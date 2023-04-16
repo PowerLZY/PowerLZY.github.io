@@ -21,26 +21,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="本博客主要用于记录个人学习笔记">
-<meta property="og:type" content="website">
+    <meta name="description" content="FP-growth  数据挖掘随笔（一）频繁模式挖掘与关联规则挖掘以及Apriori算法（python实现）：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;410019734 数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;411594391">
+<meta property="og:type" content="article">
 <meta property="og:title" content="PowerLZY&#39;s Blog">
-<meta property="og:url" content="https://powerlzy.github.io/archives/index.html">
+<meta property="og:url" content="https://powerlzy.github.io/2023/04/01/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8819%EF%BC%89%E3%80%90TODO%E3%80%91FP-growth/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="本博客主要用于记录个人学习笔记">
+<meta property="og:description" content="FP-growth  数据挖掘随笔（一）频繁模式挖掘与关联规则挖掘以及Apriori算法（python实现）：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;410019734 数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;411594391">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-01T07:37:15.389Z">
+<meta property="article:modified_time" content="2023-04-01T13:58:55.246Z">
 <meta property="article:author" content="lzy">
 <meta property="article:tag" content="Python、Machine Learing、CyberSecurity">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://powerlzy.github.io/archives/">
+<link rel="canonical" href="https://powerlzy.github.io/2023/04/01/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8819%EF%BC%89%E3%80%90TODO%E3%80%91FP-growth/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"archives/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/2023/04/01/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8819%EF%BC%89%E3%80%90TODO%E3%80%91FP-growth/","path":"2023/04/01/机器学习（19）【TODO】FP-growth/","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>归档 | PowerLZY's Blog</title>
+<title> | PowerLZY's Blog</title>
   
 
 
@@ -73,7 +75,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">PowerLZY's Blog</h1>
+      <p class="site-title">PowerLZY's Blog</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">相比到达的地方，同行的人更重要！</p>
@@ -127,7 +129,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -140,6 +142,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FP-growth"><span class="nav-number">1.</span> <span class="nav-text">FP-growth</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,235 +190,136 @@
 
     </div>
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 25 篇日志。 继续努力。</span>
-      </div>
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/2023/04/01/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8819%EF%BC%89%E3%80%90TODO%E3%80%91FP-growth/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="本博客主要用于记录个人学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
+
+      <time title="创建时间：2023-04-01 15:37:15 / 修改时间：21:58:55" itemprop="dateCreated datePublished" datetime="2023-04-01T15:37:15+08:00">2023-04-01</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>179</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="FP-growth"><a href="#FP-growth" class="headerlink" title="FP-growth"></a>FP-growth</h2><blockquote>
+<ul>
+<li>数据挖掘随笔（一）频繁模式挖掘与关联规则挖掘以及Apriori算法（python实现）：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/410019734">https://zhuanlan.zhihu.com/p/410019734</a></li>
+<li>数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/411594391">https://zhuanlan.zhihu.com/p/411594391</a></li>
+</ul>
+</blockquote>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-04-16T20:44:02+08:00"
-              content="2023-04-16">
-          04-16
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/04/16/Untitled/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
+    <footer class="post-footer">
+          
 
-      
-    </header>
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/2023/04/01/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8819%EF%BC%89%E3%80%90TODO%E3%80%91FP-growth/" title="">https://powerlzy.github.io/2023/04/01/机器学习（19）【TODO】FP-growth/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89%E3%80%90Nan%E3%80%91CRF/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/04/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%880%EF%BC%89%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" rel="next" title="机器学习理论">
+                  机器学习理论 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-04-16T15:56:31+08:00"
-              content="2023-04-16">
-          04-16
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/04/16/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%880%EF%BC%89%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url">
-            <span itemprop="name">机器学习理论</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2023-04-01T15:37:15+08:00"
-              content="2023-04-01">
-          04-01
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/04/01/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8819%EF%BC%89%E3%80%90TODO%E3%80%91FP-growth/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-07-18T21:00:40+08:00"
-              content="2022-07-18">
-          07-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/07/18/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89%E3%80%90Nan%E3%80%91CRF/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-07-02T15:21:08+08:00"
-              content="2022-07-02">
-          07-02
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/07/02/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8811%EF%BC%89CatBoost/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-06-22T12:54:43+08:00"
-              content="2022-06-22">
-          06-22
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/06/22/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89%E3%80%90Nan%E3%80%91%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-05-07T13:51:03+08:00"
-              content="2022-05-07">
-          05-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/05/07/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89%E6%A8%A1%E5%9E%8B%E8%9E%8D%E5%90%88/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-04-20T12:38:36+08:00"
-              content="2022-04-20">
-          04-20
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/04/20/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%8814%EF%BC%89%E3%80%90Nan%E3%80%91LDA(%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B)/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-03-24T14:08:53+08:00"
-              content="2022-03-24">
-          03-24
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/24/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%885%EF%BC%89%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-03-24T14:08:32+08:00"
-              content="2022-03-24">
-          03-24
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/24/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%882%EF%BC%89%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0/" itemprop="url">
-            <span itemprop="name">未命名</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
+</div>
 
 
-    </div>
-  </div>
-  
-  
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+
+
+
 
 </div>
   </main>
