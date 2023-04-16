@@ -19,198 +19,198 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;93107394   机器学习-最全面的评价指标体系: https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;359997979   机器学习工程师面试宝典-03-模型评估   分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习模型评价指标">
-<meta property="og:url" content="https://powerlzy/2023/04/16/hello-world/index.html">
+<meta property="og:url" content="https://powerlzy.github.io/2023/04/16/hello-world/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
 <meta property="og:description" content="一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;93107394   机器学习-最全面的评价指标体系: https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;359997979   机器学习工程师面试宝典-03-模型评估   分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://powerlzy/.io//image-20220421165422230.png">
-<meta property="og:image" content="https://powerlzy/.io//image-20220421165436795.png">
-<meta property="og:image" content="https://powerlzy/.io//640-20230416162047009.svg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162046966">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162046970">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/image-20220421165422230.png">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/image-20220421165436795.png">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/640-20230416162047009.svg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162046966">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162046970">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=TPR">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=FPR">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162046950">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162046968">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=10/%25/times+k(k%253D1%252C2%252C3%252C..-20230416162046951.%252C9)">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162046950">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162046968">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=10/%25/times+k(k%253D1%252C2%252C3%252C..-20230416162046951.%252C9)">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=TPR">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=FPR">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k(k=1,2,3,...,9)">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=TPR">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=FPR">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162046950">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162046968">
-<meta property="og:image" content="https://powerlzy/.io//v2-f913b42cefcd32f9fdbfa027de2dfbc8_1440w.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047033">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047062">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047046">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047333">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047311">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047100">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047320-1633247.">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047320">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047327">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047320">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047329">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047403">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047320">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047476">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047459">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047460">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162046950">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162046968">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-f913b42cefcd32f9fdbfa027de2dfbc8_1440w.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047033">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047062">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047046">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047333">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047311">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047100">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047320-1633247.">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047320">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047327">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047320">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047329">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047403">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047320">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047476">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047459">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047460">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=depth">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=Lift">
-<meta property="og:image" content="https://powerlzy/.io//v2-4cfa1e77335b91d9a47acb7238383c1e_1440w.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-4cfa1e77335b91d9a47acb7238383c1e_1440w.jpg">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=depth">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=Lift">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=Lift">
-<meta property="og:image" content="https://powerlzy/.io//v2-dc6abbb24e2dfbfefe4777408d2a8e5c_1440w.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047533">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047516">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047501">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047744">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047557">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047728">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047554">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047757">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047731">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047732">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047729">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048546">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048521">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048834">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048881">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048799">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048828">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048883">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048768">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048925">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048919">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048984">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049151">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162048985">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049034">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049017">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049062">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049473">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049156">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049168">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-dc6abbb24e2dfbfefe4777408d2a8e5c_1440w.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047533">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047516">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047501">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047744">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047557">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047728">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047554">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047757">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047731">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047732">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047729">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048546">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048521">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048834">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048881">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048799">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048828">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048883">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048768">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048925">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048919">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048984">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049151">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162048985">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049034">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049017">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049062">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049473">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049156">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049168">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049157">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049217">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049157">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049217">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat%7By%7D">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=y">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049999">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049932">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=%5B-1.5%252C+1-20230416162049423.5%5D">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049408">
-<meta property="og:image" content="https://powerlzy/.io//v2-f13a4355c21d16cad8b3f30e8a24b5cc_1440w-20230416162046673.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050043">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049991">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050213">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049568">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049986">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050188">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050488">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050490">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050304">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049999">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049932">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=%5B-1.5%252C+1-20230416162049423.5%5D">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049408">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-f13a4355c21d16cad8b3f30e8a24b5cc_1440w-20230416162046673.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050043">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049991">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050213">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049568">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049986">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050188">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050488">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050490">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050304">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=y">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050196">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050500">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050459">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050494">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050548">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049999">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050595">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162049408">
-<meta property="og:image" content="https://powerlzy/.io//v2-fd248542b6b5aa9fadcab44340045dee_1440w-20230416162047379.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050627">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050488">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050490">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050629">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050623">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050592">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050635">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050892">
-<meta property="og:image" content="https://powerlzy/.io//v2-c8edffe0406dafae41a042e412cd3251_1440w-20230416162047585.jpg">
-<meta property="og:image" content="https://powerlzy/.io//v2-93ad65845f5b0dc0327fde4ded661804_1440w-20230416162047378.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050848">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050875">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050196">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050500">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050459">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050494">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050548">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049999">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050595">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162049408">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-fd248542b6b5aa9fadcab44340045dee_1440w-20230416162047379.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050627">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050488">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050490">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050629">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050623">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050592">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050635">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050892">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-c8edffe0406dafae41a042e412cd3251_1440w-20230416162047585.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-93ad65845f5b0dc0327fde4ded661804_1440w-20230416162047378.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050848">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050875">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cdelta">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050955">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050914">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=/delta%253D1-20230416162050876.0">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051143">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050970">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050962">
-<meta property="og:image" content="https://powerlzy/.io//v2-b4260d38f70dd920fa46b8717596bda7_1440w-20230416162047797.jpg">
-<meta property="og:image" content="https://powerlzy/.io//v2-8eb8ecfcdd8031a16a471905217934a0_1440w-20230416162047585.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162050991">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051027">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051092">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=r%3E0-20230416162051067.5">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=r+%3C+0-20230416162051140.5">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=r%253D0-20230416162051084.5">
-<meta property="og:image" content="https://powerlzy/.io//v2-f8ed385f32a517c784bce841e6da1daf_1440w-20230416162047923.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051160">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051155">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051238">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050955">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050914">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=/delta%253D1-20230416162050876.0">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051143">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050970">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050962">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-b4260d38f70dd920fa46b8717596bda7_1440w-20230416162047797.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-8eb8ecfcdd8031a16a471905217934a0_1440w-20230416162047585.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162050991">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051027">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051092">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=r%3E0-20230416162051067.5">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=r+%3C+0-20230416162051140.5">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=r%253D0-20230416162051084.5">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-f8ed385f32a517c784bce841e6da1daf_1440w-20230416162047923.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051160">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051155">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051238">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=5K">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051191">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051191">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=50K">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051244">
-<meta property="og:image" content="https://powerlzy/.io//v2-e8656365e7eee25065d6bdfec33368e5_1440w-20230416162048752.jpg">
-<meta property="og:image" content="https://powerlzy/.io//image-20220711160205051.png">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051242">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051298">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051263">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051297">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051331">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051506">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051575">
-<meta property="og:image" content="https://powerlzy/.io//v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051527">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051524">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=/Omega%253D/%7B/omega_1%252C/omega_2%252C..-20230416162051525.%252C/omega_K/%7D">
-<meta property="og:image" content="https://powerlzy/.io//equation?tex=/mathbb%7BC%7D%253D/%7Bc_1%252C_2%252C..-20230416162051543.c_J/%7D">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051815">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051616">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051619">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051612">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051679">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051779">
-<meta property="og:image" content="https://powerlzy/.io//v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051924">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051734">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051915">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051935">
-<meta property="og:image" content="https://powerlzy/.io//v2-a9e709a995b006be04d026aebc721c4e_1440w-20230416162049533.png">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051911">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051996">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051993">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162052007">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162047757">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162051779">
-<meta property="og:image" content="https://powerlzy/.io//equation-20230416162052015">
-<meta property="og:image" content="https://powerlzy/.io//v2-a3b6092e30d2eab7d2372007aec15105_r-20230416162050205.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051244">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-e8656365e7eee25065d6bdfec33368e5_1440w-20230416162048752.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/image-20220711160205051.png">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051242">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051298">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051263">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051297">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051331">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051506">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051575">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051527">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051524">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=/Omega%253D/%7B/omega_1%252C/omega_2%252C..-20230416162051525.%252C/omega_K/%7D">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation?tex=/mathbb%7BC%7D%253D/%7Bc_1%252C_2%252C..-20230416162051543.c_J/%7D">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051815">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051616">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051619">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051612">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051679">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051779">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051924">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051734">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051915">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051935">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-a9e709a995b006be04d026aebc721c4e_1440w-20230416162049533.png">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051911">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051996">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051993">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162052007">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162047757">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162051779">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/equation-20230416162052015">
+<meta property="og:image" content="https://powerlzy.github.io/2023/04/16/hello-world/v2-a3b6092e30d2eab7d2372007aec15105_r-20230416162050205.jpg">
 <meta property="article:published_time" content="2023-04-16T07:04:15.748Z">
 <meta property="article:modified_time" content="2023-04-16T09:00:37.281Z">
 <meta property="article:author" content="lzy">
 <meta property="article:tag" content="Python、Machine Learing、CyberSecurity">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://powerlzy/.io//image-20220421165422230.png">
+<meta name="twitter:image" content="https://powerlzy.github.io/2023/04/16/hello-world/image-20220421165422230.png">
 
 
-<link rel="canonical" href="https://powerlzy/2023/04/16/hello-world/">
+<link rel="canonical" href="https://powerlzy.github.io/2023/04/16/hello-world/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy/2023/04/16/hello-world/","path":"2023/04/16/hello-world/","title":"机器学习模型评价指标"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/2023/04/16/hello-world/","path":"2023/04/16/hello-world/","title":"机器学习模型评价指标"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>机器学习模型评价指标 | PowerLZY's Blog</title>
@@ -328,7 +328,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -336,10 +336,6 @@
           <a href="/categories/">
         <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -376,7 +372,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy/2023/04/16/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/2023/04/16/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -456,9 +452,9 @@
 <p>  <a target="_blank" rel="noopener" href="https://github.com/HaoMood/homepage/blob/master/files/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-03-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0.pdf">机器学习工程师面试宝典-03-模型评估</a></p>
 <p>  <strong><a target="_blank" rel="noopener" href="http://www.china-nb.cn/gongsidongtai/17-85.html">分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线</a></strong></p>
 </blockquote>
-<img src="/.io//image-20220421165422230.png" alt="image-20220421165422230" style="zoom:50%;">
+<img src="image-20220421165422230.png" alt="image-20220421165422230" style="zoom:50%;">
 
-<img src="/.io//image-20220421165436795.png" alt="image-20220421165436795" style="zoom:50%;">
+<img src="image-20220421165436795.png" alt="image-20220421165436795" style="zoom:50%;">
 
 <h3 id="一、二分类问题"><a href="#一、二分类问题" class="headerlink" title="一、二分类问题"></a>一、二分类问题</h3><blockquote>
 <p>  <strong>阈值调节问题？</strong></p>
@@ -471,7 +467,7 @@
 <li><strong>真正率（TPR） &#x3D; 灵敏度（&#x3D;&#x3D;召回率&#x3D;&#x3D;） &#x3D;</strong> <strong>TP&#x2F;(TP+FN)</strong></li>
 <li><strong>假正率（FPR） &#x3D; 1- 特异度 &#x3D;</strong> <strong>FP&#x2F;(FP+TN)</strong></li>
 <li><strong>F1&#x3D;是准确率和召回率的&#x3D;&#x3D;调和平均值&#x3D;&#x3D; (2×Precision×Recall)&#x2F;（Precision+Recall）</strong></li>
-<li><strong>G-mean（GM）&#x3D; 是准确率和召回率的&#x3D;&#x3D;几何平均值&#x3D;&#x3D;</strong> <img src="/.io//640-20230416162047009.svg" alt="img"></li>
+<li><strong>G-mean（GM）&#x3D; 是准确率和召回率的&#x3D;&#x3D;几何平均值&#x3D;&#x3D;</strong> <img src="640-20230416162047009.svg" alt="img"></li>
 </ul>
 <h3 id="1-1-F1-x3D-2×Precision×Recall-x2F-（Precision-Recall）"><a href="#1-1-F1-x3D-2×Precision×Recall-x2F-（Precision-Recall）" class="headerlink" title="1.1 F1&#x3D;(2×Precision×Recall) &#x2F;（Precision+Recall）"></a>1.1 <strong>F1&#x3D;(2×Precision×Recall) &#x2F;（Precision+Recall）</strong></h3><p>精确率（Precision）和召回率（Recall）之间的关系用图来表达，就是下面的PR曲线。可以发现他们俩的关系是「两难全」的关系。为了综合两者的表现，在两者之间找一个平衡点，就出现了一个 F1分数。</p>
 <h4 id="F1-x3D-2×Precision×Recall-x2F-（Precision-Recall）"><a href="#F1-x3D-2×Precision×Recall-x2F-（Precision-Recall）" class="headerlink" title="F1&#x3D;(2×Precision×Recall)  &#x2F;（Precision+Recall）"></a><strong>F1&#x3D;(2×Precision×Recall)  &#x2F;（Precision+Recall）</strong></h4><p>P意义类似于每通过准确预测得到TP个正例需要TP+FP个预测类别为正例的样本。</p>
@@ -502,19 +498,19 @@
 </ul>
 <p><strong>&#x3D;&#x3D;auc仅反应模型的排序能力&#x3D;&#x3D;，无法反应模型的拟合优度；auc很多时候无法直接反应细粒度的和业务目标更相关的metric信息，例如 top k的准确率，召回率等等（例如同auc的模型在不同的区间的预测能力是存在差别的）；</strong></p>
 <h3 id="1-3、K-S曲线"><a href="#1-3、K-S曲线" class="headerlink" title="1.3、K-S曲线"></a>1.3、K-S曲线</h3><blockquote>
-<p>  <strong>K-S曲线</strong>，又称作洛伦兹曲线。实际上，K-S曲线的数据来源以及本质和ROC曲线是一致的，只是ROC曲线是把真正率（ <img src="/.io//equation-20230416162046966" alt="[公式]"> ）和假正率（ <img src="/.io//equation-20230416162046970" alt="[公式]"> ）当作横纵轴，<strong>而K-S曲线是把真正率（ <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> ）和假正率（ <img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> )都当作是纵轴，横轴则由选定的阈值来充当。从 <strong>K-S 曲线</strong>就能衍生出 <img src="/.io//equation-20230416162046950" alt="[公式]"> 值， <img src="/.io//equation-20230416162046968" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。</strong></p>
+<p>  <strong>K-S曲线</strong>，又称作洛伦兹曲线。实际上，K-S曲线的数据来源以及本质和ROC曲线是一致的，只是ROC曲线是把真正率（ <img src="equation-20230416162046966" alt="[公式]"> ）和假正率（ <img src="equation-20230416162046970" alt="[公式]"> ）当作横纵轴，<strong>而K-S曲线是把真正率（ <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> ）和假正率（ <img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> )都当作是纵轴，横轴则由选定的阈值来充当。从 <strong>K-S 曲线</strong>就能衍生出 <img src="equation-20230416162046950" alt="[公式]"> 值， <img src="equation-20230416162046968" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。</strong></p>
 </blockquote>
 <p><strong>K-S曲线的画法：</strong></p>
 <ol>
 <li><p><strong>排序：</strong>对于二元分类器来说，模型训练完成之后每个样本都会得到一个类概率值，把样本按这个类概率值从大到小进行排序；</p>
 </li>
-<li><p><strong>找阈值：</strong>取排序后前 <img src="/.io//equation?tex=10/%25/times+k(k%253D1%252C2%252C3%252C..-20230416162046951.%252C9)" alt="[公式]"> 处的值（概率值）作为阈值，分别计算出不同的 <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值，以<img src="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k(k=1,2,3,...,9)" alt="[公式]">为横坐标，分别以<img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值为纵坐标，就可以画出两个曲线，这就是K-S曲线，类似于下图。</p>
+<li><p><strong>找阈值：</strong>取排序后前 <img src="equation?tex=10/%25/times+k(k%253D1%252C2%252C3%252C..-20230416162046951.%252C9)" alt="[公式]"> 处的值（概率值）作为阈值，分别计算出不同的 <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值，以<img src="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k(k=1,2,3,...,9)" alt="[公式]">为横坐标，分别以<img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值为纵坐标，就可以画出两个曲线，这就是K-S曲线，类似于下图。</p>
 </li>
 <li><p><strong>KS值</strong>：</p>
-<p>从 <strong>K-S 曲线</strong>就能衍生出 <img src="/.io//equation-20230416162046950" alt="[公式]"> 值， <img src="/.io//equation-20230416162046968" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。KS值越大表示模型 的区分能力越强。</p>
+<p>从 <strong>K-S 曲线</strong>就能衍生出 <img src="equation-20230416162046950" alt="[公式]"> 值， <img src="equation-20230416162046968" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。KS值越大表示模型 的区分能力越强。</p>
 </li>
 </ol>
-<img src="/.io//v2-f913b42cefcd32f9fdbfa027de2dfbc8_1440w.jpg" alt="img" style="zoom: 50%;">
+<img src="v2-f913b42cefcd32f9fdbfa027de2dfbc8_1440w.jpg" alt="img" style="zoom: 50%;">
 
 <h3 id="1-4-Lift曲线"><a href="#1-4-Lift曲线" class="headerlink" title="1.4 Lift曲线"></a>1.4 Lift曲线</h3><p><strong>Lift曲线它衡量的是，与不利用模型相比，模型的预测能力“变好”了多少，lift(提升指数)越大，模型的运行效果越好。实质上它强调的是投入与产出比</strong>。</p>
 <p><strong>tip:<strong>理解</strong>Lift</strong>可以先看一下Quora上的一篇文章：**<a href="https://link.zhihu.com/?target=https://www.quora.com/Whats-Lift-curve">What’s Lift curve?</a>**</p>
@@ -522,27 +518,27 @@
 <ul>
 <li><strong>准确率（accuracy，ACC）</strong>：</li>
 </ul>
-<p><img src="/.io//equation-20230416162047033" alt="[公式]"></p>
+<p><img src="equation-20230416162047033" alt="[公式]"></p>
 <ul>
 <li><strong>正确率(Precision，PRE)，查准率</strong>：</li>
 </ul>
-<p><img src="/.io//equation-20230416162047062" alt="[公式]"></p>
+<p><img src="equation-20230416162047062" alt="[公式]"></p>
 <ul>
 <li>**真阳性率(True Positive Rate，TPR)，灵敏度(Sensitivity)，召回率(Recall)**：</li>
 </ul>
-<p><img src="/.io//equation-20230416162047046" alt="[公式]"></p>
+<p><img src="equation-20230416162047046" alt="[公式]"></p>
 <ul>
 <li>**假阳性率(False Positice Rate，FPR)，误诊率( &#x3D; 1 - 特异度)**：</li>
 </ul>
-<p><img src="/.io//equation-20230416162047333" alt="[公式]"></p>
+<p><img src="equation-20230416162047333" alt="[公式]"></p>
 <p><strong>Lift计算公式：</strong></p>
-<p><img src="/.io//equation-20230416162047311" alt="[公式]"></p>
-<p>根据以上公式可知，<strong>Lift指标可以这样理解：</strong>在不使用模型的情况下，我们用先验概率估计正例的比例，即上式子分母部分，以此作为正例的命中率；利用模型后，我们不需要从整个样本中来挑选正例，只需要从我们预测为正例的那个样本的子集 <img src="/.io//equation-20230416162047100" alt="[公式]"> 中挑选正例，这时正例的命中率为 <img src="/.io//equation-20230416162047320-1633247." alt="[公式]"> ，后者除以前者即可得提升值<strong>Lift。</strong></p>
-<h4 id="Lift曲线："><a href="#Lift曲线：" class="headerlink" title="Lift曲线："></a><strong>Lift曲线：</strong></h4><p>为了作出<strong>LIft</strong>曲线，首先引入 <img src="/.io//equation-20230416162047320" alt="[公式]"> 的概念：</p>
-<p><img src="/.io//equation-20230416162047327" alt="[公式]"></p>
-<p><strong>从公式可以看出</strong>，<img src="/.io//equation-20230416162047320" alt="[公式]">代表的是预测为正例的样本占整个样本的比例。</p>
-<p>当阈值为0时，所有的样本都被预测为正例，因此 <img src="/.io//equation-20230416162047329" alt="[公式]"> ，于是 <img src="/.io//equation-20230416162047403" alt="[公式]"> ，模型未起提升作用。随着阈值逐渐增大，被预测为正例的样本数逐渐减少，<img src="/.io//equation-20230416162047320" alt="[公式]">减小，而较少的预测正例样本中的真实正例比例逐渐增大。当阈值增大至1时，没有样本被预测为正例，此时 <img src="/.io//equation-20230416162047476" alt="[公式]"> ，而 <img src="/.io//equation-20230416162047459" alt="[公式]"> 。由此可见， <img src="/.io//equation-20230416162047460" alt="[公式]"> 与<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">存在相反方向变化的关系。在此基础上作出 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 图：</p>
-<img src="/.io//v2-4cfa1e77335b91d9a47acb7238383c1e_1440w.jpg" alt="img" style="zoom: 50%;">
+<p><img src="equation-20230416162047311" alt="[公式]"></p>
+<p>根据以上公式可知，<strong>Lift指标可以这样理解：</strong>在不使用模型的情况下，我们用先验概率估计正例的比例，即上式子分母部分，以此作为正例的命中率；利用模型后，我们不需要从整个样本中来挑选正例，只需要从我们预测为正例的那个样本的子集 <img src="equation-20230416162047100" alt="[公式]"> 中挑选正例，这时正例的命中率为 <img src="equation-20230416162047320-1633247." alt="[公式]"> ，后者除以前者即可得提升值<strong>Lift。</strong></p>
+<h4 id="Lift曲线："><a href="#Lift曲线：" class="headerlink" title="Lift曲线："></a><strong>Lift曲线：</strong></h4><p>为了作出<strong>LIft</strong>曲线，首先引入 <img src="equation-20230416162047320" alt="[公式]"> 的概念：</p>
+<p><img src="equation-20230416162047327" alt="[公式]"></p>
+<p><strong>从公式可以看出</strong>，<img src="equation-20230416162047320" alt="[公式]">代表的是预测为正例的样本占整个样本的比例。</p>
+<p>当阈值为0时，所有的样本都被预测为正例，因此 <img src="equation-20230416162047329" alt="[公式]"> ，于是 <img src="equation-20230416162047403" alt="[公式]"> ，模型未起提升作用。随着阈值逐渐增大，被预测为正例的样本数逐渐减少，<img src="equation-20230416162047320" alt="[公式]">减小，而较少的预测正例样本中的真实正例比例逐渐增大。当阈值增大至1时，没有样本被预测为正例，此时 <img src="equation-20230416162047476" alt="[公式]"> ，而 <img src="equation-20230416162047459" alt="[公式]"> 。由此可见， <img src="equation-20230416162047460" alt="[公式]"> 与<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">存在相反方向变化的关系。在此基础上作出 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 图：</p>
+<img src="v2-4cfa1e77335b91d9a47acb7238383c1e_1440w.jpg" alt="img" style="zoom: 50%;">
 
 <p>一般要求，在尽量大的 <img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]"> 下得到尽量大的 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 曲线的右半部分应该尽量陡峭。</p>
 <h3 id="1-5-P-R曲线"><a href="#1-5-P-R曲线" class="headerlink" title="1.5 P-R曲线"></a>1.5 <strong>P-R曲线</strong></h3><ul>
@@ -553,66 +549,66 @@
 </ul>
 <p>P-R曲线刻画<strong>查准率</strong>和<strong>查全率（召回率）</strong>之间的关系，查准率指的是在所有预测为正例的数据中，真正例所占的比例，查全率是指预测为真正例的数据占所有正例数据的比例。查准率和查全率是一对矛盾的度量，一般来说，查准率高时，查全率往往偏低，查全率高时，查准率往往偏低。</p>
 <p>在很多情况下，我们可以根据学习器的预测结果对样例进行排序，排在前面的是学习器认为最可能是正例的样本，排在后面的是学习器认为最不可能是正例的样本，按此顺序逐个把样本作为正例进行预测，则每次可计算当前的查全率和查准率，以查准率为y轴，以查全率为x轴，可以画出下面的P-R曲线。</p>
-<img src="/.io//v2-dc6abbb24e2dfbfefe4777408d2a8e5c_1440w.jpg" alt="img" style="zoom:67%;">
+<img src="v2-dc6abbb24e2dfbfefe4777408d2a8e5c_1440w.jpg" alt="img" style="zoom:67%;">
 
 <p>如果一个学习器的P-R曲线被另一个学习器的P-R曲线完全包住，则可断言后者的性能优于前者，当然我们可以根据曲线下方的面积大小来进行比较，但更常用的是<strong>平衡点</strong>或者是F1值。</p>
 <ul>
 <li><strong>平衡点（BEP）</strong>是查准率&#x3D;查全率时的取值，如果这个值较大，则说明学习器的性能较好。F1值越大，我们可以认为该学习器的性能较好。</li>
 <li><font color="red"> <strong>F1度量</strong>：<strong>BEP过于简单，这个平衡点是建立在”查准率&#x3D;查全率“的前提下，无法满足实际不同场景的应用。</strong></font></li>
 </ul>
-<p>我们先来引入加权调和平均： <img src="/.io//equation-20230416162047533" alt="[公式]">：</p>
-<p><img src="/.io//equation-20230416162047516" alt="[公式]"></p>
-<p>加权调和平均与<strong>算术平均</strong> <img src="/.io//equation-20230416162047501" alt="[公式]"> 和<strong>几何平均</strong> <img src="/.io//equation-20230416162047744" alt="[公式]"> 相比，<strong>调和平均更重视较小值（这可以从倒数上看出来）</strong>。当 <img src="/.io//equation-20230416162047557" alt="[公式]"> ，即F1是基于查准率和查全率的调和平均定义的，F1的公式如下：</p>
-<p><img src="/.io//equation-20230416162047728" alt="[公式]"></p>
+<p>我们先来引入加权调和平均： <img src="equation-20230416162047533" alt="[公式]">：</p>
+<p><img src="equation-20230416162047516" alt="[公式]"></p>
+<p>加权调和平均与<strong>算术平均</strong> <img src="equation-20230416162047501" alt="[公式]"> 和<strong>几何平均</strong> <img src="equation-20230416162047744" alt="[公式]"> 相比，<strong>调和平均更重视较小值（这可以从倒数上看出来）</strong>。当 <img src="equation-20230416162047557" alt="[公式]"> ，即F1是基于查准率和查全率的调和平均定义的，F1的公式如下：</p>
+<p><img src="equation-20230416162047728" alt="[公式]"></p>
 <p>我们把公式求倒数，即可得：</p>
-<p><img src="/.io//equation-20230416162047554" alt="[公式]"></p>
-<p>在一些应用中，对查准率和查全率的重视程度不同。例如在商品推荐中，为了尽可能少打扰用户，更希望推荐的内容确实是用户感兴趣的，此时查准率更重要；而在罪犯信息检索或者病人检查系统中，更希望尽可能少的漏判，此时查全率更重要。F1度量的一般形式是 <img src="/.io//equation-20230416162047757" alt="[公式]"> ，能让我们自定义对查准率&#x2F;查全率的不同偏好：</p>
-<p><img src="/.io//equation-20230416162047731" alt="[公式]"></p>
-<p>其中， <img src="/.io//equation-20230416162047732" alt="[公式]"> 度量了查全率对查准率的相对重要性（不明白的同学可以回看公式1）， <img src="/.io//equation-20230416162047729" alt="[公式]"> 时退化为标准F1，<img src="/.io//equation-20230416162048546" alt="[公式]">&#x3D;&#x3D;时查全率有更大影响； <img src="/.io//equation-20230416162048521" alt="[公式]"> 时，查准率有更大影响。&#x3D;&#x3D;</p>
+<p><img src="equation-20230416162047554" alt="[公式]"></p>
+<p>在一些应用中，对查准率和查全率的重视程度不同。例如在商品推荐中，为了尽可能少打扰用户，更希望推荐的内容确实是用户感兴趣的，此时查准率更重要；而在罪犯信息检索或者病人检查系统中，更希望尽可能少的漏判，此时查全率更重要。F1度量的一般形式是 <img src="equation-20230416162047757" alt="[公式]"> ，能让我们自定义对查准率&#x2F;查全率的不同偏好：</p>
+<p><img src="equation-20230416162047731" alt="[公式]"></p>
+<p>其中， <img src="equation-20230416162047732" alt="[公式]"> 度量了查全率对查准率的相对重要性（不明白的同学可以回看公式1）， <img src="equation-20230416162047729" alt="[公式]"> 时退化为标准F1，<img src="equation-20230416162048546" alt="[公式]">&#x3D;&#x3D;时查全率有更大影响； <img src="equation-20230416162048521" alt="[公式]"> 时，查准率有更大影响。&#x3D;&#x3D;</p>
 <h3 id="1-6-对数损失-Log-Loss"><a href="#1-6-对数损失-Log-Loss" class="headerlink" title="1.6 对数损失(Log Loss)"></a>1.6 <strong>对数损失(Log Loss)</strong></h3><p><strong>AUC ROC考虑用于确定模型性能的预测概率</strong>。然而，AUC ROC存在问题，它只考虑概率的顺序，因此<strong>没有考虑模型预测更可能为正样本的更高概率的能力(即考虑了大小，但没有考虑更高精度)<strong>。</strong>在这种情况下，我们可以使用对数损失，即每个实例的正例预测概率的对数的负平均值。</strong></p>
 <p>对数损失（Logistic Loss，logloss）是对预测概率的似然估计，其标准形式为：</p>
-<p><img src="/.io//equation-20230416162048834" alt="[公式]"></p>
+<p><img src="equation-20230416162048834" alt="[公式]"></p>
 <p>对数损失最小化本质是上利用样本中的已知分布，求解拟合这种分布的最佳模型参数，使这种分布出现概率最大。</p>
 <p>对数损失对应的二分类的计算公式为：</p>
-<p><img src="/.io//equation-20230416162048881" alt="[公式]"></p>
-<p>其中N为样本数， <img src="/.io//equation-20230416162048799" alt="[公式]"> 为预测为1的概率。对数损失在多分类问题中也可以使用，其计算公式为：</p>
-<p><img src="/.io//equation-20230416162048828" alt="[公式]"></p>
+<p><img src="equation-20230416162048881" alt="[公式]"></p>
+<p>其中N为样本数， <img src="equation-20230416162048799" alt="[公式]"> 为预测为1的概率。对数损失在多分类问题中也可以使用，其计算公式为：</p>
+<p><img src="equation-20230416162048828" alt="[公式]"></p>
 <p>其中，N为样本数，C为类别数，logloss衡量的是预测概率分布和真实概率分布的差异性，取值越小越好。</p>
 <h3 id="1-7-多分类"><a href="#1-7-多分类" class="headerlink" title="1.7 多分类"></a>1.7 多分类</h3><p>很多时候我们有多个<strong>二分类混淆矩阵</strong>，例如进行多次训练&#x2F;测试，每次得到一个混淆矩阵；或是在多个数据集上进行训练&#x2F;测试，希望估计算法的全局性能；或者是执行分类任务，每两两类别的组合都对应一个混淆矩阵；总之是在<strong>n个二分类混淆矩阵上综合考察查准率和查全率</strong>。</p>
 <ul>
 <li><strong>宏观</strong>：在各个混淆军阵上分别计算出查准率和查全率，记为(P1,R1)，(P2,R2),…(Pn,Rn)，在<strong>计算平均值</strong>，这样就得到“宏观查准率”(macro-P)，“宏观查全率”(macro-R)、“宏观F1”(macro-F1)：</li>
 </ul>
-<p><img src="/.io//equation-20230416162048883" alt="[公式]"></p>
-<p><img src="/.io//equation-20230416162048768" alt="[公式]"></p>
-<p><img src="/.io//equation-20230416162048925" alt="[公式]"></p>
+<p><img src="equation-20230416162048883" alt="[公式]"></p>
+<p><img src="equation-20230416162048768" alt="[公式]"></p>
+<p><img src="equation-20230416162048925" alt="[公式]"></p>
 <ul>
-<li><strong>微观</strong>：<strong>将个混淆矩阵对应的元素进行平均，得到TP、FP、TN、FN的平均值</strong>，分别记为 <img src="/.io//equation-20230416162048919" alt="[公式]"> 、 <img src="/.io//equation-20230416162048984" alt="[公式]"> 、 <img src="/.io//equation-20230416162049151" alt="[公式]"> 、 <img src="/.io//equation-20230416162048985" alt="[公式]"> ，再基于这些平均值计算出“微观查准率”(micro-P)，“微观查全率”(micro-R)、“微观F1”(micro-F1)：</li>
+<li><strong>微观</strong>：<strong>将个混淆矩阵对应的元素进行平均，得到TP、FP、TN、FN的平均值</strong>，分别记为 <img src="equation-20230416162048919" alt="[公式]"> 、 <img src="equation-20230416162048984" alt="[公式]"> 、 <img src="equation-20230416162049151" alt="[公式]"> 、 <img src="equation-20230416162048985" alt="[公式]"> ，再基于这些平均值计算出“微观查准率”(micro-P)，“微观查全率”(micro-R)、“微观F1”(micro-F1)：</li>
 </ul>
-<p><img src="/.io//equation-20230416162049034" alt="[公式]"></p>
-<p><img src="/.io//equation-20230416162049017" alt="[公式]"></p>
-<p><img src="/.io//equation-20230416162049062" alt="[公式]"></p>
+<p><img src="equation-20230416162049034" alt="[公式]"></p>
+<p><img src="equation-20230416162049017" alt="[公式]"></p>
+<p><img src="equation-20230416162049062" alt="[公式]"></p>
 <h2 id="二、回归问题评价指标"><a href="#二、回归问题评价指标" class="headerlink" title="二、回归问题评价指标"></a>二、回归问题评价指标</h2><blockquote>
 <p>  <strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
 </blockquote>
-<p>机器学习中的监督学习本质上是给定一系列训练样本 <img src="/.io//equation-20230416162049473" alt="[公式]"> ，尝试学习 <img src="/.io//equation-20230416162049156" alt="[公式]"> 的映射关系，使得给定一个 <img src="/.io//equation-20230416162049168" alt="[公式]"> ，即便这个 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 不在训练样本中，也能够得到尽量接近真实 <img src="/.io//equation-20230416162049157" alt="[公式]"> 的输出 <img src="/.io//equation-20230416162049217" alt="[公式]"> 。而损失函数（Loss Function）则是这个过程中关键的一个组成部分，用来<strong>衡量模型的输出</strong> <img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D" alt="[公式]"> <strong>与真实的</strong> <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> <strong>之间的差距</strong>，给模型的优化指明方向。</p>
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <img src="equation-20230416162049473" alt="[公式]"> ，尝试学习 <img src="equation-20230416162049156" alt="[公式]"> 的映射关系，使得给定一个 <img src="equation-20230416162049168" alt="[公式]"> ，即便这个 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 不在训练样本中，也能够得到尽量接近真实 <img src="equation-20230416162049157" alt="[公式]"> 的输出 <img src="equation-20230416162049217" alt="[公式]"> 。而损失函数（Loss Function）则是这个过程中关键的一个组成部分，用来<strong>衡量模型的输出</strong> <img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D" alt="[公式]"> <strong>与真实的</strong> <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> <strong>之间的差距</strong>，给模型的优化指明方向。</p>
 <h3 id="2-1-均方差损失-MSE、L2-loss"><a href="#2-1-均方差损失-MSE、L2-loss" class="headerlink" title="2.1 均方差损失 MSE、L2 loss"></a>2.1 均方差损失 MSE、L2 loss</h3><h5 id="基本形式与原理"><a href="#基本形式与原理" class="headerlink" title="基本形式与原理"></a><strong>基本形式与原理</strong></h5><p><strong>均方差Mean Squared Error (MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数</strong>，也称为 <strong>L2 Loss</strong>。其基本形式如下：</p>
-<p><img src="/.io//equation-20230416162049999" alt="[公式]"></p>
-<p>从直觉上理解均方差损失，这个损失函数的最小值为 0（当预测等于真实值时），最大值为无穷大。下图是对于真实值 <img src="/.io//equation-20230416162049932" alt="[公式]"> ，不同的预测值 <img src="/.io//equation?tex=%5B-1.5%252C+1-20230416162049423.5%5D" alt="[公式]"> 的均方差损失的变化图。横轴是不同的预测值，纵轴是均方差损失，可以看到随着预测与真实值绝对误差 <img src="/.io//equation-20230416162049408" alt="[公式]"> 的增加，均方差损失呈二次方地增加。</p>
-<p><img src="/.io//v2-f13a4355c21d16cad8b3f30e8a24b5cc_1440w-20230416162046673.jpg" alt="img"></p>
+<p><img src="equation-20230416162049999" alt="[公式]"></p>
+<p>从直觉上理解均方差损失，这个损失函数的最小值为 0（当预测等于真实值时），最大值为无穷大。下图是对于真实值 <img src="equation-20230416162049932" alt="[公式]"> ，不同的预测值 <img src="equation?tex=%5B-1.5%252C+1-20230416162049423.5%5D" alt="[公式]"> 的均方差损失的变化图。横轴是不同的预测值，纵轴是均方差损失，可以看到随着预测与真实值绝对误差 <img src="equation-20230416162049408" alt="[公式]"> 的增加，均方差损失呈二次方地增加。</p>
+<p><img src="v2-f13a4355c21d16cad8b3f30e8a24b5cc_1440w-20230416162046673.jpg" alt="img"></p>
 <blockquote>
-<h4 id="背后的假设"><a href="#背后的假设" class="headerlink" title="背后的假设"></a>背后的假设</h4><p>  <strong>【独立同分布-中心极限定理】</strong>：<br>  如果 <img src="/.io//equation-20230416162050043" alt="[公式]"> 独立同分布，且 <img src="/.io//equation-20230416162049991" alt="[公式]"> ，则n足够大时 <img src="/.io//equation-20230416162050213" alt="[公式]"> 近似服从正态分布 <img src="/.io//equation-20230416162049568" alt="[公式]"> ，即</p>
-<p>  <img src="/.io//equation-20230416162049986" alt="[公式]"></p>
-<p>  实际上在一定的假设下，我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>（ <img src="/.io//equation-20230416162050188" alt="[公式]"> ），则给定一个 <img src="/.io//equation-20230416162050488" alt="[公式]"> 模型输出真实值 <img src="/.io//equation-20230416162050490" alt="[公式]"> 的概率为</p>
-<p>  <img src="/.io//equation-20230416162050304" alt="[公式]"></p>
-<p>  <strong>进一步我们假设数据集中 N 个样本点之间相互独立，则给定所有 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 输出所有真实值 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的概率，即似然 Likelihood</strong>，为所有 <img src="/.io//equation-20230416162050196" alt="[公式]"> 的累乘</p>
-<p>  <img src="/.io//equation-20230416162050500" alt="[公式]"></p>
+<h4 id="背后的假设"><a href="#背后的假设" class="headerlink" title="背后的假设"></a>背后的假设</h4><p>  <strong>【独立同分布-中心极限定理】</strong>：<br>  如果 <img src="equation-20230416162050043" alt="[公式]"> 独立同分布，且 <img src="equation-20230416162049991" alt="[公式]"> ，则n足够大时 <img src="equation-20230416162050213" alt="[公式]"> 近似服从正态分布 <img src="equation-20230416162049568" alt="[公式]"> ，即</p>
+<p>  <img src="equation-20230416162049986" alt="[公式]"></p>
+<p>  实际上在一定的假设下，我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>（ <img src="equation-20230416162050188" alt="[公式]"> ），则给定一个 <img src="equation-20230416162050488" alt="[公式]"> 模型输出真实值 <img src="equation-20230416162050490" alt="[公式]"> 的概率为</p>
+<p>  <img src="equation-20230416162050304" alt="[公式]"></p>
+<p>  <strong>进一步我们假设数据集中 N 个样本点之间相互独立，则给定所有 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 输出所有真实值 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的概率，即似然 Likelihood</strong>，为所有 <img src="equation-20230416162050196" alt="[公式]"> 的累乘</p>
+<p>  <img src="equation-20230416162050500" alt="[公式]"></p>
 <p>  通常为了计算方便，我们通常最大化对数似然 Log-Likelihood</p>
-<p>  <img src="/.io//equation-20230416162050459" alt="[公式]"></p>
-<p>  去掉与 <img src="/.io//equation-20230416162050494" alt="[公式]"> 无关的第一项，然后转化为最小化负对数似然 Negative Log-Likelihood</p>
-<p>  <img src="/.io//equation-20230416162050548" alt="[公式]"></p>
+<p>  <img src="equation-20230416162050459" alt="[公式]"></p>
+<p>  去掉与 <img src="equation-20230416162050494" alt="[公式]"> 无关的第一项，然后转化为最小化负对数似然 Negative Log-Likelihood</p>
+<p>  <img src="equation-20230416162050548" alt="[公式]"></p>
 <p>  可以看到这个实际上就是均方差损失的形式。也就是说<strong>在模型输出与真实值的误差服从高斯分布的假设下，最小化均方差损失函数与极大似然估计本质上是一致的</strong>，因此在这个假设能被满足的场景中（比如回归），均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一个好的选择。</p>
 </blockquote>
-<h3 id="hulu-百面机器学习-——-平方根误差的”意外“"><a href="#hulu-百面机器学习-——-平方根误差的”意外“" class="headerlink" title=" hulu 百面机器学习 —— 平方根误差的”意外“"></a><strong><font color="red"> hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></h3><h4 id="95-的时间区间效果很好，RMSE指标居高不下的原因？"><a href="#95-的时间区间效果很好，RMSE指标居高不下的原因？" class="headerlink" title="95%的时间区间效果很好，RMSE指标居高不下的原因？"></a>95%的时间区间效果很好，RMSE指标居高不下的原因？</h4><p><img src="/.io//equation-20230416162049999" alt="[公式]"></p>
+<h3 id="hulu-百面机器学习-——-平方根误差的”意外“"><a href="#hulu-百面机器学习-——-平方根误差的”意外“" class="headerlink" title=" hulu 百面机器学习 —— 平方根误差的”意外“"></a><strong><font color="red"> hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></h3><h4 id="95-的时间区间效果很好，RMSE指标居高不下的原因？"><a href="#95-的时间区间效果很好，RMSE指标居高不下的原因？" class="headerlink" title="95%的时间区间效果很好，RMSE指标居高不下的原因？"></a>95%的时间区间效果很好，RMSE指标居高不下的原因？</h4><p><img src="equation-20230416162049999" alt="[公式]"></p>
 <p>一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
 <p><strong>解决方案</strong>：</p>
 <ul>
@@ -621,23 +617,23 @@
 <li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
 </ul>
 <h4 id="2-2-平均绝对误差-MAE"><a href="#2-2-平均绝对误差-MAE" class="headerlink" title="2.2 平均绝对误差 MAE"></a>2.2 <strong>平均绝对误差 MAE</strong></h4><p><strong>平均绝对误差 Mean Absolute Error (MAE）</strong> 是另一类常用的损失函数，也称为 <strong>L1 Loss</strong>。其基本形式如下</p>
-<p><img src="/.io//equation-20230416162050595" alt="[公式]"></p>
-<p>同样的我们可以对这个损失函数进行可视化如下图，MAE 损失的最小值为 0（当预测等于真实值时），最大值为无穷大。可以看到随着预测与真实值绝对误差 <img src="/.io//equation-20230416162049408" alt="[公式]"> 的增加，MAE 损失呈线性增长。</p>
-<p><img src="/.io//v2-fd248542b6b5aa9fadcab44340045dee_1440w-20230416162047379.jpg" alt="img"></p>
+<p><img src="equation-20230416162050595" alt="[公式]"></p>
+<p>同样的我们可以对这个损失函数进行可视化如下图，MAE 损失的最小值为 0（当预测等于真实值时），最大值为无穷大。可以看到随着预测与真实值绝对误差 <img src="equation-20230416162049408" alt="[公式]"> 的增加，MAE 损失呈线性增长。</p>
+<p><img src="v2-fd248542b6b5aa9fadcab44340045dee_1440w-20230416162047379.jpg" alt="img"></p>
 <blockquote>
-<h4 id="背后的假设-1"><a href="#背后的假设-1" class="headerlink" title="背后的假设"></a>背后的假设</h4><p>  同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式，假设<strong>模型预测与真实值之间的误差服从拉普拉斯分布 Laplace distribution</strong>（ <img src="/.io//equation-20230416162050627" alt="[公式]"> ），则给定一个 <img src="/.io//equation-20230416162050488" alt="[公式]"> 模型输出真实值 <img src="/.io//equation-20230416162050490" alt="[公式]"> 的概率为</p>
-<p>  <img src="/.io//equation-20230416162050629" alt="[公式]"></p>
+<h4 id="背后的假设-1"><a href="#背后的假设-1" class="headerlink" title="背后的假设"></a>背后的假设</h4><p>  同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式，假设<strong>模型预测与真实值之间的误差服从拉普拉斯分布 Laplace distribution</strong>（ <img src="equation-20230416162050627" alt="[公式]"> ），则给定一个 <img src="equation-20230416162050488" alt="[公式]"> 模型输出真实值 <img src="equation-20230416162050490" alt="[公式]"> 的概率为</p>
+<p>  <img src="equation-20230416162050629" alt="[公式]"></p>
 <p>  与上面推导 MSE 时类似，我们可以得到的负对数似然实际上就是 MAE 损失的形式</p>
-<p>  <img src="/.io//equation-20230416162050623" alt="[公式]"></p>
+<p>  <img src="equation-20230416162050623" alt="[公式]"></p>
 </blockquote>
 <h3 id="2-3-MAE-与-MSE-区别"><a href="#2-3-MAE-与-MSE-区别" class="headerlink" title="2.3 MAE 与 MSE 区别"></a>2.3 MAE 与 MSE 区别</h3><p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE 通常可以更快地收敛，但 MAE 损失对于 outlier 更加健壮</strong>，即更加不易受到 outlier 影响。</p>
 <ul>
-<li><p><strong>MSE 通常比 MAE 可以更快地收敛</strong>。当使用梯度下降算法时，MSE 损失的梯度为 <img src="/.io//equation-20230416162050592" alt="[公式]"> ，而 MAE 损失的梯度为 <img src="/.io//equation-20230416162050635" alt="[公式]"> ，即 MSE 的梯度的 scale 会随误差大小变化，而 MAE 的梯度的 scale 则一直保持为 1，即便在绝对误差 <img src="/.io//equation-20230416162050892" alt="[公式]"> 很小的时候 MAE 的梯度 scale 也同样为 1，这实际上是非常不利于模型的训练的。当然你可以通过在训练过程中动态调整学习率缓解这个问题，但是总的来说，损失函数梯度之间的差异导致了 MSE 在大部分时候比 MAE 收敛地更快。这个也是 MSE 更为流行的原因。</p>
+<li><p><strong>MSE 通常比 MAE 可以更快地收敛</strong>。当使用梯度下降算法时，MSE 损失的梯度为 <img src="equation-20230416162050592" alt="[公式]"> ，而 MAE 损失的梯度为 <img src="equation-20230416162050635" alt="[公式]"> ，即 MSE 的梯度的 scale 会随误差大小变化，而 MAE 的梯度的 scale 则一直保持为 1，即便在绝对误差 <img src="equation-20230416162050892" alt="[公式]"> 很小的时候 MAE 的梯度 scale 也同样为 1，这实际上是非常不利于模型的训练的。当然你可以通过在训练过程中动态调整学习率缓解这个问题，但是总的来说，损失函数梯度之间的差异导致了 MSE 在大部分时候比 MAE 收敛地更快。这个也是 MSE 更为流行的原因。</p>
 </li>
 <li><p><strong>MAE 对于异常值（outlier） 更加 robust</strong>。我们可以从两个角度来理解这一点：</p>
 <ul>
-<li>第一个角度是直观地理解，下图是 MAE 和 MSE 损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE 损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE 损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE 会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。<img src="/.io//v2-c8edffe0406dafae41a042e412cd3251_1440w-20230416162047585.jpg" alt="img"></li>
-<li>第二个角度是从两个损失函数的假设出发，MSE 假设了误差服从高斯分布，MAE 假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加 robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https://www.cs.ubc.ca/~murphyk/MLbook/">Machine Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution Figure 2.8），当右图右侧出现了 outliers 时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的 MAE 对 outlier 比高斯分布为假设的 MSE 更加 robust。<img src="/.io//v2-93ad65845f5b0dc0327fde4ded661804_1440w-20230416162047378.jpg" alt="img" style="zoom: 67%;"></li>
+<li>第一个角度是直观地理解，下图是 MAE 和 MSE 损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE 损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE 损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE 会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。<img src="v2-c8edffe0406dafae41a042e412cd3251_1440w-20230416162047585.jpg" alt="img"></li>
+<li>第二个角度是从两个损失函数的假设出发，MSE 假设了误差服从高斯分布，MAE 假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加 robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https://www.cs.ubc.ca/~murphyk/MLbook/">Machine Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution Figure 2.8），当右图右侧出现了 outliers 时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的 MAE 对 outlier 比高斯分布为假设的 MSE 更加 robust。<img src="v2-93ad65845f5b0dc0327fde4ded661804_1440w-20230416162047378.jpg" alt="img" style="zoom: 67%;"></li>
 </ul>
 </li>
 </ul>
@@ -648,28 +644,28 @@
 </ul>
 </blockquote>
 <p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点，MSE 损失收敛快但容易受 outlier 影响，MAE 对 outlier 更加健壮但是收敛慢，<a href="https://link.zhihu.com/?target=https://en.wikipedia.org/wiki/Huber_loss">Huber Loss</a> 则是一种将 MSE 与 MAE 结合起来，取两者优点的损失函数，也被称作 Smooth Mean Absolute Error Loss 。其原理很简单，就是在误差接近 0 时使用 MSE，误差较大时使用 MAE，公式为</p>
-<p><img src="/.io//equation-20230416162050848" alt="[公式]"></p>
-<p>上式中 <img src="/.io//equation-20230416162050875" alt="[公式]"> 是 Huber Loss 的一个超参数，<img src="https://www.zhihu.com/equation?tex=%5Cdelta" alt="[公式]"> 的值是 MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分，第二项是 MAE 部分，在 MAE 的部分公式为 <img src="/.io//equation-20230416162050955" alt="[公式]"> 是为了保证误差 <img src="/.io//equation-20230416162050914" alt="[公式]"> 时 MAE 和 MSE 的取值一致，进而保证 Huber Loss 损失连续可导。</p>
-<p>下图是 <img src="/.io//equation?tex=/delta%253D1-20230416162050876.0" alt="[公式]"> 时的 Huber Loss，可以看到在 <img src="/.io//equation-20230416162051143" alt="[公式]"> 的区间内实际上就是 MSE 损失，在 <img src="/.io//equation-20230416162050970" alt="[公式]"> 和 <img src="/.io//equation-20230416162050962" alt="[公式]"> 区间内为 MAE损失。</p>
-<p><img src="/.io//v2-b4260d38f70dd920fa46b8717596bda7_1440w-20230416162047797.jpg" alt="img"></p>
+<p><img src="equation-20230416162050848" alt="[公式]"></p>
+<p>上式中 <img src="equation-20230416162050875" alt="[公式]"> 是 Huber Loss 的一个超参数，<img src="https://www.zhihu.com/equation?tex=%5Cdelta" alt="[公式]"> 的值是 MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分，第二项是 MAE 部分，在 MAE 的部分公式为 <img src="equation-20230416162050955" alt="[公式]"> 是为了保证误差 <img src="equation-20230416162050914" alt="[公式]"> 时 MAE 和 MSE 的取值一致，进而保证 Huber Loss 损失连续可导。</p>
+<p>下图是 <img src="equation?tex=/delta%253D1-20230416162050876.0" alt="[公式]"> 时的 Huber Loss，可以看到在 <img src="equation-20230416162051143" alt="[公式]"> 的区间内实际上就是 MSE 损失，在 <img src="equation-20230416162050970" alt="[公式]"> 和 <img src="equation-20230416162050962" alt="[公式]"> 区间内为 MAE损失。</p>
+<p><img src="v2-b4260d38f70dd920fa46b8717596bda7_1440w-20230416162047797.jpg" alt="img"></p>
 <h3 id="2-5-分位数损失-Quantile-Loss"><a href="#2-5-分位数损失-Quantile-Loss" class="headerlink" title="2.5 分位数损失 Quantile Loss"></a>2.5 分位数损失 Quantile Loss</h3><blockquote>
 <p>  <strong>MAE 中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
 </blockquote>
 <p><strong>分位数回归 Quantile Regression 是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
-<p><img src="/.io//v2-8eb8ecfcdd8031a16a471905217934a0_1440w-20230416162047585.jpg" alt="img"></p>
+<p><img src="v2-8eb8ecfcdd8031a16a471905217934a0_1440w-20230416162047585.jpg" alt="img"></p>
 <p>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的，分位数损失形式如下，式中的 r 分位数系数。</p>
-<p><img src="/.io//equation-20230416162050991" alt="[公式]"></p>
-<p>我们如何理解这个损失函数呢？这个损失函数是一个分段的函数 ，将 <img src="/.io//equation-20230416162051027" alt="[公式]"> （高估） 和 <img src="/.io//equation-20230416162051092" alt="[公式]"> （低估） 两种情况分开来，并分别给予不同的系数。当 <img src="/.io//equation?tex=r%3E0-20230416162051067.5" alt="[公式]"> 时，低估的损失要比高估的损失更大，反过来当 <img src="/.io//equation?tex=r+%3C+0-20230416162051140.5" alt="[公式]"> 时，高估的损失比低估的损失大；分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong>。特别地，当 <img src="/.io//equation?tex=r%253D0-20230416162051084.5" alt="[公式]"> 时，分位数损失退化为 MAE 损失，从这里可以看出 MAE 损失实际上是分位数损失的一个特例 — 中位数回归。</p>
+<p><img src="equation-20230416162050991" alt="[公式]"></p>
+<p>我们如何理解这个损失函数呢？这个损失函数是一个分段的函数 ，将 <img src="equation-20230416162051027" alt="[公式]"> （高估） 和 <img src="equation-20230416162051092" alt="[公式]"> （低估） 两种情况分开来，并分别给予不同的系数。当 <img src="equation?tex=r%3E0-20230416162051067.5" alt="[公式]"> 时，低估的损失要比高估的损失更大，反过来当 <img src="equation?tex=r+%3C+0-20230416162051140.5" alt="[公式]"> 时，高估的损失比低估的损失大；分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong>。特别地，当 <img src="equation?tex=r%253D0-20230416162051084.5" alt="[公式]"> 时，分位数损失退化为 MAE 损失，从这里可以看出 MAE 损失实际上是分位数损失的一个特例 — 中位数回归。</p>
 <p>下图是取不同的分位点 0.2、0.5、0.6 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6 在高估和低估两种情况下损失是不同的，而 0.5 实际上就是 MAE。</p>
-<p><img src="/.io//v2-f8ed385f32a517c784bce841e6da1daf_1440w-20230416162047923.jpg" alt="img"></p>
+<p><img src="v2-f8ed385f32a517c784bce841e6da1daf_1440w-20230416162047923.jpg" alt="img"></p>
 <h3 id="2-6-平均绝对百分误差-MAPE"><a href="#2-6-平均绝对百分误差-MAPE" class="headerlink" title="2.6  平均绝对百分误差 MAPE"></a>2.6  平均绝对百分误差 MAPE</h3><p>虽然平均绝对误差能够获得一个评价值，但是你并不知道这个值代表模型拟合是优还是劣，只有通过对比才能达到效果。当需要以相对的观点来衡量误差时，则使用MAPE。</p>
 <p><strong>平均绝对百分误差</strong>（<strong>Mean Absolute Percentage Error，MAPE</strong>）是对 MAE 的一种改进，考虑了绝对误差相对真实值的比例。</p>
 <ul>
 <li><strong>优点</strong>：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。</li>
 </ul>
-<p><img src="/.io//equation-20230416162051160" alt="公式"></p>
+<p><img src="equation-20230416162051160" alt="公式"></p>
 <blockquote>
-<p>  在某些场景下，如房价从 <img src="/.io//equation-20230416162051155" alt="公式"> 到 <img src="/.io//equation-20230416162051238" alt="公式"> 之间，<img src="https://www.zhihu.com/equation?tex=5K" alt="公式"> 预测成 <img src="/.io//equation-20230416162051191" alt="公式"> 与 <img src="https://www.zhihu.com/equation?tex=50K" alt="公式"> 预测成 <img src="/.io//equation-20230416162051244" alt="公式"> 的差别是非常大的，而平均绝对百分误差考虑到了这点。</p>
+<p>  在某些场景下，如房价从 <img src="equation-20230416162051155" alt="公式"> 到 <img src="equation-20230416162051238" alt="公式"> 之间，<img src="https://www.zhihu.com/equation?tex=5K" alt="公式"> 预测成 <img src="equation-20230416162051191" alt="公式"> 与 <img src="https://www.zhihu.com/equation?tex=50K" alt="公式"> 预测成 <img src="equation-20230416162051244" alt="公式"> 的差别是非常大的，而平均绝对百分误差考虑到了这点。</p>
 </blockquote>
 <h2 id="三、相似性度量指标"><a href="#三、相似性度量指标" class="headerlink" title="三、相似性度量指标"></a>三、相似性度量指标</h2><blockquote>
 <p>  机器学习中的相似性度量方法 - 天下客的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/411876558">https://zhuanlan.zhihu.com/p/411876558</a></p>
@@ -692,10 +688,10 @@
 <li>推荐算法评价指标 - 一干正事就犯困的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/359528909">https://zhuanlan.zhihu.com/p/359528909</a></li>
 </ul>
 <h4 id="4-1-AP"><a href="#4-1-AP" class="headerlink" title="4.1 AP"></a>4.1 AP</h4><p><code>AP</code> 衡量的是训练好的模型在每个类别上的好坏；</p>
-<img src="/.io//v2-e8656365e7eee25065d6bdfec33368e5_1440w-20230416162048752.jpg" alt="img" style="zoom: 67%;">
+<img src="v2-e8656365e7eee25065d6bdfec33368e5_1440w-20230416162048752.jpg" alt="img" style="zoom: 67%;">
 
 <p><strong>AP总结了一个精确召回曲线，作为在每个阈值处获得的精度的加权平均值，并且与以前的阈值相比，召回率的增加用作权重</strong>：</p>
-<img src="/.io//image-20220711160205051.png" alt="image-20220711160205051" style="zoom:50%;">
+<img src="image-20220711160205051.png" alt="image-20220711160205051" style="zoom:50%;">
 
 <p>其中和分别是第n个阈值[1]时的精度和召回率。此实现未进行插值，并且与使用梯形规则计算精确调用曲线下的面积有所不同，后者使用线性插值并且可能过于乐观。</p>
 <h4 id="4-2-MAP"><a href="#4-2-MAP" class="headerlink" title="4.2 MAP"></a>4.2 MAP</h4><p><strong>MAP（Mean Average Precision）常用于排序任务，MAP的计算涉及另外两个指标：Precision和Recall</strong></p>
@@ -703,32 +699,32 @@
 <li><strong>Precision和Precision@k</strong></li>
 </ul>
 <p>推荐算法中的精度precision计算如下： </p>
-<p><img src="/.io//equation-20230416162051242" alt="[公式]"></p>
-<p>可以看出Precision的计算没有考虑结果列表中item的顺序，Precision@k则通过切片的方式将顺序隐含在结果中。Precision@k表示列表前k项的Precision，随着k的变化，可以得到一系列precision值，用 <img src="/.io//equation-20230416162051298" alt="[公式]"> 表示。</p>
+<p><img src="equation-20230416162051242" alt="[公式]"></p>
+<p>可以看出Precision的计算没有考虑结果列表中item的顺序，Precision@k则通过切片的方式将顺序隐含在结果中。Precision@k表示列表前k项的Precision，随着k的变化，可以得到一系列precision值，用 <img src="equation-20230416162051298" alt="[公式]"> 表示。</p>
 <ul>
 <li><strong>Recall和Recall@k</strong></li>
 </ul>
 <p>推荐算法中的召回率recall计算如下：</p>
-<p><img src="/.io//equation-20230416162051263" alt="[公式]"></p>
-<p>与Precision@k相似，recall@k表示结果列表前k项的recall，随着k的变化，可以得到一系列的recall值，用 <img src="/.io//equation-20230416162051297" alt="[公式]"> 表示。</p>
+<p><img src="equation-20230416162051263" alt="[公式]"></p>
+<p>与Precision@k相似，recall@k表示结果列表前k项的recall，随着k的变化，可以得到一系列的recall值，用 <img src="equation-20230416162051297" alt="[公式]"> 表示。</p>
 <ul>
 <li><h5 id="AP-N"><a href="#AP-N" class="headerlink" title="AP@N"></a>AP@N</h5></li>
 </ul>
 <p>AP（Average Precision）平均精度的计算以Precision@k为基础，可以体现出结果列表中item顺序的重要性，其计算过程如下： </p>
-<p><img src="/.io//equation-20230416162051331" alt="[公式]"></p>
-<p>其中，N表示要求推荐的N个item，m表示所有相关的item总数， <img src="/.io//equation-20230416162051506" alt="[公式]"> 表示第k个item是否相关，相关为1，反之为0</p>
+<p><img src="equation-20230416162051331" alt="[公式]"></p>
+<p>其中，N表示要求推荐的N个item，m表示所有相关的item总数， <img src="equation-20230416162051506" alt="[公式]"> 表示第k个item是否相关，相关为1，反之为0</p>
 <p><strong>AP@N的值越大，表示推荐列表中相关的item数量越多以及相关item的排名越靠前</strong></p>
 <ul>
 <li><h5 id="MAP-N"><a href="#MAP-N" class="headerlink" title="MAP@N"></a>MAP@N</h5></li>
 </ul>
 <p><strong>AP@N评价了算法对单个用户的性能，MAP@N则是算法对多个用户的平均值，是平均数的平均，其计算过程如下</strong>：</p>
-<p><img src="/.io//equation-20230416162051575" alt="[公式]"></p>
+<p><img src="equation-20230416162051575" alt="[公式]"></p>
 <h2 id="五、聚类算法评价指标"><a href="#五、聚类算法评价指标" class="headerlink" title="五、聚类算法评价指标"></a>五、聚类算法评价指标</h2><blockquote>
 <p>  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343667804">https://zhuanlan.zhihu.com/p/343667804</a></p>
 <p>  十分钟掌握聚类算法的评估指标：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6997913127572471821">https://juejin.cn/post/6997913127572471821</a></p>
 </blockquote>
 <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>如同之前介绍的其它算法模型一样，对于聚类来讲我们同样会通过一些评价指标来衡量聚类算法的优与劣。在聚类任务中，常见的评价指标有：<strong>纯度（Purity）</strong>、<strong>兰德系数（Rand Index, RI）</strong>、<strong>F值（F-score）</strong>和<strong>调整兰德系数（Adjusted Rand Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文中出现得最多的评价方法。下面，我们就来对这些算法一一进行介绍。</p>
-<img src="/.io//v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg" alt="img" style="zoom: 67%;">
+<img src="v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg" alt="img" style="zoom: 67%;">
 
 <p>好的聚类算法，一般要求类簇具有：</p>
 <ul>
@@ -737,24 +733,24 @@
 </ul>
 <p>一般来说，评估聚类质量有两个标准，内部评估评价指标和外部评估指标。</p>
 <h3 id="【外部评估】"><a href="#【外部评估】" class="headerlink" title="【外部评估】"></a>【外部评估】</h3><h3 id="5-1聚类纯度-聚类的准确率"><a href="#5-1聚类纯度-聚类的准确率" class="headerlink" title="5.1聚类纯度 - 聚类的准确率"></a><strong>5.1聚类纯度</strong> - 聚类的准确率</h3><p>在聚类结果的评估标准中，一种最简单最直观的方法就是计算它的<strong>聚类纯度</strong>（purity），别看纯度听起来很陌生，但实际上和<strong>分类问题中的准确率有着异曲同工之妙</strong>。因为聚类纯度的总体思想也<strong>用聚类正确的样本数除以总的样本数，因此它也经常被称为聚类的准确率</strong>。只是对于聚类后的结果我们并不知道每个簇所对应的真实类别，因此需要取每种情况下的最大值。具体的，纯度的计算公式定义如下：</p>
-<p><img src="/.io//equation-20230416162051527" alt="[公式]"></p>
-<p>其中<img src="/.io//equation-20230416162051524" alt="[公式]">表示总的样本数；<img src="/.io//equation?tex=/Omega%253D/%7B/omega_1%252C/omega_2%252C..-20230416162051525.%252C/omega_K/%7D" alt="[公式]">表示一个个聚类后的簇，而<img src="/.io//equation?tex=/mathbb%7BC%7D%253D/%7Bc_1%252C_2%252C..-20230416162051543.c_J/%7D" alt="[公式]">表示正确的类别；<img src="/.io//equation-20230416162051815" alt="[公式]">表示聚类后第<img src="/.io//equation-20230416162051616" alt="[公式]">个簇中的所有样本，<img src="/.io//equation-20230416162051619" alt="[公式]">表示第<img src="/.io//equation-20230416162051612" alt="[公式]">个类别中真实的样本。在这里<img src="/.io//equation-20230416162051679" alt="[公式]">的取值范围为<img src="/.io//equation-20230416162051779" alt="[公式]">，越大表示聚类效果越好。</p>
+<p><img src="equation-20230416162051527" alt="[公式]"></p>
+<p>其中<img src="equation-20230416162051524" alt="[公式]">表示总的样本数；<img src="equation?tex=/Omega%253D/%7B/omega_1%252C/omega_2%252C..-20230416162051525.%252C/omega_K/%7D" alt="[公式]">表示一个个聚类后的簇，而<img src="equation?tex=/mathbb%7BC%7D%253D/%7Bc_1%252C_2%252C..-20230416162051543.c_J/%7D" alt="[公式]">表示正确的类别；<img src="equation-20230416162051815" alt="[公式]">表示聚类后第<img src="equation-20230416162051616" alt="[公式]">个簇中的所有样本，<img src="equation-20230416162051619" alt="[公式]">表示第<img src="equation-20230416162051612" alt="[公式]">个类别中真实的样本。在这里<img src="equation-20230416162051679" alt="[公式]">的取值范围为<img src="equation-20230416162051779" alt="[公式]">，越大表示聚类效果越好。</p>
 <h3 id="5-2-兰德系数与F值-同簇混淆矩阵"><a href="#5-2-兰德系数与F值-同簇混淆矩阵" class="headerlink" title="5.2 兰德系数与F值  [同簇混淆矩阵]"></a><strong>5.2 兰德系数与F值</strong>  [同簇混淆矩阵]</h3><p>在介绍完了纯度这一评价指标后，我们再来看看兰德系数（Rand Index）和F值。虽然兰德系数听起来是一个陌生的名词，但它的计算过程却也与准确率的计算过程类似。同时，虽然这里也有一个叫做F值的指标，并且它的计算过程也和分类指标中的F值类似，但是两者却有着本质的差别。说了这么多，那这两个指标到底该怎么算呢？同分类问题中的混淆矩阵类似，这里我们也要先定义四种情况进行计数，然后再进行指标的计算。</p>
 <p><strong>为了说明兰德系数背后的思想，我们还是以图1中的聚类结果为例进行说明（为了方便观察，我们再放一张图在这里）:</strong></p>
-<img src="/.io//v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg" alt="img" style="zoom: 67%;">
+<img src="v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w-20230416162048995.jpg" alt="img" style="zoom: 67%;">
 
 <ul>
-<li><img src="/.io//equation-20230416162051924" alt="[公式]">：表示两个<strong>同类样本点</strong>在<strong>同一个簇</strong>（布袋）中的情况数量；</li>
-<li><img src="/.io//equation-20230416162051734" alt="[公式]">：表示两个<strong>非同类样本点</strong>在<strong>同一个簇</strong>中的情况数量；</li>
-<li><img src="/.io//equation-20230416162051915" alt="[公式]">：表示两个<strong>非同类样本点</strong>分别在<strong>两个簇</strong>中的情况数量；</li>
-<li><img src="/.io//equation-20230416162051935" alt="[公式]">：表示两个同类样本点分别在<strong>两个簇</strong>中的情况数量；</li>
+<li><img src="equation-20230416162051924" alt="[公式]">：表示两个<strong>同类样本点</strong>在<strong>同一个簇</strong>（布袋）中的情况数量；</li>
+<li><img src="equation-20230416162051734" alt="[公式]">：表示两个<strong>非同类样本点</strong>在<strong>同一个簇</strong>中的情况数量；</li>
+<li><img src="equation-20230416162051915" alt="[公式]">：表示两个<strong>非同类样本点</strong>分别在<strong>两个簇</strong>中的情况数量；</li>
+<li><img src="equation-20230416162051935" alt="[公式]">：表示两个同类样本点分别在<strong>两个簇</strong>中的情况数量；</li>
 </ul>
 <p>由此，我们便能得到如下所示的对<strong>混淆矩阵（Pair Confusion Matrix）</strong>：</p>
-<img src="/.io//v2-a9e709a995b006be04d026aebc721c4e_1440w-20230416162049533.png" alt="img" style="zoom:75%;">
+<img src="v2-a9e709a995b006be04d026aebc721c4e_1440w-20230416162049533.png" alt="img" style="zoom:75%;">
 
 <p>有了上面各种情况的统计值，我们就可以定义出兰德系数和F值的计算公式：</p>
-<p><img src="/.io//equation-20230416162051911" alt="[公式]"><img src="/.io//equation-20230416162051996" alt="[公式]"></p>
-<p>从上面的计算公式来看，<img src="/.io//equation-20230416162051993" alt="[公式]">从形式上看都非常像分类问题中的准确率与F值，但是有着本质的却别。同时，在这里<img src="/.io//equation-20230416162052007" alt="[公式]">和<img src="/.io//equation-20230416162047757" alt="[公式]">的取值范围均为<img src="/.io//equation-20230416162051779" alt="[公式]">，越大表示聚类效果越好。</p>
+<p><img src="equation-20230416162051911" alt="[公式]"><img src="equation-20230416162051996" alt="[公式]"></p>
+<p>从上面的计算公式来看，<img src="equation-20230416162051993" alt="[公式]">从形式上看都非常像分类问题中的准确率与F值，但是有着本质的却别。同时，在这里<img src="equation-20230416162052007" alt="[公式]">和<img src="equation-20230416162047757" alt="[公式]">的取值范围均为<img src="equation-20230416162051779" alt="[公式]">，越大表示聚类效果越好。</p>
 <h4 id="5-3-调整兰德系数（Adjusted-Rand-index）【归一化】"><a href="#5-3-调整兰德系数（Adjusted-Rand-index）【归一化】" class="headerlink" title="5.3 调整兰德系数（Adjusted Rand index）【归一化】"></a>5.3 调整兰德系数（Adjusted Rand index）【归一化】</h4><p>对于随机结果，RI并不能保证分数接近零。<strong>为了实现“在聚类结果随机产生的情况下，指标应该接近零”</strong>，调整兰德系数（Adjusted rand index）被提出，它具有更高的区分度。</p>
 <p>其公式为：<br>$$<br>\mathrm{ARI}&#x3D;\frac{\mathrm{RI}-E[\mathrm{RI}]}{\max (\mathrm{RI})-E[\mathrm{RI}]}<br>$$<br>$A R$ 取值范围为 $[-1,1]$, 值越大意味着聚类结果与真实情况越吻合。从广义的角度来讲, ARI衡量的是两个数据分布的吻合程度。</p>
 <p>优点:</p>
@@ -814,10 +810,10 @@
 <h4 id="confusion-metric"><a href="#confusion-metric" class="headerlink" title="confusion metric"></a><strong>confusion metric</strong></h4><p>混淆矩阵（confusion matrix），又称为可能性表格或是错误矩阵。它是一种特定的矩阵用来呈现算法性能的可视化效果。其每一列代表预测值，每一行代表的是实际的类别。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">confusion_matric(y_true, y_pred, labels=<span class="literal">None</span>, pos_label=<span class="number">1</span>, average=<span class="string">&#x27;binary&#x27;</span>, sample_weight=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
 
-<h4 id="precision-score"><a href="#precision-score" class="headerlink" title="precision_score"></a><strong>precision_score</strong></h4><p>计算精确度——precision <img src="/.io//equation-20230416162052015" alt="[公式]"></p>
+<h4 id="precision-score"><a href="#precision-score" class="headerlink" title="precision_score"></a><strong>precision_score</strong></h4><p>计算精确度——precision <img src="equation-20230416162052015" alt="[公式]"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">precision_score(y_true, y_pred, labels=None, pos_label=1, average=&#x27;binary&#x27;)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.io//v2-a3b6092e30d2eab7d2372007aec15105_r-20230416162050205.jpg" alt="preview"></p>
+<p><img src="v2-a3b6092e30d2eab7d2372007aec15105_r-20230416162050205.jpg" alt="preview"></p>
 <h2 id="评价指标Q-amp-A"><a href="#评价指标Q-amp-A" class="headerlink" title="评价指标Q&amp;A"></a>评价指标Q&amp;A</h2><h4 id="精度指标存在的问题？"><a href="#精度指标存在的问题？" class="headerlink" title="精度指标存在的问题？"></a><strong>精度指标存在的问题</strong>？</h4><ul>
 <li>有倾向性的问题。比如，判断空中的飞行物是导弹还是其他飞行物，很显然为了减少损失，我们更倾向于相信是导弹而采用相应的防护措施。此时判断为导弹实际上是其他飞行物与判断为其他飞行物实际上是导弹这两种情况的重要性是不一样的；</li>
 <li>样本类别数量严重不均衡的情况。比如银行客户样本中好客户990个，坏客户10个。如果一个模型直接把所有客户都判断为好客户，得到精度为99%，但这显然是没有意义的。</li>
@@ -840,7 +836,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://powerlzy/2023/04/16/hello-world/" title="机器学习模型评价指标">https://powerlzy/2023/04/16/hello-world/</a>
+      <a href="https://powerlzy.github.io/2023/04/16/hello-world/" title="机器学习模型评价指标">https://powerlzy.github.io/2023/04/16/hello-world/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
