@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="支持向量机 SVM以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习（5）SVM*">
+<meta property="og:url" content="https://powerlzy.github.io/posts/26M5EPY/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="支持向量机 SVM以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/mxOqbNtTMPoSyRz.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=wx_i+%2B+b+%3E+0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_j">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=wx_j+%2B+b+%3C+0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=D_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=wx%2Bb%3D0">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/HDlAed2wZf8cXi1.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=w%5ETx%2Bb%3D0+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28x%2Cy%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=Ax%2BBy%2BC%3D0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7B%7CAx%2BBy%2BC%7C%7D%7B%5Csqrt%7BA%5E2%2BB%5E2%7D%7D+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%3D%28x_1%2Cx_2%E2%80%A6x_n%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=w%5ETx%2Bb%3D0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7B%7Cw%5ETx%2Bb%7C%7D%7B%7C%7Cw%7C%7C%7D+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%7C%7Cw%7C%7C%3D%5Csqrt%7Bw_1%5E2%2B%E2%80%A6w_n%5E2%7D">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/2yZRMfWemFcoX75.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cleft%5C%7B+%5Cbegin%7Baligned%7D+%5Cfrac%7Bw%5ETx%2Bb%7D%7B%7C%7Cw%7C%7C%7D+%26%5Cgeq+d+%5Cquad++y%3D1+%5C%5C+%5Cfrac%7Bw%5ETx%2Bb%7D%7B%7C%7Cw%7C%7C%7D+%26%5Cleq+-d++%5Cquad+y%3D-1++%5Cend%7Baligned%7D+%5Cright.+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=y%28w%5ETx%2Bb%29+%5Cgeq+1+%5C%5C">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/aZbmfK4zWsSjyo2.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/l4WjzV7smKBoe8f.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmin+f%28x_%7B1%7D+%2Cx_%7B2%7D+%2C...%2Cx_%7Bn%7D+%29+%5C%5C+s.t.+%5Cquad+h_%7Bk%7D+%28x_%7B1%7D+%2Cx_%7B2%7D+%2C...%2Cx_%7Bn%7D+%29%3D0+%5Cquad+k+%3D1%2C2%2C...%2Cl%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L%28x%2C%5Clambda+%29+%3D+f%28x%29+%2B+%5Csum%5Climits_%7Bk+%3D+1%7D%5El+%5Clambda+_k+h_k+%28x%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L%28x%2Cy%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cleft%5C%7B+%5Cbegin%7Baligned%7D++%5Cfrac%7B%5Cpartial+L%7D%7B%5Cpartial+x_i%7D+%3D+0+%5Cquad+i%3D1%2C2%2C...%2Cn+%5C%5C+%5Cfrac%7B%5Cpartial+L%7D%7B%5Cpartial+%5Clambda_k%7D+%3D+0+%5Cquad+k%3D1%2C2%2C...%2Cl++%5Cend%7Baligned%7D+%5Cright.+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=l">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_%7Bi%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bk%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bk%7D+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28n%2Bl%29">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/Gkx9AygPfvXmheq.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csum%5Climits_%7Bi%3D1%7D%5E%7Bn%7D%5Clambda_iy_i+%3D+0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_j">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_i+y_i%2B%5Clambda_j+y_j+%3D+c+%5Cquad+%5Clambda_i+%5Cgeq+0%2C%5Clambda_j+%5Cgeq+0+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=c%3D-%5Csum%5Climits_%7Bk+%5Cne+i%2Cj%7D%5Clambda_ky_k">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_j%3D%5Cfrac%7Bc-%5Clambda_iy_i%7D%7By_j%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bj%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_i+%5Cgeq+0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi_%7Bnew%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi_%7Bnew%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bj_%7Bnew%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda%5E%2A">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/zDNf9QWoTs2JxVp.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/ha4zMrmIS9Z7jnW.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=1-y_i%28w%5ETx_i+%2B+b%29+%5Cleq+0+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cxi_%7Bi%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cxi_%7Bi%7D+%5Cgeq+0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=1+-+y_i%28w%5ETx_i+%2B+b%29-%5Cxi_i+%5Cleq+0">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/GlPvqnUM7FDeTyX.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi%7D+%3E+0">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/LPukQfqKiBNToV5.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/ROQk4xowVb7Fu39.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/CvTiDaHNeWm3q6E.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/bsWvAUQaM29RzNP.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/3j4TyoqNfcnBrLW.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/XIRKolZvQGECYAw.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/ZtVDeIKydQsNhTM.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/hMnsiJqL59xYduO.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/BpDe2wT9zZQrJVn.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/JhEDzmfuGyPK7A6.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cphi%28x%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=f%28x%29%3Dw+%5Cphi%28x%29%2Bb">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmin%5Climits_%7B%5Clambda%7D+%5B%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Clambda_i+%5Clambda_j+y_i+y_j+%28%5Cphi%28x_i%29+%5Ccdot+%5Cphi%28x_j%29%29-%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Clambda_i%5D+%5C%5C+s.t.++%5Cquad+%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Clambda_iy_i+%3D+0%2C+%5Cquad+%5Clambda_i+%5Cgeq+0%2C+%5Cquad+C-%5Clambda_i-%5Cmu_i%3D0+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28x_i+%5Ccdot+x_j%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28%5Cphi%28x_i%29+%5Ccdot+%5Cphi%28x_j%29%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=k%28x%2Cy%29+%3D+%28%5Cphi%28x%29%2C%5Cphi%28y%29%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_j">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=k%28+x%2C+y%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=k%28x%2Cy%29%3D%28x+%5Ccdot+y+%2B+1%29%5E2+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=k%28x%2Cy%29+%3D+%28%5Csum_%7Bi%3D1%7D%5En%28x_i+%5Ccdot+y_i%29+%2B+1%29%5E2+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csum_%7Bi%3D1%7D%5Enx_i%5E2y_i%5E2%2B%5Csum_%7Bi%3D2%7D%5En%5Csum_%7Bj%3D1%7D%5E%7Bi-1%7D%28%5Csqrt2x_ix_j%29%28%5Csqrt2y_iy_j%29%2B%5Csum_%7Bi%3D1%7D%7Bn%7D%28%5Csqrt2x_i%29%28%5Csqrt2y_i%29%2B1+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%5E%7B%27%7D+%3D+%28x_1%5E2%2C...%2Cx_n%5E2%2C...%5Csqrt2x_1%2C...%2C%5Csqrt2x_n%2C1%29+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=k%28x_i%2Cx_j%29+%3D+x_i%5ETx_j+%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=+k%28x_i%2Cx_j%29+%3D+%28x_i%5ETx_j%29%5Ed%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=k%28x_i%2Cx_j%29+%3D+exp%28-%5Cfrac%7B%7C%7Cx_i-x_j%7C%7C%7D%7B2%5Cdelta%5E2%7D%29+%5C%5C">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/uFims1jZcWSPBRx.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/mvX4dbSUTuzYKAq.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/UGMhET5quOZiVLn.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/6HjbuOyVkhNDmAL.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/8d9UGWZyzBoAhjJ.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/YJLzqnSQGTyXFc3.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/kZ19DcBfzWuMAaG.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=O%28N%5E2%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=O%28N%5E2%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cgamma">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmin_%7Bw%2Cb%7D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5En+max%280%2C+-y_i%28w%5ETx_i%2Bb%29%29%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmin_%7Bw%2Cb%7D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5En+max%280%2C+1-y_i%28w%5ETx_i%2Bb%29%29+%2B+%5Calpha+%7C%7Cw%7C%7C_2%5E2+%5C%5C">
+<meta property="article:published_time" content="2022-03-15T14:38:05.332Z">
+<meta property="article:modified_time" content="2023-04-17T13:20:16.853Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/04/17/mxOqbNtTMPoSyRz.jpg">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/26M5EPY/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/26M5EPY/","path":"posts/26M5EPY/","title":"机器学习（5）SVM*"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>机器学习（5）SVM* | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">相比到达的地方，同行的人更重要！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">支持向量机 SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">1. 支持向量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 线性可分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 最大间隔超平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 支持向量 【距离超平面最近的点】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 SVM 最优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 硬间隔线性SVM的基本型：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">2. 硬间隔线性SVM对偶型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（1）写成约束优化问题的基本型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（2） 构建基本型的拉格朗日函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（3）交换min, max顺序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 硬性间隔线性SVM的对偶型：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;（4）利用KKT条件得到主问题的最优解&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3、SVM优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;SMO算法求解&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">4. 软间隔线性SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;软间隔核化SVM基本型&#x3D;&#x3D;：（&#x3D;&#x3D;合页损失函数&#x3D;&#x3D;）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">回顾：对数几率回归：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5. 核函数【对偶性】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.1 线性不可分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.2 核函数的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.3 常见核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;5.4 如何选择核函数？&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.5 核方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">核化LR [非线性]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.6 支持向量回归 SVR &#x3D; ？核化岭回归？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">SVR与一般线性回归的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">支持向量回归：&#x3D;&#x3D;我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.7 多分类 SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.7.1 多分类问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">6. 优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.1 优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">SVM Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1、原理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2、SVM与LR最大区别，LR和SVM对于outlier的敏感程度分析，逻辑回归与SVM的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3、SVM如何解决&#x3D;&#x3D;多分类问题&#x3D;&#x3D;、可以做&#x3D;&#x3D;回归&#x3D;&#x3D;吗，怎么做？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">4、机器学习有很多关于核函数的说法，核函数的定义和作用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5、Linear SVM 和 LR 有什么异同？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">SVM和LR相同点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> SVM和LR的区别：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6、支持向量机(SVM)是否适合大规模数据？【速度】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">7、SVM和逻辑斯特回归对同一样本A进行训练，如果某类中增加一些数据点，那么原来的决策边界分别会怎么变化？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">8、各种机器学习的应用场景分别是什么？例如，k近邻,贝叶斯，决策树，svm，逻辑斯蒂回归和最大熵模型。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;9、SVM与感知器的联系和优缺点比较&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;感知机与SVM区别：&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">本博客主要用于记录个人学习笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/26M5EPY/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="本博客主要用于记录个人学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="机器学习（5）SVM* | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器学习（5）SVM*
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-15 22:38:05" itemprop="dateCreated datePublished" datetime="2022-03-15T22:38:05+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-17 21:20:16" itemprop="dateModified" datetime="2023-04-17T21:20:16+08:00">2023-04-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>26 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="支持向量机-svm">支持向量机 SVM</span></h2><p><strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+<h2><span id><img src="https://s2.loli.net/2023/04/17/mxOqbNtTMPoSyRz.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom:51%;"></span></h2><p>SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</p>
+<span id="more"></span>
+<h2><span id="1-支持向量">1. 支持向量</span></h2><blockquote>
+<p>  <strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。</p>
+<p>  <strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）</p>
+<p>  <strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/52168498">https://zhuanlan.zhihu.com/p/52168498</a></p>
+<p><strong>KKT条件</strong>：<strong>判断不等式约束问题是否为最优解的必要条件</strong></p>
+</li>
+</ul>
+</blockquote>
+<h3><span id="11-线性可分">1.1 线性可分</span></h3><p>首先我们先来了解下什么是线性可分。</p>
+<p><img src="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg" alt="img" style="zoom:50%;"></p>
+<p>在二维空间上，两类点被一条直线完全分开叫做线性可分。</p>
+<p>严格的数学定义是：</p>
+<p><img src="https://www.zhihu.com/equation?tex=D_0" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=D_1" alt="[公式]"> 是 n 维欧氏空间中的两个点集。如果存在 n 维向量 w 和实数 b，使得所有属于 <img src="https://www.zhihu.com/equation?tex=D_0" alt="[公式]"> 的点 <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]"> 都有 <img src="https://www.zhihu.com/equation?tex=wx_i+%2B+b+%3E+0" alt="[公式]"> ，而对于所有属于 <img src="https://www.zhihu.com/equation?tex=D_1" alt="[公式]"> 的点 <img src="https://www.zhihu.com/equation?tex=x_j" alt="[公式]"> 则有 <img src="https://www.zhihu.com/equation?tex=wx_j+%2B+b+%3C+0" alt="[公式]"> ，则我们称 <img src="https://www.zhihu.com/equation?tex=D_0" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=D_1" alt="[公式]"> 线性可分。</p>
+<h3><span id="12-最大间隔超平面">1.2 最大间隔超平面</span></h3><p>从二维扩展到多维空间中时，将 <img src="https://www.zhihu.com/equation?tex=D_0" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=D_1" alt="[公式]"> 完全正确地划分开的 <img src="https://www.zhihu.com/equation?tex=wx%2Bb%3D0" alt="[公式]"> 就成了一个超平面。</p>
+<p>为了使这个超平面更具鲁棒性，我们会去找最佳超平面，以最大间隔把两类样本分开的超平面，也称之为最大间隔超平面。</p>
+<ul>
+<li>两类样本分别分割在该超平面的两侧；</li>
+<li><strong>两侧距离超平面最近的样本点到超平面的距离被最大化了。</strong>【附近点】</li>
+</ul>
+<h3><span id="13-支持向量-距离超平面最近的点">1.3 支持向量 【距离超平面最近的点】</span></h3><p><img src="https://s2.loli.net/2023/04/17/HDlAed2wZf8cXi1.jpg" alt="img" style="zoom:50%;"></p>
+<p>样本中距离超平面最近的一些点，这些点叫做支持向量。</p>
+<h3><span id="14-svm-最优化问题">1.4 SVM 最优化问题</span></h3><p><strong>==SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面==</strong>。任意超平面可以用下面这个线性方程来描述：</p>
+<p>​                                 <img src="https://www.zhihu.com/equation?tex=w%5ETx%2Bb%3D0+%5C%5C" alt="[公式]"></p>
+<p>二维空间点 <img src="https://www.zhihu.com/equation?tex=%28x%2Cy%29" alt="[公式]"> 到直线 <img src="https://www.zhihu.com/equation?tex=Ax%2BBy%2BC%3D0" alt="[公式]"> 的距离公式是：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%7CAx%2BBy%2BC%7C%7D%7B%5Csqrt%7BA%5E2%2BB%5E2%7D%7D+%5C%5C" alt="[公式]"></p>
+<p><strong>扩展到 n 维空间后，点 <img src="https://www.zhihu.com/equation?tex=x%3D%28x_1%2Cx_2%E2%80%A6x_n%29" alt="[公式]"> 到直线 <img src="https://www.zhihu.com/equation?tex=w%5ETx%2Bb%3D0" alt="[公式]"> 的距离为</strong>：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%7Cw%5ETx%2Bb%7C%7D%7B%7C%7Cw%7C%7C%7D+%5C%5C" alt="[公式]"></p>
+<p>其中 <img src="https://www.zhihu.com/equation?tex=%7C%7Cw%7C%7C%3D%5Csqrt%7Bw_1%5E2%2B%E2%80%A6w_n%5E2%7D" alt="[公式]"> 。</p>
+<p>如图所示，根据支持向量的定义我们知道，支持向量到超平面的距离为 d，其他点到超平面的距离大于 d。</p>
+<p><img src="https://s2.loli.net/2023/04/17/2yZRMfWemFcoX75.jpg" alt="img" style="zoom:50%;"></p>
+<p>于是我们有这样的一个公式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cleft%5C%7B+%5Cbegin%7Baligned%7D+%5Cfrac%7Bw%5ETx%2Bb%7D%7B%7C%7Cw%7C%7C%7D+%26%5Cgeq+d+%5Cquad++y%3D1+%5C%5C+%5Cfrac%7Bw%5ETx%2Bb%7D%7B%7C%7Cw%7C%7C%7D+%26%5Cleq+-d++%5Cquad+y%3D-1++%5Cend%7Baligned%7D+%5Cright.+%5C%5C" alt="[公式]"></p>
+<p>将两个方程合并，我们可以简写为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=y%28w%5ETx%2Bb%29+%5Cgeq+1+%5C%5C" alt="[公式]"></p>
+<p>至此我们就可以得到最大间隔超平面的上下两个超平面：</p>
+<p><img src="https://s2.loli.net/2023/04/17/aZbmfK4zWsSjyo2.png" alt="image-20220409203050568" style="zoom:50%;"></p>
+<p><strong>间隔</strong>：<strong>训练集中离划分超平面最近的样本到划分超平面距离的两倍</strong>。有了间隔的定义，划分超平面“离正负样本都比较远”这一目标可以等价描述为正负样本里划分超平面的距离尽可能远。即<strong>让离划分超平面最近的样本到划分超平面距离尽可能远</strong>。==优化目标==：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\max _{\boldsymbol{w}, b} \gamma &=\max _{\boldsymbol{w}, b}\left(2 \min _{i} \frac{1}{\|\boldsymbol{w}\|}\left|\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right|\right) \\
+&=\max _{\boldsymbol{w}, b} \min _{i} \frac{2}{\|\boldsymbol{w}\|}\left|\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right|
+\end{aligned}</script><p><strong>简化过程</strong>：</p>
+<ul>
+<li><p><strong>缩放</strong>：为了简化优化问题, 我们可以通过调整 $(\boldsymbol{w}, b)$ 使得：</p>
+<script type="math/tex; mode=display">
+\min _{i}\left|\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right|=1 .</script></li>
+<li><p><strong>标签替换绝对值</strong>：</p>
+<script type="math/tex; mode=display">
+s.t. \min _{i} y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)=1</script></li>
+<li><p><strong>简化约束条件</strong>【<strong>反正法</strong>】</p>
+</li>
+</ul>
+<h4><span id="硬间隔线性svm的基本型"><strong><font color="red"> 硬间隔线性SVM的基本型：</font></strong></span></h4><script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{\boldsymbol{w}, b} & \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
+\text { s.t. } & y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1, \quad i=1,2, \ldots, m
+\end{array}</script><p><img src="https://s2.loli.net/2023/04/17/l4WjzV7smKBoe8f.png" alt="image-20220423163130805" style="zoom:50%;"></p>
+<p><strong>二次规划是指目标函数是==二次函数==，约束是==线性不等式约束==的一类优化问题</strong> + 凸函数</p>
+<h2><span id="2-硬间隔线性svm对偶型">2. 硬间隔线性SVM对偶型</span></h2><blockquote>
+<p>  本科高等数学学的<strong>拉格朗日程数法</strong>是<strong>等式约束优化问题</strong>：</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=%5Cmin+f%28x_%7B1%7D+%2Cx_%7B2%7D+%2C...%2Cx_%7Bn%7D+%29+%5C%5C+s.t.+%5Cquad+h_%7Bk%7D+%28x_%7B1%7D+%2Cx_%7B2%7D+%2C...%2Cx_%7Bn%7D+%29%3D0+%5Cquad+k+%3D1%2C2%2C...%2Cl%5C%5C" alt="[公式]"></p>
+<p>  我们令 <img src="https://www.zhihu.com/equation?tex=L%28x%2C%5Clambda+%29+%3D+f%28x%29+%2B+%5Csum%5Climits_%7Bk+%3D+1%7D%5El+%5Clambda+_k+h_k+%28x%29" alt="[公式]"> ，函数 <img src="https://www.zhihu.com/equation?tex=L%28x%2Cy%29" alt="[公式]"> 称为 Lagrange 函数，参数 <img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="[公式]"> 称为 Lagrange 乘子<strong>==没有非负要求。==</strong></p>
+<p>  利用必要条件找到可能的极值点：</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=%5Cleft%5C%7B+%5Cbegin%7Baligned%7D++%5Cfrac%7B%5Cpartial+L%7D%7B%5Cpartial+x_i%7D+%3D+0+%5Cquad+i%3D1%2C2%2C...%2Cn+%5C%5C+%5Cfrac%7B%5Cpartial+L%7D%7B%5Cpartial+%5Clambda_k%7D+%3D+0+%5Cquad+k%3D1%2C2%2C...%2Cl++%5Cend%7Baligned%7D+%5Cright.+%5C%5C" alt="[公式]"></p>
+<p>  具体是否为极值点需根据问题本身的具体情况检验。这个方程组称为等式约束的极值必要条件。</p>
+<p>  等式约束下的 Lagrange 乘数法引入了 <img src="https://www.zhihu.com/equation?tex=l" alt="[公式]"> 个 Lagrange 乘子，我们将 <img src="https://www.zhihu.com/equation?tex=x_%7Bi%7D" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bk%7D" alt="[公式]"> 一视同仁，把 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bk%7D+" alt="[公式]"> 也看作优化变量，共有 <img src="https://www.zhihu.com/equation?tex=%28n%2Bl%29" alt="[公式]"> 个优化变量。</p>
+</blockquote>
+<h5><span id="1写成约束优化问题的基本型">（1）写成约束优化问题的基本型</span></h5><script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{\boldsymbol{w}, b} & \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
+\text { s.t. } & 1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \leq 0, \quad i=1,2, \ldots, m
+\end{array}</script><h5><span id="2-构建基本型的拉格朗日函数">（2） 构建基本型的拉格朗日函数</span></h5><script type="math/tex; mode=display">
+\mathcal{L}(\boldsymbol{w}, b, \boldsymbol{\alpha}):=\frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right)</script><h5><span id="3交换min-max顺序">（3）交换min, max顺序</span></h5><blockquote>
+<p>  ==<strong>解得最优解 $\boldsymbol{u}^{\star}$ 。这样两层优化问题将变为一层最大化（max）问题, 问题难度大大降低, 称为对偶问题 (Dual Problem) :</strong>==【<strong>对偶问题是原问题的下界</strong>】</p>
+<ul>
+<li><script type="math/tex; mode=display">
+\max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \min _{\boldsymbol{u}} \mathcal{L}(\boldsymbol{u}, \boldsymbol{\alpha}, \boldsymbol{\beta}) \leq \min _{\boldsymbol{u}} \max _{\boldsymbol{\alpha}, \boldsymbol{\beta}} \mathcal{L}(\boldsymbol{u}, \boldsymbol{\alpha}, \boldsymbol{\beta})</script></li>
+<li><p>硬间隔线性SVM满足<strong>Slater条件</strong>， <strong>因此原问题和对偶问题等价</strong></p>
+</li>
+</ul>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{array}{cl}
+\max _{\boldsymbol{\alpha}} \min _{\boldsymbol{w}, b} & \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right) \\
+\text { s.t. } & \alpha_{i} \geq 0, \quad i=1,2, \ldots, m .
+\end{array}</script><p>首先计算 $\boldsymbol{w}$ 的最优值, 令 $\frac{\partial \mathcal{L}}{\partial \boldsymbol{w}}=\mathbf{0}$</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial \boldsymbol{w}} &=\frac{\partial}{\partial \boldsymbol{w}}\left(\frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right)\right) \\
+&=\boldsymbol{w}+\sum_{i=1}^{m} \alpha_{i}\left(-y_{i} \boldsymbol{x}_{i}\right) \\
+&=\boldsymbol{w}-\sum_{i=1}^{m} \alpha_{i} y_{i} \boldsymbol{x}_{i} \\
+&=\mathbf{0}
+\end{aligned}</script><p>==可以解得最优值==$\boldsymbol{w}$</p>
+<script type="math/tex; mode=display">
+\boldsymbol{w}^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} \boldsymbol{x}_{i}</script><p>然后计算 $b$ 的最优值, 令 $\frac{\partial \mathcal{L}}{\partial b}=0$</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial b} &=\frac{\partial}{\partial b}\left(\frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right)\right)\right) \\
+&=\sum_{i=1}^{m} \alpha_{i}\left(-y_{i}\right) \\
+&=-\sum_{i=1}^{m} \alpha_{i} y_{i} \\
+&=0
+\end{aligned}</script><p>==可以得到一个等式== $b^{\star}$ </p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0</script><p>注意到这里并没有给出最优值 $b^{\star}$ 应该是多少, 而是一个等式, 该等式是一个约束项, 而最优值通过后面的 <strong>KKT 条件</strong>的互补松弛可以计算得到。</p>
+<h4><span id="硬性间隔线性svm的对偶型"><strong><font color="red"> 硬性间隔线性SVM的对偶型：</font></strong></span></h4><script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{\boldsymbol{\alpha}} & \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_{i} \alpha_{j} y_{i} y_{j} \boldsymbol{x}_{i}^{\top} \boldsymbol{x}_{j}-\sum_{i=1}^{m} \alpha_{i} \\
+\text { s.t. } & \alpha_{i} \geq 0, \quad i=1,2, \ldots, m \\
+& \sum_{i=1}^{m} \alpha_{i} y_{i}=0
+\end{array}</script><h5><span id="4利用kkt条件得到主问题的最优解">==（4）利用KKT条件得到主问题的最优解==</span></h5><p><strong>KKT 条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
+<p>线性支持向量机的 <strong>KKT 条件</strong>:</p>
+<ul>
+<li><strong>主问题可行</strong>: $g_{i}\left(\boldsymbol{u}^{\star}\right)=1-y_{i}\left(\boldsymbol{w}^{\star \top} \boldsymbol{x}_{i}+b^{\star}\right) \leq 0$ ；</li>
+<li><strong>对偶问题可行</strong>: $\alpha_{i}^{\star} \geq 0$;</li>
+<li><strong>主变量最优</strong>: $\boldsymbol{w}^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} \boldsymbol{x}_{i}, \sum_{i=1}^{m} \alpha_{i} y_{i}=0$;</li>
+<li><strong><font color="red"> 互补松弛: $\alpha_{i}^{\star} g_{i}\left(\boldsymbol{u}^{\star}\right)=\alpha_{i}^{\star}\left(1-y_{i}\left(\boldsymbol{w}^{\star \top} \boldsymbol{x}_{i}+b^{\star}\right)\right)=0$ ；</font></strong></li>
+</ul>
+<p><strong>根据 KKT 条件中的 $\alpha_{i}^{\star} \geq 0$, 我们可以根据 $\alpha_{i}^{\star}$ 的取值将训练集 $D$ 中所有的样本分成两类</strong>, 如 图 17 所示。</p>
+<ul>
+<li>如果 $\alpha_{i}^{\star}&gt;0$, <strong>对应的样本称为支持向量 (Support Vector)</strong>, 根据 $\alpha_{i}^{\star}\left(1-y_{i}\left(\boldsymbol{w}^{\star \top} \boldsymbol{x}_{i}+b^{\star}\right)\right)=0$ , 那么一定有 $y_{i}\left(\boldsymbol{w}^{\star \top} \boldsymbol{x}_{i}+b^{\star}\right)=1$, 该样本是距离划分超平面最近的样本, 位于最大间隔边界 （见第 $2.3$ 节）;</li>
+<li>如果 $\alpha_{i}^{\star}=0$, 对应的样本不是非支持向量, 那么有 $y_{i}\left(\boldsymbol{w}^{\star \top} \boldsymbol{x}_{i}+b^{\star}\right) \geq 1$, 该样本不一定是距离 划分超平面最近的样本, <strong>位于最大间隔边界或之外</strong>。</li>
+</ul>
+<p><img src="https://s2.loli.net/2023/04/17/Gkx9AygPfvXmheq.png" alt="image-20220409212350705" style="zoom:50%;"></p>
+<p><strong>结论</strong>：</p>
+<ul>
+<li><strong><font color="red"> 参数 w， b 仅由支持向量决定，与训练集的其他样本无关；</font></strong></li>
+<li><strong><font color="red"> 对偶性是非参数模型，预测阶段不仅需要$\alpha_{i}$参数，还支持向量；</font></strong></li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&h(\boldsymbol{x}):=\operatorname{sign}\left(\boldsymbol{w}^{\star \top} \boldsymbol{x}+b^{\star}\right) \quad \text { （硬间隔线性 SVM 的基本型的假设函数） }\\
+&=\operatorname{sign}\left(\sum_{i \in S V} \alpha_{i}^{\star} y_{i} \boldsymbol{x}_{i}^{\top} \boldsymbol{x}+b^{\star}\right) \text {.(硬间隔线性 SVM 的对偶型的假设函数） }
+\end{aligned}</script><h3><span id="3-svm优化方法">3、SVM优化方法</span></h3><h5><span id="smo算法求解">==SMO算法求解==</span></h5><p>我们可以看出来这是一个<strong>二次规划问题</strong>，问题规模正比于训练样本数，我们常用 SMO(Sequential Minimal Optimization) 算法求解。</p>
+<p><strong>==SMO(Sequential Minimal Optimization)，序列最小优化算法【基于坐标下降算法】，其核心思想非常简单：每次只优化一个参数，其他参数先固定住，仅求当前这个优化参数的极值。我们来看一下 SMO 算法在 SVM 中的应用。==</strong></p>
+<p>我们刚说了 SMO 算法每次只优化一个参数，但我们的优化目标有约束条件： <img src="https://www.zhihu.com/equation?tex=%5Csum%5Climits_%7Bi%3D1%7D%5E%7Bn%7D%5Clambda_iy_i+%3D+0" alt="[公式]"> ，没法一次只变动一个参数。所以我们选择了一次选择两个参数。具体步骤为：</p>
+<ol>
+<li>选择两个需要更新的参数 <img src="https://www.zhihu.com/equation?tex=%5Clambda_i" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Clambda_j" alt="[公式]"> ，固定其他参数。于是我们有以下约束：</li>
+</ol>
+<p>这样约束就变成了：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Clambda_i+y_i%2B%5Clambda_j+y_j+%3D+c+%5Cquad+%5Clambda_i+%5Cgeq+0%2C%5Clambda_j+%5Cgeq+0+%5C%5C" alt="[公式]"></p>
+<p>其中 <img src="https://www.zhihu.com/equation?tex=c%3D-%5Csum%5Climits_%7Bk+%5Cne+i%2Cj%7D%5Clambda_ky_k" alt="[公式]"> ，由此可以得出 <img src="https://www.zhihu.com/equation?tex=%5Clambda_j%3D%5Cfrac%7Bc-%5Clambda_iy_i%7D%7By_j%7D" alt="[公式]"> ，也就是说我们可以用 <img src="https://www.zhihu.com/equation?tex=%5Clambda_i" alt="[公式]"> 的表达式代替 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bj%7D" alt="[公式]"> 。这样就相当于把目标问题转化成了仅有一个约束条件的最优化问题，仅有的约束是 <img src="https://www.zhihu.com/equation?tex=%5Clambda_i+%5Cgeq+0" alt="[公式]"> 。</p>
+<ol>
+<li><p>对于仅有一个约束条件的最优化问题，我们完全可以在 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi%7D" alt="[公式]"> 上对优化目标求偏导，令导数为零，从而求出变量值 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi_%7Bnew%7D%7D" alt="[公式]"> ，然后根据 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi_%7Bnew%7D%7D" alt="[公式]"> 求出 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bj_%7Bnew%7D%7D" alt="[公式]"> 。</p>
+</li>
+<li><p>多次迭代直至收敛。</p>
+</li>
+</ol>
+<p>通过 SMO 求得最优解 <img src="https://www.zhihu.com/equation?tex=%5Clambda%5E%2A" alt="[公式]"> 。</p>
+<h3><span id="4-软间隔线性svm">4. 软间隔线性SVM</span></h3><p>在实际应用中，完全线性可分的样本是很少的，如果遇到了不能够完全线性可分的样本，我们应该怎么办？比如下面这个：</p>
+<p><img src="https://s2.loli.net/2023/04/17/zDNf9QWoTs2JxVp.jpg" alt="img" style="zoom: 33%;"></p>
+<p>于是我们就有了软间隔，相比于硬间隔的苛刻条件，我们允许个别样本点出现在间隔带里面，比如：</p>
+<p><img src="https://s2.loli.net/2023/04/17/ha4zMrmIS9Z7jnW.jpg" alt="img" style="zoom: 33%;"></p>
+<p>我们允许部分样本点不满足约束条件：</p>
+<p><img src="https://www.zhihu.com/equation?tex=1-y_i%28w%5ETx_i+%2B+b%29+%5Cleq+0+%5C%5C" alt="[公式]"></p>
+<p>为了度量这个间隔软到何种程度，我们为每个样本引入一个松弛变量 <img src="https://www.zhihu.com/equation?tex=%5Cxi_%7Bi%7D" alt="[公式]"> ，令 <img src="https://www.zhihu.com/equation?tex=%5Cxi_%7Bi%7D+%5Cgeq+0" alt="[公式]"> ，且 <img src="https://www.zhihu.com/equation?tex=1+-+y_i%28w%5ETx_i+%2B+b%29-%5Cxi_i+%5Cleq+0" alt="[公式]"> 。对应如下图所示：</p>
+<p><img src="https://s2.loli.net/2023/04/17/GlPvqnUM7FDeTyX.jpg" alt="img" style="zoom: 33%;"></p>
+<p><strong>这边要注意一个问题，在间隔内的那部分样本点是不是支持向量？</strong></p>
+<p>我们可以由求参数 w 的那个式子可看出，只要 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bi%7D+%3E+0" alt="[公式]"> 的点都能够影响我们的超平面，因此都是支持向量。</p>
+<p><strong>==硬间隔线性SVM的基本型：==</strong>【凸二次规划问题， 具有全局最小值】</p>
+<script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{\boldsymbol{w}, b} & \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w} \\
+\text { s.t. } & y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{x}_{i}+b\right) \geq 1, \quad i=1,2, \ldots, m
+\end{array}</script><p>约束中要求所有的样本都满足 $y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right) \geq 1$, 也就是让所有的样本都满足 $y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right)&gt;0$。<br>现在我们想对<strong>该约束进行一点放松</strong>, 我们希望在优化间隔的同时, 允许分类错误的样本出现, 但这类样本应尽可能少:</p>
+<script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{\boldsymbol{w}, b} & \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+C \sum_{i=1}^{m} \mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right)\right) \\
+\text { s.t. } & y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right) \geq 1, \quad \text { 若 } y_{i}=\operatorname{sign}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right) .
+\end{array}</script><p>其中, 优化目标的第一项 $\frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}$ 源自硬间隔核化 SVM 的基本型, 即优化间隔。优化目标的第二项 中的 $\mathbb{I}(\cdot)$ 是指示函数, 函数的参数通常是一个条件, 如果条件为真（True）, 则指示函数值为 1 ; 如果条件为假 (False), 则指示函数值为 0 。<br>$\sum_{i=1}^{m} \mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right)\right)$ 的含义是统计训练集 $D$ 中所有<strong>预测错误的样本总数</strong>。因此, 公式 162 的目标函数是同时优化间隔和最小化训练集预测错误的样本总数, <strong>==$C$ 是个可调节的超参数, 用于权衡优化间隔和出现少量分类错误的样本这两个目标。==</strong></p>
+<p>但是, 由于<strong>==指示函数 $I(\cdot)$ 不是连续函数, 更不是凸函数, 使得优化问题不再是二次规划问题==</strong>, 求解起来十分困难, 所以我们需要对其进行简化。另外<strong>==指示函数没有区分预测错误的不同程度==</strong>,因此, 我们<strong>引入松他变量</strong> (Slack Variable) $\xi_{i} \in \mathbb{R}$, 用于<strong>度量训练集 $D$ 中第 $i$ 个样本违背约束的程度</strong>。当第 $i$ 个样本<strong>==违背约束的程度==</strong>越大, 松弛变量 $\xi_{i}$ 的值越大</p>
+<script type="math/tex; mode=display">
+\xi_{i}:= \begin{cases}0 & \text { 若 } y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right) \geq 1 ; \\ 1-y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right) & \text { 否则. }\end{cases}</script><p>基于以上定义, 松弛变量 $\xi_{i}$ 的取值有以下四种情况, 如图 27 所示, 注意图 27 只是示意图, 用于理 解概念, 不表示用图中数据训练得到的分类边界一定是这样:</p>
+<ul>
+<li>当 $\xi_{i}=0$ 时, 训练集 $D$ 中第 $i$ 个样本分类正确 $h\left(\boldsymbol{x}_{i}\right)=y_{i}$, 且满足大间隔约束 $y_{i}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b\right) \geq 1$;</li>
+<li>当 $0&lt;\xi_{i}&lt;1$ 时, 训练集 $D$ 中第 $i$ 个样本分类正确 $h\left(\boldsymbol{x}_{i}\right)=y_{i}$, 但是不满足大间隔约束;</li>
+<li>当 $\xi_{i}=1$ 时, 训练集 $D$ 中第 $i$ 个样本恰好位于划分超平面 $\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_{i}\right)+b=0$ 上, 且不满足大间 隔约束;</li>
+<li>当 $\xi&gt;0$ 时, 训练集 $D$ 中第 $i$ 个样本分类错误 $h\left(\boldsymbol{x}_{i}\right) \neq y_{i}$, 且不满足大间隔约束。</li>
+</ul>
+<p><img src="https://s2.loli.net/2023/04/17/LPukQfqKiBNToV5.png" alt="image-20220409230106609" style="zoom:50%;"></p>
+<h4><span id="软间隔核化svm基本型合页损失函数"><strong>==软间隔核化SVM基本型==：</strong>（<strong>==合页损失函数==</strong>）</span></h4><p><img src="https://s2.loli.net/2023/04/17/ROQk4xowVb7Fu39.png" alt="image-20220401163522598" style="zoom:50%;"></p>
+<p><img src="https://s2.loli.net/2023/04/17/CvTiDaHNeWm3q6E.png" alt="image-20220401164527480" style="zoom:50%;"></p>
+<p><strong>变为：</strong></p>
+<p><img src="https://s2.loli.net/2023/04/17/bsWvAUQaM29RzNP.png" alt="image-20220401164354384" style="zoom:50%;"></p>
+<p>令<img src="https://s2.loli.net/2023/04/17/3j4TyoqNfcnBrLW.png" alt="image-20220401164559373" style="zoom:50%;">：<strong>==合页损失==</strong></p>
+<p><img src="https://s2.loli.net/2023/04/17/XIRKolZvQGECYAw.png" alt="image-20220401164608500" style="zoom:50%;"></p>
+<blockquote>
+<h5><span id="回顾对数几率回归">回顾：对数几率回归：</span></h5><p>  <img src="https://s2.loli.net/2023/04/17/ZtVDeIKydQsNhTM.png" alt="image-20220401164913393" style="zoom:50%;"></p>
+</blockquote>
+<p>==<strong>软间隔核化SVM对偶性：</strong>== <strong>软间隔的对偶性是在硬间隔的对偶性对拉格朗日参数添加一个上界</strong>。</p>
+<p><img src="https://s2.loli.net/2023/04/17/hMnsiJqL59xYduO.png" alt="image-20220401161707141" style="zoom:50%;"></p>
+<h3><span id="5-核函数对偶性">5. 核函数【对偶性】</span></h3><h4><span id="51-线性不可分">5.1 线性不可分</span></h4><blockquote>
+<p>  <strong>==对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里，再通过间隔最大化的方式，学习得到支持向量机，就是非线性 SVM。==</strong></p>
+</blockquote>
+<p>我们刚刚讨论的<strong>硬间隔</strong>和<strong>软间隔</strong>都是在说样本的完全线性可分或者大部分样本点的线性可分。</p>
+<p>但我们可能会碰到的一种情况是样本点不是线性可分的，比如：</p>
+<p><img src="https://s2.loli.net/2023/04/17/BpDe2wT9zZQrJVn.jpg" alt="img" style="zoom:50%;"></p>
+<p>这种情况的解决方法就是：将<strong>==二维线性不可分样本映射到高维空间中，让样本点在高维空间线性可分==</strong>，比如：</p>
+<p><img src="https://s2.loli.net/2023/04/17/JhEDzmfuGyPK7A6.jpg" alt="img" style="zoom:50%;"></p>
+<p>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里，再通过间隔最大化的方式，学习得到支持向量机，就是非线性 SVM。</p>
+<p>我们用 x 表示原来的样本点，用 <img src="https://www.zhihu.com/equation?tex=%5Cphi%28x%29" alt="[公式]"> 表示 x 映射到特征新的特征空间后到新向量。那么分割超平面可以表示为： <img src="https://www.zhihu.com/equation?tex=f%28x%29%3Dw+%5Cphi%28x%29%2Bb" alt="[公式]"> 。</p>
+<p>对于非线性 SVM 的对偶问题就变成了：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cmin%5Climits_%7B%5Clambda%7D+%5B%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Clambda_i+%5Clambda_j+y_i+y_j+%28%5Cphi%28x_i%29+%5Ccdot+%5Cphi%28x_j%29%29-%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Clambda_i%5D+%5C%5C+s.t.++%5Cquad+%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Clambda_iy_i+%3D+0%2C+%5Cquad+%5Clambda_i+%5Cgeq+0%2C+%5Cquad+C-%5Clambda_i-%5Cmu_i%3D0+%5C%5C" alt="[公式]"></p>
+<p>可以看到与线性 SVM 唯一的不同就是：之前的 <img src="https://www.zhihu.com/equation?tex=%28x_i+%5Ccdot+x_j%29" alt="[公式]"> 变成了 <img src="https://www.zhihu.com/equation?tex=%28%5Cphi%28x_i%29+%5Ccdot+%5Cphi%28x_j%29%29" alt="[公式]"> 。</p>
+<h3><span id="52-核函数的作用">5.2 核函数的作用</span></h3><p>我们不禁有个疑问：只是做个内积运算，为什么要有核函数的呢？</p>
+<p>这是因为<strong>低维空间映射到高维空间后维度可能会很大，如果将全部样本的点乘全部计算好，这样的计算量太大</strong>了。</p>
+<p>但如果我们有这样的一==核函数== <img src="https://www.zhihu.com/equation?tex=k%28x%2Cy%29+%3D+%28%5Cphi%28x%29%2C%5Cphi%28y%29%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=x_j" alt="[公式]"> 在特征空间的内积等于它们在原始样本空间中通过函数 <img src="https://www.zhihu.com/equation?tex=k%28+x%2C+y%29" alt="[公式]"> 计算的结果，我们就不需要计算高维甚至无穷维空间的内积了。</p>
+<p>举个例子：假设我们有一个<strong>==多项式核函数==</strong>：</p>
+<p><img src="https://www.zhihu.com/equation?tex=k%28x%2Cy%29%3D%28x+%5Ccdot+y+%2B+1%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>带进样本点的后：</p>
+<p><img src="https://www.zhihu.com/equation?tex=k%28x%2Cy%29+%3D+%28%5Csum_%7Bi%3D1%7D%5En%28x_i+%5Ccdot+y_i%29+%2B+1%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>而它的展开项是：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Csum_%7Bi%3D1%7D%5Enx_i%5E2y_i%5E2%2B%5Csum_%7Bi%3D2%7D%5En%5Csum_%7Bj%3D1%7D%5E%7Bi-1%7D%28%5Csqrt2x_ix_j%29%28%5Csqrt2y_iy_j%29%2B%5Csum_%7Bi%3D1%7D%7Bn%7D%28%5Csqrt2x_i%29%28%5Csqrt2y_i%29%2B1+%5C%5C" alt="[公式]"></p>
+<p>如果没有核函数，我们则需要把向量映射成：</p>
+<p><img src="https://www.zhihu.com/equation?tex=x%5E%7B%27%7D+%3D+%28x_1%5E2%2C...%2Cx_n%5E2%2C...%5Csqrt2x_1%2C...%2C%5Csqrt2x_n%2C1%29+%5C%5C" alt="[公式]"></p>
+<p>然后在进行内积计算，才能与多项式核函数达到相同的效果。</p>
+<p>可见核函数的引入一方面减少了我们计算量，另一方面也减少了我们存储数据的内存使用量。</p>
+<h3><span id="53-常见核函数">5.3 常见核函数</span></h3><p>我们常用核函数有：</p>
+<p><strong>线性核函数</strong>【无映射】</p>
+<p><img src="https://www.zhihu.com/equation?tex=k%28x_i%2Cx_j%29+%3D+x_i%5ETx_j+%5C%5C" alt="[公式]"></p>
+<ul>
+<li>优点：有加速算法库、没有特征映射、过拟合风险低</li>
+<li>缺点：只能处理线性</li>
+</ul>
+<p><strong>多项式核函数</strong>【映射，超参数】</p>
+<p><img src="https://www.zhihu.com/equation?tex=+k%28x_i%2Cx_j%29+%3D+%28x_i%5ETx_j%29%5Ed%5C%5C" alt="[公式]"></p>
+<p><strong>高斯核函数</strong>【映射，超参数】</p>
+<p><img src="https://www.zhihu.com/equation?tex=k%28x_i%2Cx_j%29+%3D+exp%28-%5Cfrac%7B%7C%7Cx_i-x_j%7C%7C%7D%7B2%5Cdelta%5E2%7D%29+%5C%5C" alt="[公式]"></p>
+<ul>
+<li><strong>表示能力强，但容易过拟合</strong></li>
+<li><strong>高斯核没有多项核不稳定的问题</strong></li>
+<li><strong>只有一个超参数</strong></li>
+</ul>
+<h3><span id="54-如何选择核函数">==5.4 <strong>如何选择核函数？</strong>==</span></h3><blockquote>
+<p>  <strong>其他核函数：拉普拉斯、sigmod、卡方、直方图交叉</strong></p>
+<p>  可自定义和组合核函数</p>
+</blockquote>
+<ul>
+<li>如果特征的数量大到和样本数量差不多，则选用LR或者线性核的SVM；</li>
+<li>如果特征的数量小，样本的数量正常，则选用SVM+高斯核函数；</li>
+<li>如果特征的数量小，而样本的数量很大，则需要手工添加一些特征从而变成第一种情况。</li>
+</ul>
+<p><img src="https://s2.loli.net/2023/04/17/uFims1jZcWSPBRx.png" alt="image-20220331203905843" style="zoom:50%;"></p>
+<h3><span id="55-核方法">5.5 核方法</span></h3><h4><span id="核化lr-非线性">核化LR [非线性]</span></h4><p>正类: y = +1 负类 y= -1</p>
+<p><img src="https://s2.loli.net/2023/04/17/mvX4dbSUTuzYKAq.png" alt="image-20220331205845613" style="zoom:50%;"></p>
+<p><img src="https://s2.loli.net/2023/04/17/UGMhET5quOZiVLn.png" alt="image-20220331211740625" style="zoom:50%;"></p>
+<p><img src="https://s2.loli.net/2023/04/17/6HjbuOyVkhNDmAL.png" alt="image-20220331211757367" style="zoom:50%;"></p>
+<p><strong>梯度下降求解：</strong></p>
+<p>核化LR的参数通常都非0，并且几乎用到所有训练的样本，预测效率比较低。</p>
+<p><img src="https://s2.loli.net/2023/04/17/8d9UGWZyzBoAhjJ.png" alt="image-20220331212433609" style="zoom:50%;"></p>
+<h3><span id="56-支持向量回归-svr-核化岭回归">5.6 支持向量回归 SVR = ？核化岭回归？</span></h3><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://blog.csdn.net/ch18328071580/article/details/94168411">https://blog.csdn.net/ch18328071580/article/details/94168411</a></p>
+<p>  <strong>支持向量在隔代之外</strong></p>
+</blockquote>
+<h4><span id="svr与一般线性回归的区别">SVR与一般线性回归的区别</span></h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>SVR</th>
+<th>线性回归</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据在间隔带内则不计算损失，<strong>当且仅当f(x)与y之间的差距的绝对值大于ϵ才计算损失</strong></td>
+<td>只要f(x)与y不相等时，就计算损失</td>
+</tr>
+<tr>
+<td><strong>通过最大化间隔带的宽度与最小化总损失</strong>来优化模型</td>
+<td>通过梯度下降之后求均值来优化模型</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>岭回归：</strong><img src="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png" alt="image-20220401144206172" style="zoom:50%;"></p>
+<h5><span id="支持向量回归我们假设fx与y之间最多有一定的偏差大于偏差才计数损失">支持向量回归：==我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失==</span></h5><script type="math/tex; mode=display">
+\min _{w, b} \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m} l_{\epsilon}\left(f\left(x_{i}\right), y_{i}\right)</script><p>其中C为正则化常数, $l_{\epsilon}$ 是图中所示的 $\epsilon$-不敏感损失 ( $\epsilon$-insensitive loss)函数:</p>
+<script type="math/tex; mode=display">
+l_{\epsilon}(\mathrm{z})= \begin{cases}0, & \text { if }|z| \leq \epsilon \\ |z|-\epsilon, & \text { otherwise }\end{cases}</script><p>引入松弛变量 $\xi_{i}$ 和 $\left(\xi_{i}\right)$, 可将式重写为:</p>
+<script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{w, b, \xi_{i}, \xi_{i}} & \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m}\left(\xi_{i}, \widehat{\xi}_{i}\right) \\
+\text { s.t. } & f\left(x_{i}\right)-y_{i} \leq \epsilon+\xi_{i} \\
+& y_{i}-f\left(x_{i}\right) \leq \epsilon+\widehat{\xi}_{i} \\
+& \xi_{i} \geq 0, \hat{\xi}_{i} \geq 0, i=1,2, \ldots m
+\end{array}</script><p>引入拉格朗日乘子 $\mu_{i}$,</p>
+<p>$L(w, b, \alpha, \hat{\alpha}, \xi, \hat{\xi}, \mu, \hat{\mu})$<br>$=\frac{1}{2}|w|^{2}+C \sum_{i=1}^{m}\left(\xi_{i}+\widehat{\xi}_{i}\right)-\sum_{i=1}^{m} \xi_{i} \mu_{i}-\sum_{i=1}^{m} \widehat{\xi}_{i} \widehat{\mu_{i}}$<br>$+\sum_{i=1}^{m} \alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)+\sum_{i=1}^{m} \widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)$</p>
+<p>再令 $L(w, b, a, \hat{a}, \xi, \hat{\xi}, \mu, \mu)$ 对 $w, b, \xi_{i}, \hat{\xi}_{i}$ 的偏导为零可得:</p>
+<script type="math/tex; mode=display">
+w=\sum_{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}</script><p>上述过程中需满足KKT条件, 即要求:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{c}
+\alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)=0 \\
+\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)=0 \\
+\alpha_{i} \widehat{\alpha_{i}}=0, \xi_{i} \widehat{\xi}_{i}=0 \\
+\left(C-\alpha_{i}\right) \xi_{i}=0,\left(C-\widehat{\alpha_{i}}\right) \widehat{\xi}_{i}=0 .
+\end{array}\right.</script><h3><span id="57-多分类-svm">5.7 多分类 SVM</span></h3><h4><span id="571-多分类问题">5.7.1 多分类问题</span></h4><ul>
+<li>多分类问题拆解成若干个二分类问题，对于每个二分类训练一个分类器。<ul>
+<li><strong>one vs one 拆解</strong>：K(K-1)/2 个分类器。</li>
+<li><strong>one vs Rest 拆解</strong>：K个分类器</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png" alt="image-20220401192909167" style="zoom:50%;"></p>
+<ul>
+<li><p><strong>根据模型特点设计：多分类线性SVM</strong></p>
+<ul>
+<li><p><strong>层次支持向量机</strong></p>
+</li>
+<li><p><strong>回顾二分类</strong>；</p>
+<p><img src="https://s2.loli.net/2023/04/17/YJLzqnSQGTyXFc3.png" alt="image-20220401193645250" style="zoom:50%;"></p>
+</li>
+<li><p><strong>多分类线性SVM</strong>：</p>
+<p><img src="https://s2.loli.net/2023/04/17/kZ19DcBfzWuMAaG.png" alt="image-20220401194059380" style="zoom:50%;"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2><span id="6-优缺点">6. 优缺点</span></h2><h3><span id="61-优点">6.1 优点</span></h3><ul>
+<li>有严格的<strong>==数学理论支持==</strong>，<strong>==可解释性强==</strong>，<strong>==不依靠统计方法==</strong>，从而<strong>简化了通常的分类和回归问题</strong>；</li>
+<li>能找出对任务至关重要的<strong>==关键样本==</strong>（即：<strong>支持向量</strong>）；</li>
+<li>采用<strong>==核技巧==</strong>之后，<strong>==可以处理非线性分类/回归任务==</strong>；</li>
+<li><strong>==最终决策函数只由少数的支持向量所确定，计算的复杂性取决于支持向量的数目，而不是样本空间的维数，这在某种意义上避免了“维数灾难”。==</strong></li>
+</ul>
+<h3><span id="62-缺点">6.2 缺点</span></h3><ul>
+<li><strong>训练时间长</strong>：当采用 SMO 算法时，由于每次都需要挑选一对参数，因此时间复杂度为 <img src="https://www.zhihu.com/equation?tex=O%28N%5E2%29" alt="[公式]"> ，其中 N 为训练样本的数量；</li>
+<li><strong>存储空间大</strong>：当采用核技巧时，如果需要存储核矩阵，则空间复杂度为 <img src="https://www.zhihu.com/equation?tex=O%28N%5E2%29" alt="[公式]"> ；</li>
+<li><strong>预测时间长</strong>：模型预测时，预测时间与支持向量的个数成正比。当支持向量的数量较大时，预测计算复杂度较高。</li>
+</ul>
+<p><strong>==因此支持向量机目前只适合小批量样本的任务，无法适应百万甚至上亿样本的任务。==</strong></p>
+<h2><span id="svm-qampa">SVM Q&amp;A</span></h2><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93715996">https://zhuanlan.zhihu.com/p/93715996</a></p>
+</blockquote>
+<h3><span id="1-原理">1、原理：</span></h3><ul>
+<li>简单介绍SVM（详细原理）：从分类平面，到求两类间的最大间隔，到转化为求间隔分之一，等优化问题，然后就是优化问题的解决办法，首先是用拉格拉日乘子把约束优化转化为无约束优化，对各个变量求导令其为零，得到的式子带入拉格朗日式子从而转化为对偶问题， 最后再利用SMO（序列最小优化）来解决这个对偶问题。<strong>svm里面的超参数c有啥用：软间隔SVM去权衡优化目标和少量分错样本的目标。</strong></li>
+<li><p>SVM的推导，解释原问题和对偶问题，<strong>SVM原问题和对偶问题的关系</strong>，<strong>KKT限制条件</strong>，<strong>KKT条件用哪些</strong>，完整描述；软间隔问题，解释支持向量、核函数（哪个地方引入、画图解释高维映射，高斯核可以升到多少维，如何选择核函数），引入拉格朗日的优化方法的原因，最大的特点，损失函数解释</p>
+<ul>
+<li><strong>KKT限制</strong>：主问题可行、对偶问题可行、主变量最优、<strong>互补松弛</strong></li>
+</ul>
+</li>
+<li><p><strong>为什么要把原问题转换为对偶问题？</strong></p>
+<ul>
+<li>因为原问题是凸二次规划问题，转换为对偶问题更加高效。为什么求解对偶问题更加高效？因为只用求解alpha系数，而alpha系数只有支持向量才非0，其他全部为0.alpha系数有多少个？样本点的个数</li>
+</ul>
+</li>
+</ul>
+<h3><span id="2-svm与lr最大区别lr和svm对于outlier的敏感程度分析逻辑回归与svm的区别">2、SVM与LR最大区别，LR和SVM对于outlier的敏感程度分析，逻辑回归与SVM的区别？</span></h3><h3><span id="3-svm如何解决多分类问题-可以做回归吗怎么做">3、SVM如何解决==多分类问题==、可以做==回归==吗，怎么做？</span></h3><h3><span id="4-机器学习有很多关于核函数的说法核函数的定义和作用是什么">4、机器学习有很多关于核函数的说法，核函数的定义和作用是什么？</span></h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24627666">https://www.zhihu.com/question/24627666</a></p>
+<h3><span id="5-linear-svm-和-lr-有什么异同">5、Linear SVM 和 LR 有什么异同？</span></h3><h4><span id="svm和lr相同点">SVM和LR相同点：</span></h4><ul>
+<li>SVM和LR都属于机器学习的监督学习中的<strong>判别式模型</strong>（判别式模型对$p(y|x)$进行建模或直接基于x预测y，生成模型：$p(x|y)$和$p(y)$进行建模,预测后验概率）。</li>
+<li>SVM和LR都是线性二分类模型，<strong>分类边界为一个超平面</strong>。</li>
+<li>线性SVM和对数几率回归都可以基于表示定理和<strong>核技巧处理非线性可分问题</strong>。</li>
+<li><strong>SVM的基本型和对数几率函数都属于参数模型。SVM的对偶性和核化对数几率回归都属于非参数模型</strong>。</li>
+<li>SVM和LR优化目标都表示成：经验风险+结构风险（正则项）的形式；均是0，1损失的替代函数。风险结构都是L2正则化。</li>
+<li><strong>SVM和LR都是凸优化问题，都能收敛到全局最优解。</strong></li>
+<li>SVM和对数几率函数的优化目标相似，性能相当。</li>
+<li><strong>SVM多分类：多分类SVM；LR多分类：Softmax回归。</strong></li>
+</ul>
+<h3><span id="svm和lr的区别"><strong><font color="red"> SVM和LR的区别：</font></strong></span></h3><blockquote>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>SVM</th>
+<th>LR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>思想</strong></td>
+<td><strong>SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面</strong>。</td>
+<td><strong>逻辑回归</strong>是使用线性回归模型的预测值逼近分类任务真实标记的对数几率。</td>
+</tr>
+<tr>
+<td><strong>输出</strong></td>
+<td><strong>非概率方法</strong>；</td>
+<td><strong>概率方法</strong>；需要对$p(y</td>
+<td>x)$进行假设，具有概率意义。</td>
+</tr>
+<tr>
+<td><strong>经验损失函数</strong></td>
+<td><strong>合页损失函数</strong>；有一段平的零区域、使得SVM的对偶性有稀疏性。</td>
+<td><strong>交叉熵损失函数</strong></td>
+</tr>
+<tr>
+<td><strong>训练样本</strong></td>
+<td>支持向量（少数样本），SVM的参数和假设函数只和支持向量有关。</td>
+<td>全样本</td>
+</tr>
+<tr>
+<td><strong>优化方法</strong></td>
+<td>次梯度下降和坐标梯度下降 【<strong>SMO算法</strong>】</td>
+<td><strong>梯度下降</strong></td>
+</tr>
+<tr>
+<td>多分类</td>
+<td><strong>多分类SVM</strong></td>
+<td><strong>Softmax回归</strong></td>
+</tr>
+<tr>
+<td><strong>敏感程度</strong></td>
+<td>SVM考虑分类边界线附近的样本（决定分类超平面的样本）。在支持向量外添加或减少任何样本点对分类决策面没有任何影响；</td>
+<td>LR受所有数据点的影响。直接依赖数据分布，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26768865">https://www.zhihu.com/question/26768865</a></p>
+<h3><span id="6-支持向量机svm是否适合大规模数据速度">6、支持向量机(SVM)是否适合大规模数据？【速度】</span></h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19591450">https://www.zhihu.com/question/19591450</a></p>
+<h3><span id="7-svm和逻辑斯特回归对同一样本a进行训练如果某类中增加一些数据点那么原来的决策边界分别会怎么变化">7、SVM和逻辑斯特回归对同一样本A进行训练，如果某类中增加一些数据点，那么原来的决策边界分别会怎么变化？</span></h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30123068">https://www.zhihu.com/question/30123068</a></p>
+<h3><span id="8-各种机器学习的应用场景分别是什么例如k近邻贝叶斯决策树svm逻辑斯蒂回归和最大熵模型">8、各种机器学习的应用场景分别是什么？例如，k近邻,贝叶斯，决策树，svm，逻辑斯蒂回归和最大熵模型。</span></h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26726794">https://www.zhihu.com/question/26726794</a></p>
+<h3><span id="9-svm与感知器的联系和优缺点比较">==9、SVM与感知器的联系和优缺点比较==</span></h3><p><strong>感知机用误分类样本点的几何距离之和</strong>来表示模型的损失函数，用梯度下降算法优化，直至没有误分类点。</p>
+<script type="math/tex; mode=display">
+L(w, b)=-\sum_{x^{(i)} \in M} y^{(i)}\left(w^{T} x^{(i)}+b\right)</script><h4><span id="感知机与svm区别">==感知机与SVM区别：==</span></h4><p><strong>SVM可以视为对感知器的二阶改进</strong>：第一阶改进是加入了 <img src="https://www.zhihu.com/equation?tex=%5Cgamma" alt="[公式]"> 获得hinge loss，从而具备了产生大间隔的潜质；第二阶改进是加入了权向量的L2正则化项，从而避免产生无意义的大函数间隔，而是产生大的几何间隔。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>感知机</th>
+<th>SVM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>思想</td>
+<td>分离超平面基于误分类的损失函数<img src="https://www.zhihu.com/equation?tex=%5Cmin_%7Bw%2Cb%7D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5En+max%280%2C+-y_i%28w%5ETx_i%2Bb%29%29%5C%5C" alt="[公式]"></td>
+<td><img src="https://www.zhihu.com/equation?tex=%5Cmin_%7Bw%2Cb%7D%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5En+max%280%2C+1-y_i%28w%5ETx_i%2Bb%29%29+%2B+%5Calpha+%7C%7Cw%7C%7C_2%5E2+%5C%5C" alt="[公式]" style="zoom:150%;"></td>
+</tr>
+<tr>
+<td>超平面</td>
+<td>因采用的初值不同而得到不同的超平面</td>
+<td>让离划分超平面最近的样本到划分超平面距离尽可能远</td>
+</tr>
+<tr>
+<td>关键样本</td>
+<td>每步的分错样本</td>
+<td><strong>支持向量</strong></td>
+</tr>
+<tr>
+<td>非线性问题</td>
+<td>无</td>
+<td>核化</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/26M5EPY/" title="机器学习（5）SVM*">https://powerlzy.github.io/posts/26M5EPY/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/27302/" rel="next" title="机器学习（1）评价指标">
+                  机器学习（1）评价指标 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
