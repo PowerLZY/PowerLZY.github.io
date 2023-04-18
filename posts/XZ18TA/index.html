@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="不平衡数据问题   实际上，很多时候，数据不平衡并没有啥负面影响，并不是数据不平衡了，就一定要处理。如果你只是为了做而做，我有99%的自信告诉你，你做了也是白做，啥收益都没有。  机器学习中不平衡数据的预处理：https:&#x2F;&#x2F;capallen.gitee.io&#x2F;2019&#x2F;Deal-with-imbalanced-data-in-ML.html 如何处理数据中的「类别不平衡」？：https:&#x2F;&#x2F;zh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特征工程（3）不平衡数据集*">
+<meta property="og:url" content="https://powerlzy.github.io/posts/XZ18TA/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="不平衡数据问题   实际上，很多时候，数据不平衡并没有啥负面影响，并不是数据不平衡了，就一定要处理。如果你只是为了做而做，我有99%的自信告诉你，你做了也是白做，啥收益都没有。  机器学习中不平衡数据的预处理：https:&#x2F;&#x2F;capallen.gitee.io&#x2F;2019&#x2F;Deal-with-imbalanced-data-in-ML.html 如何处理数据中的「类别不平衡」？：https:&#x2F;&#x2F;zh">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://camo.githubusercontent.com/d79dd87cc30238a9124e1d26f787aed887a587d6061dcba4cdea9ebaec84836a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f5c6470697b3135307d2673706163653b4c5f7b777d2673706163653b3d2673706163653b2d5c73756d5f7b693d317d5e7b6d7d5c6861747b797d5f7b697d28312d795f7b697d295e7b5c67616d6d617d5c746578747b6c6f677d28795f7b697d292673706163653b2b2673706163653b28312d5c6861747b797d5f7b697d29795f7b697d5e7b5c67616d6d617d5c746578747b6c6f677d28312d795f7b697d29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=++WOE_i+%3D+ln%28+%5Cfrac%7BGood_i%7D%7BGood_T%7D%2F+%5Cfrac%7BBad_i%7D%7BBad_T%7D+%29+%3D+ln%28%5Cfrac%7BGood_i%7D%7BBad_i%7D%29+-+ln%28%5Cfrac%7BGood_T%7D%7BBad_T%7D%29+%5Ctag%7B1%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-538659592a96c40bd4098f29d30d144c_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-af2b686a4cdddff60556e90545378f91_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctextbf%7Bx%7D+%3D+x_1%2C+x_2%2C...%2C+x_n">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=G+%3D+Good%2C+B+%3D+Bad">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=Ln%28odds%28G%7C%5Ctextbf%7Bx%7D%29%29+%3D+Ln%28%5Cfrac%7Bp_Gf%28%5Ctextbf%7Bx%7D%7CG%29%7D%7Bp_Bf%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%3D+Ln%28%5Cfrac%7Bp_G%7D%7Bp_B%7D%29+%2B+Ln%28%5Cfrac%7Bf%28%5Ctextbf%7Bx%7D%7CG%29%7D%7Bf%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%5C%5C+%3D+Ln%28%5Cfrac%7Bp_G%7D%7Bp_B%7D%29+%2B+Ln%28%5Cfrac%7Bf%28x_1%2Cx_2%2C...%2Cx_n%7CG%29%7D%7Bf%28x_1%2Cx_2%2C...%2Cx_n%7CB%29%7D%29+%5C%5C+%3D+Ln%28%5Cfrac%7Bp_G%7D%7Bp_B%7D%29+%2B+Ln%28%5Cfrac%7Bf%28x_1%7CG%29%7D%7Bf%28x_1%7CB%29%7D%29+%2B+Ln%28%5Cfrac%7Bf%28x_2%7CG%29%7D%7Bf%28x_2%7CB%29%7D+%2B+%5Cspace+...+%5Cspace+%2B+Ln%28%5Cfrac%7Bf%28x_n%7CG%29%7D%7Bf%28x_n%7CB%29%7D%5C%5C+%3D+Ln%28odds_%7Bpop%7D%29+%2B+Ln%28odds_%7Binfo%7D+%28%5Ctextbf%7Bx%7D%29%29+%5Ctag%7B2%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds_%7Bpop%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds_%7Binfo%7D+%28%5Ctextbf%7Bx%7D%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-0021358b05ebb5fea25073cceea1da2d_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-c49197fdd37023e75daabd7e74feb11b_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=P%28B%7C%5Ctextbf%7Bx%7D%29+%3D+%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29%7D%7BP%28%5Ctextbf%7Bx%7D%29%7D++%3D+%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29+%2B+P%28%5Ctextbf%7Bx%7D%7CG%29P%28G%29%7D+%5C%5C+%5CLeftrightarrow+%5Cfrac%7B1%7D%7BP%28B%7C%5Ctextbf%7Bx%7D%29%7D+%3D++1+%2B+%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29P%28G%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29%7D+%5C%5C+%5CLeftrightarrow++Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%3D+Ln%28%5Cfrac%7B1%7D%7BP%28B%7C%5Ctextbf%7Bx%7D%29%7D+-+1%29++-+Ln%28%5Cfrac%7BP%28G%29%7D%7BP%28B%29%7D%29+%5C%5C+%5CLeftrightarrow++Ln%28%5Cfrac%7BP%28G%7C%5Ctextbf%7Bx%7D%29%7D%7BP%28B%7C%5Ctextbf%7Bx%7D%29%7D%29++%3D+Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%2B+Ln%28%5Cfrac%7BP%28G%29%7D%7BP%28B%29%7D%29+%5Ctag%7B3%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctextbf%7Bx%7D%27">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5C%23+B">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5C%23+G">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds+%3D+%5Cfrac%7B%5C%23+G%7D%7B%5C%23+B%7D+%5Cne+%5Cfrac%7B%5C%23+G%27%7D%7B%5C%23+B%27%7D+%3D+odds%27+%5Ctag%7B4%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=Ln%28%5Cfrac%7BP%28G%29%7D%7BP%28B%29%7D%29++%3D+Ln%28%5Cfrac%7B%5C%23+G%7D%7B%5C%23+B%7D%29+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=P%28%5Ctextbf%7Bx%7D%7CG%29+%3D+P%28%5Ctextbf%7Bx%7D%27%7CG%27%29+%5C%5C+P%28%5Ctextbf%7Bx%7D%7CB%29+%3D+P%28%5Ctextbf%7Bx%7D%27%7CB%27%29+%5Ctag%7B5%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29%7D%29++%3D+Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%27%7CG%27%29%7D%7BP%28%5Ctextbf%7Bx%7D%27%7CB%27%29%7D%29+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=X_%7Bold%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=y">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=X_%7Bnew%7D">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-b40bd56da51ab37d01fbffbdb8bc91f7_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=w+%3D+w_1+%2A+w_2+%2A+w_3+%5Ctag%7B6%7D">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-6a218af9de452a4c58e36a9e8e6d4bb0_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-4942078e60d225438f77362c675bec20_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-699ad7ac670c27a5b0963b8b104ad7fc_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=odds">
+<meta property="article:published_time" content="2022-03-28T02:55:00.036Z">
+<meta property="article:modified_time" content="2022-07-02T06:49:24.165Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/d79dd87cc30238a9124e1d26f787aed887a587d6061dcba4cdea9ebaec84836a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f5c6470697b3135307d2673706163653b4c5f7b777d2673706163653b3d2673706163653b2d5c73756d5f7b693d317d5e7b6d7d5c6861747b797d5f7b697d28312d795f7b697d295e7b5c67616d6d617d5c746578747b6c6f677d28795f7b697d292673706163653b2b2673706163653b28312d5c6861747b797d5f7b697d29795f7b697d5e7b5c67616d6d617d5c746578747b6c6f677d28312d795f7b697d29">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/XZ18TA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/XZ18TA/","path":"posts/XZ18TA/","title":"特征工程（3）不平衡数据集*"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>特征工程（3）不平衡数据集* | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">不平衡数据问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">为什么很多模型在训练数据不均衡时会出问题？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、不平衡数据集的主要处理方式？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 数据的角度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 业务角度：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 技术角度：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;分层抽样技术&#x3D;&#x3D;：批量训练分类器的「分层抽样」技术。当面对不平衡类问题时，这种技术（通过消除批次内的比例差异）可使训练过程更加稳定。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1. 2 算法的角度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">XGB自定义损失函数 &#x2F;Imbalance-XGBoost 【Focal Loss】：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 分类方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">一类分类算法:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不平数据集的划分方法？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不平数据集的评价方法？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、「类别不平衡」如何得到一个不错的分类器？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 类别不平衡下的评估问题?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 解决类别不平衡中的“奇淫巧技”有什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;2.3 简单通用的算法有哪些？&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 一个简单但有效的方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、脉脉：数据集不平衡应该思考什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、样本准备与权重指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">风控业务背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Part 1. 样本加权对WOE的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Part 2. 采样对LR系数的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">样本权重调整直接影响先验项，也就是截距。那对系数的影响呢？</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> Part 3. 样本准备与权重指标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Part 4. 常见工具包的样本赋权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Part 5. 总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/XZ18TA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="特征工程（3）不平衡数据集* | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          特征工程（3）不平衡数据集*
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-28 10:55:00" itemprop="dateCreated datePublished" datetime="2022-03-28T10:55:00+08:00">2022-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-02 14:49:24" itemprop="dateModified" datetime="2022-07-02T14:49:24+08:00">2022-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="不平衡数据问题">不平衡数据问题</span></h2><blockquote>
+<p>  <strong>实际上，很多时候，数据不平衡并没有啥负面影响，并不是数据不平衡了，就一定要处理。如果你只是为了做而做，我有99%的自信告诉你，你做了也是白做，啥收益都没有。</strong></p>
+<ul>
+<li>机器学习中不平衡数据的预处理：<a target="_blank" rel="noopener" href="https://capallen.gitee.io/2019/Deal-with-imbalanced-data-in-ML.html">https://capallen.gitee.io/2019/Deal-with-imbalanced-data-in-ML.html</a></li>
+<li>如何处理数据中的「类别不平衡」？：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32940093">https://zhuanlan.zhihu.com/p/32940093</a></li>
+<li><strong>==不平衡数据集处理方法==</strong>：<a target="_blank" rel="noopener" href="https://blog.csdn.net/asialee_bird/article/details/83714612">https://blog.csdn.net/asialee_bird/article/details/83714612</a></li>
+<li><strong>==不平衡数据究竟出了什么问题？==</strong>：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/jiqizhixin">https://www.zhihu.com/column/jiqizhixin</a></li>
+<li>数据挖掘时，当正负样本不均，代码如何实现改变正负样本权重? - 十三的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/356640889/answer/2299286791">https://www.zhihu.com/question/356640889/answer/2299286791</a></li>
+<li><strong>样本权重对逻辑回归评分卡的影响探讨</strong> - 求是汪在路上的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110982479">https://zhuanlan.zhihu.com/p/110982479</a></li>
+</ul>
+</blockquote>
+<h4><span id="为什么很多模型在训练数据不均衡时会出问题">为什么很多模型在训练数据不均衡时会出问题？</span></h4><p><strong>本质原因是</strong>：<strong>模型在训练时优化的目标函数和在测试时使用的评价标准不一致。</strong>这种”不一致“可能是训练数据的样本分布与测试数据分布不一致；</p>
+<h2><span id="一-不平衡数据集的主要处理方式"><strong>一、不平衡数据集的主要处理方式？</strong></span></h2><h3><span id="11-数据的角度">1.1 <strong>数据的角度</strong></span></h3><p>主要方法为采样，分为<strong>欠采样</strong>和<strong>过采样</strong>以及对应的一些改进方法。[<strong>python imblearn库</strong>]<strong><font color="red">尊重真实样本分布，人为主观引入样本权重，反而可能得出错误的结论。</font></strong></p>
+<h4><span id="业务角度"><strong><font color="red"> 业务角度</font></strong>：</span></h4><ul>
+<li><strong>时间因素</strong>，对近期样本提高权重，较远样本降低权重。这是考虑近期样本与未来样本之间的“相似度”更高，希望模型学到更多近期样本的模式。</li>
+<li><strong>贷款类型</strong>，不同额度、利率、期限的样本赋予不同权重，这需要结合业务未来的发展方向。例如，未来业务模式希望是小额、短期、低利率，那就提高这批样本的权重。</li>
+<li><strong>样本分群</strong>，不同群体赋予不同权重。例如，按流量获客渠道，如果未来流量渠道主要来自平台A，那么就提高这批样本权重。</li>
+</ul>
+<h4><span id="技术角度"><strong><font color="red"> 技术角度：</font></strong></span></h4><ul>
+<li><p><strong>欠采样</strong>：</p>
+<ul>
+<li><p><strong>EasyEnsemble</strong>：从多数类$S_{max}$上随机抽取一个子集，与其他类训练一个分类器；重复若干次，多个分类器融合。</p>
+</li>
+<li><p><font color="red"><strong>BalanceCascade</strong></font>：从多数类$S_{max}$上随机抽取一个子集，与其他类训练一个分类器；<strong>剔除能被分类正确的分类器</strong>，重复若干次，多个分类器融合。</p>
+</li>
+<li><p>==<strong>NearMIss</strong>：利用K邻近信息挑选具有代表性的样本==。</p>
+</li>
+<li><p>==<strong>one-side Selection</strong>：采用数据清洗技术==。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>==过采样==</strong>：</p>
+<ul>
+<li><p><strong>随机采样</strong></p>
+</li>
+<li><p><strong>SMOTE算法</strong>：对少数类$S_{min}$中每个样本x的K近邻随机选取一个样本y，在x，y的连线上随机选取一个点作为新的样本点。</p>
+</li>
+<li><p>==<strong>Borderline-SMOTE、ADASYN改进算法等</strong>==</p>
+</li>
+</ul>
+</li>
+<li><h5><span id="分层抽样技术批量训练分类器的分层抽样技术-当面对不平衡类问题时这种技术通过消除批次内的比例差异可使训练过程更加稳定">==分层抽样技术==：批量训练分类器的「分层抽样」技术。当面对不平衡类问题时，这种技术（通过消除批次内的比例差异）可使训练过程更加稳定。</span></h5></li>
+</ul>
+<h3><span id="1-2-算法的角度"><strong>1. 2 算法的角度</strong></span></h3><p>考虑<strong>不同误分类情况代价的差异性</strong>对算法进行优化，主要是基于<strong>代价敏感学习算法</strong>(Cost-Sensitive Learning)，代表的算法有<strong>==adacost==</strong>。<a href="实现基于代价敏感的AdaCost算法">实现基于代价敏感的AdaCost算法</a></p>
+<ul>
+<li><p><strong>代价函数</strong>：可以增加小类样本的权值，降低大类样本的权值（这种方法其实是产生了新的数据分布，即产生了新的数据集），从而使得分类器将重点集中在小类样本身上。刚开始，可以设置每个类别的权值与样本个数比例的倒数，然后可以使用过采样进行调优。</p>
+<blockquote>
+<p>  这种方法的难点在于设置合理的权重，实际应用中一般让各个分类间的加权损失值近似相等。当然这并不是通用法则，还是需要具体问题具体分析。</p>
+</blockquote>
+</li>
+<li><h5><span id="xgb自定义损失函数-jhwjhw0123imbalance-xgboost-focal-loss">XGB自定义损失函数 /<strong><a target="_blank" rel="noopener" href="https://github.com/jhwjhw0123/Imbalance-XGBoost">Imbalance-XGBoost </a></strong>【Focal Loss】：</span></h5><p> <img src="https://camo.githubusercontent.com/d79dd87cc30238a9124e1d26f787aed887a587d6061dcba4cdea9ebaec84836a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f5c6470697b3135307d2673706163653b4c5f7b777d2673706163653b3d2673706163653b2d5c73756d5f7b693d317d5e7b6d7d5c6861747b797d5f7b697d28312d795f7b697d295e7b5c67616d6d617d5c746578747b6c6f677d28795f7b697d292673706163653b2b2673706163653b28312d5c6861747b797d5f7b697d29795f7b697d5e7b5c67616d6d617d5c746578747b6c6f677d28312d795f7b697d29" alt="img" style="zoom: 67%;"></p>
+</li>
+</ul>
+<h3><span id="13-分类方式">1.3 <strong>分类方式</strong></span></h3><p>可以把小类样本作为<strong>异常点</strong>(outliers)，把问题转化为<strong>异常点检测问题(anomaly detection)</strong>。此时分类器需要学习到大类的决策分界面，即分类器是一个<strong>单个类分类器（One Class Classifier）</strong>。代表的算法有<font color="red"> <strong>One-class SVM</strong></font>。</p>
+<blockquote>
+<h4><span id="一类分类算法">一类分类算法:</span></h4><p>  不平衡数据集的一类分类算法:<a target="_blank" rel="noopener" href="https://machinelearningmastery.com/one-class-classification-algorithms/">https://machinelearningmastery.com/one-class-classification-algorithms/</a></p>
+<p>  一类分类是机器学习的一个领域，它提供了异常值和异常检测的技术,如何使一类分类算法适应具有严重偏斜类分布的不平衡分类,如何拟合和评估 SVM、隔离森林、椭圆包络、局部异常因子等一类分类算法。</p>
+<h4><span id="不平数据集的划分方法">不平数据集的划分方法？</span></h4><ul>
+<li>K折交叉验证？</li>
+<li><p>自助法？</p>
+<h4><span id="不平数据集的评价方法">不平数据集的评价方法？</span></h4><p>G-Mean和ROC曲线和AUC。Topk@P</p>
+</li>
+<li><p><strong>AP衡量的是学出来的模型在每个类别上的好坏，==mAP衡量==的是学出的模型在所有类别上的好坏，得到AP后mAP的计算就变得很简单了，就是取所有AP的平均值。</strong></p>
+</li>
+</ul>
+</blockquote>
+<h3><span id="二-类别不平衡如何得到一个不错的分类器">二、「类别不平衡」如何得到一个不错的分类器？</span></h3><blockquote>
+<p>  <strong>微调</strong>：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32940093">如何处理数据中的「类别不平衡」？</a></p>
+</blockquote>
+<p>机器学习中常常会遇到数据的<strong>类别不平衡（class imbalance）</strong>，也叫数据偏斜（class skew）。以常见的二分类问题为例，我们希望预测病人是否得了某种罕见疾病。但在历史数据中，阳性的比例可能很低（如百分之0.1）。在这种情况下，学习出好的分类器是很难的，而且在这种情况下得到结论往往也是很具迷惑性的。</p>
+<p>以上面提到的场景来说，如果我们的分类器<strong>总是</strong>预测一个人未患病，即预测为反例，那么我们依然有高达99.9%的预测准确率。然而这种结果是没有意义的，这提出了今天的第一个问题，如何有效在类别不平衡的情况下评估分类器？</p>
+<p><strong>当然，本文最终希望解决的问题是：在数据偏斜的情况下，如何得到一个不错的分类器？如果可能，是否可以找到一个较为简单的解决方法，而规避复杂的模型、数据处理，降低我们的工作量。</strong></p>
+<h4><span id="21-类别不平衡下的评估问题"><strong>2.1 类别不平衡下的评估问题</strong>?</span></h4><p>而<strong>当类别不平衡时，准确率就非常具有迷惑性</strong>，而且意义不大。给出几种主流的评估方法：</p>
+<ul>
+<li><strong>ROC</strong>是一种常见的替代方法，全名receiver operating curve，计算ROC曲线下的面积是一种主流方法</li>
+<li><strong>Precision-recall curve</strong>和ROC有相似的地方，但定义不同，计算此曲线下的面积也是一种方法</li>
+<li><strong>Precision@n</strong>是另一种方法，特制将分类阈值设定得到恰好n个正例时分类器的precision</li>
+<li>Average precision也叫做平均精度，主要描述了precision的一般表现，在异常检测中有时候会用</li>
+<li>直接使用Precision也是一种想法，但此时的假设是分类器的阈值是0.5，因此意义不大</li>
+</ul>
+<blockquote>
+<p>  本文的目的不是介绍一般的分类评估标准，简单的科普可以参看：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19645541">如何解释召回率与准确率？</a></p>
+</blockquote>
+<h4><span id="22-解决类别不平衡中的奇淫巧技有什么"><strong>2.2 解决类别不平衡中的“奇淫巧技”有什么？</strong></span></h4><p>对于类别不平衡的研究已经有很多年了，在资料[1]中就介绍了很多比较复杂的技巧。结合我的了解举几个简单的例子：</p>
+<blockquote>
+<p>  [1] He, H. and Garcia, E.A., 2009. Learning from imbalanced data. <em>IEEE Transactions on knowledge and data engineering</em>, <em>21</em>(9), pp.1263-1284.</p>
+</blockquote>
+<ul>
+<li>对数据进行采用的过程中通过相似性同时生成并插样“少数类别数据”，叫做SMOTE算法</li>
+<li>对数据先进行聚类，再将大的簇进行随机欠采样或者小的簇进行数据生成</li>
+<li>把监督学习变为无监督学习，舍弃掉标签把问题转化为一个无监督问题，如异常检测</li>
+<li><strong>先对多数类别进行随机的欠采样，并结合boosting算法进行集成学习</strong></li>
+</ul>
+<h4><span id="23-简单通用的算法有哪些">==<strong>2.3 简单通用的算法有哪些？</strong>==</span></h4><ul>
+<li>对较多的那个类别进行欠采样(under-sampling)，舍弃一部分数据，使其与较少类别的数据相当</li>
+<li>对较少的类别进行过采样(over-sampling)，重复使用一部分数据，使其与较多类别的数据相当</li>
+<li><strong>阈值调整（threshold moving）</strong>，将原本默认为0.5的阈值调整到 较少类别/（较少类别+较多类别）即可</li>
+</ul>
+<p>当然很明显我们可以看出，<strong>第一种和第二种方法都会明显的改变数据分布，我们的训练数据假设不再是真实数据的无偏表述</strong>。在第一种方法中，我们<strong>浪费了很多数据</strong>。而第二类方法中有无中生有或者重复使用了数据，会导致过拟合的发生。</p>
+<p><strong>因此欠采样的逻辑中往往会结合集成学习来有效的使用数据，假设正例数据n，而反例数据m个。我们可以通过欠采样，随机无重复的生成（k=n/m）个反例子集，并将每个子集都与相同正例数据合并生成k个新的训练样本。我们在k个训练样本上分别训练一个分类器，最终将k个分类器的结果结合起来，比如求平均值。这就是一个简单的思路，也就是==Easy Ensemble== [5]。</strong></p>
+<p>但不难看出，其实这样的过程是需要花时间处理数据和编程的，对于很多知识和能力有限的人来说难度比较大。特此推荐两个简单易行且效果中上的做法：</p>
+<ul>
+<li>简单的调整阈值，不对数据进行任何处理。此处特指将分类阈值从0.5调整到正例比例</li>
+<li>使用现有的集成学习分类器，如随机森林或者xgboost，<strong>==并调整分类阈值==</strong></li>
+</ul>
+<p><strong>提出这样建议的原因有很多。首先，==简单的阈值调整从经验上看往往比过采样和欠采样有效==</strong> [6]。其次，如果你对统计学知识掌握有限，而且编程能力一般，在集成过程中更容易出错，还不如使用现有的集成学习并调整分类阈值。</p>
+<h4><span id="24-一个简单但有效的方案"><strong>2.4 一个简单但有效的方案</strong></span></h4><p>经过了上文的分析，我认为一个比较靠谱的解决方案是：</p>
+<ul>
+<li>不对数据进行过采样和欠采样，但使用现有的集成学习模型，如随机森林</li>
+<li>输出随机森林的预测概率，<strong>调整阈值得到最终结果</strong></li>
+<li><strong>选择合适的评估标准，如precision@n</strong></li>
+</ul>
+<h3><span id="三-脉脉数据集不平衡应该思考什么">三、脉脉：数据集不平衡应该思考什么</span></h3><p>首先, 猜测一下, 你研究的数据存在着较 大的不平衡, 你还是比较关注正类(少数类) 样本的, 比如【想要识别出 有信用风险 的 人】那么就要谈一下你所说的【模型指标还行】这个问题。<strong>auc这种复合指标先不提, precision代表的是, 你预测的信用风险人群, 其中有多少是真的信用风险人群。recall 代表的是, “真的信用风险人群”有多少被你识别出来了</strong>；</p>
+<ul>
+<li>所以, 倘若你比较关注的是【我想要找出 所有”可能有违约风险的人”】宁可错杀也不 放过。那么你应该重点关注的就是召回率 recall。在此基础上, 尽量提高precision。</li>
+<li>你把训练集的正负样本控制在64左右, 那 么你是怎么控制的呢, 是单纯用了数据清理技术, 还是单纯生成了一些新的样本, 还是怎么做的？</li>
+<li><font color="red">**如果条件允许, 可以查看一下你被错分的 样本, 看看被错分的原因可能是什么, 是因为类重叠, 还是有少数类的分离还是单纯的因为不平衡比太夸张所以使分类器产生偏倚?** </font></li>
+<li><font color="red">不知道你用的什么模型, 但是现在有一些把重采样和分类器结合在一起的集成学习方法, 可以试试看。</font></li>
+<li>维度太高的时候, <strong>特征的提取很重要</strong>呀！</li>
+<li>当做异常检测问题可能会好一些?</li>
+</ul>
+<h3><span id="四-样本准备与权重指标">四、样本准备与权重指标</span></h3><blockquote>
+<p>  样本权重对逻辑回归评分卡的影响探讨: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110982479">https://zhuanlan.zhihu.com/p/110982479</a></p>
+</blockquote>
+<h4><span id="风控业务背景"><strong>风控业务背景</strong></span></h4><p><strong>在统计学习建模分析中，样本非常重要，它是我们洞察世界的窗口</strong>。在建立逻辑回归评分卡时，我们也会考虑对样本赋予不同的权重weight，希望模型学习更有侧重点。</p>
+<p>诚然，我们可以通过实际数据测试来检验赋权前后的差异，但我们更希望从理论上分析其合理性。毕竟理论可以指导实践。本文尝试探讨样本权重对逻辑回归评分卡的影响，以及从业务和技术角度分析样本权重调整的操作方法。</p>
+<h4><span id="part-1-样本加权对woe的影响"><strong>Part 1. 样本加权对WOE的影响</strong></span></h4><p>在<strong>《</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80134853">WOE与IV指标的深入理解应用</a><strong>》</strong>一文中，我们介绍了WOE的概念和计算方法。在逻辑回归评分卡中，其具有重要意义。其公式定义如下：</p>
+<p><img src="https://www.zhihu.com/equation?tex=++WOE_i+%3D+ln%28+%5Cfrac%7BGood_i%7D%7BGood_T%7D%2F+%5Cfrac%7BBad_i%7D%7BBad_T%7D+%29+%3D+ln%28%5Cfrac%7BGood_i%7D%7BBad_i%7D%29+-+ln%28%5Cfrac%7BGood_T%7D%7BBad_T%7D%29+%5Ctag%7B1%7D" alt="[公式]"></p>
+<p><strong>现在，我们思考在计算WOE时，是否要考虑样本权重呢？</strong></p>
+<p>如图1所示的样本，我们希望对某些样本加强学习，因此对年龄在46岁以下的样本赋予权重1.5，而对46岁以上的样本赋予权重1.0，也就是加上权重列weight。此时再计算WOE值，我们发现数值发生变化。这是因为权重的改变，既影响了局部bucket中的 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> ，也影响了整体的 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> 。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-538659592a96c40bd4098f29d30d144c_1440w.jpg" alt="img">我们有2种对样本赋权后的模型训练方案，如图2所示。</p>
+<ul>
+<li>方案1：WOE变换利用原训练集，LR模型训练时利用加权后的样本。</li>
+<li>方案2: WOE变换和LR模型训练时，均使用加权后的样本。</li>
+</ul>
+<p><img src="https://pic2.zhimg.com/80/v2-af2b686a4cdddff60556e90545378f91_1440w.jpg" alt="img"></p>
+<p>个人更倾向于第一种方案，原因在于：<strong>WOE变换侧重变量的可解释性，引入样本权重会引起不可解释的困扰。</strong></p>
+<h4><span id="part-2-采样对lr系数的影响"><strong>Part 2. 采样对LR系数的影响</strong></span></h4><p>我们定义特征向量 <img src="https://www.zhihu.com/equation?tex=%5Ctextbf%7Bx%7D+%3D+x_1%2C+x_2%2C...%2C+x_n" alt="[公式]"> 。记 <img src="https://www.zhihu.com/equation?tex=G+%3D+Good%2C+B+%3D+Bad" alt="[公式]"> ，那么逻辑回归的公式组成便是：</p>
+<p><img src="https://www.zhihu.com/equation?tex=Ln%28odds%28G%7C%5Ctextbf%7Bx%7D%29%29+%3D+Ln%28%5Cfrac%7Bp_Gf%28%5Ctextbf%7Bx%7D%7CG%29%7D%7Bp_Bf%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%3D+Ln%28%5Cfrac%7Bp_G%7D%7Bp_B%7D%29+%2B+Ln%28%5Cfrac%7Bf%28%5Ctextbf%7Bx%7D%7CG%29%7D%7Bf%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%5C%5C+%3D+Ln%28%5Cfrac%7Bp_G%7D%7Bp_B%7D%29+%2B+Ln%28%5Cfrac%7Bf%28x_1%2Cx_2%2C...%2Cx_n%7CG%29%7D%7Bf%28x_1%2Cx_2%2C...%2Cx_n%7CB%29%7D%29+%5C%5C+%3D+Ln%28%5Cfrac%7Bp_G%7D%7Bp_B%7D%29+%2B+Ln%28%5Cfrac%7Bf%28x_1%7CG%29%7D%7Bf%28x_1%7CB%29%7D%29+%2B+Ln%28%5Cfrac%7Bf%28x_2%7CG%29%7D%7Bf%28x_2%7CB%29%7D+%2B+%5Cspace+...+%5Cspace+%2B+Ln%28%5Cfrac%7Bf%28x_n%7CG%29%7D%7Bf%28x_n%7CB%29%7D%5C%5C+%3D+Ln%28odds_%7Bpop%7D%29+%2B+Ln%28odds_%7Binfo%7D+%28%5Ctextbf%7Bx%7D%29%29+%5Ctag%7B2%7D" alt="[公式]"></p>
+<p>其中，第2行到第3行的变换是基于朴素贝叶斯假设，即<strong>自变量 <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]"> 之间相互独立</strong>。</p>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=odds_%7Bpop%7D" alt="[公式]"> 是指总体（训练集）的 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]">，指<strong>先验信息</strong><img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]">。</li>
+<li><img src="https://www.zhihu.com/equation?tex=odds_%7Binfo%7D+%28%5Ctextbf%7Bx%7D%29" alt="[公式]"> 是指自变量引起的 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> 变化，我们称为<strong>后验信息</strong><img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> 。</li>
+</ul>
+<p><strong><font color="red"> 因此，随着观察信息的不断加入，对群体的好坏 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> 判断将越来越趋于客观。</font></strong></p>
+<p><img src="https://pic2.zhimg.com/80/v2-0021358b05ebb5fea25073cceea1da2d_1440w.jpg" alt="img"></p>
+<h5><span id="样本权重调整直接影响先验项也就是截距-那对系数的影响呢">样本权重调整直接影响先验项，也就是截距。那对系数的影响呢？</span></h5><p>接下来，我们以过采样（Oversampling）和欠采样（Undersampling）为例，分析采样对LR系数的影响。如图4所示，对于不平衡数据集，过采样是指对正样本简单复制很多份；欠采样是指对负样本随机抽样。最终，正负样本的比例将达到1:1平衡状态。<br><img src="https://pic4.zhimg.com/80/v2-c49197fdd37023e75daabd7e74feb11b_1440w.jpg" alt="img">图 4 - 欠采样（左）和过采样（右）</p>
+<p>我们同样从贝叶斯角度进行解释：</p>
+<h2><span id><img src="https://www.zhihu.com/equation?tex=P%28B%7C%5Ctextbf%7Bx%7D%29+%3D+%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29%7D%7BP%28%5Ctextbf%7Bx%7D%29%7D++%3D+%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29+%2B+P%28%5Ctextbf%7Bx%7D%7CG%29P%28G%29%7D+%5C%5C+%5CLeftrightarrow+%5Cfrac%7B1%7D%7BP%28B%7C%5Ctextbf%7Bx%7D%29%7D+%3D++1+%2B+%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29P%28G%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29P%28B%29%7D+%5C%5C+%5CLeftrightarrow++Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%3D+Ln%28%5Cfrac%7B1%7D%7BP%28B%7C%5Ctextbf%7Bx%7D%29%7D+-+1%29++-+Ln%28%5Cfrac%7BP%28G%29%7D%7BP%28B%29%7D%29+%5C%5C+%5CLeftrightarrow++Ln%28%5Cfrac%7BP%28G%7C%5Ctextbf%7Bx%7D%29%7D%7BP%28B%7C%5Ctextbf%7Bx%7D%29%7D%29++%3D+Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29%7D%29+%2B+Ln%28%5Cfrac%7BP%28G%29%7D%7BP%28B%29%7D%29+%5Ctag%7B3%7D" alt="[公式]"></span></h2><p>假设采样处理后的训练集为 <img src="https://www.zhihu.com/equation?tex=%5Ctextbf%7Bx%7D%27" alt="[公式]"> 。记 <img src="https://www.zhihu.com/equation?tex=%5C%23+B" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5C%23+G" alt="[公式]"> 分别表示正负样本数，那么显然：</p>
+<p><img src="https://www.zhihu.com/equation?tex=odds+%3D+%5Cfrac%7B%5C%23+G%7D%7B%5C%23+B%7D+%5Cne+%5Cfrac%7B%5C%23+G%27%7D%7B%5C%23+B%27%7D+%3D+odds%27+%5Ctag%7B4%7D" alt="[公式]"></p>
+<p>由于 <img src="https://www.zhihu.com/equation?tex=Ln%28%5Cfrac%7BP%28G%29%7D%7BP%28B%29%7D%29++%3D+Ln%28%5Cfrac%7B%5C%23+G%7D%7B%5C%23+B%7D%29+" alt="[公式]"> ，因此对应<strong>截距将发生变化</strong>。</p>
+<p>无论是过采样，还是欠采样，处理后的新样本都和原样本服从同样的分布，即满足：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28%5Ctextbf%7Bx%7D%7CG%29+%3D+P%28%5Ctextbf%7Bx%7D%27%7CG%27%29+%5C%5C+P%28%5Ctextbf%7Bx%7D%7CB%29+%3D+P%28%5Ctextbf%7Bx%7D%27%7CB%27%29+%5Ctag%7B5%7D" alt="[公式]"></p>
+<p>因此， <img src="https://www.zhihu.com/equation?tex=Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%7CG%29%7D%7BP%28%5Ctextbf%7Bx%7D%7CB%29%7D%29++%3D+Ln%28%5Cfrac%7BP%28%5Ctextbf%7Bx%7D%27%7CG%27%29%7D%7BP%28%5Ctextbf%7Bx%7D%27%7CB%27%29%7D%29+" alt="[公式]"> ，即<strong>系数不发生变化</strong>。</p>
+<p><strong>实践证明，按照做评分卡的方式，做WOE变换，然后跑LR，单变量下确实只有截距影响。而对于多变量，理想情况下，当各自变量相互独立时，LR的系数是不变的，但实际自变量之间多少存在一定的相关性，所以还是会有一定的变化。</strong></p>
+<h4><span id="part-3-样本准备与权重指标"><strong><font color="red"> Part 3. 样本准备与权重指标</font></strong></span></h4><p>风控建模的基本假设是<strong>未来样本和历史样本的分布是一致</strong>的。模型从历史样本中拟合 <img src="https://www.zhihu.com/equation?tex=X_%7Bold%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 之间的关系，并根据未来样本的 <img src="https://www.zhihu.com/equation?tex=X_%7Bnew%7D" alt="[公式]"> 进行预测。因此，我们总是在思考，<strong>如何选择能代表未来样本的训练样本。</strong></p>
+<p>如图5所示，不同时间段、不同批次的样本总是存在差异，即<strong>服从不同的总体分布</strong>。因此，我们需要<strong>从多个维度来衡量两个样本集之间的相似性。</strong></p>
+<p>从迁移学习的角度看，这是一个从源域（source domain）中学习模式，并应用到目标域（target domain）的过程。在这里，源域是训练集，目标域指测试集，或者未来样本。</p>
+<p>这就会涉及到一些难点：</p>
+<ul>
+<li>假设测试集OOT与未来总体分布样本基本一致，但未来样本是不可知且总是在发生变化。</li>
+<li>面向测试集效果作为评估指标，会出现在测试集上过拟合现象。<br><img src="https://pic4.zhimg.com/80/v2-b40bd56da51ab37d01fbffbdb8bc91f7_1440w.jpg" alt="img"></li>
+</ul>
+<p><strong>那么，建模中是否可以考虑建立一个权重指标体系，即综合多方面因素进行样本赋权？我们采取2种思路来分析如何开展。</strong></p>
+<p><strong><font color="red"> 业务角度</font></strong>：</p>
+<ol>
+<li><strong>时间因素</strong>，对近期样本提高权重，较远样本降低权重。这是考虑近期样本与未来样本之间的“相似度”更高，希望模型学到更多近期样本的模式。</li>
+<li><strong>贷款类型</strong>，不同额度、利率、期限的样本赋予不同权重，这需要结合业务未来的发展方向。例如，未来业务模式希望是小额、短期、低利率，那就提高这批样本的权重。</li>
+<li><strong>样本分群</strong>，不同群体赋予不同权重。例如，按流量获客渠道，如果未来流量渠道主要来自平台A，那么就提高这批样本权重。</li>
+</ol>
+<p>结合以上各维度，可得到总体采样权重的一种融合方式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=w+%3D+w_1+%2A+w_2+%2A+w_3+%5Ctag%7B6%7D" alt="[公式]"></p>
+<p><strong>这种业务角度的方案虽然解释性强，但实际拍定多大的权重显得非常主观，实践中往往需要不断尝试，缺少一些理论指导。</strong></p>
+<p><strong><font color="red"> 技术角度：</font></strong></p>
+<ol>
+<li><strong>过采样、欠采样等，从样本组成上调整正负不平衡</strong>。</li>
+<li>代价敏感学习，在损失函数对好坏样本加上不同的代价。比如，坏样本少，分错代价更高。</li>
+<li>借鉴Adaboost的做法，对误判样本在下一轮训练时提高权重。</li>
+</ol>
+<p>在机器学习中，有一个常见的现象——<strong>Covariate Shift</strong>，是指当训练集的样本分布和测试集的样本分布不一致的时候，训练得到的模型无法具有很好的泛化 (Generalization) 能力。</p>
+<p>其中一种做法，既然是希望让训练集尽可能像测试集，那就让模型帮助我们做这件事。如图6所示，将测试集标记为1，训练集标记为0，训练一个LR模型，在训练集上预测，概率越高，说明这个样例属于测试集的可能性越大。以此达到样本权重调整的目的。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-6a218af9de452a4c58e36a9e8e6d4bb0_1440w.jpg" alt="img"></p>
+<h4><span id="part-4-常见工具包的样本赋权"><strong>Part 4. 常见工具包的样本赋权</strong></span></h4><p>现有Logistic Regression模块主要来自sklearn和scipy两个包。很不幸，scipy包并不支持直接赋予权重列。这是为什么呢？有统计学家认为，<strong><font color="red"> 尊重真实样本分布，人为主观引入样本权重，反而可能得出错误的结论。</font></strong></p>
+<p><img src="https://pic1.zhimg.com/80/v2-4942078e60d225438f77362c675bec20_1440w.jpg" alt="img"></p>
+<p>因此，我们只能选择用scikit-learn。样本权重是如何体现在模型训练过程呢？查看源码后，发现目前主要是体现在<strong>损失函数</strong>中，即<strong>代价敏感学习。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Logistic loss is the negative of the log of the logistic function.</span></span><br><span class="line"><span class="comment"># 添加L2正则项的逻辑回归对数损失函数</span></span><br><span class="line">out = -np.<span class="built_in">sum</span>(sample_weight * log_logistic(yz)) + <span class="number">.5</span> * alpha * np.dot(w, w)</span><br></pre></td></tr></table></figure>
+<p><strong><font color="red"> 样本权重对决策分割面的影响:</font></strong></p>
+<p><img src="https://pic1.zhimg.com/80/v2-699ad7ac670c27a5b0963b8b104ad7fc_1440w.jpg" alt="img"></p>
+<p>以下是scikit-learn包中的逻辑回归参数列表说明，可以发现调节样本权重的方法有两种：</p>
+<ul>
+<li>在class_weight参数中使用balanced</li>
+<li>在调用fit函数时，通过sample_weight调节每个样本权重。</li>
+</ul>
+<p>如果同时设置上述2个参数，<strong>那么样本的真正权重是class_weight * sample_weight.</strong></p>
+<p><strong>那么，在评估模型的指标时，是否需要考虑抽样权重，即还原真实场景下的模型评价指标？</strong>笔者认为，最终评估还是需要还原到真实场景下。例如，训练集正负比例被调节为1:1，但这并不是真实的 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> ，在预测时将会偏高。因此，仍需要进行模型校准。</p>
+<h4><span id="part-5-总结"><strong>Part 5. 总结</strong></span></h4><p>本文系统整理了样本权重的一些观点，但目前仍然没有统一的答案。据笔者所知，目前在实践中还是采取以下几种方案：</p>
+<ol>
+<li>尊重原样本分布，不予处理，LR模型训练后即为真实概率估计。</li>
+<li>结合权重指标综合确定权重，训练完毕模型后再进行校准，还原至真实概率估计。</li>
+</ol>
+<p>值得指出的是，大环境总是在发生变化，造成样本分布总在偏移。因此，尽可能增强模型的鲁棒性，以及策略使用时根据实际情况灵活调整，两者相辅相成，可能是最佳的使用方法。欢迎大家一起讨论业界的一些做法。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/XZ18TA/" title="特征工程（3）不平衡数据集*">https://powerlzy.github.io/posts/XZ18TA/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/T8EY5H/" rel="prev" title="特征工程（2）特征选择">
+                  <i class="fa fa-chevron-left"></i> 特征工程（2）特征选择
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/322BXWN/" rel="next" title="机器学习（14）【Nan】LDA(主题模型)">
+                  机器学习（14）【Nan】LDA(主题模型) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

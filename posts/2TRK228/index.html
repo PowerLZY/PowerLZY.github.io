@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="特征工程｜数据清洗（预处理）、特征生成、特征拼接 这或许是全网最全机器学习模型融合方法总结！：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;511246278  特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特征工程（5）特征融合">
+<meta property="og:url" content="https://powerlzy.github.io/posts/2TRK228/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="特征工程｜数据清洗（预处理）、特征生成、特征拼接 这或许是全网最全机器学习模型融合方法总结！：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;511246278  特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220519212856682.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220519220722481.png">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-c4ecc29092d26822fef3f420c2bf5bb2_1440w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-3e0669ac057b924e8814f34578d4acee_1440w.jpg">
+<meta property="article:published_time" content="2022-05-17T05:38:58.792Z">
+<meta property="article:modified_time" content="2022-05-29T13:50:15.181Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/2TRK228/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/2TRK228/","path":"posts/2TRK228/","title":"特征工程（5）特征融合"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>特征工程（5）特征融合 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、数据清洗：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、特征生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;三、特征融合&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 特征处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 模型结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 后处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.4 特征融合是什么？和特征交叉有什么区别呢？</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2TRK228/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="特征工程（5）特征融合 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          特征工程（5）特征融合
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-17 13:38:58" itemprop="dateCreated datePublished" datetime="2022-05-17T13:38:58+08:00">2022-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-29 21:50:15" itemprop="dateModified" datetime="2022-05-29T21:50:15+08:00">2022-05-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="特征工程数据清洗预处理-特征生成-特征拼接">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></h2><ul>
+<li>这或许是全网最全机器学习模型融合方法总结！：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511246278">https://zhuanlan.zhihu.com/p/511246278</a></li>
+</ul>
+<p>特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。特征处理中还包括：数据清洗、特征生成、特征拼接、特征处理、特征转换、特征选择。本篇主要介绍<strong>数据清洗、特征生成、特征拼接</strong>。</p>
+<h3><span id="一-数据清洗">一、数据清洗：</span></h3><p>从特征工程角度讲，数据清洗是特征工程的前置阶段（但是也会贯穿整个数据应用过程），其本义是对数据进行重新的<strong>审查和校验</strong>，目的在于<strong>删除重复信息</strong>、纠正存在的错误数据，并保证数据的一致性。数据清洗是整个数据分析过程中不可缺少的一个环节，其结果质量直接关系到模型效果和最终结论。</p>
+<p>一个特征处理的完整流程可以表示为：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png" alt="img"></p>
+<p>因此基础数据的准确性、完备性、一致性决定了后续特征数据的有效性。在我们日常使用的公开数据集中，很多都是已经被处理后的了，比如学术界中使用很广泛的MovieLens数据集，但是在真实的业务场景中，我们拿到的数据其实直接是没有办法使用的，可能包含了<strong>大量的缺失值</strong>，可能包含<strong>大量的噪音</strong>，也可能因为人工录入错误导致有异常点存在，对我们挖据出有效信息造成了一定的困扰，所以我们需要通过一些方法，尽量提高数据的质量。</p>
+<p><strong>初期数据清洗更多的是针对单条样本数据的清洗和检测</strong>，包括：</p>
+<ul>
+<li>数据表示一致性处理</li>
+<li>逻辑错误值处理</li>
+<li>缺失值处理</li>
+<li>非必要性数据剔除</li>
+</ul>
+<p>在实际的业务场景中，数据是由系统收集或用户填写而来，有很大可能性在格式和内容上存在一些问题，同样类型的数据在不同的团队上报过程中产出的内容或格式会不一致，同样不同数据源采集而来的数据内容和格式也会不一致。</p>
+<blockquote>
+<p>  数据格式的一致性。比如<strong>时间信息</strong>（以2020年6月18日，11点11分12秒为例），有的用毫秒时间戳表示（1592449872000），有的用秒时间戳表示（1592449872），有的用带横线的时间表示（2020-06-18 11:11:12），有的则用不带横线的时间表示（20200618 11:11:12）。</p>
+<p>  数据类型的一致性。比如不同的数据表中，同样表示用户ID的字段，有的可能是string类型，有的是int类型。如果用string类型表示，如果用户id缺失的话，正常可以留空，但是不同团队，不同人对于缺失的id处理方式也会不一致，比如有的用None，有的用Null，有的则用0表示，可谓是千奇百怪。小编在日常工作中也会经常遇到这种情况，被折磨的体无完肤。</p>
+</blockquote>
+<h3><span id="二-特征生成">二、特征生成</span></h3><p>对基础数据进行清理之后需要做的就是生成我们需要的特征，在特征设计部分提到特征主要分为四大维度，根据小编的经验特征又可以根据其值的属性划分为：</p>
+<ul>
+<li><strong>类别特征</strong>：即特征的属性值是一个有限的集合，比如用户性别、事物的类别、事物的ID编码类特征等</li>
+<li><strong>连续特征</strong>：即用户行为、类别、组合特征之类的统计值，比如用户观看的视频部数、某类别下事物的个数等</li>
+<li><strong>时间序列特征</strong>：即和时间相关的特征，比如用户来访时间、用户停留时长、当前时间等。</li>
+<li>组合特征：即多种类别的组合特征，比如用户在某个类别下的行为统计特征、当天内事物被访问次数特征等</li>
+<li><strong>文本特征</strong>：即和文本相关的特征，比如评论数据、商品描述、新闻内容等。</li>
+<li><strong>Embedding特征</strong>：即一些基础特征的高层次表示，比如用户ID编码的Embedding表示、事物ID编码的Embedding表示、<strong>用户访问事物序列的Embedding编码</strong>等。</li>
+</ul>
+<h3><span id="三-特征融合">==三、特征融合==</span></h3><blockquote>
+<p>  多模态特征融合三部曲: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390668652">https://zhuanlan.zhihu.com/p/390668652</a></p>
+<p>  推荐系统（六）—— 特征融合 :  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/459012483">https://zhuanlan.zhihu.com/p/459012483</a></p>
+</blockquote>
+<h4><span id="31-特征处理">3.1 特征处理</span></h4><p>假设你有三种类型数据，或者说可以是三个不同维度的向量</p>
+<p><img src="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D" alt="[公式]"></p>
+<p>第一种融合手段就是在训练前进行的</p>
+<ol>
+<li><strong>三个向量直接concat，可能维度会比较高，再进行个PCA</strong></li>
+<li><strong>自编码器结构</strong>：三个向量通过MLP映射成一个维度后相加，用还原回去；融合特征再用来做后续的模型设计和训练就好了。</li>
+</ol>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220519212856682.png" alt="image-20220519212856682" style="zoom: 33%;"></p>
+<h4><span id="32-模型结构">3.2 模型结构</span></h4><p>一种直接的思想就是分而治之，多分支网络；还有一种比较出名的在中间层进行融合的方法，多模态双线性矩阵分解池化方法（MFB），本质上就是对不同模态数据进行双线性融合，借助矩阵分解的思想，再对原始特征进行高维映射，然后element-wise相乘后再做pooling操作。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220519220722481.png" alt="image-20220519220722481" style="zoom: 33%;"></p>
+<p><img src="https://pic3.zhimg.com/80/v2-c4ecc29092d26822fef3f420c2bf5bb2_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="33-后处理">3.3 后处理</span></h4><p>后处理其实也是分而治之的思想，多模态数据分别训练不同的模型，再将不同模型的预测输出进行融合，比如平均、加权，或者fix住原来的多个网络，后面再加一层进行微调。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-3e0669ac057b924e8814f34578d4acee_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="34-特征融合是什么和特征交叉有什么区别呢">3.4 特征融合是什么？和特征交叉有什么区别呢？</span></h4><p>在上一篇文章（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457853657">yu-lzn：推荐系统（五）—— 特征交叉</a>）中，我们讨论了特征交叉，特征交叉也称为特征组合，旨在提高模型对非线性的建模能力，从而提高模型的性能。<strong>特征融合</strong>和特征交叉有相同的目的，都是为了提高模型的性能。特征融合是想更好地利用不同特性的特征。</p>
+<blockquote>
+<p>  随着信息时代的发展，<strong>在推荐系统中，多模态信息的融合也变得越来越重要</strong>。以淘宝购物为例，用户在决策是否购买物品时，会考虑<strong>物品的属性</strong>、<strong>物品图片的展示</strong>、其他<strong>用户的评论信息</strong>、甚至是观看<strong>物品的介绍视频</strong>等等。换句话说，这些<strong>多模态信息（文本、图片、视频）会影响用户的行为</strong>。所以如何利用这些多模态信息来建模，是提高推荐系统准确度的一个途径。那么如何去融合这些不同来源的信息便是一个关键的问题。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/2TRK228/" title="特征工程（5）特征融合">https://powerlzy.github.io/posts/2TRK228/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/169EKJ8/" rel="prev" title="工业落地（7）AVClass2-自动恶意软件标记工具">
+                  <i class="fa fa-chevron-left"></i> 工业落地（7）AVClass2-自动恶意软件标记工具
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/S0Q57W/" rel="next" title="特征工程 vs 表示学习">
+                  特征工程 vs 表示学习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
