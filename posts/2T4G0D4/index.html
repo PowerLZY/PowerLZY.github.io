@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="hadoop和spark的区别和联系   &#x3D;&#x3D;总结一句话：spark在hadoop肩膀上可以让大数据跑的更快&#x3D;&#x3D;  一、 hadoop1.1 hadoop简介Hadoop是一个由Apache基金会所开发的分布式系统基础架构。 Hadoop实现了一个分布式文件系统HDFS。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程">
+    <meta name="description" content="hadoop和spark的区别和联系  &#x3D;&#x3D;总结一句话：spark在hadoop肩膀上可以让大数据跑的更快&#x3D;&#x3D;  一、 hadoop 1.1 hadoop简介 Hadoop是一个由Apache基金会所开发的分布式系统基础架构。 Hadoop实现了一个分布式文件系统HDFS。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hadoop&amp;spark的">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2T4G0D4/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="hadoop和spark的区别和联系   &#x3D;&#x3D;总结一句话：spark在hadoop肩膀上可以让大数据跑的更快&#x3D;&#x3D;  一、 hadoop1.1 hadoop简介Hadoop是一个由Apache基金会所开发的分布式系统基础架构。 Hadoop实现了一个分布式文件系统HDFS。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程">
+<meta property="og:description" content="hadoop和spark的区别和联系  &#x3D;&#x3D;总结一句话：spark在hadoop肩膀上可以让大数据跑的更快&#x3D;&#x3D;  一、 hadoop 1.1 hadoop简介 Hadoop是一个由Apache基金会所开发的分布式系统基础架构。 Hadoop实现了一个分布式文件系统HDFS。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-27T12:44:15.961Z">
 <meta property="article:modified_time" content="2022-04-27T12:56:14.894Z">
@@ -156,13 +156,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -279,37 +279,57 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1><span id="hadoop和spark的区别和联系">hadoop和spark的区别和联系</span></h1><blockquote>
-<p>  ==<strong>总结一句话：spark在hadoop肩膀上可以让大数据跑的更快</strong>==</p>
+        <h1><span id="hadoop和spark的区别和联系">hadoop和spark的区别和联系</span></h1>
+<blockquote>
+<p>==<strong>总结一句话：spark在hadoop肩膀上可以让大数据跑的更快</strong>==</p>
 </blockquote>
-<h3><span id="一-hadoop">一、 hadoop</span></h3><h4><span id="11-hadoop简介">1.1 hadoop简介</span></h4><p><strong>Hadoop是一个由Apache基金会所开发的分布式系统基础架构</strong>。 <strong>Hadoop实现了一个分布式文件系统HDFS</strong>。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程序。Hadoop的框架最核心的设计就是：HDFS和MapReduce。<strong>HDFS为海量的数据提供了存储，而MapReduce则为海量的数据提供了计算</strong>。</p>
-<h4><span id="12-hadoop优点">1.2 hadoop优点</span></h4><p><strong>Hadoop 以一种可靠、高效、可伸缩的方式进行数据处理。</strong></p>
+<h3><span id="一-hadoop">一、 hadoop</span></h3>
+<h4><span id="11-hadoop简介">1.1 hadoop简介</span></h4>
+<p><strong>Hadoop是一个由Apache基金会所开发的分布式系统基础架构</strong>。
+<strong>Hadoop实现了一个分布式文件系统HDFS</strong>。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程序。Hadoop的框架最核心的设计就是：HDFS和MapReduce。<strong>HDFS为海量的数据提供了存储，而MapReduce则为海量的数据提供了计算</strong>。</p>
+<h4><span id="12-hadoop优点">1.2 hadoop优点</span></h4>
+<p><strong>Hadoop
+以一种可靠、高效、可伸缩的方式进行数据处理。</strong></p>
 <ul>
-<li><p><strong>可靠性</strong>: Hadoop将数据存储在多个备份，Hadoop提供高吞吐量来访问应用程序的数据。</p>
-</li>
-<li><p><strong>高扩展性</strong>： Hadoop是在可用的计算机集簇间分配数据并完成计算任务的，这些集簇可以方便地扩展到数以千计的节点中。</p>
-</li>
-<li><p><strong>高效性</strong>： Hadoop以并行的方式工作，通过并行处理加快处理速度。</p>
-</li>
-<li><p><strong>高容错性</strong>： Hadoop能够自动保存数据的多个副本，并且能够自动将失败的任务重新分配。</p>
-</li>
-<li><p><strong>低成本</strong>： Hadoop能够部署在低廉的（low-cost）硬件上。</p>
-</li>
+<li><p><strong>可靠性</strong>:
+Hadoop将数据存储在多个备份，Hadoop提供高吞吐量来访问应用程序的数据。</p></li>
+<li><p><strong>高扩展性</strong>：
+Hadoop是在可用的计算机集簇间分配数据并完成计算任务的，这些集簇可以方便地扩展到数以千计的节点中。</p></li>
+<li><p><strong>高效性</strong>：
+Hadoop以并行的方式工作，通过并行处理加快处理速度。</p></li>
+<li><p><strong>高容错性</strong>：
+Hadoop能够自动保存数据的多个副本，并且能够自动将失败的任务重新分配。</p></li>
+<li><p><strong>低成本</strong>：
+Hadoop能够部署在低廉的（low-cost）硬件上。</p></li>
 </ul>
-<h3><span id="二-spark"><strong>二、spark</strong></span></h3><h4><span id="21-spark简介">2.1 spark简介</span></h4><p><strong>Spark 是专为大规模数据处理而设计的快速通用的计算引擎</strong>。Spark拥有Hadoop MapReduce所具有的优点，Spark在Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark性能以及运算速度高于MapReduce。</p>
-<h4><span id="22-spark优点">2.2 spark优点</span></h4><p><strong>计算速度快</strong>: 因为spark从磁盘中读取数据，把<strong>中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
+<h3><span id="二-spark"><strong>二、spark</strong></span></h3>
+<h4><span id="21-spark简介">2.1 spark简介</span></h4>
+<p><strong>Spark
+是专为大规模数据处理而设计的快速通用的计算引擎</strong>。Spark拥有Hadoop
+MapReduce所具有的优点，Spark在Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark性能以及运算速度高于MapReduce。</p>
+<h4><span id="22-spark优点">2.2 spark优点</span></h4>
+<p><strong>计算速度快</strong>:
+因为spark从磁盘中读取数据，把<strong>中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
 <ul>
-<li><p><strong>Spark 提供了大量的库</strong>: 包括Spark Core、Spark SQL、Spark Streaming、MLlib、GraphX。</p>
-</li>
-<li><p><strong>支持多种资源管理器</strong>: Spark 支持 Hadoop YARN，及其自带的独立集群管理器</p>
-</li>
-<li><p><strong>操作简单</strong>: 高级 API 剥离了对集群本身的关注，Spark 应用开发者可以专注于应用所要做的计算本身</p>
-</li>
+<li><p><strong>Spark 提供了大量的库</strong>: 包括Spark Core、Spark
+SQL、Spark Streaming、MLlib、GraphX。</p></li>
+<li><p><strong>支持多种资源管理器</strong>: Spark 支持 Hadoop
+YARN，及其自带的独立集群管理器</p></li>
+<li><p><strong>操作简单</strong>: 高级 API 剥离了对集群本身的关注，Spark
+应用开发者可以专注于应用所要做的计算本身</p></li>
 </ul>
-<h3><span id="三-spark与hadoop的不同点">三、spark与hadoop的不同点</span></h3><h4><span id="31-应用场景不同">3.1 应用场景不同</span></h4><p>Hadoop和Spark两者都是大数据框架，但是各自应用场景是不同的。<strong>Hadoop是一个分布式数据存储架构，它将巨大的数据集分派到一个由普通计算机组成的集群中的多个节点进行存储，降低了硬件的成本</strong>。<strong>Spark是那么一个专门用来对那些分布式存储的大数据进行处理的工具，它要借助hdfs的数据存储</strong>。</p>
-<h4><span id="32-处理速度不同">3.2 处理速度不同</span></h4><p><strong>hadoop的MapReduce是分步对数据进行处理的，从磁盘中读取数据，进行一次处理，将结果写到磁盘</strong>，然后在从磁盘中读取更新后的数据，再次进行的处理，最后再将结果存入磁盘，这存取磁盘的过程会影响处理速度。<strong>spark从磁盘中读取数据，把中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
-<h4><span id="33-容错性不同">3.3 容错性不同</span></h4><p><strong>Hadoop将每次处理后的数据都写入到磁盘上，基本谈不上断电或者出错数据丢失的情况</strong>。Spark的数据对象存储在弹性分布式数据集 RDD，RDD是分布在一组节点中的只读对象集合，如果数据集一部分丢失，则可以根据于数据衍生过程对它们进行重建。而且RDD 计算时可以通过 CheckPoint 来实现容错。</p>
-<h3><span id="四-spark与hadoop的联系">四、spark与hadoop的联系</span></h3><p>Hadoop提供分布式数据存储功能HDFS，还提供了用于数据处理的MapReduce。 MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依靠HDFS进行运作，它可以依靠其它的分布式文件系统。但是两者完全可以结合在一起，<strong>hadoop提供分布式集群和分布式文件系统</strong>，<strong>spark可以依附在hadoop的HDFS代替MapReduce弥补MapReduce计算能力不足的问题。</strong></p>
+<h3><span id="三-spark与hadoop的不同点">三、spark与hadoop的不同点</span></h3>
+<h4><span id="31-应用场景不同">3.1 应用场景不同</span></h4>
+<p>Hadoop和Spark两者都是大数据框架，但是各自应用场景是不同的。<strong>Hadoop是一个分布式数据存储架构，它将巨大的数据集分派到一个由普通计算机组成的集群中的多个节点进行存储，降低了硬件的成本</strong>。<strong>Spark是那么一个专门用来对那些分布式存储的大数据进行处理的工具，它要借助hdfs的数据存储</strong>。</p>
+<h4><span id="32-处理速度不同">3.2 处理速度不同</span></h4>
+<p><strong>hadoop的MapReduce是分步对数据进行处理的，从磁盘中读取数据，进行一次处理，将结果写到磁盘</strong>，然后在从磁盘中读取更新后的数据，再次进行的处理，最后再将结果存入磁盘，这存取磁盘的过程会影响处理速度。<strong>spark从磁盘中读取数据，把中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
+<h4><span id="33-容错性不同">3.3 容错性不同</span></h4>
+<p><strong>Hadoop将每次处理后的数据都写入到磁盘上，基本谈不上断电或者出错数据丢失的情况</strong>。Spark的数据对象存储在弹性分布式数据集
+RDD，RDD是分布在一组节点中的只读对象集合，如果数据集一部分丢失，则可以根据于数据衍生过程对它们进行重建。而且RDD
+计算时可以通过 CheckPoint 来实现容错。</p>
+<h3><span id="四-spark与hadoop的联系">四、spark与hadoop的联系</span></h3>
+<p>Hadoop提供分布式数据存储功能HDFS，还提供了用于数据处理的MapReduce。
+MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依靠HDFS进行运作，它可以依靠其它的分布式文件系统。但是两者完全可以结合在一起，<strong>hadoop提供分布式集群和分布式文件系统</strong>，<strong>spark可以依附在hadoop的HDFS代替MapReduce弥补MapReduce计算能力不足的问题。</strong></p>
 
     </div>
 
@@ -454,7 +474,7 @@ setInterval("createtime()",250);
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

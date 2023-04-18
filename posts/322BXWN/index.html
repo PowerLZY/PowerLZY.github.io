@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="同一个主题，在不同的文章中，他出现的比例(概率)是不同的，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！    LDA于2003年由 David Blei, Andrew Ng和 Michael I. Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自">
+    <meta name="description" content="同一个主题，在不同的文章中，他出现的比例(概率)是不同的，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！  LDA于2003年由 David Blei, Andrew Ng和 Michael I. Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（14）【Nan】LDA(主题模型)">
 <meta property="og:url" content="https://powerlzy.github.io/posts/322BXWN/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="同一个主题，在不同的文章中，他出现的比例(概率)是不同的，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！    LDA于2003年由 David Blei, Andrew Ng和 Michael I. Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自">
+<meta property="og:description" content="同一个主题，在不同的文章中，他出现的比例(概率)是不同的，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！  LDA于2003年由 David Blei, Andrew Ng和 Michael I. Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-20T04:38:36.251Z">
 <meta property="article:modified_time" content="2022-07-05T08:55:36.609Z">
@@ -156,13 +156,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -289,9 +289,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="ldalatent-dirichlet-allocation-主题模型"></span></h2><p><strong>同一个主题，在不同的文章中，他出现的比例(概率)是不同的</strong>，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！</p>
+        <h2><span id="ldalatentdirichlet-allocation-主题模型"></span></h2>
+<p><strong>同一个主题，在不同的文章中，他出现的比例(概率)是不同的</strong>，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！</p>
 <blockquote>
-<p>  LDA于2003年由 David Blei, Andrew Ng和 Michael I. Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔。于是牛人们看不下去了，纷纷站出来发表了各种教程。国内方面rickjin有著名的《<a href="https://link.zhihu.com/?target=http%3A//www.52nlp.cn/author/rickjin">LDA数学八卦</a>》，国外的Gregor Heinrich有著名的《<a href="https://link.zhihu.com/?target=https%3A//users.soe.ucsc.edu/~amichelo/docs/text-est2.pdf">Parameter estimation for text analysis</a>》。其实有了这两篇互补的通俗教程，大家沉住心看个4、5遍，基本就可以明白LDA为什么是简单的了。那么其实也没我什么事了，然而心中总有一种被大牛点播的豁然开朗的快感，实在是不吐不快啊。</p>
+<p>LDA于2003年由 David Blei, Andrew Ng和 Michael I.
+Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔。于是牛人们看不下去了，纷纷站出来发表了各种教程。国内方面rickjin有著名的《<a href="https://link.zhihu.com/?target=http%3A//www.52nlp.cn/author/rickjin">LDA数学八卦</a>》，国外的Gregor
+Heinrich有著名的《<a href="https://link.zhihu.com/?target=https%3A//users.soe.ucsc.edu/~amichelo/docs/text-est2.pdf">Parameter
+estimation for text
+analysis</a>》。其实有了这两篇互补的通俗教程，大家沉住心看个4、5遍，基本就可以明白LDA为什么是简单的了。那么其实也没我什么事了，然而心中总有一种被大牛点播的豁然开朗的快感，实在是不吐不快啊。</p>
 </blockquote>
 
     </div>
@@ -323,8 +328,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/XZ18TA/" rel="prev" title="特征工程（3）不平衡数据集*">
-                  <i class="fa fa-chevron-left"></i> 特征工程（3）不平衡数据集*
+                <a href="/posts/T8EY5H/" rel="prev" title="特征工程（2）特征选择">
+                  <i class="fa fa-chevron-left"></i> 特征工程（2）特征选择
                 </a>
             </div>
             <div class="post-nav-item">
@@ -437,7 +442,7 @@ setInterval("createtime()",250);
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
