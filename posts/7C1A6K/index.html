@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="搜狐情感分析 × 推荐排序算法大赛 baseline  搜狐情感分析 × 推荐排序算法大赛 baseline 比赛官网：https:&#x2F;&#x2F;www.biendata.xyz&#x2F;competition&#x2F;sohu_2022&#x2F;  赛题背景 在工业界，推荐算法和自然语言处理是结合非常紧密的两个技术环节。本次大赛我们推出创新赛制——NLP 和推荐算法双赛道：探究文本情感对推荐转化的影响。情感分析是NLP领域的经典">
+    <meta name="description" content="搜狐情感分析 × 推荐排序算法大赛 baseline 搜狐情感分析 × 推荐排序算法大赛 baseline 比赛官网：https:&#x2F;&#x2F;www.biendata.xyz&#x2F;competition&#x2F;sohu_2022&#x2F;  赛题背景在工业界，推荐算法和自然语言处理是结合非常紧密的两个技术环节。本次大赛我们推出创新赛制——NLP 和推荐算法双赛道：探究文本情感对推荐转化的影响。情感分析是NLP领域的经典任务">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本分类（1）搜狐文本情感分类">
 <meta property="og:url" content="https://powerlzy.github.io/posts/7C1A6K/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="搜狐情感分析 × 推荐排序算法大赛 baseline  搜狐情感分析 × 推荐排序算法大赛 baseline 比赛官网：https:&#x2F;&#x2F;www.biendata.xyz&#x2F;competition&#x2F;sohu_2022&#x2F;  赛题背景 在工业界，推荐算法和自然语言处理是结合非常紧密的两个技术环节。本次大赛我们推出创新赛制——NLP 和推荐算法双赛道：探究文本情感对推荐转化的影响。情感分析是NLP领域的经典">
+<meta property="og:description" content="搜狐情感分析 × 推荐排序算法大赛 baseline 搜狐情感分析 × 推荐排序算法大赛 baseline 比赛官网：https:&#x2F;&#x2F;www.biendata.xyz&#x2F;competition&#x2F;sohu_2022&#x2F;  赛题背景在工业界，推荐算法和自然语言处理是结合非常紧密的两个技术环节。本次大赛我们推出创新赛制——NLP 和推荐算法双赛道：探究文本情感对推荐转化的影响。情感分析是NLP领域的经典任务">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040555.png">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040982.png">
@@ -149,9 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">搜狐情感分析 ×
-推荐排序算法大赛 baseline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">赛题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">比赛任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、
-任务1：面向实体对象的文本情感分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 数据加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 文本长度统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 实体情感标签统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 数据预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">模型定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">扩展思路：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、任务2：文章点击预测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 数据加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 数据分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">标签分布如下:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 初步特征工程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">类别特征count特征：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">用户特征：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">物料特征：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">NN模型-DeepFM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">树模型-Catboost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">特征工程思路扩展</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">搜狐情感分析 × 推荐排序算法大赛 baseline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">赛题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">比赛任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、 任务1：面向实体对象的文本情感分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 数据加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 文本长度统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 实体情感标签统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 数据预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">模型定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">扩展思路：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、任务2：文章点击预测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 数据加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 数据分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">标签分布如下:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 初步特征工程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">类别特征count特征：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">用户特征：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">物料特征：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">NN模型-DeepFM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">树模型-Catboost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">特征工程思路扩展</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,13 +164,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -299,26 +297,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="搜狐情感分析-推荐排序算法大赛-baseline">搜狐情感分析 ×
-推荐排序算法大赛 baseline</span></h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxOTU5NTU4MQ==&amp;mid=2247490226&amp;idx=1&amp;sn=b080925450eb0fa2f8215a33e297214e&amp;chksm=9bc5f2e0acb27bf60296480678b8a8d20ddc0ca1e7e086fd7894fd70372cdd75d0260a915aa6&amp;mpshare=1&amp;scene=23&amp;srcid=0506hKi6p6tQeYmhSvBsgKQT&amp;sharer_sharetime=1651827176665&amp;sharer_shareid=984256fd6ff6c7f7ab7ae447f9006552%23rd">搜狐情感分析
-× 推荐排序算法大赛 baseline</a></li>
-<li><strong>比赛官网</strong>：https://www.biendata.xyz/competition/sohu_2022/</li>
+        <h2><span id="搜狐情感分析-推荐排序算法大赛-baseline">搜狐情感分析 × 推荐排序算法大赛 baseline</span></h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxOTU5NTU4MQ==&amp;mid=2247490226&amp;idx=1&amp;sn=b080925450eb0fa2f8215a33e297214e&amp;chksm=9bc5f2e0acb27bf60296480678b8a8d20ddc0ca1e7e086fd7894fd70372cdd75d0260a915aa6&amp;mpshare=1&amp;scene=23&amp;srcid=0506hKi6p6tQeYmhSvBsgKQT&amp;sharer_sharetime=1651827176665&amp;sharer_shareid=984256fd6ff6c7f7ab7ae447f9006552%23rd">搜狐情感分析 × 推荐排序算法大赛 baseline</a></li>
+<li><strong>比赛官网</strong>：<a target="_blank" rel="noopener" href="https://www.biendata.xyz/competition/sohu_2022/">https://www.biendata.xyz/competition/sohu_2022/</a></li>
 </ul>
-<h3><span id="赛题背景"><strong>赛题背景</strong></span></h3>
-<p>在工业界，推荐算法和自然语言处理是结合非常紧密的两个技术环节。本次大赛我们推出创新赛制——NLP
-和推荐算法双赛道：探究文本情感对推荐转化的影响。情感分析是NLP领域的经典任务，本次赛事在经典任务上再度加码，研究文本对指定对象的情感极性及色彩强度，难度升级，挑战加倍。同时拥有将算法成果研究落地实际场景的绝佳机会，接触在校园难以体验到的工业实践，体验与用户博弈的真实推荐场景。</p>
-<h3><span id="比赛任务"><strong>比赛任务</strong></span></h3>
-<p><strong>比赛分为两部分：</strong></p>
+<h3><span id="赛题背景"><strong>赛题背景</strong></span></h3><p>在工业界，推荐算法和自然语言处理是结合非常紧密的两个技术环节。本次大赛我们推出创新赛制——NLP 和推荐算法双赛道：探究文本情感对推荐转化的影响。情感分析是NLP领域的经典任务，本次赛事在经典任务上再度加码，研究文本对指定对象的情感极性及色彩强度，难度升级，挑战加倍。同时拥有将算法成果研究落地实际场景的绝佳机会，接触在校园难以体验到的工业实践，体验与用户博弈的真实推荐场景。</p>
+<h3><span id="比赛任务"><strong>比赛任务</strong></span></h3><p><strong>比赛分为两部分：</strong></p>
 <ul>
 <li><strong>第一部分：==面向实体对象的文本描述情感极性及色彩强度分析==。情感极性和强度分为五种情况：极正向、正向、中立、负向、极负向。选手需要针对给定的每一个实体对象，从文本描述的角度，分析出对该实体的情感极性和强度。</strong></li>
 <li><strong>第二部分：利用给出的用户文章点击序列数据及用户相关特征，结合第一部分做出的情感分析模型，对给定的文章做出是否会形成点击转化的预测判别。用户点击序列中涉及的文章，及待预测的文章，我们都会给出其详细内容。</strong></li>
 </ul>
-<h3><span id="一-任务1面向实体对象的文本情感分类">一、
-<strong>任务1：面向实体对象的文本情感分类</strong></span></h3>
-<h4><span id="21-数据加载">2.1 <strong>数据加载</strong></span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">train_file <span class="token operator">=</span> <span class="token string">'data/Sohu2022_data/nlp_data/train.txt'</span>
+<h3><span id="一-任务1面向实体对象的文本情感分类">一、 <strong>任务1：面向实体对象的文本情感分类</strong></span></h3><h4><span id="21-数据加载">2.1 <strong>数据加载</strong></span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">train_file <span class="token operator">=</span> <span class="token string">'data/Sohu2022_data/nlp_data/train.txt'</span>
 test_file <span class="token operator">=</span> <span class="token string">'data/Sohu2022_data/nlp_data/test.txt'</span>
 sub_file <span class="token operator">=</span> <span class="token string">'data/submission/section1.txt'</span>
 
@@ -326,30 +315,25 @@ train <span class="token operator">=</span> pd<span class="token punctuation">.<
 test <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_json<span class="token punctuation">(</span>test_file<span class="token punctuation">,</span> lines<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
 sub<span class="token operator">=</span> pd<span class="token punctuation">.</span>read_table<span class="token punctuation">(</span>sub_file<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040555.png" alt="图片"></p>
-<h4><span id="22-文本长度统计">2.2 <strong>文本长度统计</strong></span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">train<span class="token punctuation">[</span><span class="token string">'text_len'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>quantile<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.5</span><span class="token punctuation">,</span><span class="token number">0.8</span><span class="token punctuation">,</span><span class="token number">0.9</span><span class="token punctuation">,</span><span class="token number">0.96</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4><span id="22-文本长度统计">2.2 <strong>文本长度统计</strong></span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">train<span class="token punctuation">[</span><span class="token string">'text_len'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>quantile<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.5</span><span class="token punctuation">,</span><span class="token number">0.8</span><span class="token punctuation">,</span><span class="token number">0.9</span><span class="token punctuation">,</span><span class="token number">0.96</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><strong>大部分文本长度在562以内</strong>，在迭代过程中发现，输入到模型的文本越完整效果越好，所以可以尝试<strong>文档级的模型</strong>，比如<strong>ernie-doc</strong>或者<strong>xlnet</strong>等。</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040982.png" alt="图片" style="zoom:50%;"></p>
-<h4><span id="23-实体情感标签统计">2.3 <strong>实体情感标签统计</strong></span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">sns<span class="token punctuation">.</span>countplot<span class="token punctuation">(</span>sentiment_df<span class="token punctuation">.</span>sentiment<span class="token punctuation">)</span>
+<h4><span id="23-实体情感标签统计">2.3 <strong>实体情感标签统计</strong></span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">sns<span class="token punctuation">.</span>countplot<span class="token punctuation">(</span>sentiment_df<span class="token punctuation">.</span>sentiment<span class="token punctuation">)</span>
 plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'sentiment value count'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040704.png" alt="图片" style="zoom:50%;"></p>
 <p>可以看出中性情感占到了绝大部分，极端情感最少。因为数据量比较大，大家可以使用一些<strong>采样策略</strong>：</p>
 <ul>
 <li><strong>中立情感负采样 ，但是有过拟合风险</strong></li>
 <li><strong>保证情感比例采样：加快模型迭代速度</strong></li>
-<li><strong>对同一个样本的重复情感可以负采样，ent1和ent2：1
-text|ent1+ent2</strong></li>
+<li><strong>对同一个样本的重复情感可以负采样，ent1和ent2：1  text|ent1+ent2</strong></li>
 </ul>
-<h4><span id="24-数据预处理">2.4 <strong>数据预处理</strong></span></h4>
-<p><strong>重复标签</strong>：同一样本的标签有多个，然后按照多个实体情感对样本进行复制，得到每个文本以及标签，处理代码如下：</p>
+<h4><span id="24-数据预处理">2.4 <strong>数据预处理</strong></span></h4><p><strong>重复标签</strong>：同一样本的标签有多个，然后按照多个实体情感对样本进行复制，得到每个文本以及标签，处理代码如下：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">lst_col <span class="token operator">=</span> <span class="token string">'sentiment'</span>
 train <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
     col<span class="token punctuation">:</span> np<span class="token punctuation">.</span>repeat<span class="token punctuation">(</span>train<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">,</span> train<span class="token punctuation">[</span>lst_col<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">str</span><span class="token punctuation">.</span><span class="token builtin">len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
     <span class="token keyword">for</span> col <span class="token keyword">in</span> train<span class="token punctuation">.</span>columns<span class="token punctuation">.</span>difference<span class="token punctuation">(</span><span class="token punctuation">[</span>lst_col<span class="token punctuation">]</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>assign<span class="token punctuation">(</span><span class="token operator">**</span><span class="token punctuation">&#123;</span>lst_col<span class="token punctuation">:</span> np<span class="token punctuation">.</span>concatenate<span class="token punctuation">(</span>train<span class="token punctuation">[</span>lst_col<span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">[</span>train<span class="token punctuation">.</span>columns<span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="模型定义"><strong>模型定义</strong></span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">LastHiddenModel</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h4><span id="模型定义"><strong>模型定义</strong></span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">LastHiddenModel</span><span class="token punctuation">(</span>nn<span class="token punctuation">.</span>Module<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> model_name<span class="token punctuation">,</span> n_classes<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
@@ -369,48 +353,38 @@ train <span class="token operator">=</span> pd<span class="token punctuation">.<
         logits <span class="token operator">=</span> self<span class="token punctuation">.</span>linear<span class="token punctuation">(</span>mean_embeddings<span class="token punctuation">)</span>
 
         <span class="token keyword">return</span> logits<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="扩展思路"><strong>扩展思路：</strong></span></h4>
-<ul>
+<h4><span id="扩展思路"><strong>扩展思路：</strong></span></h4><ul>
 <li><strong>长文本处理：模型输入/模型预测:TTA</strong></li>
 <li><strong>doc级文本模型：longformer</strong></li>
 </ul>
 <blockquote>
-<p>（<strong>xlnet</strong>）
-https://huggingface.co/hfl/chinese-xlnet-base</p>
-<p>(<strong>longformer_zh</strong>)
-https://huggingface.co/ValkyriaLenneth/longformer_zh</p>
-<p>(longformer-chinese-base-4096)
-https://huggingface.co/schen/longformer-chinese-base-4096</p>
+<p>  （<strong>xlnet</strong>） <a target="_blank" rel="noopener" href="https://huggingface.co/hfl/chinese-xlnet-base">https://huggingface.co/hfl/chinese-xlnet-base</a></p>
+<p>  (<strong>longformer_zh</strong>) <a target="_blank" rel="noopener" href="https://huggingface.co/ValkyriaLenneth/longformer_zh">https://huggingface.co/ValkyriaLenneth/longformer_zh</a></p>
+<p>  (longformer-chinese-base-4096) <a target="_blank" rel="noopener" href="https://huggingface.co/schen/longformer-chinese-base-4096">https://huggingface.co/schen/longformer-chinese-base-4096</a></p>
 </blockquote>
 <ul>
-<li><strong>轻量级模型：LSTM、GRU/Transformer等网络 600 word
-300</strong></li>
+<li><strong>轻量级模型：LSTM、GRU/Transformer等网络 600 word 300</strong></li>
 <li><strong>选择使用不同预训练模型进行微调，chinese-roberta-wwm/nezha/xlnet/ernie/ernie-gram,其中ernie或者ernie-gram效果可能会好些</strong></li>
-<li><strong>预训练模型输出的利用：CLS/PoolerOut/LastHiddenState/+(Bi)LSTM/LastFourConcat/etc...</strong></li>
+<li><strong>预训练模型输出的利用：CLS/PoolerOut/LastHiddenState/+(Bi)LSTM/LastFourConcat/etc…</strong></li>
 <li><strong>训练优化：对抗训练(FGM/PGD/AWP)/EMA/MultiDropout/Rdrop</strong></li>
-<li><strong>文本分类上分微调技巧实战</strong>
-<ul>
+<li><strong>文本分类上分微调技巧实战</strong><ul>
 <li>改进1 Last 4 Layers Concatenating</li>
-<li>改进2 模型层间差分学习率:
-对不同的网络层数使用不同的学习率，这样可以防止过拟合，有利于加速学习。</li>
-</ul></li>
-<li>==<strong>BERT长文本处理：《CogLTX: Applying BERT to Long
-Texts》</strong>==
-<ul>
-<li>https://github.com/Sleepychord/CogLTX</li>
-<li><strong>分类实例</strong>：https://github.com/Sleepychord/CogLTX/blob/main/run_20news.py</li>
+<li>改进2 模型层间差分学习率: 对不同的网络层数使用不同的学习率，这样可以防止过拟合，有利于加速学习。</li>
+</ul>
+</li>
+<li>==<strong>BERT长文本处理：《CogLTX: Applying BERT to Long Texts》</strong>==<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Sleepychord/CogLTX">https://github.com/Sleepychord/CogLTX</a></li>
+<li><strong>分类实例</strong>：<a target="_blank" rel="noopener" href="https://github.com/Sleepychord/CogLTX/blob/main/run_20news.py">https://github.com/Sleepychord/CogLTX/blob/main/run_20news.py</a></li>
 <li>COGLTX采用的策略是将每个子句从原句中移除判断其是否是必不可少的(t是一个阈值)：</li>
-</ul></li>
 </ul>
-<p>​
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040195.png" alt="图片" style="zoom: 67%;"></p>
+</li>
+</ul>
+<p>​                <img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040195.png" alt="图片" style="zoom: 67%;"></p>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzOTI4ODc2Ng==&amp;mid=2247484174&amp;idx=1&amp;sn=cd2d5d51d9874bbc03d50b0bca9f17f3&amp;scene=21#wechat_redirect"><strong>CogLTX
-: bert处理长文本代码解析</strong></a></p>
+<p>  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzOTI4ODc2Ng==&amp;mid=2247484174&amp;idx=1&amp;sn=cd2d5d51d9874bbc03d50b0bca9f17f3&amp;scene=21#wechat_redirect"><strong>CogLTX : bert处理长文本代码解析</strong></a></p>
 <ul>
-<li><strong>XLNET分类模型</strong></li>
-</ul>
-<p><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
+<li><p><strong>XLNET分类模型</strong></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> torch
 <span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn <span class="token keyword">as</span> nn
 <span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional <span class="token keyword">as</span> F
 <span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
@@ -441,46 +415,40 @@ Texts》</strong>==
         x <span class="token operator">=</span> torch<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> dim<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
         x <span class="token operator">=</span> self<span class="token punctuation">.</span>MLP<span class="token punctuation">(</span>x<span class="token punctuation">)</span>
 
-        <span class="token keyword">return</span> torch<span class="token punctuation">.</span>sigmoid<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+        <span class="token keyword">return</span> torch<span class="token punctuation">.</span>sigmoid<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
 </blockquote>
 <ul>
-<li><strong>长文本理解模型 ERNIE-Doc</strong>
-<ul>
-<li>ERNIE-DOC，是一个基于Recurrence Transformers(Dai et al., 2019)
-的文档级语言预训练模型。
-本模型用了两种技术：<strong>回溯式feed机制和增强的循环机制</strong>，<strong>使模型具有更长的有效上下文长度，以获取整个文档的相关信息。</strong></li>
-<li>https://github.com/PaddlePaddle/ERNIE</li>
-</ul></li>
+<li><strong>长文本理解模型 ERNIE-Doc</strong><ul>
+<li>ERNIE-DOC，是一个基于Recurrence Transformers(Dai et al., 2019) 的文档级语言预训练模型。 本模型用了两种技术：<strong>回溯式feed机制和增强的循环机制</strong>，<strong>使模型具有更长的有效上下文长度，以获取整个文档的相关信息。</strong></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/PaddlePaddle/ERNIE">https://github.com/PaddlePaddle/ERNIE</a></li>
 </ul>
-<h3><span id="二-任务2文章点击预测"><strong>二、任务2：文章点击预测</strong></span></h3>
-<p>第二部分：利用给出的<strong>用户文章点击序列数据</strong>及<strong>用户相关特征</strong>，结合第一部分做出的情感分析模型，对给定的文章做出是否会形成点击转化的预测判别。用户点击序列中涉及的文章，及待预测的文章，我们都会给出其详细内容。</p>
-<h4><span id="21-数据加载">2.1 <strong>数据加载</strong></span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">train <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'data/Sohu2022_data/rec_data/train-dataset.csv'</span><span class="token punctuation">)</span>
+</li>
+</ul>
+<h3><span id="二-任务2文章点击预测"><strong>二、任务2：文章点击预测</strong></span></h3><p>第二部分：利用给出的<strong>用户文章点击序列数据</strong>及<strong>用户相关特征</strong>，结合第一部分做出的情感分析模型，对给定的文章做出是否会形成点击转化的预测判别。用户点击序列中涉及的文章，及待预测的文章，我们都会给出其详细内容。</p>
+<h4><span id="21-数据加载">2.1 <strong>数据加载</strong></span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">train <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'data/Sohu2022_data/rec_data/train-dataset.csv'</span><span class="token punctuation">)</span>
 test <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'data/Sohu2022_data/rec_data/test-dataset.csv'</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"train_data.shape"</span><span class="token punctuation">,</span>train<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"test_data.shape"</span><span class="token punctuation">,</span>test<span class="token punctuation">.</span>shape<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040116.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040116.png" alt="图片"></p>
 <p>训练集中每条样本包含pvId，用户id，点击序列（序列中的每次点击都包含文章id和浏览时间），用户特征（包含但不限于操作系统、浏览器、设备、运营商、省份、城市等），待预测文章id和当前时间戳，以及用户的行为(1为有点击，0为未点击)。</p>
 <blockquote>
-<p><strong>smapleId:样本的唯一id</strong></p>
-<p><strong>label：点击标签</strong></p>
-<p><strong>pvId：将每次曝光给用户的展示结果列表称为一个Group(每个Group都有唯一的pvId)</strong></p>
-<p><strong>suv:用户id</strong></p>
-<p><strong>itemId：文章id</strong></p>
-<p><strong>userSeq:点击序列</strong></p>
-<p><strong>logTs：当前时间戳</strong></p>
-<p><strong>operator：操作系统</strong></p>
-<p><strong>browserType：浏览器</strong></p>
-<p><strong>deviceType:设备</strong></p>
-<p><strong>osType：运营商</strong></p>
-<p><strong>province：省份</strong></p>
-<p><strong>city：城市</strong></p>
+<p>  <strong>smapleId:样本的唯一id</strong></p>
+<p>  <strong>label：点击标签</strong></p>
+<p>  <strong>pvId：将每次曝光给用户的展示结果列表称为一个Group(每个Group都有唯一的pvId)</strong></p>
+<p>  <strong>suv:用户id</strong></p>
+<p>  <strong>itemId：文章id</strong></p>
+<p>  <strong>userSeq:点击序列</strong></p>
+<p>  <strong>logTs：当前时间戳</strong></p>
+<p>  <strong>operator：操作系统</strong></p>
+<p>  <strong>browserType：浏览器</strong></p>
+<p>  <strong>deviceType:设备</strong></p>
+<p>  <strong>osType：运营商</strong></p>
+<p>  <strong>province：省份</strong></p>
+<p>  <strong>city：城市</strong></p>
 </blockquote>
-<h4><span id="22-数据分析">2.2 数据分析</span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">statics</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<h4><span id="22-数据分析">2.2 数据分析</span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">statics</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
     stats <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
     <span class="token keyword">for</span> col <span class="token keyword">in</span> data<span class="token punctuation">.</span>columns<span class="token punctuation">:</span>
         stats<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>col<span class="token punctuation">,</span> data<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>isnull<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span> <span class="token operator">/</span> data<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>data<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>value_counts<span class="token punctuation">(</span>normalize<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> dropna<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>dtype<span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -489,16 +457,11 @@ test <span class="token operator">=</span> pd<span class="token punctuation">.</
     <span class="token keyword">return</span> stats_df  
 stats_df<span class="token operator">=</span>statics<span class="token punctuation">(</span>train<span class="token punctuation">)</span>
 stats_df<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040147.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<h5><span id="标签分布如下">标签分布如下:</span></h5>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">sns<span class="token punctuation">.</span>countplot<span class="token punctuation">(</span>train<span class="token punctuation">.</span>label<span class="token punctuation">)</span>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040147.png" alt="图片"></p>
+<h5><span id="标签分布如下">标签分布如下:</span></h5><pre class="line-numbers language-python" data-language="python"><code class="language-python">sns<span class="token punctuation">.</span>countplot<span class="token punctuation">(</span>train<span class="token punctuation">.</span>label<span class="token punctuation">)</span>
 plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'train label count'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182041629.png" alt="图片" style="zoom:67%;"></p>
-<h4><span id="23-初步特征工程"><strong>2.3 初步特征工程</strong></span></h4>
-<ul>
+<h4><span id="23-初步特征工程"><strong>2.3 初步特征工程</strong></span></h4><ul>
 <li><strong>情感特征</strong></li>
 </ul>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">amount_feas <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'prob_0'</span><span class="token punctuation">,</span> <span class="token string">'prob_1'</span><span class="token punctuation">,</span> <span class="token string">'prob_2'</span><span class="token punctuation">,</span> <span class="token string">'prob_3'</span><span class="token punctuation">,</span><span class="token string">'prob_4'</span> <span class="token punctuation">]</span>
@@ -515,18 +478,15 @@ category_fea <span class="token operator">=</span> <span class="token punctuatio
             rec_item_sentiment<span class="token punctuation">[</span><span class="token string">'&#123;&#125;_&#123;&#125;_min'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token string">'senti'</span><span class="token punctuation">,</span> f<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> rec_item_sentiment<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span>cate<span class="token punctuation">)</span><span class="token punctuation">[</span>f<span class="token punctuation">]</span><span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token string">'min'</span><span class="token punctuation">)</span>
 
             rec_item_sentiment<span class="token punctuation">[</span><span class="token string">'&#123;&#125;_&#123;&#125;_std'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token string">'senti'</span><span class="token punctuation">,</span> f<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> rec_item_sentiment<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span>cate<span class="token punctuation">)</span><span class="token punctuation">[</span>f<span class="token punctuation">]</span><span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token string">'std'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h5><span id="类别特征count特征">类别特征count特征：</span></h5>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># count特征</span>
+<h5><span id="类别特征count特征">类别特征count特征：</span></h5><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># count特征</span>
 <span class="token keyword">for</span> col <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span>sparse_features<span class="token punctuation">)</span><span class="token punctuation">:</span>
     data<span class="token punctuation">[</span>col <span class="token operator">+</span> <span class="token string">'_count'</span><span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span>col<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'sampleId'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span>
     dense_features<span class="token punctuation">.</span>append<span class="token punctuation">(</span>col <span class="token operator">+</span> <span class="token string">'_count'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5><span id="用户特征">用户特征：</span></h5>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># count特征</span>
+<h5><span id="用户特征">用户特征：</span></h5><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># count特征</span>
 <span class="token keyword">for</span> col <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'pvId'</span><span class="token punctuation">,</span><span class="token string">'itemId'</span> <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     data<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f'group_suv_</span><span class="token interpolation"><span class="token punctuation">&#123;</span>col<span class="token punctuation">&#125;</span></span><span class="token string">_nunique'</span></span><span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'suv'</span><span class="token punctuation">,</span> col<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'suv'</span><span class="token punctuation">)</span><span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token string">'nunique'</span><span class="token punctuation">)</span>
     dense_features<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'group_suv_</span><span class="token interpolation"><span class="token punctuation">&#123;</span>col<span class="token punctuation">&#125;</span></span><span class="token string">_nunique'</span></span><span class="token punctuation">)</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h5><span id="物料特征">物料特征：</span></h5>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># pvId nunique特征</span>
+<h5><span id="物料特征">物料特征：</span></h5><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># pvId nunique特征</span>
 select_cols <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'suv'</span><span class="token punctuation">,</span> <span class="token string">'itemId'</span><span class="token punctuation">]</span>
 <span class="token keyword">for</span> col <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span>select_cols<span class="token punctuation">)</span><span class="token punctuation">:</span>
 
@@ -539,8 +499,7 @@ select_cols <span class="token operator">=</span> <span class="token punctuation
     data<span class="token punctuation">[</span><span class="token string-interpolation"><span class="token string">f'group_itemId_</span><span class="token interpolation"><span class="token punctuation">&#123;</span>col<span class="token punctuation">&#125;</span></span><span class="token string">_nunique'</span></span><span class="token punctuation">]</span> <span class="token operator">=</span> \
         data<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'itemId'</span><span class="token punctuation">,</span> col<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'itemId'</span><span class="token punctuation">)</span><span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>transform<span class="token punctuation">(</span><span class="token string">'nunique'</span><span class="token punctuation">)</span>
     dense_features<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'group_itemId_</span><span class="token interpolation"><span class="token punctuation">&#123;</span>col<span class="token punctuation">&#125;</span></span><span class="token string">_nunique'</span></span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="nn模型-deepfm"><strong>NN模型-DeepFM</strong></span></h4>
-<p>基于deepctr实现DeepFM训练</p>
+<h4><span id="nn模型-deepfm"><strong>NN模型-DeepFM</strong></span></h4><p>基于deepctr实现DeepFM训练</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">train_model_input <span class="token operator">=</span> <span class="token punctuation">&#123;</span>name<span class="token punctuation">:</span> train<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token keyword">for</span> name <span class="token keyword">in</span> feature_names<span class="token punctuation">&#125;</span>
 valid_model_input <span class="token operator">=</span> <span class="token punctuation">&#123;</span>name<span class="token punctuation">:</span> valid<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token keyword">for</span> name <span class="token keyword">in</span> feature_names<span class="token punctuation">&#125;</span>
 test_model_input <span class="token operator">=</span> <span class="token punctuation">&#123;</span>name<span class="token punctuation">:</span> test<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token keyword">for</span> name <span class="token keyword">in</span> feature_names<span class="token punctuation">&#125;</span>
@@ -554,19 +513,14 @@ history <span class="token operator">=</span> model<span class="token punctuatio
 pred_ans <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>valid_model_input<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">1024</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"valid AUC"</span><span class="token punctuation">,</span> <span class="token builtin">round</span><span class="token punctuation">(</span>roc_auc_score<span class="token punctuation">(</span>valid<span class="token punctuation">[</span>target<span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">,</span> pred_ans<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 pred_ans <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>test_model_input<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">1024</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="树模型-catboost"><strong>树模型-Catboost</strong></span></h4>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">train_model <span class="token operator">=</span> CatBoostClassifier<span class="token punctuation">(</span>iterations<span class="token operator">=</span><span class="token number">15000</span><span class="token punctuation">,</span> depth<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> learning_rate<span class="token operator">=</span><span class="token number">0.05</span><span class="token punctuation">,</span> loss_function<span class="token operator">=</span><span class="token string">'Logloss'</span><span class="token punctuation">,</span> logging_level<span class="token operator">=</span><span class="token string">'Verbose'</span><span class="token punctuation">,</span> eval_metric<span class="token operator">=</span><span class="token string">'AUC'</span><span class="token punctuation">,</span> task_type<span class="token operator">=</span><span class="token string">"GPU"</span><span class="token punctuation">,</span> devices<span class="token operator">=</span><span class="token string">'0:1'</span><span class="token punctuation">)</span>
+<h4><span id="树模型-catboost"><strong>树模型-Catboost</strong></span></h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">train_model <span class="token operator">=</span> CatBoostClassifier<span class="token punctuation">(</span>iterations<span class="token operator">=</span><span class="token number">15000</span><span class="token punctuation">,</span> depth<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span> learning_rate<span class="token operator">=</span><span class="token number">0.05</span><span class="token punctuation">,</span> loss_function<span class="token operator">=</span><span class="token string">'Logloss'</span><span class="token punctuation">,</span> logging_level<span class="token operator">=</span><span class="token string">'Verbose'</span><span class="token punctuation">,</span> eval_metric<span class="token operator">=</span><span class="token string">'AUC'</span><span class="token punctuation">,</span> task_type<span class="token operator">=</span><span class="token string">"GPU"</span><span class="token punctuation">,</span> devices<span class="token operator">=</span><span class="token string">'0:1'</span><span class="token punctuation">)</span>
 
 train_model<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>train_dataset<span class="token punctuation">,</span> eval_set<span class="token operator">=</span>eval_dataset<span class="token punctuation">,</span> early_stopping_rounds<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span> verbose<span class="token operator">=</span><span class="token number">40</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4><span id="特征工程思路扩展"><strong>特征工程思路扩展</strong></span></h4>
-<ul>
+<h4><span id="特征工程思路扩展"><strong>特征工程思路扩展</strong></span></h4><ul>
 <li><strong>高阶特征：类别特征组合、高阶聚合特征，比例特征</strong></li>
-<li><strong>点击序列统计特征：当前用户|全局： item
-众数当做类别特征；统计量 count或者nunique</strong></li>
-<li><strong>序列 Embedding特征：word2vec，tfidf(词袋)+SVD、graph
-embedding(deepwalk)</strong></li>
-<li><strong>点击转化率特征：itemid、pvId,类别组合 ..(提分)
-Kfold</strong></li>
+<li><strong>点击序列统计特征：当前用户|全局： item 众数当做类别特征；统计量 count或者nunique</strong></li>
+<li><strong>序列 Embedding特征：word2vec，tfidf(词袋)+SVD、graph embedding(deepwalk)</strong></li>
+<li><strong>点击转化率特征：itemid、pvId,类别组合 ..(提分) Kfold</strong></li>
 </ul>
 
     </div>
@@ -603,8 +557,8 @@ Kfold</strong></li>
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/GTE114/" rel="next" title="特征工程（4）Auto工具">
-                  特征工程（4）Auto工具 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/JFCMNX/" rel="next" title="恶意软件检测（1）SeqNet: An Efficient Neural Network for Automatic Malware Detection">
+                  恶意软件检测（1）SeqNet: An Efficient Neural Network for Automatic Malware Detection <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

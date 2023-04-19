@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks   利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击: DataDome:https:&#x2F;&#x2F;datadome.co&#x2F;   在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 S">
+    <meta name="description" content="Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks  利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击: DataDome:https:&#x2F;&#x2F;datadome.co&#x2F;   在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 Sl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工业落地（12）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1WG0TJH/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks   利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击: DataDome:https:&#x2F;&#x2F;datadome.co&#x2F;   在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 S">
+<meta property="og:description" content="Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks  利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击: DataDome:https:&#x2F;&#x2F;datadome.co&#x2F;   在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 Sl">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-10T13:28:54.876Z">
 <meta property="article:modified_time" content="2023-04-11T03:13:50.347Z">
@@ -141,9 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">Leveraging
-Streaming-Based Outlier Detection and SliceLine to Stop Heavily
-Distributed Bot Attacks</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -158,13 +156,13 @@ Distributed Bot Attacks</span></a></li></ol></div>
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -291,30 +289,17 @@ Distributed Bot Attacks</span></a></li></ol></div>
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="leveragingstreaming-based-outlier-detection-and-sliceline-to-stop-heavilydistributed-bot-attacks">Leveraging
-Streaming-Based Outlier Detection and SliceLine to Stop Heavily
-Distributed Bot Attacks</span></h2>
-<blockquote>
+        <h2><span id="leveraging-streaming-based-outlier-detection-and-sliceline-to-stop-heavily-distributed-bot-attacks">Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks</span></h2><blockquote>
 <ul>
 <li>利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击:</li>
-<li>DataDome:https://datadome.co/</li>
+<li>DataDome:<a target="_blank" rel="noopener" href="https://datadome.co/">https://datadome.co/</a></li>
 </ul>
 </blockquote>
-<p>在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 SliceLine
-来快速安全地生成大量可用于阻止恶意流量的规则/签名。</p>
-<p>虽然 ML
-的使用变得越来越广泛，但规则仍然相关。事实上，公司在能够快速评估大量规则的高效规则引擎方面投入了大量资金。此外，规则通常更便于创建、操作和解释，这使得它们除了
-ML 方法之外仍然有价值。</p>
-<p>我们证明，虽然 SliceLine 最初设计用于识别 ML
-模型表现不佳的数据子集，但它的使用可以适应以无监督方式生成大量与攻击相关的规则，即不使用标记数据。此外，我们利用机器人检测问题来说明如何使用
-SliceLine 即时生成大量恶意签名。</p>
-<p>我们还将展示我们优化的 SliceLine Python
-开源实现，并展示如何将其用于特定但困难的机器人检测子集：分布式凭证填充攻击，攻击者利用数千个受感染的
-IP 地址进行攻击和绕过传统的安全机制，例如速率限制策略。</p>
-<p>通过一个真实世界的例子，我们将首先解释如何使用基于流的检测来检测此类攻击，以及我们如何使用数据建模在服务器端信号（HTTP
-标头、TLS 指纹、IP 地址等）上应用 <strong>SliceLine</strong>
-来识别并生成与分布式攻击相关的阻止签名。这种方法使我们能够在去年阻止 59
-位客户超过 2.85 亿次恶意登录尝试。</p>
+<p>在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 SliceLine 来快速安全地生成大量可用于阻止恶意流量的规则/签名。</p>
+<p>虽然 ML 的使用变得越来越广泛，但规则仍然相关。事实上，公司在能够快速评估大量规则的高效规则引擎方面投入了大量资金。此外，规则通常更便于创建、操作和解释，这使得它们除了 ML 方法之外仍然有价值。</p>
+<p>我们证明，虽然 SliceLine 最初设计用于识别 ML 模型表现不佳的数据子集，但它的使用可以适应以无监督方式生成大量与攻击相关的规则，即不使用标记数据。此外，我们利用机器人检测问题来说明如何使用 SliceLine 即时生成大量恶意签名。</p>
+<p>我们还将展示我们优化的 SliceLine Python 开源实现，并展示如何将其用于特定但困难的机器人检测子集：分布式凭证填充攻击，攻击者利用数千个受感染的 IP 地址进行攻击和绕过传统的安全机制，例如速率限制策略。</p>
+<p>通过一个真实世界的例子，我们将首先解释如何使用基于流的检测来检测此类攻击，以及我们如何使用数据建模在服务器端信号（HTTP 标头、TLS 指纹、IP 地址等）上应用 <strong>SliceLine</strong> 来识别并生成与分布式攻击相关的阻止签名。这种方法使我们能够在去年阻止 59 位客户超过 2.85 亿次恶意登录尝试。</p>
 <p>最后，我们将解释这种方法如何推广到除机器人检测之外的其他安全用例，以及如何在不同的规则引擎中使用它。</p>
 
     </div>
@@ -346,13 +331,13 @@ IP 地址进行攻击和绕过传统的安全机制，例如速率限制策略�
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/3J5RV40/" rel="prev" title="工程设计-在线部署">
-                  <i class="fa fa-chevron-left"></i> 工程设计-在线部署
+                <a href="/posts/1EB7867/" rel="prev" title="恶意软件检测（12）Neurlux: Dynamic Malware Analysis Without Feature Engineering">
+                  <i class="fa fa-chevron-left"></i> 恶意软件检测（12）Neurlux: Dynamic Malware Analysis Without Feature Engineering
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/52716/" rel="next" title="机器学习-理论基础">
-                  机器学习-理论基础 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/BGCJ54/" rel="next" title="【Nan】算法优化（1）SliceLine- Fast, Linear-Algebra-based Slice Finding for ML Model Debugging">
+                  【Nan】算法优化（1）SliceLine- Fast, Linear-Algebra-based Slice Finding for ML Model Debugging <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

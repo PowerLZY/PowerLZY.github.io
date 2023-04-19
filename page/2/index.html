@@ -153,13 +153,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -192,6 +192,684 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3W8D2M2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3W8D2M2/" class="post-title-link" itemprop="url">工业落地（15）阿里妈妈-“广告主套利”风控技术分享</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-16 14:02:13" itemprop="dateCreated datePublished" datetime="2023-03-16T14:02:13+08:00">2023-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 20:20:56" itemprop="dateModified" datetime="2023-04-18T20:20:56+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="阿里妈妈-广告主套利风控技术分享">阿里妈妈-“广告主套利”风控技术分享</span></h2><h3><span id="一-北京介绍">一、北京介绍</span></h3><h4><span id="11-套利的影响">1.1 套利的影响</span></h4><p>由于平台的有效总曝光有限，当套利广告主占据了高质量位置后，真实点击率和成交率低于模型预期，平台产生的总点击、总成交就会相应减少，从而导致该资源位的收入降低。这里我们统一使用<strong>千次展现收益</strong>（Revenue Per Mile，以下简称：RPM）来代表地价。即<strong>套利会在一定程度上使对应位置的RPM降低</strong>。</p>
+<p>由于现阶段ctr、cvr预估模型有在线更新机制，从长周期来看是具备自愈能力的。但模型的更新有一段时间延迟，在每个模型更新的空窗期内，广告主不会恰好都补单补量至模型的预期水平。最终就导致了模型不断被欺骗又修复的过程。如下图所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020935.png" alt="图片"></p>
+<p>因此，在与排序模型的博弈中，广告主周期性地实现着套利。随着online模型更新的时效性提升，套利空间在不断被压缩。也导致广告主更加倾向于高频、低程度地进行操作，识别难度进一步增大。</p>
+<h4><span id="12-困难与挑战">1.2 困难与挑战</span></h4><p>由于<strong>作弊手法千变万化</strong>、<strong>真实标签难以界定</strong>、<strong>作弊Ground-Truth未知</strong>，风控场景很难通过<strong>监督训练</strong>等手段获得<strong>通用解</strong>。具体到广告主套利上，我们还面临着一些其他的问题。</p>
+<h5><span id="121-众包人工流量的识别">1.2.1 众包人工流量的识别</span></h5><p><strong>相比于以往的无效流量甄别，众包人工流量往往更加贴近平常用户的行为</strong>。难度远超以往的爬虫、机械性攻击。高并发的广告场景，对识别的精度和召回，要求都非常高。而且即使是刷手，也会产出正常的流量。</p>
+<p>如何精细化区分刷手的每次行为以及是否是受雇佣的，是极具挑战的一个课题。</p>
+<h5><span id="122-精度难评价">1.2.2 精度难评价</span></h5><p><strong>由于众包人工流量会有一定比例的成交，不符合0转化假设。</strong>高效评价流量识别模型的精度和召回，是很困难的。此外，套利广告主检测本身也需要找到合适的假设，没有客观高效的评价方式，难以指导模型迭代。</p>
+<h5><span id="123-区分主动与被动">1.2.3 区分主动与被动</span></h5><p>存在任务流量的广告主，不仅是主动套利的，还有一部分是被其他广告主雇佣的刷手误伤、或者受到人工攻击消耗的。如何无监督、高精度、高召回、鲁棒地挖掘广告主的主动性，也是我们需要重点关注的。</p>
+<h3><span id="二-方案概览">二、方案概览</span></h3><p>在正式开始介绍方案之前，我们针对1.3节的问题，分别介绍一下思路。为了解决1.3中提到的3个问题，我们针对广告主套利开发了一套同样集<strong>感知</strong>、<strong>洞察</strong>、<strong>处置、评价</strong>于一体的检测框架，其架构图如下图所示。框架理念可以参考这篇文章：<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020589.png" alt="图片"></p>
+<ol>
+<li><strong>众包流量识别</strong>，分别由统计基线、行为序列、图关系3个模型一起召回，并使用黑话模型的产出评价标准，指导模型迭代；</li>
+<li><strong>感知</strong>部分，通过对<strong>RPM的鲁棒预估</strong>，计算广告主实际产生的RPM与平台预期的diff，从而召回RPM偏低的广告主；</li>
+<li>通过<strong>洞察</strong>分析平台对列表中的实例进行分析，获取新模式认知的同时进行标注作为验证样本；</li>
+<li>将认知抽象为策略或模型（当前为双模型因果推断），产出了套利广告主名单用于区分“主动”与“被动”，最后在下游中进行分类<strong>处置</strong>；</li>
+</ol>
+<h3><span id="三-众包流量识别">三、众包流量识别</span></h3><p>在介绍感知、洞察、处置体系之前，我们首先对挖掘套利广告主的基础能力进行介绍——众包人工流量识别。该流量不满足0成交转化，模型的迭代和监控保障，也显然不能依赖低效的人工抽检。首先需要寻找一种可以批量校验、又和处置严格正交的评价方法。整体方案如下图所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020065.png" alt="图片"></p>
+<h4><span id="31-黑话模型">3.1 黑话模型</span></h4><p>考虑到直通车场景下，刷手需要高频地进行搜索，从而定位到自己的任务目标，不可能所有的内容都手敲。风控工程团队基于淘宝的搜索记录，对历史文本信息进行了系统地整合，使得黑话凝聚在标准化的文本库中。</p>
+<h5><span id="311-特性">3.1.1 特性</span></h5><p>黑搜索的文本信息采集，受<strong>设备型号、手滑粘贴、误点搜索的影响</strong>，导致产出上并不稳定，所以没有直接用于召回。但同设备类型、应用、天维度同比是有意义的，可以<strong>作为精度和召回的评价指标</strong>。因此，我们构造了和众包流量构成强相关、但召回有限的黑话模型。</p>
+<p><strong>典型的黑话如下所示：</strong></p>
+<ul>
+<li>“3️⃣看图👆拍苐一个,π下多少仮溃”</li>
+</ul>
+<p>根据我们的分析显示，黑话具有以下特点：1）文字语序混乱；2）拼音、中、英文混输；3）表情、形近字替代；4）快速迭代、分析低效。这涉及到多种语义的还原，并且新的变种不断产生。基于文本出发的黑话模型开发非常困难。</p>
+<h5><span id="312-用户维度-关键词与树">3.1.2 用户维度、关键词与树</span></h5><p>综合考虑各个方案的性价比后，我们尝试不完全依赖文本，而是从用户出发，<strong>2段式、半监督地召回黑话。</strong></p>
+<ol>
+<li>首先构造用户维度的处罚特征，无监督的召回候选人群集；</li>
+<li>再以变换后的关键词为目标，天维度更新Cart回归树模型，选择额外80%召回的动态阈值，得到离线样本库；</li>
+</ol>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020453.png" alt="图片"></p>
+<h5><span id="313-bert提效">3.1.3 Bert提效</span></h5><p>我们基于黑话样本库与大盘可信白样本，训练了基于Bert的2分类模型，用于对全量文本进行打分，从而减轻黑话样本库覆盖度不足的影响。使用召回人群多日黑话得分均值，来作为众包流量识别的精度指数，指导模型快速迭代，并持续以黑话精度作为模型的监控指标。</p>
+<h4><span id="32-统计基线">3.2 统计基线</span></h4><p>众包人工流量虽然更难以识别，但是我们始终相信黑灰产用户是不可能完美隐藏的。<strong>我们从用户行为角度设计了一系列的异常检测方案。</strong>首先调研了黑灰产平台。发现用户需要通过一系列行为来完成任务的交付（考虑到攻防属性，暂不透出具体行为）。据此我们构造了本质、鲁棒性的统计特征，结合统计异常检测模型，产出了套利识别的基线。在<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>中介绍过，本质特征更有助于挖掘异常；如用“偏离对应人群的分布的程度”，代替“绝对数量”。</p>
+<p>由于统计特征的粒度偏粗，导致我们并不能区分刷手当天的哪部分流量属于众包，哪部分属于正常流量。所以还需要更加精细化的识别能力建设。</p>
+<h4><span id="33-行为序列">3.3 行为序列</span></h4><p>近期我们一直在尝试，使用更为<strong>细粒度的原始行为序列</strong>、<strong>良好的序列设计</strong>、以及<strong>合理的辅助任务</strong>，训练大规模无监督预训练模型。<strong>Zero-shot</strong>在下游进行应用，实现精细化地捕捉众包流量特点。当前行为序列研究的整体框架如下图所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020951.png" alt="图片"></p>
+<h5><span id="331-序列信息">3.3.1 序列信息</span></h5><p><strong><font color="red"> 首先是通用的行为选择。为了更好地适用于大多数场景，我们只选择了搜索和点击两个行为，并辅以行为的属性与时间信息，共同组成行为序列。</font></strong></p>
+<p>为了方便刻画行为模式，我们使用下划线拼接行为和属性，构造类似于NLP中单词概念的行为元素，形式为：()<em>()</em>()_()。例如：<strong>clk_true_3_2 表示为 一次点击 &amp; 是广告点击 &amp; 商品属性为编号3 &amp; 距离上一次行为时间间隔属于分箱编号2。</strong></p>
+<p>由于刷手需要接单大量的任务，产品类型、任务目的可能各不相同。通过合理的session划分，将不同的基础行为进行聚合，可以使信息更加凝聚。</p>
+<p>结合搜索广告的特点，我们限制一个session必须以搜索开始，时间间隔在一定范围内都同属于一个session。</p>
+<h5><span id="332-辅助任务设计">3.3.2 辅助任务设计</span></h5><p>为了使模型学习到session排列的模式，我们使用<strong>Transformer结构 + Cut-paste任务</strong>，对序列整体进行表示。</p>
+<p><strong><font color="red"> Cut-paste算法是用于图像异常检测的一种辅助任务。通过对原始图片进行随机地局部剪裁，再随机粘贴至新的位置，原位置以黑色阴影覆盖(向量值均为0)，从而获得大量的负样本，并以大量的数据增强产生正样本。</font></strong>然后通过原图与新图的二分类任务，促使模型学习到剪裁边缘的连续性。算法内容详见[1]。</p>
+<p>类似地，根据刷手行为特点，对序列进行Cut-paste衍生，得到大量的样本用于二分类任务，从而得到完整序列表示。最终的预训练网络结构如下所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020120.png" alt="图片" style="zoom:67%;"></p>
+<h5><span id="333-异常检测">3.3.3 异常检测</span></h5><p>根据序列表示的结果，我们得到了N维的Embedding向量：</p>
+<ol>
+<li>将序列Embedding与COPOD模型结合，产出Embedding每个维度偏离分布的异常分(1)；</li>
+<li>固定基础行为的Embedding层权重，二次训练Seq2Seq模型，将重构误差产出异常分(2)；</li>
+</ol>
+<p>将2个方案计算的异常分结合，得到下游任务的打分。</p>
+<h4><span id="34-图关联挖掘">3.4 图关联挖掘</span></h4><p><strong>截止目前，我们通过统计基线 + 行为序列对众包人工流量进行了识别</strong>。在阿里妈妈广告场景下，这些流量会在受害者/套利者维度上呈现出聚集。且因为模型的评估依赖于人工抽检，为了保证精度符合预期，显然单体识别模型的精度与召回都会受限。</p>
+<p><strong>因此我们增加了基于图关联的召回。以统计基线为基础节点，用行为序列结果剪枝，最终通过半监督的GAT网络对行为稀疏、但访问宝贝和基础节点重合度高的人工众包流量进行扩召回。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020148.png" alt="图片" style="zoom: 50%;"></p>
+<p>下图是2021年至今为止，最新挖掘的每日人工众包的设备数量趋势（具体数字已隐藏）。除大型节日外外，流量基本趋于稳定。相比于原始统计基线，组合模型可以精细定位到刷手与宝贝的对应关系，目前已额外新增30%的广告点击召回。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020955.png" alt="图片" style="zoom: 67%;"></p>
+<h3><span id="四-套利感知">四、套利感知</span></h3><p>为了建立内部自驱循环的异常检测框架，感知系统是必备的。在<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>文章中我们介绍过：<strong>感知重召回，其理念是召回一切认知之外的异常</strong>。从作弊的结果（果性）出发，才能召回受害者可感知的全部流量。</p>
+<p>在广告主套利场景下，受害者是平台。但广告主的手法各不相同，从结果上看，未必会成功。虽然都需要处置，但在感知角度，我们更关注那些成功套利的案例。因此，我们从RPM低于平台预期的广告主的流量出发，<strong>召回套利成功流量的超集</strong>。</p>
+<p>除了作为感知手段以外，估准RPM才能计算出该问题究竟为平台带来了多大影响。而且先找到一批RPM低于预期的广告主，才能用于最终，套利广告主名单的精度、召回评价。</p>
+<h4><span id="41-评价方案">4.1 评价方案</span></h4>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3RSRTFF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3RSRTFF/" class="post-title-link" itemprop="url">工业落地（14）阿里妈妈-流量反作弊算法实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-16 11:12:21" itemprop="dateCreated datePublished" datetime="2023-03-16T11:12:21+08:00">2023-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 20:20:00" itemprop="dateModified" datetime="2023-04-18T20:20:00+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="阿里妈妈-流量反作弊算法实践">阿里妈妈-流量反作弊算法实践</span></h2><blockquote>
+<p>  不光要思考需要哪些技术能推动产品成熟，还要思考一个产品成熟的样本；</p>
+</blockquote>
+<h3><span id="一-广告风控流程"><strong>一、广告风控流程</strong></span></h3><p>下图是广告主投放内容与风控团队、下游业务团队的简易交互流程。广告素材通过<strong>内容风控</strong>审核后，即可以在线上进行<strong>展示</strong>。在展示期间，广告主可能会主动作弊、也可能受到其他广告主攻击。风控团队需要对无效流量进行过滤，保护广告主的利益，维护健康的广告投放环境。本文重点介绍在线展示期间，<strong>流量、淘客交易</strong>场景下的业务风险与算法体系。详细的解决方案在未来的文章中逐一介绍。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019363.png" alt="图片"></p>
+<blockquote>
+<p>  <strong><font color="red"> 离线无监督样本库：标签指导（误报率）对准实时进行修正；</font></strong></p>
+</blockquote>
+<h3><span id="二-无效流量"><strong>二、无效流量</strong></span></h3><p><strong>流量反作弊系统</strong>的核心能力就是<strong>清洗、过滤无效流量</strong>。但是<strong>无效流量</strong>并不等价于<strong>作弊流量</strong>。我们将这部分流量的定义分为2个层面：</p>
+<p>1）<strong>低质量</strong>：重复点击计费策略、频率控制策略、剧烈波动策略等；</p>
+<p>2）<strong>作弊</strong>：转化效果概率为0的流量；</p>
+<p>作弊流量转化期望概率一定为0，比如<strong>爬虫</strong>产生的点击流量（<strong>重复traceid</strong>）。但后续实际<strong>频率</strong>为0的流量不一定是作弊。比如新商品累计1万点击后仍没有转化，只能说频率为0。不能直接断定为作弊流量。</p>
+<p>常见的无效流量包括：</p>
+<p>1）消耗竞争对手；</p>
+<p>2）提升自身排名；</p>
+<p>3）自然宝贝刷单误伤广告主；</p>
+<p>4）非恶意无效流量。如下图所示，一名诚信投放的广告主，可能受到多种维度的影响。</p>
+<blockquote>
+<p>  <strong><font color="red"> 网约车业务的冒转率可能受到哪些影响？</font></strong></p>
+</blockquote>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019652.png" alt="图片"></p>
+<h4><span id="21-消耗竞争对手">2.1 消耗竞争对手</span></h4><p>广告主在设置投放策略的时候，通常有预算限制。一些广告主，通过构造虚假流量，攻击其他广告主，消耗预算致使广告下架。如原定计划可以投放7日的广告内容，在第2天突然被完全消耗。这种情况下，很容易引起受害广告主的投诉，影响恶劣。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019707.png" alt="图片"></p>
+<h4><span id="22-提升自身排名">2.2 提升自身排名</span></h4><p>广告排名由出价和质量评分决定。<strong>一些广告主会雇佣黑产刷单，提高广告的转化率</strong>。通过低成本获得靠前的广告排名。这些作弊利益驱动属性也很强，比较容易被平台和相关广告主感知到。对平台的影响也较为恶劣。</p>
+<h4><span id="23-自然宝贝刷单"><strong>2.3 自然宝贝刷单</strong></span></h4><p><strong>一些广告主通过雇佣黑产提高店铺的成交数、好评数、加购收藏数等。刷手为了更好地隐藏自己，往往会装作“货比三家”，查看多个宝贝信息</strong>。该过程偶尔会误伤了广告展示宝贝。这种作弊对广告生态的影响比较弱。感知程度会偏低一些。此外，人工刷手往往伪装的更好，在流量甄别上难度比较大。</p>
+<h4><span id="24-非恶意无效流量">2.4 非恶意无效流量</span></h4><p>除上述带有恶意的虚假流量。还有非恶意、非薅羊毛的<strong>无效流量</strong>需要被过滤。<strong>比如一些浏览器在打开淘宝首页时，会预加载所有的宝贝链接后续跳转网页。显然这些是无效流量</strong>。又比如，爬虫或浏览器劫持而产生的流量，不应该计入广告主的费用中。</p>
+<h4><span id="25-淘客交易作弊">2.5 淘客交易作弊</span></h4><p>淘宝联盟是阿里妈妈平台给淘宝客推广者搭建的推广平台，在淘宝联盟后台可以完成取链、推广和提现等一系列操作。而淘客交易作弊，不满足作弊流量转化概率为0的假设。根据计费方式不同，常见的2种作弊形式为：1）流量劫持；2）黑灰产淘客拉新。</p>
+<h5><span id="251-流量劫持"><strong>2.5.1 流量劫持</strong></span></h5><p>CPS计费下的主要作弊手法是流量劫持。常见的流量劫持有2种。第一种，是<strong>篡改记录用户流量来源</strong>，将其他淘宝客的拉新流量据为己有。广告主会明显感知到自然流量变少，拉新流量增加。第二种，是<strong>修改用户跳转链接</strong>，使得用户跳转到自己的宝贝页面。会导致用户在不知情的情况下购买了另一家店铺的商品。此时商家会在销量层面有一定感知。</p>
+<h5><span id="252-黑灰产淘客拉新">2.5.2 黑灰产淘客拉新</span></h5><p>CPA计费下的主要问题是<strong>虚假地址</strong>。常见的CPA通常发生在产品拉新中，如用户注册、用户下单…等。在一些淘宝客拉新场景中，需要拉新用户完成注册、下单等一系列流程。此时一些淘宝客通过批量注册，下单廉价商品来赚取拉新差价。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019823.png" alt="图片" style="zoom: 67%;"></p>
+<h4><span id="26-下游任务影响">2.6 下游任务影响</span></h4><p>对于阿里妈妈来说，虚假流量不单影响着其他广告主的权益，同时影响着阿里生态的下游业务。<strong>搜索、推荐、广告等业务的收益，强依赖于其基于用户行为数据的在线学习</strong>。如：个性化推荐、点击率预估、流量分发、广告定价等。而当<strong>这些任务中混入虚假流量时，会对其真实线上的精度造成极大影响</strong>。</p>
+<blockquote>
+<p>  <strong><font color="red"> 虚假的无效流量对下游任务的影响；</font></strong></p>
+</blockquote>
+<h3><span id="三-算法实践"><strong>三、算法实践</strong></span></h3><p>相比于其他正向业务，流量反作弊对于精度的要求尤其高。<strong><font color="red"> 多过滤导致平台收益减少、少过滤引起广告主投诉，破坏投放生态。</font></strong>而且业务场景对实时返款的诉求越来越强烈，同时作弊对抗升级，从集中式、大规模转向分布式、稀疏化攻击，识别难度增大。亟需基于高维异常检查的新系统能力。为此，我们建立了集<strong>异常主动感知、人工洞察分析、自动处置过滤、客观评价</strong>高效循环一体的风控系统。</p>
+<blockquote>
+<p>  <strong><font color="red"> 1、被动反馈case驱动、领域经验处置 —&gt; 主动感知、洞察分析、标准化的处置体系、成熟的指标大盘</font></strong></p>
+<p>  <strong><font color="red"> 2、领域经验驱动算法迭代 —&gt; 数据驱动算法迭代</font></strong></p>
+</blockquote>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019092.png" alt="图片" style="zoom: 67%;"></p>
+<h4><span id="31-感知">3.1 感知</span></h4><p><strong><font color="red"> 在历史的风控体系中，往往是Case驱动的。即遇到问题通过滞后的算法或策略迭代来覆盖风险</font></strong>。为了提前发现问题，尽可能减少投诉，净化投放环境，我们引入了感知。通过感知捕捉与常见分布不同的数据，输出异常列表。</p>
+<p>我们将可感知异常流量分为:</p>
+<ul>
+<li><strong>受害者可感知</strong>：业务本身可感知，冒转率，高峰期流量、营销流量不属于；</li>
+<li><strong>平台可感知</strong>：接口安全（接入层、风控）、业务安全；</li>
+<li><strong>实战攻防可感知</strong>：</li>
+<li><strong>假想攻防可感知</strong>：</li>
+<li><strong>算法挖掘可感知</strong>：</li>
+</ul>
+<p><strong><font color="red"> 感知是重召回的，但并不是单纯为了更多地召回现有风险，它设计的核心是去感知所有的“异常”</font></strong>。以2020年初为例，由于骑行政策的调整，售卖头盔商家的访问量显著偏高，连带着必然影响到<strong>点击率、转化率</strong>等一系列指标。这些异常是<strong>商铺可感知</strong>的，需要被我们捕捉到。但并不属于作弊流量。所以不会被流量反作弊系统所过滤。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019109.png" alt="图片" style="zoom:67%;"></p>
+<p>那感知究竟如何来做呢？以“点击流量反作弊”来说，<strong>作弊一定会导致点击量增加</strong>。如果可以预估出一个商品每天的点击数量。则超出该值的点击一定为作弊。因此流量反作弊感知的核心之一，就是<strong>如何在大盘召回率未知的情况下，精准预估正常流量值</strong>。这部分内容在后续文章中进行介绍。</p>
+<blockquote>
+<p>  接口画像：预估出一个接口每天的点击量，<strong><font color="red"> 因此流量反作弊感知的核心之一，就是如何在大盘召回率未知的情况下，精准预估正常流量值</font></strong>。</p>
+</blockquote>
+<h4><span id="32-洞察">3.2 洞察</span></h4><p><strong>为了确认感知到的异常流量哪些属于作弊，分析人员需要进行洞察分析</strong>。<strong><font color="red"> “洞察 ”的目的是从“感知”到的异常中将风险抽离出来，进而发现新的风险模式。</font></strong>我们将洞察分为：1）受害者洞察；2）攻击者洞察；3）套利漏洞洞察；4）流量实例洞察。</p>
+<p><strong><font color="red"> 传统洞察需要人工挑选可疑特征（如停留时长、注册时长、ua、token_str），并与大盘好样本(正常业务曲线)进行比较。</font></strong>如下图。这就对领域经验有强依赖。而领域专家毕竟是少数。<strong>并且随着作弊越发高级，单一维度或少量维度下逐渐难以发现作弊。</strong>为此，我们引入了<strong>高维数据下的可视化洞察分析技术</strong>。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019492.png" alt="图片" style="zoom: 50%;"></p>
+<p><strong><font color="red"> 在洞察环节，首先需要对样本进行高度抽象表示。如何在高维数据中选择合适的子空间投影，是非常具有挑战性的课题。</font></strong>后续文章会展开介绍。确定合适的子空间后，除了和大盘比较，我们还引入了<strong>时间维度的分布同比</strong>，如下图所示。对于分布稳定的某个广告，3月6日降维图中突然出现明显不同的一簇（红圈内），很可能是新的异常模式。（图中“样本库”指最终被识别为作弊的流量，在3.3节进行介绍）</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019579.png" alt="图片"></p>
+<p><strong>洞察的难点在于，如何减轻未召回的作弊对正常分布的污染。</strong>比如上图中蓝色线条内部分可能也存在作弊，这时通过同比就无法发现异常。如何跳出既有认知去召回未知异常模式，以及非常棘手的冷启动问题，这些都是后续文章的重点内容。</p>
+<h4><span id="33-处置">3.3 处置</span></h4><p><strong><font color="red"> 处置，指对风险进行处置。对于不同的风险实体、风险类型，会使用不同的处置方法。</font></strong></p>
+<h5><span id="331-流量反作弊的处置">3.3.1 流量反作弊的处置</span></h5><blockquote>
+<p>  <strong><font color="red"> 所有的策略和模型都可以用标准的统计学习方法来描述；</font></strong></p>
+</blockquote>
+<p><strong><font color="red"> 传统的算法迭代模式，是根据洞察分析的结果，指导规则、统计模型为主的无监督过滤系统。</font></strong>对领域经验比较依赖，而且效率低下、难以形成沉淀。因此，对于流量反作弊的处置，我们部署了<strong>实时流式、小时批处理双重防线</strong>。其逻辑如下图所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019002.png" alt="图片" style="zoom: 67%;"></p>
+<blockquote>
+<p>  <strong><font color="red"> 实时有监督过滤系统，依赖数据维度的多样性（场景要区分端、app、小程序和web的数据维度不同）+ 低代价特征 + 高效的模型结构；</font></strong></p>
+</blockquote>
+<p>在线实时过滤系统，综合了<strong>无监督、半监督的特征工程，以及监督的集成（Ensemble）异常检测器</strong>。相比于单条策略的独立决策，集成的容错性更高（召回能力下降，适用于精度高的场景）。例如，<strong>PC端反作弊策略依赖于网页采集的前端行为、鼠标点击行为等，当数据采集出错时，过渡依赖某一策略将导致大面积误差。</strong></p>
+<p>同时，<strong><font color="red"> 我们会尽可能使用更触及作弊本质、更具有鲁棒性的特征</font></strong>。和正向业务不同，我们不会在特征设计层面，过分聚焦于正样本的区分度。比如绝大部分爬虫流量都是PC端带来的，“是否是PC”就是一个极强的特征。但一旦这种作弊没有继续攻击，模型的效果就大打折扣。因此更多会使用各个维度上计算与Normal分布的偏差、到Normal簇的距离…等。</p>
+<p>实时过滤系统基本可以解决90%的问题。<strong>为了更好地拟合高级作弊，我们又引入了小时级别过滤系统，使用开销更大的特征与更复杂的模型。而且广告结算支持事后返款，可以使用小时级结果对实时流模型进行修正，用于结算与展示</strong>。当然，处置能力最终收敛于实时流过滤系统，会是我们更长期的追求。</p>
+<blockquote>
+<p>  小时级的离线策略的意义：能否对准实时修正，</p>
+</blockquote>
+<p>此外，在线实时过滤系统可以让新同学快速上手迭代其中的组件，将不同同学的产出解耦，更客观的评价业务贡献。</p>
+<h5><span id="332-淘客交易反作弊的处置">3.3.2 淘客交易反作弊的处置</span></h5><p>对于过滤系统判定作弊的淘客，我们首先<strong>冻结其佣金</strong>。搜集证据后下达处罚结果。并通过“预估佣金”、“异常特征”来对待处罚淘客进行分级处置。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019490.png" alt="图片" style="zoom:50%;"></p>
+<p>此外，传统的处罚机制为月结，从媒体开始作弊到下达处罚有一定延迟。一方面不利于及时管控风险，另一方面会导致非主观恶意作弊淘客的强烈反弹，为提升管控的时效，减少淘客的损失，同时提升用户体验，我们在原有的月结机制基础上，<strong>增加周/天的处罚机制</strong>。</p>
+<h4><span id="34-评价">3.4 评价</span></h4><blockquote>
+<p>  拦截率和攻击量：相当于对已知攻击的覆盖能力；</p>
+<p>  准确率和召回率：相当于对全量攻击的防御能力；</p>
+</blockquote>
+<p>对于整个流量反作弊系统，我们有4部分需要评价：</p>
+<ul>
+<li>在线有监督精度；</li>
+<li>在线有监督召回；</li>
+<li>离线无监督精度；</li>
+<li>离线无监督召回；</li>
+</ul>
+<p>因为没有Ground Truth，为了客观评价在线有监督过滤系统的<strong>精度</strong>与<strong>召回</strong>，我们建立了<strong>离线无监督样本库</strong>。使用离线无监督样本库的最终结果，作为在线有监督系统的Groud truth，就可以评估其分类效果。但也引入了后面2部分无监督评价问题。</p>
+<h5><span id="341-有监督过滤系统的评价">3.4.1 有监督过滤系统的评价</span></h5><p>在线与离线2者的关系如下图所示。基于纯无监督的挖掘体系，我们的底线是消灭3.2.1中提到的5种可感知异常流量中的作弊流量，终局则是消灭不可感知的作弊流量。<strong><font color="red"> 通过天级别的事后信息引入，以无监督的方式对线上实时系统过滤结果进行修正，并将标签用于后续在线监督系统学习。</font></strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019764.png" alt="图片" style="zoom:67%;"></p>
+<p><strong><font color="red"> 基于现有标签的AUC、KS、MAX-F1…等指标，会过分高估风控模型效果。</font></strong>例如，实时模型的AUC很容易高于0.99。然而这其中绝大多数的样本都来自于简单的爬虫、或傻瓜式疯狂点击，如下图离散分布的红点。在更高级的作弊上AUC可能不足0.8，如下图红圈中的样本。为了更客观地评价模型，我们引入了“<strong>样本库分级</strong>”，将“简单作弊”与“高级作弊”区分开。并通过结构化采样构造封闭评测集，指导模型迭代。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182019507.jpeg" alt="图片" style="zoom: 50%;"></p>
+<h5><span id="342-无监督精准评价">3.4.2 无监督精准评价</span></h5><p>无监督系统的精准与召回评价一直是业内的难题。传统的评价方法是通过数据抽样，由专家进行标注进行评估。效率低下且非常主观。为此我们借助淘系生态数据，为无监督系统引入了自动化评价体系。基于无效流量转化概率为0的假设，通过统计推断，得到模型在指定置信度下的精度指数下限。基于区间估计的精度推断方法，在后续专题文章中进行介绍。</p>
+<h5><span id="343-无监督召回评价">3.4.3 无监督召回评价</span></h5><p>真实环境下的召回评价，是难以定量的。除了大盘抽样巡检外，由于引入了完备的感知、洞察体系。将所有的异常流量，均归纳至一个风险池。无论何时有需要对流量进行处置（临时止血或迭代模型），我们都可以迅速定位到问题根源。于是将安全感最大化。</p>
+<h3><span id="四-总-结">四、总 结</span></h3><p>高维数据下的<strong>异常检测、大规模图学习、机器学习可解释性、数据可视化方法</strong>等，都是我们的重点研究方向。在我们看来，风控可能是当前机器学习领域，对算法鲁棒性和解释性要求最高、精度要求最极致、系统规模和时效性挑战最大、最能用钱衡量的工业级业务。这就需要我们具备卓越的业务数据洞察能力、工程架构能力，让研究成果转换成坚实的工业级解决方案。</p>
+<p>本文重点介绍了我们在流量反作弊场景下所遇到的问题，以及相应的解决方案。希望通过这篇文章，可以让读者理解我们在流量反作弊领域所遇到的问题，以及解决问题的思路。</p>
+<h3><span id="当前思路总结">当前思路总结</span></h3><ul>
+<li><p><strong><font color="red"> 离线无监督样本库：标签指导（误报率）对准实时进行修正；</font></strong></p>
+</li>
+<li><p><strong><font color="red"> 网约车业务的冒转率可能受到哪些影响？</font></strong></p>
+</li>
+<li><p><strong><font color="red"> 虚假的无效流量对下游任务的影响；</font></strong></p>
+</li>
+<li><p><strong><font color="red"> 1、被动反馈case驱动、领域经验处置 —&gt; 主动感知、洞察分析、标准化的处置体系、成熟的指标大盘</font></strong></p>
+<p><strong><font color="red"> 2、领域经验驱动算法迭代 —&gt; 数据驱动算法迭代</font></strong></p>
+</li>
+<li><p>接口画像：预估出一个接口每天的点击量，<strong><font color="red"> 因此流量反作弊感知的核心之一，就是如何在大盘召回率未知的情况下，精准预估正常流量值</font></strong>。</p>
+</li>
+<li><p><strong><font color="red"> 所有的策略和模型都可以用标准的统计学习方法来描述；</font></strong></p>
+</li>
+<li><p><strong><font color="red"> 实时有监督过滤系统，依赖数据维度的多样性（场景要区分端、app、小程序和web的数据维度不同）+ 低代价特征 + 高效的模型结构；</font></strong></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/285K7D8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/285K7D8/" class="post-title-link" itemprop="url">工业落地（11）青藤云安全-安全狩猎</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-05 22:06:47" itemprop="dateCreated datePublished" datetime="2022-11-05T22:06:47+08:00">2022-11-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 15:21:49" itemprop="dateModified" datetime="2023-04-18T15:21:49+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>166</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="青藤云安全">青藤云安全</span></h2><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181517940.png" alt="image-20221105221126284"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181517783.png" alt="image-20221105221329660"></p>
+<ul>
+<li>护网检测的角度：交叉验证？？？</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181517592.png" alt="image-20221105232013125"></p>
+<ul>
+<li>索引的效率，压缩率</li>
+<li>上下文，攻击树</li>
+<li><strong>开源的解决方案？？？</strong></li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181518268.png" alt="image-20221105232149561"></p>
+<h4><span id="可视化">可视化</span></h4><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181518127.png" alt="image-20221105233353542"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181518088.png" alt="image-20221105235633129"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181518279.png" alt="image-20221105235813988"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181518619.png" alt="image-20221106150043663"></p>
+<h4><span id="attck实战书">ATTCK，实战书</span></h4><h4><span id="attampck-数据源">ATT&amp;CK 数据源</span></h4><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519913.png" alt="image-20221106001624464"></p>
+<h4><span id="attampck-12-中一个套动作">ATT&amp;CK 12 中：一个套动作</span></h4><h4><span id="攻击链路的弱点">攻击链路的弱点</span></h4><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519458.png" alt="image-20221106001713487"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519329.png" alt="image-20221106002243403"></p>
+<h4><span id="告警确认">告警确认</span></h4><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519141.png" alt="image-20221106150625666"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519976.png" alt="image-20221106150704168"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519449.png" alt="image-20221106002701972"></p>
+<h3><span id="二-威胁搜猎案例分析">二、威胁搜猎案例分析</span></h3><p>在发现切入点之后，怎么把整个告警链路描绘出来？</p>
+<ul>
+<li>起点一般是？？</li>
+<li>无文件攻击内存马；</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519752.png" alt="image-20221106151139571"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519579.png" alt="image-20221106151211979"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519132.png" alt="image-20221106151330278"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519605.png" alt="image-20221106151451348"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519493.png" alt="image-20221106151557997"></p>
+<h4><span id="案例二">案例二</span></h4><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519890.png" alt="image-20221106151644322"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519379.png" alt="image-20221106151759583"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519323.png" alt="image-20221106151841034"> </p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181519370.png" alt="image-20221106152030094"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520074.png" alt="image-20221106152054691"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520806.png" alt="image-20221106152157892"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520002.png" alt="image-20221106152227941"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520733.png" alt="image-20221106152258258"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520422.png" alt="image-20221106152429497"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520270.png" alt="image-20221106153100491"></p>
+<p>  <img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520679.png" alt="image-20221106153126202"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520651.png" alt="image-20221106153149463"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520518.png" alt="image-20221106153209441"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520470.png" alt="image-20221106153342379"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520137.png" alt="image-20221106153413544"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520587.png" alt="image-20221106153521553"></p>
+<p> <img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520102.png" alt="image-20221106153714241"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520726.png" alt="image-20221106153749604"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520328.png" alt="image-20221106153855615"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181520996.png" alt="image-20221106153825021"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521998.png" alt="image-20221106154040458"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521246.png" alt="image-20221106154854666"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521644.png" alt="image-20221106154914480"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521152.png" alt="image-20221106154934078"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521895.png" alt="image-20221106155005831"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521565.png" alt="image-20221106155018946"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521464.png" alt="image-20221106155119929">  </p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521605.png" alt="image-20221106155856100"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181521537.png" alt="image-20221106160005755"></p>
+<ul>
+<li>sigma 社区；<ul>
+<li>情报转换；</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/25Z7M1R/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/25Z7M1R/" class="post-title-link" itemprop="url">工业落地（10）图机器学习在蚂蚁推荐业务中的应用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-18 13:21:57 / 修改时间：13:48:06" itemprop="dateCreated datePublished" datetime="2022-09-18T13:21:57+08:00">2022-09-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="图机器学习在蚂蚁推荐业务中的应用">图机器学习在蚂蚁推荐业务中的应用</span></h2><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/BgNQdW3RvLw6rS1Wy-emzA">https://mp.weixin.qq.com/s/BgNQdW3RvLw6rS1Wy-emzA</a></p>
+</blockquote>
+<h3><span id="一-相关背景">一、相关背景</span></h3><p><strong>导读：</strong>本文将介绍图机器学习在蚂蚁推荐系统中的应用。<strong>在蚂蚁的实际业务中，有大量的额外信息，比如知识图谱、其他业务的用户行为等，这些信息通常对推荐业务很有帮助，我们利用图算法连接这些信息和推荐系统，来增强用户兴趣的表达。</strong></p>
+<p>==全文主要围绕以下几方面内容展开：==</p>
+<ul>
+<li>背景</li>
+<li>基于图谱的推荐</li>
+<li>基于社交和文本的推荐</li>
+<li>基于跨域的推荐</li>
+</ul>
+<p><img src="640.png" alt="图片" style="zoom:50%;"></p>
+<p>支付宝除了最主要的支付功能外还有大量的推荐场景，包括腰封推荐、基金推荐和消费券推荐等等。支付宝域内的推荐相比于其他推荐最大的区别是用户的行为稀疏，活跃度较低，很多用户打开支付宝只是为了支付，不会关注其他东西。所以<strong><em>推荐网络中UI边的记录是非常少的，我们的关注点也是低活目标的推荐。</em></strong>比如为了提升DAU，可能只会给低活用户在腰封投放内容，正常用户是看不到的；基金推荐板块我们更关注的是那些没有理财或理财持仓金额较低的用户，引导他们买一些基金进行交易；消费券的推荐也是为了促进低活用户的线下消费。</p>
+<p><strong>低活用户历史行为序列信息很少，一些直接根据UI历史行为序列来推荐的方法可能不太适用于我们的场景</strong>。因此我们引入了下面三个场景信息来增强支付宝域内的UI关系信息：</p>
+<ul>
+<li><strong>社交网络的UU关系</strong></li>
+<li><strong>II图谱关系</strong></li>
+<li><strong>其他场景的UI关系</strong></li>
+</ul>
+<p>通过社交网络的UU关系可以获取低活用户好友的点击偏好，根据同质性就可以推断出该用户的点击偏好，物品与物品之间的图谱关系可以发现、扩展用户对相似物品的喜好信息，最后跨域场景下的用户行为对当前场景的推荐任务也有很大帮助。</p>
+<h3><span id="二-基于图谱的推荐">二、<strong>基于图谱的推荐</strong></span></h3><p><strong>很多推荐场景中用户的行为是稀疏的，尤其是在对新用户进行刻画时，可利用的行为信息很少，所以通常要引入很多辅助信息</strong>，比如attribute、contexts、images等等，我们这里引入的是knowledge graph—知识图谱。</p>
+<p>知识图谱是一个大而全的历史专家知识，有助于我们的算法推荐，但是还存在两个问题：</p>
+<ul>
+<li><p><strong>一是图谱本身可能并不是为了这个业务而设计的，所以里面包含很多无用信息，训练过程也非常耗时。</strong>一个常用的解决办法是只保留图谱中能关联上我们商品的边，把其他边都删掉，但这又可能会造成一些信息损失，因为其他边也是有用的。</p>
+</li>
+<li><p><strong>二是图谱用做辅助信息时，没办法将用户的偏好聚合到图谱内部的边上</strong>。==如上图所示，用户1喜欢电影1和电影2的原因可能是因为它们有同一个主演，而用户2喜欢电影2和电影3的原因是它们的类型相同==。如果只用普通的图模型的UI、II关系来建模，只能得到用户和电影的相关性，而没办法将用户的这些潜在意图聚合到图谱中。</p>
+</li>
+</ul>
+<p>所以我们后面主要解决图谱蒸馏和图谱精炼这两个问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -278,12 +956,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="linux跨平台二进制函数识别">Linux跨平台二进制函数识别</span></h2>
-<p>https://www.datafountain.cn/competitions/593/datasets</p>
-<h2><span id="web攻击检测与分类识别">Web攻击检测与分类识别</span></h2>
-<p>https://www.datafountain.cn/competitions/596/ranking?isRedance=0&amp;sch=2006&amp;page=1</p>
-<h2><span id="大数据平台安全事件检测与分类识别">大数据平台安全事件检测与分类识别</span></h2>
-<p>https://www.datafountain.cn/competitions/595/datasets</p>
+          <h2><span id="linux跨平台二进制函数识别">Linux跨平台二进制函数识别</span></h2><p><a target="_blank" rel="noopener" href="https://www.datafountain.cn/competitions/593/datasets">https://www.datafountain.cn/competitions/593/datasets</a></p>
+<h2><span id="web攻击检测与分类识别">Web攻击检测与分类识别</span></h2><p><a target="_blank" rel="noopener" href="https://www.datafountain.cn/competitions/596/ranking?isRedance=0&amp;sch=2006&amp;page=1">https://www.datafountain.cn/competitions/596/ranking?isRedance=0&amp;sch=2006&amp;page=1</a></p>
+<h2><span id="大数据平台安全事件检测与分类识别">大数据平台安全事件检测与分类识别</span></h2><p><a target="_blank" rel="noopener" href="https://www.datafountain.cn/competitions/595/datasets">https://www.datafountain.cn/competitions/595/datasets</a></p>
 
       
     </div>
@@ -383,13 +1058,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="特征重要性-模型的可解释性">特征重要性 - 模型的可解释性</span></h2>
-<blockquote>
-<p>机器学习模型可解释性进行到底 —— <strong>SHAP值理论</strong>（一） -
-悟乙己的文章 - 知乎 https://zhuanlan.zhihu.com/p/364919024</p>
-<p><strong>Permutation Importance</strong></p>
-<p>机器学习模型可解释性进行到底——特征重要性（四） - 悟乙己的文章 - 知乎
-https://zhuanlan.zhihu.com/p/364922142</p>
+          <h2><span id="特征重要性-模型的可解释性">特征重要性 - 模型的可解释性</span></h2><blockquote>
+<p>  机器学习模型可解释性进行到底 —— <strong>SHAP值理论</strong>（一） - 悟乙己的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/364919024">https://zhuanlan.zhihu.com/p/364919024</a></p>
+<p>  <strong>Permutation Importance</strong></p>
+<p>  机器学习模型可解释性进行到底——特征重要性（四） - 悟乙己的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/364922142">https://zhuanlan.zhihu.com/p/364922142</a></p>
 </blockquote>
 
       
@@ -488,12 +1160,9 @@ https://zhuanlan.zhihu.com/p/364922142</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="科大讯飞2021ai开发者大赛恶意软件分类">科大讯飞2021
-A.I.开发者大赛——恶意软件分类</span></h2>
-<blockquote>
-<p>比赛链接：https://link.zhihu.com/?target=https%3A//challenge.xfyun.cn/topic/info%3Ftype%3Dmalware-classification</p>
-<p><strong>操作码逆词频共现矩阵 + Vision Transformer</strong> - 知乎
-https://zhuanlan.zhihu.com/p/396207089</p>
+          <h2><span id="科大讯飞2021-ai开发者大赛恶意软件分类">科大讯飞2021 A.I.开发者大赛——恶意软件分类</span></h2><blockquote>
+<p>  比赛链接：<a href="https://link.zhihu.com/?target=https%3A//challenge.xfyun.cn/topic/info%3Ftype%3Dmalware-classification">https://link.zhihu.com/?target=https%3A//challenge.xfyun.cn/topic/info%3Ftype%3Dmalware-classification</a></p>
+<p>  <strong>操作码逆词频共现矩阵 +  Vision Transformer</strong> - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/396207089">https://zhuanlan.zhihu.com/p/396207089</a></p>
 </blockquote>
 
       
@@ -593,7 +1262,6 @@ https://zhuanlan.zhihu.com/p/396207089</p>
     
     <div class="post-body" itemprop="articleBody">
           
-
       
     </div>
 
@@ -690,29 +1358,17 @@ https://zhuanlan.zhihu.com/p/396207089</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="fxysecurity-scenes-feature-engineering-toolkit">FXY：<em>Security-Scenes-Feature-Engineering-Toolkit</em></span></h2>
-<blockquote>
-<p>https://github.com/404notf0und/FXY/blob/master/docs/%E9%9C%80%E6%B1%82%E5%92%8C%E8%AE%BE%E8%AE%A1.md</p>
+          <h2><span id="fxysecurity-scenes-feature-engineering-toolkit">FXY：<em>Security-Scenes-Feature-Engineering-Toolkit</em></span></h2><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/404notf0und/FXY/blob/master/docs/%E9%9C%80%E6%B1%82%E5%92%8C%E8%AE%BE%E8%AE%A1.md">https://github.com/404notf0und/FXY/blob/master/docs/%E9%9C%80%E6%B1%82%E5%92%8C%E8%AE%BE%E8%AE%A1.md</a></p>
 </blockquote>
-<h3><span id="介绍">介绍</span></h3>
-<p>FXY是一款特征工程框架，用于安全场景中数据预处理、数据预分析、数据特征化和向量化等任务。FXY这个名字一方面代表这款工具的目的是从原始安全数据中获取Feature
-X和Feature
-Y用于对接人工智能算法，另一方面寓意着人工智能的本质，函数Y=F(X)。FXY的特性是支持多种安全场景多种安全数据的预处理和特征化，内置多种NLP通用特征提取方法，内置脚本扩展支持二次开发。</p>
-<h3><span id="需求">需求</span></h3>
-<p>无论机器学习、深度学习还是强化学习应用在哪个领域，<strong>其处理流程主要有五个环节：问题-&gt;数据-&gt;特征化-&gt;算法-&gt;结果</strong>，数据的数字化，狭义的来说是数据的特征化，在整个流程中起到了承上启下的关键作用，承上，<strong>特征化的好坏直接反映了对问题本质的理解深入与否</strong>，启下，作为算法的输入，一定程度上决定了最终结果的天花板。这是FXY定位于安全场景下特征工程环节的一点原因。另一点原因是考虑到算法环节的不确定性因素和确定性因素，不确定性因素导致难以形成统一的范式，确定性因素导致问题已被解决。就算法的应用来说，机器学习算法、深度学习算法和超参数众多，在同一特征化方法下，难以客观比较不同算法的性能，并且找到泛化性强的SOTA算法。<strong>就算法本身来说，现有的框架tensorflow、keras等对算法的封装已经很完美了，重复造轮子意义不大。如果给算法环节盖上安全场景的帽子，问题依然如此，这是FXY不选择定位于安全场景下算法环节的原因。</strong></p>
-<h3><span id="架构设计">架构设计</span></h3>
-<p><img src="https://i.imgur.com/d2Rq9hc.png"></p>
+<h3><span id="介绍">介绍</span></h3><p>FXY是一款特征工程框架，用于安全场景中数据预处理、数据预分析、数据特征化和向量化等任务。FXY这个名字一方面代表这款工具的目的是从原始安全数据中获取Feature X和Feature Y用于对接人工智能算法，另一方面寓意着人工智能的本质，函数Y=F(X)。FXY的特性是支持多种安全场景多种安全数据的预处理和特征化，内置多种NLP通用特征提取方法，内置脚本扩展支持二次开发。</p>
+<h3><span id="需求">需求</span></h3><p>无论机器学习、深度学习还是强化学习应用在哪个领域，<strong>其处理流程主要有五个环节：问题-&gt;数据-&gt;特征化-&gt;算法-&gt;结果</strong>，数据的数字化，狭义的来说是数据的特征化，在整个流程中起到了承上启下的关键作用，承上，<strong>特征化的好坏直接反映了对问题本质的理解深入与否</strong>，启下，作为算法的输入，一定程度上决定了最终结果的天花板。这是FXY定位于安全场景下特征工程环节的一点原因。另一点原因是考虑到算法环节的不确定性因素和确定性因素，不确定性因素导致难以形成统一的范式，确定性因素导致问题已被解决。就算法的应用来说，机器学习算法、深度学习算法和超参数众多，在同一特征化方法下，难以客观比较不同算法的性能，并且找到泛化性强的SOTA算法。<strong>就算法本身来说，现有的框架tensorflow、keras等对算法的封装已经很完美了，重复造轮子意义不大。如果给算法环节盖上安全场景的帽子，问题依然如此，这是FXY不选择定位于安全场景下算法环节的原因。</strong></p>
+<h3><span id="架构设计">架构设计</span></h3><p><img src="https://i.imgur.com/d2Rq9hc.png" alt></p>
 <p>因为机器学习解决安全问题的流程固定为安全问题-&gt;数据-&gt;数字化-&gt;算法-&gt;结果，<strong>具体到FXY的架构设计，从下到上依次是安全场景层-&gt;数据的数据层-&gt;数据清洗层-&gt;特征层-&gt;算法层-&gt;API层</strong>，对应的FXY各模块层次结构依次为内置函数模块-&gt;数据预处理模块-&gt;特征工程模块-&gt;tensorflow/keras-&gt;控制器模块。</p>
-<p>扩展可扩展的，因为安全场景较多且杂，完全不可能用一种或少数几种特征方法解决所有问题，想到的一种解决方式是针对安全问题做特征方法的插件化扩展，把每个安全问题对应每个CMS，每个feature
-engineering方法对应每个POC，那么就可以像写CMS
-POC一样专注于安全场景的底层数据feature engineering。</p>
-<h3><span id="集成">集成</span></h3>
-<p>笔者Github上AI-for-Security-Learning仓库专注于知识，而此FXY仓库专注于工具，现依赖前者仓库，笔者开始二刷，站在前人的肩膀上，不断集成优质方法到FXY框架中，此框架不做未知的创新。现已集成4种安全场景，4种特征工程方法，四种安全场景分别是<strong>LSTM识别恶意HTTP请求@cdxy，AI-Driven-WAF@exp-db，Phishing
-URL
-Classification@surajr，使用深度学习检测XSS@Webber，基于深度学习的恶意样本行为检测@ApplePig<span class="citation" data-cites="360云影实验室">@360云影实验室</span></strong>，四种特征工程方法分别是<strong>钓鱼url的统计特征，恶意url和恶意软件api的词典索引特征，恶意url的TF-IDF特征，xss的word2vec词嵌入向量</strong>。</p>
+<p>扩展可扩展的，因为安全场景较多且杂，完全不可能用一种或少数几种特征方法解决所有问题，想到的一种解决方式是针对安全问题做特征方法的插件化扩展，把每个安全问题对应每个CMS，每个feature engineering方法对应每个POC，那么就可以像写CMS POC一样专注于安全场景的底层数据feature engineering。</p>
+<h3><span id="集成">集成</span></h3><p>笔者Github上AI-for-Security-Learning仓库专注于知识，而此FXY仓库专注于工具，现依赖前者仓库，笔者开始二刷，站在前人的肩膀上，不断集成优质方法到FXY框架中，此框架不做未知的创新。现已集成4种安全场景，4种特征工程方法，四种安全场景分别是<strong>LSTM识别恶意HTTP请求@cdxy，AI-Driven-WAF@exp-db，Phishing URL Classification@surajr，使用深度学习检测XSS@Webber，基于深度学习的恶意样本行为检测@ApplePig@360云影实验室</strong>，四种特征工程方法分别是<strong>钓鱼url的统计特征，恶意url和恶意软件api的词典索引特征，恶意url的TF-IDF特征，xss的word2vec词嵌入向量</strong>。</p>
 <p>在二刷并集成的过程中，需要彻底读懂原作者的文章思路和代码，然后改写到FXY限定的框架中，学到了很多。同时输出一份二刷笔记，里面不但包括已集成代码到框架中的原文理解，还包括一些暂时无法集成的文章的理解，文档化记录了原作者用到的安全场景、解决的思路、数据的构成、数据预处理方法、特征的方法、使用的模型、有无监督分类，二刷笔记持续更新。</p>
-<h3><span id="潜在问题">潜在问题</span></h3>
-<p><strong>FXY框架专注于安全问题、数据和特征化三个环节</strong>:这其中数据环节存在数据源难获取的问题，有些文章中的数据属于公司级数据不会开源，较难获取，这导致只能使用开源数据集或自己采集数据集复现原作者的实验，集成并测试框架，虽说不会影响FXY框架的预处理、预分析和特征化等主要功能，但这会导致数据环节数据本身的价值变小，一定程度上减小了FXY框架的价值，因为可能大多数人遇到的问题不是没有方法，而是没有数据，数据本身的价值和数据分析的价值都很高，前者价值甚至大于后者。而CMS的POC框架可以靠各种搜索引擎和爬虫来获取数据源，输送给POC脚本，就不会存在此问题。</p>
+<h3><span id="潜在问题">潜在问题</span></h3><p><strong>FXY框架专注于安全问题、数据和特征化三个环节</strong>:这其中数据环节存在数据源难获取的问题，有些文章中的数据属于公司级数据不会开源，较难获取，这导致只能使用开源数据集或自己采集数据集复现原作者的实验，集成并测试框架，虽说不会影响FXY框架的预处理、预分析和特征化等主要功能，但这会导致数据环节数据本身的价值变小，一定程度上减小了FXY框架的价值，因为可能大多数人遇到的问题不是没有方法，而是没有数据，数据本身的价值和数据分析的价值都很高，前者价值甚至大于后者。而CMS的POC框架可以靠各种搜索引擎和爬虫来获取数据源，输送给POC脚本，就不会存在此问题。</p>
 <p>这促使我们是不是可以通过爬虫爬取更多异源开源数据，用开源弥补闭源，或是本地搭建环境采集数据，缓解数据源缺失的问题，从而使FXY框架的价值不只在于数据分析，更在于数据集本身，采集数据集是个脏活累活，在规划中。</p>
 
       
@@ -793,7 +1449,7 @@ Classification@surajr，使用深度学习检测XSS@Webber，基于深度学习�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>984</span>
+      <span>981</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -811,660 +1467,15 @@ Classification@surajr，使用深度学习检测XSS@Webber，基于深度学习�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-阿里云恶意文件检测平台">一、阿里云恶意文件检测平台</span></h2>
-<p>Linux沙箱 ｜
-阿里云恶意文件检测平台开放Linux二进制文件检测：https://www.anquanke.com/post/id/276349#10006-weixin-1-52626-6b3bffd01fdde4900130bc5a2751b6d1</p>
-<h3><span id="11-简介">1.1 简介</span></h3>
-<p>在病毒检测方向，一直以来常见的两种手段就是<strong>静态特征检测</strong>与<strong>动态行为检测</strong>。两者各有优势与不足，<strong>静态特征检测方案实施成本更低，检出结果也更精准，但是其泛化能力不足</strong>，针对具有高级对抗能力的恶意文件显得力不从心，并且天然地处于被动的地位，人力运营成本会更高。</p>
+          <h2><span id="一-阿里云恶意文件检测平台">一、阿里云恶意文件检测平台</span></h2><p>Linux沙箱 ｜ 阿里云恶意文件检测平台开放Linux二进制文件检测：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/276349#10006-weixin-1-52626-6b3bffd01fdde4900130bc5a2751b6d1">https://www.anquanke.com/post/id/276349#10006-weixin-1-52626-6b3bffd01fdde4900130bc5a2751b6d1</a></p>
+<h3><span id="11-简介">1.1 简介</span></h3><p>在病毒检测方向，一直以来常见的两种手段就是<strong>静态特征检测</strong>与<strong>动态行为检测</strong>。两者各有优势与不足，<strong>静态特征检测方案实施成本更低，检出结果也更精准，但是其泛化能力不足</strong>，针对具有高级对抗能力的恶意文件显得力不从心，并且天然地处于被动的地位，人力运营成本会更高。</p>
 <p>动态行为检测实施成本相对较高，需要有足够的资源，而且检出的结果在一定程度上不如静态检测精准，但是它最大的优势是可以从<strong>恶意行为、技术手段</strong>的角度识别恶意文件，具有极大的泛化能力。对于需要检测大量恶意文件的安全厂商来说，人工运营所有样本并提取静态特征是不现实的，而沙箱的作用也就显现出来了：在海量的文件中，识别出最值得关注的恶意文件。</p>
-<h3><span id="12-沙箱优势">1.2 沙箱优势</span></h3>
-<h4><span id="高性能的环境仿真">高性能的环境仿真</span></h4>
-<p><strong>云沙箱依托于阿里云神龙架构，在具备高性能的仿真的同时，还支持资源池化和自动化运维的能力</strong>。利用自定义的虚拟化技术和定制的沙箱OS内核，对恶意样本使用的反虚拟化的技术具备天然的对抗能力，配合上专门打造的二进制检测探针，可以在安全、高效、仿真的隔离环境中对二进制进行深度的行为分析。</p>
-<h4><span id="全面的动态行为分析">全面的动态行为分析</span></h4>
-<p><strong>基于虚拟化构建的沙箱深度分析技术，对进程、文件、网络、敏感系统调用、rootkit、漏洞利用等进行全面监控</strong>，配合智能模型规则检测引擎，快速分析出样本潜在的恶意行为。</p>
-<h4><span id="海量的数据积累">海量的数据积累</span></h4>
-<p>阿里云沙箱服务于阿里云安全云上恶意文件检测，积累了海量样本数据，提炼出大量有独检优势的行为检测规则。</p>
-<h3><span id="33-检测优势">3.3 检测优势</span></h3>
-<h4><span id="算法模型覆盖未知威胁">算法模型——覆盖未知威胁</span></h4>
-<p>基于阿里云平台海量样本数据和强劲计算能力，<strong>采用“机器智能(神经网络)”与“专家智能(行为标签、ATT&amp;CK)”结合的智能安全思想</strong>，挖掘海量样本数据中可疑内容信息和行为标签威胁值，构建智能的威胁检测模型发现新威胁。</p>
+<h3><span id="12-沙箱优势">1.2 沙箱优势</span></h3><h4><span id="高性能的环境仿真">高性能的环境仿真</span></h4><p><strong>云沙箱依托于阿里云神龙架构，在具备高性能的仿真的同时，还支持资源池化和自动化运维的能力</strong>。利用自定义的虚拟化技术和定制的沙箱OS内核，对恶意样本使用的反虚拟化的技术具备天然的对抗能力，配合上专门打造的二进制检测探针，可以在安全、高效、仿真的隔离环境中对二进制进行深度的行为分析。</p>
+<h4><span id="全面的动态行为分析">全面的动态行为分析</span></h4><p><strong>基于虚拟化构建的沙箱深度分析技术，对进程、文件、网络、敏感系统调用、rootkit、漏洞利用等进行全面监控</strong>，配合智能模型规则检测引擎，快速分析出样本潜在的恶意行为。</p>
+<h4><span id="海量的数据积累">海量的数据积累</span></h4><p>阿里云沙箱服务于阿里云安全云上恶意文件检测，积累了海量样本数据，提炼出大量有独检优势的行为检测规则。</p>
+<h3><span id="33-检测优势">3.3 检测优势</span></h3><h4><span id="算法模型覆盖未知威胁">算法模型——覆盖未知威胁</span></h4><p>基于阿里云平台海量样本数据和强劲计算能力，<strong>采用“机器智能(神经网络)”与“专家智能(行为标签、ATT&amp;CK)”结合的智能安全思想</strong>，挖掘海量样本数据中可疑内容信息和行为标签威胁值，构建智能的威胁检测模型发现新威胁。</p>
 <p>将专家知识与海量数据结合智能化构建以<strong>ATT&amp;CK为核心的多模态特征表示</strong>，对样本行为从技术战术度量、敏感信息表征、意图逻辑推理等角度进行多维度刻画、分析，同时依赖机器智能的学习泛化能力、检测模型能覆盖更多的未知，拓展威胁发现边界。</p>
-<figure>
-<img src="https://p2.ssl.qhimg.com/t019938cd9a1afcd563.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/29WR3P/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/29WR3P/" class="post-title-link" itemprop="url">特征工程（0）【Nan】数据清洗</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-08 17:48:29" itemprop="dateCreated datePublished" datetime="2022-07-08T17:48:29+08:00">2022-07-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-18 16:48:00" itemprop="dateModified" datetime="2022-07-18T16:48:00+08:00">2022-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>536</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="特征工程-数据清洗">特征工程-数据清洗</span></h2>
-<blockquote>
-<p>特征工程 - 未来达摩大师的文章 - 知乎
-https://zhuanlan.zhihu.com/p/476659737</p>
-<p>这9个特征工程使用技巧，解决90%机器学习问题！ - Python与数据挖掘的文章
-- 知乎 https://zhuanlan.zhihu.com/p/462744763</p>
-<p>有哪些精彩的特征工程案例？ - 京东科技风险算法与技术的回答 - 知乎
-https://www.zhihu.com/question/400064722/answer/1308358333</p>
-</blockquote>
-<figure>
-<img src="https://pic1.zhimg.com/v2-3baead31deae5b339481aa843a13e21c_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>数据格式内容错误数据来源有多种，有些是传感器采集，然后算法提取的特征数据；有些是采集的控制器的数据；还有一些应用场合，则是用户/访客产生的，数据肯定存在格式和内容上不一致的情况，所以在进行模型构建之前需要先进行数据的格式内容清洗操作。逻辑错误清洗主要是通过简单的逻辑推理发现数据中的问题数据，防止分析结果走偏，主要包含以下几个步骤：</p>
-<p><strong><em>1.数据去重，去除或替换不合理的值；</em></strong></p>
-<p><strong><em>2.去除或重构不可靠的字段值（修改矛盾的内容）；</em></strong></p>
-<p><strong><em>3.去除异常点数据。</em></strong></p>
-<h2><span id="采样">采样</span></h2>
-<blockquote>
-<p>随机采样方法整理与讲解（MCMC、Gibbs Sampling等） - 向阳树的文章 -
-知乎 https://zhuanlan.zhihu.com/p/109978580</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2ZWAT5R/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2ZWAT5R/" class="post-title-link" itemprop="url">机器学习（11）CatBoost</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-02 15:21:08" itemprop="dateCreated datePublished" datetime="2022-07-02T15:21:08+08:00">2022-07-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-16 21:38:38" itemprop="dateModified" datetime="2023-04-16T21:38:38+08:00">2023-04-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">集成学习</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="深入理解catboost">深入理解CatBoost</span></h2>
-<blockquote>
-<p>深入理解CatBoost - Microstrong的文章 - 知乎
-https://zhuanlan.zhihu.com/p/102540344</p>
-</blockquote>
-<p><strong>本文主要内容概览：</strong></p>
-<figure>
-<img src="https://pic1.zhimg.com/v2-f6a9520c6db0ba77ad620800cb36c054_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3><span id="一-catboost简介"><strong>一、CatBoost简介</strong></span></h3>
-<p>CatBoost是俄罗斯的搜索巨头Yandex在2017年开源的机器学习库，是Boosting族算法的一种。CatBoost和XGBoost、LightGBM并称为GBDT的三大主流神器，都是在GBDT算法框架下的一种改进实现。XGBoost被广泛的应用于工业界，LightGBM有效的提升了GBDT的计算效率，而Yandex的CatBoost号称是比XGBoost和LightGBM在算法准确率等方面表现更为优秀的算法。</p>
-<p>CatBoost是一种基于对称决策树（oblivious
-trees）为基学习器实现的参数较少、支持类别型变量和高准确性的GBDT框架，主要解决的痛点是高效合理地处理类别型特征，这一点从它的名字中可以看出来，<strong>CatBoost是由Categorical和Boosting组成。此外，CatBoost还解决了梯度偏差（Gradient
-Bias）以及预测偏移（Prediction
-shift）的问题，从而减少过拟合的发生，进而提高算法的准确性和泛化能力。</strong></p>
-<p><strong>与XGBoost、LightGBM相比，CatBoost的创新点有：</strong></p>
-<ul>
-<li><strong>嵌入了自动将类别型特征处理为数值型特征的创新算法。首先对categorical
-features做一些统计，计算某个类别特征（category）出现的频率，之后加上超参数，生成新的数值型特征（numerical
-features）。</strong></li>
-<li><strong>Catboost还使用了组合类别特征，可以利用到特征之间的联系，这极大的丰富了特征维度</strong>。</li>
-<li>采用排序提升的方法对抗训练集中的噪声点，从而避免梯度估计的偏差，进而解决预测偏移的问题。</li>
-<li>采用了<strong>完全对称树作为基模型</strong>。</li>
-</ul>
-<h3><span id="二-类别型特征">二、<strong>类别型特征</strong></span></h3>
-<p><strong>所谓类别型特征，即这类特征不是数值型特征，而是离散的集合</strong>，比如省份名（山东、山西、河北等），城市名（北京、上海、深圳等），学历（本科、硕士、博士等）。在梯度提升算法中，最常用的是将这些类别型特征转为数值型来处理，一般类别型特征会转化为一个或多个数值型特征。</p>
-<p><strong>类别型特征基数比较低（low-cardinality
-features）</strong>，即该特征的所有值去重后构成的集合元素个数比较少，一般利用One-hot编码方法将特征转为数值型。One-hot编码可以在数据预处理时完成，也可以在模型训练的时候完成，从训练时间的角度，后一种方法的实现更为高效，CatBoost对于基数较低的类别型特征也是采用后一种实现。</p>
-<p><strong>高基数类别型特征（high cardinality
-features）</strong>当中，比如
-<code>user ID</code>，这种编码方式会产生大量新的特征，造成维度灾难。一种折中的办法是可以将类别分组成有限个的群体再进行One-hot编码。<strong>一种常被使用的方法是根据目标变量统计（Target
-Statistics，以下简称TS）进行分组</strong>，目标变量统计用于估算每个类别的目标变量期望值。甚至有人直接用TS作为一个新的数值型变量来代替原来的类别型变量。<strong><font color="red">
-重要的是，可以通过对TS数值型特征的阈值设置，基于对数损失、基尼系数或者均方差，得到一个对于训练集而言将类别一分为二的所有可能划分当中最优的那个。</font></strong></p>
-<p>在LightGBM当中，类别型特征用每一步梯度提升时的梯度统计（Gradient
-Statistics，以下简称GS）来表示。虽然为建树提供了重要的信息，但是这种方法有以下两个缺点：</p>
-<ul>
-<li>增加计算时间，因为需要对每一个类别型特征，在迭代的每一步，都需要对GS进行计算；</li>
-<li>增加存储需求，对于一个类别型变量，需要存储每一次分离每个节点的类别；</li>
-</ul>
-<p><strong>为了克服这些缺点，LightGBM以损失部分信息为代价将所有的长尾类别归为一类</strong>，作者声称这样处理高基数类别型特征时比One-hot编码还是好不少。不过如果采用TS特征，那么对于每个类别只需要计算和存储一个数字。</p>
-<p>因此，采用TS作为一个新的数值型特征是最有效、信息损失最小的处理类别型特征的方法。TS也被广泛应用在点击预测任务当中，这个场景当中的类别型特征有用户、地区、广告、广告发布者等。接下来我们着重讨论TS，暂时将One-hot编码和GS放一边。</p>
-<h4><span id="21-目标变量统计targetstatistics">2.1 <strong>目标变量统计（Target
-Statistics）</strong></span></h4>
-<p><strong><font color="red">
-CatBoost算法的设计初衷是为了更好的处理GBDT特征中的categorical
-features</font></strong>。在处理 GBDT特征中的categorical
-features的时候，最简单的方法是用 categorical feature
-对应的标签的平均值来替换。在决策树中，标签平均值将作为节点分裂的标准。<strong>这种方法被称为
-Greedy Target-based Statistics , 简称 Greedy
-TS</strong>，用公式来表达就是：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Chat%7Bx%7D_k%5Ei%3D%5Cfrac%7B%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Bx_%7Bj%2Ck%7D%3Dx_%7Bi%2Ck%7D%5D%5Ccdot+Y_i%7D%7B%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Bx_%7Bj%2Ck%7D%3Dx_%7Bi%2Ck%7D%5D%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>这种方法有一个显而易见的缺陷，就是通常特征比标签包含更多的信息，<strong><font color="red">
-如果强行用标签的平均值来表示特征的话，当训练数据集和测试数据集数据结构和分布不一样的时候会出条件偏移问题。</font></strong></p>
-<p>一个标准的改进 Greedy
-TS的方式是添加先验分布项，这样可以减少噪声和低频率类别型数据对于数据分布的影响：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Chat%7Bx%7D_k%5Ei%3D%5Cfrac%7B%5Csum_%7Bj%3D1%7D%5E%7Bp-1%7D%7B%5Bx_%7B%5Csigma_%7Bj%2Ck%7D%7D%3Dx_%7B%5Csigma_%7Bp%2Ck%7D%7D%5D%7DY_%7B%5Csigma_%7Bj%7D%7D%2Ba%5Ccdot+p%7D%7B%5Csum_%7Bj%3D1%7D%5E%7Bp-1%7D%7B%5Bx_%7B%5Csigma_%7Bj%2Ck%7D%7D%3Dx_%7B%5Csigma_%7Bp%2Ck%7D%7D%5D%7D%2Ba%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中<span class="math inline">\(p\)</span>是添加的先验项， <span class="math inline">\(a\)</span>通常是大于 <img src="https://www.zhihu.com/equation?tex=+0+" alt="[公式]">
-的权重系数。添加先验项是一个普遍做法，针对类别数较少的特征，它可以减少噪声数据。对于回归问题，一般情况下，先验项可取数据集label的均值。对于二分类，先验项是正例的先验概率。利用多个数据集排列也是有效的，但是，如果直接计算可能导致过拟合。CatBoost利用了一个比较新颖的计算叶子节点值的方法，这种方式(oblivious
-trees，对称树)可以避免多个数据集排列中直接计算会出现过拟合的问题。</p>
-<p>当然，在论文《CatBoost: unbiased boosting with categorical
-features》中，还提到了其它几种改进Greedy TS的方法，分别有：Holdout
-TS、Leave-one-out TS、Ordered
-TS。我这里就不再翻译论文中的这些方法了，感兴趣的同学可以自己翻看一下原论文。</p>
-<h4><span id="22-特征组合">2.2 <strong>特征组合</strong></span></h4>
-<p>值得注意的是几个类别型特征的任意组合都可视为新的特征。例如，在音乐推荐应用中，我们有两个类别型特征：用户ID和音乐流派。如果有些用户更喜欢摇滚乐，将用户ID和音乐流派转换为数字特征时，根据上述这些信息就会丢失。结合这两个特征就可以解决这个问题，并且可以得到一个新的强大的特征。然而，组合的数量会随着数据集中类别型特征的数量成指数增长，因此不可能在算法中考虑所有组合。为当前树构造新的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=分割点&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22102540344%22%7D">分割点</a>时，CatBoost会采用贪婪的策略考虑组合。对于树的第一次分割，不考虑任何组合。对于下一个分割，CatBoost将当前树的所有组合、类别型特征与数据集中的所有类别型特征相结合，并将新的组合类别型特征动态地转换为数值型特征。CatBoost还通过以下方式生成数值型特征和类别型特征的组合：树中选定的所有分割点都被视为具有两个值的类别型特征，并像类别型特征一样被进行组合考虑。</p>
-<h4><span id="23catboost处理categorical-features总结">2.3
-<strong>CatBoost处理Categorical features总结</strong></span></h4>
-<ul>
-<li><strong>首先计算一些数据的statistics。计算某个category出现的频率，加上超参数，生成新的numerical
-features</strong>。这一策略要求同一标签数据不能排列在一起（即先全是0之后全是1这种方式），训练之前需要打乱数据集。</li>
-<li>使用数据的不同排列（实际上是4个）。在每一轮建立树之前，先扔一轮骰子，决定使用哪个排列来生成树。</li>
-<li>考虑使用categorical
-features的不同组合。例如颜色和种类组合起来，可以构成类似于blue
-dog这样的特征。当需要组合的categorical
-features变多时，CatBoost只考虑一部分<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=combinations&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22102540344%22%7D">combinations</a>。在选择第一个节点时，只考虑选择一个特征，例如A。在生成第二个节点时，考虑A和任意一个categorical
-feature的组合，选择其中最好的。就这样使用贪心算法生成combinations。</li>
-<li><strong>除非向gender这种维数很小的情况，不建议自己生成One-hot编码向量，最好交给算法来处理。</strong></li>
-</ul>
-<h2><span id="三-catboostqampa">三、CatboostQ&amp;A</span></h2>
-<h4><span id="31catboost与xgboost-lightgbm的联系与区别">3.1
-<strong>CatBoost与XGBoost、LightGBM的联系与区别？</strong></span></h4>
-<p>（1）2014年3月XGBoost算法首次被<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=陈天奇&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22102540344%22%7D">陈天奇</a>提出，但是直到2016年才逐渐著名。2017年1月微软发布LightGBM第一个稳定版本。2017年4月Yandex开源CatBoost。自从XGBoost被提出之后，很多文章都在对其进行各种改进，CatBoost和LightGBM就是其中的两种。</p>
-<p>（2）<strong>CatBoost处理类别型特征十分灵活，可直接传入类别型特征的列标识，模型会自动将其使用One-hot编码，还可通过设置
-one_hot_max_size参数来限制One-hot特征向量的长度</strong>。如果不传入类别型特征的列标识，那么CatBoost会把所有列视为数值特征。对于One-hot编码超过设定的one_hot_max_size值的特征来说，CatBoost将会使用一种高效的encoding方法，与mean
-encoding类似，但是会降低过拟合。处理过程如下：</p>
-<ul>
-<li>将输入样本集随机排序，并生成多组随机排列的情况；</li>
-<li>将浮点型或属性值标记转化为整数；</li>
-<li>将所有的类别型特征值结果都根据以下公式，转化为数值结果；</li>
-</ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=avg%5C_target+%3D+%5Cfrac%7BcountInClass+%2B+prior%7D%7BtotalCount+%2B+1%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中 countInClass
-表示在当前类别型特征值中有多少样本的标记值是1；prior
-是分子的初始值，根据初始参数确定。totalCount
-是在所有样本中（包含当前样本）和当前样本具有相同的类别型特征值的样本数量。</p>
-<p>LighGBM 和 CatBoost
-类似，也可以通过使用特征名称的输入来处理类别型特征数据，它没有对数据进行独热编码，因此速度比独热编码快得多。LighGBM
-使用了一个特殊的算法来确定属性特征的分割值。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">train_data <span class="token operator">=</span> lgb<span class="token punctuation">.</span>Dataset<span class="token punctuation">(</span>data<span class="token punctuation">,</span> label<span class="token operator">=</span>label<span class="token punctuation">,</span> feature_name<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'c1'</span><span class="token punctuation">,</span> <span class="token string">'c2'</span><span class="token punctuation">,</span> <span class="token string">'c3'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> categorical_feature<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'c3'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment"># 注意，在建立适用于 LighGBM 的数据集之前，需要将类别型特征变量转化为整型变量，此算法不允许将字符串数据传给类别型变量参数。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>（3）XGBoost 和 CatBoost、 LighGBM 算法不同，XGBoost
-本身无法处理类别型特征，而是像随机森林一样，只接受数值数据。因此在将类别型特征数据传入
-XGBoost
-之前，必须通过各种编码方式：例如序号编码、独热编码和二进制编码等对数据进行处理。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1RE0J1S/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1RE0J1S/" class="post-title-link" itemprop="url">风控算法（3）阿里云-风险商品图算法识别</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-30 13:16:10" itemprop="dateCreated datePublished" datetime="2022-06-30T13:16:10+08:00">2022-06-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 20:40:22" itemprop="dateModified" datetime="2023-04-18T20:40:22+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="阿里安全-icdm-2022大规模电商图上的风险商品检测赛">【阿里安全 ×
-ICDM 2022】大规模电商图上的风险商品检测赛</span></h2>
-<blockquote>
-<ul>
-<li><p><strong>比赛链接</strong>：Https://tianchi.aliyun.com/competition/entrance/531976/introduction</p></li>
-<li><p>ICDM 2022: Risk Commodities Detection on Large-Scale E-Commence
-Graphs：https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution</p></li>
-<li><p>ICDM2022大规模电商图上的风险商品检测比赛（第六名）：https://github.com/JaySaligia/SGHQS</p></li>
-<li><p><strong>ICDM 2022 : 大规模电商图上的风险商品检测 --
-top1方案分享+代码</strong>：https://github.com/fmc123653/Competition/tree/main/ICDMCup2022-top1</p></li>
-<li><p><strong>【论文笔记】KGAT：融合知识图谱的 CKG 表示 +
-图注意力机制的推荐系统</strong>：https://zhuanlan.zhihu.com/p/364002920</p></li>
-</ul>
-</blockquote>
-<h3><span id="一-黑灰产vs风控系统">一、<strong>黑灰产VS风控系统</strong></span></h3>
-<p>近年来，图计算尤其是图神经网络等技术获得了快速的发展以及广泛的应用。</p>
-<p>在电商平台上的风险商品检测场景中，<strong>黑灰产和风控系统</strong>之间存在着<strong>激烈的对抗</strong>，黑灰产为了躲避平台管控，会蓄意掩饰风险信息，通过引入场景中存在的图数据，可以缓解因黑灰产对抗带来的检测效果下降。</p>
-<p>在实际应用中，图算法的效果往往和图结构的质量紧密相关，由于风险商品检测场景中对抗的存在，<strong>恶意用户会通过伪造设备、伪造地址等方式，伪造较为“干净”的关联关系</strong>。<strong><font color="red">
-如何能够在这种存在着大量噪声的图结构数据中充分挖掘风险信息，是一个十分有挑战性的问题，另外该场景中还存在着黑白样本严重不均衡、图结构规模巨大且异构等多种挑战</font></strong>。</p>
-<h3><span id="二-赛题背景">二、赛题背景</span></h3>
-<p>在电商平台上，商品是最主要的内容之一。风险商品检测旨在识别平台上存在的假货商品、违禁商品等，对维护平台内容信息健康、保护消费者权益起着至关重要的作用。</p>
-<p>风险商品检测和其他风控领域一样，<strong>面临风险的对抗和变异</strong>，如对商品风险内容的刻意隐藏等，而使用平台广泛存在的各类图关系数据可以提供更多证据，提升黑灰产的攻击成本。</p>
-<p>本次比赛提供了<strong>阿里巴巴平台来源于真实场景的风险商品检测数据</strong>，需要参赛者利用大规模的异构图结构以及比例不均衡的黑白样本，利用图算法，检测出风险商品。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039050.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<h3><span id="三-结题思路">三、结题思路</span></h3>
-<h4><span id="31-deepfm模型">3.1 DeepFM模型</span></h4>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039128.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong><font color="red"> 低阶和高阶特征选择</font></strong></p>
-<h4><span id="32-序列模型">3.2 序列模型</span></h4>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040137.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://pic3.zhimg.com/v2-1e23798979f03dd7369306c91df35042_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="33-图模型">3.3 图模型</span></h4>
-<figure>
-<img src="https://pic4.zhimg.com/v2-526f68f85c8b9d6116039bf2b98f3403_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://pic4.zhimg.com/v2-9eadc122d63374a77d5090b3f62a8ff3_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://pic4.zhimg.com/v2-4602cba212d520cb5babfde5865856a7_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/16VDGF1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/16VDGF1/" class="post-title-link" itemprop="url">机器学习（8）【Nan】马尔可夫模型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-22 12:54:43" itemprop="dateCreated datePublished" datetime="2022-06-22T12:54:43+08:00">2022-06-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-18 22:17:36" itemprop="dateModified" datetime="2022-07-18T22:17:36+08:00">2022-07-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">概率图模型</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="马尔可夫模型">马尔可夫模型</span></h2>
-<blockquote>
-<p>如何用简单易懂的例子解释条件随机场（CRF）模型？它和HMM有什么区别？ -
-Scofield的回答 - 知乎
-https://www.zhihu.com/question/35866596/answer/236886066</p>
-</blockquote>
-<h3><span id="一-概念">一、概念</span></h3>
-<h4><span id="11-随机过程">1.1 随机过程</span></h4>
-<p><strong>随机过程就是一些统计模型，利用这些统计模型可以对自然界的一些事物进行预测和处理</strong>，比如天气预报，比如股票，比如市场分析，比如人工智能。它的应用还真是多了去了。</p>
-<h4><span id="12-马尔可夫链-markov-chain">1.2 马尔可夫链 （Markov Chain）</span></h4>
-<blockquote>
-<p>马尔可夫链 （Markov Chain）是什么鬼 - 车卡门的文章 - 知乎
-https://zhuanlan.zhihu.com/p/26453269</p>
-</blockquote>
-<p>马尔可夫链就是这样一个任性的过程，它将来的状态分布只取决于现在，跟过去无关！实际上就是一个随机变量随时间按照Markov性进行变化的过程。</p>
-<h4><span id="13-马尔可夫模型hiddenmarkov-models">1.3 马尔可夫模型（Hidden
-Markov Models）</span></h4>
-<p>既是马尔可夫模型，就一定存在<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=马尔可夫链&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A%2264187492%22%7D">马尔可夫链</a>，该马尔可夫链服从马尔可夫性质：即无记忆性。也就是说，这一时刻的状态，受且只受前一时刻的影响，而不受更往前时刻的状态的影响。在这里我们仍然使用非常简单的天气模型来做说明。</p>
-<p><img src="https://picx.zhimg.com/80/648a55725e67d718d97d6a475891d70b_1440w.png" alt="img" style="zoom:50%;"></p>
-<p>在这个马尔可夫模型中，存在三个状态，Sunny， Rainy，
-Cloudy，同时图片上标的是各个状态间的转移概率（如果不明白什么是转移概率，那建议先去学习什么是马尔可夫再来看HMM）。</p>
-<p><strong><font color="red"> 现在我们要说明什么是
-HMM。既是隐形，说明这些状态是观测不到的，相应的，我们可以通过其他方式来『猜测』或是『推断』这些状态，这也是
-HMM 需要解决的问题之一。</font></strong></p>
-<blockquote>
-<p>举个例子，我女朋友现在在北京工作，而我还在法国读书。每天下班之后，她会根据天气情况有相应的活动：或是去商场购物，或是去公园散步，或是回家收拾房间。我们有时候会通电话，她会告诉我她这几天做了什么，而闲着没事的我呢，则要通过她的行为猜测这几天对应的天气最有可能是什么样子的。</p>
-<p>以上就是一个简单的
-HMM，天气状况属于状态序列，而她的行为则属于观测序列。天气状况的转换是一个马尔可夫序列。而根据天气的不同，有相对应的概率产生不同的行为。在这里，为了简化，把天气情况简单归结为晴天和雨天两种情况。雨天，她选择去散步，购物，收拾的概率分别是0.1，0.4，0.5，
-而如果是晴天，她选择去散步，购物，收拾的概率分别是0.6，0.3，0.1。而天气的转换情况如下：这一天下雨，则下一天依然下雨的概率是0.7，而转换成晴天的概率是0.3；这一天是晴天，则下一天依然是晴天的概率是0.6，而转换成雨天的概率是0.4.
-同时还存在一个初始概率，也就是第一天下雨的概率是0.6，
-晴天的概率是0.4.</p>
-<p><img src="https://pic4.zhimg.com/80/792e033ff9b0418b3b6c9bbaef30fd83_1440w.png" alt="img" style="zoom:50%;"></p>
-</blockquote>
+<p><img src="https://p2.ssl.qhimg.com/t019938cd9a1afcd563.png" alt="img"></p>
 
       
     </div>
@@ -1484,7 +1495,7 @@ HMM，天气状况属于状态序列，而她的行为则属于观测序列。�
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

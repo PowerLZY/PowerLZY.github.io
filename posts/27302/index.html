@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;93107394 机器学习-最全面的评价指标体系: https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;359997979 机器学习工程师面试宝典-03-模型评估 分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线">
+    <meta name="description" content="一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;93107394   机器学习-最全面的评价指标体系: https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;359997979   机器学习工程师面试宝典-03-模型评估   分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（1）评价指标">
 <meta property="og:url" content="https://powerlzy.github.io/posts/27302/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;93107394 机器学习-最全面的评价指标体系: https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;359997979 机器学习工程师面试宝典-03-模型评估 分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线">
+<meta property="og:description" content="一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;93107394   机器学习-最全面的评价指标体系: https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;359997979   机器学习工程师面试宝典-03-模型评估   分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://powerlzy.github.io/posts/27302/apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/image-20220421165422230.png">
 <meta property="og:image" content="https://powerlzy.github.io/posts/27302/apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/image-20220421165436795.png">
@@ -314,20 +314,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、二分类问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1
-F1&#x3D;(2×Precision×Recall) &#x2F;（Precision+Recall）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">F1&#x3D;(2×Precision×Recall)
-&#x2F;（Precision+Recall）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 ROC&#x2F;AUC的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.
-ROC（接受者操作特征曲线）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">AUC的缺陷？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3、K-S曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 Lift曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Lift曲线：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 P-R曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.6 对数损失(Log Loss)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.7 多分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、回归问题评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 均方差损失 MSE、L2 loss</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">基本形式与原理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">
-hulu 百面机器学习 —— 平方根误差的”意外“</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">95%的时间区间效果很好，RMSE指标居高不下的原因？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 平均绝对误差 MAE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 MAE 与 MSE 区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 Huber Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.5 分位数损失 Quantile Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.6 平均绝对百分误差 MAPE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、相似性度量指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、推荐算法评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 AP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2 MAP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">AP@N</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">MAP@N</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、聚类算法评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">前言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">【外部评估】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.1聚类纯度 -
-聚类的准确率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.2 兰德系数与F值
-[同簇混淆矩阵]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.3
-调整兰德系数（Adjusted Rand index）【归一化】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.4
- 标准化互信息（NMI, Normalized Mutual
-Information）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">【内部指标】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.5 
-轮廓系数（Silhouette Coefficient）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.6
-Calinski-Harabaz指数（Calinski-Harabaz Index）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.7 戴维森堡丁指数（DBI,
-Davies-Bouldin Index）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">六、评分总结（sklearn）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.1 分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">accuracy_score</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">recall_score</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">roc_curve</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">confusion metric</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">precision_score</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">评价指标Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">精度指标存在的问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">为什么 ROC
-和 AUC 都能应用于非均衡的分类问题？</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、二分类问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 F1&#x3D;(2×Precision×Recall) &#x2F;（Precision+Recall）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">F1&#x3D;(2×Precision×Recall)  &#x2F;（Precision+Recall）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 ROC&#x2F;AUC的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2. ROC（接受者操作特征曲线）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">AUC的缺陷？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3、K-S曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 Lift曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Lift曲线：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 P-R曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.6 对数损失(Log Loss)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.7 多分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、回归问题评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 均方差损失 MSE、L2 loss</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">基本形式与原理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">背后的假设</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> hulu 百面机器学习 —— 平方根误差的”意外“</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">95%的时间区间效果很好，RMSE指标居高不下的原因？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 平均绝对误差 MAE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">背后的假设</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 MAE 与 MSE 区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 Huber Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.5 分位数损失 Quantile Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.6  平均绝对百分误差 MAPE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、相似性度量指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、推荐算法评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 AP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2 MAP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">AP@N</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">MAP@N</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、聚类算法评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">前言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">【外部评估】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.1聚类纯度 - 聚类的准确率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.2 兰德系数与F值  [同簇混淆矩阵]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.3 调整兰德系数（Adjusted Rand index）【归一化】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.4  标准化互信息（NMI, Normalized Mutual Information）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">【内部指标】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.5  轮廓系数（Silhouette Coefficient）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.6 Calinski-Harabaz指数（Calinski-Harabaz Index）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.7 戴维森堡丁指数（DBI, Davies-Bouldin Index）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">六、评分总结（sklearn）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.1 分类模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">accuracy_score</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">recall_score</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">roc_curve</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">confusion metric</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">precision_score</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">评价指标Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">精度指标存在的问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">为什么 ROC 和 AUC 都能应用于非均衡的分类问题？</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -342,13 +329,13 @@ Davies-Bouldin Index）</span></a></li></ol></li><li class="nav-item nav-level-2
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -476,172 +463,103 @@ Davies-Bouldin Index）</span></a></li></ol></li><li class="nav-item nav-level-2
     
     <div class="post-body" itemprop="articleBody">
         <blockquote>
-<p>一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https://zhuanlan.zhihu.com/p/93107394</p>
-<p><strong>机器学习-最全面的评价指标体系:
-https://zhuanlan.zhihu.com/p/359997979</strong></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/HaoMood/homepage/blob/master/files/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-03-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0.pdf">机器学习工程师面试宝典-03-模型评估</a></p>
-<p><strong><a target="_blank" rel="noopener" href="http://www.china-nb.cn/gongsidongtai/17-85.html">分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线</a></strong></p>
+<p>  一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93107394">https://zhuanlan.zhihu.com/p/93107394</a></p>
+<p>  <strong>机器学习-最全面的评价指标体系: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/359997979">https://zhuanlan.zhihu.com/p/359997979</a></strong></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/HaoMood/homepage/blob/master/files/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-03-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0.pdf">机器学习工程师面试宝典-03-模型评估</a></p>
+<p>  <strong><a target="_blank" rel="noopener" href="http://www.china-nb.cn/gongsidongtai/17-85.html">分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线</a></strong></p>
 </blockquote>
 <span id="more"></span>
 <p><img src="apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/image-20220421165422230.png" alt="image-20220421165422230" style="zoom:50%;"></p>
 <p><img src="apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/image-20220421165436795.png" alt="image-20220421165436795" style="zoom:50%;"></p>
-<h3><span id="一-二分类问题">一、二分类问题</span></h3>
-<blockquote>
-<p><strong>阈值调节问题？</strong></p>
+<h3><span id="一-二分类问题">一、二分类问题</span></h3><blockquote>
+<p>  <strong>阈值调节问题？</strong></p>
 </blockquote>
 <ul>
-<li><strong>准确率 (Accuracy)</strong>：<strong>预测正确的概率</strong>
-【<strong>(TP+TN)/(TP+TN+FP+FN)</strong>】</li>
-<li><strong>精确率（查准率 Precision
-)：==预测为正的样本==中实际为正的样本的概率</strong>
-【<strong>TP/(TP+FP)</strong>】</li>
-<li>错误发现率（FDR）= 1 - 精确率 =
-==预测为正的样本==中实际为负的样本的概率
-【<strong>FP/(TP+FP)</strong>】</li>
-<li><strong>召回率（查全率）-
-Recall</strong>：<strong>==实际为正的样本==中被预测为正样本的概率</strong>【<strong>TP/(TP+FN)</strong>】</li>
-<li><strong>真正率（TPR） = 灵敏度（==召回率==） =</strong>
-<strong>TP/(TP+FN)</strong></li>
-<li><strong>假正率（FPR） = 1- 特异度 =</strong>
-<strong>FP/(FP+TN)</strong></li>
-<li><strong>F1=是准确率和召回率的==调和平均值==
-(2×Precision×Recall)/（Precision+Recall）</strong></li>
+<li><strong>准确率 (Accuracy)</strong>：<strong>预测正确的概率</strong>  【<strong>(TP+TN)/(TP+TN+FP+FN)</strong>】</li>
+<li><strong>精确率（查准率 Precision )：==预测为正的样本==中实际为正的样本的概率</strong> 【<strong>TP/(TP+FP)</strong>】</li>
+<li>错误发现率（FDR）= 1 - 精确率 = ==预测为正的样本==中实际为负的样本的概率 【<strong>FP/(TP+FP)</strong>】</li>
+<li><strong>召回率（查全率）- Recall</strong>：<strong>==实际为正的样本==中被预测为正样本的概率</strong>【<strong>TP/(TP+FN)</strong>】</li>
+<li><strong>真正率（TPR） = 灵敏度（==召回率==） =</strong> <strong>TP/(TP+FN)</strong></li>
+<li><strong>假正率（FPR） = 1- 特异度 =</strong> <strong>FP/(FP+TN)</strong></li>
+<li><strong>F1=是准确率和召回率的==调和平均值== (2×Precision×Recall)/（Precision+Recall）</strong></li>
 <li><strong>G-mean（GM）= 是准确率和召回率的==几何平均值==</strong> <img src="https://image.jiqizhixin.com/uploads/editor/c9841ee6-28df-4eb9-aace-8902a6e525a5/640.svg" alt="img"></li>
 </ul>
-<h3><span id="11f12precisionrecall-precisionrecall">1.1
-<strong>F1=(2×Precision×Recall) /（Precision+Recall）</strong></span></h3>
-<p>精确率（Precision）和召回率（Recall）之间的关系用图来表达，就是下面的PR曲线。可以发现他们俩的关系是「两难全」的关系。为了综合两者的表现，在两者之间找一个平衡点，就出现了一个
-F1分数。</p>
-<h4><span id="f12precisionrecallprecisionrecall"><strong>F1=(2×Precision×Recall)
-/（Precision+Recall）</strong></span></h4>
-<p>P意义类似于每通过准确预测得到TP个正例需要TP+FP个预测类别为正例的样本。</p>
+<h3><span id="11-f12precisionrecall-precisionrecall">1.1 <strong>F1=(2×Precision×Recall) /（Precision+Recall）</strong></span></h3><p>精确率（Precision）和召回率（Recall）之间的关系用图来表达，就是下面的PR曲线。可以发现他们俩的关系是「两难全」的关系。为了综合两者的表现，在两者之间找一个平衡点，就出现了一个 F1分数。</p>
+<h4><span id="f12precisionrecall-precisionrecall"><strong>F1=(2×Precision×Recall)  /（Precision+Recall）</strong></span></h4><p>P意义类似于每通过准确预测得到TP个正例需要TP+FP个预测类别为正例的样本。</p>
 <p>R意义类似于每通过成功召回得到TP个正例需要TP+FN个真实类别为正例的样本。</p>
 <p>F1度量了给定一批样本，对这一批样本进行预测与召回，最终得到的正例的多少。<strong>其中一半的正例是通过预测得到的，一半的正例是通过召回得到的。</strong></p>
 <p>有一种把预测所需的预测类别为正例的样本和召回所需的真实类别为正例的样本看作原料，而我们的目标正例样本看作产品的感觉。<strong>所以也能解释为什么P跟R其中一者比较低的时候，F1会偏低。因为跟算术平均数不一样，两者不能互相替代，两部分各负责一半。那么加权调和平均Fbeta也可以很好的理解了。</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7BF_%7B%5Cbeta%7D%7D%3D%5Cfrac%7B1%7D%7B1%2B%5Cbeta%5E%7B2%7D%7D%5Ccdot%5Cleft%28+%5Cfrac%7B1%7D%7BP%7D%2B+%5Cfrac%7B%5Cbeta%5E%7B2%7D%7D%7BR%7D%5Cright%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7BF_%7B%5Cbeta%7D%7D%3D%5Cfrac%7B1%7D%7B1%2B%5Cbeta%5E%7B2%7D%7D%5Ccdot%5Cleft%28+%5Cfrac%7B1%7D%7BP%7D%2B+%5Cfrac%7B%5Cbeta%5E%7B2%7D%7D%7BR%7D%5Cright%29" alt="[公式]"></p>
 <p>各自负责的比例不一样了。因此beta越大，Fbeta越着重考虑召回能力。</p>
-<h3><span id="12-rocauc的概念">1.2 ROC/AUC的概念</span></h3>
-<p><strong>1. 灵敏度，特异度，真正率，假正率</strong></p>
-<p>在正式介绍ROC/AUC之前，我们还要再介绍两个指标，<strong>这两个指标的选择也正是ROC和AUC可以无视样本不平衡的原因。</strong>
-这两个指标分别是：<strong>灵敏度和（1-特异度），也叫做真正率（TPR）和假正率（FPR）</strong>。其实我们可以发现<strong>灵敏度和召回率是一模一样的，只是名字换了而已</strong>。由于我们比较关心正样本，所以需要查看有多少负样本被错误地预测为正样本，所以使用（1-特异度），而不是特异度。</p>
-<p><strong>真正率（TPR） = 灵敏度（==召回率==） =</strong>
-<strong>TP/(TP+FN)</strong></p>
-<p><strong>假正率（FPR） = 1- 特异度 =</strong>
-<strong>FP/(FP+TN)</strong></p>
-<p>下面是真正率和假正率的示意，我们发现<strong>TPR和FPR分别是基于实际表现1和0出发的，也就是说它们分别在实际的正样本和负样本中来观察相关概率问题。</strong></p>
+<h3><span id="12-rocauc的概念">1.2 ROC/AUC的概念</span></h3><p><strong>1. 灵敏度，特异度，真正率，假正率</strong></p>
+<p>在正式介绍ROC/AUC之前，我们还要再介绍两个指标，<strong>这两个指标的选择也正是ROC和AUC可以无视样本不平衡的原因。</strong> 这两个指标分别是：<strong>灵敏度和（1-特异度），也叫做真正率（TPR）和假正率（FPR）</strong>。其实我们可以发现<strong>灵敏度和召回率是一模一样的，只是名字换了而已</strong>。由于我们比较关心正样本，所以需要查看有多少负样本被错误地预测为正样本，所以使用（1-特异度），而不是特异度。</p>
+<p><strong>真正率（TPR） = 灵敏度（==召回率==） =</strong> <strong>TP/(TP+FN)</strong></p>
+<p><strong>假正率（FPR） = 1- 特异度 =</strong> <strong>FP/(FP+TN)</strong></p>
+<p>下面是真正率和假正率的示意，我们发现<strong>TPR和FPR分别是基于实际表现1和0出发的，也就是说它们分别在实际的正样本和负样本中来观察相关概率问题。</strong> </p>
 <blockquote>
-<p>正因为如此，所以无论样本是否平衡，都不会被影响。还是拿之前的例子，总样本中，90%是正样本，10%是负样本。我们知道用准确率是有水分的，但是用TPR和FPR不一样。这里，TPR只关注90%正样本中有多少是被真正覆盖的，而与那10%毫无关系，同理，FPR只关注10%负样本中有多少是被错误覆盖的，也与那90%毫无关系，</p>
+<p>  正因为如此，所以无论样本是否平衡，都不会被影响。还是拿之前的例子，总样本中，90%是正样本，10%是负样本。我们知道用准确率是有水分的，但是用TPR和FPR不一样。这里，TPR只关注90%正样本中有多少是被真正覆盖的，而与那10%毫无关系，同理，FPR只关注10%负样本中有多少是被错误覆盖的，也与那90%毫无关系，</p>
 </blockquote>
 <p><strong>如果我们从实际表现的各个结果角度出发，就可以避免样本不平衡的问题了，这也是为什么选用TPR和FPR作为ROC/AUC的指标的原因。</strong></p>
-<h4><span id="2roc接受者操作特征曲线"><strong>2.
-ROC（接受者操作特征曲线）</strong></span></h4>
-<blockquote>
-<p>ROC（Receiver Operating
-Characteristic）曲线，又称接受者操作特征曲线。该曲线最早应用于雷达信号检测领域，用于区分信号与噪声。后来人们将其用于评价模型的预测能力，ROC曲线是基于<strong>混淆矩阵</strong>得出的。</p>
+<h4><span id="2-roc接受者操作特征曲线"><strong>2. ROC（接受者操作特征曲线）</strong></span></h4><blockquote>
+<p>  ROC（Receiver Operating Characteristic）曲线，又称接受者操作特征曲线。该曲线最早应用于雷达信号检测领域，用于区分信号与噪声。后来人们将其用于评价模型的预测能力，ROC曲线是基于<strong>混淆矩阵</strong>得出的。</p>
 </blockquote>
-<p>ROC曲线中的主要两个指标就是<strong>真正率</strong>和<strong>假正率，</strong>
-上面也解释了这么选择的好处所在。其中<strong>横坐标为假正率（FPR），纵坐标为真正率（TPR）</strong>，下面就是一个标准的ROC曲线图。</p>
-<h4><span id="auc的缺陷">AUC的缺陷？</span></h4>
-<p><strong>优点</strong>：目前普遍认为接收器工作特性曲线（ROC）曲线下的面积—AUC是评估分类模型准确性的标准方法。<strong>它避免了在阈值选择过程中假定的主观性</strong>，当连续的概率得到的分数被转换为二分类标签时，通过总结整体模型表现，其衡量模型区分正负样本的性能优于通过阈值来判断的其他方法（比如准确率、召回率等）。</p>
+<p>ROC曲线中的主要两个指标就是<strong>真正率</strong>和<strong>假正率，</strong> 上面也解释了这么选择的好处所在。其中<strong>横坐标为假正率（FPR），纵坐标为真正率（TPR）</strong>，下面就是一个标准的ROC曲线图。</p>
+<h4><span id="auc的缺陷">AUC的缺陷？</span></h4><p><strong>优点</strong>：目前普遍认为接收器工作特性曲线（ROC）曲线下的面积—AUC是评估分类模型准确性的标准方法。<strong>它避免了在阈值选择过程中假定的主观性</strong>，当连续的概率得到的分数被转换为二分类标签时，通过总结整体模型表现，其衡量模型区分正负样本的性能优于通过阈值来判断的其他方法（比如准确率、召回率等）。</p>
 <ul>
 <li><strong>忽略了预测的概率值和模型的拟合优度</strong></li>
 <li><strong>AUC反应了太过笼统的信息。无法反应召回率、精确率等在实际业务中经常关心的指标</strong></li>
-<li><font color="red">
-<strong>对FPR和TPR两种错误的代价同等看待</strong></font></li>
+<li><font color="red"> **对FPR和TPR两种错误的代价同等看待**</font></li>
 <li>它没有给出模型误差的空间分布信息</li>
 <li>最重要的一点，AUC的misleading的问题</li>
 </ul>
-<p><strong>==auc仅反应模型的排序能力==，无法反应模型的拟合优度；auc很多时候无法直接反应细粒度的和业务目标更相关的metric信息，例如
-top
-k的准确率，召回率等等（例如同auc的模型在不同的区间的预测能力是存在差别的）；</strong></p>
-<h3><span id="13-k-s曲线">1.3、K-S曲线</span></h3>
-<blockquote>
-<p><strong>K-S曲线</strong>，又称作洛伦兹曲线。实际上，K-S曲线的数据来源以及本质和ROC曲线是一致的，只是ROC曲线是把真正率（
-<img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]">
-）和假正率（ <img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> ）当作横纵轴，<strong>而K-S曲线是把真正率（ <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]">
-）和假正率（ <img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> )都当作是纵轴，横轴则由选定的阈值来充当。从 </strong>K-S
-曲线<strong>就能衍生出 <img src="https://www.zhihu.com/equation?tex=KS" alt="[公式]"> 值， <img src="https://www.zhihu.com/equation?tex=KS+%3D+max%28TPR+-+FPR%29" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。</strong></p>
+<p><strong>==auc仅反应模型的排序能力==，无法反应模型的拟合优度；auc很多时候无法直接反应细粒度的和业务目标更相关的metric信息，例如 top k的准确率，召回率等等（例如同auc的模型在不同的区间的预测能力是存在差别的）；</strong></p>
+<h3><span id="13-k-s曲线">1.3、K-S曲线</span></h3><blockquote>
+<p>  <strong>K-S曲线</strong>，又称作洛伦兹曲线。实际上，K-S曲线的数据来源以及本质和ROC曲线是一致的，只是ROC曲线是把真正率（ <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> ）和假正率（ <img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> ）当作横纵轴，<strong>而K-S曲线是把真正率（ <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> ）和假正率（ <img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> )都当作是纵轴，横轴则由选定的阈值来充当。从 </strong>K-S 曲线<strong>就能衍生出 <img src="https://www.zhihu.com/equation?tex=KS" alt="[公式]"> 值， <img src="https://www.zhihu.com/equation?tex=KS+%3D+max%28TPR+-+FPR%29" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。</strong></p>
 </blockquote>
 <p><strong>K-S曲线的画法：</strong></p>
-<ol type="1">
-<li><p><strong>排序：</strong>对于二元分类器来说，模型训练完成之后每个样本都会得到一个类概率值，把样本按这个类概率值从大到小进行排序；</p></li>
-<li><p><strong>找阈值：</strong>取排序后前 <img src="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k%28k%3D1%2C2%2C3%2C...%2C9%29" alt="[公式]"> 处的值（概率值）作为阈值，分别计算出不同的 <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值，以<img src="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k%28k%3D1%2C2%2C3%2C...%2C9%29" alt="[公式]">为横坐标，分别以<img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]">
-值为纵坐标，就可以画出两个曲线，这就是K-S曲线，类似于下图。</p></li>
+<ol>
+<li><p><strong>排序：</strong>对于二元分类器来说，模型训练完成之后每个样本都会得到一个类概率值，把样本按这个类概率值从大到小进行排序；</p>
+</li>
+<li><p><strong>找阈值：</strong>取排序后前 <img src="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k%28k%3D1%2C2%2C3%2C...%2C9%29" alt="[公式]"> 处的值（概率值）作为阈值，分别计算出不同的 <img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值，以<img src="https://www.zhihu.com/equation?tex=10%5C%25%5Ctimes+k%28k%3D1%2C2%2C3%2C...%2C9%29" alt="[公式]">为横坐标，分别以<img src="https://www.zhihu.com/equation?tex=TPR" alt="[公式]"> 和<img src="https://www.zhihu.com/equation?tex=FPR" alt="[公式]"> 值为纵坐标，就可以画出两个曲线，这就是K-S曲线，类似于下图。</p>
+</li>
 <li><p><strong>KS值</strong>：</p>
-<p>从 <strong>K-S 曲线</strong>就能衍生出 <img src="https://www.zhihu.com/equation?tex=KS" alt="[公式]"> 值， <img src="https://www.zhihu.com/equation?tex=KS+%3D+max%28TPR+-+FPR%29" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。KS值越大表示模型
-的区分能力越强。</p></li>
+<p>从 <strong>K-S 曲线</strong>就能衍生出 <img src="https://www.zhihu.com/equation?tex=KS" alt="[公式]"> 值， <img src="https://www.zhihu.com/equation?tex=KS+%3D+max%28TPR+-+FPR%29" alt="[公式]"> ，即是两条曲线之间的最大间隔距离。KS值越大表示模型 的区分能力越强。</p>
+</li>
 </ol>
 <p><img src="apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/v2-f913b42cefcd32f9fdbfa027de2dfbc8_1440w.jpg" alt="img" style="zoom: 50%;"></p>
-<h3><span id="14-lift曲线">1.4 Lift曲线</span></h3>
-<p><strong>Lift曲线它衡量的是，与不利用模型相比，模型的预测能力“变好”了多少，lift(提升指数)越大，模型的运行效果越好。实质上它强调的是投入与产出比</strong>。</p>
-<p><strong>tip:</strong>理解<strong>Lift</strong>可以先看一下Quora上的一篇文章：<strong><a href="https://link.zhihu.com/?target=https%3A//www.quora.com/Whats-Lift-curve">What's
-Lift curve?</a></strong></p>
+<h3><span id="14-lift曲线">1.4 Lift曲线</span></h3><p><strong>Lift曲线它衡量的是，与不利用模型相比，模型的预测能力“变好”了多少，lift(提升指数)越大，模型的运行效果越好。实质上它强调的是投入与产出比</strong>。</p>
+<p><strong>tip:</strong>理解<strong>Lift</strong>可以先看一下Quora上的一篇文章：<strong><a href="https://link.zhihu.com/?target=https%3A//www.quora.com/Whats-Lift-curve">What’s Lift curve?</a></strong></p>
 <p><strong>Lift计算公式：</strong>先介绍几个相关的指标，以免混淆：</p>
 <ul>
 <li><strong>准确率（accuracy，ACC）</strong>：</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=ACC%3D%5Cfrac%7BTP%2BTN%7D%7BFP%2BFN%2BTP%2BTN%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=ACC%3D%5Cfrac%7BTP%2BTN%7D%7BFP%2BFN%2BTP%2BTN%7D%5C%5C" alt="[公式]"></p>
 <ul>
 <li><strong>正确率(Precision，PRE)，查准率</strong>：</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=PRE+%3D+%5Cfrac%7BTP%7D%7BTP%2BFP%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=PRE+%3D+%5Cfrac%7BTP%7D%7BTP%2BFP%7D+%5C%5C" alt="[公式]"></p>
 <ul>
-<li><strong>真阳性率(True Positive
-Rate，TPR)，灵敏度(Sensitivity)，召回率(Recall)</strong>：</li>
+<li><strong>真阳性率(True Positive Rate，TPR)，灵敏度(Sensitivity)，召回率(Recall)</strong>：</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=TPR%3D%5Cfrac%7BTP%7D%7BTP%2BFN%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=TPR%3D%5Cfrac%7BTP%7D%7BTP%2BFN%7D+%5C%5C" alt="[公式]"></p>
 <ul>
-<li><strong>假阳性率(False Positice Rate，FPR)，误诊率( = 1 -
-特异度)</strong>：</li>
+<li><strong>假阳性率(False Positice Rate，FPR)，误诊率( = 1 - 特异度)</strong>：</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=FPR%3D%5Cfrac%7BFP%7D%7BFP%2BTN%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=FPR%3D%5Cfrac%7BFP%7D%7BFP%2BTN%7D%5C%5C" alt="[公式]"></p>
 <p><strong>Lift计算公式：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=Lift%3D%5Cfrac%7B%5Cfrac%7BTP%7D%7BTP%2BFP%7D%7D%7B%5Cfrac%7BTP%2BFN%7D%7BTP%2BFP%2BTN%2BFN%7D%7D%3D%5Cfrac%7BPRE%7D%7B%E6%AD%A3%E4%BE%8B%E5%8D%A0%E6%AF%94%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>根据以上公式可知，<strong>Lift指标可以这样理解：</strong>在不使用模型的情况下，我们用先验概率估计正例的比例，即上式子分母部分，以此作为正例的命中率；利用模型后，我们不需要从整个样本中来挑选正例，只需要从我们预测为正例的那个样本的子集
-<img src="https://www.zhihu.com/equation?tex=TP%2BFP" alt="[公式]">
-中挑选正例，这时正例的命中率为 <img src="https://www.zhihu.com/equation?tex=PRE" alt="[公式]">
-，后者除以前者即可得提升值<strong>Lift。</strong></p>
-<h4><span id="lift曲线"><strong>Lift曲线：</strong></span></h4>
-<p>为了作出<strong>LIft</strong>曲线，首先引入 <img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">
-的概念：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=depth%3D%5Cfrac%7BTP%2BFP%7D%7BTP%2BFP%2BTN%2BFN%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=Lift%3D%5Cfrac%7B%5Cfrac%7BTP%7D%7BTP%2BFP%7D%7D%7B%5Cfrac%7BTP%2BFN%7D%7BTP%2BFP%2BTN%2BFN%7D%7D%3D%5Cfrac%7BPRE%7D%7B%E6%AD%A3%E4%BE%8B%E5%8D%A0%E6%AF%94%7D%5C%5C" alt="[公式]"></p>
+<p>根据以上公式可知，<strong>Lift指标可以这样理解：</strong>在不使用模型的情况下，我们用先验概率估计正例的比例，即上式子分母部分，以此作为正例的命中率；利用模型后，我们不需要从整个样本中来挑选正例，只需要从我们预测为正例的那个样本的子集 <img src="https://www.zhihu.com/equation?tex=TP%2BFP" alt="[公式]"> 中挑选正例，这时正例的命中率为 <img src="https://www.zhihu.com/equation?tex=PRE" alt="[公式]"> ，后者除以前者即可得提升值<strong>Lift。</strong></p>
+<h4><span id="lift曲线"><strong>Lift曲线：</strong></span></h4><p>为了作出<strong>LIft</strong>曲线，首先引入 <img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]"> 的概念：</p>
+<p><img src="https://www.zhihu.com/equation?tex=depth%3D%5Cfrac%7BTP%2BFP%7D%7BTP%2BFP%2BTN%2BFN%7D%5C%5C" alt="[公式]"></p>
 <p><strong>从公式可以看出</strong>，<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">代表的是预测为正例的样本占整个样本的比例。</p>
-<p>当阈值为0时，所有的样本都被预测为正例，因此 <img src="https://www.zhihu.com/equation?tex=depth%3D1" alt="[公式]">
-，于是 <img src="https://www.zhihu.com/equation?tex=Lift%3D1" alt="[公式]">
-，模型未起提升作用。随着阈值逐渐增大，被预测为正例的样本数逐渐减少，<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">减小，而较少的预测正例样本中的真实正例比例逐渐增大。当阈值增大至1时，没有样本被预测为正例，此时
-<img src="https://www.zhihu.com/equation?tex=depth%3D0" alt="[公式]">
-，而 <img src="https://www.zhihu.com/equation?tex=Lift%3D0" alt="[公式]"> 。由此可见， <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 与<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">存在相反方向变化的关系。在此基础上作出 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 图：</p>
+<p>当阈值为0时，所有的样本都被预测为正例，因此 <img src="https://www.zhihu.com/equation?tex=depth%3D1" alt="[公式]"> ，于是 <img src="https://www.zhihu.com/equation?tex=Lift%3D1" alt="[公式]"> ，模型未起提升作用。随着阈值逐渐增大，被预测为正例的样本数逐渐减少，<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">减小，而较少的预测正例样本中的真实正例比例逐渐增大。当阈值增大至1时，没有样本被预测为正例，此时 <img src="https://www.zhihu.com/equation?tex=depth%3D0" alt="[公式]"> ，而 <img src="https://www.zhihu.com/equation?tex=Lift%3D0" alt="[公式]"> 。由此可见， <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 与<img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">存在相反方向变化的关系。在此基础上作出 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 图：</p>
 <p><img src="apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/v2-4cfa1e77335b91d9a47acb7238383c1e_1440w.jpg" alt="img" style="zoom: 50%;"></p>
-<p>一般要求，在尽量大的 <img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]">
-下得到尽量大的 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 曲线的右半部分应该尽量陡峭。</p>
-<h3><span id="15-p-r曲线">1.5 <strong>P-R曲线</strong></span></h3>
-<ul>
-<li><p><strong>精确率（查准率）- Precision
-：==预测为正的样本==中实际为正的样本的概率</strong>
-【<strong>TP/(TP+FP)</strong>】</p></li>
-<li><p><strong>召回率（查全率）-
-Recall</strong>：<strong>==实际为正的样本==中被预测为正样本的概率</strong>【<strong>TP/(TP+FN)</strong>】</p></li>
+<p>一般要求，在尽量大的 <img src="https://www.zhihu.com/equation?tex=depth" alt="[公式]"> 下得到尽量大的 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=Lift" alt="[公式]"> 曲线的右半部分应该尽量陡峭。</p>
+<h3><span id="15-p-r曲线">1.5 <strong>P-R曲线</strong></span></h3><ul>
+<li><p><strong>精确率（查准率）- Precision ：==预测为正的样本==中实际为正的样本的概率</strong> 【<strong>TP/(TP+FP)</strong>】</p>
+</li>
+<li><p><strong>召回率（查全率）- Recall</strong>：<strong>==实际为正的样本==中被预测为正样本的概率</strong>【<strong>TP/(TP+FN)</strong>】</p>
+</li>
 </ul>
 <p>P-R曲线刻画<strong>查准率</strong>和<strong>查全率（召回率）</strong>之间的关系，查准率指的是在所有预测为正例的数据中，真正例所占的比例，查全率是指预测为真正例的数据占所有正例数据的比例。查准率和查全率是一对矛盾的度量，一般来说，查准率高时，查全率往往偏低，查全率高时，查准率往往偏低。</p>
 <p>在很多情况下，我们可以根据学习器的预测结果对样例进行排序，排在前面的是学习器认为最可能是正例的样本，排在后面的是学习器认为最不可能是正例的样本，按此顺序逐个把样本作为正例进行预测，则每次可计算当前的查全率和查准率，以查准率为y轴，以查全率为x轴，可以画出下面的P-R曲线。</p>
@@ -649,166 +567,63 @@ Recall</strong>：<strong>==实际为正的样本==中被预测为正样本的�
 <p>如果一个学习器的P-R曲线被另一个学习器的P-R曲线完全包住，则可断言后者的性能优于前者，当然我们可以根据曲线下方的面积大小来进行比较，但更常用的是<strong>平衡点</strong>或者是F1值。</p>
 <ul>
 <li><strong>平衡点（BEP）</strong>是查准率=查全率时的取值，如果这个值较大，则说明学习器的性能较好。F1值越大，我们可以认为该学习器的性能较好。</li>
-<li><font color="red">
-<strong>F1度量</strong>：<strong>BEP过于简单，这个平衡点是建立在”查准率=查全率“的前提下，无法满足实际不同场景的应用。</strong></font></li>
+<li><font color="red"> **F1度量**：**BEP过于简单，这个平衡点是建立在”查准率=查全率“的前提下，无法满足实际不同场景的应用。**</font>
+
+</li>
 </ul>
 <p>我们先来引入加权调和平均： <img src="https://www.zhihu.com/equation?tex=F_%5Cbeta" alt="[公式]">：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+%5Cfrac+%7B1%7D%7BF_%7B%5Cbeta%7D%7D%3D%5Cfrac+%7B1%7D%7B1%2B%7B%5Cbeta%7D%5E2%7D%28%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B%5Cbeta%5E2%7D%7BR%7D%29++++%5Cquad+%E5%85%AC%E5%BC%8F%281%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>加权调和平均与<strong>算术平均</strong> <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7BP%2BR%7D%7B2%7D" alt="[公式]"> 和<strong>几何平均</strong> <img src="https://www.zhihu.com/equation?tex=%5Csqrt%7BP%2BR%7D" alt="[公式]">
-相比，<strong>调和平均更重视较小值（这可以从倒数上看出来）</strong>。当
-<img src="https://www.zhihu.com/equation?tex=%5Cbeta%3D1+" alt="[公式]">
-，即F1是基于查准率和查全率的调和平均定义的，F1的公式如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+%5Cfrac+%7B1%7D%7BF_%7B1%7D%7D%3D%5Cfrac+%7B1%7D%7B2%7D%28%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B1%7D%7BR%7D%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+%5Cfrac+%7B1%7D%7BF_%7B%5Cbeta%7D%7D%3D%5Cfrac+%7B1%7D%7B1%2B%7B%5Cbeta%7D%5E2%7D%28%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B%5Cbeta%5E2%7D%7BR%7D%29++++%5Cquad+%E5%85%AC%E5%BC%8F%281%29" alt="[公式]"></p>
+<p>加权调和平均与<strong>算术平均</strong> <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7BP%2BR%7D%7B2%7D" alt="[公式]"> 和<strong>几何平均</strong> <img src="https://www.zhihu.com/equation?tex=%5Csqrt%7BP%2BR%7D" alt="[公式]"> 相比，<strong>调和平均更重视较小值（这可以从倒数上看出来）</strong>。当 <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3D1+" alt="[公式]"> ，即F1是基于查准率和查全率的调和平均定义的，F1的公式如下：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+%5Cfrac+%7B1%7D%7BF_%7B1%7D%7D%3D%5Cfrac+%7B1%7D%7B2%7D%28%5Cfrac%7B1%7D%7BP%7D%2B%5Cfrac%7B1%7D%7BR%7D%29" alt="[公式]"></p>
 <p>我们把公式求倒数，即可得：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+F1%3D%5Cfrac%7B2%2AP%2AR%7D%7BP%2BR%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>在一些应用中，对查准率和查全率的重视程度不同。例如在商品推荐中，为了尽可能少打扰用户，更希望推荐的内容确实是用户感兴趣的，此时查准率更重要；而在罪犯信息检索或者病人检查系统中，更希望尽可能少的漏判，此时查全率更重要。F1度量的一般形式是
-<img src="https://www.zhihu.com/equation?tex=F_%7B%5Cbeta%7D" alt="[公式]"> ，能让我们自定义对查准率/查全率的不同偏好：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+F_%7B%5Cbeta%7D%3D%5Cfrac%7B%281%2B%5Cbeta%5E2%29%2AP%2AR%7D%7B%28%5Cbeta%5E2%2AP%29%2BR%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3E0+" alt="[公式]">
-度量了查全率对查准率的相对重要性（不明白的同学可以回看公式1）， <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3D1" alt="[公式]">
-时退化为标准F1，<img src="https://www.zhihu.com/equation?tex=%5Cbeta%3E1+" alt="[公式]">==时查全率有更大影响； <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3C1" alt="[公式]">
-时，查准率有更大影响。==</p>
-<h3><span id="16-对数损失log-loss">1.6 <strong>对数损失(Log Loss)</strong></span></h3>
-<p><strong>AUC ROC考虑用于确定模型性能的预测概率</strong>。然而，AUC
-ROC存在问题，它只考虑概率的顺序，因此<strong>没有考虑模型预测更可能为正样本的更高概率的能力(即考虑了大小，但没有考虑更高精度)</strong>。<strong>在这种情况下，我们可以使用对数损失，即每个实例的正例预测概率的对数的负平均值。</strong></p>
-<p>对数损失（Logistic
-Loss，logloss）是对预测概率的似然估计，其标准形式为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+logloss%3DlogP%28Y%7CX%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+F1%3D%5Cfrac%7B2%2AP%2AR%7D%7BP%2BR%7D" alt="[公式]"></p>
+<p>在一些应用中，对查准率和查全率的重视程度不同。例如在商品推荐中，为了尽可能少打扰用户，更希望推荐的内容确实是用户感兴趣的，此时查准率更重要；而在罪犯信息检索或者病人检查系统中，更希望尽可能少的漏判，此时查全率更重要。F1度量的一般形式是 <img src="https://www.zhihu.com/equation?tex=F_%7B%5Cbeta%7D" alt="[公式]"> ，能让我们自定义对查准率/查全率的不同偏好：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+F_%7B%5Cbeta%7D%3D%5Cfrac%7B%281%2B%5Cbeta%5E2%29%2AP%2AR%7D%7B%28%5Cbeta%5E2%2AP%29%2BR%7D" alt="[公式]"></p>
+<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3E0+" alt="[公式]"> 度量了查全率对查准率的相对重要性（不明白的同学可以回看公式1）， <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3D1" alt="[公式]"> 时退化为标准F1，<img src="https://www.zhihu.com/equation?tex=%5Cbeta%3E1+" alt="[公式]">==时查全率有更大影响； <img src="https://www.zhihu.com/equation?tex=%5Cbeta%3C1" alt="[公式]"> 时，查准率有更大影响。==</p>
+<h3><span id="16-对数损失log-loss">1.6 <strong>对数损失(Log Loss)</strong></span></h3><p><strong>AUC ROC考虑用于确定模型性能的预测概率</strong>。然而，AUC ROC存在问题，它只考虑概率的顺序，因此<strong>没有考虑模型预测更可能为正样本的更高概率的能力(即考虑了大小，但没有考虑更高精度)</strong>。<strong>在这种情况下，我们可以使用对数损失，即每个实例的正例预测概率的对数的负平均值。</strong></p>
+<p>对数损失（Logistic Loss，logloss）是对预测概率的似然估计，其标准形式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+logloss%3DlogP%28Y%7CX%29" alt="[公式]"></p>
 <p>对数损失最小化本质是上利用样本中的已知分布，求解拟合这种分布的最佳模型参数，使这种分布出现概率最大。</p>
 <p>对数损失对应的二分类的计算公式为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=logloss%3D-%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_ilog%5Chat%7By_i%7D%2B%281-y_i%29log%281-%5Chat%7By_i%7D%29%29+%2C%5Cquad%5Cquad%5Cquad+y%5Cin%5B0%2C1%5D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中N为样本数， <img src="https://www.zhihu.com/equation?tex=%5Chat+y_i" alt="[公式]">
-为预测为1的概率。对数损失在多分类问题中也可以使用，其计算公式为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=logloss%3D-%5Cfrac%7B1%7D%7BN%7D%5Cfrac%7B1%7D%7BC%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%5Csum_%7Bj%3D1%7D%5E%7BC%7D%28y_%7Bij%7Dlog%5Chat%7By_%7Bij%7D%7D%29+%2C%5Cquad%5Cquad%5Cquad+y%5Cin%5B0%2C1%5D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=logloss%3D-%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_ilog%5Chat%7By_i%7D%2B%281-y_i%29log%281-%5Chat%7By_i%7D%29%29+%2C%5Cquad%5Cquad%5Cquad+y%5Cin%5B0%2C1%5D" alt="[公式]"></p>
+<p>其中N为样本数， <img src="https://www.zhihu.com/equation?tex=%5Chat+y_i" alt="[公式]"> 为预测为1的概率。对数损失在多分类问题中也可以使用，其计算公式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=logloss%3D-%5Cfrac%7B1%7D%7BN%7D%5Cfrac%7B1%7D%7BC%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%5Csum_%7Bj%3D1%7D%5E%7BC%7D%28y_%7Bij%7Dlog%5Chat%7By_%7Bij%7D%7D%29+%2C%5Cquad%5Cquad%5Cquad+y%5Cin%5B0%2C1%5D" alt="[公式]"></p>
 <p>其中，N为样本数，C为类别数，logloss衡量的是预测概率分布和真实概率分布的差异性，取值越小越好。</p>
-<h3><span id="17-多分类">1.7 多分类</span></h3>
-<p>很多时候我们有多个<strong>二分类混淆矩阵</strong>，例如进行多次训练/测试，每次得到一个混淆矩阵；或是在多个数据集上进行训练/测试，希望估计算法的全局性能；或者是执行分类任务，每两两类别的组合都对应一个混淆矩阵；总之是在<strong>n个二分类混淆矩阵上综合考察查准率和查全率</strong>。</p>
+<h3><span id="17-多分类">1.7 多分类</span></h3><p>很多时候我们有多个<strong>二分类混淆矩阵</strong>，例如进行多次训练/测试，每次得到一个混淆矩阵；或是在多个数据集上进行训练/测试，希望估计算法的全局性能；或者是执行分类任务，每两两类别的组合都对应一个混淆矩阵；总之是在<strong>n个二分类混淆矩阵上综合考察查准率和查全率</strong>。</p>
 <ul>
-<li><strong>宏观</strong>：在各个混淆军阵上分别计算出查准率和查全率，记为(P1,R1)，(P2,R2),...(Pn,Rn)，在<strong>计算平均值</strong>，这样就得到“宏观查准率”(macro-P)，“宏观查全率”(macro-R)、“宏观F1”(macro-F1)：</li>
+<li><strong>宏观</strong>：在各个混淆军阵上分别计算出查准率和查全率，记为(P1,R1)，(P2,R2),…(Pn,Rn)，在<strong>计算平均值</strong>，这样就得到“宏观查准率”(macro-P)，“宏观查全率”(macro-R)、“宏观F1”(macro-F1)：</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+macro-P+%3D+%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DP_i" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+macro-R+%3D+%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DR_i" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+macro-F1%3D%5Cfrac%7B2%2Amacro-P%2Amacro-R%7D%7Bmacro-P%2Bmacro-R%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+macro-P+%3D+%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DP_i" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+macro-R+%3D+%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7DR_i" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+macro-F1%3D%5Cfrac%7B2%2Amacro-P%2Amacro-R%7D%7Bmacro-P%2Bmacro-R%7D" alt="[公式]"></p>
 <ul>
-<li><strong>微观</strong>：<strong>将个混淆矩阵对应的元素进行平均，得到TP、FP、TN、FN的平均值</strong>，分别记为
-<img src="https://www.zhihu.com/equation?tex=%5Coverline%7BTP%7D" alt="[公式]"> 、 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BFP%7D" alt="[公式]"> 、 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BFN%7D" alt="[公式]"> 、 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BTN%7D" alt="[公式]">
-，再基于这些平均值计算出“微观查准率”(micro-P)，“微观查全率”(micro-R)、“微观F1”(micro-F1)：</li>
+<li><strong>微观</strong>：<strong>将个混淆矩阵对应的元素进行平均，得到TP、FP、TN、FN的平均值</strong>，分别记为 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BTP%7D" alt="[公式]"> 、 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BFP%7D" alt="[公式]"> 、 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BFN%7D" alt="[公式]"> 、 <img src="https://www.zhihu.com/equation?tex=%5Coverline%7BTN%7D" alt="[公式]"> ，再基于这些平均值计算出“微观查准率”(micro-P)，“微观查全率”(micro-R)、“微观F1”(micro-F1)：</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+micro-P%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFP%7D%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+micro-R%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFN%7D%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+micro-F1%3D%5Cfrac%7B2%2Amicro-P%2Amicro-R%7D%7Bmicro-P%2Bmicro-R%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h2><span id="二-回归问题评价指标">二、回归问题评价指标</span></h2>
-<blockquote>
-<p><strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute
-Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+micro-P%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFP%7D%7D" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+micro-R%3D%5Cfrac%7B%5Coverline%7BTP%7D%7D%7B%5Coverline%7BTP%7D%2B%5Coverline%7BFN%7D%7D" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cquad+%5Cquad+micro-F1%3D%5Cfrac%7B2%2Amicro-P%2Amicro-R%7D%7Bmicro-P%2Bmicro-R%7D" alt="[公式]"></p>
+<h2><span id="二-回归问题评价指标">二、回归问题评价指标</span></h2><blockquote>
+<p>  <strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
 </blockquote>
-<p>机器学习中的监督学习本质上是给定一系列训练样本 <img src="https://www.zhihu.com/equation?tex=%28x_i%2C+y_i%29" alt="[公式]"> ，尝试学习 <img src="https://www.zhihu.com/equation?tex=x%5Crightarrow+y" alt="[公式]"> 的映射关系，使得给定一个 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> ，即便这个
-<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">
-不在训练样本中，也能够得到尽量接近真实 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的输出 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D" alt="[公式]">
-。而损失函数（Loss
-Function）则是这个过程中关键的一个组成部分，用来<strong>衡量模型的输出</strong>
-<img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D" alt="[公式]"> <strong>与真实的</strong> <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">
-<strong>之间的差距</strong>，给模型的优化指明方向。</p>
-<h3><span id="21-均方差损失-mse-l2-loss">2.1 均方差损失 MSE、L2 loss</span></h3>
-<h5><span id="基本形式与原理"><strong>基本形式与原理</strong></span></h5>
-<p><strong>均方差Mean Squared Error
-(MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数</strong>，也称为
-<strong>L2 Loss</strong>。其基本形式如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=J_%7BMSE%7D+%3D+%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_i+-+%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>从直觉上理解均方差损失，这个损失函数的最小值为
-0（当预测等于真实值时），最大值为无穷大。下图是对于真实值 <img src="https://www.zhihu.com/equation?tex=y%3D0" alt="[公式]">
-，不同的预测值 <img src="https://www.zhihu.com/equation?tex=%5B-1.5%2C+1.5%5D" alt="[公式]">
-的均方差损失的变化图。横轴是不同的预测值，纵轴是均方差损失，可以看到随着预测与真实值绝对误差
-<img src="https://www.zhihu.com/equation?tex=%5Clvert+y-+%5Chat%7By%7D%5Crvert" alt="[公式]"> 的增加，均方差损失呈二次方地增加。</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-f13a4355c21d16cad8b3f30e8a24b5cc_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <img src="https://www.zhihu.com/equation?tex=%28x_i%2C+y_i%29" alt="[公式]"> ，尝试学习 <img src="https://www.zhihu.com/equation?tex=x%5Crightarrow+y" alt="[公式]"> 的映射关系，使得给定一个 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> ，即便这个 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 不在训练样本中，也能够得到尽量接近真实 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的输出 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D" alt="[公式]"> 。而损失函数（Loss Function）则是这个过程中关键的一个组成部分，用来<strong>衡量模型的输出</strong> <img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D" alt="[公式]"> <strong>与真实的</strong> <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> <strong>之间的差距</strong>，给模型的优化指明方向。</p>
+<h3><span id="21-均方差损失-mse-l2-loss">2.1 均方差损失 MSE、L2 loss</span></h3><h5><span id="基本形式与原理"><strong>基本形式与原理</strong></span></h5><p><strong>均方差Mean Squared Error (MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数</strong>，也称为 <strong>L2 Loss</strong>。其基本形式如下：</p>
+<p><img src="https://www.zhihu.com/equation?tex=J_%7BMSE%7D+%3D+%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_i+-+%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>从直觉上理解均方差损失，这个损失函数的最小值为 0（当预测等于真实值时），最大值为无穷大。下图是对于真实值 <img src="https://www.zhihu.com/equation?tex=y%3D0" alt="[公式]"> ，不同的预测值 <img src="https://www.zhihu.com/equation?tex=%5B-1.5%2C+1.5%5D" alt="[公式]"> 的均方差损失的变化图。横轴是不同的预测值，纵轴是均方差损失，可以看到随着预测与真实值绝对误差 <img src="https://www.zhihu.com/equation?tex=%5Clvert+y-+%5Chat%7By%7D%5Crvert" alt="[公式]"> 的增加，均方差损失呈二次方地增加。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-f13a4355c21d16cad8b3f30e8a24b5cc_1440w.jpg" alt="img"></p>
 <blockquote>
-<p>#### 背后的假设</p>
-<p><strong>【独立同分布-中心极限定理】</strong>： 如果 <img src="https://www.zhihu.com/equation?tex=%5C%7BX_n%5C%7D" alt="[公式]">
-独立同分布，且 <img src="https://www.zhihu.com/equation?tex=%5Cmathbb+EX%3D%5Cmu%2C%5Cquad+%5Cmathbb+D+X%3D%5Csigma%5E2%3E0" alt="[公式]"> ，则n足够大时 <img src="https://www.zhihu.com/equation?tex=%5Coverline+X_n" alt="[公式]">
-近似服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%5Cleft%28%5Cmu%2C%5Cfrac%7B%5Csigma%5E2%7Dn%5Cright%29" alt="[公式]"> ，即</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Clim_%7Bn%5Cto%5Cinfty%7DP%5Cleft%28%5Cfrac%7B%5Coverline+X_n-%5Cmu%7D%7B%5Csigma%2F%5Csqrt+n%7D%3Ca%5Cright%29%3D%5CPhi%28a%29%3D%5Cint_%7B-%5Cinfty%7D%5Ea%5Cfrac1%7B%5Csqrt%7B2%5Cpi%7D%7De%5E%7B-t%5E2%2F2%7Ddt%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>实际上在一定的假设下，我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>（
-<img src="https://www.zhihu.com/equation?tex=%5Cmu%3D0%2C+%5Csigma%3D1" alt="[公式]"> ），则给定一个 <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]">
-模型输出真实值 <img src="https://www.zhihu.com/equation?tex=y_i" alt="[公式]"> 的概率为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=p%28y_i%7Cx_i%29+%3D+%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7D%5Cmathbb%7Bexp%7D%5Cleft+%28-%5Cfrac%7B%28y_i-%5Chat%7By_i%7D%29%5E2%7D%7B2%7D%5Cright+%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><strong>进一步我们假设数据集中 N 个样本点之间相互独立，则给定所有
-<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">
-输出所有真实值 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的概率，即似然 Likelihood</strong>，为所有 <img src="https://www.zhihu.com/equation?tex=p%28y_i+%5Cvert+x_i%29" alt="[公式]"> 的累乘</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=L%28x%2C+y%29+%3D+%5Cprod_%7Bi%3D1%7D%5E%7BN%7D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7D%5Cmathbb%7Bexp%7D%5Cleft+%28-%5Cfrac%7B%28y_i-%5Chat%7By_i%7D%29%5E2%7D%7B2%7D%5Cright%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>通常为了计算方便，我们通常最大化对数似然 Log-Likelihood</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=LL%28x%2C+y%29%3D%5Cmathbb%7Blog%7D%28L%28x%2C+y%29%29%3D-%5Cfrac%7BN%7D%7B2%7D%5Cmathbb%7Blog%7D2%5Cpi+-+%5Cfrac%7B1%7D%7B2%7D+%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%28y_i-%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>去掉与 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By_i%7D" alt="[公式]"> 无关的第一项，然后转化为最小化负对数似然 Negative
-Log-Likelihood</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=NLL%28x%2C+y%29+%3D+%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_i+-+%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>可以看到这个实际上就是均方差损失的形式。也就是说<strong>在模型输出与真实值的误差服从高斯分布的假设下，最小化均方差损失函数与极大似然估计本质上是一致的</strong>，因此在这个假设能被满足的场景中（比如回归），均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一个好的选择。</p>
+<h4><span id="背后的假设">背后的假设</span></h4><p>  <strong>【独立同分布-中心极限定理】</strong>：<br>  如果 <img src="https://www.zhihu.com/equation?tex=%5C%7BX_n%5C%7D" alt="[公式]"> 独立同分布，且 <img src="https://www.zhihu.com/equation?tex=%5Cmathbb+EX%3D%5Cmu%2C%5Cquad+%5Cmathbb+D+X%3D%5Csigma%5E2%3E0" alt="[公式]"> ，则n足够大时 <img src="https://www.zhihu.com/equation?tex=%5Coverline+X_n" alt="[公式]"> 近似服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%5Cleft%28%5Cmu%2C%5Cfrac%7B%5Csigma%5E2%7Dn%5Cright%29" alt="[公式]"> ，即</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=%5Clim_%7Bn%5Cto%5Cinfty%7DP%5Cleft%28%5Cfrac%7B%5Coverline+X_n-%5Cmu%7D%7B%5Csigma%2F%5Csqrt+n%7D%3Ca%5Cright%29%3D%5CPhi%28a%29%3D%5Cint_%7B-%5Cinfty%7D%5Ea%5Cfrac1%7B%5Csqrt%7B2%5Cpi%7D%7De%5E%7B-t%5E2%2F2%7Ddt%5C%5C" alt="[公式]"></p>
+<p>  实际上在一定的假设下，我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>（ <img src="https://www.zhihu.com/equation?tex=%5Cmu%3D0%2C+%5Csigma%3D1" alt="[公式]"> ），则给定一个 <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]"> 模型输出真实值 <img src="https://www.zhihu.com/equation?tex=y_i" alt="[公式]"> 的概率为</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=p%28y_i%7Cx_i%29+%3D+%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7D%5Cmathbb%7Bexp%7D%5Cleft+%28-%5Cfrac%7B%28y_i-%5Chat%7By_i%7D%29%5E2%7D%7B2%7D%5Cright+%29+%5C%5C" alt="[公式]"></p>
+<p>  <strong>进一步我们假设数据集中 N 个样本点之间相互独立，则给定所有 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 输出所有真实值 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的概率，即似然 Likelihood</strong>，为所有 <img src="https://www.zhihu.com/equation?tex=p%28y_i+%5Cvert+x_i%29" alt="[公式]"> 的累乘</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=L%28x%2C+y%29+%3D+%5Cprod_%7Bi%3D1%7D%5E%7BN%7D%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7D%5Cmathbb%7Bexp%7D%5Cleft+%28-%5Cfrac%7B%28y_i-%5Chat%7By_i%7D%29%5E2%7D%7B2%7D%5Cright%29+%5C%5C" alt="[公式]"></p>
+<p>  通常为了计算方便，我们通常最大化对数似然 Log-Likelihood</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=LL%28x%2C+y%29%3D%5Cmathbb%7Blog%7D%28L%28x%2C+y%29%29%3D-%5Cfrac%7BN%7D%7B2%7D%5Cmathbb%7Blog%7D2%5Cpi+-+%5Cfrac%7B1%7D%7B2%7D+%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%28y_i-%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>  去掉与 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By_i%7D" alt="[公式]"> 无关的第一项，然后转化为最小化负对数似然 Negative Log-Likelihood</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=NLL%28x%2C+y%29+%3D+%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_i+-+%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]"></p>
+<p>  可以看到这个实际上就是均方差损失的形式。也就是说<strong>在模型输出与真实值的误差服从高斯分布的假设下，最小化均方差损失函数与极大似然估计本质上是一致的</strong>，因此在这个假设能被满足的场景中（比如回归），均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一个好的选择。</p>
 </blockquote>
-<h3><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red">
-hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h3>
-<h4><span id="95的时间区间效果很好rmse指标居高不下的原因">95%的时间区间效果很好，RMSE指标居高不下的原因？</span></h4>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=J_%7BMSE%7D+%3D+%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_i+-+%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<h3><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red"> hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h3><h4><span id="95的时间区间效果很好rmse指标居高不下的原因">95%的时间区间效果很好，RMSE指标居高不下的原因？</span></h4><p><img src="https://www.zhihu.com/equation?tex=J_%7BMSE%7D+%3D+%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28y_i+-+%5Chat%7By_i%7D%29%5E2+%5C%5C" alt="[公式]"></p>
 <p>一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
 <p><strong>解决方案</strong>：</p>
 <ul>
@@ -816,148 +631,61 @@ hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></s
 <li>将离群点的产生机制建模进去</li>
 <li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
 </ul>
-<h4><span id="22-平均绝对误差-mae">2.2 <strong>平均绝对误差 MAE</strong></span></h4>
-<p><strong>平均绝对误差 Mean Absolute Error (MAE）</strong>
-是另一类常用的损失函数，也称为 <strong>L1
-Loss</strong>。其基本形式如下</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=+J_%7BMAE%7D%3D%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%5Cleft+%7C+y_i+-+%5Chat%7By_i%7D+%5Cright+%7C+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>同样的我们可以对这个损失函数进行可视化如下图，MAE 损失的最小值为
-0（当预测等于真实值时），最大值为无穷大。可以看到随着预测与真实值绝对误差
-<img src="https://www.zhihu.com/equation?tex=%5Clvert+y-+%5Chat%7By%7D%5Crvert" alt="[公式]"> 的增加，MAE 损失呈线性增长。</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-fd248542b6b5aa9fadcab44340045dee_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<h4><span id="22-平均绝对误差-mae">2.2 <strong>平均绝对误差 MAE</strong></span></h4><p><strong>平均绝对误差 Mean Absolute Error (MAE）</strong> 是另一类常用的损失函数，也称为 <strong>L1 Loss</strong>。其基本形式如下</p>
+<p><img src="https://www.zhihu.com/equation?tex=+J_%7BMAE%7D%3D%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D%5Cleft+%7C+y_i+-+%5Chat%7By_i%7D+%5Cright+%7C+%5C%5C" alt="[公式]"></p>
+<p>同样的我们可以对这个损失函数进行可视化如下图，MAE 损失的最小值为 0（当预测等于真实值时），最大值为无穷大。可以看到随着预测与真实值绝对误差 <img src="https://www.zhihu.com/equation?tex=%5Clvert+y-+%5Chat%7By%7D%5Crvert" alt="[公式]"> 的增加，MAE 损失呈线性增长。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-fd248542b6b5aa9fadcab44340045dee_1440w.jpg" alt="img"></p>
 <blockquote>
-<p>#### 背后的假设</p>
-<p>同样的我们可以在一定的假设下通过最大化似然得到 MAE
-损失的形式，假设<strong>模型预测与真实值之间的误差服从拉普拉斯分布
-Laplace distribution</strong>（ <img src="https://www.zhihu.com/equation?tex=%5Cmu%3D0%2C+b%3D1" alt="[公式]"> ），则给定一个 <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]">
-模型输出真实值 <img src="https://www.zhihu.com/equation?tex=y_i" alt="[公式]"> 的概率为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=p%28y_i%7Cx_i%29+%3D+%5Cfrac%7B1%7D%7B2%7D%5Cmathbb%7Bexp%7D%28-%5Cleft+%7Cy_i-%5Chat%7By_i%7D%5Cright%7C%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>与上面推导 MSE 时类似，我们可以得到的负对数似然实际上就是 MAE
-损失的形式</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=L%28x%2C+y%29+%3D+%5Cprod_%7Bi%3D1%7D%5E%7BN%7D%5Cfrac%7B1%7D%7B2%7D%5Cmathbb%7Bexp%7D%28-%7Cy_i-%5Chat%7By_i%7D%7C%29%5C%5C+++LL%28x%2C+y%29+%3D+N%5Cln%7B%5Cfrac%7B1%7D%7B2%7D%7D+-+%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%7Cy_i-%5Chat%7By_i%7D%7C+%5C%5C+++NLL%28x%2C+y%29+%3D+%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%7Cy_i-%5Chat%7By_i%7D%7C++%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<h4><span id="背后的假设">背后的假设</span></h4><p>  同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式，假设<strong>模型预测与真实值之间的误差服从拉普拉斯分布 Laplace distribution</strong>（ <img src="https://www.zhihu.com/equation?tex=%5Cmu%3D0%2C+b%3D1" alt="[公式]"> ），则给定一个 <img src="https://www.zhihu.com/equation?tex=x_i" alt="[公式]"> 模型输出真实值 <img src="https://www.zhihu.com/equation?tex=y_i" alt="[公式]"> 的概率为</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=p%28y_i%7Cx_i%29+%3D+%5Cfrac%7B1%7D%7B2%7D%5Cmathbb%7Bexp%7D%28-%5Cleft+%7Cy_i-%5Chat%7By_i%7D%5Cright%7C%29+%5C%5C" alt="[公式]"></p>
+<p>  与上面推导 MSE 时类似，我们可以得到的负对数似然实际上就是 MAE 损失的形式</p>
+<p>  <img src="https://www.zhihu.com/equation?tex=L%28x%2C+y%29+%3D+%5Cprod_%7Bi%3D1%7D%5E%7BN%7D%5Cfrac%7B1%7D%7B2%7D%5Cmathbb%7Bexp%7D%28-%7Cy_i-%5Chat%7By_i%7D%7C%29%5C%5C+++LL%28x%2C+y%29+%3D+N%5Cln%7B%5Cfrac%7B1%7D%7B2%7D%7D+-+%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%7Cy_i-%5Chat%7By_i%7D%7C+%5C%5C+++NLL%28x%2C+y%29+%3D+%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%7Cy_i-%5Chat%7By_i%7D%7C++%5C%5C" alt="[公式]"></p>
 </blockquote>
-<h3><span id="23-mae-与-mse-区别">2.3 MAE 与 MSE 区别</span></h3>
-<p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE
-通常可以更快地收敛，但 MAE 损失对于 outlier
-更加健壮</strong>，即更加不易受到 outlier 影响。</p>
+<h3><span id="23-mae-与-mse-区别">2.3 MAE 与 MSE 区别</span></h3><p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE 通常可以更快地收敛，但 MAE 损失对于 outlier 更加健壮</strong>，即更加不易受到 outlier 影响。</p>
 <ul>
-<li><p><strong>MSE 通常比 MAE
-可以更快地收敛</strong>。当使用梯度下降算法时，MSE 损失的梯度为 <img src="https://www.zhihu.com/equation?tex=-%5Chat%7By_i%7D" alt="[公式]"> ，而 MAE 损失的梯度为 <img src="https://www.zhihu.com/equation?tex=%5Cpm1" alt="[公式]"> ，即 MSE
-的梯度的 scale 会随误差大小变化，而 MAE 的梯度的 scale 则一直保持为
-1，即便在绝对误差 <img src="https://www.zhihu.com/equation?tex=%5Clvert+y_i-%5Chat%7By_i%7D+%5Crvert" alt="[公式]"> 很小的时候 MAE 的梯度 scale 也同样为
-1，这实际上是非常不利于模型的训练的。当然你可以通过在训练过程中动态调整学习率缓解这个问题，但是总的来说，损失函数梯度之间的差异导致了
-MSE 在大部分时候比 MAE 收敛地更快。这个也是 MSE
-更为流行的原因。</p></li>
-<li><p><strong>MAE 对于异常值（outlier） 更加
-robust</strong>。我们可以从两个角度来理解这一点：</p>
+<li><p><strong>MSE 通常比 MAE 可以更快地收敛</strong>。当使用梯度下降算法时，MSE 损失的梯度为 <img src="https://www.zhihu.com/equation?tex=-%5Chat%7By_i%7D" alt="[公式]"> ，而 MAE 损失的梯度为 <img src="https://www.zhihu.com/equation?tex=%5Cpm1" alt="[公式]"> ，即 MSE 的梯度的 scale 会随误差大小变化，而 MAE 的梯度的 scale 则一直保持为 1，即便在绝对误差 <img src="https://www.zhihu.com/equation?tex=%5Clvert+y_i-%5Chat%7By_i%7D+%5Crvert" alt="[公式]"> 很小的时候 MAE 的梯度 scale 也同样为 1，这实际上是非常不利于模型的训练的。当然你可以通过在训练过程中动态调整学习率缓解这个问题，但是总的来说，损失函数梯度之间的差异导致了 MSE 在大部分时候比 MAE 收敛地更快。这个也是 MSE 更为流行的原因。</p>
+</li>
+<li><p><strong>MAE 对于异常值（outlier） 更加 robust</strong>。我们可以从两个角度来理解这一点：</p>
 <ul>
-<li>第一个角度是直观地理解，下图是 MAE 和 MSE
-损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE
-损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE
-损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE
-会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。<img src="https://pic2.zhimg.com/80/v2-c8edffe0406dafae41a042e412cd3251_1440w.jpg" alt="img"></li>
-<li>第二个角度是从两个损失函数的假设出发，MSE
-假设了误差服从高斯分布，MAE
-假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加
-robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine
-Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution
-Figure 2.8），当右图右侧出现了 outliers
-时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的
-MAE 对 outlier 比高斯分布为假设的 MSE 更加
-robust。<img src="https://pic1.zhimg.com/80/v2-93ad65845f5b0dc0327fde4ded661804_1440w.jpg" alt="img" style="zoom: 67%;"></li>
-</ul></li>
+<li>第一个角度是直观地理解，下图是 MAE 和 MSE 损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE 损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE 损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE 会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。<img src="https://pic2.zhimg.com/80/v2-c8edffe0406dafae41a042e412cd3251_1440w.jpg" alt="img"></li>
+<li>第二个角度是从两个损失函数的假设出发，MSE 假设了误差服从高斯分布，MAE 假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加 robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution Figure 2.8），当右图右侧出现了 outliers 时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的 MAE 对 outlier 比高斯分布为假设的 MSE 更加 robust。<img src="https://pic1.zhimg.com/80/v2-93ad65845f5b0dc0327fde4ded661804_1440w.jpg" alt="img" style="zoom: 67%;"></li>
 </ul>
-<h3><span id="24-huber-loss">2.4 Huber Loss</span></h3>
-<blockquote>
+</li>
+</ul>
+<h3><span id="24-huber-loss">2.4 Huber Loss</span></h3><blockquote>
 <ul>
 <li>在误差接近 0 时使用 MSE，使损失函数可导并且梯度更加稳定</li>
-<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier
-更加健壮。</li>
+<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier 更加健壮。</li>
 </ul>
 </blockquote>
-<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点，MSE
-损失收敛快但容易受 outlier 影响，MAE 对 outlier 更加健壮但是收敛慢，<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Huber_loss">Huber
-Loss</a> 则是一种将 MSE 与 MAE 结合起来，取两者优点的损失函数，也被称作
-Smooth Mean Absolute Error Loss 。其原理很简单，就是在误差接近 0 时使用
-MSE，误差较大时使用 MAE，公式为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=J_%7Bhuber%7D%3D%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5EN%5Cmathbb%7BI%7D_%7B%7C+y_i+-+%5Chat%7By_i%7D%7C+%5Cleq+%5Cdelta%7D+%5Cfrac%7B%28y_i+-+%5Chat%7By_i%7D%29%5E2%7D%7B2%7D%2B+%5Cmathbb%7BI%7D_%7B%7C+y_i+-+%5Chat%7By_i%7D%7C+%3E+%5Cdelta%7D+%28%5Cdelta+%7Cy_i+-+%5Chat%7By_i%7D%7C+-+%5Cfrac%7B1%7D%7B2%7D%5Cdelta%5E2%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>上式中 <img src="https://www.zhihu.com/equation?tex=%5Cdelta" alt="[公式]"> 是 Huber Loss 的一个超参数，<img src="https://www.zhihu.com/equation?tex=%5Cdelta" alt="[公式]"> 的值是
-MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分，第二项是
-MAE 部分，在 MAE 的部分公式为 <img src="https://www.zhihu.com/equation?tex=%5Cdelta+%5Clvert+y_i+-+%5Chat%7By_i%7D%5Crvert+-+%5Cfrac%7B1%7D%7B2%7D%5Cdelta%5E2" alt="[公式]"> 是为了保证误差 <img src="https://www.zhihu.com/equation?tex=%5Clvert+y+-+%5Chat%7By%7D%5Crvert%3D%5Cpm+%5Cdelta" alt="[公式]"> 时 MAE 和 MSE 的取值一致，进而保证 Huber Loss
-损失连续可导。</p>
+<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点，MSE 损失收敛快但容易受 outlier 影响，MAE 对 outlier 更加健壮但是收敛慢，<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Huber_loss">Huber Loss</a> 则是一种将 MSE 与 MAE 结合起来，取两者优点的损失函数，也被称作 Smooth Mean Absolute Error Loss 。其原理很简单，就是在误差接近 0 时使用 MSE，误差较大时使用 MAE，公式为</p>
+<p><img src="https://www.zhihu.com/equation?tex=J_%7Bhuber%7D%3D%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5EN%5Cmathbb%7BI%7D_%7B%7C+y_i+-+%5Chat%7By_i%7D%7C+%5Cleq+%5Cdelta%7D+%5Cfrac%7B%28y_i+-+%5Chat%7By_i%7D%29%5E2%7D%7B2%7D%2B+%5Cmathbb%7BI%7D_%7B%7C+y_i+-+%5Chat%7By_i%7D%7C+%3E+%5Cdelta%7D+%28%5Cdelta+%7Cy_i+-+%5Chat%7By_i%7D%7C+-+%5Cfrac%7B1%7D%7B2%7D%5Cdelta%5E2%29+%5C%5C" alt="[公式]"></p>
+<p>上式中 <img src="https://www.zhihu.com/equation?tex=%5Cdelta" alt="[公式]"> 是 Huber Loss 的一个超参数，<img src="https://www.zhihu.com/equation?tex=%5Cdelta" alt="[公式]"> 的值是 MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分，第二项是 MAE 部分，在 MAE 的部分公式为 <img src="https://www.zhihu.com/equation?tex=%5Cdelta+%5Clvert+y_i+-+%5Chat%7By_i%7D%5Crvert+-+%5Cfrac%7B1%7D%7B2%7D%5Cdelta%5E2" alt="[公式]"> 是为了保证误差 <img src="https://www.zhihu.com/equation?tex=%5Clvert+y+-+%5Chat%7By%7D%5Crvert%3D%5Cpm+%5Cdelta" alt="[公式]"> 时 MAE 和 MSE 的取值一致，进而保证 Huber Loss 损失连续可导。</p>
 <p>下图是 <img src="https://www.zhihu.com/equation?tex=%5Cdelta%3D1.0" alt="[公式]"> 时的 Huber Loss，可以看到在 <img src="https://www.zhihu.com/equation?tex=%5B-%5Cdelta%2C+%5Cdelta%5D" alt="[公式]"> 的区间内实际上就是 MSE 损失，在 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cdelta%29" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%28%5Cdelta%2C+%5Cinfty%29" alt="[公式]"> 区间内为 MAE损失。</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-b4260d38f70dd920fa46b8717596bda7_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3><span id="25-分位数损失-quantile-loss">2.5 分位数损失 Quantile Loss</span></h3>
-<blockquote>
-<p><strong>MAE
-中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
+<p><img src="https://pic4.zhimg.com/80/v2-b4260d38f70dd920fa46b8717596bda7_1440w.jpg" alt="img"></p>
+<h3><span id="25-分位数损失-quantile-loss">2.5 分位数损失 Quantile Loss</span></h3><blockquote>
+<p>  <strong>MAE 中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
 </blockquote>
-<p><strong>分位数回归 Quantile Regression
-是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-8eb8ecfcdd8031a16a471905217934a0_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>分位数回归是通过使用分位数损失 Quantile Loss
-来实现这一点的，分位数损失形式如下，式中的 r 分位数系数。</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=J_%7Bquant%7D+%3D+%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%5Cmathbb%7BI%7D_%7B%5Chat%7By_i%7D%5Cgeq+y_i%7D%281-r%29%7Cy_i+-+%5Chat%7By_i%7D%7C+%2B+%5Cmathbb%7BI%7D_%7B%5Chat%7By_i%7D%3C+y_i%7Dr%7Cy_i-%5Chat%7By_i%7D%7C+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>我们如何理解这个损失函数呢？这个损失函数是一个分段的函数 ，将 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By_i%7D+%5Cgeq+y_i" alt="[公式]"> （高估） 和 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By_i%7D+%3C+y_i" alt="[公式]"> （低估） 两种情况分开来，并分别给予不同的系数。当 <img src="https://www.zhihu.com/equation?tex=r%3E0.5" alt="[公式]">
-时，低估的损失要比高估的损失更大，反过来当 <img src="https://www.zhihu.com/equation?tex=r+%3C+0.5" alt="[公式]">
-时，高估的损失比低估的损失大；分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong>。特别地，当
-<img src="https://www.zhihu.com/equation?tex=r%3D0.5" alt="[公式]">
-时，分位数损失退化为 MAE 损失，从这里可以看出 MAE
-损失实际上是分位数损失的一个特例 — 中位数回归。</p>
-<p>下图是取不同的分位点 0.2、0.5、0.6
-得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6
-在高估和低估两种情况下损失是不同的，而 0.5 实际上就是 MAE。</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-f8ed385f32a517c784bce841e6da1daf_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3><span id="26-平均绝对百分误差-mape">2.6 平均绝对百分误差 MAPE</span></h3>
-<p>虽然平均绝对误差能够获得一个评价值，但是你并不知道这个值代表模型拟合是优还是劣，只有通过对比才能达到效果。当需要以相对的观点来衡量误差时，则使用MAPE。</p>
-<p><strong>平均绝对百分误差</strong>（<strong>Mean Absolute Percentage
-Error，MAPE</strong>）是对 MAE
-的一种改进，考虑了绝对误差相对真实值的比例。</p>
+<p><strong>分位数回归 Quantile Regression 是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-8eb8ecfcdd8031a16a471905217934a0_1440w.jpg" alt="img"></p>
+<p>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的，分位数损失形式如下，式中的 r 分位数系数。</p>
+<p><img src="https://www.zhihu.com/equation?tex=J_%7Bquant%7D+%3D+%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%5Cmathbb%7BI%7D_%7B%5Chat%7By_i%7D%5Cgeq+y_i%7D%281-r%29%7Cy_i+-+%5Chat%7By_i%7D%7C+%2B+%5Cmathbb%7BI%7D_%7B%5Chat%7By_i%7D%3C+y_i%7Dr%7Cy_i-%5Chat%7By_i%7D%7C+%5C%5C" alt="[公式]"></p>
+<p>我们如何理解这个损失函数呢？这个损失函数是一个分段的函数 ，将 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By_i%7D+%5Cgeq+y_i" alt="[公式]"> （高估） 和 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By_i%7D+%3C+y_i" alt="[公式]"> （低估） 两种情况分开来，并分别给予不同的系数。当 <img src="https://www.zhihu.com/equation?tex=r%3E0.5" alt="[公式]"> 时，低估的损失要比高估的损失更大，反过来当 <img src="https://www.zhihu.com/equation?tex=r+%3C+0.5" alt="[公式]"> 时，高估的损失比低估的损失大；分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong>。特别地，当 <img src="https://www.zhihu.com/equation?tex=r%3D0.5" alt="[公式]"> 时，分位数损失退化为 MAE 损失，从这里可以看出 MAE 损失实际上是分位数损失的一个特例 — 中位数回归。</p>
+<p>下图是取不同的分位点 0.2、0.5、0.6 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6 在高估和低估两种情况下损失是不同的，而 0.5 实际上就是 MAE。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-f8ed385f32a517c784bce841e6da1daf_1440w.jpg" alt="img"></p>
+<h3><span id="26-平均绝对百分误差-mape">2.6  平均绝对百分误差 MAPE</span></h3><p>虽然平均绝对误差能够获得一个评价值，但是你并不知道这个值代表模型拟合是优还是劣，只有通过对比才能达到效果。当需要以相对的观点来衡量误差时，则使用MAPE。</p>
+<p><strong>平均绝对百分误差</strong>（<strong>Mean Absolute Percentage Error，MAPE</strong>）是对 MAE 的一种改进，考虑了绝对误差相对真实值的比例。</p>
 <ul>
 <li><strong>优点</strong>：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。</li>
 </ul>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=MAPE%3D%5Cfrac%7B100%7D%7Bm%7D%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%20%5Cleft%20%7C%20%20%5Cfrac%7By_%7Bi%7D-f%5Cleft%28x_%7Bi%7D%5Cright%29%7D%7By_%7Bi%7D%7D%20%5Cright%20%7C" alt="公式">
-<figcaption aria-hidden="true">公式</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=MAPE%3D%5Cfrac%7B100%7D%7Bm%7D%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%20%5Cleft%20%7C%20%20%5Cfrac%7By_%7Bi%7D-f%5Cleft%28x_%7Bi%7D%5Cright%29%7D%7By_%7Bi%7D%7D%20%5Cright%20%7C" alt="公式"></p>
 <blockquote>
-<p>在某些场景下，如房价从 <img src="https://www.zhihu.com/equation?tex=5K" alt="公式"> 到 <img src="https://www.zhihu.com/equation?tex=50K" alt="公式"> 之间，<img src="https://www.zhihu.com/equation?tex=5K" alt="公式"> 预测成 <img src="https://www.zhihu.com/equation?tex=10K" alt="公式"> 与 <img src="https://www.zhihu.com/equation?tex=50K" alt="公式"> 预测成 <img src="https://www.zhihu.com/equation?tex=45K" alt="公式">
-的差别是非常大的，而平均绝对百分误差考虑到了这点。</p>
+<p>  在某些场景下，如房价从 <img src="https://www.zhihu.com/equation?tex=5K" alt="公式"> 到 <img src="https://www.zhihu.com/equation?tex=50K" alt="公式"> 之间，<img src="https://www.zhihu.com/equation?tex=5K" alt="公式"> 预测成 <img src="https://www.zhihu.com/equation?tex=10K" alt="公式"> 与 <img src="https://www.zhihu.com/equation?tex=50K" alt="公式"> 预测成 <img src="https://www.zhihu.com/equation?tex=45K" alt="公式"> 的差别是非常大的，而平均绝对百分误差考虑到了这点。</p>
 </blockquote>
-<h2><span id="三-相似性度量指标">三、相似性度量指标</span></h2>
-<blockquote>
-<p>机器学习中的相似性度量方法 - 天下客的文章 - 知乎
-https://zhuanlan.zhihu.com/p/411876558</p>
+<h2><span id="三-相似性度量指标">三、相似性度量指标</span></h2><blockquote>
+<p>  机器学习中的相似性度量方法 - 天下客的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/411876558">https://zhuanlan.zhihu.com/p/411876558</a></p>
 </blockquote>
-<p>描述样本之间相似度的方法有很多种，一般来说常用的有相关系数和欧式距离。本文对机器学习中常用的相似性度量方法进行了总结。<strong>在做分类时，常常需要估算不同样本之间的相似性度量（Similarity
-Measurement），</strong>这时通常采用的方法就是计算样本间的“距离”（distance）。采用什么样的方法计算距离是很讲究的，甚至关系到分类的正确与否。</p>
+<p>描述样本之间相似度的方法有很多种，一般来说常用的有相关系数和欧式距离。本文对机器学习中常用的相似性度量方法进行了总结。<strong>在做分类时，常常需要估算不同样本之间的相似性度量（Similarity Measurement），</strong>这时通常采用的方法就是计算样本间的“距离”（distance）。采用什么样的方法计算距离是很讲究的，甚至关系到分类的正确与否。</p>
 <ul>
 <li><strong>欧式距离</strong>：k-means</li>
 <li><strong>曼哈顿距离</strong>：</li>
@@ -965,80 +693,50 @@ Measurement），</strong>这时通常采用的方法就是计算样本间的“
 <li>闵可夫斯基距离</li>
 <li>标准化欧氏距离</li>
 <li>马氏距离</li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=夹角余弦&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2255493039%22%7D">夹角余弦</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=夹角余弦&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;55493039&quot;}">夹角余弦</a></li>
 <li><strong>汉明距离</strong>：simhash</li>
-<li><strong>杰卡德距离&amp;杰卡德相似系数</strong>:
-<strong>杰卡德相似系数是衡量两个集合的相似度一种指标。</strong></li>
+<li><strong>杰卡德距离&amp;杰卡德相似系数</strong>: <strong>杰卡德相似系数是衡量两个集合的相似度一种指标。</strong></li>
 <li>相关系数&amp;相关距离</li>
 <li>信息熵</li>
 </ul>
-<h2><span id="四-推荐算法评价指标">四、推荐算法评价指标</span></h2>
-<ul>
-<li>推荐算法评价指标 - 一干正事就犯困的文章 - 知乎
-https://zhuanlan.zhihu.com/p/359528909</li>
+<h2><span id="四-推荐算法评价指标">四、推荐算法评价指标</span></h2><ul>
+<li>推荐算法评价指标 - 一干正事就犯困的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/359528909">https://zhuanlan.zhihu.com/p/359528909</a></li>
 </ul>
-<h4><span id="41-ap">4.1 AP</span></h4>
-<p><code>AP</code> 衡量的是训练好的模型在每个类别上的好坏；</p>
+<h4><span id="41-ap">4.1 AP</span></h4><p><code>AP</code> 衡量的是训练好的模型在每个类别上的好坏；</p>
 <p><img src="https://pic2.zhimg.com/80/v2-e8656365e7eee25065d6bdfec33368e5_1440w.jpg" alt="img" style="zoom: 67%;"></p>
 <p><strong>AP总结了一个精确召回曲线，作为在每个阈值处获得的精度的加权平均值，并且与以前的阈值相比，召回率的增加用作权重</strong>：</p>
 <p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20220711160205051.png" alt="image-20220711160205051" style="zoom:50%;"></p>
 <p>其中和分别是第n个阈值[1]时的精度和召回率。此实现未进行插值，并且与使用梯形规则计算精确调用曲线下的面积有所不同，后者使用线性插值并且可能过于乐观。</p>
-<h4><span id="42-map">4.2 MAP</span></h4>
-<p><strong>MAP（Mean Average
-Precision）常用于排序任务，MAP的计算涉及另外两个指标：Precision和Recall</strong></p>
+<h4><span id="42-map">4.2 MAP</span></h4><p><strong>MAP（Mean Average Precision）常用于排序任务，MAP的计算涉及另外两个指标：Precision和Recall</strong></p>
 <ul>
 <li><strong>Precision和Precision@k</strong></li>
 </ul>
-<p>推荐算法中的精度precision计算如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=precision%3D%5Cfrac%7B%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%9C%E4%B8%AD%E7%9B%B8%E5%85%B3%E7%9A%84item%E6%95%B0%E9%87%8F%7D%7B%E6%8E%A8%E8%8D%90%E7%9A%84item%E6%80%BB%E6%95%B0%E9%87%8F%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>可以看出Precision的计算没有考虑结果列表中item的顺序，Precision@k则通过切片的方式将顺序隐含在结果中。Precision@k表示列表前k项的Precision，随着k的变化，可以得到一系列precision值，用
-<img src="https://www.zhihu.com/equation?tex=P%28k%29" alt="[公式]">
-表示。</p>
+<p>推荐算法中的精度precision计算如下： </p>
+<p><img src="https://www.zhihu.com/equation?tex=precision%3D%5Cfrac%7B%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%9C%E4%B8%AD%E7%9B%B8%E5%85%B3%E7%9A%84item%E6%95%B0%E9%87%8F%7D%7B%E6%8E%A8%E8%8D%90%E7%9A%84item%E6%80%BB%E6%95%B0%E9%87%8F%7D+%5C%5C" alt="[公式]"></p>
+<p>可以看出Precision的计算没有考虑结果列表中item的顺序，Precision@k则通过切片的方式将顺序隐含在结果中。Precision@k表示列表前k项的Precision，随着k的变化，可以得到一系列precision值，用 <img src="https://www.zhihu.com/equation?tex=P%28k%29" alt="[公式]"> 表示。</p>
 <ul>
 <li><strong>Recall和Recall@k</strong></li>
 </ul>
 <p>推荐算法中的召回率recall计算如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=+recall%3D%5Cfrac%7B%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%9C%E4%B8%AD%E7%9B%B8%E5%85%B3%E7%9A%84item%E6%95%B0%E9%87%8F%7D%7B%E6%89%80%E6%9C%89%E7%9B%B8%E5%85%B3%E7%9A%84item%E6%95%B0%E9%87%8F%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>与Precision@k相似，recall@k表示结果列表前k项的recall，随着k的变化，可以得到一系列的recall值，用
-<img src="https://www.zhihu.com/equation?tex=r%28k%29" alt="[公式]">
-表示。</p>
+<p><img src="https://www.zhihu.com/equation?tex=+recall%3D%5Cfrac%7B%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%9C%E4%B8%AD%E7%9B%B8%E5%85%B3%E7%9A%84item%E6%95%B0%E9%87%8F%7D%7B%E6%89%80%E6%9C%89%E7%9B%B8%E5%85%B3%E7%9A%84item%E6%95%B0%E9%87%8F%7D%5C%5C" alt="[公式]"></p>
+<p>与Precision@k相似，recall@k表示结果列表前k项的recall，随着k的变化，可以得到一系列的recall值，用 <img src="https://www.zhihu.com/equation?tex=r%28k%29" alt="[公式]"> 表示。</p>
 <ul>
 <li><h5><span id="apn">AP@N</span></h5></li>
 </ul>
-<p>AP（Average
-Precision）平均精度的计算以Precision@k为基础，可以体现出结果列表中item顺序的重要性，其计算过程如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=AP%40N%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum%5EN_%7Bk%3D1%7D%28P%28k%29%5Cquad+if%5C%2C+kth%5C%2C+item%5C%2C+is%5C%2C+relevant%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum%5EN_%7Bk%3D1%7DP%28k%29%5Ccdot+rel%28k%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中，N表示要求推荐的N个item，m表示所有相关的item总数， <img src="https://www.zhihu.com/equation?tex=rel%28k%29" alt="[公式]">
-表示第k个item是否相关，相关为1，反之为0</p>
+<p>AP（Average Precision）平均精度的计算以Precision@k为基础，可以体现出结果列表中item顺序的重要性，其计算过程如下： </p>
+<p><img src="https://www.zhihu.com/equation?tex=AP%40N%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum%5EN_%7Bk%3D1%7D%28P%28k%29%5Cquad+if%5C%2C+kth%5C%2C+item%5C%2C+is%5C%2C+relevant%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum%5EN_%7Bk%3D1%7DP%28k%29%5Ccdot+rel%28k%29+%5C%5C" alt="[公式]"></p>
+<p>其中，N表示要求推荐的N个item，m表示所有相关的item总数， <img src="https://www.zhihu.com/equation?tex=rel%28k%29" alt="[公式]"> 表示第k个item是否相关，相关为1，反之为0</p>
 <p><strong>AP@N的值越大，表示推荐列表中相关的item数量越多以及相关item的排名越靠前</strong></p>
 <ul>
 <li><h5><span id="mapn">MAP@N</span></h5></li>
 </ul>
 <p><strong>AP@N评价了算法对单个用户的性能，MAP@N则是算法对多个用户的平均值，是平均数的平均，其计算过程如下</strong>：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=MAP%40N%3D%5Cfrac%7B1%7D%7B%7CU%7C%7D%5Csum_%7Bu%3D1%7D%5E%7B%7CU%7C%7D%28AP%40N%29u%3D%5Cfrac%7B1%7D%7B%7CU%7C%7D%5Csum%7Bu%3D1%7D%5E%7B%7CU%7C%7D%28%5Cfrac%7B1%7D%7Bm%7D%5Csum%5EN_%7Bk%3D1%7DP_u%28k%29%5Ccdot+rel_u%28k%29%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h2><span id="五-聚类算法评价指标">五、聚类算法评价指标</span></h2>
-<blockquote>
-<p>https://zhuanlan.zhihu.com/p/343667804</p>
-<p>十分钟掌握聚类算法的评估指标：https://juejin.cn/post/6997913127572471821</p>
+<p><img src="https://www.zhihu.com/equation?tex=MAP%40N%3D%5Cfrac%7B1%7D%7B%7CU%7C%7D%5Csum_%7Bu%3D1%7D%5E%7B%7CU%7C%7D%28AP%40N%29u%3D%5Cfrac%7B1%7D%7B%7CU%7C%7D%5Csum%7Bu%3D1%7D%5E%7B%7CU%7C%7D%28%5Cfrac%7B1%7D%7Bm%7D%5Csum%5EN_%7Bk%3D1%7DP_u%28k%29%5Ccdot+rel_u%28k%29%29+%5C%5C" alt="[公式]"></p>
+<h2><span id="五-聚类算法评价指标">五、聚类算法评价指标</span></h2><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343667804">https://zhuanlan.zhihu.com/p/343667804</a></p>
+<p>  十分钟掌握聚类算法的评估指标：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6997913127572471821">https://juejin.cn/post/6997913127572471821</a></p>
 </blockquote>
-<h4><span id="前言">前言</span></h4>
-<p>如同之前介绍的其它算法模型一样，对于聚类来讲我们同样会通过一些评价指标来衡量聚类算法的优与劣。在聚类任务中，常见的评价指标有：<strong>纯度（Purity）</strong>、<strong>兰德系数（Rand
-Index,
-RI）</strong>、<strong>F值（F-score）</strong>和<strong>调整兰德系数（Adjusted
-Rand
-Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文中出现得最多的评价方法。下面，我们就来对这些算法一一进行介绍。</p>
+<h4><span id="前言">前言</span></h4><p>如同之前介绍的其它算法模型一样，对于聚类来讲我们同样会通过一些评价指标来衡量聚类算法的优与劣。在聚类任务中，常见的评价指标有：<strong>纯度（Purity）</strong>、<strong>兰德系数（Rand Index, RI）</strong>、<strong>F值（F-score）</strong>和<strong>调整兰德系数（Adjusted Rand Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文中出现得最多的评价方法。下面，我们就来对这些算法一一进行介绍。</p>
 <p><img src="https://pic3.zhimg.com/80/v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w.jpg" alt="img" style="zoom: 67%;"></p>
 <p>好的聚类算法，一般要求类簇具有：</p>
 <ul>
@@ -1046,19 +744,10 @@ Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文�
 <li><strong>簇间 (inter-cluster) 相似度底</strong></li>
 </ul>
 <p>一般来说，评估聚类质量有两个标准，内部评估评价指标和外部评估指标。</p>
-<h3><span id="外部评估">【外部评估】</span></h3>
-<h3><span id="51聚类纯度-聚类的准确率"><strong>5.1聚类纯度</strong> -
-聚类的准确率</span></h3>
-<p>在聚类结果的评估标准中，一种最简单最直观的方法就是计算它的<strong>聚类纯度</strong>（purity），别看纯度听起来很陌生，但实际上和<strong>分类问题中的准确率有着异曲同工之妙</strong>。因为聚类纯度的总体思想也<strong>用聚类正确的样本数除以总的样本数，因此它也经常被称为聚类的准确率</strong>。只是对于聚类后的结果我们并不知道每个簇所对应的真实类别，因此需要取每种情况下的最大值。具体的，纯度的计算公式定义如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+P%3D%28%5COmega%2C%5Cmathbb%7BC%7D%29%3D%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bk%7D%5Cmax_%7Bj%7D%7C%5Comega_k%5Ccap+c_j%7C+%5Cend%7Baligned%7D%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%281%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<h3><span id="外部评估">【外部评估】</span></h3><h3><span id="51聚类纯度-聚类的准确率"><strong>5.1聚类纯度</strong> - 聚类的准确率</span></h3><p>在聚类结果的评估标准中，一种最简单最直观的方法就是计算它的<strong>聚类纯度</strong>（purity），别看纯度听起来很陌生，但实际上和<strong>分类问题中的准确率有着异曲同工之妙</strong>。因为聚类纯度的总体思想也<strong>用聚类正确的样本数除以总的样本数，因此它也经常被称为聚类的准确率</strong>。只是对于聚类后的结果我们并不知道每个簇所对应的真实类别，因此需要取每种情况下的最大值。具体的，纯度的计算公式定义如下：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+P%3D%28%5COmega%2C%5Cmathbb%7BC%7D%29%3D%5Cfrac%7B1%7D%7BN%7D%5Csum_%7Bk%7D%5Cmax_%7Bj%7D%7C%5Comega_k%5Ccap+c_j%7C+%5Cend%7Baligned%7D%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%281%29+%5C%5C" alt="[公式]"></p>
 <p>其中<img src="https://www.zhihu.com/equation?tex=N" alt="[公式]">表示总的样本数；<img src="https://www.zhihu.com/equation?tex=%5COmega%3D%5C%7B%5Comega_1%2C%5Comega_2%2C...%2C%5Comega_K%5C%7D" alt="[公式]">表示一个个聚类后的簇，而<img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BC%7D%3D%5C%7Bc_1%2C_2%2C...c_J%5C%7D" alt="[公式]">表示正确的类别；<img src="https://www.zhihu.com/equation?tex=%5Comega_k" alt="[公式]">表示聚类后第<img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">个簇中的所有样本，<img src="https://www.zhihu.com/equation?tex=c_j" alt="[公式]">表示第<img src="https://www.zhihu.com/equation?tex=j" alt="[公式]">个类别中真实的样本。在这里<img src="https://www.zhihu.com/equation?tex=P" alt="[公式]">的取值范围为<img src="https://www.zhihu.com/equation?tex=%5B0%2C1%5D" alt="[公式]">，越大表示聚类效果越好。</p>
-<h3><span id="52-兰德系数与f值同簇混淆矩阵"><strong>5.2 兰德系数与F值</strong>
-[同簇混淆矩阵]</span></h3>
-<p>在介绍完了纯度这一评价指标后，我们再来看看兰德系数（Rand
-Index）和F值。虽然兰德系数听起来是一个陌生的名词，但它的计算过程却也与准确率的计算过程类似。同时，虽然这里也有一个叫做F值的指标，并且它的计算过程也和分类指标中的F值类似，但是两者却有着本质的差别。说了这么多，那这两个指标到底该怎么算呢？同分类问题中的混淆矩阵类似，这里我们也要先定义四种情况进行计数，然后再进行指标的计算。</p>
+<h3><span id="52-兰德系数与f值-同簇混淆矩阵"><strong>5.2 兰德系数与F值</strong>  [同簇混淆矩阵]</span></h3><p>在介绍完了纯度这一评价指标后，我们再来看看兰德系数（Rand Index）和F值。虽然兰德系数听起来是一个陌生的名词，但它的计算过程却也与准确率的计算过程类似。同时，虽然这里也有一个叫做F值的指标，并且它的计算过程也和分类指标中的F值类似，但是两者却有着本质的差别。说了这么多，那这两个指标到底该怎么算呢？同分类问题中的混淆矩阵类似，这里我们也要先定义四种情况进行计数，然后再进行指标的计算。</p>
 <p><strong>为了说明兰德系数背后的思想，我们还是以图1中的聚类结果为例进行说明（为了方便观察，我们再放一张图在这里）:</strong></p>
 <p><img src="https://pic3.zhimg.com/80/v2-e62c8b4b793c89b1cd70f2aaebf690c6_1440w.jpg" alt="img" style="zoom: 67%;"></p>
 <ul>
@@ -1067,50 +756,32 @@ Index）和F值。虽然兰德系数听起来是一个陌生的名词，但它�
 <li><img src="https://www.zhihu.com/equation?tex=TN" alt="[公式]">：表示两个<strong>非同类样本点</strong>分别在<strong>两个簇</strong>中的情况数量；</li>
 <li><img src="https://www.zhihu.com/equation?tex=FN" alt="[公式]">：表示两个同类样本点分别在<strong>两个簇</strong>中的情况数量；</li>
 </ul>
-<p>由此，我们便能得到如下所示的对<strong>混淆矩阵（Pair Confusion
-Matrix）</strong>：</p>
+<p>由此，我们便能得到如下所示的对<strong>混淆矩阵（Pair Confusion Matrix）</strong>：</p>
 <p><img src="https://pic3.zhimg.com/80/v2-a9e709a995b006be04d026aebc721c4e_1440w.png" alt="img" style="zoom:75%;"></p>
 <p>有了上面各种情况的统计值，我们就可以定义出兰德系数和F值的计算公式：</p>
 <p><img src="https://www.zhihu.com/equation?tex=RI%3D%5Cfrac%7BTP%2BTN%7D%7BTP%2BFP%2BFN%2BTN%7D%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%283%29+%5C%5C" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+Precision%26%3D%5Cfrac%7BTP%7D%7BTP%2BFP%7D%5C%5C%5B2ex%5D+Recall%26%3D%5Cfrac%7BTP%7D%7BTP%2BFN%7D%5C%5C%5B2ex%5D+F_%7B%5Cbeta%7D%26%3D%281%2B%5Cbeta%5E2%29%5Cfrac%7BPrecision%5Ccdot+Recall%7D%7B%5Cbeta%5E2%5Ccdot+Precision%2BRecall%7D+%5Cend%7Baligned%7D%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%5C%3B%284%29+%5C%5C" alt="[公式]"></p>
 <p>从上面的计算公式来看，<img src="https://www.zhihu.com/equation?tex=%283%29%284%29" alt="[公式]">从形式上看都非常像分类问题中的准确率与F值，但是有着本质的却别。同时，在这里<img src="https://www.zhihu.com/equation?tex=RI" alt="[公式]">和<img src="https://www.zhihu.com/equation?tex=F_%7B%5Cbeta%7D" alt="[公式]">的取值范围均为<img src="https://www.zhihu.com/equation?tex=%5B0%2C1%5D" alt="[公式]">，越大表示聚类效果越好。</p>
-<h4><span id="53调整兰德系数adjusted-rand-index归一化">5.3
-调整兰德系数（Adjusted Rand index）【归一化】</span></h4>
-<p>对于随机结果，RI并不能保证分数接近零。<strong>为了实现“在聚类结果随机产生的情况下，指标应该接近零”</strong>，调整兰德系数（Adjusted
-rand index）被提出，它具有更高的区分度。</p>
-<p>其公式为： <span class="math display">\[
-\mathrm{ARI}=\frac{\mathrm{RI}-E[\mathrm{RI}]}{\max
-(\mathrm{RI})-E[\mathrm{RI}]}
-\]</span> <span class="math inline">\(A R\)</span> 取值范围为 <span class="math inline">\([-1,1]\)</span>,
-值越大意味着聚类结果与真实情况越吻合。从广义的角度来讲,
-ARI衡量的是两个数据分布的吻合程度。</p>
+<h4><span id="53-调整兰德系数adjusted-rand-index归一化">5.3 调整兰德系数（Adjusted Rand index）【归一化】</span></h4><p>对于随机结果，RI并不能保证分数接近零。<strong>为了实现“在聚类结果随机产生的情况下，指标应该接近零”</strong>，调整兰德系数（Adjusted rand index）被提出，它具有更高的区分度。</p>
+<p>其公式为：</p>
+<script type="math/tex; mode=display">
+\mathrm{ARI}=\frac{\mathrm{RI}-E[\mathrm{RI}]}{\max (\mathrm{RI})-E[\mathrm{RI}]}</script><p>$A R$ 取值范围为 $[-1,1]$, 值越大意味着聚类结果与真实情况越吻合。从广义的角度来讲, ARI衡量的是两个数据分布的吻合程度。</p>
 <p>优点:</p>
 <ul>
 <li>对任意数量的聚类中心和样本数, 随机聚类的ARI都非常接近于 0 。</li>
-<li>取值在 <span class="math inline">\([-1,1]\)</span> 之间,
-负数代表结果不好, 越接近于1越好。</li>
+<li>取值在 $[-1,1]$ 之间, 负数代表结果不好, 越接近于1越好。</li>
 <li>对簇的结构不需作出任何假设：可以用于比较聚类算法。</li>
 </ul>
 <p>缺点:</p>
 <ul>
-<li>ARI 需要 ground truth classes 的相关知识, ARI需要真实标签,
-而在实践中几乎不可用, 或者需要人工
-标注者手动分配（如在监督学习环境中）。</li>
+<li>ARI 需要 ground truth classes 的相关知识, ARI需要真实标签, 而在实践中几乎不可用, 或者需要人工 标注者手动分配（如在监督学习环境中）。</li>
 </ul>
-<h3><span id="54-标准化互信息nmi-normalized-mutualinformation">5.4
-<strong><font color="red"> 标准化互信息（NMI, Normalized Mutual
-Information）</font></strong></span></h3>
-<p>互信息是用来衡量两个数据分布的吻合程度。它也是一有用的信息度量，它是指两个事件集合之间的相关性。互信息越大，词条和类别的相关程度也越大。</p>
-<h3><span id="内部指标">【内部指标】</span></h3>
-<p>内部评估指标主要基于数据集的集合结构信息从紧致性、分离性、连通性和重叠度等方面对聚类划分进行评价。即基于数据聚类自身进行评估的。</p>
-<h3><span id="55-轮廓系数silhouette-coefficient">5.5 <strong><font color="red">
-轮廓系数（Silhouette Coefficient）</font></strong></span></h3>
-<p>轮廓系数适用于实际类别信息未知的情况。</p>
+<h3><span id="54-标准化互信息nmi-normalized-mutual-information">5.4 <strong><font color="red"> 标准化互信息（NMI, Normalized Mutual Information）</font></strong></span></h3><p>互信息是用来衡量两个数据分布的吻合程度。它也是一有用的信息度量，它是指两个事件集合之间的相关性。互信息越大，词条和类别的相关程度也越大。</p>
+<h3><span id="内部指标">【内部指标】</span></h3><p>内部评估指标主要基于数据集的集合结构信息从紧致性、分离性、连通性和重叠度等方面对聚类划分进行评价。即基于数据聚类自身进行评估的。</p>
+<h3><span id="55-轮廓系数silhouette-coefficient">5.5 <strong><font color="red"> 轮廓系数（Silhouette Coefficient）</font></strong></span></h3><p>轮廓系数适用于实际类别信息未知的情况。</p>
 <p>对于单个样本，设<strong>a是与它同类别中其他样本的平均距离</strong>，<strong>b是与它距离最近不同类别中样本的平均距离</strong>，其轮廓系数为：</p>
-<p><span class="math inline">\(s = \frac {b-a} {max(a, b)}\)</span></p>
+<p>$s = \frac {b-a} {max(a, b)}$</p>
 <p>对于一个样本集合，它的轮廓系数是所有样本轮廓系数的平均值。轮廓系数的取值范围是[-1,1]，同类别样本距离越相近，不同类别样本距离越远，值越大。当值为负数时，说明聚类效果很差。</p>
-<h3><span id="56calinski-harabaz指数calinski-harabaz-index">5.6
-Calinski-Harabaz指数（Calinski-Harabaz Index）</span></h3>
-<p>在真实的分群label不知道的情况下，Calinski-Harabasz可以作为评估模型的一个指标。</p>
+<h3><span id="56-calinski-harabaz指数calinski-harabaz-index">5.6 Calinski-Harabaz指数（Calinski-Harabaz Index）</span></h3><p>在真实的分群label不知道的情况下，Calinski-Harabasz可以作为评估模型的一个指标。</p>
 <p>Calinski-Harabasz指数通过<strong>计算类中各点与类中心的距离平方和来度量类内的紧密度</strong>，通过<strong>==计算各类中心点与数据集中心点距离平方和来度量数据集的分离度==</strong>，CH指标<strong>由分离度与紧密度的比值得到</strong>。从而，CH越大代表着类自身越紧密，类与类之间越分散，即更优的聚类结果。</p>
 <p><strong>优点</strong></p>
 <ul>
@@ -1119,31 +790,21 @@ Calinski-Harabaz指数（Calinski-Harabaz Index）</span></h3>
 </ul>
 <p><strong>缺点</strong></p>
 <ul>
-<li>凸的簇的CH指数通常高于其他类型的簇。例如，通过 DBSCAN
-获得基于密度的簇；所以，不适合基于密度的聚类算法（DBSCAN）。</li>
+<li>凸的簇的CH指数通常高于其他类型的簇。例如，通过 DBSCAN 获得基于密度的簇；所以，不适合基于密度的聚类算法（DBSCAN）。</li>
 </ul>
-<h3><span id="57-戴维森堡丁指数dbidavies-bouldin-index">5.7 戴维森堡丁指数（DBI,
-Davies-Bouldin Index）</span></h3>
-<p><strong>DB指数是计算任意两类别的类内距离平均距离之和除以两聚类中心距离求最大值</strong>。DB越小，意味着类内距
-离越小同时类间距离越大。<strong>零是可能的最低值,
-接近零的值表示更好的分区</strong>。 <span class="math display">\[
+<h3><span id="57-戴维森堡丁指数dbi-davies-bouldin-index">5.7 戴维森堡丁指数（DBI, Davies-Bouldin Index）</span></h3><p><strong>DB指数是计算任意两类别的类内距离平均距离之和除以两聚类中心距离求最大值</strong>。DB越小，意味着类内距 离越小同时类间距离越大。<strong>零是可能的最低值, 接近零的值表示更好的分区</strong>。</p>
+<script type="math/tex; mode=display">
 \begin{gathered}
 R_{i j}=\frac{s_{i}+s_{j}}{d_{i j}} \\
 D B=\frac{1}{k} \sum_{i=1}^{k} \max _{i \neq j} R_{i j}
-\end{gathered}
-\]</span> 其中, <span class="math inline">\(s_{i}\)</span>
-表示簇的每个点与该簇的质心之间的平均距离, 也称为簇直径。 <span class="math inline">\(d_{i j}\)</span> 表示聚类和的质心之间的距 离。
-算法生成的聚类结果越是朝着簇内距离最小（类内相似性最大）和笶间距离最大（类间相似性最小）变化，
-那么Davies-Bouldin指数就会越小。 <strong>缺点</strong>: -
-因使用欧式距离, 所以对于环状分布聚类评测很差。</p>
-<h2><span id="六-评分总结sklearn">六、评分总结（sklearn）</span></h2>
-<blockquote>
-<p>sklearn.metrics -
-回归/分类模型的评估方法:https://zhuanlan.zhihu.com/p/408078074</p>
+\end{gathered}</script><p>其中, $s<em>{i}$ 表示簇的每个点与该簇的质心之间的平均距离, 也称为簇直径。 $d</em>{i j}$ 表示聚类和的质心之间的距 离。<br>算法生成的聚类结果越是朝着簇内距离最小（类内相似性最大）和笶间距离最大（类间相似性最小）变化， 那么Davies-Bouldin指数就会越小。<br><strong>缺点</strong>:</p>
+<ul>
+<li>因使用欧式距离, 所以对于环状分布聚类评测很差。</li>
+</ul>
+<h2><span id="六-评分总结sklearn">六、评分总结（sklearn）</span></h2><blockquote>
+<p>  sklearn.metrics - 回归/分类模型的评估方法:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/408078074">https://zhuanlan.zhihu.com/p/408078074</a></p>
 </blockquote>
-<h3><span id="61-分类模型">6.1 分类模型</span></h3>
-<h4><span id="accuracy_score"><strong>accuracy_score</strong></span></h4>
-<p><strong>分类准确率分数是指所有分类正确的百分比</strong>。分类准确率这一衡量分类器的标准比较容易理解，但是它不能告诉你响应值的潜在分布，并且它也不能告诉你分类器犯错的类型。所以在使用的时候，一般需要搭配matplotlib等数据可视化工具来观察预测的分类情况，与实际的结果做更加直观的比较。</p>
+<h3><span id="61-分类模型">6.1 分类模型</span></h3><h4><span id="accuracy_score"><strong>accuracy_score</strong></span></h4><p><strong>分类准确率分数是指所有分类正确的百分比</strong>。分类准确率这一衡量分类器的标准比较容易理解，但是它不能告诉你响应值的潜在分布，并且它也不能告诉你分类器犯错的类型。所以在使用的时候，一般需要搭配matplotlib等数据可视化工具来观察预测的分类情况，与实际的结果做更加直观的比较。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np  
 <span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>metrics <span class="token keyword">import</span> accuracy_score  
 y_pred <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>  
@@ -1152,30 +813,21 @@ accuracy_score<span class="token punctuation">(</span>y_true<span class="token p
 <span class="token operator">>></span><span class="token operator">></span> <span class="token number">0.5</span>
 accuracy_score<span class="token punctuation">(</span>y_true<span class="token punctuation">,</span> y_pred<span class="token punctuation">,</span> normalize<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
 <span class="token operator">>></span><span class="token operator">></span> <span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="recall_score"><strong>recall_score</strong></span></h4>
-<p>召回率 =<strong>提取出的正确信息条数
-/样本中的信息条数</strong>。通俗地说，就是所有准确的条目有多少被检索出来了。</p>
+<h4><span id="recall_score"><strong>recall_score</strong></span></h4><p>召回率 =<strong>提取出的正确信息条数 /样本中的信息条数</strong>。通俗地说，就是所有准确的条目有多少被检索出来了。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">recall_score<span class="token punctuation">(</span>y_true<span class="token punctuation">,</span> y_pred<span class="token punctuation">,</span> labels<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> pos_label<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>average<span class="token operator">=</span><span class="token string">'binary'</span><span class="token punctuation">,</span> sample_weight<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span>
 参数average <span class="token punctuation">:</span> string<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> ‘micro’<span class="token punctuation">,</span> ‘macro’<span class="token punctuation">(</span>default<span class="token punctuation">)</span><span class="token punctuation">,</span> ‘samples’<span class="token punctuation">,</span> ‘weighted’<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>将一个二分类matrics拓展到多分类或多标签问题时，我们可以将数据看成多个二分类问题的集合，每个类都是一个二分类。接着，我们可以通过跨多个分类计算每个二分类metrics得分的均值，这在一些情况下很有用。你可以使用<strong>average参数</strong>来指定。</p>
+<p>将一个二分类matrics拓展到多分类或多标签问题时，我们可以将数据看成多个二分类问题的集合，每个类都是一个二分类。接着，我们可以通过跨多个分类计算每个二分类metrics得分的均值，这在一些情况下很有用。你可以使用<strong>average参数</strong>来指定。 </p>
 <ul>
 <li>macro：计算二分类metrics的均值，为每个类给出相同权重的分值。</li>
-<li>weighted:对于不均衡数量的类来说，计算二分类metrics的平均，通过在每个类的score上进行加权实现。</li>
+<li>weighted:对于不均衡数量的类来说，计算二分类metrics的平均，通过在每个类的score上进行加权实现。 </li>
 <li>micro：给出了每个样本类以及它对整个metrics的贡献的pair（sample-weight），而非对整个类的metrics求和，它会每个类的metrics上的权重及因子进行求和，来计算整个份额。</li>
-<li>samples：应用在multilabel问题上。它不会计算每个类，相反，它会在评估数据中，通过计算真实类和预测类的差异的metrics，来求平均（sample_weight-weighted）</li>
+<li>samples：应用在multilabel问题上。它不会计算每个类，相反，它会在评估数据中，通过计算真实类和预测类的差异的metrics，来求平均（sample_weight-weighted） </li>
 <li>average：average=None将返回一个数组，它包含了每个类的得分.</li>
 </ul>
-<h4><span id="roc_curve"><strong>roc_curve</strong></span></h4>
-<p>ROC曲线指受试者工作特征曲线/接收器操作特性(receiver operating
-characteristic，ROC)曲线,是<strong>反映灵敏性和特效性连续变量的综合指标</strong>,是用构图法揭示敏感性和特异性的相互关系，它通过将连续变量设定出多个不同的临界值，从而计算出一系列敏感性和特异性。ROC曲线是根据一系列不同的二分类方式（分界值或决定阈），<strong>以真正例率（也就是灵敏度）（True
-Positive Rate,TPR）为纵坐标，假正例率（1-特效性）（False Positive
-Rate,FPR）为横坐标</strong>绘制的曲线。</p>
-<p>通过ROC我们可以观察到模型正确识别的正例的比例与模型错误地把负例数据识别成正例的比例之间的权衡。TPR的增加以FPR的增加为代价。ROC曲线下的面积是模型准确率的度量，<strong>AUC</strong>（Area
-under roc curve）。</p>
-<p><strong>TPR</strong> = TP /（TP + FN）
-（正样本<strong>预测数</strong> / 正样本<strong>实际数</strong>）</p>
-<p><strong>FPR</strong> = FP /（FP + TN）
-（负样本<strong>预测数</strong> /负样本<strong>实际数</strong>）</p>
+<h4><span id="roc_curve"><strong>roc_curve</strong></span></h4><p>ROC曲线指受试者工作特征曲线/接收器操作特性(receiver operating characteristic，ROC)曲线,是<strong>反映灵敏性和特效性连续变量的综合指标</strong>,是用构图法揭示敏感性和特异性的相互关系，它通过将连续变量设定出多个不同的临界值，从而计算出一系列敏感性和特异性。ROC曲线是根据一系列不同的二分类方式（分界值或决定阈），<strong>以真正例率（也就是灵敏度）（True Positive Rate,TPR）为纵坐标，假正例率（1-特效性）（False Positive Rate,FPR）为横坐标</strong>绘制的曲线。</p>
+<p>通过ROC我们可以观察到模型正确识别的正例的比例与模型错误地把负例数据识别成正例的比例之间的权衡。TPR的增加以FPR的增加为代价。ROC曲线下的面积是模型准确率的度量，<strong>AUC</strong>（Area under roc curve）。</p>
+<p><strong>TPR</strong> = TP /（TP + FN） （正样本<strong>预测数</strong> / 正样本<strong>实际数</strong>）</p>
+<p><strong>FPR</strong> = FP /（FP + TN） （负样本<strong>预测数</strong> /负样本<strong>实际数</strong>）</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np  
 <span class="token keyword">from</span> sklearn <span class="token keyword">import</span> metrics  
 y <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  
@@ -1204,30 +856,16 @@ y_true <span class="token operator">=</span> np<span class="token punctuation">.
 y_scores <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token number">0.4</span><span class="token punctuation">,</span> <span class="token number">0.35</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  
 roc_auc_score<span class="token punctuation">(</span>y_true<span class="token punctuation">,</span> y_scores<span class="token punctuation">)</span>  
 <span class="token operator">>></span><span class="token operator">></span> <span class="token number">0.75</span>  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="confusion-metric"><strong>confusion metric</strong></span></h4>
-<p>混淆矩阵（confusion
-matrix），又称为可能性表格或是错误矩阵。它是一种特定的矩阵用来呈现算法性能的可视化效果。其每一列代表预测值，每一行代表的是实际的类别。</p>
+<h4><span id="confusion-metric"><strong>confusion metric</strong></span></h4><p>混淆矩阵（confusion matrix），又称为可能性表格或是错误矩阵。它是一种特定的矩阵用来呈现算法性能的可视化效果。其每一列代表预测值，每一行代表的是实际的类别。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">confusion_matric<span class="token punctuation">(</span>y_true<span class="token punctuation">,</span> y_pred<span class="token punctuation">,</span> labels<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> pos_label<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> average<span class="token operator">=</span><span class="token string">'binary'</span><span class="token punctuation">,</span> sample_weight<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4><span id="precision_score"><strong>precision_score</strong></span></h4>
-<p>计算精确度——precision <img src="https://www.zhihu.com/equation?tex=%3DTP%2F%28TP%2FFP%29" alt="[公式]"></p>
+<h4><span id="precision_score"><strong>precision_score</strong></span></h4><p>计算精确度——precision <img src="https://www.zhihu.com/equation?tex=%3DTP%2F%28TP%2FFP%29" alt="[公式]"></p>
 <pre class="line-numbers language-python3" data-language="python3"><code class="language-python3">precision_score(y_true, y_pred, labels&#x3D;None, pos_label&#x3D;1, average&#x3D;&#39;binary&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<figure>
-<img src="https://pic2.zhimg.com/v2-a3b6092e30d2eab7d2372007aec15105_r.jpg" alt="preview">
-<figcaption aria-hidden="true">preview</figcaption>
-</figure>
-<h2><span id="评价指标qampa">评价指标Q&amp;A</span></h2>
-<h4><span id="精度指标存在的问题"><strong>精度指标存在的问题</strong>？</span></h4>
-<ul>
+<p><img src="https://pic2.zhimg.com/v2-a3b6092e30d2eab7d2372007aec15105_r.jpg" alt="preview"></p>
+<h2><span id="评价指标qampa">评价指标Q&amp;A</span></h2><h4><span id="精度指标存在的问题"><strong>精度指标存在的问题</strong>？</span></h4><ul>
 <li>有倾向性的问题。比如，判断空中的飞行物是导弹还是其他飞行物，很显然为了减少损失，我们更倾向于相信是导弹而采用相应的防护措施。此时判断为导弹实际上是其他飞行物与判断为其他飞行物实际上是导弹这两种情况的重要性是不一样的；</li>
 <li>样本类别数量严重不均衡的情况。比如银行客户样本中好客户990个，坏客户10个。如果一个模型直接把所有客户都判断为好客户，得到精度为99%，但这显然是没有意义的。</li>
 </ul>
-<h4><span id="为什么-roc和-auc-都能应用于非均衡的分类问题"><strong>为什么 ROC
-和 AUC 都能应用于非均衡的分类问题？</strong></span></h4>
-<p><strong>ROC曲线只与横坐标 (FPR) 和 纵坐标 (TPR) 有关系</strong>
-。我们可以发现TPR只是正样本中预测正确的概率，而FPR只是负样本中预测错误的概率，和正负样本的比例没有关系。因此
-ROC
-的值与实际的正负样本比例无关，因此既可以用于均衡问题，也可以用于非均衡问题。而
-AUC 的几何意义为ROC曲线下的面积，因此也和实际的正负样本比例无关。</p>
+<h4><span id="为什么-roc-和-auc-都能应用于非均衡的分类问题"><strong>为什么 ROC 和 AUC 都能应用于非均衡的分类问题？</strong></span></h4><p><strong>ROC曲线只与横坐标 (FPR) 和 纵坐标 (TPR) 有关系</strong> 。我们可以发现TPR只是正样本中预测正确的概率，而FPR只是负样本中预测错误的概率，和正负样本的比例没有关系。因此 ROC 的值与实际的正负样本比例无关，因此既可以用于均衡问题，也可以用于非均衡问题。而 AUC 的几何意义为ROC曲线下的面积，因此也和实际的正负样本比例无关。</p>
 
     </div>
 

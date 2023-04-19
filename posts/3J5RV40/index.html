@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="模型在线部署-TensorFlow Serving TensorFlow Serving 是 TensorFlow 提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow 模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow Serving 的主要特点包括：  支持多种模型格式：TensorFlo">
+    <meta name="description" content="模型在线部署-TensorFlow ServingTensorFlow Serving 是 TensorFlow 提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow 模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow Serving 的主要特点包括：  支持多种模型格式：TensorFlow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工程设计-在线部署">
 <meta property="og:url" content="https://powerlzy.github.io/posts/3J5RV40/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="模型在线部署-TensorFlow Serving TensorFlow Serving 是 TensorFlow 提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow 模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow Serving 的主要特点包括：  支持多种模型格式：TensorFlo">
+<meta property="og:description" content="模型在线部署-TensorFlow ServingTensorFlow Serving 是 TensorFlow 提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow 模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow Serving 的主要特点包括：  支持多种模型格式：TensorFlow">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-05T15:00:17.358Z">
 <meta property="article:modified_time" content="2023-04-05T15:04:36.988Z">
@@ -141,8 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">模型在线部署-TensorFlow
-Serving</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">模型在线部署-TensorFlow Serving</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -157,13 +156,13 @@ Serving</span></a></li></ol></div>
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -280,29 +279,14 @@ Serving</span></a></li></ol></div>
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="模型在线部署-tensorflowserving">模型在线部署-TensorFlow
-Serving</span></h2>
-<p>TensorFlow Serving 是 TensorFlow
-提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow
-模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow
-Serving 的主要特点包括：</p>
-<ol type="1">
-<li>支持多种模型格式：TensorFlow Serving 支持多种常见的模型格式，包括
-TensorFlow SavedModel 格式、TensorFlow Hub 格式、Session Bundle
-格式等，能够适应不同类型和规模的深度学习模型。</li>
-<li>支持多种协议：TensorFlow Serving 支持多种常见的网络协议，包括
-gRPC、RESTful API、Apache Kafka、Apache Pulsar
-等，能够方便地与其他系统集成，实现模型服务的高效和灵活。</li>
-<li>高性能和高可用性：TensorFlow Serving
-提供了多种性能优化和扩展机制，包括模型预热、预加载、多线程和多进程等，能够快速响应请求并保证高可用性。</li>
-<li>易于部署和管理：TensorFlow Serving 提供了多种部署和管理工具，包括
-Docker 容器、Kubernetes、Triton Inference Server
-等，能够快速部署和管理模型服务，并支持自动化部署和扩展。</li>
+        <h2><span id="模型在线部署-tensorflow-serving">模型在线部署-TensorFlow Serving</span></h2><p>TensorFlow Serving 是 TensorFlow 提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow 模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow Serving 的主要特点包括：</p>
+<ol>
+<li>支持多种模型格式：TensorFlow Serving 支持多种常见的模型格式，包括 TensorFlow SavedModel 格式、TensorFlow Hub 格式、Session Bundle 格式等，能够适应不同类型和规模的深度学习模型。</li>
+<li>支持多种协议：TensorFlow Serving 支持多种常见的网络协议，包括 gRPC、RESTful API、Apache Kafka、Apache Pulsar 等，能够方便地与其他系统集成，实现模型服务的高效和灵活。</li>
+<li>高性能和高可用性：TensorFlow Serving 提供了多种性能优化和扩展机制，包括模型预热、预加载、多线程和多进程等，能够快速响应请求并保证高可用性。</li>
+<li>易于部署和管理：TensorFlow Serving 提供了多种部署和管理工具，包括 Docker 容器、Kubernetes、Triton Inference Server 等，能够快速部署和管理模型服务，并支持自动化部署和扩展。</li>
 </ol>
-<p>通过使用 TensorFlow Serving，用户可以方便地将训练好的 TensorFlow
-模型部署到云端或本地服务器上，提供高效、灵活、可扩展的模型服务。TensorFlow
-Serving
-已广泛应用于各种领域，包括计算机视觉、自然语言处理、语音识别等，是深度学习模型部署和推断的重要基础框架之一。</p>
+<p>通过使用 TensorFlow Serving，用户可以方便地将训练好的 TensorFlow 模型部署到云端或本地服务器上，提供高效、灵活、可扩展的模型服务。TensorFlow Serving 已广泛应用于各种领域，包括计算机视觉、自然语言处理、语音识别等，是深度学习模型部署和推断的重要基础框架之一。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
 <span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
 
@@ -357,13 +341,13 @@ response <span class="token operator">=</span> requests<span class="token punctu
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2406X25/" rel="prev" title="机器学习（19）【TODO】FP-growth">
-                  <i class="fa fa-chevron-left"></i> 机器学习（19）【TODO】FP-growth
+                <a href="/posts/1HGMZ3J/" rel="prev" title="对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity">
+                  <i class="fa fa-chevron-left"></i> 对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/1WG0TJH/" rel="next" title="工业落地（12）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击">
-                  工业落地（12）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/1EB7867/" rel="next" title="恶意软件检测（12）Neurlux: Dynamic Malware Analysis Without Feature Engineering">
+                  恶意软件检测（12）Neurlux: Dynamic Malware Analysis Without Feature Engineering <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

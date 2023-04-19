@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity https:&#x2F;&#x2F;dl.acm.org&#x2F;doi&#x2F;10.1145&#x2F;3547330  摘要深度神经网络的卓越性能推动了深度学习在广泛领域的应用。然而，对抗性样本带来的潜在风险阻碍了深度学习的大规模部署。在这些场景中，人眼无法察觉的对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity">
+<meta property="og:url" content="https://powerlzy.github.io/posts/1HGMZ3J/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity https:&#x2F;&#x2F;dl.acm.org&#x2F;doi&#x2F;10.1145&#x2F;3547330  摘要深度神经网络的卓越性能推动了深度学习在广泛领域的应用。然而，对抗性样本带来的潜在风险阻碍了深度学习的大规模部署。在这些场景中，人眼无法察觉的对">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546299.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546534.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546941.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546006.png">
+<meta property="article:published_time" content="2023-04-02T12:32:41.288Z">
+<meta property="article:modified_time" content="2023-04-19T07:46:43.388Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546299.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/1HGMZ3J/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/1HGMZ3J/","path":"posts/1HGMZ3J/","title":"对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、相关研究</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 针对DNN的威胁模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">2.2.1 攻击目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">2.2.2 对抗性特异性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">2.2.3 敌人的知识</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 对抗性攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">2.3.1 逃逸攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">2.3.2 投毒攻击</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 Advanced Persistent Threats</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1HGMZ3J/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-02 20:32:41" itemprop="dateCreated datePublished" datetime="2023-04-02T20:32:41+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-19 15:46:43" itemprop="dateModified" datetime="2023-04-19T15:46:43+08:00">2023-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="adversarial-attacks-and-defenses-in-deep-learning-from-a-perspective-of-cybersecurity">Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity</span></h2><ul>
+<li><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3547330">https://dl.acm.org/doi/10.1145/3547330</a></li>
+</ul>
+<h3><span id="摘要">摘要</span></h3><p>深度神经网络的卓越性能推动了深度学习在广泛领域的应用。然而，对抗性样本带来的潜在风险阻碍了深度学习的大规模部署。在这些场景中，人眼无法察觉的对抗性扰动会显著降低模型的最终性能。已经发表了许多关于对抗性攻击及其在深度学习领域的对策的论文。大多数论文都集中在逃避攻击上，即在测试时发现对抗性示例，而不是在训练数据中插入中毒数据的中毒攻击。此外，由于没有标准的评估方法，很难评估对抗性攻击的真实威胁或深度学习模型的稳健性。因此，在本文中，我们回顾了迄今为止的文献。此外，我们试图为系统地理解对抗性攻击提供第一个分析框架。该框架是从网络安全的角度构建的，为对抗性攻击和防御提供生命周期。</p>
+<h3><span id="说明">说明</span></h3><p>机器学习技术已被应用于广泛的场景，并取得了广泛的成功，尤其是在深度学习方面，它正迅速成为各种任务中的关键工具。然而，在许多情况下，机器学习或深度学习模型的失败可能会导致严重的安全问题。例如，在自动驾驶汽车中，无法识别交通标志可能会导致严重事故[1]。因此，在大规模部署之前，训练一个准确稳定的模型至关重要。不幸的是，近年来，许多研究揭示了模型安全中一个令人失望的现象，即深度学习模型可能容易受到对抗性示例的影响，即被对手恶意干扰的样本。以这种方式被篡改的模型很有可能会产生错误的预测，尽管它们可能在良性样本中显示出很高的准确性[2-5]。对抗性攻击可以被广泛定义为一类攻击，其目的是通过将对抗性示例插入训练阶段（称为中毒攻击[6-8]）或推理阶段（称称为逃避攻击[2，3]）来欺骗机器学习模型。无论哪种攻击都会显著降低深度学习模型的鲁棒性，并引发模型安全问题。此外，最近在现实世界中发现了深受这种模型安全问题困扰的深度学习解决方案的漏洞，这引发了人们对深度学习技术的信任程度的担忧</p>
+<p>由于在深度学习技术的实际应用中，隐私和安全的潜在威胁多种多样，越来越多的组织，如ISO、IEEE和NIST，正在参与人工智能标准化的过程。对一些国家来说，这项工作被认为类似于一些国家的新基础设施建设[9]。ISO提出了一个关于人工智能系统生命周期的项目，该项目将技术的生命周期分为八个阶段，包括初始化、设计和开发、检查和验证、部署、运行监控、持续验证、重新评估和放弃[10]。本周期中没有进一步解决的是对抗性攻击如何阻碍深度学习模型的商业部署。因此，评估模型安全威胁是人工智能项目生命周期中的一个关键组成部分。此外，考虑到可能的对抗性攻击和防御的分散性、独立性和多样性，如何分析模型的安全威胁也应该标准化。迫切需要的是一个风险图，以帮助准确确定项目生命周期每个阶段的多种类型的风险。更严重的是，攻击的防御仍处于早期阶段，因此对更复杂的分析技术提出了更高的要求。</p>
+<p>近年来，一些与对抗性机器学习相关的调查已经发表。Chakraborty等人[11]描述了安全相关环境中对抗性示例的灾难性后果，并回顾了一些强有力的对策。然而，他们的结论表明，它们都不能成为应对所有挑战的灵丹妙药。Hu等人[12]首先介绍了基于人工智能的系统的生命周期，用于分析每个阶段的安全威胁和研究进展。对抗性攻击分为训练和推理阶段。Serban等人[13]和Machado等人[14]分别回顾了在对象识别和图像分类中关于对抗性机器学习的现有工作，并总结了存在对抗性示例的原因。Serban等人[13]还描述了对抗性示例在不同模型之间的可转移性。与参考文献[14]提供设计防御的相关指导类似，Zhang等人[15]还从防御者的角度对相关工作进行了全面调查，并总结了深度神经网络对抗性示例起源的假设。还有一些关于对抗性机器学习在特定领域的应用的调查，如推荐系统[16]、网络安全领域[17]和医疗系统[18]。</p>
+<blockquote>
+<p>  [17]</p>
+</blockquote>
+<p>先前已经观察到，在网络安全背景下，高级持续威胁（APT）通常是高度有组织的，成功的可能性极高[19]。以Stuxnet为例，这是最著名的APT攻击之一。它于2009年发射，摧毁了伊朗的核武器计划[19]。APT的工作流程系统地考虑了安全问题，这使得APT相关技术既能获得出色的成功率，即绕过这些防御，又能以高度有效的方式评估系统的安全性。受APT工作流程的启发，我们将此系统分析工具应用于网络安全问题，作为分析对抗性攻击威胁的潜在方法。APT主要由多种类型的现有底层网络空间攻击（如SQL注入和恶意软件）组成。不同类型的底层攻击的组合策略及其五阶段工作流程意味着，与单一攻击相比，APT的成功率极高。然而，有趣的是，根据现有的对抗性攻击策略，可以将其巧妙地划分为这五个阶段。基于这一观察，我们发现在评估对抗性攻击的威胁时，类似于APT的工作流程是有效的。因此，这构成了我们分析和对策框架的基础。尽管一些综述论文总结了模型安全方面的工作，但攻击方法或防御通常仍分为依赖类和分段类。这意味着不同方法之间的关系尚未明确确定。在这篇文章中，我们从APT的角度系统地对现有的对抗性攻击和防御进行了全面系统的回顾。我们的贡献如下：</p>
+<ul>
+<li>我们提供了一个新颖的网络安全视角来研究深度学习的安全问题。我们首次提出将APT概念纳入深度学习中对抗性攻击和防御的分析中。其结果是为模型安全性提供了一个标准的类似APT的分析框架。与之前部分关注机制[13，20]、威胁模型[21]或情景[22]的调查不同，我们的工作可以为理解和研究这个问题提供全局和系统层面的视角。具体而言，先前的研究倾向于在小组中讨论具有类似策略的方法。分别研究了不同策略的对抗性攻击，忽略了不同攻击群之间的关系。相反，我们的工作将对抗性攻击视为一个全球系统，每一组具有相似策略的攻击都只是这个全球系统的一部分。与网络安全类似，考虑不同群体之间的关系有助于进一步提高攻击的有效性；</li>
+<li>基于类似APT的分析框架，我们对现有的对抗性攻击方法进行了系统的审查。根据APT的逻辑，对抗性攻击可以明确地分为五个阶段。在每个阶段，都确定了共同的基本组成部分和短期目标，这有助于以深入的顺序提高攻击性能；</li>
+<li>我们还回顾了在类似APT的分析框架内对对抗性攻击的防御。同样，防御分为五个阶段，提供自上而下的顺序来消除对抗性例子的威胁。可以识别不同阶段的防御方法之间的关系，从而激发一种可能的策略，将多种防御结合起来，为深度学习模型提供更高的鲁棒性</li>
+<li>我们分别从数据和模型的角度总结了对抗性示例存在的假设，并全面介绍了对抗性机器学习中常用的数据集</li>
+</ul>
+<p>我们希望这项工作能激励其他研究人员在系统层面上看待模型的安全风险（甚至隐私威胁），并在全球范围内评估这些风险。如果可以建立一个标准，那么各种财产，例如健壮性，就可以在更短的时间内更准确地访问。因此，用户对深度学习模型的信心将会增强。</p>
+<h3><span id="二-相关研究">二、相关研究</span></h3><p>深度学习是指建立在深度神经网络（DNN）上的一组机器学习算法，已广泛应用于预测和分类等任务[21]。DNN是一种数学模型，包括具有大量计算神经元和非线性激活函数的多层。典型的深度学习系统的工作流程包括两个阶段：训练阶段和推理阶段。两个阶段的详细流程如下所示，如图1所示：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546299.png" alt="image-20230402204215480"></p>
+<p>图1：深度学习系统的一般工作流程。在训练阶段，基于训练数据迭代更新参数θ。得到最佳参数θ后 , 在推理阶段，输入将被输入到经过训练的模型中，这将为决策提供相应的输出</p>
+<ul>
+<li><p>在训练阶段，DNN的参数通过迭代前馈和反向传播不断更新。反向传播中的梯度下降方向是通过优化损失函数来引导的，该函数量化了预测标签和地面实况标签之间的误差。具体地，给定输入空间X和标签空间Y，最优参数θ  期望DNN f的损失函数L最小化训练数据集（X，Y）上的损失函数。因此，在训练过程中要找到最佳θ  可以定义为：</p>
+<script type="math/tex; mode=display">
+\theta^{\star}=\underset{\theta}{\arg \min } \sum_{x_i \in \mathcal{X}, y_i \in \mathcal{Y}} \mathcal{L}\left(f_\theta\left(x_i\right), y_i\right)</script></li>
+</ul>
+<pre><code>其中fθ是要训练的DNN模型；xi∈X是从训练数据集中采样的数据实例，yi和fθ（xi）分别表示相应的地面真实标签和预测标签。
+</code></pre><ul>
+<li>在推理阶段，训练的模型f  具有固定最优参数的θ  被应用来提供关于未被包括在训练数据集中的看不见的输入的决策。给定看不见的输入xj，可以通过单个前馈过程来计算相应的模型决策yj（即xj的预测标签）：yj=f  θ（xj）。值得注意的是，一次成功的对抗性攻击通常会在推理阶段导致被操纵的预测yõ，这可能与xj的正确标签相去甚远。</li>
+</ul>
+<h4><span id="22-针对dnn的威胁模型">2.2 针对DNN的威胁模型</span></h4><p>为了对这些攻击进行分类，我们通过引入模型攻击的关键组件来指定针对DNN的威胁模型。威胁被分解为三个维度：对手的目标、对手的特异性和对手的知识。这三个维度可以帮助我们识别潜在的风险，并了解对抗性攻击环境中的攻击行为。在图2中，我们概述了对抗性攻击中的威胁模型。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546534.png" alt="image-20230403202614103"></p>
+<h5><span id="221-攻击目标">2.2.1 攻击目标</span></h5><ul>
+<li>中毒攻击。在中毒攻击中，攻击者可以访问和修改训练数据集，以影响最终训练的模型[23-26]。攻击者在训练数据中注入假样本以生成有缺陷的模型的方式可以被视为“中毒”。中毒攻击通常会导致准确性下降[25]或对给定测试样本的错误分类[26]。•躲避攻击。</li>
+<li>在规避攻击中，对手的目标是攻击训练有素且固定的DNN，而没有任何权限修改目标模型的参数[13，18，23]。通过这种方式，攻击者不再需要训练数据集的可访问性。相反，攻击者生成目标模型无法识别的欺骗性测试样本，以逃避最终检测[27，28]。</li>
+</ul>
+<h5><span id="222-对抗性特异性">2.2.2 对抗性特异性</span></h5><p>对抗性特异性的差异取决于攻击者是否能够在推理阶段为给定的对抗性样本预先定义特定的欺诈预测。</p>
+<ul>
+<li>非目标攻击。在无目标攻击中，对手的唯一目的是欺骗目标模型生成错误预测，而不关心选择哪个标签作为最终输出[29-32]。</li>
+<li>有针对性的攻击。在有针对性的攻击中，对于给定的样本，攻击者不仅希望目标模型做出错误的预测，而且还旨在诱导模型提供特定的错误预测[33-36]。一般来说，有针对性的攻击不会像无针对性的那样成功。</li>
+</ul>
+<h5><span id="223-敌人的知识">2.2.3 敌人的知识</span></h5><ul>
+<li>白盒攻击。在白盒设置中，对手能够访问目标模型的细节，包括结构信息、梯度和所有可能的参数[30，34，37]。因此，对手可以通过利用手头的所有信息来精心制作对抗性样本。</li>
+<li>黑匣子攻击。在黑盒设置中，攻击者在不了解目标模型的情况下实施攻击。攻击者可以通过与目标模型交互来获取一些信息[36，38，39]。这是通过将输入查询样本输入到模型中并分析相应的输出来完成的。</li>
+</ul>
+<h4><span id="23-对抗性攻击">2.3 对抗性攻击</span></h4><h5><span id="231-逃逸攻击">2.3.1 逃逸攻击</span></h5><p>Szegedy等人[2]首先在对抗性攻击中引入了对抗性示例的概念，它可以在推理阶段以高成功率误导目标模型。他们提出了一种通过等式（1）搜索具有目标标签的最小失真对抗性示例的方法：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546941.png" alt="image-20230402210029648" style="zoom:50%;"></p>
+<p>通过这个方程，他们可以找到最接近的x  通过最小化与良性样本x的距离 x  − x 22，并且将被f（x）的条件错误地分类为目标标签t ) = 时间。这个问题可以导致方程（2）中的目标，该目标可以通过L-BFGS算法来解决：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546006.png" alt="image-20230402210112765" style="zoom:50%;"></p>
+<h5><span id="232-投毒攻击">2.3.2 投毒攻击</span></h5><p>与推理攻击中发生的规避攻击不同，中毒攻击旨在通过污染训练数据来降低模型的准确性。攻击者需要一些权限来操纵训练数据，例如数据注入和数据修改[11]。因此，发起中毒攻击的目标可以分为两类：可用性违规和完整性违规。前者旨在降低受害者模型的置信度或准确性，破坏整个系统，而后者试图在不影响其他正常样本的情况下，通过引入后门，在某些特定样本上误导受害者模型[11]。具体而言，针对仅涉及训练样本的神经网络的中毒实例可以通过以下两种策略来制作：双层优化和特征碰撞[23]。</p>
+<ul>
+<li>双层优化：修改数据的经典数据中毒可以形式化为双层优化问题[23]。然而，对于非凸神经网络，双层优化问题是棘手的。Mu~noz-Gonz´alez等人[24]提出了“反向梯度下降”来近似内部问题的解，然后对外部损失进行梯度下降，尽管这在计算上仍然很昂贵。为了加快中毒样品的生产，Yang等人[25]引入GAN来产生毒素。MetaPoison等人[26]也被提出作为一阶方法，使用集成策略近似解决生产毒药的双层优化。</li>
+<li>特征冲突：基于双层优化的方法通常对迁移学习和端到端训练都有效，而特征冲突策略可以用于在有针对性的错误分类设置中设计针对迁移学习的有效攻击。例如，Shafahi等人[40]开发了一种方法，在特征空间中生成与目标样本相似的中毒样本，同时在输入空间中接近原始良性样本。这两类方法只需要操作训练的权限，而不需要标签，并且训练数据的语义将保持不变。这些带有干净标签的中毒样本将更难被检测到。</li>
+</ul>
+<p>此外，除了仅操纵训练数据的中毒攻击外，另一种类型的中毒攻击是后门攻击，它需要在推理阶段向输入插入触发器的额外能力[23]。</p>
+<p>后门攻击：后门攻击中的对手通常可以修改训练样本的标签[41]。这些带有后门触发器的错误标记数据将被注入到训练数据集中。因此，基于该数据集的训练模型将被迫为新样本（使用触发器）分配所需的目标标签。大多数后门攻击都需要在制作毒药的过程中给训练样本贴上错误的标签，而这些毒药更有可能被防御者识别出来。因此，还提出了一些干净标签后门攻击[42]，并使用参考文献[40]中提出的特征碰撞策略来制作后门样本。</p>
+<h4><span id="24-advanced-persistent-threats">2.4 Advanced Persistent Threats</span></h4><p>高级持久性威胁（APT）是一系列新定义的攻击过程，其中攻击是长时间连续的，例如数年。分析APT的工作流程构成了我们对抗性攻击和防御分析框架的基础。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/1HGMZ3J/" title="对抗攻击与防御（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity">https://powerlzy.github.io/posts/1HGMZ3J/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2406X25/" rel="prev" title="机器学习（19）【TODO】FP-growth">
+                  <i class="fa fa-chevron-left"></i> 机器学习（19）【TODO】FP-growth
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/3J5RV40/" rel="next" title="工程设计-在线部署">
+                  工程设计-在线部署 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'your_domain' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="二、特征选择  【机器学习】特征选择(Feature Selection)方法汇总 特征选择方法全面总结 特征选择的基本方法总结    img  训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来; 特征很多但样本相对较少  产生过程：产生特征或特征子集候选集合； 评价函数：衡量特征或特征">
+    <meta name="description" content="二、特征选择 【机器学习】特征选择(Feature Selection)方法汇总 特征选择方法全面总结 特征选择的基本方法总结    训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来; 特征很多但样本相对较少  产生过程：产生特征或特征子集候选集合；  评价函数：衡量特征或特征子集的重要">
 <meta property="og:type" content="article">
 <meta property="og:title" content="特征工程（2）特征选择">
 <meta property="og:url" content="https://powerlzy.github.io/posts/T8EY5H/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="二、特征选择  【机器学习】特征选择(Feature Selection)方法汇总 特征选择方法全面总结 特征选择的基本方法总结    img  训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来; 特征很多但样本相对较少  产生过程：产生特征或特征子集候选集合； 评价函数：衡量特征或特征">
+<meta property="og:description" content="二、特征选择 【机器学习】特征选择(Feature Selection)方法汇总 特征选择方法全面总结 特征选择的基本方法总结    训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来; 特征很多但样本相对较少  产生过程：产生特征或特征子集候选集合；  评价函数：衡量特征或特征子集的重要">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic4.zhimg.com/v2-05756baf02bd7a023f7b27842594bc2b_b.jpg">
 <meta property="og:image" content="https://pic4.zhimg.com/v2-d91b1bdb2bf6034b9e26b3620bf8a233_b.jpg">
@@ -158,11 +158,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 特征选择的目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 特征选择常见方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2.1 Filter(过滤法)
-【特征集】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;覆盖率&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;方差选择法&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Pearson皮尔森相关系数&#x3D;&#x3D;:用于度量两个变量X和Y之间的线性相关性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;卡方检验&#x3D;&#x3D;:自变量对因变量的相关性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;PSI互信息法&#x3D;&#x3D;(KL散度、相对熵)和&#x3D;&#x3D;最大信息系数&#x3D;&#x3D;
-Mutual information and maximal information coefficient (MIC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Fisher得分&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;相关特征选择&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;最小冗余最大相关性(
-mRMR)&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2.2 Wrapper(包装法)
-【特征集+模型】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;完全搜索&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;启发式搜索&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;随机搜索&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;递归特征消除法&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2.3 Embedded(嵌入法)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;LASSO方法&#x3D;&#x3D; L1正则项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;基于树模型的特征选择方法&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用特征重要性来筛选特征的缺陷？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Non importance 选择&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 特征选择的目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 特征选择常见方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2.1 Filter(过滤法) 【特征集】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;覆盖率&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;方差选择法&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Pearson皮尔森相关系数&#x3D;&#x3D;:用于度量两个变量X和Y之间的线性相关性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;卡方检验&#x3D;&#x3D;:自变量对因变量的相关性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;PSI互信息法&#x3D;&#x3D;(KL散度、相对熵)和&#x3D;&#x3D;最大信息系数&#x3D;&#x3D; Mutual information and maximal information coefficient (MIC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Fisher得分&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;相关特征选择&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;最小冗余最大相关性( mRMR)&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2.2 Wrapper(包装法) 【特征集+模型】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;完全搜索&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;启发式搜索&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;随机搜索&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;递归特征消除法&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2.3 Embedded(嵌入法)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;LASSO方法&#x3D;&#x3D; L1正则项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;基于树模型的特征选择方法&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用特征重要性来筛选特征的缺陷？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Non importance 选择&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -177,13 +173,13 @@ mRMR)&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a c
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -306,87 +302,73 @@ mRMR)&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a c
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="二-特征选择">二、特征选择</span></h2>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74198735">【机器学习】特征选择(Feature
-Selection)方法汇总</a></p>
+        <h2><span id="二-特征选择">二、特征选择</span></h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74198735">【机器学习】特征选择(Feature Selection)方法汇总</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/306057603"><em>特征选择方法</em>全面总结</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/479948993"><em>特征选择</em>的基本<em>方法</em>总结</a></p>
 </blockquote>
-<figure>
-<img src="https://pic4.zhimg.com/v2-05756baf02bd7a023f7b27842594bc2b_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来;
-特征很多但样本相对较少</p>
+<p> <img src="https://pic4.zhimg.com/v2-05756baf02bd7a023f7b27842594bc2b_b.jpg" alt="img"></p>
+<p>训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来; 特征很多但样本相对较少</p>
 <ul>
-<li><p>产生过程：产生特征或特征子集候选集合；</p></li>
-<li><p>评价函数：衡量特征或特征子集的重要性或者好坏程度，即量化特征变量和目标变量之间的联系以及特征之间的相互联系。为了避免过拟合，可用交叉验证的方式来评估特征的好坏；</p></li>
-<li><p>停止准则：为了减少计算复杂度，需设定一个阈值，当评价函数值达到阈值后搜索停止</p></li>
-<li><p>验证过程：在验证数据集上验证选出来的特征子集的有效性</p></li>
+<li><p>产生过程：产生特征或特征子集候选集合；</p>
+</li>
+<li><p>评价函数：衡量特征或特征子集的重要性或者好坏程度，即量化特征变量和目标变量之间的联系以及特征之间的相互联系。为了避免过拟合，可用交叉验证的方式来评估特征的好坏；</p>
+</li>
+<li><p>停止准则：为了减少计算复杂度，需设定一个阈值，当评价函数值达到阈值后搜索停止</p>
+</li>
+<li><p>验证过程：在验证数据集上验证选出来的特征子集的有效性</p>
+</li>
 </ul>
-<h3><span id="21-特征选择的目的"><strong>2.1 特征选择的目的</strong></span></h3>
-<p>1.<strong>简化模型</strong>，使模型更易于理解：去除不相关的特征会降低学习任务的难度。并且可解释性能对模型效果的稳定性有更多的把握</p>
+<h3><span id="21-特征选择的目的"><strong>2.1 特征选择的目的</strong></span></h3><p>1.<strong>简化模型</strong>，使模型更易于理解：去除不相关的特征会降低学习任务的难度。并且可解释性能对模型效果的稳定性有更多的把握</p>
 <p>2.<strong>改善性能</strong>：节省存储和计算开销</p>
 <p>3.<strong>改善通用性、降低过拟合风险</strong>：减轻维数灾难，特征的增多会大大增加模型的搜索空间，大多数模型所需要的训练样本随着特征数量的增加而显著增加。特征的增加虽然能更好地拟合训练数据，但也可能增加方差</p>
-<h3><span id="22-特征选择常见方法">2.2 特征选择常见方法</span></h3>
-<ul>
-<li>==<strong>Filter(过滤法)</strong>==
+<h3><span id="22-特征选择常见方法">2.2 特征选择常见方法</span></h3><ul>
+<li><p>==<strong>Filter(过滤法)</strong>==</p>
 <ul>
 <li><strong>覆盖率</strong></li>
 <li><strong>方差选择</strong></li>
 <li><strong>Pearson(皮尔森)相关系数</strong></li>
 <li><strong>卡方检验</strong></li>
-<li><strong>互信息法(KL散度、相对熵)和最大信息系数</strong></li>
+<li><strong>互信息法(KL散度、相对熵)和最大信息系数</strong> </li>
 <li>Fisher得分</li>
 <li>相关特征选择</li>
 <li>最小冗余最大相关性</li>
-</ul></li>
-<li><strong>Wrapper(包装法)</strong>
+</ul>
+</li>
+<li><p><strong>Wrapper(包装法)</strong></p>
 <ul>
 <li>完全搜索</li>
 <li>启发搜索</li>
 <li>随机搜索</li>
-</ul></li>
-<li>==<strong>Embedded(嵌入法)</strong>==
-<ul>
+</ul>
+</li>
+<li>==<strong>Embedded(嵌入法)</strong>==<ul>
 <li>L1 正则项</li>
 <li>树模型选择</li>
 <li>不重要性特征选择</li>
-</ul></li>
 </ul>
-<h3><span id="221-filter过滤法特征集">2.2.1 <strong>Filter(过滤法)</strong>
-【特征集】</span></h3>
-<figure>
-<img src="https://pic4.zhimg.com/v2-d91b1bdb2bf6034b9e26b3620bf8a233_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="定义"><strong>定义</strong></span></h4>
-<ul>
-<li><strong>过滤法的思想就是不依赖模型，仅从特征的角度来做特征的筛选</strong>，具体又可以分为两种方法，一种是根据特征里面包含的信息量，如方差选择法，如果一列特征的方差很小，每个样本的取值都一样的话，说明这个特征的作用不大，可以直接剔除。另一种是对每一个特征，都计算关于目标特征的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=相关度&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22479948993%22%7D">相关度</a>，然后根据这个相关度来筛选特征，只保留高于某个阈值的特征，这里根据相关度的计算方式不同就可以衍生出一下很多种方法。</li>
+</li>
 </ul>
-<h4><span id="分类"><strong>分类</strong></span></h4>
-<ul>
+<h3><span id="221-filter过滤法-特征集">2.2.1 <strong>Filter(过滤法)</strong> 【特征集】</span></h3><p><img src="https://pic4.zhimg.com/v2-d91b1bdb2bf6034b9e26b3620bf8a233_b.jpg" alt="img"></p>
+<h4><span id="定义"><strong>定义</strong></span></h4><ul>
+<li><strong>过滤法的思想就是不依赖模型，仅从特征的角度来做特征的筛选</strong>，具体又可以分为两种方法，一种是根据特征里面包含的信息量，如方差选择法，如果一列特征的方差很小，每个样本的取值都一样的话，说明这个特征的作用不大，可以直接剔除。另一种是对每一个特征，都计算关于目标特征的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=相关度&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;479948993&quot;}">相关度</a>，然后根据这个相关度来筛选特征，只保留高于某个阈值的特征，这里根据相关度的计算方式不同就可以衍生出一下很多种方法。</li>
+</ul>
+<h4><span id="分类"><strong>分类</strong></span></h4><ul>
 <li><strong>单变量过滤方法</strong>：不需要考虑特征之间的相互关系，按照特征变量和目标变量之间的相关性或互信息对特征进行排序，过滤掉最不相关的特征变量。优点是计算效率高、不易过拟合。</li>
 <li><strong>多变量过滤方法</strong>：考虑特征之间的相互关系，常用方法有基于相关性和一致性的特征选择</li>
 </ul>
-<h4><span id="覆盖率">==覆盖率==</span></h4>
-<ul>
+<h4><span id="覆盖率">==覆盖率==</span></h4><ul>
 <li>即特征在训练集中出现的比例。若覆盖率很小，如有10000个样本，但某个特征只出现了5次，则次覆盖率对模型的预测作用不大，可删除</li>
 </ul>
-<h4><span id="方差选择法">==<strong>方差选择法</strong>==</span></h4>
-<ul>
+<h4><span id="方差选择法">==<strong>方差选择法</strong>==</span></h4><ul>
 <li>先计算各个特征的方差，然后根据阈值，选择方差大于阈值的特征</li>
 </ul>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> VarianceThreshold
 <span class="token comment"># 方差选择法，返回值为特征选择后的数据</span>
 <span class="token comment"># 参数threshold为方差的阈值</span>
 VarianceThreshold<span class="token punctuation">(</span>threshold<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="pearson皮尔森相关系数用于度量两个变量x和y之间的线性相关性">==Pearson皮尔森相关系数==:用于度量两个变量X和Y之间的线性相关性</span></h4>
-<ul>
-<li><strong>用于度量两个变量X和Y之间的线性相关性</strong>，结果的取值区间为[-1,
-1]，
--1表示完全的负相关(这个变量下降，那个就会上升)，+1表示完全的正相关，0表示没有线性相关性</li>
+<h4><span id="pearson皮尔森相关系数用于度量两个变量x和y之间的线性相关性">==Pearson皮尔森相关系数==:用于度量两个变量X和Y之间的线性相关性</span></h4><ul>
+<li><strong>用于度量两个变量X和Y之间的线性相关性</strong>，结果的取值区间为[-1, 1]， -1表示完全的负相关(这个变量下降，那个就会上升)，+1表示完全的正相关，0表示没有线性相关性</li>
 <li>计算方法为两个变量之间的<strong>协方差</strong>和<strong>标准差</strong>的商</li>
 </ul>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> SelectKBest
@@ -398,8 +380,7 @@ VarianceThreshold<span class="token punctuation">(</span>threshold<span class="t
   <span class="token comment"># 其中参数k为选择的特征个数</span>
 SelectKBest<span class="token punctuation">(</span><span class="token keyword">lambda</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>pearsonr<span class="token punctuation">(</span>x<span class="token punctuation">,</span> Y<span class="token punctuation">)</span><span class="token punctuation">,</span> X<span class="token punctuation">.</span>T<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>T<span class="token punctuation">,</span> 
               k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span> iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="卡方检验自变量对因变量的相关性">==<strong>卡方检验</strong>==:自变量对因变量的相关性</span></h4>
-<ul>
+<h4><span id="卡方检验自变量对因变量的相关性">==<strong>卡方检验</strong>==:自变量对因变量的相关性</span></h4><ul>
 <li><strong>检验定性自变量对定性因变量的相关性</strong>。假设自变量有N种取值，因变量有M种取值，考虑自变量等于i且因变量等于j的样本频数的观察值与期望的差距，构建统计量:</li>
 </ul>
 <p><img src="https://www.zhihu.com/equation?tex=%5Cchi%5E%7B2%7D%3D%5Csum+%5Cfrac%7B%28A-E%29%5E%7B2%7D%7D%7BE%7D+%5C%5C" alt="[公式]"></p>
@@ -407,41 +388,26 @@ SelectKBest<span class="token punctuation">(</span><span class="token keyword">l
 <span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> chi2
 <span class="token comment">#选择K个最好的特征，返回选择特征后的数据</span>
 SelectKBest<span class="token punctuation">(</span>chi2<span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span> iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="psi互信息法kl散度-相对熵和最大信息系数mutual-information-and-maximal-information-coefficient-mic">==PSI互信息法==(KL散度、相对熵)和==最大信息系数==
-Mutual information and maximal information coefficient (MIC)</span></h4>
-<blockquote>
-<p><strong><font color="red">
-风控模型—群体稳定性指标(PSI)深入理解应用</font></strong>:https://zhuanlan.zhihu.com/p/79682292</p>
+<h4><span id="psi互信息法kl散度-相对熵和最大信息系数-mutual-information-and-maximal-information-coefficient-mic">==PSI互信息法==(KL散度、相对熵)和==最大信息系数== Mutual information and maximal information coefficient (MIC)</span></h4><blockquote>
+<p>  <strong><font color="red"> 风控模型—群体稳定性指标(PSI)深入理解应用</font></strong>:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79682292">https://zhuanlan.zhihu.com/p/79682292</a></p>
 </blockquote>
 <ul>
 <li>评价定性自变量对定性因变量的相关性，评价类别型变量对类别型变量的相关性，互信息越大表明两个变量相关性越高，互信息为0时，两个变量相互独立。互信息的计算公式为</li>
-<li><figure>
-<img src="https://www.zhihu.com/equation?tex=I%28X+%3B+Y%29%3D%5Csum%5Climits_%7Bx+%5Cin+X%7D+%5Csum%5Climits_%7By+%5Cin+Y%7D+p%28x%2C+y%29+%5Clog+%5Cfrac%7Bp%28x%2C+y%29%7D%7Bp%28x%29+p%28y%29%7D%3DD_%7BK+L%7D%28p%28x%2C+y%29+%5C%7C+p%28x%29+p%28y%29%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure></li>
+<li><img src="https://www.zhihu.com/equation?tex=I%28X+%3B+Y%29%3D%5Csum%5Climits_%7Bx+%5Cin+X%7D+%5Csum%5Climits_%7By+%5Cin+Y%7D+p%28x%2C+y%29+%5Clog+%5Cfrac%7Bp%28x%2C+y%29%7D%7Bp%28x%29+p%28y%29%7D%3DD_%7BK+L%7D%28p%28x%2C+y%29+%5C%7C+p%28x%29+p%28y%29%29+%5C%5C" alt="[公式]"></li>
 </ul>
-<h4><span id="fisher得分">==<strong>Fisher得分</strong>==</span></h4>
-<p>对于分类问题，<strong>好的特征应该是在同一个类别中的取值比较相似</strong>，<strong>而在不同类别之间的取值差异比较大</strong>。因此特征i的重要性可用Fiser得分<img src="https://www.zhihu.com/equation?tex=S_i" alt="[公式]">来表示</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=S_%7Bi%7D%3D%5Cfrac%7B%5Csum_%7Bj%3D1%7D%5E%7BK%7D+n_%7Bj%7D%5Cleft%28%5Cmu_%7Bi+j%7D-%5Cmu_%7Bi%7D%5Cright%29%5E%7B2%7D%7D%7B%5Csum_%7Bj%3D1%7D%5E%7BK%7D+n_%7Bj%7D+%5Crho_%7Bi+j%7D%5E%7B2%7D%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中，<img src="https://www.zhihu.com/equation?tex=u_%7Bij%7D" alt="[公式]">和<img src="https://www.zhihu.com/equation?tex=%5Crho_%7Bij%7D" alt="[公式]">分别是特征i在类别j中均值和方差，<img src="https://www.zhihu.com/equation?tex=%5Cmu_i" alt="[公式]">为特征i的均值，<img src="https://www.zhihu.com/equation?tex=n_j" alt="[公式]">为类别j中的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=样本数&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22306057603%22%7D">样本数</a>。Fisher得分越高，<strong>特征在不同类别之间的差异性越大、在同一类别中的差异性越小，则特征越重要</strong>;</p>
-<h4><span id="相关特征选择">==<strong>相关特征选择</strong>==</span></h4>
-<p>该方法基于的假设是，好的特征集合包含跟目标变量非常相关的特征，但这些特征之间彼此不相关</p>
-<h4><span id="最小冗余最大相关性mrmr">==<strong>最小冗余最大相关性(
-mRMR)</strong>==</span></h4>
-<p>由于单变量过滤法只考虑了单特征变量和目标变量之间的相关性，因此选择的特征子集可能过于冗余。mRMR在进行特征时考虑到了特征之间的冗余性，具体做法是对跟已选择特征相关性较高的冗余特征进行惩罚;</p>
-<h3><span id="222-wrapper包装法特征集模型"><strong>2.2.2 Wrapper(包装法)</strong>
-【特征集+模型】</span></h3>
-<figure>
-<img src="https://pic4.zhimg.com/v2-bd321ff1e16c011d1a2bce86a5939a17_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<h4><span id="fisher得分">==<strong>Fisher得分</strong>==</span></h4><p>对于分类问题，<strong>好的特征应该是在同一个类别中的取值比较相似</strong>，<strong>而在不同类别之间的取值差异比较大</strong>。因此特征i的重要性可用Fiser得分<img src="https://www.zhihu.com/equation?tex=S_i" alt="[公式]">来表示</p>
+<p><img src="https://www.zhihu.com/equation?tex=S_%7Bi%7D%3D%5Cfrac%7B%5Csum_%7Bj%3D1%7D%5E%7BK%7D+n_%7Bj%7D%5Cleft%28%5Cmu_%7Bi+j%7D-%5Cmu_%7Bi%7D%5Cright%29%5E%7B2%7D%7D%7B%5Csum_%7Bj%3D1%7D%5E%7BK%7D+n_%7Bj%7D+%5Crho_%7Bi+j%7D%5E%7B2%7D%7D+%5C%5C" alt="[公式]"> </p>
+<p>其中，<img src="https://www.zhihu.com/equation?tex=u_%7Bij%7D" alt="[公式]">和<img src="https://www.zhihu.com/equation?tex=%5Crho_%7Bij%7D" alt="[公式]">分别是特征i在类别j中均值和方差，<img src="https://www.zhihu.com/equation?tex=%5Cmu_i" alt="[公式]">为特征i的均值，<img src="https://www.zhihu.com/equation?tex=n_j" alt="[公式]">为类别j中的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=样本数&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;306057603&quot;}">样本数</a>。Fisher得分越高，<strong>特征在不同类别之间的差异性越大、在同一类别中的差异性越小，则特征越重要</strong>;</p>
+<h4><span id="相关特征选择">==<strong>相关特征选择</strong>==</span></h4><p>该方法基于的假设是，好的特征集合包含跟目标变量非常相关的特征，但这些特征之间彼此不相关</p>
+<h4><span id="最小冗余最大相关性-mrmr">==<strong>最小冗余最大相关性( mRMR)</strong>==</span></h4><p>由于单变量过滤法只考虑了单特征变量和目标变量之间的相关性，因此选择的特征子集可能过于冗余。mRMR在进行特征时考虑到了特征之间的冗余性，具体做法是对跟已选择特征相关性较高的冗余特征进行惩罚;</p>
+<h3><span id="222-wrapper包装法-特征集模型"><strong>2.2.2 Wrapper(包装法)</strong> 【特征集+模型】</span></h3><p><img src="https://pic4.zhimg.com/v2-bd321ff1e16c011d1a2bce86a5939a17_b.jpg" alt="img"></p>
 <ul>
-<li><p>使用<strong>机器学习算法评估特征子集</strong>的效果，可以检测两个或多个特征之间的交互关系，而且选择的特征子集让模型的效果达到最优。</p></li>
-<li><p>这是<strong>特征子集搜索</strong>和<strong>评估指标相结合</strong>的方法。前者提供候选的新特征子集，后者基于新特征子集训练一个模型，并用验证集进行评估，为每一组特征子集进行打分。</p></li>
-<li><p>最简单的方法是在<strong>每一个特征子集上训练并评估模型</strong>，从而找出最优的特征子集</p></li>
+<li><p>使用<strong>机器学习算法评估特征子集</strong>的效果，可以检测两个或多个特征之间的交互关系，而且选择的特征子集让模型的效果达到最优。</p>
+</li>
+<li><p>这是<strong>特征子集搜索</strong>和<strong>评估指标相结合</strong>的方法。前者提供候选的新特征子集，后者基于新特征子集训练一个模型，并用验证集进行评估，为每一组特征子集进行打分。</p>
+</li>
+<li><p>最简单的方法是在<strong>每一个特征子集上训练并评估模型</strong>，从而找出最优的特征子集</p>
+</li>
 </ul>
 <p><strong>缺点</strong>：</p>
 <ul>
@@ -449,22 +415,18 @@ mRMR)</strong>==</span></h4>
 <li>样本不够充分的情况下<strong>容易过拟合</strong></li>
 <li>特征变量较多时计算复杂度太高</li>
 </ul>
-<h4><span id="完全搜索">==完全搜索==</span></h4>
-<ul>
+<h4><span id="完全搜索">==完全搜索==</span></h4><ul>
 <li>即穷举法，<strong>遍历所有可能的组合达到全局最优</strong>，时间复杂度<img src="https://www.zhihu.com/equation?tex=2%5En" alt="[公式]"></li>
 </ul>
-<h4><span id="启发式搜索">==<strong>启发式搜索</strong>==</span></h4>
-<ul>
+<h4><span id="启发式搜索">==<strong>启发式搜索</strong>==</span></h4><ul>
 <li>序列向前选择：特征子集从空集开始，每次只加入一个特征，时间复杂度为<img src="https://www.zhihu.com/equation?tex=O%28n%2B%28n-1%29%2B%28n-2%29%2B%5Cldots%2B1%29%3DO%5Cleft%28n%5E%7B2%7D%5Cright%29" alt="[公式]"></li>
 <li>序列向后选择：特征子集从全集开始，每次删除一个特征，时间复杂度为<img src="https://www.zhihu.com/equation?tex=O%28n%5E%7B2%7D%29" alt="[公式]"></li>
 </ul>
-<h4><span id="随机搜索">==<strong>随机搜索</strong>==</span></h4>
-<ul>
+<h4><span id="随机搜索">==<strong>随机搜索</strong>==</span></h4><ul>
 <li>执行序列向前或向后选择时，随机选择特征子集</li>
 </ul>
-<h4><span id="递归特征消除法">==<strong>递归特征消除法</strong>==</span></h4>
-<ul>
-<li>使用一个基模型进行多轮训练，每轮训练后通过学习器返回的<strong>coef</strong>_或者<strong>feature_importances</strong>_消除若干权重较低的特征，再基于新的特征集进行下一轮训练</li>
+<h4><span id="递归特征消除法">==<strong>递归特征消除法</strong>==</span></h4><ul>
+<li>使用一个基模型进行多轮训练，每轮训练后通过学习器返回的<strong>coef</strong><em>或者<strong>feature_importances</strong></em>消除若干权重较低的特征，再基于新的特征集进行下一轮训练</li>
 </ul>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> RFE
 <span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>linear_model <span class="token keyword">import</span> LogisticRegression
@@ -474,23 +436,17 @@ mRMR)</strong>==</span></h4>
 RFE<span class="token punctuation">(</span>estimator<span class="token operator">=</span>LogisticRegression<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
     n_features_to_select<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span> 
                                           iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3><span id="223-embedded嵌入法">2.2.3 Embedded(嵌入法)</span></h3>
-<figure>
-<img src="https://pic4.zhimg.com/v2-9420bbe9f86094fd683ff1fb8919631f_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<h3><span id="223-embedded嵌入法">2.2.3 Embedded(嵌入法)</span></h3><p><img src="https://pic4.zhimg.com/v2-9420bbe9f86094fd683ff1fb8919631f_b.jpg" alt="img"></p>
 <p>将特征选择嵌入到模型的构建过程中，具有<strong>包装法与机器学习算法相结合的优点</strong>，也具有<strong>过滤法计算效率高的优点</strong></p>
-<h4><span id="lasso方法-l1正则项">==<strong>LASSO方法</strong>== L1正则项</span></h4>
-<p>通过对回归系数添加<img src="https://www.zhihu.com/equation?tex=L_1" alt="[公式]">惩罚项来防止过拟合，可以让特定的回归系数变为0，从而可以选择一个不包含那些系数的更简单的模型；实际上，L1惩罚项降维的原理是，在多个对实际上，L1惩罚项降维的原理是，在多个对<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=目标值&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22306057603%22%7D">目标值</a>具有同等相关性的特征中，只保留一个，所以没保留的特征并不代表不重要具有同等相关性的特征中，只保留一个，所以没保留的特征并不代表不重要。</p>
+<h4><span id="lasso方法-l1正则项">==<strong>LASSO方法</strong>== L1正则项</span></h4><p>通过对回归系数添加<img src="https://www.zhihu.com/equation?tex=L_1" alt="[公式]">惩罚项来防止过拟合，可以让特定的回归系数变为0，从而可以选择一个不包含那些系数的更简单的模型；实际上，L1惩罚项降维的原理是，在多个对实际上，L1惩罚项降维的原理是，在多个对<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=目标值&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;306057603&quot;}">目标值</a>具有同等相关性的特征中，只保留一个，所以没保留的特征并不代表不重要具有同等相关性的特征中，只保留一个，所以没保留的特征并不代表不重要。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> SelectFromModel
 <span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>linear_model <span class="token keyword">import</span> LogisticRegression
 <span class="token comment">#带L1惩罚项的逻辑回归作为基模型的特征选择</span>
 SelectFromModel<span class="token punctuation">(</span>LogisticRegression<span class="token punctuation">(</span>
           penalty<span class="token operator">=</span><span class="token string">"l1"</span><span class="token punctuation">,</span> C<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>
                iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span>iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="基于树模型的特征选择方法">==<strong>基于树模型的特征选择方法</strong>==</span></h4>
-<ul>
-<li>在<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=决策树&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22306057603%22%7D">决策树</a>中，深度较浅的节点一般对应的特征分类能力更强(可以将更多的样本区分开)</li>
+<h4><span id="基于树模型的特征选择方法">==<strong>基于树模型的特征选择方法</strong>==</span></h4><ul>
+<li>在<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=决策树&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;306057603&quot;}">决策树</a>中，深度较浅的节点一般对应的特征分类能力更强(可以将更多的样本区分开)</li>
 <li>对于基于决策树的算法，如<strong>随机森林</strong>，重要的特征更有可能出现在深度较浅的节点，而且出现的次数可能越多</li>
 <li>即可基于树模型中<strong>特征出现次数</strong>等指标对特征进行重要性排序</li>
 </ul>
@@ -500,12 +456,10 @@ SelectFromModel<span class="token punctuation">(</span>LogisticRegression<span c
 SelectFromModel<span class="token punctuation">(</span>
     GradientBoostingClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>
       iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span>iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4><span id="使用特征重要性来筛选特征的缺陷">使用特征重要性来筛选特征的缺陷？</span></h4>
-<p>1、特征重要性只能说明哪些特征在训练时起到作用了，<strong>并不能说明特征和目标变量之间一定存在依赖关系</strong>。举例来说，随机生成一大堆没用的特征，然后用这些特征来训练模型，一样可以得到特征重要性，但是这个特征重要性并不会全是0，这是完全没有意义的。</p>
+<h4><span id="使用特征重要性来筛选特征的缺陷">使用特征重要性来筛选特征的缺陷？</span></h4><p>1、特征重要性只能说明哪些特征在训练时起到作用了，<strong>并不能说明特征和目标变量之间一定存在依赖关系</strong>。举例来说，随机生成一大堆没用的特征，然后用这些特征来训练模型，一样可以得到特征重要性，但是这个特征重要性并不会全是0，这是完全没有意义的。</p>
 <p>2、<strong>特征重要性容易高估数值特征和基数高的类别特征的重要性</strong>。这个道理很简单，特征重要度是根据决策树分裂前后节点的不纯度的减少量（基尼系数或者MSE）来算的，那么对于数值特征或者基础高的类别特征，不纯度较少相对来说会比较多。</p>
 <p>3、<strong>特征重要度在选择特征时需要决定阈值</strong>，要保留多少特征、删去多少特征，这些需要人为决定，并且删掉这些特征后模型的效果也不一定会提升。</p>
 <h4><span id="non-importance-选择">==Non importance 选择==</span></h4>
-
     </div>
 
     
@@ -540,8 +494,8 @@ SelectFromModel<span class="token punctuation">(</span>
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/322BXWN/" rel="next" title="机器学习（14）【Nan】LDA(主题模型)">
-                  机器学习（14）【Nan】LDA(主题模型) <i class="fa fa-chevron-right"></i>
+                <a href="/posts/3PJZDND/" rel="next" title="特征工程（1）特征预处理*">
+                  特征工程（1）特征预处理* <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
