@@ -16,10 +16,10 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="二、特征选择 【机器学习】特征选择(Feature Selection)方法汇总 特征选择方法全面总结 特征选择的基本方法总结    训练数据包含许多冗余或无用的特征，移除这些特征并不会导致丢失信息。其中冗余是指一个本身很有用的特征与另外一个有用的特征强相关，或它包含的信息能从其它特征推演出来; 特征很多但样本相对较少  产生过程：产生特征或特征子集候选集合；  评价函数：衡量特征或特征子集的重要">
 <meta property="og:type" content="article">
@@ -173,18 +173,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -203,6 +203,10 @@
 
         </div>
       </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
     </div>
 
     
@@ -284,7 +288,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.3k</span>
+      <span>4.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -363,31 +367,17 @@
 <h4><span id="方差选择法">==<strong>方差选择法</strong>==</span></h4><ul>
 <li>先计算各个特征的方差，然后根据阈值，选择方差大于阈值的特征</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> VarianceThreshold
-<span class="token comment"># 方差选择法，返回值为特征选择后的数据</span>
-<span class="token comment"># 参数threshold为方差的阈值</span>
-VarianceThreshold<span class="token punctuation">(</span>threshold<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> VarianceThreshold</span><br><span class="line"><span class="comment"># 方差选择法，返回值为特征选择后的数据</span></span><br><span class="line"><span class="comment"># 参数threshold为方差的阈值</span></span><br><span class="line">VarianceThreshold(threshold=<span class="number">3</span>).fit_transform(iris.data)</span><br></pre></td></tr></table></figure>
 <h4><span id="pearson皮尔森相关系数用于度量两个变量x和y之间的线性相关性">==Pearson皮尔森相关系数==:用于度量两个变量X和Y之间的线性相关性</span></h4><ul>
 <li><strong>用于度量两个变量X和Y之间的线性相关性</strong>，结果的取值区间为[-1, 1]， -1表示完全的负相关(这个变量下降，那个就会上升)，+1表示完全的正相关，0表示没有线性相关性</li>
 <li>计算方法为两个变量之间的<strong>协方差</strong>和<strong>标准差</strong>的商</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> SelectKBest
-<span class="token keyword">from</span> scipy<span class="token punctuation">.</span>stats <span class="token keyword">import</span> pearsonr
-  <span class="token comment"># 选择K个最好的特征，返回选择特征后的数据</span>
-  <span class="token comment"># 第一个参数为计算评估特征是否好的函数，该函数输入特征矩阵和目标向量，</span>
-  <span class="token comment"># 输出二元组（评分，P值）的数组，数组第i项为第i个特征的评分和P值。</span>
-  <span class="token comment"># 在此为计算相关系数</span>
-  <span class="token comment"># 其中参数k为选择的特征个数</span>
-SelectKBest<span class="token punctuation">(</span><span class="token keyword">lambda</span> X<span class="token punctuation">,</span> Y<span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>pearsonr<span class="token punctuation">(</span>x<span class="token punctuation">,</span> Y<span class="token punctuation">)</span><span class="token punctuation">,</span> X<span class="token punctuation">.</span>T<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>T<span class="token punctuation">,</span> 
-              k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span> iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest</span><br><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> pearsonr</span><br><span class="line">  <span class="comment"># 选择K个最好的特征，返回选择特征后的数据</span></span><br><span class="line">  <span class="comment"># 第一个参数为计算评估特征是否好的函数，该函数输入特征矩阵和目标向量，</span></span><br><span class="line">  <span class="comment"># 输出二元组（评分，P值）的数组，数组第i项为第i个特征的评分和P值。</span></span><br><span class="line">  <span class="comment"># 在此为计算相关系数</span></span><br><span class="line">  <span class="comment"># 其中参数k为选择的特征个数</span></span><br><span class="line">SelectKBest(<span class="keyword">lambda</span> X, Y: array(<span class="built_in">map</span>(<span class="keyword">lambda</span> x:pearsonr(x, Y), X.T)).T, </span><br><span class="line">              k=<span class="number">2</span>).fit_transform(iris.data, iris.target)</span><br></pre></td></tr></table></figure>
 <h4><span id="卡方检验自变量对因变量的相关性">==<strong>卡方检验</strong>==:自变量对因变量的相关性</span></h4><ul>
 <li><strong>检验定性自变量对定性因变量的相关性</strong>。假设自变量有N种取值，因变量有M种取值，考虑自变量等于i且因变量等于j的样本频数的观察值与期望的差距，构建统计量:</li>
 </ul>
 <p><img src="https://www.zhihu.com/equation?tex=%5Cchi%5E%7B2%7D%3D%5Csum+%5Cfrac%7B%28A-E%29%5E%7B2%7D%7D%7BE%7D+%5C%5C" alt="[公式]"></p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> SelectKBest
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> chi2
-<span class="token comment">#选择K个最好的特征，返回选择特征后的数据</span>
-SelectKBest<span class="token punctuation">(</span>chi2<span class="token punctuation">,</span> k<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span> iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> chi2</span><br><span class="line"><span class="comment">#选择K个最好的特征，返回选择特征后的数据</span></span><br><span class="line">SelectKBest(chi2, k=<span class="number">2</span>).fit_transform(iris.data, iris.target)</span><br></pre></td></tr></table></figure>
 <h4><span id="psi互信息法kl散度-相对熵和最大信息系数-mutual-information-and-maximal-information-coefficient-mic">==PSI互信息法==(KL散度、相对熵)和==最大信息系数== Mutual information and maximal information coefficient (MIC)</span></h4><blockquote>
 <p>  <strong><font color="red"> 风控模型—群体稳定性指标(PSI)深入理解应用</font></strong>:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79682292">https://zhuanlan.zhihu.com/p/79682292</a></p>
 </blockquote>
@@ -428,34 +418,17 @@ SelectKBest<span class="token punctuation">(</span>chi2<span class="token punctu
 <h4><span id="递归特征消除法">==<strong>递归特征消除法</strong>==</span></h4><ul>
 <li>使用一个基模型进行多轮训练，每轮训练后通过学习器返回的<strong>coef</strong><em>或者<strong>feature_importances</strong></em>消除若干权重较低的特征，再基于新的特征集进行下一轮训练</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> RFE
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>linear_model <span class="token keyword">import</span> LogisticRegression
-<span class="token comment">#递归特征消除法，返回特征选择后的数据</span>
-<span class="token comment">#参数estimator为基模型</span>
-<span class="token comment">#参数n_features_to_select为选择的特征个数</span>
-RFE<span class="token punctuation">(</span>estimator<span class="token operator">=</span>LogisticRegression<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-    n_features_to_select<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span> 
-                                          iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> RFE</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="comment">#递归特征消除法，返回特征选择后的数据</span></span><br><span class="line"><span class="comment">#参数estimator为基模型</span></span><br><span class="line"><span class="comment">#参数n_features_to_select为选择的特征个数</span></span><br><span class="line">RFE(estimator=LogisticRegression(), </span><br><span class="line">    n_features_to_select=<span class="number">2</span>).fit_transform(iris.data, </span><br><span class="line">                                          iris.target)</span><br></pre></td></tr></table></figure>
 <h3><span id="223-embedded嵌入法">2.2.3 Embedded(嵌入法)</span></h3><p><img src="https://pic4.zhimg.com/v2-9420bbe9f86094fd683ff1fb8919631f_b.jpg" alt="img"></p>
 <p>将特征选择嵌入到模型的构建过程中，具有<strong>包装法与机器学习算法相结合的优点</strong>，也具有<strong>过滤法计算效率高的优点</strong></p>
 <h4><span id="lasso方法-l1正则项">==<strong>LASSO方法</strong>== L1正则项</span></h4><p>通过对回归系数添加<img src="https://www.zhihu.com/equation?tex=L_1" alt="[公式]">惩罚项来防止过拟合，可以让特定的回归系数变为0，从而可以选择一个不包含那些系数的更简单的模型；实际上，L1惩罚项降维的原理是，在多个对实际上，L1惩罚项降维的原理是，在多个对<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=目标值&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;306057603&quot;}">目标值</a>具有同等相关性的特征中，只保留一个，所以没保留的特征并不代表不重要具有同等相关性的特征中，只保留一个，所以没保留的特征并不代表不重要。</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> SelectFromModel
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>linear_model <span class="token keyword">import</span> LogisticRegression
-<span class="token comment">#带L1惩罚项的逻辑回归作为基模型的特征选择</span>
-SelectFromModel<span class="token punctuation">(</span>LogisticRegression<span class="token punctuation">(</span>
-          penalty<span class="token operator">=</span><span class="token string">"l1"</span><span class="token punctuation">,</span> C<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>
-               iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span>iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectFromModel</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="comment">#带L1惩罚项的逻辑回归作为基模型的特征选择</span></span><br><span class="line">SelectFromModel(LogisticRegression(</span><br><span class="line">          penalty=<span class="string">&quot;l1&quot;</span>, C=<span class="number">0.1</span>)).fit_transform(</span><br><span class="line">               iris.data,iris.target)</span><br></pre></td></tr></table></figure>
 <h4><span id="基于树模型的特征选择方法">==<strong>基于树模型的特征选择方法</strong>==</span></h4><ul>
 <li>在<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=决策树&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;306057603&quot;}">决策树</a>中，深度较浅的节点一般对应的特征分类能力更强(可以将更多的样本区分开)</li>
 <li>对于基于决策树的算法，如<strong>随机森林</strong>，重要的特征更有可能出现在深度较浅的节点，而且出现的次数可能越多</li>
 <li>即可基于树模型中<strong>特征出现次数</strong>等指标对特征进行重要性排序</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>feature_selection <span class="token keyword">import</span> SelectFromModel
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>ensemble <span class="token keyword">import</span> GradientBoostingClassifier
-<span class="token comment">#GBDT作为基模型的特征选择</span>
-SelectFromModel<span class="token punctuation">(</span>
-    GradientBoostingClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>
-      iris<span class="token punctuation">.</span>data<span class="token punctuation">,</span>iris<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectFromModel</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line"><span class="comment">#GBDT作为基模型的特征选择</span></span><br><span class="line">SelectFromModel(</span><br><span class="line">    GradientBoostingClassifier()).fit_transform(</span><br><span class="line">      iris.data,iris.target)</span><br></pre></td></tr></table></figure>
 <h4><span id="使用特征重要性来筛选特征的缺陷">使用特征重要性来筛选特征的缺陷？</span></h4><p>1、特征重要性只能说明哪些特征在训练时起到作用了，<strong>并不能说明特征和目标变量之间一定存在依赖关系</strong>。举例来说，随机生成一大堆没用的特征，然后用这些特征来训练模型，一样可以得到特征重要性，但是这个特征重要性并不会全是0，这是完全没有意义的。</p>
 <p>2、<strong>特征重要性容易高估数值特征和基数高的类别特征的重要性</strong>。这个道理很简单，特征重要度是根据决策树分裂前后节点的不纯度的减少量（基尼系数或者MSE）来算的，那么对于数值特征或者基础高的类别特征，不纯度较少相对来说会比较多。</p>
 <p>3、<strong>特征重要度在选择特征时需要决定阈值</strong>，要保留多少特征、删去多少特征，这些需要人为决定，并且删掉这些特征后模型的效果也不一定会提升。</p>
@@ -489,13 +462,13 @@ SelectFromModel<span class="token punctuation">(</span>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/XZ18TA/" rel="prev" title="特征工程（3）不平衡数据集*">
-                  <i class="fa fa-chevron-left"></i> 特征工程（3）不平衡数据集*
+                <a href="/posts/3PJZDND/" rel="prev" title="特征工程（1）特征预处理*">
+                  <i class="fa fa-chevron-left"></i> 特征工程（1）特征预处理*
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/3PJZDND/" rel="next" title="特征工程（1）特征预处理*">
-                  特征工程（1）特征预处理* <i class="fa fa-chevron-right"></i>
+                <a href="/posts/322BXWN/" rel="next" title="机器学习（14）【Nan】LDA(主题模型)">
+                  机器学习（14）【Nan】LDA(主题模型) <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -569,10 +542,6 @@ setInterval("createtime()",250);
   </footer>
 
   
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
 
   <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
@@ -620,7 +589,7 @@ setInterval("createtime()",250);
             const strs = href.split('/');
             if (strs.length >= 3) {
                 const host = strs[2];
-                if (host !== 'your_domain' || window.location.host) {
+                if (host !== 'powerlzy.github.io' || window.location.host) {
                     $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
                     if (true) {
                         $this.attr('target', '_blank');
