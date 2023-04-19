@@ -154,18 +154,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -212,10 +212,10 @@
       
       <div class="post-body"><div class="tag-cloud">
   <div class="tag-cloud-title">
-    目前共计 2 个标签
+    目前共计 5 个标签
   </div>
   <div class="tag-cloud-tags">
-    <a href="/tags/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" style="font-size: 12px;" class="tag-cloud-0">理论基础</a> <a href="/tags/%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" style="font-size: 12px;" class="tag-cloud-0">评价指标</a>
+    <a href="/tags/%E5%9B%BE%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B0/" style="font-size: 12px;" class="tag-cloud-0">图社区发现</a> <a href="/tags/%E6%97%A0%E7%9B%91%E7%9D%A3/" style="font-size: 12px;" class="tag-cloud-0">无监督</a> <a href="/tags/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" style="font-size: 12px;" class="tag-cloud-0">理论基础</a> <a href="/tags/%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" style="font-size: 12px;" class="tag-cloud-0">评价指标</a> <a href="/tags/%E8%B4%A6%E5%8F%B7%E5%AE%89%E5%85%A8/" style="font-size: 12px;" class="tag-cloud-0">账号安全</a>
   </div>
 </div>
 
@@ -324,10 +324,31 @@ setInterval("createtime()",250);
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
 
-</body>
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'your_domain' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
 </html>
