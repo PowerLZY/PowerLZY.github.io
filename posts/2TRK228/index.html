@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="特征工程｜数据清洗（预处理）、特征生成、特征拼接 这或许是全网最全机器学习模型融合方法总结！：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;511246278  特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。">
+    <meta name="description" content="特征工程｜数据清洗（预处理）、特征生成、特征拼接  这或许是全网最全机器学习模型融合方法总结！：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;511246278  特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="特征工程（5）特征融合">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2TRK228/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="特征工程｜数据清洗（预处理）、特征生成、特征拼接 这或许是全网最全机器学习模型融合方法总结！：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;511246278  特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。">
+<meta property="og:description" content="特征工程｜数据清洗（预处理）、特征生成、特征拼接  这或许是全网最全机器学习模型融合方法总结！：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;511246278  特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D">
@@ -148,7 +148,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、数据清洗：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、特征生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;三、特征融合&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 特征处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 模型结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 后处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.4 特征融合是什么？和特征交叉有什么区别呢？</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、数据清洗：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、特征生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;三、特征融合&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 特征处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 模型结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 后处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.4
+特征融合是什么？和特征交叉有什么区别呢？</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,18 +164,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -296,13 +297,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="特征工程数据清洗预处理-特征生成-特征拼接">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></h2><ul>
-<li>这或许是全网最全机器学习模型融合方法总结！：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511246278">https://zhuanlan.zhihu.com/p/511246278</a></li>
+        <h2><span id="特征工程数据清洗预处理-特征生成-特征拼接">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></h2>
+<ul>
+<li>这或许是全网最全机器学习模型融合方法总结！：https://zhuanlan.zhihu.com/p/511246278</li>
 </ul>
-<p>特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。特征处理中还包括：数据清洗、特征生成、特征拼接、特征处理、特征转换、特征选择。本篇主要介绍<strong>数据清洗、特征生成、特征拼接</strong>。</p>
-<h3><span id="一-数据清洗">一、数据清洗：</span></h3><p>从特征工程角度讲，数据清洗是特征工程的前置阶段（但是也会贯穿整个数据应用过程），其本义是对数据进行重新的<strong>审查和校验</strong>，目的在于<strong>删除重复信息</strong>、纠正存在的错误数据，并保证数据的一致性。数据清洗是整个数据分析过程中不可缺少的一个环节，其结果质量直接关系到模型效果和最终结论。</p>
+<p>特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt;
+特征存储 -&gt;
+特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。特征处理中还包括：数据清洗、特征生成、特征拼接、特征处理、特征转换、特征选择。本篇主要介绍<strong>数据清洗、特征生成、特征拼接</strong>。</p>
+<h3><span id="一-数据清洗">一、数据清洗：</span></h3>
+<p>从特征工程角度讲，数据清洗是特征工程的前置阶段（但是也会贯穿整个数据应用过程），其本义是对数据进行重新的<strong>审查和校验</strong>，目的在于<strong>删除重复信息</strong>、纠正存在的错误数据，并保证数据的一致性。数据清洗是整个数据分析过程中不可缺少的一个环节，其结果质量直接关系到模型效果和最终结论。</p>
 <p>一个特征处理的完整流程可以表示为：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png" alt="img"></p>
+<figure>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>因此基础数据的准确性、完备性、一致性决定了后续特征数据的有效性。在我们日常使用的公开数据集中，很多都是已经被处理后的了，比如学术界中使用很广泛的MovieLens数据集，但是在真实的业务场景中，我们拿到的数据其实直接是没有办法使用的，可能包含了<strong>大量的缺失值</strong>，可能包含<strong>大量的噪音</strong>，也可能因为人工录入错误导致有异常点存在，对我们挖据出有效信息造成了一定的困扰，所以我们需要通过一些方法，尽量提高数据的质量。</p>
 <p><strong>初期数据清洗更多的是针对单条样本数据的清洗和检测</strong>，包括：</p>
 <ul>
@@ -313,10 +321,12 @@
 </ul>
 <p>在实际的业务场景中，数据是由系统收集或用户填写而来，有很大可能性在格式和内容上存在一些问题，同样类型的数据在不同的团队上报过程中产出的内容或格式会不一致，同样不同数据源采集而来的数据内容和格式也会不一致。</p>
 <blockquote>
-<p>  数据格式的一致性。比如<strong>时间信息</strong>（以2020年6月18日，11点11分12秒为例），有的用毫秒时间戳表示（1592449872000），有的用秒时间戳表示（1592449872），有的用带横线的时间表示（2020-06-18 11:11:12），有的则用不带横线的时间表示（20200618 11:11:12）。</p>
-<p>  数据类型的一致性。比如不同的数据表中，同样表示用户ID的字段，有的可能是string类型，有的是int类型。如果用string类型表示，如果用户id缺失的话，正常可以留空，但是不同团队，不同人对于缺失的id处理方式也会不一致，比如有的用None，有的用Null，有的则用0表示，可谓是千奇百怪。小编在日常工作中也会经常遇到这种情况，被折磨的体无完肤。</p>
+<p>数据格式的一致性。比如<strong>时间信息</strong>（以2020年6月18日，11点11分12秒为例），有的用毫秒时间戳表示（1592449872000），有的用秒时间戳表示（1592449872），有的用带横线的时间表示（2020-06-18
+11:11:12），有的则用不带横线的时间表示（20200618 11:11:12）。</p>
+<p>数据类型的一致性。比如不同的数据表中，同样表示用户ID的字段，有的可能是string类型，有的是int类型。如果用string类型表示，如果用户id缺失的话，正常可以留空，但是不同团队，不同人对于缺失的id处理方式也会不一致，比如有的用None，有的用Null，有的则用0表示，可谓是千奇百怪。小编在日常工作中也会经常遇到这种情况，被折磨的体无完肤。</p>
 </blockquote>
-<h3><span id="二-特征生成">二、特征生成</span></h3><p>对基础数据进行清理之后需要做的就是生成我们需要的特征，在特征设计部分提到特征主要分为四大维度，根据小编的经验特征又可以根据其值的属性划分为：</p>
+<h3><span id="二-特征生成">二、特征生成</span></h3>
+<p>对基础数据进行清理之后需要做的就是生成我们需要的特征，在特征设计部分提到特征主要分为四大维度，根据小编的经验特征又可以根据其值的属性划分为：</p>
 <ul>
 <li><strong>类别特征</strong>：即特征的属性值是一个有限的集合，比如用户性别、事物的类别、事物的ID编码类特征等</li>
 <li><strong>连续特征</strong>：即用户行为、类别、组合特征之类的统计值，比如用户观看的视频部数、某类别下事物的个数等</li>
@@ -325,26 +335,37 @@
 <li><strong>文本特征</strong>：即和文本相关的特征，比如评论数据、商品描述、新闻内容等。</li>
 <li><strong>Embedding特征</strong>：即一些基础特征的高层次表示，比如用户ID编码的Embedding表示、事物ID编码的Embedding表示、<strong>用户访问事物序列的Embedding编码</strong>等。</li>
 </ul>
-<h3><span id="三-特征融合">==三、特征融合==</span></h3><blockquote>
-<p>  多模态特征融合三部曲: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390668652">https://zhuanlan.zhihu.com/p/390668652</a></p>
-<p>  推荐系统（六）—— 特征融合 :  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/459012483">https://zhuanlan.zhihu.com/p/459012483</a></p>
+<h3><span id="三-特征融合">==三、特征融合==</span></h3>
+<blockquote>
+<p>多模态特征融合三部曲: https://zhuanlan.zhihu.com/p/390668652</p>
+<p>推荐系统（六）—— 特征融合 :
+https://zhuanlan.zhihu.com/p/459012483</p>
 </blockquote>
-<h4><span id="31-特征处理">3.1 特征处理</span></h4><p>假设你有三种类型数据，或者说可以是三个不同维度的向量</p>
-<p><img src="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D" alt="[公式]"></p>
+<h4><span id="31-特征处理">3.1 特征处理</span></h4>
+<p>假设你有三种类型数据，或者说可以是三个不同维度的向量</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>第一种融合手段就是在训练前进行的</p>
-<ol>
+<ol type="1">
 <li><strong>三个向量直接concat，可能维度会比较高，再进行个PCA</strong></li>
 <li><strong>自编码器结构</strong>：三个向量通过MLP映射成一个维度后相加，用还原回去；融合特征再用来做后续的模型设计和训练就好了。</li>
 </ol>
 <p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220519212856682.png" alt="image-20220519212856682" style="zoom: 33%;"></p>
-<h4><span id="32-模型结构">3.2 模型结构</span></h4><p>一种直接的思想就是分而治之，多分支网络；还有一种比较出名的在中间层进行融合的方法，多模态双线性矩阵分解池化方法（MFB），本质上就是对不同模态数据进行双线性融合，借助矩阵分解的思想，再对原始特征进行高维映射，然后element-wise相乘后再做pooling操作。</p>
+<h4><span id="32-模型结构">3.2 模型结构</span></h4>
+<p>一种直接的思想就是分而治之，多分支网络；还有一种比较出名的在中间层进行融合的方法，多模态双线性矩阵分解池化方法（MFB），本质上就是对不同模态数据进行双线性融合，借助矩阵分解的思想，再对原始特征进行高维映射，然后element-wise相乘后再做pooling操作。</p>
 <p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220519220722481.png" alt="image-20220519220722481" style="zoom: 33%;"></p>
 <p><img src="https://pic3.zhimg.com/80/v2-c4ecc29092d26822fef3f420c2bf5bb2_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<h4><span id="33-后处理">3.3 后处理</span></h4><p>后处理其实也是分而治之的思想，多模态数据分别训练不同的模型，再将不同模型的预测输出进行融合，比如平均、加权，或者fix住原来的多个网络，后面再加一层进行微调。</p>
+<h4><span id="33-后处理">3.3 后处理</span></h4>
+<p>后处理其实也是分而治之的思想，多模态数据分别训练不同的模型，再将不同模型的预测输出进行融合，比如平均、加权，或者fix住原来的多个网络，后面再加一层进行微调。</p>
 <p><img src="https://pic3.zhimg.com/80/v2-3e0669ac057b924e8814f34578d4acee_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<h4><span id="34-特征融合是什么和特征交叉有什么区别呢">3.4 特征融合是什么？和特征交叉有什么区别呢？</span></h4><p>在上一篇文章（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457853657">yu-lzn：推荐系统（五）—— 特征交叉</a>）中，我们讨论了特征交叉，特征交叉也称为特征组合，旨在提高模型对非线性的建模能力，从而提高模型的性能。<strong>特征融合</strong>和特征交叉有相同的目的，都是为了提高模型的性能。特征融合是想更好地利用不同特性的特征。</p>
+<h4><span id="34特征融合是什么和特征交叉有什么区别呢">3.4
+特征融合是什么？和特征交叉有什么区别呢？</span></h4>
+<p>在上一篇文章（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457853657">yu-lzn：推荐系统（五）——
+特征交叉</a>）中，我们讨论了特征交叉，特征交叉也称为特征组合，旨在提高模型对非线性的建模能力，从而提高模型的性能。<strong>特征融合</strong>和特征交叉有相同的目的，都是为了提高模型的性能。特征融合是想更好地利用不同特性的特征。</p>
 <blockquote>
-<p>  随着信息时代的发展，<strong>在推荐系统中，多模态信息的融合也变得越来越重要</strong>。以淘宝购物为例，用户在决策是否购买物品时，会考虑<strong>物品的属性</strong>、<strong>物品图片的展示</strong>、其他<strong>用户的评论信息</strong>、甚至是观看<strong>物品的介绍视频</strong>等等。换句话说，这些<strong>多模态信息（文本、图片、视频）会影响用户的行为</strong>。所以如何利用这些多模态信息来建模，是提高推荐系统准确度的一个途径。那么如何去融合这些不同来源的信息便是一个关键的问题。</p>
+<p>随着信息时代的发展，<strong>在推荐系统中，多模态信息的融合也变得越来越重要</strong>。以淘宝购物为例，用户在决策是否购买物品时，会考虑<strong>物品的属性</strong>、<strong>物品图片的展示</strong>、其他<strong>用户的评论信息</strong>、甚至是观看<strong>物品的介绍视频</strong>等等。换句话说，这些<strong>多模态信息（文本、图片、视频）会影响用户的行为</strong>。所以如何利用这些多模态信息来建模，是提高推荐系统准确度的一个途径。那么如何去融合这些不同来源的信息便是一个关键的问题。</p>
 </blockquote>
 
     </div>

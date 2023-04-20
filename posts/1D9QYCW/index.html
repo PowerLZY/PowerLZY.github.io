@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="EM——期望最大 [概率模型]   EM 算法通过引入隐含变量，使用 MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM 算法首先会固定其中的第一个参数，然后使用 MLE 计算第二个变量值；接着通过固定第二个变量，再使用 MLE 估测第一个变量值，依次迭代，直至收敛到局部最优解。  怎么通俗易懂地解释 EM 算法并且举个例子? 从最大似然到 EM 算法浅解     EM">
+    <meta name="description" content="EM——期望最大 [概率模型]  EM 算法通过引入隐含变量，使用 MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM 算法首先会固定其中的第一个参数，然后使用 MLE 计算第二个变量值；接着通过固定第二个变量，再使用 MLE 估测第一个变量值，依次迭代，直至收敛到局部最优解。  怎么通俗易懂地解释 EM 算法并且举个例子? 从最大似然到 EM 算法浅解     EM 算">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（13）EM算法">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1D9QYCW/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="EM——期望最大 [概率模型]   EM 算法通过引入隐含变量，使用 MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM 算法首先会固定其中的第一个参数，然后使用 MLE 计算第二个变量值；接着通过固定第二个变量，再使用 MLE 估测第一个变量值，依次迭代，直至收敛到局部最优解。  怎么通俗易懂地解释 EM 算法并且举个例子? 从最大似然到 EM 算法浅解     EM">
+<meta property="og:description" content="EM——期望最大 [概率模型]  EM 算法通过引入隐含变量，使用 MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM 算法首先会固定其中的第一个参数，然后使用 MLE 计算第二个变量值；接着通过固定第二个变量，再使用 MLE 估测第一个变量值，依次迭代，直至收敛到局部最优解。  怎么通俗易懂地解释 EM 算法并且举个例子? 从最大似然到 EM 算法浅解     EM 算">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=EM">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=E">
@@ -276,18 +276,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -395,7 +395,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -413,62 +413,184 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1><span id="em期望最大-概率模型">EM——期望最大 [概率模型]</span></h1><blockquote>
-<p>  <strong>EM 算法通过引入隐含变量，使用 MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM 算法首先会固定其中的第一个参数，然后使用 MLE 计算第二个变量值；接着通过固定第二个变量，再使用 MLE 估测第一个变量值，依次迭代，直至收敛到局部最优解。</strong></p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27976634">怎么通俗易懂地解释 EM 算法并且举个例子?</a></li>
-<li><a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/zouxy09/article/details/8537620">从最大似然到 EM 算法浅解</a></li>
+        <h1><span id="em期望最大-概率模型">EM——期望最大 [概率模型]</span></h1>
+<blockquote>
+<p><strong>EM 算法通过引入隐含变量，使用
+MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM
+算法首先会固定其中的第一个参数，然后使用 MLE
+计算第二个变量值；接着通过固定第二个变量，再使用 MLE
+估测第一个变量值，依次迭代，直至收敛到局部最优解。</strong></p>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27976634">怎么通俗易懂地解释
+EM 算法并且举个例子?</a></li>
+<li><a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/zouxy09/article/details/8537620">从最大似然到
+EM 算法浅解</a></li>
 <li><h5><span id="em算法"></span></h5></li>
 </ol>
 </blockquote>
-<p><strong><font color="red"> EM 算法，全称 Expectation Maximization Algorithm。期望最大算法是一种迭代算法，用于含有隐变量（Hidden Variable）的概率参数模型的最大似然估计或极大后验概率估计。</font></strong></p>
+<p><strong><font color="red"> EM 算法，全称 Expectation Maximization
+Algorithm。期望最大算法是一种迭代算法，用于含有隐变量（Hidden
+Variable）的概率参数模型的最大似然估计或极大后验概率估计。</font></strong></p>
 <p>本文思路大致如下：先简要介绍其思想，然后举两个例子帮助大家理解，有了感性的认识后再进行严格的数学公式推导。</p>
-<h2><span id="1-思想">1. 思想</span></h2><p>EM 算法的核心思想非常简单，分为两步：<strong>Expection-Step</strong> 和 <strong>Maximization-Step</strong>。<strong>E-Step 主要通过观察数据和现有模型来估计参数</strong>，然后用这个估计的参数值来计算似然函数的期望值；而 M-Step 是寻找似然函数最大化时对应的参数。由于算法会保证在每次迭代之后<strong>似然函数都会增加</strong>，所以函数最终会收敛。</p>
-<p><img src="https://www.zhihu.com/equation?tex=EM" alt="[公式]"> <strong>算法一句话总结就是</strong>： <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步固定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 优化 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 步固定 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 优化 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 。</p>
-<h3><span id="2-例子">2 例子</span></h3><h4><span id="21-例子-a">2.1 例子 A</span></h4><p>假设有两枚硬币 A 和 B，他们的随机抛掷的结果如下图所示：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-4e19d89b47e21cf284644b0576e9af0f_1440w.jpg" alt="img"></p>
+<h2><span id="1-思想">1. 思想</span></h2>
+<p>EM 算法的核心思想非常简单，分为两步：<strong>Expection-Step</strong>
+和 <strong>Maximization-Step</strong>。<strong>E-Step
+主要通过观察数据和现有模型来估计参数</strong>，然后用这个估计的参数值来计算似然函数的期望值；而
+M-Step
+是寻找似然函数最大化时对应的参数。由于算法会保证在每次迭代之后<strong>似然函数都会增加</strong>，所以函数最终会收敛。</p>
+<p><img src="https://www.zhihu.com/equation?tex=EM" alt="[公式]">
+<strong>算法一句话总结就是</strong>： <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步固定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 优化
+<img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 步固定 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 优化 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 。</p>
+<h3><span id="2-例子">2 例子</span></h3>
+<h4><span id="21-例子-a">2.1 例子 A</span></h4>
+<p>假设有两枚硬币 A 和 B，他们的随机抛掷的结果如下图所示：</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-4e19d89b47e21cf284644b0576e9af0f_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>我们很容易估计出两枚硬币抛出正面的概率：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_A+%3D+24%2F30+%3D0.8+%5C%5C%5Ctheta_B+%3D+9%2F20+%3D0.45++%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_A+%3D+24%2F30+%3D0.8+%5C%5C%5Ctheta_B+%3D+9%2F20+%3D0.45++%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>现在我们加入<strong>隐变量</strong>，抹去每轮投掷的硬币标记：</p>
-<p><img src="https://pic1.zhimg.com/80/v2-caa896173185a8f527c037c122122258_1440w.jpg" alt="img"></p>
-<p>碰到这种情况，我们该如何估计 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"> 的值？</p>
-<p>我们多了一个隐变量 <img src="https://www.zhihu.com/equation?tex=Z%3D%28z_1%2C+z_2%2C+z_3%2C+z_4%2C+z_5%29" alt="[公式]"> ，代表每一轮所使用的硬币，我们需要知道每一轮抛掷所使用的硬币这样才能估计 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"> 的值，但是估计隐变量 Z 我们又需要知道 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"> 的值，才能用极大似然估计法去估计出 Z。这就陷入了一个鸡生蛋和蛋生鸡的问题。</p>
-<p>其解决方法就是先<strong>随机初始化 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"></strong> ，然后用去估计 Z， 然后基于 Z 按照最大似然概率去估计新的 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"> ，循环至收敛。</p>
-<h4><span id="212-计算"><strong>2.1.2 计算</strong></span></h4><p>随机初始化 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A%3D0.6" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B%3D0.5" alt="[公式]"></p>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-caa896173185a8f527c037c122122258_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>碰到这种情况，我们该如何估计 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]">
+的值？</p>
+<p>我们多了一个隐变量 <img src="https://www.zhihu.com/equation?tex=Z%3D%28z_1%2C+z_2%2C+z_3%2C+z_4%2C+z_5%29" alt="[公式]">
+，代表每一轮所使用的硬币，我们需要知道每一轮抛掷所使用的硬币这样才能估计
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]">
+和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"> 的值，但是估计隐变量 Z 我们又需要知道 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]">
+的值，才能用极大似然估计法去估计出
+Z。这就陷入了一个鸡生蛋和蛋生鸡的问题。</p>
+<p>其解决方法就是先<strong>随机初始化 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"></strong> ，然后用去估计 Z， 然后基于 Z
+按照最大似然概率去估计新的 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]">
+，循环至收敛。</p>
+<h4><span id="212-计算"><strong>2.1.2 计算</strong></span></h4>
+<p>随机初始化 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A%3D0.6" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B%3D0.5" alt="[公式]"></p>
 <p>对于第一轮来说，如果是硬币 A，得出的 5 正 5 反的概率为： <img src="https://www.zhihu.com/equation?tex=0.6%5E5%2A0.4%5E5" alt="[公式]"> ；如果是硬币 B，得出的 5 正 5 反的概率为： <img src="https://www.zhihu.com/equation?tex=0.5%5E5%2A0.5%5E5" alt="[公式]"> 。我们可以算出使用是硬币 A 和硬币 B 的概率分别为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=P_A%3D%5Cfrac%7B0.6%5E5+%2A+0.4%5E5%7D%7B%280.6%5E5+%2A+0.4%5E5%29+%2B+%280.5%5E5+%2A+0.5%5E5%29%7D+%3D+0.45%5C%5C+P_B%3D%5Cfrac%7B0.5%5E5+%2A+0.5%5E5%7D%7B%280.6%5E5+%2A+0.4%5E5%29+%2B+%280.5%5E5+%2A+0.5%5E5%29%7D+%3D+0.55+%5C%5C" alt="[公式]"></p>
-<p><img src="https://pic4.zhimg.com/80/v2-b325de65a5bcac196fc0939f346410d7_1440w.jpg" alt="img"></p>
-<p>从期望的角度来看，对于第一轮抛掷，使用硬币 A 的概率是 0.45，使用硬币 B 的概率是 0.55。同理其他轮。这一步我们实际上是<strong>估计出了 Z 的概率分布</strong>，这部就是 <strong>E-Step</strong>。</p>
-<p>结合硬币 A 的概率和上一张投掷结果，我们利用期望可以求出硬币 A 和硬币 B 的贡献。以第二轮硬币 A 为例子，计算方式为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=H%3A+0.80%2A9+%3D7.2+%5C%5C+T%3A+0.80%2A1%3D0.8+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=P_A%3D%5Cfrac%7B0.6%5E5+%2A+0.4%5E5%7D%7B%280.6%5E5+%2A+0.4%5E5%29+%2B+%280.5%5E5+%2A+0.5%5E5%29%7D+%3D+0.45%5C%5C+P_B%3D%5Cfrac%7B0.5%5E5+%2A+0.5%5E5%7D%7B%280.6%5E5+%2A+0.4%5E5%29+%2B+%280.5%5E5+%2A+0.5%5E5%29%7D+%3D+0.55+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-b325de65a5bcac196fc0939f346410d7_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>从期望的角度来看，对于第一轮抛掷，使用硬币 A 的概率是 0.45，使用硬币
+B 的概率是 0.55。同理其他轮。这一步我们实际上是<strong>估计出了 Z
+的概率分布</strong>，这部就是 <strong>E-Step</strong>。</p>
+<p>结合硬币 A 的概率和上一张投掷结果，我们利用期望可以求出硬币 A 和硬币
+B 的贡献。以第二轮硬币 A 为例子，计算方式为：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=H%3A+0.80%2A9+%3D7.2+%5C%5C+T%3A+0.80%2A1%3D0.8+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>于是我们可以得到：</p>
-<p><img src="https://pic1.zhimg.com/80/v2-9b6e8c50c0761c6ac19909c26e0a71d4_1440w.jpg" alt="img"></p>
-<p>然后用极大似然估计来估计新的 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]"> 。</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_A+%3D+%5Cfrac%7B21.3%7D%7B21.3%2B8.6%7D+%3D+0.71+%5C%5C+%5Ctheta_B+%3D+%5Cfrac%7B11.7%7D%7B11.7+%2B+8.4%7D+%3D+0.58+%5C%5C" alt="[公式]"></p>
-<p>这步就对应了 M-Step，重新估计出了参数值。如此反复迭代，我们就可以算出最终的参数值。</p>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-9b6e8c50c0761c6ac19909c26e0a71d4_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>然后用极大似然估计来估计新的 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_A" alt="[公式]"> 和
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_B" alt="[公式]">
+。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_A+%3D+%5Cfrac%7B21.3%7D%7B21.3%2B8.6%7D+%3D+0.71+%5C%5C+%5Ctheta_B+%3D+%5Cfrac%7B11.7%7D%7B11.7+%2B+8.4%7D+%3D+0.58+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>这步就对应了
+M-Step，重新估计出了参数值。如此反复迭代，我们就可以算出最终的参数值。</p>
 <p>上述讲解对应下图：</p>
 <p><img src="https://pic3.zhimg.com/v2-6cac968d6500cbca58fc90347c288466_r.jpg" alt="preview" style="zoom:50%;"></p>
-<h4><span id="22-例子-b">2.2 例子 B</span></h4><p>如果说例子 A 需要计算你可能没那么直观，那就举更一个简单的例子：</p>
-<p>现在一个班里有 50 个男生和 50 个女生，且男女生分开。我们假定男生的身高服从正态分布： <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu_1%2C+%5Csigma%5E2_1+%29" alt="[公式]"> ，女生的身高则服从另一个正态分布： <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu_2%2C+%5Csigma%5E2_2+%29" alt="[公式]"> 。这时候我们可以用极大似然法（MLE），分别通过这 50 个男生和 50 个女生的样本来估计这两个正态分布的参数。</p>
-<p>但现在我们让情况复杂一点，就是这 50 个男生和 50 个女生混在一起了。我们拥有 100 个人的身高数据，却不知道这 100 个人每一个是男生还是女生。</p>
+<h4><span id="22-例子-b">2.2 例子 B</span></h4>
+<p>如果说例子 A 需要计算你可能没那么直观，那就举更一个简单的例子：</p>
+<p>现在一个班里有 50 个男生和 50
+个女生，且男女生分开。我们假定男生的身高服从正态分布： <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu_1%2C+%5Csigma%5E2_1+%29" alt="[公式]"> ，女生的身高则服从另一个正态分布： <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu_2%2C+%5Csigma%5E2_2+%29" alt="[公式]"> 。这时候我们可以用极大似然法（MLE），分别通过这 50
+个男生和 50 个女生的样本来估计这两个正态分布的参数。</p>
+<p>但现在我们让情况复杂一点，就是这 50 个男生和 50
+个女生混在一起了。我们拥有 100 个人的身高数据，却不知道这 100
+个人每一个是男生还是女生。</p>
 <p>这时候情况就有点尴尬，因为通常来说，我们只有知道了精确的男女身高的正态分布参数我们才能知道每一个人更有可能是男生还是女生。但从另一方面去考量，我们只有知道了每个人是男生还是女生才能尽可能准确地估计男女各自身高的正态分布的参数。</p>
-<p>这个时候有人就想到我们必须从某一点开始，并用迭代的办法去解决这个问题：<strong>==我们先设定男生身高和女生身高分布的几个参数（初始值），然后根据这些参数去判断每一个样本（人）是男生还是女生，之后根据标注后的样本再反过来重新估计参数。之后再多次重复这个过程，直至稳定。这个算法也就是 EM 算法。==</strong></p>
-<h3><span id="3-推导">3. 推导</span></h3><p>给定数据集，假设样本间相互独立，我们想要拟合模型 <img src="https://www.zhihu.com/equation?tex=p%28x%3B%5Ctheta%29" alt="[公式]"> 到数据的参数。根据分布我们可以得到如下<strong>似然函数</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+L%28%5Ctheta%29+%26%3D+%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dlog+p%28x_i%3B%5Ctheta%29++%5C%5C+%26%3D+%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dlog+%5Csum_%7Bz%7Dp%28x_i%2C+z%3B%5Ctheta%29+%5Cend%7Baligned%7D+%5C%5C" alt="[公式]"></p>
-<p>第一步是<strong>对极大似然函数取对数</strong>，第二步是对每个样本的每个可能的类别 z 求<strong>联合概率分布之和</strong>。如果这个 z 是已知的数，那么使用极大似然法会很容易。但如果 z 是隐变量，我们就需要用 EM 算法来求。<strong>事实上，隐变量估计问题也可以通过梯度下降等优化算法，但事实由于求和项将随着隐变量的数目以指数级上升，会给梯度计算带来麻烦；而 EM 算法则可看作一种非梯度优化方法。</strong></p>
-<h4><span id="31-求解含有隐变量的概率模型">3.1 求解含有隐变量的概率模型</span></h4><p><strong>为了求解含有隐变量 <img src="https://www.zhihu.com/equation?tex=z" alt="[公式]"> 的概率模型</strong> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D%5Chat%7B%5Ctheta%7D%3D%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D+%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%5Cend%7Baligned%7D" alt="[公式]"> <strong>需要一些特殊的技巧</strong>，通过引入隐变量 <img src="https://www.zhihu.com/equation?tex=z%5E%7B%28i%29%7D" alt="[公式]"> 的概率分布为 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> ，<strong>==因为 <img src="https://www.zhihu.com/equation?tex=%5Clog+%28x%29" alt="[公式]"> 是凹函数故结合凹函数形式下的詹森不等式进行放缩处理==</strong><br> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7D+Q_i%28z%5E%7B%28i%29%7D%29%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C%5C+%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Cmathbb%7BE%7D%28%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%29%5C%5C+%26%5Cge%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Cmathbb%7BE%7D%5B%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%29%5D%5C%5C+%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"><br>其中由概率分布的充要条件 <img src="https://www.zhihu.com/equation?tex=%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%3D1%E3%80%81Q_i%28z%5E%7B%28i%29%7D%29%5Cge0" alt="[公式]"> 可看成下述关于 <img src="https://www.zhihu.com/equation?tex=z" alt="[公式]"> 函数分布列的形式：</p>
+<p>这个时候有人就想到我们必须从某一点开始，并用迭代的办法去解决这个问题：<strong>==我们先设定男生身高和女生身高分布的几个参数（初始值），然后根据这些参数去判断每一个样本（人）是男生还是女生，之后根据标注后的样本再反过来重新估计参数。之后再多次重复这个过程，直至稳定。这个算法也就是
+EM 算法。==</strong></p>
+<h3><span id="3-推导">3. 推导</span></h3>
+<p>给定数据集，假设样本间相互独立，我们想要拟合模型 <img src="https://www.zhihu.com/equation?tex=p%28x%3B%5Ctheta%29" alt="[公式]">
+到数据的参数。根据分布我们可以得到如下<strong>似然函数</strong>：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+L%28%5Ctheta%29+%26%3D+%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dlog+p%28x_i%3B%5Ctheta%29++%5C%5C+%26%3D+%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dlog+%5Csum_%7Bz%7Dp%28x_i%2C+z%3B%5Ctheta%29+%5Cend%7Baligned%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>第一步是<strong>对极大似然函数取对数</strong>，第二步是对每个样本的每个可能的类别
+z 求<strong>联合概率分布之和</strong>。如果这个 z
+是已知的数，那么使用极大似然法会很容易。但如果 z 是隐变量，我们就需要用
+EM
+算法来求。<strong>事实上，隐变量估计问题也可以通过梯度下降等优化算法，但事实由于求和项将随着隐变量的数目以指数级上升，会给梯度计算带来麻烦；而
+EM 算法则可看作一种非梯度优化方法。</strong></p>
+<h4><span id="31-求解含有隐变量的概率模型">3.1 求解含有隐变量的概率模型</span></h4>
+<p><strong>为了求解含有隐变量 <img src="https://www.zhihu.com/equation?tex=z" alt="[公式]">
+的概率模型</strong> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D%5Chat%7B%5Ctheta%7D%3D%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D+%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%5Cend%7Baligned%7D" alt="[公式]"> <strong>需要一些特殊的技巧</strong>，通过引入隐变量 <img src="https://www.zhihu.com/equation?tex=z%5E%7B%28i%29%7D" alt="[公式]"> 的概率分布为 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> ，<strong>==因为 <img src="https://www.zhihu.com/equation?tex=%5Clog+%28x%29" alt="[公式]">
+是凹函数故结合凹函数形式下的詹森不等式进行放缩处理==</strong> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7D+Q_i%28z%5E%7B%28i%29%7D%29%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C%5C+%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+%5Cmathbb%7BE%7D%28%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%29%5C%5C+%26%5Cge%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Cmathbb%7BE%7D%5B%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%29%5D%5C%5C+%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"> 其中由概率分布的充要条件 <img src="https://www.zhihu.com/equation?tex=%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%3D1%E3%80%81Q_i%28z%5E%7B%28i%29%7D%29%5Cge0" alt="[公式]"> 可看成下述关于 <img src="https://www.zhihu.com/equation?tex=z" alt="[公式]">
+函数分布列的形式：</p>
 <p><img src="https://pic2.zhimg.com/v2-cb7ddb5cdc34761ec70d63c97189b102_720w.jpg?source=d16d100b" alt="img" style="zoom:50%;"></p>
-<p><strong>这个过程可以看作是对 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 求了下界</strong>，假设 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 已经给定那么 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 的值就取决于 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%29" alt="[公式]"> 了，因此可以通过调整这两个概率使下界不断上升，以逼近 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 的真实值，当不等式变成等式时说明调整后的概率能够等价于 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> ，所以必须找到使得等式成立的条件，即寻找<br> <img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BE%7D%5B%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%29%5D%3D%5Clog+%5Cmathbb%7BE%7D%5B%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5D%5C%5C" alt="[公式]"><br>由期望得性质可知当<br> <img src="https://www.zhihu.com/equation?tex=%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%3DC%2C%5C+%5C+%5C+%5C+%5C+C%5Cin%5Cmathbb%7BR%7D+%5C+%5C+%5C+%5C+%5C+%28%2A%29%5C%5C" alt="[公式]"><br>等式成立，对上述等式进行变形处理可得<br> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%26p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%3DCQ_i%28z%5E%7B%28i%29%7D%29%5C%5C+%26%5CLeftrightarrow+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%3DC%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%3DC%5C%5C+%26%5CLeftrightarrow+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%3DC+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28%2A%2A%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"><br>把 <img src="https://www.zhihu.com/equation?tex=%28%2A%2A%29" alt="[公式]"> 式带入 <img src="https://www.zhihu.com/equation?tex=%28%2A%29" alt="[公式]"> 化简可知<br> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+Q_i%28z%5E%7B%28i%29%7D%29%26%3D%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7B%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%5C%5C+%26%3D%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7Bp%28x%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%5C%5C+%26%3Dp%28z%5E%7B%28i%29%7D%7Cx%5E%7B%28i%29%7D%3B%5Ctheta%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"><br>至此，可以推出<strong>在固定参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 后</strong>， <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 的<strong>计算公式就是后验概率</strong>，解决了 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 如何选择得问题。这一步称为 <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步，建立 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 得下界；接下来得 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 步，就是在给定 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 后，调整 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 去极大化 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 的下界即<br> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%26%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+p%28x%5E%7B%28i%29%7D%3B%5Ctheta%29%5C%5C+%26%5CLeftrightarrow+%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C%5C+%26%5CLeftrightarrow+%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Cleft%5B%5Clog+p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29-%5Clog+Q_i%28z%5E%7B%28i%29%7D%29%5Cright%5D%5C%5C+%26%5CLeftrightarrow+%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Clog+p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"><br>因此EM算法的迭代形式为：</p>
+<p><strong>这个过程可以看作是对 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 求了下界</strong>，假设 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+已经给定那么 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 的值就取决于 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%29" alt="[公式]"> 了，因此可以通过调整这两个概率使下界不断上升，以逼近
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 的真实值，当不等式变成等式时说明调整后的概率能够等价于
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> ，所以必须找到使得等式成立的条件，即寻找 <img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BE%7D%5B%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%29%5D%3D%5Clog+%5Cmathbb%7BE%7D%5B%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5D%5C%5C" alt="[公式]"> 由期望得性质可知当 <img src="https://www.zhihu.com/equation?tex=%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%3DC%2C%5C+%5C+%5C+%5C+%5C+C%5Cin%5Cmathbb%7BR%7D+%5C+%5C+%5C+%5C+%5C+%28%2A%29%5C%5C" alt="[公式]"> 等式成立，对上述等式进行变形处理可得 <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%26p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%3DCQ_i%28z%5E%7B%28i%29%7D%29%5C%5C+%26%5CLeftrightarrow+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%3DC%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%3DC%5C%5C+%26%5CLeftrightarrow+%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%3DC+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28%2A%2A%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"> 把 <img src="https://www.zhihu.com/equation?tex=%28%2A%2A%29" alt="[公式]">
+式带入 <img src="https://www.zhihu.com/equation?tex=%28%2A%29" alt="[公式]"> 化简可知 <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+Q_i%28z%5E%7B%28i%29%7D%29%26%3D%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7B%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7Dp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%5C%5C+%26%3D%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7Bp%28x%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%5C%5C+%26%3Dp%28z%5E%7B%28i%29%7D%7Cx%5E%7B%28i%29%7D%3B%5Ctheta%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"> 至此，可以推出<strong>在固定参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+后</strong>， <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 的<strong>计算公式就是后验概率</strong>，解决了 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 如何选择得问题。这一步称为 <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步，建立 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 得下界；接下来得 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]">
+步，就是在给定 <img src="https://www.zhihu.com/equation?tex=Q_i%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 后，调整 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+去极大化 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%29" alt="[公式]"> 的下界即 <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%26%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Clog+p%28x%5E%7B%28i%29%7D%3B%5Ctheta%29%5C%5C+%26%5CLeftrightarrow+%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Clog%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C%5C+%26%5CLeftrightarrow+%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Cleft%5B%5Clog+p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29-%5Clog+Q_i%28z%5E%7B%28i%29%7D%29%5Cright%5D%5C%5C+%26%5CLeftrightarrow+%5Cmathop%7B%5Carg%5Cmax%7D_%7B%5Ctheta%7D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%28z%5E%7B%28i%29%7D%29%5Clog+p%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"> 因此EM算法的迭代形式为：</p>
 <p><img src="https://pic2.zhimg.com/80/v2-8a4f41596e78bfeb1b4044212b259524_1440w.jpg?source=d16d100b" alt="img" style="zoom:50%;"></p>
 <p><img src="https://pic3.zhimg.com/80/v2-2f7fc5ca144d2f85f14d46e88055dd86_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>这张图的意思就是：<strong>首先我们固定</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> <strong>，调整</strong> <img src="https://www.zhihu.com/equation?tex=Q%28z%29" alt="[公式]"> <strong>使下界</strong> <img src="https://www.zhihu.com/equation?tex=J%28z%2CQ%29" alt="[公式]"> <strong>上升至与</strong> <img src="https://www.zhihu.com/equation?tex=L%28%5Ctheta%29" alt="[公式]"> <strong>在此点</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> <strong>处相等（绿色曲线到蓝色曲线），然后固定</strong> <img src="https://www.zhihu.com/equation?tex=Q%28z%29" alt="[公式]"> <strong>，调整</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> <strong>使下界</strong> <img src="https://www.zhihu.com/equation?tex=J%28z%2CQ%29" alt="[公式]"> <strong>达到最大值（</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta_t" alt="[公式]"> <strong>到</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bt%2B1%7D" alt="[公式]"> <strong>），然后再固定</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> <strong>，调整</strong> <img src="https://www.zhihu.com/equation?tex=Q%28z%29" alt="[公式]"> <strong>，一直到收敛到似然函数</strong> <img src="https://www.zhihu.com/equation?tex=L%28%5Ctheta%29" alt="[公式]"> <strong>的最大值处的</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 。</p>
-<p><strong><font color="red"> EM 算法通过引入隐含变量，使用 MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM 算法首先会固定其中的第一个参数，然后使用 MLE 计算第二个变量值；接着通过固定第二个变量，再使用 MLE 估测第一个变量值，依次迭代，直至收敛到局部最优解。</font></strong></p>
-<h4><span id="32-em算法的收敛性">3.2 EM算法的收敛性</span></h4><p>不妨假设 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%2B1%29%7D" alt="[公式]"> 是EM算法第 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]"> 次迭代和第 <img src="https://www.zhihu.com/equation?tex=k%2B1" alt="[公式]"> 次迭代的结果，要确保 <img src="https://www.zhihu.com/equation?tex=EM" alt="[公式]"> 算法收敛那么等价于证明 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29%5Cle%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%2B1%29%7D%29" alt="[公式]"> 也就是说极大似然估计单调增加，那么算法最终会迭代到极大似然估计的最大值。在选定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 后可以得到 <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步 <img src="https://www.zhihu.com/equation?tex=Q_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%3Dp%28z%5E%7B%28i%29%7D%7Cx%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29" alt="[公式]"> ，这一步保证了在给定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 时，詹森不等式中的等式成立即<br> <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%5Clog+%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C%5C" alt="[公式]"><br>然后再进行 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 步，固定 <img src="https://www.zhihu.com/equation?tex=Q_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 并将 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 视作变量，对上式 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29" alt="[公式]"> 求导后得到 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%2B1%29%7D" alt="[公式]"> 因此有如下式子成立<br> <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%5Clog+%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28a%29%5C%5C+%26%5Cle+%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%5Clog+%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28b%29%5C%5C+%26%5Cle%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%2B1%29%7D%29%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28c%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"><br>首先 <img src="https://www.zhihu.com/equation?tex=%28a%29" alt="[公式]"> 式是前面 <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步所保证詹森不等式中的等式成立的条件， <img src="https://www.zhihu.com/equation?tex=%28a%29" alt="[公式]"> 到 <img src="https://www.zhihu.com/equation?tex=%28b%29" alt="[公式]"> 是 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 步的定义，<img src="https://www.zhihu.com/equation?tex=%28b%29" alt="[公式]"> 到 <img src="https://www.zhihu.com/equation?tex=%28c%29" alt="[公式]">对任意参数都成立，而其等式的条件是固定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 并调整好 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 时成立，<img src="https://www.zhihu.com/equation?tex=%28b%29" alt="[公式]"> 到 <img src="https://www.zhihu.com/equation?tex=%28c%29" alt="[公式]">只是固定 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 调整 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> ，在得到 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%2B1%29%7D" alt="[公式]"> 时，只是最大化 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29" alt="[公式]"> ，也就是 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%2B1%29%7D%29" alt="[公式]"> 的一个下界而没有使等式成立。</p>
-<h3><span id="4-另一种理解">4. 另一种理解</span></h3><p>坐标上升法（Coordinate ascent）：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-b28bfe68513ff86d9643fec10786b827_1440w.jpg" alt="img"></p>
+<p>这张图的意思就是：<strong>首先我们固定</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+<strong>，调整</strong> <img src="https://www.zhihu.com/equation?tex=Q%28z%29" alt="[公式]">
+<strong>使下界</strong> <img src="https://www.zhihu.com/equation?tex=J%28z%2CQ%29" alt="[公式]">
+<strong>上升至与</strong> <img src="https://www.zhihu.com/equation?tex=L%28%5Ctheta%29" alt="[公式]">
+<strong>在此点</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+<strong>处相等（绿色曲线到蓝色曲线），然后固定</strong> <img src="https://www.zhihu.com/equation?tex=Q%28z%29" alt="[公式]">
+<strong>，调整</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+<strong>使下界</strong> <img src="https://www.zhihu.com/equation?tex=J%28z%2CQ%29" alt="[公式]">
+<strong>达到最大值（</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta_t" alt="[公式]">
+<strong>到</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bt%2B1%7D" alt="[公式]"> <strong>），然后再固定</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+<strong>，调整</strong> <img src="https://www.zhihu.com/equation?tex=Q%28z%29" alt="[公式]">
+<strong>，一直到收敛到似然函数</strong> <img src="https://www.zhihu.com/equation?tex=L%28%5Ctheta%29" alt="[公式]">
+<strong>的最大值处的</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 。</p>
+<p><strong><font color="red"> EM 算法通过引入隐含变量，使用
+MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM
+算法首先会固定其中的第一个参数，然后使用 MLE
+计算第二个变量值；接着通过固定第二个变量，再使用 MLE
+估测第一个变量值，依次迭代，直至收敛到局部最优解。</font></strong></p>
+<h4><span id="32-em算法的收敛性">3.2 EM算法的收敛性</span></h4>
+<p>不妨假设 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%2B1%29%7D" alt="[公式]"> 是EM算法第 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]"> 次迭代和第
+<img src="https://www.zhihu.com/equation?tex=k%2B1" alt="[公式]">
+次迭代的结果，要确保 <img src="https://www.zhihu.com/equation?tex=EM" alt="[公式]"> 算法收敛那么等价于证明 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29%5Cle%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%2B1%29%7D%29" alt="[公式]">
+也就是说极大似然估计单调增加，那么算法最终会迭代到极大似然估计的最大值。在选定
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 后可以得到 <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]"> 步 <img src="https://www.zhihu.com/equation?tex=Q_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%3Dp%28z%5E%7B%28i%29%7D%7Cx%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29" alt="[公式]"> ，这一步保证了在给定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 时，詹森不等式中的等式成立即 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%5Clog+%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C%5C" alt="[公式]"> 然后再进行 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 步，固定 <img src="https://www.zhihu.com/equation?tex=Q_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29" alt="[公式]"> 并将 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D" alt="[公式]"> 视作变量，对上式 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29" alt="[公式]"> 求导后得到 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%2B1%29%7D" alt="[公式]"> 因此有如下式子成立 <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29%26%3D%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%5Clog+%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28a%29%5C%5C+%26%5Cle+%5Csum%5Climits_%7Bi%3D1%7D%5Em%5Csum%5Climits_%7Bz%5E%7B%28i%29%7D%7DQ_i%5E%7B%28k%29%7D%28z%5E%7B%28i%29%7D%29%5Clog+%5Cdfrac%7Bp%28x%5E%7B%28i%29%7D%2Cz%5E%7B%28i%29%7D%3B%5Ctheta%5E%7B%28k%29%7D%29%7D%7BQ_i%28z%5E%7B%28i%29%7D%29%7D%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28b%29%5C%5C+%26%5Cle%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%2B1%29%7D%29%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%28c%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]"> 首先 <img src="https://www.zhihu.com/equation?tex=%28a%29" alt="[公式]">
+式是前面 <img src="https://www.zhihu.com/equation?tex=E" alt="[公式]">
+步所保证詹森不等式中的等式成立的条件， <img src="https://www.zhihu.com/equation?tex=%28a%29" alt="[公式]"> 到 <img src="https://www.zhihu.com/equation?tex=%28b%29" alt="[公式]"> 是 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]">
+步的定义，<img src="https://www.zhihu.com/equation?tex=%28b%29" alt="[公式]"> 到 <img src="https://www.zhihu.com/equation?tex=%28c%29" alt="[公式]">对任意参数都成立，而其等式的条件是固定 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+并调整好 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]">
+时成立，<img src="https://www.zhihu.com/equation?tex=%28b%29" alt="[公式]"> 到 <img src="https://www.zhihu.com/equation?tex=%28c%29" alt="[公式]">只是固定 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 调整 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+，在得到 <img src="https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%2B1%29%7D" alt="[公式]"> 时，只是最大化 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%29%7D%29" alt="[公式]"> ，也就是 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28%5Ctheta%5E%7B%28k%2B1%29%7D%29" alt="[公式]"> 的一个下界而没有使等式成立。</p>
+<h3><span id="4-另一种理解">4. 另一种理解</span></h3>
+<p>坐标上升法（Coordinate ascent）：</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-b28bfe68513ff86d9643fec10786b827_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>途中直线为迭代优化路径，因为每次只优化一个变量，所以可以看到它没走一步都是平行与坐标轴的。</p>
-<p>EM 算法类似于坐标上升法，E 步：固定参数，优化 Q；M 步：固定 Q，优化参数。交替将极值推向最大。</p>
-<h4><span id="5-应用">5. 应用</span></h4><p>EM 的应用有很多，比如、混合高斯模型、聚类、HMM 等等。其中 <strong>EM 在 K-means 中的用处</strong>，我将在介绍 K-means 中的给出。</p>
+<p>EM 算法类似于坐标上升法，E 步：固定参数，优化 Q；M 步：固定
+Q，优化参数。交替将极值推向最大。</p>
+<h4><span id="5-应用">5. 应用</span></h4>
+<p>EM 的应用有很多，比如、混合高斯模型、聚类、HMM 等等。其中 <strong>EM
+在 K-means 中的用处</strong>，我将在介绍 K-means 中的给出。</p>
 
     </div>
 

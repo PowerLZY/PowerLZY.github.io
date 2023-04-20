@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="1. 什么是KNN【KD树 + SIFT+BBF算法】   KNN与KD树：https:&#x2F;&#x2F;www.joinquant.com&#x2F;view&#x2F;community&#x2F;detail&#x2F;dd60bd4e89761b916fe36dc4d14bb272   【数学】kd 树算法之详细篇 - 椰了的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;23966698   KNN是生成式模型还是">
+    <meta name="description" content="1. 什么是KNN【KD树 + SIFT+BBF算法】  KNN与KD树：https:&#x2F;&#x2F;www.joinquant.com&#x2F;view&#x2F;community&#x2F;detail&#x2F;dd60bd4e89761b916fe36dc4d14bb272 【数学】kd 树算法之详细篇 - 椰了的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;23966698 KNN是生成式模型还是判别式的，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（17）KNN">
 <meta property="og:url" content="https://powerlzy.github.io/posts/171MAZN/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="1. 什么是KNN【KD树 + SIFT+BBF算法】   KNN与KD树：https:&#x2F;&#x2F;www.joinquant.com&#x2F;view&#x2F;community&#x2F;detail&#x2F;dd60bd4e89761b916fe36dc4d14bb272   【数学】kd 树算法之详细篇 - 椰了的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;23966698   KNN是生成式模型还是">
+<meta property="og:description" content="1. 什么是KNN【KD树 + SIFT+BBF算法】  KNN与KD树：https:&#x2F;&#x2F;www.joinquant.com&#x2F;view&#x2F;community&#x2F;detail&#x2F;dd60bd4e89761b916fe36dc4d14bb272 【数学】kd 树算法之详细篇 - 椰了的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;23966698 KNN是生成式模型还是判别式的，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://camo.githubusercontent.com/f0eabe33161ae7f977f082590a3690be147319df428ad1695c79127ad406729d/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936333437323839353636302e6a7067">
 <meta property="og:image" content="https://camo.githubusercontent.com/a8942eed547ab4f08494126b0d2e5480fdfc795252e4a34a956c2b959cb5c6b8/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936363635343430333634362e706e67">
@@ -157,7 +157,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">1. 什么是KNN【KD树 + SIFT+BBF算法】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 KNN的通俗解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 近邻的距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 K值选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 KNN最近邻分类算法的过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">关于KNN的一些问题</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">1. 什么是KNN【KD树 +
+SIFT+BBF算法】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 KNN的通俗解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 近邻的距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 K值选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 KNN最近邻分类算法的过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">关于KNN的一些问题</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -172,18 +173,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -309,65 +310,72 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="1-什么是knnkd树-siftbbf算法">1. 什么是KNN【KD树 + SIFT+BBF算法】</span></h2><blockquote>
-<p>  KNN与KD树：<a target="_blank" rel="noopener" href="https://www.joinquant.com/view/community/detail/dd60bd4e89761b916fe36dc4d14bb272">https://www.joinquant.com/view/community/detail/dd60bd4e89761b916fe36dc4d14bb272</a></p>
-<p>  【数学】kd 树算法之详细篇 - 椰了的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/23966698">https://zhuanlan.zhihu.com/p/23966698</a></p>
-<p>  <strong>KNN是生成式模型还是判别式的</strong>，为什么？ - 风控算法小白的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/475072467/answer/2027766449">https://www.zhihu.com/question/475072467/answer/2027766449</a></p>
+        <h2><span id="1-什么是knnkd树-siftbbf算法">1. 什么是KNN【KD树 +
+SIFT+BBF算法】</span></h2>
+<blockquote>
+<p>KNN与KD树：https://www.joinquant.com/view/community/detail/dd60bd4e89761b916fe36dc4d14bb272</p>
+<p>【数学】kd 树算法之详细篇 - 椰了的文章 - 知乎
+https://zhuanlan.zhihu.com/p/23966698</p>
+<p><strong>KNN是生成式模型还是判别式的</strong>，为什么？ -
+风控算法小白的回答 - 知乎
+https://www.zhihu.com/question/475072467/answer/2027766449</p>
 </blockquote>
-<h3><span id="11-knn的通俗解释">1.1 KNN的通俗解释</span></h3><p>何谓K近邻算法，即K-Nearest Neighbor algorithm，简称KNN算法，单从名字来猜想，可以简单粗暴的认为是：K个最近的邻居，当K=1时，算法便成了最近邻算法，即寻找最近的那个邻居。</p>
+<h3><span id="11-knn的通俗解释">1.1 KNN的通俗解释</span></h3>
+<p>何谓K近邻算法，即K-Nearest Neighbor
+algorithm，简称KNN算法，单从名字来猜想，可以简单粗暴的认为是：K个最近的邻居，当K=1时，算法便成了最近邻算法，即寻找最近的那个邻居。</p>
 <p>用官方的话来说，所谓K近邻算法，即是给定一个训练数据集，对新的输入实例，<strong>在训练数据集中找到与该实例最邻近的K个实例（也就是上面所说的K个邻居），这K个实例的多数属于某个类，就把该输入实例分类到这个类中。</strong></p>
-<p>​                                                                     <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/f0eabe33161ae7f977f082590a3690be147319df428ad1695c79127ad406729d/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936333437323839353636302e6a7067"><img src="https://camo.githubusercontent.com/f0eabe33161ae7f977f082590a3690be147319df428ad1695c79127ad406729d/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936333437323839353636302e6a7067" alt="img"></a></p>
-<p>​                                                                <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/a8942eed547ab4f08494126b0d2e5480fdfc795252e4a34a956c2b959cb5c6b8/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936363635343430333634362e706e67"><img src="https://camo.githubusercontent.com/a8942eed547ab4f08494126b0d2e5480fdfc795252e4a34a956c2b959cb5c6b8/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936363635343430333634362e706e67" alt="img"></a></p>
+<p>​ <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/f0eabe33161ae7f977f082590a3690be147319df428ad1695c79127ad406729d/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936333437323839353636302e6a7067"><img src="https://camo.githubusercontent.com/f0eabe33161ae7f977f082590a3690be147319df428ad1695c79127ad406729d/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936333437323839353636302e6a7067" alt="img"></a></p>
+<p>​ <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/a8942eed547ab4f08494126b0d2e5480fdfc795252e4a34a956c2b959cb5c6b8/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936363635343430333634362e706e67"><img src="https://camo.githubusercontent.com/a8942eed547ab4f08494126b0d2e5480fdfc795252e4a34a956c2b959cb5c6b8/68747470733a2f2f6a756c796564752d696d672e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f717565736261736536343135353238333936363635343430333634362e706e67" alt="img"></a></p>
 <p>如上图所示，有两类不同的样本数据，分别用蓝色的小正方形和红色的小三角形表示，而图正中间的那个绿色的圆所标示的数据则是待分类的数据。也就是说，现在，我们不知道中间那个绿色的数据是从属于哪一类（蓝色小正方形or红色小三角形），KNN就是解决这个问题的。</p>
 <p>如果<strong>K=3</strong>，绿色圆点的最近的3个邻居是2个红色小三角形和1个蓝色小正方形，少数从属于多数，基于统计的方法，判定绿色的这个待分类点属于<strong>红色</strong>的三角形一类。</p>
 <p>如果<strong>K=5</strong>，绿色圆点的最近的5个邻居是2个红色三角形和3个蓝色的正方形，还是少数从属于多数，基于统计的方法，判定绿色的这个待分类点属于<strong>蓝色</strong>的正方形一类。</p>
 <p><strong>于此我们看到，当无法判定当前待分类点是从属于已知分类中的哪一类时，我们可以依据统计学的理论看它所处的位置特征，衡量它周围邻居的权重，而把它归为(或分配)到权重更大的那一类。这就是K近邻算法的核心思想。</strong></p>
-<h3><span id="12-近邻的距离度量">1.2 近邻的距离度量</span></h3><p>我们看到，K近邻算法的核心在于找到实例点的邻居，这个时候，问题就接踵而至了，如何找到邻居，邻居的判定标准是什么，用什么来度量。这一系列问题便是下面要讲的距离度量表示法。</p>
+<h3><span id="12-近邻的距离度量">1.2 近邻的距离度量</span></h3>
+<p>我们看到，K近邻算法的核心在于找到实例点的邻居，这个时候，问题就接踵而至了，如何找到邻居，邻居的判定标准是什么，用什么来度量。这一系列问题便是下面要讲的距离度量表示法。</p>
 <p><strong>有哪些距离度量的表示法</strong>(普及知识点，可以跳过)：</p>
-<ol>
-<li><p><strong>==欧氏距离==</strong>，最常见的两点之间或多点之间的距离表示法，又称之为<strong>欧几里得度量</strong>，它定义于欧几里得空间中，如点 x = (x1,…,xn) 和 y = (y1,…,yn) 之间的距离为：</p>
+<ol type="1">
+<li><p><strong>==欧氏距离==</strong>，最常见的两点之间或多点之间的距离表示法，又称之为<strong>欧几里得度量</strong>，它定义于欧几里得空间中，如点
+x = (x1,...,xn) 和 y = (y1,...,yn) 之间的距离为：</p>
 <p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/0699ac91c0bb89297e4cf418ad7d46cac175652d1a1de30fccc66a16a0eef254/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f6428782c79293d2535437371727425374228785f312d795f3129253545322b28785f322d795f3229253545322b2e2e2e2b28785f6e2d795f6e29253545322537443d2535437371727425374225354373756d5f253742693d312537442535452537426e25374428785f692d795f692925354532253744"><img src="https://camo.githubusercontent.com/0699ac91c0bb89297e4cf418ad7d46cac175652d1a1de30fccc66a16a0eef254/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f6428782c79293d2535437371727425374228785f312d795f3129253545322b28785f322d795f3229253545322b2e2e2e2b28785f6e2d795f6e29253545322537443d2535437371727425374225354373756d5f253742693d312537442535452537426e25374428785f692d795f692925354532253744" alt="img"></a></p>
 <ul>
 <li><p>二维平面上两点a(x1,y1)与b(x2,y2)间的欧氏距离：</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/b21b48fd9bce0b9f47d16d8e5505a6b600a02e1032632df73a77d5ba43012e2a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f322925354532253744"><img src="https://camo.githubusercontent.com/b21b48fd9bce0b9f47d16d8e5505a6b600a02e1032632df73a77d5ba43012e2a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f322925354532253744" alt="img"></a></p>
-</li>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/b21b48fd9bce0b9f47d16d8e5505a6b600a02e1032632df73a77d5ba43012e2a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f322925354532253744"><img src="https://camo.githubusercontent.com/b21b48fd9bce0b9f47d16d8e5505a6b600a02e1032632df73a77d5ba43012e2a/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f322925354532253744" alt="img"></a></p></li>
 <li><p>三维空间两点a(x1,y1,z1)与b(x2,y2,z2)间的欧氏距离：</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/ebf7fbc4dd6e6eb0d80576e7e5cd19d38ea7a8b9cd801680fc9b39f242367515/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f3229253545322b287a5f312d7a5f322925354532253744"><img src="https://camo.githubusercontent.com/ebf7fbc4dd6e6eb0d80576e7e5cd19d38ea7a8b9cd801680fc9b39f242367515/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f3229253545322b287a5f312d7a5f322925354532253744" alt="img"></a></p>
-</li>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/ebf7fbc4dd6e6eb0d80576e7e5cd19d38ea7a8b9cd801680fc9b39f242367515/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f3229253545322b287a5f312d7a5f322925354532253744"><img src="https://camo.githubusercontent.com/ebf7fbc4dd6e6eb0d80576e7e5cd19d38ea7a8b9cd801680fc9b39f242367515/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228785f312d785f3229253545322b28795f312d795f3229253545322b287a5f312d7a5f322925354532253744" alt="img"></a></p></li>
 <li><p>两个n维向量a(x11,x12,…,x1n)与 b(x21,x22,…,x2n)间的欧氏距离：</p>
 <p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/62f0123f5d52ed280b23c7972c60f635d52a02d0b4958bd5bf0a7c61328f3225/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374225354373756d5f2537426b3d312537442535452537426e25374428785f253742316b2537442d785f253742326b2537442925354532253744"><img src="https://camo.githubusercontent.com/62f0123f5d52ed280b23c7972c60f635d52a02d0b4958bd5bf0a7c61328f3225/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374225354373756d5f2537426b3d312537442535452537426e25374428785f253742316b2537442d785f253742326b2537442925354532253744" alt="img"></a></p>
 <p>也可以用表示成向量运算的形式：</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/8e7528374c22f456904f868c6619a94ba0e51180896315eb3b019f9d7b358742/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228612d622928612d622925354554253744"><img src="https://camo.githubusercontent.com/8e7528374c22f456904f868c6619a94ba0e51180896315eb3b019f9d7b358742/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228612d622928612d622925354554253744" alt="img"></a></p>
-</li>
-</ul>
-</li>
-<li><p><strong>曼哈顿距离</strong>，我们可以定义曼哈顿距离的正式意义为L1-距离或城市区块距离，也就是在<strong>==欧几里得空间的固定直角坐标系上两点所形成的线段对轴产生的投影的距离总和==</strong>。例如在平面上，坐标（x1, y1）的点P1与坐标（x2, y2）的点P2的曼哈顿距离为： <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/eeacd6c593ac3eadb18eebfdaf9e27626a54b8f8bdb9f53bc11a90713e8b0bf8/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f253743785f312d785f322537432b253743795f312d795f32253743"><img src="https://camo.githubusercontent.com/eeacd6c593ac3eadb18eebfdaf9e27626a54b8f8bdb9f53bc11a90713e8b0bf8/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f253743785f312d785f322537432b253743795f312d795f32253743" alt="img"></a>，要注意的是，曼哈顿距离依赖座标系统的转度，而非系统在座标轴上的平移或映射。</p>
-<p>通俗来讲，想象你在曼哈顿要从一个十字路口开车到另外一个十字路口，驾驶距离是两点间的直线距离吗？显然不是，除非你能穿越大楼。而实际驾驶距离就是这个“曼哈顿距离”，此即曼哈顿距离名称的来源， 同时，曼哈顿距离也称为城市街区距离(City Block distance)。</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/8e7528374c22f456904f868c6619a94ba0e51180896315eb3b019f9d7b358742/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228612d622928612d622925354554253744"><img src="https://camo.githubusercontent.com/8e7528374c22f456904f868c6619a94ba0e51180896315eb3b019f9d7b358742/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d2535437371727425374228612d622928612d622925354554253744" alt="img"></a></p></li>
+</ul></li>
+<li><p><strong>曼哈顿距离</strong>，我们可以定义曼哈顿距离的正式意义为L1-距离或城市区块距离，也就是在<strong>==欧几里得空间的固定直角坐标系上两点所形成的线段对轴产生的投影的距离总和==</strong>。例如在平面上，坐标（x1,
+y1）的点P1与坐标（x2, y2）的点P2的曼哈顿距离为： <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/eeacd6c593ac3eadb18eebfdaf9e27626a54b8f8bdb9f53bc11a90713e8b0bf8/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f253743785f312d785f322537432b253743795f312d795f32253743"><img src="https://camo.githubusercontent.com/eeacd6c593ac3eadb18eebfdaf9e27626a54b8f8bdb9f53bc11a90713e8b0bf8/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f253743785f312d785f322537432b253743795f312d795f32253743" alt="img"></a>，要注意的是，曼哈顿距离依赖座标系统的转度，而非系统在座标轴上的平移或映射。</p>
+<p>通俗来讲，想象你在曼哈顿要从一个十字路口开车到另外一个十字路口，驾驶距离是两点间的直线距离吗？显然不是，除非你能穿越大楼。而实际驾驶距离就是这个“曼哈顿距离”，此即曼哈顿距离名称的来源，
+同时，曼哈顿距离也称为城市街区距离(City Block distance)。</p>
 <ul>
 <li><p>二维平面两点a(x1,y1)与b(x2,y2)间的曼哈顿距离</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/c914feff78b9ccb3f920a67c8dba69b110d641abde5f2533f184a656780cb94d/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d253743785f312d785f322537432b253743795f312d795f32253743"><img src="https://camo.githubusercontent.com/c914feff78b9ccb3f920a67c8dba69b110d641abde5f2533f184a656780cb94d/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d253743785f312d785f322537432b253743795f312d795f32253743" alt="img"></a></p>
-</li>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/c914feff78b9ccb3f920a67c8dba69b110d641abde5f2533f184a656780cb94d/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d253743785f312d785f322537432b253743795f312d795f32253743"><img src="https://camo.githubusercontent.com/c914feff78b9ccb3f920a67c8dba69b110d641abde5f2533f184a656780cb94d/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d253743785f312d785f322537432b253743795f312d795f32253743" alt="img"></a></p></li>
 <li><p>两个n维向量a(x11,x12,…,x1n)与 b(x21,x22,…,x2n)间的曼哈顿距离</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/eb4a219d2fbe50979339a7e1a83464ec27957562f106da7a3b08da8cc3394795/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d25354373756d5f2537426b3d312537442535452537426e253744253743785f253742316b2537442d785f253742326b253744253743"><img src="https://camo.githubusercontent.com/eb4a219d2fbe50979339a7e1a83464ec27957562f106da7a3b08da8cc3394795/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d25354373756d5f2537426b3d312537442535452537426e253744253743785f253742316b2537442d785f253742326b253744253743" alt="img"></a></p>
-</li>
-</ul>
-</li>
-<li><p><strong>切比雪夫距离</strong>，若二个向量或二个点p 、and q，其座标分别为Pi及qi，则两者之间的切比雪夫距离定义如下：</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/eb4a219d2fbe50979339a7e1a83464ec27957562f106da7a3b08da8cc3394795/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d25354373756d5f2537426b3d312537442535452537426e253744253743785f253742316b2537442d785f253742326b253744253743"><img src="https://camo.githubusercontent.com/eb4a219d2fbe50979339a7e1a83464ec27957562f106da7a3b08da8cc3394795/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d25354373756d5f2537426b3d312537442535452537426e253744253743785f253742316b2537442d785f253742326b253744253743" alt="img"></a></p></li>
+</ul></li>
+<li><p><strong>切比雪夫距离</strong>，若二个向量或二个点p 、and
+q，其座标分别为Pi及qi，则两者之间的切比雪夫距离定义如下：</p>
 <p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/3a305bb0cf8cdcd6a77f9e2e2cc1085542ae46f8c70c5b43c67be9728d3d99d6/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f445f25374243686562797368657625374428702c71293d6d61785f6928253743705f692d715f6925374329"><img src="https://camo.githubusercontent.com/3a305bb0cf8cdcd6a77f9e2e2cc1085542ae46f8c70c5b43c67be9728d3d99d6/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f445f25374243686562797368657625374428702c71293d6d61785f6928253743705f692d715f6925374329" alt="img"></a></p>
 <p>这也等于以下Lp度量的极值： <a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/8fe6945bfb5795e12cfe28b72758c59a598e0c5a89b1ffb874f01cc8ff77a7ba/68747470733a2f2f67697465652e636f6d2f6b6b7765697368652f696d616765732f7261772f6d61737465722f4d4c2f323031392d392d32345f32322d31392d34312e706e67"><img src="https://camo.githubusercontent.com/8fe6945bfb5795e12cfe28b72758c59a598e0c5a89b1ffb874f01cc8ff77a7ba/68747470733a2f2f67697465652e636f6d2f6b6b7765697368652f696d616765732f7261772f6d61737465722f4d4c2f323031392d392d32345f32322d31392d34312e706e67" alt="img"></a>，因此切比雪夫距离也称为L∞度量。</p>
-<p>以数学的观点来看，切比雪夫距离是由一致范数（uniform norm）（或称为上确界范数）所衍生的度量，也是超凸度量（injective metric space）的一种。</p>
+<p>以数学的观点来看，切比雪夫距离是由一致范数（uniform
+norm）（或称为上确界范数）所衍生的度量，也是超凸度量（injective metric
+space）的一种。</p>
 <p>在平面几何中，若二点p及q的直角坐标系坐标为(x1,y1)及(x2,y2)，则切比雪夫距离为：</p>
 <p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/2c68232279b3d8c857a5ebf5bcb91f6792abeb47daedeb22214391611680dd97/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f445f25374243686573732537443d6d617828253743785f322d785f312537432c253743795f322d795f3125374329"><img src="https://camo.githubusercontent.com/2c68232279b3d8c857a5ebf5bcb91f6792abeb47daedeb22214391611680dd97/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f445f25374243686573732537443d6d617828253743785f322d785f312537432c253743795f322d795f3125374329" alt="img"></a></p>
-<p><strong>玩过国际象棋的朋友或许知道，国王走一步能够移动到相邻的8个方格中的任意一个。那么国王从格子(x1,y1)走到格子(x2,y2)最少需要多少步？。你会发现最少步数总是max( | x2-x1 | , | y2-y1 | ) 步 。有一种类似的一种距离度量方法叫切比雪夫距离。</strong></p>
+<p><strong>玩过国际象棋的朋友或许知道，国王走一步能够移动到相邻的8个方格中的任意一个。那么国王从格子(x1,y1)走到格子(x2,y2)最少需要多少步？。你会发现最少步数总是max(
+| x2-x1 | , | y2-y1 | ) 步
+。有一种类似的一种距离度量方法叫切比雪夫距离。</strong></p>
 <ul>
 <li><p>二维平面两点a(x1,y1)与b(x2,y2)间的切比雪夫距离 ：</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/9387d181258b2a722bcabf891beb2d616a2ec297f35bade87679099641f27f09/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d617828253743785f322d785f312537432c253743795f322d795f3125374329"><img src="https://camo.githubusercontent.com/9387d181258b2a722bcabf891beb2d616a2ec297f35bade87679099641f27f09/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d617828253743785f322d785f312537432c253743795f322d795f3125374329" alt="img"></a></p>
-</li>
-<li><p>两个n维向量a(x11,x12,…,x1n)与 b(x21,x22,…,x2n)间的切比雪夫距离：</p>
-<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/ea4a630eab19efb4c0270f3808dde70fec7bb5f21d37f76ab016316277fbb730/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d61785f6928253743785f25374231692537442d785f253742326925374425374329"><img src="https://camo.githubusercontent.com/ea4a630eab19efb4c0270f3808dde70fec7bb5f21d37f76ab016316277fbb730/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d61785f6928253743785f25374231692537442d785f253742326925374425374329" alt="img"></a></p>
-</li>
-</ul>
-</li>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/9387d181258b2a722bcabf891beb2d616a2ec297f35bade87679099641f27f09/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d617828253743785f322d785f312537432c253743795f322d795f3125374329"><img src="https://camo.githubusercontent.com/9387d181258b2a722bcabf891beb2d616a2ec297f35bade87679099641f27f09/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d617828253743785f322d785f312537432c253743795f322d795f3125374329" alt="img"></a></p></li>
+<li><p>两个n维向量a(x11,x12,…,x1n)与
+b(x21,x22,…,x2n)间的切比雪夫距离：</p>
+<p><a target="_blank" rel="noopener" href="https://camo.githubusercontent.com/ea4a630eab19efb4c0270f3808dde70fec7bb5f21d37f76ab016316277fbb730/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d61785f6928253743785f25374231692537442d785f253742326925374425374329"><img src="https://camo.githubusercontent.com/ea4a630eab19efb4c0270f3808dde70fec7bb5f21d37f76ab016316277fbb730/68747470733a2f2f6c617465782e636f6465636f67732e636f6d2f6769662e6c617465783f645f25374231322537443d6d61785f6928253743785f25374231692537442d785f253742326925374425374329" alt="img"></a></p></li>
+</ul></li>
 </ol>
 <p><strong>==简单说来，各种“距离”的应用场景简单概括为：==</strong></p>
 <ul>
@@ -381,25 +389,27 @@
 <li>集合近似度：杰卡德类似系数与距离，</li>
 <li>相关：相关系数与相关距离。</li>
 </ul>
-<h3><span id="13-k值选择">1.3 K值选择</span></h3><ol>
+<h3><span id="13-k值选择">1.3 K值选择</span></h3>
+<ol type="1">
 <li>如果选择较小的K值，就相当于用较小的领域中的训练实例进行预测，“学习”近似误差会减小，只有与输入实例较近或相似的训练实例才会对预测结果起作用，与此同时带来的问题是“学习”的估计误差会增大，换句话说，<strong>K值的减小就意味着整体模型变得复杂，容易发生过拟合；</strong></li>
 <li>如果选择较大的K值，就相当于用较大领域中的训练实例进行预测，其优点是可以减少学习的估计误差，但缺点是学习的近似误差会增大。这时候，与输入实例较远（不相似的）训练实例也会对预测器作用，使预测发生错误，且<strong>K值的增大就意味着整体的模型变得简单。</strong></li>
 <li>K=N，则完全不足取，因为此时无论输入实例是什么，都只是简单的预测它属于在训练实例中最多的累，模型过于简单，忽略了训练实例中大量有用信息。</li>
 </ol>
 <p>在实际应用中，K值一般取一个比较小的数值，<strong>例如采用交叉验证法（简单来说，就是一部分样本做训练集，一部分做测试集）来选择最优的K值。</strong></p>
-<h3><span id="14-knn最近邻分类算法的过程">1.4 KNN最近邻分类算法的过程</span></h3><ol>
+<h3><span id="14-knn最近邻分类算法的过程">1.4 KNN最近邻分类算法的过程</span></h3>
+<ol type="1">
 <li>计算测试样本和训练样本中每个样本点的距离（常见的距离度量有欧式距离，马氏距离等）；</li>
 <li>对上面所有的距离值进行排序；</li>
 <li>选前 k 个最小距离的样本；</li>
 <li>根据这 k 个样本的标签进行投票，得到最后的分类类别；</li>
 </ol>
-<h2><span id="关于knn的一些问题">关于KNN的一些问题</span></h2><ol>
+<h2><span id="关于knn的一些问题">关于KNN的一些问题</span></h2>
+<ol type="1">
 <li><p>在k-means或kNN，我们是用欧氏距离来计算最近的邻居之间的距离。为什么不用<strong>曼哈顿距离</strong>？</p>
-<p><strong>答：</strong>我们不用曼哈顿距离，因为它只计算水平或垂直距离，有维度的限制。另一方面，欧式距离可用于任何空间的距离计算问题。因为，数据点可以存在于任何空间，欧氏距离是更可行的选择。例如：想象一下国际象棋棋盘，象或车所做的移动是由曼哈顿距离计算的，因为它们是在各自的水平和垂直方向的运动。</p>
-</li>
+<p><strong>答：</strong>我们不用曼哈顿距离，因为它只计算水平或垂直距离，有维度的限制。另一方面，欧式距离可用于任何空间的距离计算问题。因为，数据点可以存在于任何空间，欧氏距离是更可行的选择。例如：想象一下国际象棋棋盘，象或车所做的移动是由曼哈顿距离计算的，因为它们是在各自的水平和垂直方向的运动。</p></li>
 <li><p>KD-Tree相比KNN来进行快速图像特征比对的好处在哪里?</p>
-<p>答：极大的节约了时间成本．点线距离如果 &gt;　最小点，无需回溯上一层，如果&lt;,则再上一层寻找。</p>
-</li>
+<p>答：极大的节约了时间成本．点线距离如果
+&gt;　最小点，无需回溯上一层，如果&lt;,则再上一层寻找。</p></li>
 </ol>
 
     </div>

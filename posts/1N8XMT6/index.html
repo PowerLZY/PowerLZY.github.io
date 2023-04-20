@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、HDBSCAN聚类   图解HDBSCANS - Mr.g的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;412918565   原文: How HDBSCAN works   聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) - 小玉的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.c">
+    <meta name="description" content="一、HDBSCAN聚类  图解HDBSCANS - Mr.g的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;412918565 原文: How HDBSCAN works 聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) - 小玉的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（16）聚类*-HDBSCAN">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1N8XMT6/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、HDBSCAN聚类   图解HDBSCANS - Mr.g的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;412918565   原文: How HDBSCAN works   聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) - 小玉的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.c">
+<meta property="og:description" content="一、HDBSCAN聚类  图解HDBSCANS - Mr.g的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;412918565 原文: How HDBSCAN works 聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) - 小玉的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=core_k%28x%29">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=d_%7B%5Cmathrm%7Bmreach-%7Dk%7D%28a%2Cb%29+%3D+%5Cmax+%5C%7B%5Cmathrm%7Bcore%7D_k%28a%29%2C+%5Cmathrm%7Bcore%7D_k%28b%29%2C+d%28a%2Cb%29+%5C%7D">
@@ -164,18 +164,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -301,26 +301,48 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="一-hdbscan聚类">一、HDBSCAN聚类</span></h2><blockquote>
-<p>  <strong>图解HDBSCANS - Mr.g的文章</strong> - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/412918565">https://zhuanlan.zhihu.com/p/412918565</a></p>
-<p>  原文: <a href="https://link.zhihu.com/?target=https%3A//nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb">How HDBSCAN works</a></p>
-<p>  聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) - 小玉的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/363879425">https://zhuanlan.zhihu.com/p/363879425</a></p>
+        <h2><span id="一-hdbscan聚类">一、HDBSCAN聚类</span></h2>
+<blockquote>
+<p><strong>图解HDBSCANS - Mr.g的文章</strong> - 知乎
+https://zhuanlan.zhihu.com/p/412918565</p>
+<p>原文: <a href="https://link.zhihu.com/?target=https%3A//nbviewer.jupyter.org/github/scikit-learn-contrib/hdbscan/blob/master/notebooks/How%20HDBSCAN%20Works.ipynb">How
+HDBSCAN works</a></p>
+<p>聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) -
+小玉的文章 - 知乎 https://zhuanlan.zhihu.com/p/363879425</p>
 </blockquote>
-<p><strong>HDBSCAN 是由 Campello、Moulavi 和 Sander 开发的聚类算法。它通过将 DBSCAN 转换为层次聚类算法，然后用一种稳定的聚类技术提取出一个扁平的聚类来扩展 DBSCAN</strong>。这篇文章的目标是让你大致了解这个算法的工作原理及其背后的动机。与 HDBSCAN 的原论文不一样，我们这里将不将 DBSCAN 进行对照分析。作者这里更倾向将这算法类比成一种扁平聚类提取方法（ Robust Single Linkage ）。</p>
+<p><strong>HDBSCAN 是由 Campello、Moulavi 和 Sander
+开发的聚类算法。它通过将 DBSCAN
+转换为层次聚类算法，然后用一种稳定的聚类技术提取出一个扁平的聚类来扩展
+DBSCAN</strong>。这篇文章的目标是让你大致了解这个算法的工作原理及其背后的动机。与
+HDBSCAN 的原论文不一样，我们这里将不将 DBSCAN
+进行对照分析。作者这里更倾向将这算法类比成一种扁平聚类提取方法（ Robust
+Single Linkage ）。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> sklearn.datasets <span class="keyword">as</span> data</span><br><span class="line">%matplotlib inline</span><br><span class="line">sns.set_context(<span class="string">&#x27;poster&#x27;</span>)</span><br><span class="line">sns.set_style(<span class="string">&#x27;white&#x27;</span>)</span><br><span class="line">sns.set_color_codes()</span><br><span class="line">plot_kwds = &#123;<span class="string">&#x27;alpha&#x27;</span> : <span class="number">0.5</span>, <span class="string">&#x27;s&#x27;</span> : <span class="number">80</span>, <span class="string">&#x27;linewidths&#x27;</span>:<span class="number">0</span>&#125;</span><br><span class="line"></span><br><span class="line">moons, _ = data.make_moons(n_samples=<span class="number">50</span>, noise=<span class="number">0.05</span>)</span><br><span class="line">blobs, _ = data.make_blobs(n_samples=<span class="number">50</span>, centers=[(-<span class="number">0.75</span>,<span class="number">2.25</span>), (<span class="number">1.0</span>, <span class="number">2.0</span>)], cluster_std=<span class="number">0.25</span>)</span><br><span class="line">test_data = np.vstack([moons, blobs])</span><br><span class="line">plt.scatter(test_data.T[<span class="number">0</span>], test_data.T[<span class="number">1</span>], color=<span class="string">&#x27;b&#x27;</span>, **plot_kwds)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> hdbscan</span><br><span class="line">clusterer = hdbscan.HDBSCAN(min_cluster_size=<span class="number">5</span>, gen_min_span_tree=<span class="literal">True</span>)</span><br><span class="line">clusterer.fit(test_data)</span><br></pre></td></tr></table></figure>
 <p><strong>现在我们已经对数据聚类完了——但实际发生了什么我们还不知道。我们将拆解成下面5个步骤来进行分析：</strong></p>
-<ol>
+<ol type="1">
 <li>根据 密度/稀疏度 进行<strong>空间转换</strong>。</li>
 <li>构建基于加权距离图的最小生成树。</li>
 <li>构建组件之间的层次簇结构。</li>
 <li>用最小簇大小压缩层次聚类。</li>
 <li>利用压缩好的生成树进行分类。</li>
 </ol>
-<h3><span id="11-空间转换">1.1 空间转换</span></h3><p><strong>聚类时我们希望在稀疏带噪声的数据中找到密度更高的族类——噪声的假设很重要</strong>：因为在真实情况下，数据都比较复杂，会有异常值的、缺失的数据和噪声等情况。算法的核心是单链聚类，它对噪声非常敏感：如果噪声数据点放在两个岛屿之间，可能就会将它们连在一起（也就是本来是两个族类的被分成一个）。显然，我们希望我们的算法对噪声具有鲁棒性，因此我们需要在运行单链算法之前找到一种方法来减少噪声。（作者用岛屿来比喻族类，海洋来表示噪声，下面“海洋”和“岛屿”代表这个意思。）</p>
+<h3><span id="11-空间转换">1.1 空间转换</span></h3>
+<p><strong>聚类时我们希望在稀疏带噪声的数据中找到密度更高的族类——噪声的假设很重要</strong>：因为在真实情况下，数据都比较复杂，会有异常值的、缺失的数据和噪声等情况。算法的核心是单链聚类，它对噪声非常敏感：如果噪声数据点放在两个岛屿之间，可能就会将它们连在一起（也就是本来是两个族类的被分成一个）。显然，我们希望我们的算法对噪声具有鲁棒性，因此我们需要在运行单链算法之前找到一种方法来减少噪声。（作者用岛屿来比喻族类，海洋来表示噪声，下面“海洋”和“岛屿”代表这个意思。）</p>
 <p><strong>我们要如何在不进行聚类的情况下找出“海洋”和“岛屿”？</strong>只要我们能够估算出样本集的密度，我们就可以认为密度较低的点都是“海洋”。要注意的是这里的目标不是完全区分出“海洋”和“岛屿”——现在只是聚类的初始步骤，并不是最终的输出——现在只是为了使我们的聚类中心对噪声更加鲁棒。因此，要识别出“海洋”的话，我们可以降低海平面（也就是加大容错范围）。出于实际目的，这意味着使每个“海洋”之间以及“海洋”与“岛屿”之间的距离会增加。</p>
-<p>当然这只是直觉。它在实际中是如何工作的？我们需要一个计算量少的密度估计方式，简单到只要计算 k 个最近邻点的距离就可以。<strong><font color="red"> 我们可以直接从一个距离矩阵（不管怎样后面都要生成的）中地读取到这个距离；或者，如果我们的指标支持（并且维度较低），用 <a href="https://link.zhihu.com/?target=http%3A//scikit-learn.org/stable/modules/neighbors.html%23k-d-tree">kd-trees</a> 来做这种检索就很适合。</font></strong>下面正式将点 x 的参数 k 定义为<strong>核心距离</strong>，并表示为 <img src="https://www.zhihu.com/equation?tex=core_k%28x%29" alt="[公式]"> （与DBSCAN、LOF 和 HDBSCAN 文献一样）。现在我们需要一种降维方法来拉开点之间的距离（相对高维距离）。简单的方法是定义一种新距离公式，我们将其称为（与论文一样)<strong>相互可达距离（mutual reachability distance)。相互可达距离的定义如下：</strong></p>
+<p>当然这只是直觉。它在实际中是如何工作的？我们需要一个计算量少的密度估计方式，简单到只要计算
+k 个最近邻点的距离就可以。<strong><font color="red">
+我们可以直接从一个距离矩阵（不管怎样后面都要生成的）中地读取到这个距离；或者，如果我们的指标支持（并且维度较低），用
+<a href="https://link.zhihu.com/?target=http%3A//scikit-learn.org/stable/modules/neighbors.html%23k-d-tree">kd-trees</a>
+来做这种检索就很适合。</font></strong>下面正式将点 x 的参数 k
+定义为<strong>核心距离</strong>，并表示为 <img src="https://www.zhihu.com/equation?tex=core_k%28x%29" alt="[公式]">
+（与DBSCAN、LOF 和 HDBSCAN
+文献一样）。现在我们需要一种降维方法来拉开点之间的距离（相对高维距离）。简单的方法是定义一种新距离公式，我们将其称为（与论文一样)<strong>相互可达距离（mutual
+reachability distance)。相互可达距离的定义如下：</strong></p>
 <p><img src="https://www.zhihu.com/equation?tex=d_%7B%5Cmathrm%7Bmreach-%7Dk%7D%28a%2Cb%29+%3D+%5Cmax+%5C%7B%5Cmathrm%7Bcore%7D_k%28a%29%2C+%5Cmathrm%7Bcore%7D_k%28b%29%2C+d%28a%2Cb%29+%5C%7D" alt="[公式]" style="zoom: 150%;"></p>
-<p><strong>其中 d(a,b) 是 a 和 b 之间的原始距离</strong>。在这个度量下，密集点（具有低核心距离）之间的距离保持不变，但稀疏的点与其他点的距离被拉远到用core距离来计算。这有效地“降低了海平面”，减少稀疏的“海”点，同时使“陆地”保持原状。需要注意的是，显然 k 取值很关键；较大的 k 值将更多的点圈到“海”中。下面用图片来解析更容易理解，先让k=5。然后对于给定的点，我们可以为核心距离绘制一个圆刚好圈到第六个临近点（包括点本身），如下所示：</p>
+<p><strong>其中 d(a,b) 是 a 和 b
+之间的原始距离</strong>。在这个度量下，密集点（具有低核心距离）之间的距离保持不变，但稀疏的点与其他点的距离被拉远到用core距离来计算。这有效地“降低了海平面”，减少稀疏的“海”点，同时使“陆地”保持原状。需要注意的是，显然
+k 取值很关键；较大的 k
+值将更多的点圈到“海”中。下面用图片来解析更容易理解，先让k=5。然后对于给定的点，我们可以为核心距离绘制一个圆刚好圈到第六个临近点（包括点本身），如下所示：</p>
 <p><img src="https://pic2.zhimg.com/80/v2-dbf4559853b0d81f1c5ae2205a7b97a9_1440w.jpg" alt="img" style="zoom: 33%;"></p>
 <p><strong>再选择另一个点</strong>，进行同样的操作，这次选到另一组临近点集合（其中一些点可能是上一组的临近点）。</p>
 <p><img src="https://pic3.zhimg.com/80/v2-308c1bb09e8f779232aac217bee2507e_1440w.jpg" alt="img" style="zoom: 33%;"></p>
@@ -328,15 +350,28 @@
 <p><img src="https://pic4.zhimg.com/80/v2-0e0e83ecf594b202cea6d3c208e45f0f_1440w.jpg" alt="img" style="zoom:33%;"></p>
 <p>如果我们现在想知道蓝绿两组之间的相互可达距离，我们可以像下图，先画一个箭头连接蓝绿两个圆心：它穿过蓝色圆心，但不穿过绿色圆圈——绿色的核心距离大于蓝色和绿色之间的距离。<strong>因此，我们认为蓝色和绿色之间的相互可达距离更大——也就是绿色圆圈的半径（如果我们将一端设在绿色点上，则最容易想象）。</strong></p>
 <p>实际上，有<a href="https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1506.06422v2.pdf">基础理论</a>可以证明<strong>相互可达距离</strong>作为一种变换，在允许单链接聚类的情况下，更接近层次水平上的真实密度分布。</p>
-<h3><span id="12-构建最小生成树"><strong>1.2 构建最小生成树</strong></span></h3><p><strong>为了从密集的数据集上找到“岛屿”，现在我们有了新的指标：相互可达性</strong>。当然密集区是相对的，不同的“岛屿”可能会有不同的密度。<strong><font color="red"> 理论上，我们要做的是：将数据当成是一个加权图，以数据点作为顶点，任意两点之间的边的权重等于这些点的相互可达距离。</font></strong></p>
+<h3><span id="12-构建最小生成树"><strong>1.2 构建最小生成树</strong></span></h3>
+<p><strong>为了从密集的数据集上找到“岛屿”，现在我们有了新的指标：相互可达性</strong>。当然密集区是相对的，不同的“岛屿”可能会有不同的密度。<strong><font color="red">
+理论上，我们要做的是：将数据当成是一个加权图，以数据点作为顶点，任意两点之间的边的权重等于这些点的相互可达距离。</font></strong></p>
 <p>现在考虑一个阈值，一开始很高，然后逐渐变小。丢弃权重高于该阈值的任何边。我们删除边的同时，连接的组件从图里断开。最终，我们将拥有不同阈值级别的连接元件（从完全连接到完全断开）的层次结构。</p>
-<p>实际当中，这样操纵非常耗时：有 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/412918565/edit#">n^2</a> 条边，我们不想多次计算连通组件算法。正确的做法是找到最小的边集，从这个集合中删除任何边都会导致组件的连接断开。但是我们还需要找到更多这样的边，使得找不到更小的边来连接组件。幸运的是，图论为我们提供了这样的东西：<strong>图的最小生成树</strong>。</p>
-<p>我们可以通过 Prim 的算法非常有效地构建最小生成树——我们一次构建一条边，每次都把当前最小权重的边去连接一个尚未加入到树中的节点。可以看到下面HDBSCAN构造的树 ；请注意，这是相互可达距离的最小生成树，与图中的纯距离不同。在这种情况下，我们的 k 值为 5。 在这个例子中，存在一种更快的方法，例如用 <strong>Dual Tree Boruvka 来构建最小生成树。</strong></p>
+<p>实际当中，这样操纵非常耗时：有 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/412918565/edit#">n^2</a>
+条边，我们不想多次计算连通组件算法。正确的做法是找到最小的边集，从这个集合中删除任何边都会导致组件的连接断开。但是我们还需要找到更多这样的边，使得找不到更小的边来连接组件。幸运的是，图论为我们提供了这样的东西：<strong>图的最小生成树</strong>。</p>
+<p>我们可以通过 Prim
+的算法非常有效地构建最小生成树——我们一次构建一条边，每次都把当前最小权重的边去连接一个尚未加入到树中的节点。可以看到下面HDBSCAN构造的树
+；请注意，这是相互可达距离的最小生成树，与图中的纯距离不同。在这种情况下，我们的
+k 值为 5。 在这个例子中，存在一种更快的方法，例如用 <strong>Dual Tree
+Boruvka 来构建最小生成树。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">clusterer.minimum_spanning_tree_.plot(edge_cmap=<span class="string">&#x27;viridis&#x27;</span>, </span><br><span class="line">                                      edge_alpha=<span class="number">0.6</span>, </span><br><span class="line">                                      node_size=<span class="number">80</span>, </span><br><span class="line">                                      edge_linewidth=<span class="number">2</span>)   </span><br></pre></td></tr></table></figure>
 <p><img src="https://pic2.zhimg.com/80/v2-a4b387ac9c43b1f681589529c82fe68d_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<h3><span id="13-构建层次聚类">1.3 <strong>构建层次聚类</strong></span></h3><p><strong>给定最小生成树，下一步是将其转换为层次结构的组件</strong>。这最容易以相反的顺序完成：按距离（按递增顺序）对树的边进行排序，然后迭代，为每条边新建一个合并后的簇。这里唯一困难是识别每条边将连接在哪两个簇上，但这通过联合查找数据结构很容易。我们可以将结果视为树状图，如下所示：</p>
+<h3><span id="13-构建层次聚类">1.3 <strong>构建层次聚类</strong></span></h3>
+<p><strong>给定最小生成树，下一步是将其转换为层次结构的组件</strong>。这最容易以相反的顺序完成：按距离（按递增顺序）对树的边进行排序，然后迭代，为每条边新建一个合并后的簇。这里唯一困难是识别每条边将连接在哪两个簇上，但这通过联合查找数据结构很容易。我们可以将结果视为树状图，如下所示：</p>
 <p><img src="https://pic1.zhimg.com/80/v2-33a8cb27ae3ea0009e1ad77b438cf458_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>这图可以告诉我们这个鲁棒的单一链接会在哪挺下来。我们想知道；层次结构结构的聚类虽好，但我们想要的是一个扁平的聚类。我们可以通过在上图中画一条水平线并选择它穿过的聚类，来做到这一点。这实际上是 DBSCAN 里用到的操作（将只能切割成单一集群的作为噪声）。<strong>问题是，我们怎么知道在哪里画这条线？ DBSCAN 只是把它作为一个（非常不直观的）参数</strong>。更糟糕的是，我们真的要用来处理可变密度的聚类，并希望任何切割线都是通过相互可达距离选出来的，并且今后固定在一个密度水平上。理想情况下，我们希望能够在不同的地方切割树，来选择我们的聚类。这是 HDBSCAN 下一步开始的地方，并与鲁棒的单一链接产生差异。</p>
+<p>这图可以告诉我们这个鲁棒的单一链接会在哪挺下来。我们想知道；层次结构结构的聚类虽好，但我们想要的是一个扁平的聚类。我们可以通过在上图中画一条水平线并选择它穿过的聚类，来做到这一点。这实际上是
+DBSCAN
+里用到的操作（将只能切割成单一集群的作为噪声）。<strong>问题是，我们怎么知道在哪里画这条线？
+DBSCAN
+只是把它作为一个（非常不直观的）参数</strong>。更糟糕的是，我们真的要用来处理可变密度的聚类，并希望任何切割线都是通过相互可达距离选出来的，并且今后固定在一个密度水平上。理想情况下，我们希望能够在不同的地方切割树，来选择我们的聚类。这是
+HDBSCAN 下一步开始的地方，并与鲁棒的单一链接产生差异。</p>
 
     </div>
 

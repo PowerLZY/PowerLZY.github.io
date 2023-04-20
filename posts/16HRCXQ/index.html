@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="降维  数据降维算法: https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1194552337170214912    一、PCA    降维问题的优化目标：将一组 N 维向量降为 K 维，其目标是选择 K 个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为 0，而变量方差则尽可能大（在正交的约束下，取最大的 K 个方差）。   要找的 &#x3D;&#x3D;P 是能让原始协方差矩阵对角化">
+    <meta name="description" content="降维   数据降维算法: https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1194552337170214912    一、PCA   降维问题的优化目标：将一组 N 维向量降为 K 维，其目标是选择 K 个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为 0，而变量方差则尽可能大（在正交的约束下，取最大的 K 个方差）。 要找的 &#x3D;&#x3D;P 是能让原始协方差矩阵对角化的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（12）降维">
 <meta property="og:url" content="https://powerlzy.github.io/posts/16HRCXQ/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="降维  数据降维算法: https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1194552337170214912    一、PCA    降维问题的优化目标：将一组 N 维向量降为 K 维，其目标是选择 K 个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为 0，而变量方差则尽可能大（在正交的约束下，取最大的 K 个方差）。   要找的 &#x3D;&#x3D;P 是能让原始协方差矩阵对角化">
+<meta property="og:description" content="降维   数据降维算法: https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1194552337170214912    一、PCA   降维问题的优化目标：将一组 N 维向量降为 K 维，其目标是选择 K 个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为 0，而变量方差则尽可能大（在正交的约束下，取最大的 K 个方差）。 要找的 &#x3D;&#x3D;P 是能让原始协方差矩阵对角化的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic2.zhimg.com/v2-e47296e78fff3d97eea11d0657ddcb81_1440w.jpg?source=172ae18b">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=PCP%5ET">
@@ -238,7 +238,9 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">降维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1. 向量表示与基变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 内积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 基</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 基变换的矩阵表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2. 最大可分性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 方差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 协方差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 协方差矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 矩阵对角化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.5 最近重构性-思路</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;3. 求解步骤&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结一下 PCA 的算法步骤：设有 m 条 n 维数据。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4. 性质【维度灾难、降噪、过拟合、特征独立】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5. 细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.1 零均值化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;5.2 SVD 的对比&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、线性判别分析（LDA）【监督】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、t-SNE 高维数据可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 t-SNE数据算法的目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 SNE原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 目标函数求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.4 对称性-SNE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.5 t-SNE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、AutoEncoder</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">缺点：</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">降维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1. 向量表示与基变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 内积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 基</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 基变换的矩阵表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2. 最大可分性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 方差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 协方差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 协方差矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 矩阵对角化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.5 最近重构性-思路</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;3. 求解步骤&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结一下 PCA
+的算法步骤：设有 m 条 n 维数据。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.
+性质【维度灾难、降噪、过拟合、特征独立】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5. 细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.1 零均值化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;5.2 SVD 的对比&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、线性判别分析（LDA）【监督】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、t-SNE 高维数据可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 t-SNE数据算法的目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 SNE原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 目标函数求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.4 对称性-SNE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.5 t-SNE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、AutoEncoder</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">缺点：</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -253,18 +255,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -390,269 +392,565 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="降维">降维</span></h2><blockquote>
+        <h2><span id="降维">降维</span></h2>
+<blockquote>
 <ul>
-<li>数据降维算法: <a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1194552337170214912">https://www.zhihu.com/column/c_1194552337170214912</a></li>
+<li>数据降维算法:
+https://www.zhihu.com/column/c_1194552337170214912</li>
 </ul>
 </blockquote>
 <p><img src="https://pic2.zhimg.com/v2-e47296e78fff3d97eea11d0657ddcb81_1440w.jpg?source=172ae18b" alt="【机器学习】降维——PCA（非常详细）" style="zoom:51%;"></p>
-<h2><span id="一-pca">一、PCA</span></h2><blockquote>
-<p>  <strong><font color="red"> 降维问题的优化目标：将一组 N 维向量降为 K 维，其目标是选择 K 个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为 0，而变量方差则尽可能大（在正交的约束下，取最大的 K 个方差）。</font></strong></p>
-<p>  要找的 <strong>==P 是能让原始协方差矩阵对角化的 P==</strong>。换句话说，优化目标变成了<strong>寻找一个矩阵 P，满足</strong> <img src="https://www.zhihu.com/equation?tex=PCP%5ET" alt="[公式]"> <strong>是一个对角矩阵，并且对角元素按从大到小依次排列，那么 P 的前 K 行就是要寻找的基，用 P 的前 K 行组成的矩阵乘以 X 就使得 X 从 N 维降到了 K 维并满足上述优化条件</strong>。</p>
+<h2><span id="一-pca">一、PCA</span></h2>
+<blockquote>
+<p><strong><font color="red"> 降维问题的优化目标：将一组 N 维向量降为 K
+维，其目标是选择 K
+个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为
+0，而变量方差则尽可能大（在正交的约束下，取最大的 K
+个方差）。</font></strong></p>
+<p>要找的 <strong>==P 是能让原始协方差矩阵对角化的
+P==</strong>。换句话说，优化目标变成了<strong>寻找一个矩阵
+P，满足</strong> <img src="https://www.zhihu.com/equation?tex=PCP%5ET" alt="[公式]">
+<strong>是一个对角矩阵，并且对角元素按从大到小依次排列，那么 P 的前 K
+行就是要寻找的基，用 P 的前 K 行组成的矩阵乘以 X 就使得 X 从 N 维降到了
+K 维并满足上述优化条件</strong>。</p>
 </blockquote>
-<p><strong>PCA（Principal Component Analysis） 是一种常见的数据分析方式，常用于高维数据的降维，可用于提取数据的主要特征分量</strong>。PCA 的数学推导可以从<strong>==最大可分型==</strong>和<strong>最近重构性</strong>两方面进行，前者的优化条件为划分后方差最大，后者的优化条件为点到划分平面距离最小，这里我将从最大可分性的角度进行证明。</p>
-<h3><span id="1-向量表示与基变换">1. 向量表示与基变换</span></h3><p>我们先来介绍些线性代数的基本知识。</p>
-<h3><span id="11-内积">1.1 内积</span></h3><p><strong>两个向量的 A 和 B 内积</strong>我们知道形式是这样的：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%28a_1%2Ca_2%2C%5Ccdots%2Ca_n%29%5Ccdot+%28b_1%2Cb_2%2C%5Ccdots%2Cb_n%29%5E%5Cmathsf%7BT%7D%3Da_1b_1%2Ba_2b_2%2B%5Ccdots%2Ba_nb_n+%5C%5C" alt="[公式]"></p>
-<p>内积运算将两个向量映射为实数，其计算方式非常容易理解，但我们无法看出其物理含义。接下来我们从几何角度来分析，为了简单起见，我们假设 A 和 B 均为二维向量，则：</p>
-<p><img src="https://www.zhihu.com/equation?tex=A%3D%28x_1%2Cy_1%29%EF%BC%8CB%3D%28x_2%2Cy_2%29+%5C+A+%5Ccdot+B+%3D+%7CA%7C%7CB%7Ccos%28%5Calpha%29+%5C%5C" alt="[公式]"></p>
+<p><strong>PCA（Principal Component Analysis）
+是一种常见的数据分析方式，常用于高维数据的降维，可用于提取数据的主要特征分量</strong>。PCA
+的数学推导可以从<strong>==最大可分型==</strong>和<strong>最近重构性</strong>两方面进行，前者的优化条件为划分后方差最大，后者的优化条件为点到划分平面距离最小，这里我将从最大可分性的角度进行证明。</p>
+<h3><span id="1-向量表示与基变换">1. 向量表示与基变换</span></h3>
+<p>我们先来介绍些线性代数的基本知识。</p>
+<h3><span id="11-内积">1.1 内积</span></h3>
+<p><strong>两个向量的 A 和 B 内积</strong>我们知道形式是这样的：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%28a_1%2Ca_2%2C%5Ccdots%2Ca_n%29%5Ccdot+%28b_1%2Cb_2%2C%5Ccdots%2Cb_n%29%5E%5Cmathsf%7BT%7D%3Da_1b_1%2Ba_2b_2%2B%5Ccdots%2Ba_nb_n+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>内积运算将两个向量映射为实数，其计算方式非常容易理解，但我们无法看出其物理含义。接下来我们从几何角度来分析，为了简单起见，我们假设
+A 和 B 均为二维向量，则：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=A%3D%28x_1%2Cy_1%29%EF%BC%8CB%3D%28x_2%2Cy_2%29+%5C+A+%5Ccdot+B+%3D+%7CA%7C%7CB%7Ccos%28%5Calpha%29+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>其几何表示见下图：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-cf4c0041c8459d2894b9a57d8f679a0a_1440w.jpg" alt="img"></p>
-<p>我们看出 A 与 B 的内积等于 <strong>A 到 B 的投影长度乘以 B 的模</strong>。</p>
-<p>如果假设 B 的模为 1，即让 <img src="https://www.zhihu.com/equation?tex=%7CB%7C%3D1" alt="[公式]"> ，那么就变成了：</p>
-<p><img src="https://www.zhihu.com/equation?tex=A%5Ccdot+B%3D%7CA%7Ccos%28a%29+%5C%5C" alt="[公式]"></p>
-<p>也就是说，<strong>A 与 B 的内积值等于 A 向 B 所在直线投影的标量大小。</strong></p>
-<h3><span id="12-基">1.2 基</span></h3><p>在我们常说的坐标系种，向量 (3,2) 其实隐式引入了一个定义：以 x 轴和 y 轴上正方向长度为 1 的向量为标准。向量 (3,2) 实际是说在 x 轴投影为 3 而 y 轴的投影为 2。<strong>注意投影是一个标量，所以可以为负。</strong></p>
-<p>所以，对于向量 (3, 2) 来说，如果我们想求它在 <img src="https://www.zhihu.com/equation?tex=%281%2C0%29%2C%280%2C1%29" alt="[公式]"> 这组基下的坐标的话，分别内积即可。当然，内积完了还是 (3, 2)。</p>
-<p>所以，我们大致可以得到一个结论，我们<strong>要准确描述向量，首先要确定一组基，然后给出在基所在的各个直线上的投影值，就可以了</strong>。为了方便求坐标，我们希望这组基向量模长为 1。因为向量的内积运算，当模长为 1 时，内积可以直接表示投影。然后还需要这组基是线性无关的，我们一般用正交基，非正交的基也是可以的，不过正交基有较好的性质。</p>
-<h3><span id="13-基变换的矩阵表示">1.3 基变换的矩阵表示</span></h3><p>这里我们先做一个练习：对于向量 (3,2) 这个点来说，在 <img src="https://www.zhihu.com/equation?tex=%28%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%2C%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%29" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%28-%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%2C+%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%29" alt="[公式]"> 这组基下的坐标是多少？</p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-cf4c0041c8459d2894b9a57d8f679a0a_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>我们看出 A 与 B 的内积等于 <strong>A 到 B 的投影长度乘以 B
+的模</strong>。</p>
+<p>如果假设 B 的模为 1，即让 <img src="https://www.zhihu.com/equation?tex=%7CB%7C%3D1" alt="[公式]">
+，那么就变成了：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=A%5Ccdot+B%3D%7CA%7Ccos%28a%29+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>也就是说，<strong>A 与 B 的内积值等于 A 向 B
+所在直线投影的标量大小。</strong></p>
+<h3><span id="12-基">1.2 基</span></h3>
+<p>在我们常说的坐标系种，向量 (3,2) 其实隐式引入了一个定义：以 x 轴和 y
+轴上正方向长度为 1 的向量为标准。向量 (3,2) 实际是说在 x 轴投影为 3 而 y
+轴的投影为 2。<strong>注意投影是一个标量，所以可以为负。</strong></p>
+<p>所以，对于向量 (3, 2) 来说，如果我们想求它在 <img src="https://www.zhihu.com/equation?tex=%281%2C0%29%2C%280%2C1%29" alt="[公式]"> 这组基下的坐标的话，分别内积即可。当然，内积完了还是 (3,
+2)。</p>
+<p>所以，我们大致可以得到一个结论，我们<strong>要准确描述向量，首先要确定一组基，然后给出在基所在的各个直线上的投影值，就可以了</strong>。为了方便求坐标，我们希望这组基向量模长为
+1。因为向量的内积运算，当模长为 1
+时，内积可以直接表示投影。然后还需要这组基是线性无关的，我们一般用正交基，非正交的基也是可以的，不过正交基有较好的性质。</p>
+<h3><span id="13-基变换的矩阵表示">1.3 基变换的矩阵表示</span></h3>
+<p>这里我们先做一个练习：对于向量 (3,2) 这个点来说，在 <img src="https://www.zhihu.com/equation?tex=%28%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%2C%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%29" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%28-%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%2C+%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%29" alt="[公式]"> 这组基下的坐标是多少？</p>
 <p>我们拿 (3,2) 分别与之内积，得到 <img src="https://www.zhihu.com/equation?tex=%28%5Cfrac%7B5%7D%7B%5Csqrt%7B2%7D%7D%2C-%5Cfrac%7B1%7D%7B%5Csqrt%7B2%7D%7D%29" alt="[公式]"> 这个新坐标。</p>
 <p>我们可以用矩阵相乘的形式简洁的表示这个变换：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bpmatrix%7D++1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5C%5C+-1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5Cend%7Bpmatrix%7D+%5Cbegin%7Bpmatrix%7D+3+%5C%5C+2+%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D+5%2F%5Csqrt%7B2%7D+%5C%5C+-1%2F%5Csqrt%7B2%7D++%5Cend%7Bpmatrix%7D++%5C%5C" alt="[公式]"></p>
-<p>左边矩阵的两行分别为两个基，乘以原向量，其结果刚好为新基的坐标。推广一下，如果我们有 m 个二维向量，只要将二维向量按列排成一个两行 m 列矩阵，然后用“基矩阵”乘以这个矩阵就可以得到了所有这些向量在新基下的值。例如对于数据点 <img src="https://www.zhihu.com/equation?tex=%281%2C1%29%EF%BC%8C%282%2C2%29%EF%BC%8C%283%2C3%29" alt="[公式]"> 来说，想变换到刚才那组基上，则可以这样表示：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bpmatrix%7D+1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5C%5C+-1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5Cend%7Bpmatrix%7D+%5Cbegin%7Bpmatrix%7D+1+%26+2+%26+3+%5C%5C+1+%26+2+%26+3+%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D+2%2F%5Csqrt%7B2%7D+%26+4%2F%5Csqrt%7B2%7D+%26+6%2F%5Csqrt%7B2%7D+%5C%5C+0+%26+0+%26+0+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bpmatrix%7D++1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5C%5C+-1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5Cend%7Bpmatrix%7D+%5Cbegin%7Bpmatrix%7D+3+%5C%5C+2+%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D+5%2F%5Csqrt%7B2%7D+%5C%5C+-1%2F%5Csqrt%7B2%7D++%5Cend%7Bpmatrix%7D++%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>左边矩阵的两行分别为两个基，乘以原向量，其结果刚好为新基的坐标。推广一下，如果我们有
+m 个二维向量，只要将二维向量按列排成一个两行 m
+列矩阵，然后用“基矩阵”乘以这个矩阵就可以得到了所有这些向量在新基下的值。例如对于数据点
+<img src="https://www.zhihu.com/equation?tex=%281%2C1%29%EF%BC%8C%282%2C2%29%EF%BC%8C%283%2C3%29" alt="[公式]"> 来说，想变换到刚才那组基上，则可以这样表示：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bpmatrix%7D+1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5C%5C+-1%2F%5Csqrt%7B2%7D+%26+1%2F%5Csqrt%7B2%7D+%5Cend%7Bpmatrix%7D+%5Cbegin%7Bpmatrix%7D+1+%26+2+%26+3+%5C%5C+1+%26+2+%26+3+%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D+2%2F%5Csqrt%7B2%7D+%26+4%2F%5Csqrt%7B2%7D+%26+6%2F%5Csqrt%7B2%7D+%5C%5C+0+%26+0+%26+0+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>我们可以把它写成通用的表示形式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bpmatrix%7D+p_1+%5C%5C+p_2+%5C%5C+%5Cvdots+%5C%5C+p_R+%5Cend%7Bpmatrix%7D+%5Cbegin%7Bpmatrix%7D+a_1+%26+a_2+%26+%5Ccdots+%26+a_M+%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D+p_1a_1+%26+p_1a_2+%26+%5Ccdots+%26+p_1a_M+%5C%5C+p_2a_1+%26+p_2a_2+%26+%5Ccdots+%26+p_2a_M+%5C%5C+%5Cvdots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%5C%5C+p_Ra_1+%26+p_Ra_2+%26+%5Ccdots+%26+p_Ra_M+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]"></p>
-<p>其中 <img src="https://www.zhihu.com/equation?tex=p_i" alt="[公式]"> 是一个行向量，表示第 i 个基， <img src="https://www.zhihu.com/equation?tex=a_j" alt="[公式]"> 是一个列向量，表示第 j 个原始数据记录。实际上也就是做了一个向量矩阵化的操作。</p>
-<p>==上述分析给矩阵相乘找到了一种物理解释：<strong>两个矩阵相乘的意义是将右边矩阵中的每一列向量</strong> <img src="https://www.zhihu.com/equation?tex=a_i" alt="[公式]"> <strong>变换到左边矩阵中以每一行行向量为基所表示的空间中去。</strong>也就是说一个矩阵可以表示一种线性变换。==</p>
-<h3><span id="2-最大可分性">2. 最大可分性</span></h3><p>上面我们讨论了选择不同的基可以对同样一组数据给出不同的表示，<strong>如果基的数量少于向量本身的维数，则可以达到降维的效果</strong>。</p>
-<p><strong>但是我们还没回答一个最关键的问题：如何选择基才是最优的。或者说，如果我们有一组 N 维向量，现在要将其降到 K 维（K 小于 N），那么我们应该如何选择 K 个基才能最大程度保留原有的信息？</strong></p>
-<p>一种直观的看法是：<strong><font color="red"> 希望投影后的投影值尽可能分散，因为如果重叠就会有样本消失。当然这个也可以从熵的角度进行理解，熵越大所含信息越多。</font></strong></p>
-<h4><span id="21-方差">2.1 方差</span></h4><p>我们知道数值的分散程度，可以用数学上的方差来表述。<strong>一个变量的方差可以看做是每个元素与变量均值的差的平方和的均值</strong>，即：</p>
-<p><img src="https://www.zhihu.com/equation?tex=Var%28a%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7B%28a_i-%5Cmu%29%5E2%7D+%5C%5C" alt="[公式]"></p>
-<p><strong>为了方便处理，我们将每个变量的均值都化为 0</strong> ，因此方差可以直接用每个元素的平方和除以元素个数表示：</p>
-<p><img src="https://www.zhihu.com/equation?tex=Var%28a%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_i%5E2%7D+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bpmatrix%7D+p_1+%5C%5C+p_2+%5C%5C+%5Cvdots+%5C%5C+p_R+%5Cend%7Bpmatrix%7D+%5Cbegin%7Bpmatrix%7D+a_1+%26+a_2+%26+%5Ccdots+%26+a_M+%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D+p_1a_1+%26+p_1a_2+%26+%5Ccdots+%26+p_1a_M+%5C%5C+p_2a_1+%26+p_2a_2+%26+%5Ccdots+%26+p_2a_M+%5C%5C+%5Cvdots+%26+%5Cvdots+%26+%5Cddots+%26+%5Cvdots+%5C%5C+p_Ra_1+%26+p_Ra_2+%26+%5Ccdots+%26+p_Ra_M+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中 <img src="https://www.zhihu.com/equation?tex=p_i" alt="[公式]"> 是一个行向量，表示第 i 个基， <img src="https://www.zhihu.com/equation?tex=a_j" alt="[公式]">
+是一个列向量，表示第 j
+个原始数据记录。实际上也就是做了一个向量矩阵化的操作。</p>
+<p>==上述分析给矩阵相乘找到了一种物理解释：<strong>两个矩阵相乘的意义是将右边矩阵中的每一列向量</strong>
+<img src="https://www.zhihu.com/equation?tex=a_i" alt="[公式]">
+<strong>变换到左边矩阵中以每一行行向量为基所表示的空间中去。</strong>也就是说一个矩阵可以表示一种线性变换。==</p>
+<h3><span id="2-最大可分性">2. 最大可分性</span></h3>
+<p>上面我们讨论了选择不同的基可以对同样一组数据给出不同的表示，<strong>如果基的数量少于向量本身的维数，则可以达到降维的效果</strong>。</p>
+<p><strong>但是我们还没回答一个最关键的问题：如何选择基才是最优的。或者说，如果我们有一组
+N 维向量，现在要将其降到 K 维（K 小于 N），那么我们应该如何选择 K
+个基才能最大程度保留原有的信息？</strong></p>
+<p>一种直观的看法是：<strong><font color="red">
+希望投影后的投影值尽可能分散，因为如果重叠就会有样本消失。当然这个也可以从熵的角度进行理解，熵越大所含信息越多。</font></strong></p>
+<h4><span id="21-方差">2.1 方差</span></h4>
+<p>我们知道数值的分散程度，可以用数学上的方差来表述。<strong>一个变量的方差可以看做是每个元素与变量均值的差的平方和的均值</strong>，即：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=Var%28a%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7B%28a_i-%5Cmu%29%5E2%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>为了方便处理，我们将每个变量的均值都化为 0</strong>
+，因此方差可以直接用每个元素的平方和除以元素个数表示：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=Var%28a%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_i%5E2%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>于是上面的问题被形式化表述为：<strong>寻找一个一维基，使得所有数据变换为这个基上的坐标表示后，方差值最大。</strong></p>
-<h4><span id="22-协方差">2.2 协方差</span></h4><p>在一维空间中我们可以用方差来表示数据的分散程度。而对于高维数据，我们用协方差进行约束，<strong>协方差可以表示两个变量的相关性</strong>。<strong><font color="red"> 为了让两个变量尽可能表示更多的原始信息，我们希望它们之间不存在线性相关性</font></strong>，因为相关性意味着两个变量不是完全独立，必然存在重复表示的信息。</p>
+<h4><span id="22-协方差">2.2 协方差</span></h4>
+<p>在一维空间中我们可以用方差来表示数据的分散程度。而对于高维数据，我们用协方差进行约束，<strong>协方差可以表示两个变量的相关性</strong>。<strong><font color="red">
+为了让两个变量尽可能表示更多的原始信息，我们希望它们之间不存在线性相关性</font></strong>，因为相关性意味着两个变量不是完全独立，必然存在重复表示的信息。</p>
 <p>协方差公式为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=Cov%28a%2Cb%29%3D%5Cfrac%7B1%7D%7Bm-1%7D%5Csum_%7Bi%3D1%7D%5Em%7B%28a_i-%5Cmu_a%29%28b_i-%5Cmu_b%29%7D+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=Cov%28a%2Cb%29%3D%5Cfrac%7B1%7D%7Bm-1%7D%5Csum_%7Bi%3D1%7D%5Em%7B%28a_i-%5Cmu_a%29%28b_i-%5Cmu_b%29%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>由于均值为 0，所以我们的协方差公式可以表示为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=Cov%28a%2Cb%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_ib_i%7D+%5C%5C" alt="[公式]"></p>
-<p>当样本数较大时，不必在意其是 m 还是 m-1，为了方便计算，我们分母取 m。</p>
-<p><strong><font color="red"> 协方差为 0 时，表示两个变量完全不相关</font></strong>。为了让协方差为 0，我们选择第二个基时只能在与第一个基正交的方向上进行选择，因此最终选择的两个方向一定是正交的。</p>
-<p>（<strong>补充</strong>：协方差为 0 时，两个变量只是线性不相关。完全独立是有问题的，才疏学浅，还望见谅。）</p>
-<p><strong><font color="red"> 至此，我们得到了降维问题的优化目标：将一组 N 维向量降为 K 维，其目标是选择 K 个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为 0，而变量方差则尽可能大（在正交的约束下，取最大的 K 个方差）。</font></strong></p>
-<h4><span id="23-协方差矩阵">2.3 协方差矩阵</span></h4><p>针对我们给出的优化目标，接下来我们将从数学的角度来给出优化目标。我们看到，最终要达到的目的与<strong>变量内方差及变量间协方差</strong>有密切关系。因此我们希望能将两者统一表示，仔细观察发现，两者均可以表示为内积的形式，而内积又与矩阵相乘密切相关。于是我们有：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=Cov%28a%2Cb%29%3D%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_ib_i%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>当样本数较大时，不必在意其是 m 还是 m-1，为了方便计算，我们分母取
+m。</p>
+<p><strong><font color="red"> 协方差为 0
+时，表示两个变量完全不相关</font></strong>。为了让协方差为
+0，我们选择第二个基时只能在与第一个基正交的方向上进行选择，因此最终选择的两个方向一定是正交的。</p>
+<p>（<strong>补充</strong>：协方差为 0
+时，两个变量只是线性不相关。完全独立是有问题的，才疏学浅，还望见谅。）</p>
+<p><strong><font color="red"> 至此，我们得到了降维问题的优化目标：将一组
+N 维向量降为 K 维，其目标是选择 K
+个单位正交基，使得原始数据变换到这组基上后，各变量两两间协方差为
+0，而变量方差则尽可能大（在正交的约束下，取最大的 K
+个方差）。</font></strong></p>
+<h4><span id="23-协方差矩阵">2.3 协方差矩阵</span></h4>
+<p>针对我们给出的优化目标，接下来我们将从数学的角度来给出优化目标。我们看到，最终要达到的目的与<strong>变量内方差及变量间协方差</strong>有密切关系。因此我们希望能将两者统一表示，仔细观察发现，两者均可以表示为内积的形式，而内积又与矩阵相乘密切相关。于是我们有：</p>
 <p>假设我们只有 a 和 b 两个变量，那么我们将它们按行组成矩阵 X：</p>
-<p><img src="https://www.zhihu.com/equation?tex=X%3D%5Cbegin%7Bpmatrix%7D++a_1+%26+a_2+%26+%5Ccdots+%26+a_m+%5C%5C+b_1+%26+b_2+%26+%5Ccdots+%26+b_m++%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=X%3D%5Cbegin%7Bpmatrix%7D++a_1+%26+a_2+%26+%5Ccdots+%26+a_m+%5C%5C+b_1+%26+b_2+%26+%5Ccdots+%26+b_m++%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>然后：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7DXX%5E%5Cmathsf%7BT%7D%3D+%5Cbegin%7Bpmatrix%7D++%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_i%5E2%7D+%26+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_ib_i%7D+%5C%5C+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_ib_i%7D+%26+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Bb_i%5E2%7D++%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D++Cov%28a%2Ca%29+%26+Cov%28a%2Cb%29+%5C%5C++Cov%28b%2Ca%29+%26+Cov%28b%2Cb%29+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]"></p>
-<p>我们可以看到这个矩阵对角线上的分别是两个变量的方差，而其它元素是 a 和 b 的协方差。两者被统一到了一个矩阵里。</p>
-<p><strong>设我们有 m 个 n 维数据记录，将其排列成矩阵</strong> <img src="https://www.zhihu.com/equation?tex=X_%7Bn%2Cm%7D" alt="[公式]"> <strong>，设</strong> <img src="https://www.zhihu.com/equation?tex=C%3D%5Cfrac%7B1%7D%7Bm%7DXX%5ET" alt="[公式]"> <strong>，则 C 是一个对称矩阵，其对角线分别对应各个变量的方差，而第 i 行 j 列和 j 行 i 列元素相同，表示 i 和 j 两个变量的协方差</strong>。</p>
-<h4><span id="24-矩阵对角化">2.4 矩阵对角化</span></h4><p>根据我们的优化条件，<strong>我们需要将除对角线外的其它元素化为 0，并且在对角线上将元素按大小从上到下排列（变量方差尽可能大）</strong>，这样我们就达到了优化目的。这样说可能还不是很明晰，我们进一步看下原矩阵与基变换后矩阵协方差矩阵的关系。</p>
-<p>设原始数据矩阵 X 对应的协方差矩阵为 C，而 P 是一组基按行组成的矩阵，设 Y=PX，则 Y 为 X 对 P 做基变换后的数据。设 Y 的协方差矩阵为 D，我们推导一下 D 与 C 的关系：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D++D+%26+%3D++%5Cfrac%7B1%7D%7Bm%7DYY%5ET+%5C%5C++%26+%3D+%5Cfrac%7B1%7D%7Bm%7D%28PX%29%28PX%29%5ET+%5C%5C+%26+%3D+%5Cfrac%7B1%7D%7Bm%7DPXX%5ETP%5ET+%5C%5C++%26+%3D+P%28%5Cfrac%7B1%7D%7Bm%7DXX%5ET%29P%5ET+%5C%5C++%26+%3D+PCP%5ET++%5Cend%7Baligned%7D++%5C%5C" alt="[公式]"></p>
-<p>这样我们就看清楚了，我们要找的 <strong>==P 是能让原始协方差矩阵对角化的 P==</strong>。换句话说，优化目标变成了<strong>寻找一个矩阵 P，满足</strong> <img src="https://www.zhihu.com/equation?tex=PCP%5ET" alt="[公式]"> <strong>是一个对角矩阵，并且对角元素按从大到小依次排列，那么 P 的前 K 行就是要寻找的基，用 P 的前 K 行组成的矩阵乘以 X 就使得 X 从 N 维降到了 K 维并满足上述优化条件</strong>。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7DXX%5E%5Cmathsf%7BT%7D%3D+%5Cbegin%7Bpmatrix%7D++%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_i%5E2%7D+%26+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_ib_i%7D+%5C%5C+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Ba_ib_i%7D+%26+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%7Bb_i%5E2%7D++%5Cend%7Bpmatrix%7D+%3D+%5Cbegin%7Bpmatrix%7D++Cov%28a%2Ca%29+%26+Cov%28a%2Cb%29+%5C%5C++Cov%28b%2Ca%29+%26+Cov%28b%2Cb%29+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>我们可以看到这个矩阵对角线上的分别是两个变量的方差，而其它元素是 a 和
+b 的协方差。两者被统一到了一个矩阵里。</p>
+<p><strong>设我们有 m 个 n 维数据记录，将其排列成矩阵</strong> <img src="https://www.zhihu.com/equation?tex=X_%7Bn%2Cm%7D" alt="[公式]">
+<strong>，设</strong> <img src="https://www.zhihu.com/equation?tex=C%3D%5Cfrac%7B1%7D%7Bm%7DXX%5ET" alt="[公式]"> <strong>，则 C
+是一个对称矩阵，其对角线分别对应各个变量的方差，而第 i 行 j 列和 j 行 i
+列元素相同，表示 i 和 j 两个变量的协方差</strong>。</p>
+<h4><span id="24-矩阵对角化">2.4 矩阵对角化</span></h4>
+<p>根据我们的优化条件，<strong>我们需要将除对角线外的其它元素化为
+0，并且在对角线上将元素按大小从上到下排列（变量方差尽可能大）</strong>，这样我们就达到了优化目的。这样说可能还不是很明晰，我们进一步看下原矩阵与基变换后矩阵协方差矩阵的关系。</p>
+<p>设原始数据矩阵 X 对应的协方差矩阵为 C，而 P
+是一组基按行组成的矩阵，设 Y=PX，则 Y 为 X 对 P 做基变换后的数据。设 Y
+的协方差矩阵为 D，我们推导一下 D 与 C 的关系：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D++D+%26+%3D++%5Cfrac%7B1%7D%7Bm%7DYY%5ET+%5C%5C++%26+%3D+%5Cfrac%7B1%7D%7Bm%7D%28PX%29%28PX%29%5ET+%5C%5C+%26+%3D+%5Cfrac%7B1%7D%7Bm%7DPXX%5ETP%5ET+%5C%5C++%26+%3D+P%28%5Cfrac%7B1%7D%7Bm%7DXX%5ET%29P%5ET+%5C%5C++%26+%3D+PCP%5ET++%5Cend%7Baligned%7D++%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>这样我们就看清楚了，我们要找的 <strong>==P
+是能让原始协方差矩阵对角化的
+P==</strong>。换句话说，优化目标变成了<strong>寻找一个矩阵
+P，满足</strong> <img src="https://www.zhihu.com/equation?tex=PCP%5ET" alt="[公式]">
+<strong>是一个对角矩阵，并且对角元素按从大到小依次排列，那么 P 的前 K
+行就是要寻找的基，用 P 的前 K 行组成的矩阵乘以 X 就使得 X 从 N 维降到了
+K 维并满足上述优化条件</strong>。</p>
 <p>至此，我们离 PCA 还有仅一步之遥，我们还需要完成对角化。</p>
-<p><strong>由上文知道，协方差矩阵 C 是一个是对称矩阵，在线性代数中实对称矩阵有一系列非常好的性质：</strong></p>
-<ol>
+<p><strong>由上文知道，协方差矩阵 C
+是一个是对称矩阵，在线性代数中实对称矩阵有一系列非常好的性质：</strong></p>
+<ol type="1">
 <li><strong>实对称矩阵不同特征值对应的特征向量必然正交</strong>。</li>
-<li><strong>设特征向量 <img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="[公式]"> 重数为 r，则必然存在 r 个线性无关的特征向量对应于 <img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="[公式]"> ，因此可以将这 r 个特征向量单位正交化。</strong></li>
+<li><strong>设特征向量 <img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="[公式]">
+重数为 r，则必然存在 r 个线性无关的特征向量对应于 <img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="[公式]">
+，因此可以将这 r 个特征向量单位正交化。</strong></li>
 </ol>
-<p><strong>由上面两条可知，一个 n 行 n 列的实对称矩阵一定可以找到 n 个单位正交特征向量，设这 n 个特征向量为 <img src="https://www.zhihu.com/equation?tex=e_1%2Ce_2%2C%5Ccdots%2Ce_n" alt="[公式]"> ，我们将其按列组成矩阵： <img src="https://www.zhihu.com/equation?tex=E%3D%28e_1+%2C+e_2+%2C+%5Ccdots+%2C+e_n+%29" alt="[公式]"> 。</strong></p>
+<p><strong>由上面两条可知，一个 n 行 n 列的实对称矩阵一定可以找到 n
+个单位正交特征向量，设这 n 个特征向量为 <img src="https://www.zhihu.com/equation?tex=e_1%2Ce_2%2C%5Ccdots%2Ce_n" alt="[公式]"> ，我们将其按列组成矩阵： <img src="https://www.zhihu.com/equation?tex=E%3D%28e_1+%2C+e_2+%2C+%5Ccdots+%2C+e_n+%29" alt="[公式]"> 。</strong></p>
 <p>则对协方差矩阵 C 有如下结论：</p>
-<p><img src="https://www.zhihu.com/equation?tex=E%5ETCE%3D%5CLambda%3D%5Cbegin%7Bpmatrix%7D+%5Clambda_1+%26+%26+%26+%5C%5C+%26+%5Clambda_2+%26+%26+%5C%5C+%26+%26+%5Cddots+%26+%5C%5C+%26+%26+%26+%5Clambda_n+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]"></p>
-<p>其中 <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]"> 为对角矩阵，其对角元素为各特征向量对应的特征值（可能有重复）。到这里，我们发现我们已经找到了需要的矩阵 P： <img src="https://www.zhihu.com/equation?tex=P%3DE%5E%5Cmathsf%7BT%7D" alt="[公式]"> 。</p>
-<p><strong>P 是协方差矩阵的特征向量单位化后按行排列出的矩阵</strong>，其中每一行都是 C 的一个特征向量。如果设 P 按照 <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]"> 中特征值的从大到小，将特征向量从上到下排列，则用 P 的前 K 行组成的矩阵乘以原始数据矩阵 X，就得到了我们需要的降维后的数据矩阵 Y。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=E%5ETCE%3D%5CLambda%3D%5Cbegin%7Bpmatrix%7D+%5Clambda_1+%26+%26+%26+%5C%5C+%26+%5Clambda_2+%26+%26+%5C%5C+%26+%26+%5Cddots+%26+%5C%5C+%26+%26+%26+%5Clambda_n+%5Cend%7Bpmatrix%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中 <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]">
+为对角矩阵，其对角元素为各特征向量对应的特征值（可能有重复）。到这里，我们发现我们已经找到了需要的矩阵
+P： <img src="https://www.zhihu.com/equation?tex=P%3DE%5E%5Cmathsf%7BT%7D" alt="[公式]"> 。</p>
+<p><strong>P
+是协方差矩阵的特征向量单位化后按行排列出的矩阵</strong>，其中每一行都是
+C 的一个特征向量。如果设 P 按照 <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]">
+中特征值的从大到小，将特征向量从上到下排列，则用 P 的前 K
+行组成的矩阵乘以原始数据矩阵 X，就得到了我们需要的降维后的数据矩阵
+Y。</p>
 <blockquote>
-<p>  <strong>拉格朗日乘子法证明</strong>:<strong>方差就是协方差矩阵的特征值</strong></p>
+<p><strong>拉格朗日乘子法证明</strong>:<strong>方差就是协方差矩阵的特征值</strong></p>
 </blockquote>
-<h4><span id="25-最近重构性-思路">2.5 最近重构性-思路</span></h4><p>以上的证明思路主要是基于最大可分性的思想，<strong>通过一条直线使得样本点投影到该直线上的方差最大</strong>。除此之外，我们还可以<strong>将其转换为线型回归问题，其目标是求解一个线性函数使得对应直线能够更好地拟合样本点集合</strong>。这就<strong>使得我们的优化目标从方差最大转化为平方误差最小</strong>，因为映射距离越短，丢失的信息也会越小。区别于最大可分性，这是从最近重构性的角度进行论证。</p>
-<h3><span id="3-求解步骤">==3. 求解步骤==</span></h3><h4><span id="总结一下-pca-的算法步骤设有-m-条-n-维数据">总结一下 PCA 的算法步骤：<strong>设有 m 条 n 维数据。</strong></span></h4><ol>
+<h4><span id="25-最近重构性-思路">2.5 最近重构性-思路</span></h4>
+<p>以上的证明思路主要是基于最大可分性的思想，<strong>通过一条直线使得样本点投影到该直线上的方差最大</strong>。除此之外，我们还可以<strong>将其转换为线型回归问题，其目标是求解一个线性函数使得对应直线能够更好地拟合样本点集合</strong>。这就<strong>使得我们的优化目标从方差最大转化为平方误差最小</strong>，因为映射距离越短，丢失的信息也会越小。区别于最大可分性，这是从最近重构性的角度进行论证。</p>
+<h3><span id="3-求解步骤">==3. 求解步骤==</span></h3>
+<h4><span id="总结一下-pca的算法步骤设有-m-条-n-维数据">总结一下 PCA
+的算法步骤：<strong>设有 m 条 n 维数据。</strong></span></h4>
+<ol type="1">
 <li><strong>将原始数据按列组成 n 行 m 列矩阵 X；</strong></li>
-<li><strong>将 X 的每一行进行==零均值化==，即减去这一行的均值</strong>；【<strong>零均值化</strong>】【<strong>方差、协方差好计算</strong>】</li>
+<li><strong>将 X
+的每一行进行==零均值化==，即减去这一行的均值</strong>；【<strong>零均值化</strong>】【<strong>方差、协方差好计算</strong>】</li>
 <li><strong>==求出协方差矩阵==</strong> <img src="https://www.zhihu.com/equation?tex=C%3D%5Cfrac%7B1%7D%7Bm%7DXX%5E%5Cmathsf%7BT%7D" alt="[公式]"> ；</li>
 <li><strong>求出协方差矩阵的特征值及对应的特征向量</strong>；</li>
-<li><strong>将特征向量按对应特征值大小从上到下按行排列成矩阵，取前 k 行组成矩阵 P</strong>；</li>
-<li><img src="https://www.zhihu.com/equation?tex=Y%3DPX" alt="[公式]"> <strong>即为降维到 k 维后的数据</strong>。</li>
+<li><strong>将特征向量按对应特征值大小从上到下按行排列成矩阵，取前 k
+行组成矩阵 P</strong>；</li>
+<li><img src="https://www.zhihu.com/equation?tex=Y%3DPX" alt="[公式]">
+<strong>即为降维到 k 维后的数据</strong>。</li>
 </ol>
-<h4><span id="4-性质维度灾难-降噪-过拟合-特征独立">4. 性质【维度灾难、降噪、过拟合、特征独立】</span></h4><ol>
-<li><strong>==缓解维度灾难==</strong>：PCA 算法通过舍去一部分信息之后能使得样本的采样密度增大（因为维数降低了），这是缓解维度灾难的重要手段；</li>
+<h4><span id="4性质维度灾难-降噪-过拟合-特征独立">4.
+性质【维度灾难、降噪、过拟合、特征独立】</span></h4>
+<ol type="1">
+<li><strong>==缓解维度灾难==</strong>：PCA
+算法通过舍去一部分信息之后能使得样本的采样密度增大（因为维数降低了），这是缓解维度灾难的重要手段；</li>
 <li><strong>==降噪==</strong>：当数据受到噪声影响时，最小特征值对应的特征向量往往与噪声有关，将它们舍弃能在一定程度上起到降噪的效果；</li>
-<li><strong>==过拟合==</strong>：PCA 保留了主要信息，但这个主要信息只是针对训练集的，而且这个主要信息未必是重要信息。有可能舍弃了一些看似无用的信息，但是这些看似无用的信息恰好是重要信息，只是在训练集上没有很大的表现，所以 PCA 也可能加剧了过拟合；</li>
-<li><strong>==特征独立==</strong>：PCA 不仅将数据压缩到低维，它也使得<strong>降维之后的数据各特征相互独立</strong>；</li>
+<li><strong>==过拟合==</strong>：PCA
+保留了主要信息，但这个主要信息只是针对训练集的，而且这个主要信息未必是重要信息。有可能舍弃了一些看似无用的信息，但是这些看似无用的信息恰好是重要信息，只是在训练集上没有很大的表现，所以
+PCA 也可能加剧了过拟合；</li>
+<li><strong>==特征独立==</strong>：PCA
+不仅将数据压缩到低维，它也使得<strong>降维之后的数据各特征相互独立</strong>；</li>
 </ol>
-<h3><span id="5-细节">5. 细节</span></h3><h4><span id="51-零均值化">5.1 零均值化</span></h4><p>当对训练集进行 PCA 降维时，也需要对验证集、测试集执行同样的降维。==而<strong>对验证集、测试集执行零均值化操作时，均值必须从训练集计算而来</strong>，不能使用验证集或者测试集的中心向量。==</p>
+<h3><span id="5-细节">5. 细节</span></h3>
+<h4><span id="51-零均值化">5.1 零均值化</span></h4>
+<p>当对训练集进行 PCA
+降维时，也需要对验证集、测试集执行同样的降维。==而<strong>对验证集、测试集执行零均值化操作时，均值必须从训练集计算而来</strong>，不能使用验证集或者测试集的中心向量。==</p>
 <p>其原因也很简单，因为我们的训练集时可观测到的数据，测试集不可观测所以不会知道其均值，而验证集再大部分情况下是在处理完数据后再从训练集中分离出来，一般不会单独处理。如果真的是单独处理了，不能独自求均值的原因是和测试集一样。</p>
-<p>另外我们也需要保证一致性，我们拿训练集训练出来的模型用来预测测试集的前提假设就是两者是独立同分布的，如果不能保证一致性的话，会出现 Variance Shift 的问题。</p>
-<h4><span id="52-svd-的对比">==5.2 SVD 的对比==</span></h4><p>这是两个不同的数学定义。我们先给结论：<strong>特征值和特征向量是针对方阵</strong>才有的，而<strong>对任意形状的矩阵都可以做奇异值分解</strong>。</p>
-<p><strong>PCA</strong>：<strong>方阵的特征值分解</strong>，对于一个方阵 A。其中，Q 是这个矩阵 A 的特征向量组成的矩阵， <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]"> 是一个对角矩阵，每一个对角线元素就是一个特征值，里面的特征值是由大到小排列的，这些特征值所对应的特征向量就是描述这个矩阵变化方向（从主要的变化到次要的变化排列)。也就是说矩阵 A 的信息可以由其特征值和特征向量表示。</p>
-<p><strong>SVD</strong>：<strong>矩阵的奇异值分解其实就是对于矩阵 A 的协方差矩阵 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=AA%5ET" alt="[公式]"> 做特征值分解推导出来的</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=A_%7Bm%2Cn%7D%3DU_%7Bm%2Cm%7D%5CLambda_%7Bm%2Cn%7DV%5ET_%7Bn%2Cn%7D+%5Capprox+U_%7Bm%2Ck%7D%5CLambda_%7Bk%2Ck%7DV%5ET_%7Bk%2Cn%7D+%5C%5C" alt="[公式]"></p>
-<p>其中：U V 都是正交矩阵，有 <img src="https://www.zhihu.com/equation?tex=U%5ETU%3DI_m%2C+V%5ETV%3DI_n" alt="[公式]"> 。这里的约等于是因为 <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]"> 中有 n 个奇异值，但是由于排在后面的很多接近 0，所以我们可以仅保留比较大的 k 个奇异值。</p>
-<p><img src="https://www.zhihu.com/equation?tex=A%5ETA%3D%28U+%5CLambda+V%5ET%29%5ETU+%5CLambda+V%5ET+%3DV+%5CLambda%5ET+U%5ETU+%5CLambda+V%5ET++%3D+V%5CLambda%5E2+V%5ET+%5C%5C+AA%5ET%3DU+%5CLambda+V%5ET%28U+%5CLambda+V%5ET%29%5ET+%3DU+%5CLambda+V%5ETV+%5CLambda%5ET+U%5ET+%3D+U%5CLambda%5E2+U%5ET++%5C%5C" alt="[公式]"></p>
-<p>所以，V U 两个矩阵分别是 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=AA%5ET" alt="[公式]"> 的特征向量，中间的矩阵对角线的元素是 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=AA%5ET" alt="[公式]"> 的特征值。我们也很容易看出 A 的奇异值和 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 的特征值之间的关系。</p>
-<p>PCA 需要对协方差矩阵 <img src="https://www.zhihu.com/equation?tex=C%3D%5Cfrac%7B1%7D%7Bm%7DXX%5ET" alt="[公式]"> 。进行特征值分解； SVD 也是对 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 进行特征值分解。如果取 <img src="https://www.zhihu.com/equation?tex=A%3D%5Cfrac%7BX%5ET%7D%7B%5Csqrt%7Bm%7D%7D" alt="[公式]"> 则两者基本等价。所以 PCA 问题可以转换成 SVD 求解。</p>
-<p><strong>==而实际上 Sklearn 的 PCA 就是用 SVD 进行求解的==</strong>，原因有以下几点：</p>
-<ol>
+<p>另外我们也需要保证一致性，我们拿训练集训练出来的模型用来预测测试集的前提假设就是两者是独立同分布的，如果不能保证一致性的话，会出现
+Variance Shift 的问题。</p>
+<h4><span id="52-svd-的对比">==5.2 SVD 的对比==</span></h4>
+<p>这是两个不同的数学定义。我们先给结论：<strong>特征值和特征向量是针对方阵</strong>才有的，而<strong>对任意形状的矩阵都可以做奇异值分解</strong>。</p>
+<p><strong>PCA</strong>：<strong>方阵的特征值分解</strong>，对于一个方阵
+A。其中，Q 是这个矩阵 A 的特征向量组成的矩阵， <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]">
+是一个对角矩阵，每一个对角线元素就是一个特征值，里面的特征值是由大到小排列的，这些特征值所对应的特征向量就是描述这个矩阵变化方向（从主要的变化到次要的变化排列)。也就是说矩阵
+A 的信息可以由其特征值和特征向量表示。</p>
+<p><strong>SVD</strong>：<strong>矩阵的奇异值分解其实就是对于矩阵 A
+的协方差矩阵 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=AA%5ET" alt="[公式]"> 做特征值分解推导出来的</strong>：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=A_%7Bm%2Cn%7D%3DU_%7Bm%2Cm%7D%5CLambda_%7Bm%2Cn%7DV%5ET_%7Bn%2Cn%7D+%5Capprox+U_%7Bm%2Ck%7D%5CLambda_%7Bk%2Ck%7DV%5ET_%7Bk%2Cn%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中：U V 都是正交矩阵，有 <img src="https://www.zhihu.com/equation?tex=U%5ETU%3DI_m%2C+V%5ETV%3DI_n" alt="[公式]"> 。这里的约等于是因为 <img src="https://www.zhihu.com/equation?tex=%5CLambda" alt="[公式]"> 中有
+n 个奇异值，但是由于排在后面的很多接近 0，所以我们可以仅保留比较大的 k
+个奇异值。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=A%5ETA%3D%28U+%5CLambda+V%5ET%29%5ETU+%5CLambda+V%5ET+%3DV+%5CLambda%5ET+U%5ETU+%5CLambda+V%5ET++%3D+V%5CLambda%5E2+V%5ET+%5C%5C+AA%5ET%3DU+%5CLambda+V%5ET%28U+%5CLambda+V%5ET%29%5ET+%3DU+%5CLambda+V%5ETV+%5CLambda%5ET+U%5ET+%3D+U%5CLambda%5E2+U%5ET++%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>所以，V U 两个矩阵分别是 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=AA%5ET" alt="[公式]">
+的特征向量，中间的矩阵对角线的元素是 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=AA%5ET" alt="[公式]">
+的特征值。我们也很容易看出 A 的奇异值和 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]">
+的特征值之间的关系。</p>
+<p>PCA 需要对协方差矩阵 <img src="https://www.zhihu.com/equation?tex=C%3D%5Cfrac%7B1%7D%7Bm%7DXX%5ET" alt="[公式]"> 。进行特征值分解； SVD 也是对 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]">
+进行特征值分解。如果取 <img src="https://www.zhihu.com/equation?tex=A%3D%5Cfrac%7BX%5ET%7D%7B%5Csqrt%7Bm%7D%7D" alt="[公式]"> 则两者基本等价。所以 PCA 问题可以转换成 SVD 求解。</p>
+<p><strong>==而实际上 Sklearn 的 PCA 就是用 SVD
+进行求解的==</strong>，原因有以下几点：</p>
+<ol type="1">
 <li>当样本维度很高时，协方差矩阵计算太慢；</li>
 <li>方阵特征值分解计算效率不高；</li>
-<li><strong>==SVD 除了特征值分解这种求解方式外，还有更高效更准确的迭代求解方式，避免了 <img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]"> 的计算；==</strong></li>
+<li><strong>==SVD
+除了特征值分解这种求解方式外，还有更高效更准确的迭代求解方式，避免了
+<img src="https://www.zhihu.com/equation?tex=A%5ETA" alt="[公式]">
+的计算；==</strong></li>
 <li><strong>其实 PCA 与 SVD 的右奇异向量的压缩效果相同</strong>。</li>
 </ol>
 <blockquote>
-<ol>
+<ol type="1">
 <li>《机器学习》周志华</li>
-<li><a href="https://link.zhihu.com/?target=https%3A//blog.codinglabs.org/articles/pca-tutorial.html">PCA 的数学原理</a></li>
-<li><a href="https://link.zhihu.com/?target=http%3A//web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm">Singular Value Decomposition (SVD) tutorial</a></li>
-<li><a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/LeftNotEasy/archive/2011/01/08/lda-and-pca-machine-learning.html">机器学习中的数学（4）——线性判别分析（LDA）, 主成分分析（PCA）</a></li>
+<li><a href="https://link.zhihu.com/?target=https%3A//blog.codinglabs.org/articles/pca-tutorial.html">PCA
+的数学原理</a></li>
+<li><a href="https://link.zhihu.com/?target=http%3A//web.mit.edu/be.400/www/SVD/Singular_Value_Decomposition.htm">Singular
+Value Decomposition (SVD) tutorial</a></li>
+<li><a href="https://link.zhihu.com/?target=https%3A//www.cnblogs.com/LeftNotEasy/archive/2011/01/08/lda-and-pca-machine-learning.html">机器学习中的数学（4）——线性判别分析（LDA）,
+主成分分析（PCA）</a></li>
 <li><a href="https://link.zhihu.com/?target=https%3A//my.oschina.net/findbill/blog/535044">从SVD到PCA——奇妙的数学游戏</a></li>
-<li>scikit-learn：降维算法PCA和SVD <a target="_blank" rel="noopener" href="https://blog.csdn.net/HHG20171226/article/details/102981822">https://blog.csdn.net/HHG20171226/article/details/102981822</a></li>
+<li>scikit-learn：降维算法PCA和SVD
+https://blog.csdn.net/HHG20171226/article/details/102981822</li>
 </ol>
 </blockquote>
-<h2><span id="二-线性判别分析lda监督">二、线性判别分析（LDA）【监督】</span></h2><blockquote>
-<p>  ==<strong>“投影后类内方差最小，类间方差最大”</strong>==</p>
+<h2><span id="二-线性判别分析lda监督">二、线性判别分析（LDA）【监督】</span></h2>
+<blockquote>
+<p>==<strong>“投影后类内方差最小，类间方差最大”</strong>==</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuweiyuxiang/article/details/78874106">https://blog.csdn.net/liuweiyuxiang/article/details/78874106</a></li>
+<li>https://blog.csdn.net/liuweiyuxiang/article/details/78874106</li>
 </ul>
 </blockquote>
-<h3><span id="21-概念">2.1 概念</span></h3><p><strong>线性判别分析（Linear Discriminant Analysis，LDA）是一种经典的降维方法。和主成分分析PCA不考虑样本类别输出的无监督降维技术不同，LDA是一种监督学习的降维技术，数据集的每个样本有类别输出。</strong></p>
+<h3><span id="21-概念">2.1 概念</span></h3>
+<p><strong>线性判别分析（Linear Discriminant
+Analysis，LDA）是一种经典的降维方法。和主成分分析PCA不考虑样本类别输出的无监督降维技术不同，LDA是一种监督学习的降维技术，数据集的每个样本有类别输出。</strong></p>
 <p><strong>LDA分类思想简单总结如下：</strong></p>
-<ol>
+<ol type="1">
 <li>多维空间中，数据处理分类问题较为复杂，LDA算法将多维空间中的数据投影到一条直线上，将d维数据转化成1维数据进行处理。</li>
 <li>对于训练数据，设法将多维数据投影到一条直线上，<strong>同类数据的投影点尽可能接近，异类数据点尽可能远离</strong>。</li>
 <li>对数据进行分类时，将其投影到同样的这条直线上，再根据投影点的位置来确定样本的类别。</li>
 </ol>
-<p><strong><font color="red"> 如果用一句话概括LDA思想，即“投影后类内方差最小，类间方差最大”。</font></strong></p>
+<p><strong><font color="red">
+如果用一句话概括LDA思想，即“投影后类内方差最小，类间方差最大”。</font></strong></p>
 <p>假设有红、蓝两类数据，这些数据特征均为二维，如下图所示。我们的目标是将这些数据投影到一维，让每一类相近的数据的投影点尽可能接近，不同类别数据尽可能远，即图中红色和蓝色数据中心之间的距离尽可能大。</p>
-<p><img src="image-20220526135646769.png" alt="image-20220526135646769"></p>
-<p> 从上图直观看出，右图红色数据和蓝色数据在各自的区域来说相对集中，根据数据分布直方图也可看出，所以右图的投影效果好于左图，左图中间直方图部分有明显交集。 以上例子是基于数据是二维的，分类后的投影是一条直线。如果原始数据是多维的，则投影后的分类面是一低维的超平面。</p>
-<h3><span id="22-原理">2.2 原理</span></h3><p> LDA的原理是，将带上标签的数据（点），通过投影的方法，投影到维度更低的空间中，使得投影后的点，会形成按类别区分，一簇一簇的情况，相同类别的点，将会在投影后的空间中更接近。要说明白LDA，首先得弄明白线性分类器(<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Linear_classifier">Linear Classifier</a>)：因为LDA是一种线性分类器。对于<strong>K-分类的一个分类问题，会有K个线性函数</strong>：</p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455464493.png" alt="image"></p>
-<p>当满足条件：对于所有的j，都有Yk &gt; Yj,的时候，我们就说x属于类别k。对于每一个分类，都有一个公式去算一个分值，在所有的公式得到的分值中，找一个最大的就是所属的分类了。</p>
+<figure>
+<img src="image-20220526135646769.png" alt="image-20220526135646769">
+<figcaption aria-hidden="true">image-20220526135646769</figcaption>
+</figure>
+<p>从上图直观看出，右图红色数据和蓝色数据在各自的区域来说相对集中，根据数据分布直方图也可看出，所以右图的投影效果好于左图，左图中间直方图部分有明显交集。
+以上例子是基于数据是二维的，分类后的投影是一条直线。如果原始数据是多维的，则投影后的分类面是一低维的超平面。</p>
+<h3><span id="22-原理">2.2 原理</span></h3>
+<p>LDA的原理是，将带上标签的数据（点），通过投影的方法，投影到维度更低的空间中，使得投影后的点，会形成按类别区分，一簇一簇的情况，相同类别的点，将会在投影后的空间中更接近。要说明白LDA，首先得弄明白线性分类器(<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Linear_classifier">Linear
+Classifier</a>)：因为LDA是一种线性分类器。对于<strong>K-分类的一个分类问题，会有K个线性函数</strong>：</p>
+<figure>
+<img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455464493.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p>当满足条件：对于所有的j，都有Yk &gt;
+Yj,的时候，我们就说x属于类别k。对于每一个分类，都有一个公式去算一个分值，在所有的公式得到的分值中，找一个最大的就是所属的分类了。</p>
 <p>上式实际上就是一种投影，是将一个高维的点投影到一条高维的直线上，LDA最求的目标是，给出一个标注了类别的数据集，投影到了一条直线之后，能够使得点尽量的按类别区分开，当k=2即二分类问题的时候，如下图所示：</p>
 <p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455475507.gif" alt="clip_image002" style="zoom:67%;"></p>
 <p>红色的方形的点为0类的原始点、蓝色的方形点为1类的原始点，经过原点的那条线就是投影的直线，从图上可以清楚的看到，红色的点和蓝色的点被<strong>原点</strong>明显的分开了，这个数据只是随便画的，如果在高维的情况下，看起来会更好一点。下面我来推导一下二分类LDA问题的公式：假设用来区分二分类的直线（投影函数)为：</p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455471885.png" alt="image"></p>
-<p> <strong>LDA分类的一个目标是使得==不同类别==之间的距离越远越好，==同一类别==之中的距离越近越好</strong>，所以我们需要定义几个关键的值。</p>
+<figure>
+<img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455471885.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
+<p><strong>LDA分类的一个目标是使得==不同类别==之间的距离越远越好，==同一类别==之中的距离越近越好</strong>，所以我们需要定义几个关键的值。</p>
 <ul>
 <li><p><strong>==类别i的原始中心点为==</strong>：（Di表示属于类别i的点)</p>
-<p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455478264.png" alt="image"></p>
-</li>
-<li><p>类别i投影后的中心点为：</p>
-</li>
+<figure>
+<img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455478264.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure></li>
+<li><p>类别i投影后的中心点为：</p></li>
 </ul>
-<p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455488231.png" alt="image"></p>
+<figure>
+<img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455488231.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
 <ul>
 <li><strong>==衡量类别i投影后，类别点之间的分散程度（方差）为==</strong>：</li>
 </ul>
-<p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455487326.png" alt="image"></p>
+<figure>
+<img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455487326.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
 <ul>
 <li><strong>==最终我们可以得到一个下面的公式，表示LDA投影到w后的损失函数==</strong>：</li>
 </ul>
-<p><img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455484785.png" alt="image"></p>
+<figure>
+<img src="https://images.cnblogs.com/cnblogs_com/LeftNotEasy/201101/201101081455484785.png" alt="image">
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
 <p>我们<strong>分类的目标是，使得类别内的点距离越近越好（集中），类别间的点越远越好。</strong>分母表示每一个类别内的方差之和，方差越大表示一个类别内的点越分散，分子为两个类别各自的中心点的距离的平方，我们最大化J(w)就可以求出最优的w了。想要求出最优的w，可以使用拉格朗日乘子法，但是现在我们得到的J(w)里面，w是不能被单独提出来的，我们就得想办法将w单独提出来。</p>
-<p> 我们定义一个<strong>投影前的==各类别分散程度的矩阵==</strong>，这个矩阵看起来有一点麻烦，其实意思是，如果某一个分类的<strong>输入点集Di里面的点距离这个分类的中心店mi越近</strong>，则Si里面元素的值就越小，如果分类的点都紧紧地围绕着mi，则Si里面的元素值越更接近0.</p>
-<script type="math/tex; mode=display">
-S_{i}=\sum_{x \in D_{i}}\left(x-m_{i}\right)\left(x-m_{i}\right)^{T}</script><p>带入 $\mathrm{Si}$, 将 $\mathrm{J}(\mathrm{w})$ 分母化为:</p>
-<p>$\tilde{s}<em>{i}=\sum</em>{x \in D<em>{i}}\left(w^{T} x-w^{T} m</em>{i}\right)^{2}=\sum<em>{x \in D</em>{i}} w^{T}\left(x-m<em>{i}\right)\left(x-m</em>{i}\right)^{T} w=w^{T} S_{i} w$</p>
-<script type="math/tex; mode=display">{\tilde{S_{1}}}^{2}+{\tilde{S_{2}}}^{2}=w^{T}\left(S_{1}+S_{2}\right) w=w^{T} S_{w} w</script><p>同样的将 $\mathrm{J}(\mathrm{w})$ 分子化为:</p>
-<script type="math/tex; mode=display">
-\left|\widetilde{m_{1}}-\widetilde{m_{2}}\right|^{2}=w^{T}\left(m_{1}-m_{2}\right)\left(m_{1}-m_{2}\right)^{T} w=w^{T} S_{B} w</script><p>这样<strong>损失函数</strong>可以化成下面的形式:</p>
-<script type="math/tex; mode=display">
-J(w)=\frac{w^{T} S_{B} w}{w^{T} S_{w} w}</script><p>这样就可以用最喜欢的<strong>==拉格朗日乘子法==</strong>了, 但是还有一个问题, 如果分子、分母是都可以取任意值的, 那就会 使得有无穷解, 我们将分母限制为长度为 1, 并作为拉格朗日乘子法的限制条件, 带入得到:</p>
-<script type="math/tex; mode=display">
+<p>我们定义一个<strong>投影前的==各类别分散程度的矩阵==</strong>，这个矩阵看起来有一点麻烦，其实意思是，如果某一个分类的<strong>输入点集Di里面的点距离这个分类的中心店mi越近</strong>，则Si里面元素的值就越小，如果分类的点都紧紧地围绕着mi，则Si里面的元素值越更接近0.
+<span class="math display">\[
+S_{i}=\sum_{x \in D_{i}}\left(x-m_{i}\right)\left(x-m_{i}\right)^{T}
+\]</span> 带入 <span class="math inline">\(\mathrm{Si}\)</span>, 将
+<span class="math inline">\(\mathrm{J}(\mathrm{w})\)</span>
+分母化为:</p>
+<p><span class="math inline">\(\tilde{s}_{i}=\sum_{x \in
+D_{i}}\left(w^{T} x-w^{T} m_{i}\right)^{2}=\sum_{x \in D_{i}}
+w^{T}\left(x-m_{i}\right)\left(x-m_{i}\right)^{T} w=w^{T} S_{i}
+w\)</span></p>
+<p><span class="math display">\[{\tilde{S_{1}}}^{2}+{\tilde{S_{2}}}^{2}=w^{T}\left(S_{1}+S_{2}\right)
+w=w^{T} S_{w} w\]</span></p>
+<p>同样的将 <span class="math inline">\(\mathrm{J}(\mathrm{w})\)</span>
+分子化为: <span class="math display">\[
+\left|\widetilde{m_{1}}-\widetilde{m_{2}}\right|^{2}=w^{T}\left(m_{1}-m_{2}\right)\left(m_{1}-m_{2}\right)^{T}
+w=w^{T} S_{B} w
+\]</span> 这样<strong>损失函数</strong>可以化成下面的形式: <span class="math display">\[
+J(w)=\frac{w^{T} S_{B} w}{w^{T} S_{w} w}
+\]</span> 这样就可以用最喜欢的<strong>==拉格朗日乘子法==</strong>了,
+但是还有一个问题, 如果分子、分母是都可以取任意值的, 那就会 使得有无穷解,
+我们将分母限制为长度为 1, 并作为拉格朗日乘子法的限制条件, 带入得到:
+<span class="math display">\[
 \begin{aligned}
-&c(w)=w^{T} S_{B} w-\lambda\left(w^{T} S_{w} w-1\right) \\
-&\Rightarrow \frac{d c}{d w}=2 S_{B} w-2 \lambda S_{w} w=0 \\
-&\Rightarrow S_{B} w=\lambda S_{w} w
-\end{aligned}</script><p><strong>==这样的式子就是一个求特征值的问题了。==</strong><br>对于 $N(N&gt;2)$ 分类的问题, 我就直接写出下面的结论了:</p>
-<script type="math/tex; mode=display">
+&amp;c(w)=w^{T} S_{B} w-\lambda\left(w^{T} S_{w} w-1\right) \\
+&amp;\Rightarrow \frac{d c}{d w}=2 S_{B} w-2 \lambda S_{w} w=0 \\
+&amp;\Rightarrow S_{B} w=\lambda S_{w} w
+\end{aligned}
+\]</span> <strong>==这样的式子就是一个求特征值的问题了。==</strong> 对于
+<span class="math inline">\(N(N&gt;2)\)</span> 分类的问题,
+我就直接写出下面的结论了: <span class="math display">\[
 \begin{aligned}
-&S_{W}=\sum_{i=1}^{c} S_{i} \\
-&S_{B}=\sum_{i=1}^{c} n_{i}\left(m_{i}-m\right)\left(m_{i}-m\right)^{T} \\
-&S_{B} w_{i}=\lambda S_{w} w_{i}
-\end{aligned}</script><p>这同样是一个求特征值的问题，我们求出的第i大的特征向量，就是对应的Wi了。</p>
+&amp;S_{W}=\sum_{i=1}^{c} S_{i} \\
+&amp;S_{B}=\sum_{i=1}^{c}
+n_{i}\left(m_{i}-m\right)\left(m_{i}-m\right)^{T} \\
+&amp;S_{B} w_{i}=\lambda S_{w} w_{i}
+\end{aligned}
+\]</span>
+这同样是一个求特征值的问题，我们求出的第i大的特征向量，就是对应的Wi了。</p>
 <blockquote>
-<p>  这里想多谈谈特征值，特征值在纯数学、量子力学、固体力学、计算机等等领域都有广泛的应用，特征值表示的是矩阵的性质，当我们取到矩阵的前N个最大的特征值的时候，我们可以说提取到的矩阵主要的成分（这个和之后的PCA相关，但是不是完全一样的概念）。在机器学习领域，不少的地方都要用到特征值的计算，比如说图像识别、pagerank、LDA、还有之后将会提到的PCA等等。</p>
+<p>这里想多谈谈特征值，特征值在纯数学、量子力学、固体力学、计算机等等领域都有广泛的应用，特征值表示的是矩阵的性质，当我们取到矩阵的前N个最大的特征值的时候，我们可以说提取到的矩阵主要的成分（这个和之后的PCA相关，但是不是完全一样的概念）。在机器学习领域，不少的地方都要用到特征值的计算，比如说图像识别、pagerank、LDA、还有之后将会提到的PCA等等。</p>
 </blockquote>
 <p><strong>优缺点</strong></p>
-<div class="table-container">
 <table>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 90%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>优缺点</th>
 <th>简要说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>优点</td>
-<td>1. 可以使用类别的先验知识； 2. 以标签、类别衡量差异性的有监督降维方式，相对于PCA的模糊性，其目的更明确，更能反映样本间的差异；</td>
+<td>1. 可以使用类别的先验知识； 2.
+以标签、类别衡量差异性的有监督降维方式，相对于PCA的模糊性，其目的更明确，更能反映样本间的差异；</td>
 </tr>
-<tr>
+<tr class="even">
 <td>缺点</td>
-<td>1. LDA不适合对非高斯分布样本进行降维； 2. <strong>LDA降维最多降到分类数k-1维</strong>； 3. LDA在样本分类信息依赖方差而不是均值时，降维效果不好； 4. LDA可能过度拟合数据。</td>
+<td>1. LDA不适合对非高斯分布样本进行降维； 2.
+<strong>LDA降维最多降到分类数k-1维</strong>； 3.
+LDA在样本分类信息依赖方差而不是均值时，降维效果不好； 4.
+LDA可能过度拟合数据。</td>
 </tr>
 </tbody>
 </table>
-</div>
-<h2><span id="三-t-sne-高维数据可视化">三、t-SNE 高维数据可视化</span></h2><blockquote>
-<p>  高维数据可视化之t-SNE算法🌈:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/57937096">https://zhuanlan.zhihu.com/p/57937096</a></p>
+<h2><span id="三-t-sne-高维数据可视化">三、t-SNE 高维数据可视化</span></h2>
+<blockquote>
+<p>高维数据可视化之t-SNE算法🌈:https://zhuanlan.zhihu.com/p/57937096</p>
 </blockquote>
-<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens van der Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
-<h4><span id="31-t-sne数据算法的目的">3.1 t-SNE数据算法的目的</span></h4><p><strong>主要是将数据从高维数据转到低维数据，并在低维空间里也保持其在高维空间里所携带的信息（比如高维空间里有的清晰的分布特征，转到低维度时也依然存在）。</strong></p>
+<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens
+van der
+Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
+<h4><span id="31-t-sne数据算法的目的">3.1 t-SNE数据算法的目的</span></h4>
+<p><strong>主要是将数据从高维数据转到低维数据，并在低维空间里也保持其在高维空间里所携带的信息（比如高维空间里有的清晰的分布特征，转到低维度时也依然存在）。</strong></p>
 <p><strong>==t-SNE将欧氏距离距离转换为条件概率，来表达点与点之间的相似度，再优化两个分布之间的距离-KL散度，从而保证点与点之间的分布概率不变。==</strong></p>
-<h4><span id="32-sne原理">3.2 SNE原理</span></h4><p>$S N E$ 是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>, 主要包括下面两个步骤:</p>
-<ol>
-<li>通过在高维空间中构建数据点之间的概率分布 $P$, 使得相似的数据点有更高的概率被选择, 而 不相似的数据点有较低的概率被选择;</li>
-<li>然后在低维空间里重构这些点的概率分布 $Q$, 使得这两个概率分布尽可能相似。</li>
-</ol>
-<p>令输入空间是 $X \in \mathbb{R}^{n}$, 输出空间为 $Y \in \mathbb{R}^{t}(t \ll n)$ 。不妨假设含有 $m$ 个样本数据 $\left{x^{(1)}, x^{(2)}, \cdots, x^{(m)}\right}$, 其中 $x^{(i)} \in X$, 降维后的数据为 $\left{y^{(1)}, y^{(2)}, \cdots, y^{(m)}\right}, y^{(i)} \in Y$ 。 $S N E$ 是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>, 即首先是计算条件概 率 $p<em>{j \mid i}$, 其正比于 $x^{(i)}$ 和 $x^{(j)}$ 之间的相似度, $p</em>{j \mid i}$ 的计算公式为:</p>
-<script type="math/tex; mode=display">
-p_{j \mid i}=\frac{\exp \left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^{2}}{2 \sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp \left(-\frac{\left\|x^{(i)}-x^{(k)}\right\|^{2}}{2 \sigma_{i}^{2}}\right)}</script><p>在这里引入了一个参数 $\sigma<em>{i}$, 对于不同的数据点 $x^{(i)}$ 取值亦不相同, 因为我们关注的是不同数据 点两两之间的相似度, 故可设置 $p</em>{i \mid i}=0$ 。对于低维度下的数据点 $y^{(i)}$, 通过条件概率 $q<em>{j \mid i}$ 来 刻画 $y^{(i)}$ 与 $y^{(j)}$ 之间的相似度, $q</em>{j \mid i}$ 的计算公式为:</p>
-<script type="math/tex; mode=display">
-q_{j \mid i}=\frac{\exp \left(-\left\|y^{(i)}-y^{(j)}\right\|^{2}\right)}{\sum_{k \neq i} \exp \left(-\left\|y^{(i)}-y^{(k)}\right\|^{2}\right)}</script><p>同理, 设置 $q<em>{i \mid i}=0$ 。<br>如果降维的效果比较好, 局部特征保留完整, 那么有 $p</em>{i \mid j}=q_{i \mid j}$ 成立, 因此通过优化两个分布之 间的 <strong>$K L$ 散度构造出的损失函数为</strong>:</p>
-<script type="math/tex; mode=display">
-C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} \| Q_{i}\right)=\sum_{i} \sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}</script><p>这里的 $P<em>{i}$ 表示在给定高维数据点 $x^{(i)}$ 时, 其他所有数据点的条件概率分布; $Q</em>{i}$ 则表示在给定 低维数据点 $y^{(i)}$ 时, 其他所有数据点的条件概率分布。从损失函数可以看出, 当 $p<em>{j \mid i}$ 较大 $q</em>{j \mid i}$ 较小时, 惩罚较高; 而 $p<em>{j \mid i}$ 较小 $q</em>{j \mid i}$ 较大时, 惩罚较低。换句话说就是高维空间中两个数据点距 离较近时, 若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之, 高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近, 将得到一个很低的惩罚值。也就是说, <strong>$S N E$ 的 损失函数更关注于局部特征, 而忽视了全局结构</strong>。</p>
-<h4><span id="33-目标函数求解">3.3 目标函数求解</span></h4><h4><span id="34-对称性-sne">3.4 对称性-SNE</span></h4><p><strong>优化 <img src="https://www.zhihu.com/equation?tex=KL%28P%5CVert+Q%29" alt="[公式]"> 的一种替换思路是使用联合概率分布来替换条件概率分布</strong>，即 <img src="https://www.zhihu.com/equation?tex=P" alt="[公式]"> 是高维空间里数据点的联合概率分布， <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 是低维空间里数据点的联合概率分布，此时的损失函数为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=C%28y%5E%7B%28i%29%7D%29%3DKL%28P%5CVert+Q%29%3D%5Csum%5Climits_i%5Csum%5Climits_jp_%7Bij%7D%5Clog%5Cdfrac%7Bp_%7Bij%7D%7D%7Bq_%7Bij%7D%7D%5C%5C" alt="[公式]"></p>
-<p>同样的 <img src="https://www.zhihu.com/equation?tex=p_%7Bii%7D%3Dq_%7Bii%7D%3D0" alt="[公式]"> ，这种改进下的 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 称为对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> ，因为它的先验假设为对 <img src="https://www.zhihu.com/equation?tex=%5Cforall+i" alt="[公式]"> 有 <img src="https://www.zhihu.com/equation?tex=p_%7Bij%7D%3Dp_%7Bji%7D%2Cq_%7Bij%7D%3Dq_%7Bji%7D" alt="[公式]"> 成立，故概率分布可以改写成：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p_%7Bij%7D%3D%5Cdfrac%7Bexp%28-%5Cfrac%7B%5CVert+x%5E%7B%28i%29%7D-x%5E%7B%28j%29%7D%5CVert%5E2%7D%7B2%5Csigma%5E2%7D%29%7D%7B%5Csum%5Climits_%7Bk%5Cneq+l%7Dexp%28-%5Cfrac%7B%5CVert+x%5E%7B%28k%29%7D-x%5E%7B%28l%29%7D+%5CVert%5E2%7D%7B2%5Csigma%5E2%7D%29%7D%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+q_%7Bij%7D%3D%5Cdfrac%7Bexp%28-%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%7D%7B%5Csum%5Climits_%7Bk%5Cneq+l%7Dexp%28-%5CVert+y%5E%7B%28k%29%7D-y%5E%7B%28l%29%7D+%5CVert%5E2%29%7D%5C%5C" alt="[公式]"></p>
-<p>这种改进方法使得表达式简洁很多，但是容易受到异常点数据的影响，为了解决这个问题通过对联合概率分布定义修正为： <img src="https://www.zhihu.com/equation?tex=p_%7Bij%7D%3D%5Cfrac%7Bp_%7Bj%7Ci%7D%2Bp_%7Bi%7Cj%7D%7D%7B2%7D" alt="[公式]"> ，这保证了 <img src="https://www.zhihu.com/equation?tex=%5Csum%5Climits_jp_%7Bij%7D+%5Cgt+%5Cfrac%7B1%7D%7B2m%7D" alt="[公式]"> ，使得每个点对于损失函数都会有贡献。对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 最大的优点是简化了梯度计算，梯度公式改写为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cdfrac%7B%5Cpartial+C%28y%5E%7B%28i%29%7D%29%7D%7B%5Cpartial+y%5E%7B%28i%29%7D%7D%3D4%5Csum%5Climits_j%28p_%7Bij%7D-q_%7Bij%7D%29%28y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D%29%5C%5C" alt="[公式]"></p>
+<h4><span id="32-sne原理">3.2 SNE原理</span></h4>
+<p><span class="math inline">\(S N E\)</span>
+是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>,
+主要包括下面两个步骤: 1. 通过在高维空间中构建数据点之间的概率分布 <span class="math inline">\(P\)</span>, 使得相似的数据点有更高的概率被选择, 而
+不相似的数据点有较低的概率被选择; 2.
+然后在低维空间里重构这些点的概率分布 <span class="math inline">\(Q\)</span>, 使得这两个概率分布尽可能相似。</p>
+<p>令输入空间是 <span class="math inline">\(X \in
+\mathbb{R}^{n}\)</span>, 输出空间为 <span class="math inline">\(Y \in
+\mathbb{R}^{t}(t \ll n)\)</span> 。不妨假设含有 <span class="math inline">\(m\)</span> 个样本数据 <span class="math inline">\(\left\{x^{(1)}, x^{(2)}, \cdots,
+x^{(m)}\right\}\)</span>, 其中 <span class="math inline">\(x^{(i)} \in
+X\)</span>, 降维后的数据为 <span class="math inline">\(\left\{y^{(1)},
+y^{(2)}, \cdots, y^{(m)}\right\}, y^{(i)} \in Y\)</span> 。 <span class="math inline">\(S N E\)</span>
+是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>,
+即首先是计算条件概 率 <span class="math inline">\(p_{j \mid i}\)</span>,
+其正比于 <span class="math inline">\(x^{(i)}\)</span> 和 <span class="math inline">\(x^{(j)}\)</span> 之间的相似度, <span class="math inline">\(p_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+p_{j \mid i}=\frac{\exp
+\left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp
+\left(-\frac{\left\|x^{(i)}-x^{(k)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}
+\]</span> 在这里引入了一个参数 <span class="math inline">\(\sigma_{i}\)</span>, 对于不同的数据点 <span class="math inline">\(x^{(i)}\)</span> 取值亦不相同,
+因为我们关注的是不同数据 点两两之间的相似度, 故可设置 <span class="math inline">\(p_{i \mid i}=0\)</span> 。对于低维度下的数据点
+<span class="math inline">\(y^{(i)}\)</span>, 通过条件概率 <span class="math inline">\(q_{j \mid i}\)</span> 来 刻画 <span class="math inline">\(y^{(i)}\)</span> 与 <span class="math inline">\(y^{(j)}\)</span> 之间的相似度, <span class="math inline">\(q_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+q_{j \mid i}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^{2}\right)}{\sum_{k \neq i} \exp
+\left(-\left\|y^{(i)}-y^{(k)}\right\|^{2}\right)}
+\]</span> 同理, 设置 <span class="math inline">\(q_{i \mid i}=0\)</span>
+。 如果降维的效果比较好, 局部特征保留完整, 那么有 <span class="math inline">\(p_{i \mid j}=q_{i \mid j}\)</span> 成立,
+因此通过优化两个分布之 间的 <strong><span class="math inline">\(K
+L\)</span> 散度构造出的损失函数为</strong>: <span class="math display">\[
+C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} \| Q_{i}\right)=\sum_{i}
+\sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}
+\]</span> 这里的 <span class="math inline">\(P_{i}\)</span>
+表示在给定高维数据点 <span class="math inline">\(x^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布; <span class="math inline">\(Q_{i}\)</span>
+则表示在给定 低维数据点 <span class="math inline">\(y^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布。从损失函数可以看出, 当 <span class="math inline">\(p_{j \mid i}\)</span> 较大 <span class="math inline">\(q_{j \mid i}\)</span> 较小时, 惩罚较高; 而 <span class="math inline">\(p_{j \mid i}\)</span> 较小 <span class="math inline">\(q_{j \mid i}\)</span> 较大时,
+惩罚较低。换句话说就是高维空间中两个数据点距 离较近时,
+若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之,
+高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近,
+将得到一个很低的惩罚值。也就是说, <strong><span class="math inline">\(S
+N E\)</span> 的 损失函数更关注于局部特征,
+而忽视了全局结构</strong>。</p>
+<h4><span id="33-目标函数求解">3.3 目标函数求解</span></h4>
+<h4><span id="34-对称性-sne">3.4 对称性-SNE</span></h4>
+<p><strong>优化 <img src="https://www.zhihu.com/equation?tex=KL%28P%5CVert+Q%29" alt="[公式]">
+的一种替换思路是使用联合概率分布来替换条件概率分布</strong>，即 <img src="https://www.zhihu.com/equation?tex=P" alt="[公式]">
+是高维空间里数据点的联合概率分布， <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]">
+是低维空间里数据点的联合概率分布，此时的损失函数为：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=C%28y%5E%7B%28i%29%7D%29%3DKL%28P%5CVert+Q%29%3D%5Csum%5Climits_i%5Csum%5Climits_jp_%7Bij%7D%5Clog%5Cdfrac%7Bp_%7Bij%7D%7D%7Bq_%7Bij%7D%7D%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>同样的 <img src="https://www.zhihu.com/equation?tex=p_%7Bii%7D%3Dq_%7Bii%7D%3D0" alt="[公式]"> ，这种改进下的 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 称为对称
+<img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]">
+，因为它的先验假设为对 <img src="https://www.zhihu.com/equation?tex=%5Cforall+i" alt="[公式]"> 有
+<img src="https://www.zhihu.com/equation?tex=p_%7Bij%7D%3Dp_%7Bji%7D%2Cq_%7Bij%7D%3Dq_%7Bji%7D" alt="[公式]"> 成立，故概率分布可以改写成：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p_%7Bij%7D%3D%5Cdfrac%7Bexp%28-%5Cfrac%7B%5CVert+x%5E%7B%28i%29%7D-x%5E%7B%28j%29%7D%5CVert%5E2%7D%7B2%5Csigma%5E2%7D%29%7D%7B%5Csum%5Climits_%7Bk%5Cneq+l%7Dexp%28-%5Cfrac%7B%5CVert+x%5E%7B%28k%29%7D-x%5E%7B%28l%29%7D+%5CVert%5E2%7D%7B2%5Csigma%5E2%7D%29%7D%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+%5C+q_%7Bij%7D%3D%5Cdfrac%7Bexp%28-%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%7D%7B%5Csum%5Climits_%7Bk%5Cneq+l%7Dexp%28-%5CVert+y%5E%7B%28k%29%7D-y%5E%7B%28l%29%7D+%5CVert%5E2%29%7D%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>这种改进方法使得表达式简洁很多，但是容易受到异常点数据的影响，为了解决这个问题通过对联合概率分布定义修正为：
+<img src="https://www.zhihu.com/equation?tex=p_%7Bij%7D%3D%5Cfrac%7Bp_%7Bj%7Ci%7D%2Bp_%7Bi%7Cj%7D%7D%7B2%7D" alt="[公式]"> ，这保证了 <img src="https://www.zhihu.com/equation?tex=%5Csum%5Climits_jp_%7Bij%7D+%5Cgt+%5Cfrac%7B1%7D%7B2m%7D" alt="[公式]"> ，使得每个点对于损失函数都会有贡献。对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]">
+最大的优点是简化了梯度计算，梯度公式改写为：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cdfrac%7B%5Cpartial+C%28y%5E%7B%28i%29%7D%29%7D%7B%5Cpartial+y%5E%7B%28i%29%7D%7D%3D4%5Csum%5Climits_j%28p_%7Bij%7D-q_%7Bij%7D%29%28y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D%29%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>研究表明，对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 的效果差不多，有时甚至更好一点。</p>
-<h4><span id="35-t-sne">3.5 t-SNE</span></h4><p><img src="https://www.zhihu.com/equation?tex=t%5Ctext%7B-%7DSNE" alt="[公式]"> 在对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 的改进是，首先<strong>通过在高维空间中使用高斯分布将距离转换为概率分布，然后在低维空间中，使用更加偏重长尾分布的方式来将距离转换为概率分布</strong>，使得高维度空间中的中低等距离在映射后能够有一个较大的距离。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img"></p>
-<p>从图中可以看到，在没有异常点时， <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 分布与高斯分布的拟合结果基本一致。而在第二张图中，出现了部分异常点，由于高斯分布的尾部较低，对异常点比较敏感，为了照顾这些异常点，高斯分布的拟合结果偏离了大多数样本所在位置，方差也较大。<strong>相比之下， <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 分布的尾部较高，对异常点不敏感，保证了其鲁棒性，因此拟合结果更为合理，较好的捕获了数据的全局特征。</strong></p>
-<p>使用 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 分布替换高斯分布之后 <img src="https://www.zhihu.com/equation?tex=q_%7Bij+%7D" alt="[公式]"> 的变化如下：</p>
-<p><img src="https://www.zhihu.com/equation?tex=q_%7Bij%7D%3D%5Cdfrac%7B%281%2B%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%5E%7B-1%7D%7D%7B%5Csum%5Climits_%7Bk%5Cneq+l%7D%281%2B%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%5E%7B-1%7D%7D%5C%5C" alt="[公式]"></p>
-<p>此外，随着自由度的逐渐增大， <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多，优化后的梯度公式如下：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cdfrac%7B%5Cpartial+C%28y%5E%7B%28i%29%7D%29%7D%7B%5Cpartial+y%5E%7B%28i%29%7D%7D%3D4%5Csum%5Climits_%7Bj%7D%28p_%7Bij%7D-q_%7Bij%7D%29%28y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D%29%281%2B%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%5E%7B-1%7D%5C%5C" alt="[公式]"></p>
+<h4><span id="35-t-sne">3.5 t-SNE</span></h4>
+<p><img src="https://www.zhihu.com/equation?tex=t%5Ctext%7B-%7DSNE" alt="[公式]"> 在对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]">
+的改进是，首先<strong>通过在高维空间中使用高斯分布将距离转换为概率分布，然后在低维空间中，使用更加偏重长尾分布的方式来将距离转换为概率分布</strong>，使得高维度空间中的中低等距离在映射后能够有一个较大的距离。</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>从图中可以看到，在没有异常点时， <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
+分布与高斯分布的拟合结果基本一致。而在第二张图中，出现了部分异常点，由于高斯分布的尾部较低，对异常点比较敏感，为了照顾这些异常点，高斯分布的拟合结果偏离了大多数样本所在位置，方差也较大。<strong>相比之下，
+<img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
+分布的尾部较高，对异常点不敏感，保证了其鲁棒性，因此拟合结果更为合理，较好的捕获了数据的全局特征。</strong></p>
+<p>使用 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
+分布替换高斯分布之后 <img src="https://www.zhihu.com/equation?tex=q_%7Bij+%7D" alt="[公式]">
+的变化如下：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=q_%7Bij%7D%3D%5Cdfrac%7B%281%2B%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%5E%7B-1%7D%7D%7B%5Csum%5Climits_%7Bk%5Cneq+l%7D%281%2B%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%5E%7B-1%7D%7D%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>此外，随着自由度的逐渐增大， <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
+分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多，优化后的梯度公式如下：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cdfrac%7B%5Cpartial+C%28y%5E%7B%28i%29%7D%29%7D%7B%5Cpartial+y%5E%7B%28i%29%7D%7D%3D4%5Csum%5Climits_%7Bj%7D%28p_%7Bij%7D-q_%7Bij%7D%29%28y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D%29%281%2B%5CVert+y%5E%7B%28i%29%7D-y%5E%7B%28j%29%7D+%5CVert%5E2%29%5E%7B-1%7D%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>总的来说， <img src="https://www.zhihu.com/equation?tex=t%5Ctext%7B-%7DSNE" alt="[公式]"> 的梯度更新具有以下两个优势：</p>
 <ul>
 <li><strong>对于低维空间中不相似的数据点，用一个较小的距离会产生较大的梯度让这些数据点排斥开来</strong>；</li>
 <li><strong>这种排斥又不会无限大，因此避免了不相似的数据点距离太远</strong>。</li>
 </ul>
-<h4><span id="总结">总结：</span></h4><p><img src="https://www.zhihu.com/equation?tex=t%5Ctext%7B-%7D+SNE" alt="[公式]"> 算法其实就是在 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 算法的基础上增加了两个改进：</p>
+<h4><span id="总结">总结：</span></h4>
+<p><img src="https://www.zhihu.com/equation?tex=t%5Ctext%7B-%7D+SNE" alt="[公式]"> 算法其实就是在 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]">
+算法的基础上增加了两个改进：</p>
 <ul>
-<li>把 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 修正为对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> ，提高了计算效率，效果稍有提升；</li>
-<li>在低维空间中采用了 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题，优化了 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> 过于关注局部特征而忽略全局特征的问题 。</li>
+<li>把 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]">
+修正为对称 <img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]"> ，提高了计算效率，效果稍有提升；</li>
+<li>在低维空间中采用了 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
+分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题，优化了
+<img src="https://www.zhihu.com/equation?tex=SNE" alt="[公式]">
+过于关注局部特征而忽略全局特征的问题 。</li>
 </ul>
-<h2><span id="四-autoencoder">四、AutoEncoder</span></h2><blockquote>
+<h2><span id="四-autoencoder">四、AutoEncoder</span></h2>
+<blockquote>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80377698">【全】一文带你了解自编码器（<em>AutoEncoder</em>）</a></li>
 </ul>
 </blockquote>
-<p>理解为：（下图）高维数据（左测蓝色）通过某种网络变成低位数据（中间红色）后，又经过某种网络变回高维数据（右侧蓝色）。数据经过该模型前后没有变化，而中间的低维数据完全具有输入输出的高维数据的全部信息，所以可以用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=低维数据&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;157482881&quot;}">低维数据</a>代表高维数据。</p>
-<p>之所以叫AutoEncoder，而不叫AutoEncoderDecoder，是因为训练好之后只有encoder部分有用，<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=decoder&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;157482881&quot;}">decoder</a>部分就不用了。</p>
-<p><img src="https://pic2.zhimg.com/v2-47f6429e5ffb379205ba0bcb0db399d1_b.jpg" alt="img"></p>
+<p>理解为：（下图）高维数据（左测蓝色）通过某种网络变成低位数据（中间红色）后，又经过某种网络变回高维数据（右侧蓝色）。数据经过该模型前后没有变化，而中间的低维数据完全具有输入输出的高维数据的全部信息，所以可以用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=低维数据&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22157482881%22%7D">低维数据</a>代表高维数据。</p>
+<p>之所以叫AutoEncoder，而不叫AutoEncoderDecoder，是因为训练好之后只有encoder部分有用，<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=decoder&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22157482881%22%7D">decoder</a>部分就不用了。</p>
+<figure>
+<img src="https://pic2.zhimg.com/v2-47f6429e5ffb379205ba0bcb0db399d1_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>进入深度学习的思路之后，编码的网络是开放的，可以自由设计的。一个思路是端到端，将网络的输出设为你任务要的结果（如类别、序列等），<strong>过程中的某层嵌入都可以作为降维的低维结果</strong>。当然，这种低维结果其实是模型的副产品，因为任务已经解决。比如bert模型得到（中文的）字嵌入。</p>
-<h4><span id="优点">优点：</span></h4><ul>
+<h4><span id="优点">优点：</span></h4>
+<ul>
 <li>能够学习到非线性特性</li>
 <li>降低数据维度</li>
 </ul>
-<h4><span id="缺点">缺点：</span></h4><ul>
+<h4><span id="缺点">缺点：</span></h4>
+<ul>
 <li>训练的<strong>计算成本高</strong></li>
 <li><strong>可解释性较差</strong></li>
 <li>背后的数学知识复杂</li>

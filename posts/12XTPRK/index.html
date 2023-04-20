@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="支持向量机 SVM SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的">
+    <meta name="description" content="支持向量机 SVM  SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（5）SVM">
 <meta property="og:url" content="https://powerlzy.github.io/posts/12XTPRK/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="支持向量机 SVM SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的">
+<meta property="og:description" content="支持向量机 SVM  SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
 <meta property="og:image" content="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg">
@@ -172,7 +172,14 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">支持向量机 SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、支持向量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 线性可分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 最大间隔超平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 支持向量 【距离超平面最近的点】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 SVM 最优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 硬间隔线性SVM的基本型：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、硬间隔线性SVM对偶型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（1）写成约束优化问题的基本型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（2） 构建基本型的拉格朗日函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（3）交换min, max顺序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 硬性间隔线性SVM的对偶型：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（4）利用KKT条件得到主问题的最优解</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、SVM优化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、软间隔线性SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">软间隔核化SVM基本型：（合页损失函数）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">回顾：对数几率回归：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、核函数【对偶性】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.1 线性不可分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.2 核函数的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.3 常见核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.4 如何选择核函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.5 核方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">核化LR [非线性]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.6 支持向量回归 SVR &#x3D; ？核化岭回归？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">SVR与一般线性回归的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.7 多分类 SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.7.1 多分类问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">六、优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.1 优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">SVM Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1、原理：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2、SVM与LR最大区别，LR和SVM对于outlier的敏感程度分析，逻辑回归与SVM的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3、SVM如何解决多分类问题、可以做回归吗，怎么做？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4、机器学习有很多关于核函数的说法，核函数的定义和作用是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5、Linear SVM 和 LR 有什么异同？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">SVM和LR相同点：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text"> SVM和LR的区别：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6、支持向量机(SVM)是否适合大规模数据？【速度】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7、SVM和逻辑斯特回归对同一样本A进行训练，如果某类中增加一些数据点，那么原来的决策边界分别会怎么变化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">8、各种机器学习的应用场景分别是什么？例如，k近邻,贝叶斯，决策树，svm，逻辑斯蒂回归和最大熵模型。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">9、SVM与感知器的联系和优缺点比较</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text"> 感知机与SVM区别</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">支持向量机 SVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、支持向量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 线性可分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 最大间隔超平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 支持向量
+【距离超平面最近的点】</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 SVM 最优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
+硬间隔线性SVM的基本型：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、硬间隔线性SVM对偶型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（1）写成约束优化问题的基本型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（2） 构建基本型的拉格朗日函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（3）交换min, max顺序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
+硬性间隔线性SVM的对偶型：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（4）利用KKT条件得到主问题的最优解</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、SVM优化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、软间隔线性SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">软间隔核化SVM基本型：（合页损失函数）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、核函数【对偶性】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.1 线性不可分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.2 核函数的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.3 常见核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.4 如何选择核函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.5 核方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">核化LR [非线性]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.6 支持向量回归 SVR &#x3D;
+？核化岭回归？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">SVR与一般线性回归的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.7 多分类 SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.7.1 多分类问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">六、优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.1 优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6.2 缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">SVM Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1、原理：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2、SVM与LR最大区别，LR和SVM对于outlier的敏感程度分析，逻辑回归与SVM的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3、SVM如何解决多分类问题、可以做回归吗，怎么做？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4、机器学习有很多关于核函数的说法，核函数的定义和作用是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5、Linear SVM 和 LR
+有什么异同？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">SVM和LR相同点：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">
+SVM和LR的区别：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6、支持向量机(SVM)是否适合大规模数据？【速度】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7、SVM和逻辑斯特回归对同一样本A进行训练，如果某类中增加一些数据点，那么原来的决策边界分别会怎么变化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">8、各种机器学习的应用场景分别是什么？例如，k近邻,贝叶斯，决策树，svm，逻辑斯蒂回归和最大熵模型。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">9、SVM与感知器的联系和优缺点比较</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">
+感知机与SVM区别</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,18 +194,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -306,14 +313,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>15k</span>
+      <span>16k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>27 分钟</span>
+      <span>28 分钟</span>
     </span>
 </div>
 
@@ -324,240 +331,417 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="支持向量机-svm">支持向量机 SVM</span></h2><p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+        <h2><span id="支持向量机-svm">支持向量机 SVM</span></h2>
+<p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
 <span id="more"></span>
-<h2><span id="一-支持向量">一、支持向量</span></h2><blockquote>
+<h2><span id="一-支持向量">一、支持向量</span></h2>
+<blockquote>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/52168498">https://zhuanlan.zhihu.com/p/52168498</a></p>
-<p>【机器学习】支持向量机 SVM（非常详细）:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77750026">https://zhuanlan.zhihu.com/p/77750026</a></p>
-<p><strong>KKT条件</strong>：<strong>判断不等式约束问题是否为最优解的必要条件</strong></p>
-</li>
+<li>https://zhuanlan.zhihu.com/p/52168498</li>
 </ul>
+<p>【机器学习】支持向量机
+SVM（非常详细）:https://zhuanlan.zhihu.com/p/77750026</p>
+<p><strong>KKT条件</strong>：<strong>判断不等式约束问题是否为最优解的必要条件</strong></p>
 </blockquote>
-<h3><span id="11-线性可分">1.1 线性可分</span></h3><p>首先我们先来了解下什么是线性可分。</p>
+<h3><span id="11-线性可分">1.1 线性可分</span></h3>
+<p>首先我们先来了解下什么是线性可分。</p>
 <p><img src="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg" alt="img" style="zoom: 33%;"></p>
-<p>在二维空间上, 两类点被一条直线完全分开叫做线性可分。严格的数学定义是:<br>$D_0$ 和 $D_1$ 是 $\mathrm{n}$ 维欧氏空间中的两个点集。如果存在 $\mathrm{n}$ 维向量 $\mathrm{w}$ 和实数 $\mathrm{b}$, 使得所有属于 $D_0$ 的点 $x_i$ 都有 $w x_i+b&gt;0$ ， 而对于所有属于 $D_1$ 的点 $x_j$ 则有 $w x_j+b&lt;0$ ， 则我们称 $D_0$ 和 $D_1$ 线性可分。</p>
-<h3><span id="12-最大间隔超平面">1.2 最大间隔超平面</span></h3><p>从二维扩展到多维空间中时, 将 $D_0$ 和 $D_1$ 完全正确地划分开的 $w x+b=0$ 就成了一个超平面。<br>为了使这个超平面更具鲁棒性, 我们会去找最佳超平面, 以最大间隔把两类样本分开的超平面, 也称之为最大 间隔超平面。</p>
+<p>在二维空间上, 两类点被一条直线完全分开叫做线性可分。严格的数学定义是:
+<span class="math inline">\(D_0\)</span> 和 <span class="math inline">\(D_1\)</span> 是 <span class="math inline">\(\mathrm{n}\)</span>
+维欧氏空间中的两个点集。如果存在 <span class="math inline">\(\mathrm{n}\)</span> 维向量 <span class="math inline">\(\mathrm{w}\)</span> 和实数 <span class="math inline">\(\mathrm{b}\)</span>, 使得所有属于 <span class="math inline">\(D_0\)</span> 的点 <span class="math inline">\(x_i\)</span> 都有 <span class="math inline">\(w
+x_i+b&gt;0\)</span> ， 而对于所有属于 <span class="math inline">\(D_1\)</span> 的点 <span class="math inline">\(x_j\)</span> 则有 <span class="math inline">\(w
+x_j+b&lt;0\)</span> ， 则我们称 <span class="math inline">\(D_0\)</span>
+和 <span class="math inline">\(D_1\)</span> 线性可分。</p>
+<h3><span id="12-最大间隔超平面">1.2 最大间隔超平面</span></h3>
+<p>从二维扩展到多维空间中时, 将 <span class="math inline">\(D_0\)</span>
+和 <span class="math inline">\(D_1\)</span> 完全正确地划分开的 <span class="math inline">\(w x+b=0\)</span> 就成了一个超平面。
+为了使这个超平面更具鲁棒性, 我们会去找最佳超平面,
+以最大间隔把两类样本分开的超平面, 也称之为最大 间隔超平面。</p>
 <ul>
 <li>两类样本分别分割在该超平面的两侧；</li>
 <li><strong>两侧距离超平面最近的样本点到超平面的距离被最大化了。</strong>【附近点】</li>
 </ul>
-<h3><span id="13-支持向量-距离超平面最近的点">1.3 支持向量 【距离超平面最近的点】</span></h3><p><img src="https://s2.loli.net/2023/04/17/HDlAed2wZf8cXi1.jpg" alt="img" style="zoom: 33%;"></p>
+<h3><span id="13-支持向量距离超平面最近的点">1.3 支持向量
+【距离超平面最近的点】</span></h3>
+<p><img src="https://s2.loli.net/2023/04/17/HDlAed2wZf8cXi1.jpg" alt="img" style="zoom: 33%;"></p>
 <p>样本中距离超平面最近的一些点，这些点叫做支持向量。</p>
-<h3><span id="14-svm-最优化问题">1.4 SVM 最优化问题</span></h3><p><strong>SVM 想要的就是找到各类样本点到超平面的距离最远, 也就是找到最大间隔超平面</strong>。任意超平面可以用下面这个 线性方程来描述：</p>
-<script type="math/tex; mode=display">
-w^T x+b=0</script><p>二维空间点 $(x, y)$ 到直线 $A x+B y+C=0$ 的距离公式是:</p>
-<script type="math/tex; mode=display">
-\frac{|A x+B y+C|}{\sqrt{A^2+B^2}}</script><p>扩展到 $\mathbf{n}$ 维空间后, 点 $x=\left(x_1, x_2 \ldots x_n\right)$ 到直线 $w^T x+b=0$ 的距离为:</p>
-<script type="math/tex; mode=display">
-\frac{\left|w^T x+b\right|}{\|w\|}</script><p>其中 $|w|=\sqrt{w_1^2+\ldots w_n^2}$ 。<br>如图所示，根据支持向量的定义我们知道, 支持向量到超平面的距离为 $d$ ，其他点到超平面的距离大于 $d$ 。</p>
+<h3><span id="14-svm-最优化问题">1.4 SVM 最优化问题</span></h3>
+<p><strong>SVM 想要的就是找到各类样本点到超平面的距离最远,
+也就是找到最大间隔超平面</strong>。任意超平面可以用下面这个
+线性方程来描述： <span class="math display">\[
+w^T x+b=0
+\]</span> 二维空间点 <span class="math inline">\((x, y)\)</span> 到直线
+<span class="math inline">\(A x+B y+C=0\)</span> 的距离公式是: <span class="math display">\[
+\frac{|A x+B y+C|}{\sqrt{A^2+B^2}}
+\]</span> 扩展到 <span class="math inline">\(\mathbf{n}\)</span>
+维空间后, 点 <span class="math inline">\(x=\left(x_1, x_2 \ldots
+x_n\right)\)</span> 到直线 <span class="math inline">\(w^T
+x+b=0\)</span> 的距离为: <span class="math display">\[
+\frac{\left|w^T x+b\right|}{\|w\|}
+\]</span> 其中 <span class="math inline">\(\|w\|=\sqrt{w_1^2+\ldots
+w_n^2}\)</span> 。 如图所示，根据支持向量的定义我们知道,
+支持向量到超平面的距离为 <span class="math inline">\(d\)</span>
+，其他点到超平面的距离大于 <span class="math inline">\(d\)</span> 。</p>
 <p><img src="https://s2.loli.net/2023/04/17/2yZRMfWemFcoX75.jpg" alt="img" style="zoom: 33%;"></p>
-<p>于是我们有这样的一个公式：</p>
-<script type="math/tex; mode=display">
+<p>于是我们有这样的一个公式： <span class="math display">\[
 \left\{\begin{array}{l}
 \frac{w^T x+b}{\|w\|} \geq d \quad y=1 \\
 \frac{w^T x+b}{\|w\|} \leq-d \quad y=-1
-\end{array}\right.</script><p>将两个方程合并, 我们可以简写为:</p>
-<script type="math/tex; mode=display">
-y\left(w^T x+b\right) \geq 1</script><p>至此我们就可以得到最大间隔超平面的上下两个超平面：</p>
+\end{array}\right.
+\]</span> 将两个方程合并, 我们可以简写为: <span class="math display">\[
+y\left(w^T x+b\right) \geq 1
+\]</span> 至此我们就可以得到最大间隔超平面的上下两个超平面：</p>
 <p><img src="https://s2.loli.net/2023/04/17/aZbmfK4zWsSjyo2.png" alt="image-20220409203050568" style="zoom:50%;"></p>
-<p><strong>间隔</strong>：<strong>训练集中离划分超平面最近的样本到划分超平面距离的两倍</strong>。有了间隔的定义，划分超平面“离正负样本都比较远”这一目标可以等价描述为正负样本里划分超平面的距离尽可能远。即<strong>让离划分超平面最近的样本到划分超平面距离尽可能远</strong>。优化目标：</p>
-<script type="math/tex; mode=display">
+<p><strong>间隔</strong>：<strong>训练集中离划分超平面最近的样本到划分超平面距离的两倍</strong>。有了间隔的定义，划分超平面“离正负样本都比较远”这一目标可以等价描述为正负样本里划分超平面的距离尽可能远。即<strong>让离划分超平面最近的样本到划分超平面距离尽可能远</strong>。优化目标：
+<span class="math display">\[
 \begin{aligned}
-\max _{w, b} \gamma &=\max _{w, b}\left(2 \min _{i} \frac{1}{\|w\|}\left|w^{\top} x_{i}+b\right|\right) \\
-&=\max _{w, b} \min _{i} \frac{2}{\|w\|}\left|w^{\top} x_{i}+b\right|
-\end{aligned}</script><p><strong>简化过程</strong>：</p>
+\max _{w, b} \gamma &amp;=\max _{w, b}\left(2 \min _{i}
+\frac{1}{\|w\|}\left|w^{\top} x_{i}+b\right|\right) \\
+&amp;=\max _{w, b} \min _{i} \frac{2}{\|w\|}\left|w^{\top}
+x_{i}+b\right|
+\end{aligned}
+\]</span> <strong>简化过程</strong>：</p>
 <ul>
-<li><p><strong>缩放</strong>：为了简化优化问题, 我们可以通过调整 $(w, b)$ 使得：</p>
-<script type="math/tex; mode=display">
-\min _{i}\left|w^{\top} x_{i}+b\right|=1 .</script></li>
-<li><p><strong>标签替换绝对值</strong>：</p>
-<script type="math/tex; mode=display">
-s.t. \min _{i} y_{i}\left(w^{\top} x_{i}+b\right)=1</script></li>
-<li><p><strong>简化约束条件</strong>【<strong>反正法</strong>】</p>
-</li>
+<li><p><strong>缩放</strong>：为了简化优化问题, 我们可以通过调整 <span class="math inline">\((w, b)\)</span> 使得： <span class="math display">\[
+\min _{i}\left|w^{\top} x_{i}+b\right|=1 .
+\]</span></p></li>
+<li><p><strong>标签替换绝对值</strong>： <span class="math display">\[
+s.t. \min _{i} y_{i}\left(w^{\top} x_{i}+b\right)=1
+\]</span></p></li>
+<li><p><strong>简化约束条件</strong>【<strong>反正法</strong>】</p></li>
 </ul>
-<h4><span id="硬间隔线性svm的基本型"><strong><font color="red"> 硬间隔线性SVM的基本型：</font></strong></span></h4><script type="math/tex; mode=display">
+<h4><span id="硬间隔线性svm的基本型"><strong><font color="red">
+硬间隔线性SVM的基本型：</font></strong></span></h4>
+<p><span class="math display">\[
 \begin{array}{ll}
-\min _{w, b} & \frac{1}{2} w^{\top} w \\
-\text { s.t. } & y_{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad i=1,2, \ldots, m
-\end{array}</script><p><img src="https://s2.loli.net/2023/04/17/l4WjzV7smKBoe8f.png" alt="image-20220423163130805" style="zoom:50%;"></p>
-<p><strong>二次规划是指目标函数是二次函数，约束是线性不等式约束的一类优化问题</strong> + 凸函数</p>
-<h2><span id="二-硬间隔线性svm对偶型">二、硬间隔线性SVM对偶型</span></h2><p><strong>本科高等数学学的拉格朗日程数法是等式约束优化问题</strong>:</p>
-<script type="math/tex; mode=display">
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w \\
+\text { s.t. } &amp; y_{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad
+i=1,2, \ldots, m
+\end{array}
+\]</span></p>
+<p><img src="https://s2.loli.net/2023/04/17/l4WjzV7smKBoe8f.png" alt="image-20220423163130805" style="zoom:50%;"></p>
+<p><strong>二次规划是指目标函数是二次函数，约束是线性不等式约束的一类优化问题</strong>
++ 凸函数</p>
+<h2><span id="二-硬间隔线性svm对偶型">二、硬间隔线性SVM对偶型</span></h2>
+<p><strong>本科高等数学学的拉格朗日程数法是等式约束优化问题</strong>:
+<span class="math display">\[
 \begin{gathered}
 \min f\left(x_1, x_2, \ldots, x_n\right) \\
-\text { s.t. } \quad h_k\left(x_1, x_2, \ldots, x_n\right)=0 \quad k=1,2, \ldots, l
-\end{gathered}</script><p>我们令 $L(x, \lambda)=f(x)+\sum_{k=1}^l \lambda_k h_k(x)$, 函数 $L(x, y)$ 称为 Lagrange 函数, 参数 $\lambda$ 称为 Lagrange 乘子没有非负 要求。<br>利用必要条件找到可能的极值点:</p>
-<script type="math/tex; mode=display">
-\begin{cases}\frac{\partial L}{\partial x_i}=0 & i=1,2, \ldots, n \\ \frac{\partial L}{\partial \lambda_k}=0 & k=1,2, \ldots, l\end{cases}</script><p>具体是否为极值点需根据问题本身的具体情况检验。这个方程组称为等式约束的极值必要条件。等式约束下的 Lagrange 乘数法引入了 $l$ 个 Lagrange 乘子, 我们将 $x_i$ 与 $\lambda_k$ 一视同仁, 把 $\lambda_k$ 也看作优化变 量, 共有 $(n+l)$ 个优化变量。</p>
-<h5><span id="1写成约束优化问题的基本型">（1）写成约束优化问题的基本型</span></h5><script type="math/tex; mode=display">
+\text { s.t. } \quad h_k\left(x_1, x_2, \ldots, x_n\right)=0 \quad
+k=1,2, \ldots, l
+\end{gathered}
+\]</span> 我们令 <span class="math inline">\(L(x,
+\lambda)=f(x)+\sum_{k=1}^l \lambda_k h_k(x)\)</span>, 函数 <span class="math inline">\(L(x, y)\)</span> 称为 Lagrange 函数, 参数 <span class="math inline">\(\lambda\)</span> 称为 Lagrange 乘子没有非负 要求。
+利用必要条件找到可能的极值点: <span class="math display">\[
+\begin{cases}\frac{\partial L}{\partial x_i}=0 &amp; i=1,2, \ldots, n \\
+\frac{\partial L}{\partial \lambda_k}=0 &amp; k=1,2, \ldots,
+l\end{cases}
+\]</span>
+具体是否为极值点需根据问题本身的具体情况检验。这个方程组称为等式约束的极值必要条件。等式约束下的
+Lagrange 乘数法引入了 <span class="math inline">\(l\)</span> 个 Lagrange
+乘子, 我们将 <span class="math inline">\(x_i\)</span> 与 <span class="math inline">\(\lambda_k\)</span> 一视同仁, 把 <span class="math inline">\(\lambda_k\)</span> 也看作优化变 量, 共有 <span class="math inline">\((n+l)\)</span> 个优化变量。</p>
+<h5><span id="1写成约束优化问题的基本型">（1）写成约束优化问题的基本型</span></h5>
+<p><span class="math display">\[
 \begin{array}{ll}
-\min _{w, b} & \frac{1}{2} w^{\top} w \\
-\text { s.t. } & 1-y_{i}\left(w^{\top} x_{i}+b\right) \leq 0, \quad i=1,2, \ldots, m
-\end{array}</script><h5><span id="2-构建基本型的拉格朗日函数">（2） 构建基本型的拉格朗日函数</span></h5><script type="math/tex; mode=display">
-\mathcal{L}(w, b, \alpha):=\frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)</script><h5><span id="3交换min-max顺序">（3）交换min, max顺序</span></h5><blockquote>
-<p>  <strong>解得最优解 $u^{\star}$ 。这样两层优化问题将变为一层最大化（max）问题, 问题难度大大降低, 称为对偶问题 (Dual Problem) :</strong>【<strong>对偶问题是原问题的下界</strong>】</p>
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w \\
+\text { s.t. } &amp; 1-y_{i}\left(w^{\top} x_{i}+b\right) \leq 0, \quad
+i=1,2, \ldots, m
+\end{array}
+\]</span></p>
+<h5><span id="2-构建基本型的拉格朗日函数">（2） 构建基本型的拉格朗日函数</span></h5>
+<p><span class="math display">\[
+\mathcal{L}(w, b, \alpha):=\frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)
+\]</span></p>
+<h5><span id="3交换min-max顺序">（3）交换min, max顺序</span></h5>
+<blockquote>
+<p><strong>解得最优解 <span class="math inline">\(u^{\star}\)</span>
+。这样两层优化问题将变为一层最大化（max）问题, 问题难度大大降低,
+称为对偶问题 (Dual Problem)
+:</strong>【<strong>对偶问题是原问题的下界</strong>】</p>
 <ul>
-<li><script type="math/tex; mode=display">
-\max _{\alpha}, \beta \min _{u} \mathcal{L}(u, \alpha, \beta) \leq \min _{u} \max _{\alpha}, \beta \mathcal{L}(u, \alpha, \beta)</script></li>
-<li><p>硬间隔线性SVM满足<strong>Slater条件</strong>， <strong>因此原问题和对偶问题等价</strong></p>
-</li>
+<li><p><span class="math display">\[
+\max _{\alpha}, \beta \min _{u} \mathcal{L}(u, \alpha, \beta) \leq \min
+_{u} \max _{\alpha}, \beta \mathcal{L}(u, \alpha, \beta)
+\]</span></p></li>
+<li><p>硬间隔线性SVM满足<strong>Slater条件</strong>，
+<strong>因此原问题和对偶问题等价</strong></p></li>
 </ul>
 </blockquote>
-<script type="math/tex; mode=display">
+<p><span class="math display">\[
 \begin{array}{cl}
-\max _{\alpha} \min _{w, b} & \frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right) \\
-\text { s.t. } & \alpha_{i} \geq 0, \quad i=1,2, \ldots, m .
-\end{array}</script><p>首先计算 $w$ 的最优值, 令 $\frac{\partial \mathcal{L}}{\partial w}=\mathbf{0}$</p>
-<script type="math/tex; mode=display">
+\max _{\alpha} \min _{w, b} &amp; \frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right) \\
+\text { s.t. } &amp; \alpha_{i} \geq 0, \quad i=1,2, \ldots, m .
+\end{array}
+\]</span></p>
+<p>首先计算 <span class="math inline">\(w\)</span> 的最优值, 令 <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+w}=\mathbf{0}\)</span> <span class="math display">\[
 \begin{aligned}
-\frac{\partial \mathcal{L}}{\partial w} &=\frac{\partial}{\partial w}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \\
-&=w+\sum_{i=1}^{m} \alpha_{i}\left(-y_{i} x_{i}\right) \\
-&=w-\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i} \\
-&=\mathbf{0}
-\end{aligned}</script><p>可以解得最优值$w$</p>
-<script type="math/tex; mode=display">
-w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i}</script><p>然后计算 $b$ 的最优值, 令 $\frac{\partial \mathcal{L}}{\partial b}=0$</p>
-<script type="math/tex; mode=display">
+\frac{\partial \mathcal{L}}{\partial w} &amp;=\frac{\partial}{\partial
+w}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \\
+&amp;=w+\sum_{i=1}^{m} \alpha_{i}\left(-y_{i} x_{i}\right) \\
+&amp;=w-\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i} \\
+&amp;=\mathbf{0}
+\end{aligned}
+\]</span></p>
+<p>可以解得最优值<span class="math inline">\(w\)</span> <span class="math display">\[
+w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i}
+\]</span> 然后计算 <span class="math inline">\(b\)</span> 的最优值, 令
+<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}=0\)</span> <span class="math display">\[
 \begin{aligned}
-\frac{\partial \mathcal{L}}{\partial b} &=\frac{\partial}{\partial b}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \\
-&=\sum_{i=1}^{m} \alpha_{i}\left(-y_{i}\right) \\
-&=-\sum_{i=1}^{m} \alpha_{i} y_{i} \\
-&=0
-\end{aligned}</script><p>可以得到一个等式 $b^{\star}$ </p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^{m} \alpha_{i} y_{i}=0</script><p>注意到这里并没有给出最优值 $b^{\star}$ 应该是多少, 而是一个等式, 该等式是一个约束项, 而最优值通过后面的 <strong>KKT 条件</strong>的互补松弛可以计算得到。</p>
-<h4><span id="硬性间隔线性svm的对偶型"><strong><font color="red"> 硬性间隔线性SVM的对偶型：</font></strong></span></h4><script type="math/tex; mode=display">
+\frac{\partial \mathcal{L}}{\partial b} &amp;=\frac{\partial}{\partial
+b}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \\
+&amp;=\sum_{i=1}^{m} \alpha_{i}\left(-y_{i}\right) \\
+&amp;=-\sum_{i=1}^{m} \alpha_{i} y_{i} \\
+&amp;=0
+\end{aligned}
+\]</span> 可以得到一个等式 <span class="math inline">\(b^{\star}\)</span> <span class="math display">\[
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0
+\]</span> 注意到这里并没有给出最优值 <span class="math inline">\(b^{\star}\)</span> 应该是多少, 而是一个等式,
+该等式是一个约束项, 而最优值通过后面的 <strong>KKT
+条件</strong>的互补松弛可以计算得到。</p>
+<h4><span id="硬性间隔线性svm的对偶型"><strong><font color="red">
+硬性间隔线性SVM的对偶型：</font></strong></span></h4>
+<p><span class="math display">\[
 \begin{array}{ll}
-\min _{\alpha} & \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^{\top} x_{j}-\sum_{i=1}^{m} \alpha_{i} \\
-\text { s.t. } & \alpha_{i} \geq 0, \quad i=1,2, \ldots, m \\
-& \sum_{i=1}^{m} \alpha_{i} y_{i}=0
-\end{array}</script><h5><span id="4利用kkt条件得到主问题的最优解">（4）利用KKT条件得到主问题的最优解</span></h5><p><strong>KKT 条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
-<p>线性支持向量机的 <strong>KKT 条件</strong>:</p>
+\min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m}
+\alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^{\top} x_{j}-\sum_{i=1}^{m}
+\alpha_{i} \\
+\text { s.t. } &amp; \alpha_{i} \geq 0, \quad i=1,2, \ldots, m \\
+&amp; \sum_{i=1}^{m} \alpha_{i} y_{i}=0
+\end{array}
+\]</span></p>
+<h5><span id="4利用kkt条件得到主问题的最优解">（4）利用KKT条件得到主问题的最优解</span></h5>
+<p><strong>KKT
+条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
+<p>线性支持向量机的 <strong>KKT 条件</strong>: -
+<strong>主问题可行</strong>: <span class="math inline">\(g_{i}\left(u^{\star}\right)=1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right) \leq 0\)</span> ； -
+<strong>对偶问题可行</strong>: <span class="math inline">\(\alpha_{i}^{\star} \geq 0\)</span>; -
+<strong>主变量最优</strong>: <span class="math inline">\(w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i},
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0\)</span>; - <font color="red">
+<strong>互补松弛</strong>: <span class="math inline">\(\alpha_{i}^{\star}
+g_{i}\left(u^{\star}\right)=\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right)\right)=0\)</span> ；</font></p>
+<p><strong>根据 KKT 条件中的 <span class="math inline">\(\alpha_{i}^{\star} \geq 0\)</span>, 我们可以根据
+<span class="math inline">\(\alpha_{i}^{\star}\)</span> 的取值将训练集
+<span class="math inline">\(D\)</span> 中所有的样本分成两类</strong>, 如
+图 17 所示。</p>
 <ul>
-<li><strong>主问题可行</strong>: $g<em>{i}\left(u^{\star}\right)=1-y</em>{i}\left(w^{\star \top} x_{i}+b^{\star}\right) \leq 0$ ；</li>
-<li><strong>对偶问题可行</strong>: $\alpha_{i}^{\star} \geq 0$;</li>
-<li><strong>主变量最优</strong>: $w^{\star}=\sum<em>{i=1}^{m} \alpha</em>{i} y<em>{i} x</em>{i}, \sum<em>{i=1}^{m} \alpha</em>{i} y_{i}=0$;</li>
-<li><font color="red"> **互补松弛**: $\alpha_{i}^{\star} g_{i}\left(u^{\star}\right)=\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)\right)=0$ ；</font>
-
-</li>
-</ul>
-<p><strong>根据 KKT 条件中的 $\alpha<em>{i}^{\star} \geq 0$, 我们可以根据 $\alpha</em>{i}^{\star}$ 的取值将训练集 $D$ 中所有的样本分成两类</strong>, 如 图 17 所示。</p>
-<ul>
-<li>如果 $\alpha<em>{i}^{\star}&gt;0$, <strong>对应的样本称为支持向量 (Support Vector)</strong>, 根据 $\alpha</em>{i}^{\star}\left(1-y<em>{i}\left(w^{\star \top} x</em>{i}+b^{\star}\right)\right)=0$ , 那么一定有 $y<em>{i}\left(w^{\star \top} x</em>{i}+b^{\star}\right)=1$, 该样本是距离划分超平面最近的样本, 位于最大间隔边界 （见第 $2.3$ 节）;</li>
-<li>如果 $\alpha<em>{i}^{\star}=0$, 对应的样本不是非支持向量, 那么有 $y</em>{i}\left(w^{\star \top} x_{i}+b^{\star}\right) \geq 1$, 该样本不一定是距离 划分超平面最近的样本, <strong>位于最大间隔边界或之外</strong>。</li>
+<li>如果 <span class="math inline">\(\alpha_{i}^{\star}&gt;0\)</span>,
+<strong>对应的样本称为支持向量 (Support Vector)</strong>, 根据 <span class="math inline">\(\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right)\right)=0\)</span> , 那么一定有 <span class="math inline">\(y_{i}\left(w^{\star \top}
+x_{i}+b^{\star}\right)=1\)</span>, 该样本是距离划分超平面最近的样本,
+位于最大间隔边界 （见第 <span class="math inline">\(2.3\)</span>
+节）;</li>
+<li>如果 <span class="math inline">\(\alpha_{i}^{\star}=0\)</span>,
+对应的样本不是非支持向量, 那么有 <span class="math inline">\(y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)
+\geq 1\)</span>, 该样本不一定是距离 划分超平面最近的样本,
+<strong>位于最大间隔边界或之外</strong>。</li>
 </ul>
 <p><img src="https://s2.loli.net/2023/04/17/Gkx9AygPfvXmheq.png" alt="image-20220409212350705" style="zoom:50%;"></p>
 <p><strong>结论</strong>：</p>
 <ul>
-<li><strong><font color="red"> 参数 w， b 仅由支持向量决定，与训练集的其他样本无关；</font></strong></li>
-<li><strong><font color="red"> 对偶性是非参数模型，预测阶段不仅需要$\alpha_{i}$参数，还支持向量；</font></strong></li>
+<li><strong><font color="red"> 参数 w， b
+仅由支持向量决定，与训练集的其他样本无关；</font></strong></li>
+<li><strong><font color="red"> 对偶性是非参数模型，预测阶段不仅需要<span class="math inline">\(\alpha_{i}\)</span>参数，还支持向量；</font></strong></li>
 </ul>
-<script type="math/tex; mode=display">
+<p><span class="math display">\[
 \begin{aligned}
-&h(x):=\operatorname{sign}\left(w^{\star \top} x+b^{\star}\right) \quad \text { （硬间隔线性 SVM 的基本型的假设函数） }\\
-&=\operatorname{sign}\left(\sum_{i \in S V} \alpha_{i}^{\star} y_{i} x_{i}^{\top} x+b^{\star}\right) \text {.(硬间隔线性 SVM 的对偶型的假设函数） }
-\end{aligned}</script><h2><span id="三-svm优化方法">三、SVM优化方法</span></h2><p>SMO算法求解</p>
-<p>我们可以看出来这是一个二次规划问题, 问题规模正比于训练样本数, 我们常用 SMO(Sequential Minimal Optimization) 算法求解。</p>
-<font color="red"> SMO(Sequential Minimal Optimization), 序列最小优化算法【基于坐标下降算法】, 其核心思想非常简单: 每次只优化一个参数, 其他参数先固定住, 仅求当前这个优化参数的极值。我们来看一下 SMO 算法在 SVM 中的 应用。</font>
-
-<p>我们刚说了 SMO 算法每次只优化一个参数, 但我们的优化目标有约束条件: $\sum_{i=1}^n \lambda_i y_i=0$, 没法一次只变动一个 参数。所以我们选择了一次选择两个参数。具体步骤为：</p>
-<ol>
-<li>选择两个需要更新的参数 $\lambda_i$ 和 $\lambda_j$, 固定其他参数。于是我们有以下约束:<br>这样约束就变成了:<script type="math/tex; mode=display">
-\lambda_i y_i+\lambda_j y_j=c \quad \lambda_i \geq 0, \lambda_j \geq 0</script>其中 $c=-\sum_{k \neq i, j} \lambda_k y_k$, 由此可以得出 $\lambda_j=\frac{c-\lambda_i y_i}{y_j}$ ，也就是说我们可以用 $\lambda_i$ 的表达式代替 $\lambda_j$ 。这样就相当 于把目标问题转化成了仅有一个约束条件的最优化问题, 仅有的约束是 $\lambda_i \geq 0$ 。</li>
-<li>对于仅有一个约束条件的最优化问题, 我们完全可以在 $\lambda<em>i$ 上对优化目标求偏导, 令导数为零, 从而求出变量 值 $\lambda</em>{i<em>{\text {new }}}$ ，然后根据 $\lambda</em>{\text {inew }}$ 求出 $\lambda<em>{j</em>{\text {new }}}$ 。</li>
-<li>多次迭代直至收敛。通过 SMO 求得最优解 $\lambda^*$ 。</li>
+&amp;h(x):=\operatorname{sign}\left(w^{\star \top} x+b^{\star}\right)
+\quad \text { （硬间隔线性 SVM 的基本型的假设函数） }\\
+&amp;=\operatorname{sign}\left(\sum_{i \in S V} \alpha_{i}^{\star} y_{i}
+x_{i}^{\top} x+b^{\star}\right) \text {.(硬间隔线性 SVM
+的对偶型的假设函数） }
+\end{aligned}
+\]</span></p>
+<h2><span id="三-svm优化方法">三、SVM优化方法</span></h2>
+<p>SMO算法求解</p>
+<p>我们可以看出来这是一个二次规划问题, 问题规模正比于训练样本数,
+我们常用 SMO(Sequential Minimal Optimization) 算法求解。</p>
+<p><font color="red"> SMO(Sequential Minimal Optimization),
+序列最小优化算法【基于坐标下降算法】, 其核心思想非常简单:
+每次只优化一个参数, 其他参数先固定住,
+仅求当前这个优化参数的极值。我们来看一下 SMO 算法在 SVM 中的
+应用。</font></p>
+<p>我们刚说了 SMO 算法每次只优化一个参数, 但我们的优化目标有约束条件:
+<span class="math inline">\(\sum_{i=1}^n \lambda_i y_i=0\)</span>,
+没法一次只变动一个
+参数。所以我们选择了一次选择两个参数。具体步骤为：</p>
+<ol type="1">
+<li>选择两个需要更新的参数 <span class="math inline">\(\lambda_i\)</span> 和 <span class="math inline">\(\lambda_j\)</span>,
+固定其他参数。于是我们有以下约束: 这样约束就变成了: <span class="math display">\[
+\lambda_i y_i+\lambda_j y_j=c \quad \lambda_i \geq 0, \lambda_j \geq 0
+\]</span> 其中 <span class="math inline">\(c=-\sum_{k \neq i, j}
+\lambda_k y_k\)</span>, 由此可以得出 <span class="math inline">\(\lambda_j=\frac{c-\lambda_i y_i}{y_j}\)</span>
+，也就是说我们可以用 <span class="math inline">\(\lambda_i\)</span>
+的表达式代替 <span class="math inline">\(\lambda_j\)</span> 。这样就相当
+于把目标问题转化成了仅有一个约束条件的最优化问题, 仅有的约束是 <span class="math inline">\(\lambda_i \geq 0\)</span> 。</li>
+<li>对于仅有一个约束条件的最优化问题, 我们完全可以在 <span class="math inline">\(\lambda_i\)</span> 上对优化目标求偏导, 令导数为零,
+从而求出变量 值 <span class="math inline">\(\lambda_{i_{\text {new
+}}}\)</span> ，然后根据 <span class="math inline">\(\lambda_{\text {inew
+}}\)</span> 求出 <span class="math inline">\(\lambda_{j_{\text {new
+}}}\)</span> 。</li>
+<li>多次迭代直至收敛。通过 SMO 求得最优解 <span class="math inline">\(\lambda^*\)</span> 。</li>
 </ol>
-<h2><span id="四-软间隔线性svm">四、软间隔线性SVM</span></h2><p>在实际应用中，完全线性可分的样本是很少的，如果遇到了不能够完全线性可分的样本，我们应该怎么办？比如下面这个：</p>
+<h2><span id="四-软间隔线性svm">四、软间隔线性SVM</span></h2>
+<p>在实际应用中，完全线性可分的样本是很少的，如果遇到了不能够完全线性可分的样本，我们应该怎么办？比如下面这个：</p>
 <p><img src="https://s2.loli.net/2023/04/17/zDNf9QWoTs2JxVp.jpg" alt="img" style="zoom: 33%;"></p>
 <p>于是我们就有了软间隔，相比于硬间隔的苛刻条件，我们允许个别样本点出现在间隔带里面，比如：</p>
 <p><img src="https://s2.loli.net/2023/04/17/ha4zMrmIS9Z7jnW.jpg" alt="img" style="zoom: 33%;"></p>
-<p>我们允许部分样本点不满足约束条件:</p>
-<script type="math/tex; mode=display">
-1-y_i\left(w^T x_i+b\right) \leq 0</script><p>为了度量这个间隔软到何种程度, 我们为每个样本引入一个松弛变量 $\xi_i$, 令 $\xi_i \geq 0$, 且 $1-y_i\left(w^T x_i+b\right)-\xi_i \leq 0$ 。对应如下图所示:</p>
+<p>我们允许部分样本点不满足约束条件: <span class="math display">\[
+1-y_i\left(w^T x_i+b\right) \leq 0
+\]</span> 为了度量这个间隔软到何种程度, 我们为每个样本引入一个松弛变量
+<span class="math inline">\(\xi_i\)</span>, 令 <span class="math inline">\(\xi_i \geq 0\)</span>, 且 <span class="math inline">\(1-y_i\left(w^T x_i+b\right)-\xi_i \leq 0\)</span>
+。对应如下图所示:</p>
 <p><img src="https://s2.loli.net/2023/04/17/GlPvqnUM7FDeTyX.jpg" alt="img" style="zoom: 33%;"></p>
 <p><strong>这边要注意一个问题，在间隔内的那部分样本点是不是支持向量？</strong></p>
-<p>我们可以由求参数 w 的那个式子可看出，只要$\lambda &gt; 0$的点都能够影响我们的超平面，因此都是支持向量。</p>
-<p><strong>硬间隔线性SVM的基本型：</strong>【凸二次规划问题， 具有全局最小值】</p>
-<script type="math/tex; mode=display">
+<p>我们可以由求参数 w 的那个式子可看出，只要<span class="math inline">\(\lambda &gt;
+0\)</span>的点都能够影响我们的超平面，因此都是支持向量。</p>
+<p><strong>硬间隔线性SVM的基本型：</strong>【凸二次规划问题，
+具有全局最小值】 <span class="math display">\[
 \begin{array}{ll}
-\min _{w, b} & \frac{1}{2} w^{\top} w \\
-\text { s.t. } & y_{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad i=1,2, \ldots, m
-\end{array}</script><p>约束中要求所有的样本都满足 $y<em>{i}\left(w^{\top} \phi\left(x</em>{i}\right)+b\right) \geq 1$, 也就是让所有的样本都满足 $y<em>{i}\left(w^{\top} \phi\left(x</em>{i}\right)+b\right)&gt;0$。<br>现在我们想对<strong>该约束进行一点放松</strong>, 我们希望在优化间隔的同时, 允许分类错误的样本出现, 但这类样本应尽可能少:</p>
-<script type="math/tex; mode=display">
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w \\
+\text { s.t. } &amp; y_{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad
+i=1,2, \ldots, m
+\end{array}
+\]</span> 约束中要求所有的样本都满足 <span class="math inline">\(y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) \geq 1\)</span>,
+也就是让所有的样本都满足 <span class="math inline">\(y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right)&gt;0\)</span>。
+现在我们想对<strong>该约束进行一点放松</strong>,
+我们希望在优化间隔的同时, 允许分类错误的样本出现, 但这类样本应尽可能少:
+<span class="math display">\[
 \begin{array}{ll}
-\min _{w, b} & \frac{1}{2} w^{\top} w+C \sum_{i=1}^{m} \mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(w^{\top} \phi\left(x_{i}\right)+b\right)\right) \\
-\text { s.t. } & y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1, \quad \text { 若 } y_{i}=\operatorname{sign}\left(w^{\top} \phi\left(x_{i}\right)+b\right) .
-\end{array}</script><p>其中, 优化目标的第一项 $\frac{1}{2} w^{\top} w$ 源自硬间隔核化 SVM 的基本型, 即优化间隔。优化目标的第二项 中的 $\mathbb{I}(\cdot)$ 是指示函数, 函数的参数通常是一个条件, 如果条件为真（True）, 则指示函数值为 1 ; 如果条件为假 (False), 则指示函数值为 0 。<br>$\sum<em>{i=1}^{m} \mathbb{I}\left(y</em>{i} \neq \operatorname{sign}\left(w^{\top} \phi\left(x_{i}\right)+b\right)\right)$ 的含义是统计训练集 $D$ 中所有<strong>预测错误的样本总数</strong>。因此, 公式 162 的目标函数是同时优化间隔和最小化训练集预测错误的样本总数, <strong>$C$ 是个可调节的超参数, 用于权衡优化间隔和出现少量分类错误的样本这两个目标。</strong></p>
-<p>但是, 由于<strong>指示函数 $I(\cdot)$ 不是连续函数, 更不是凸函数, 使得优化问题不再是二次规划问题</strong>, 求解起来十分困难, 所以我们需要对其进行简化。另外<strong>指示函数没有区分预测错误的不同程度</strong>,因此, 我们<strong>引入松他变量</strong> (Slack Variable) $\xi<em>{i} \in \mathbb{R}$, 用于<strong>度量训练集 $D$ 中第 $i$ 个样本违背约束的程度</strong>。当第 $i$ 个样本<strong>违背约束的程度</strong>越大, 松弛变量 $\xi</em>{i}$ 的值越大</p>
-<script type="math/tex; mode=display">
-\xi_{i}:= \begin{cases}0 & \text { 若 } y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1 ; \\ 1-y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) & \text { 否则. }\end{cases}</script><p>基于以上定义, 松弛变量 $\xi_{i}$ 的取值有以下四种情况, 如图 27 所示, 注意图 27 只是示意图, 用于理 解概念, 不表示用图中数据训练得到的分类边界一定是这样:</p>
-<ul>
-<li>当 $\xi<em>{i}=0$ 时, 训练集 $D$ 中第 $i$ 个样本分类正确 $h\left(x</em>{i}\right)=y<em>{i}$, 且满足大间隔约束 $y</em>{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1$;</li>
-<li>当 $0&lt;\xi<em>{i}&lt;1$ 时, 训练集 $D$ 中第 $i$ 个样本分类正确 $h\left(x</em>{i}\right)=y_{i}$, 但是不满足大间隔约束;</li>
-<li>当 $\xi<em>{i}=1$ 时, 训练集 $D$ 中第 $i$ 个样本恰好位于划分超平面 $w^{\top} \phi\left(x</em>{i}\right)+b=0$ 上, 且不满足大间 隔约束;</li>
-<li>当 $\xi&gt;0$ 时, 训练集 $D$ 中第 $i$ 个样本分类错误 $h\left(x<em>{i}\right) \neq y</em>{i}$, 且不满足大间隔约束。</li>
-</ul>
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w+C \sum_{i=1}^{m}
+\mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right)\right) \\
+\text { s.t. } &amp; y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right)
+\geq 1, \quad \text { 若 } y_{i}=\operatorname{sign}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) .
+\end{array}
+\]</span> 其中, 优化目标的第一项 <span class="math inline">\(\frac{1}{2}
+w^{\top} w\)</span> 源自硬间隔核化 SVM 的基本型,
+即优化间隔。优化目标的第二项 中的 <span class="math inline">\(\mathbb{I}(\cdot)\)</span> 是指示函数,
+函数的参数通常是一个条件, 如果条件为真（True）, 则指示函数值为 1 ;
+如果条件为假 (False), 则指示函数值为 0 。 <span class="math inline">\(\sum_{i=1}^{m} \mathbb{I}\left(y_{i} \neq
+\operatorname{sign}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right)\right)\)</span> 的含义是统计训练集 <span class="math inline">\(D\)</span>
+中所有<strong>预测错误的样本总数</strong>。因此, 公式 162
+的目标函数是同时优化间隔和最小化训练集预测错误的样本总数, <strong><span class="math inline">\(C\)</span> 是个可调节的超参数,
+用于权衡优化间隔和出现少量分类错误的样本这两个目标。</strong></p>
+<p>但是, 由于<strong>指示函数 <span class="math inline">\(I(\cdot)\)</span> 不是连续函数, 更不是凸函数,
+使得优化问题不再是二次规划问题</strong>, 求解起来十分困难,
+所以我们需要对其进行简化。另外<strong>指示函数没有区分预测错误的不同程度</strong>,因此,
+我们<strong>引入松他变量</strong> (Slack Variable) <span class="math inline">\(\xi_{i} \in \mathbb{R}\)</span>,
+用于<strong>度量训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本违背约束的程度</strong>。当第
+<span class="math inline">\(i\)</span>
+个样本<strong>违背约束的程度</strong>越大, 松弛变量 <span class="math inline">\(\xi_{i}\)</span> 的值越大 <span class="math display">\[
+\xi_{i}:= \begin{cases}0 &amp; \text { 若 } y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) \geq 1 ; \\ 1-y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) &amp; \text { 否则. }\end{cases}
+\]</span> 基于以上定义, 松弛变量 <span class="math inline">\(\xi_{i}\)</span> 的取值有以下四种情况, 如图 27
+所示, 注意图 27 只是示意图, 用于理 解概念,
+不表示用图中数据训练得到的分类边界一定是这样: - 当 <span class="math inline">\(\xi_{i}=0\)</span> 时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本分类正确 <span class="math inline">\(h\left(x_{i}\right)=y_{i}\)</span>,
+且满足大间隔约束 <span class="math inline">\(y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) \geq 1\)</span>; - 当 <span class="math inline">\(0&lt;\xi_{i}&lt;1\)</span> 时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本分类正确 <span class="math inline">\(h\left(x_{i}\right)=y_{i}\)</span>,
+但是不满足大间隔约束; - 当 <span class="math inline">\(\xi_{i}=1\)</span> 时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本恰好位于划分超平面 <span class="math inline">\(w^{\top} \phi\left(x_{i}\right)+b=0\)</span> 上,
+且不满足大间 隔约束; - 当 <span class="math inline">\(\xi&gt;0\)</span>
+时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本分类错误 <span class="math inline">\(h\left(x_{i}\right) \neq y_{i}\)</span>,
+且不满足大间隔约束。</p>
 <p><img src="https://s2.loli.net/2023/04/17/LPukQfqKiBNToV5.png" alt="image-20220409230106609" style="zoom:50%;"></p>
-<h4><span id="软间隔核化svm基本型合页损失函数"><strong>软间隔核化SVM基本型：</strong>（<strong>合页损失函数</strong>）</span></h4><p><img src="https://s2.loli.net/2023/04/17/ROQk4xowVb7Fu39.png" alt="image-20220401163522598" style="zoom:50%;"></p>
+<h4><span id="软间隔核化svm基本型合页损失函数"><strong>软间隔核化SVM基本型：</strong>（<strong>合页损失函数</strong>）</span></h4>
+<p><img src="https://s2.loli.net/2023/04/17/ROQk4xowVb7Fu39.png" alt="image-20220401163522598" style="zoom:50%;"></p>
 <p><img src="https://s2.loli.net/2023/04/17/CvTiDaHNeWm3q6E.png" alt="image-20220401164527480" style="zoom:50%;"></p>
 <p><strong>变为：</strong></p>
 <p><img src="https://s2.loli.net/2023/04/17/bsWvAUQaM29RzNP.png" alt="image-20220401164354384" style="zoom:50%;"></p>
 <p>令<img src="https://s2.loli.net/2023/04/17/3j4TyoqNfcnBrLW.png" alt="image-20220401164559373" style="zoom:50%;">：<strong>合页损失</strong></p>
 <p><img src="https://s2.loli.net/2023/04/17/XIRKolZvQGECYAw.png" alt="image-20220401164608500" style="zoom:50%;"></p>
 <blockquote>
-<h5><span id="回顾对数几率回归">回顾：对数几率回归：</span></h5><p>  <img src="https://s2.loli.net/2023/04/17/ZtVDeIKydQsNhTM.png" alt="image-20220401164913393" style="zoom:50%;"></p>
+<p>##### 回顾：对数几率回归：</p>
+<p><img src="https://s2.loli.net/2023/04/17/ZtVDeIKydQsNhTM.png" alt="image-20220401164913393" style="zoom:50%;"></p>
 </blockquote>
-<p><strong>软间隔核化SVM对偶性：</strong> <strong>软间隔的对偶性是在硬间隔的对偶性对拉格朗日参数添加一个上界</strong>。</p>
+<p><strong>软间隔核化SVM对偶性：</strong>
+<strong>软间隔的对偶性是在硬间隔的对偶性对拉格朗日参数添加一个上界</strong>。</p>
 <p><img src="https://s2.loli.net/2023/04/17/hMnsiJqL59xYduO.png" alt="image-20220401161707141" style="zoom:50%;"></p>
-<h2><span id="五-核函数对偶性">五、核函数【对偶性】</span></h2><h3><span id="51-线性不可分">5.1 线性不可分</span></h3><blockquote>
-<p>  <strong>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里，再通过间隔最大化的方式，学习得到支持向量机，就是非线性 SVM。</strong></p>
+<h2><span id="五-核函数对偶性">五、核函数【对偶性】</span></h2>
+<h3><span id="51-线性不可分">5.1 线性不可分</span></h3>
+<blockquote>
+<p><strong>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里，再通过间隔最大化的方式，学习得到支持向量机，就是非线性
+SVM。</strong></p>
 </blockquote>
 <p>我们刚刚讨论的<strong>硬间隔</strong>和<strong>软间隔</strong>都是在说样本的完全线性可分或者大部分样本点的线性可分。</p>
 <p>但我们可能会碰到的一种情况是样本点不是线性可分的，比如：</p>
 <p><img src="https://s2.loli.net/2023/04/17/BpDe2wT9zZQrJVn.jpg" alt="img" style="zoom:50%;"></p>
 <p>这种情况的解决方法就是：将<strong>二维线性不可分样本映射到高维空间中，让样本点在高维空间线性可分</strong>，比如：</p>
 <p><img src="https://s2.loli.net/2023/04/17/JhEDzmfuGyPK7A6.jpg" alt="img" style="zoom:50%;"></p>
-<p>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里, 再通过间隔最大化的方 式，学习得到支持向量机，就是非线性 SVM。<br>我们用 $\mathrm{x}$ 表示原来的样本点, 用 $\phi(x)$ 表示 $\mathrm{x}$ 映射到特征新的特征空间后到新向量。那么分割超平面可以表示为: $f(x)=w \phi(x)+b$ 。<br>对于非线性 SVM 的对偶问题就变成了：</p>
-<script type="math/tex; mode=display">
+<p>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里,
+再通过间隔最大化的方 式，学习得到支持向量机，就是非线性 SVM。 我们用
+<span class="math inline">\(\mathrm{x}\)</span> 表示原来的样本点, 用
+<span class="math inline">\(\phi(x)\)</span> 表示 <span class="math inline">\(\mathrm{x}\)</span>
+映射到特征新的特征空间后到新向量。那么分割超平面可以表示为: <span class="math inline">\(f(x)=w \phi(x)+b\)</span> 。 对于非线性 SVM
+的对偶问题就变成了： <span class="math display">\[
 \begin{aligned}
-& \min _\lambda\left[\frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \lambda_i \lambda_j y_i y_j\left(\phi\left(x_i\right) \cdot \phi\left(x_j\right)\right)-\sum_{j=1}^n \lambda_i\right] \\
-& \text { s.t. } \quad \sum_{i=1}^n \lambda_i y_i=0, \quad \lambda_i \geq 0, \quad C-\lambda_i-\mu_i=0
-\end{aligned}</script><p>可以看到与线性 SVM 唯一的不同就是：之前的 $\left(x_i \cdot x_j\right)$ 变成了 $\left(\phi\left(x_i\right) \cdot \phi\left(x_j\right)\right)$ 。</p>
-<h3><span id="52-核函数的作用">5.2 核函数的作用</span></h3><p>我们不禁有个疑问：只是做个内积运算, 为什么要有核函数的呢?</p>
-<p>这是因为<font color="red"> 低维空间映射到高维空间后维度可能会很大, 如果将全部样本的点乘全部计算好, 这样的计算量太大了。</font></p>
-<p>但如果我们有这样的一核函数 $k(x, y)=(\phi(x), \phi(y)) ， \quad x_i$ 与 $x_j$ 在特征空间的内积等于它们在原始样本空间中通 过函数 $k(x, y)$ 计算的结果, 我们就不需要计算高维甚至无穷维空间的内积了。<br>举个例子：假设我们有一个多项式核函数：</p>
-<script type="math/tex; mode=display">
-k(x, y)=(x \cdot y+1)^2</script><p>带进样本点的后:</p>
-<script type="math/tex; mode=display">
-k(x, y)=\left(\sum_{i=1}^n\left(x_i \cdot y_i\right)+1\right)^2</script><p>而它的展开项是:</p>
-<script type="math/tex; mode=display">
-\sum_{i=1}^n x_i^2 y_i^2+\sum_{i=2}^n \sum_{j=1}^{i-1}\left(\sqrt{2} x_i x_j\right)\left(\sqrt{2} y_i y_j\right)+\sum_{i=1} n\left(\sqrt{2} x_i\right)\left(\sqrt{2} y_i\right)+1</script><p>如果没有核函数，我们则需要把向量映射成:</p>
-<script type="math/tex; mode=display">
-x^{\prime}=\left(x_1^2, \ldots, x_n^2, \ldots \sqrt{2} x_1, \ldots, \sqrt{2} x_n, 1\right)</script><p>然后在进行内积计算, 才能与多项式核函数达到相同的效果。可见核函数的引入一方面减少了我们计算量, 另一方面也减少了我们存储数据的内存使用量。</p>
-<h3><span id="53-常见核函数">5.3 常见核函数</span></h3><p>我们常用核函数有:<br><strong>线性核函数</strong>【无映射】</p>
-<script type="math/tex; mode=display">
-k\left(x_i, x_j\right)=x_i^T x_j</script><ul>
-<li>优点: 有加速算法库、没有特征映射、过拟合风险低</li>
-<li>缺点：只能处理线性</li>
-</ul>
-<p><strong>多项式核函数【映射，超参数】</strong></p>
-<script type="math/tex; mode=display">
-k\left(x_i, x_j\right)=\left(x_i^T x_j\right)^d</script><p><strong>高斯核函数【映射，超参数】</strong></p>
-<script type="math/tex; mode=display">
-k\left(x_i, x_j\right)=\exp \left(-\frac{\left\|x_i-x_j\right\|}{2 \delta^2}\right)</script><ul>
+&amp; \min _\lambda\left[\frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \lambda_i
+\lambda_j y_i y_j\left(\phi\left(x_i\right) \cdot
+\phi\left(x_j\right)\right)-\sum_{j=1}^n \lambda_i\right] \\
+&amp; \text { s.t. } \quad \sum_{i=1}^n \lambda_i y_i=0, \quad \lambda_i
+\geq 0, \quad C-\lambda_i-\mu_i=0
+\end{aligned}
+\]</span> 可以看到与线性 SVM 唯一的不同就是：之前的 <span class="math inline">\(\left(x_i \cdot x_j\right)\)</span> 变成了 <span class="math inline">\(\left(\phi\left(x_i\right) \cdot
+\phi\left(x_j\right)\right)\)</span> 。</p>
+<h3><span id="52-核函数的作用">5.2 核函数的作用</span></h3>
+<p>我们不禁有个疑问：只是做个内积运算, 为什么要有核函数的呢?</p>
+<p>这是因为<font color="red"> 低维空间映射到高维空间后维度可能会很大,
+如果将全部样本的点乘全部计算好, 这样的计算量太大了。</font></p>
+<p>但如果我们有这样的一核函数 <span class="math inline">\(k(x,
+y)=(\phi(x), \phi(y)) ， \quad x_i\)</span> 与 <span class="math inline">\(x_j\)</span>
+在特征空间的内积等于它们在原始样本空间中通 过函数 <span class="math inline">\(k(x, y)\)</span> 计算的结果,
+我们就不需要计算高维甚至无穷维空间的内积了。
+举个例子：假设我们有一个多项式核函数： <span class="math display">\[
+k(x, y)=(x \cdot y+1)^2
+\]</span> 带进样本点的后: <span class="math display">\[
+k(x, y)=\left(\sum_{i=1}^n\left(x_i \cdot y_i\right)+1\right)^2
+\]</span> 而它的展开项是: <span class="math display">\[
+\sum_{i=1}^n x_i^2 y_i^2+\sum_{i=2}^n \sum_{j=1}^{i-1}\left(\sqrt{2} x_i
+x_j\right)\left(\sqrt{2} y_i y_j\right)+\sum_{i=1} n\left(\sqrt{2}
+x_i\right)\left(\sqrt{2} y_i\right)+1
+\]</span> 如果没有核函数，我们则需要把向量映射成: <span class="math display">\[
+x^{\prime}=\left(x_1^2, \ldots, x_n^2, \ldots \sqrt{2} x_1, \ldots,
+\sqrt{2} x_n, 1\right)
+\]</span> 然后在进行内积计算,
+才能与多项式核函数达到相同的效果。可见核函数的引入一方面减少了我们计算量,
+另一方面也减少了我们存储数据的内存使用量。</p>
+<h3><span id="53-常见核函数">5.3 常见核函数</span></h3>
+<p>我们常用核函数有: <strong>线性核函数</strong>【无映射】 <span class="math display">\[
+k\left(x_i, x_j\right)=x_i^T x_j
+\]</span> - 优点: 有加速算法库、没有特征映射、过拟合风险低 -
+缺点：只能处理线性</p>
+<p><strong>多项式核函数【映射，超参数】</strong> <span class="math display">\[
+k\left(x_i, x_j\right)=\left(x_i^T x_j\right)^d
+\]</span> <strong>高斯核函数【映射，超参数】</strong> <span class="math display">\[
+k\left(x_i, x_j\right)=\exp \left(-\frac{\left\|x_i-x_j\right\|}{2
+\delta^2}\right)
+\]</span></p>
+<ul>
 <li><strong>表示能力强，但容易过拟合</strong></li>
 <li><strong>高斯核没有多项核不稳定的问题</strong></li>
 <li><strong>只有一个超参数</strong></li>
 </ul>
-<h3><span id="54-如何选择核函数">5.4 <strong>如何选择核函数？</strong></span></h3><blockquote>
-<p>  <strong>其他核函数：拉普拉斯、sigmod、卡方、直方图交叉</strong></p>
-<p>  可自定义和组合核函数</p>
+<h3><span id="54-如何选择核函数">5.4 <strong>如何选择核函数？</strong></span></h3>
+<blockquote>
+<p><strong>其他核函数：拉普拉斯、sigmod、卡方、直方图交叉</strong></p>
+<p>可自定义和组合核函数</p>
 </blockquote>
 <ul>
 <li>如果特征的数量大到和样本数量差不多，则选用LR或者线性核的SVM；</li>
@@ -565,112 +749,146 @@ k\left(x_i, x_j\right)=\exp \left(-\frac{\left\|x_i-x_j\right\|}{2 \delta^2}\rig
 <li>如果特征的数量小，而样本的数量很大，则需要手工添加一些特征从而变成第一种情况。</li>
 </ul>
 <p><img src="https://s2.loli.net/2023/04/17/uFims1jZcWSPBRx.png" alt="image-20220331203905843" style="zoom:50%;"></p>
-<h3><span id="55-核方法">5.5 核方法</span></h3><h4><span id="核化lr-非线性">核化LR [非线性]</span></h4><p>正类: y = +1 负类 y= -1</p>
+<h3><span id="55-核方法">5.5 核方法</span></h3>
+<h4><span id="核化lr-非线性">核化LR [非线性]</span></h4>
+<p>正类: y = +1 负类 y= -1</p>
 <p><img src="https://s2.loli.net/2023/04/17/mvX4dbSUTuzYKAq.png" alt="image-20220331205845613" style="zoom:50%;"></p>
 <p><img src="https://s2.loli.net/2023/04/17/UGMhET5quOZiVLn.png" alt="image-20220331211740625" style="zoom:50%;"></p>
 <p><img src="https://s2.loli.net/2023/04/17/6HjbuOyVkhNDmAL.png" alt="image-20220331211757367" style="zoom:50%;"></p>
 <p><strong>梯度下降求解：</strong></p>
 <p>核化LR的参数通常都非0，并且几乎用到所有训练的样本，预测效率比较低。</p>
 <p><img src="https://s2.loli.net/2023/04/17/8d9UGWZyzBoAhjJ.png" alt="image-20220331212433609" style="zoom:50%;"></p>
-<h3><span id="56-支持向量回归-svr-核化岭回归">5.6 支持向量回归 SVR = ？核化岭回归？</span></h3><blockquote>
-<p>  <a target="_blank" rel="noopener" href="https://blog.csdn.net/ch18328071580/article/details/94168411">https://blog.csdn.net/ch18328071580/article/details/94168411</a></p>
-<p>  <strong>支持向量在隔代之外</strong></p>
+<h3><span id="56-支持向量回归-svr-核化岭回归">5.6 支持向量回归 SVR =
+？核化岭回归？</span></h3>
+<blockquote>
+<p>https://blog.csdn.net/ch18328071580/article/details/94168411</p>
+<p><strong>支持向量在隔代之外</strong></p>
 </blockquote>
-<h4><span id="svr与一般线性回归的区别">SVR与一般线性回归的区别</span></h4><div class="table-container">
+<h4><span id="svr与一般线性回归的区别">SVR与一般线性回归的区别</span></h4>
 <table>
+<colgroup>
+<col style="width: 65%">
+<col style="width: 34%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>SVR</th>
 <th>线性回归</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>数据在间隔带内则不计算损失，<strong>当且仅当f(x)与y之间的差距的绝对值大于ϵ才计算损失</strong></td>
 <td>只要f(x)与y不相等时，就计算损失</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>通过最大化间隔带的宽度与最小化总损失</strong>来优化模型</td>
 <td>通过梯度下降之后求均值来优化模型</td>
 </tr>
 </tbody>
 </table>
-</div>
 <p><strong>岭回归：</strong><img src="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png" alt="image-20220401144206172" style="zoom:50%;"></p>
-<h5><span id="支持向量回归我们假设fx与y之间最多有一定的偏差大于偏差才计数损失">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></h5><script type="math/tex; mode=display">
-\min _{w, b} \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m} l_{\epsilon}\left(f\left(x_{i}\right), y_{i}\right)</script><p>其中C为正则化常数, $l_{\epsilon}$ 是图中所示的 $\epsilon$-不敏感损失 ( $\epsilon$-insensitive loss)函数:</p>
-<script type="math/tex; mode=display">
-l_{\epsilon}(\mathrm{z})= \begin{cases}0, & \text { if }|z| \leq \epsilon \\ |z|-\epsilon, & \text { otherwise }\end{cases}</script><p>引入松弛变量 $\xi<em>{i}$ 和 $\left(\xi</em>{i}\right)$, 可将式重写为:</p>
-<script type="math/tex; mode=display">
+<h5><span id="支持向量回归我们假设fx与y之间最多有一定的偏差大于偏差才计数损失">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></h5>
+<p><span class="math display">\[
+\min _{w, b} \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m}
+l_{\epsilon}\left(f\left(x_{i}\right), y_{i}\right)
+\]</span> 其中C为正则化常数, <span class="math inline">\(l_{\epsilon}\)</span> 是图中所示的 <span class="math inline">\(\epsilon\)</span>-不敏感损失 ( <span class="math inline">\(\epsilon\)</span>-insensitive loss)函数: <span class="math display">\[
+l_{\epsilon}(\mathrm{z})= \begin{cases}0, &amp; \text { if }|z| \leq
+\epsilon \\ |z|-\epsilon, &amp; \text { otherwise }\end{cases}
+\]</span> 引入松弛变量 <span class="math inline">\(\xi_{i}\)</span> 和
+<span class="math inline">\(\left(\xi_{i}\right)\)</span>, 可将式重写为:
+<span class="math display">\[
 \begin{array}{ll}
-\min _{w, b, \xi_{i}, \xi_{i}} & \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m}\left(\xi_{i}, \widehat{\xi}_{i}\right) \\
-\text { s.t. } & f\left(x_{i}\right)-y_{i} \leq \epsilon+\xi_{i} \\
-& y_{i}-f\left(x_{i}\right) \leq \epsilon+\widehat{\xi}_{i} \\
-& \xi_{i} \geq 0, \hat{\xi}_{i} \geq 0, i=1,2, \ldots m
-\end{array}</script><p>引入拉格朗日乘子 $\mu_{i}$,</p>
-<p>$L(w, b, \alpha, \hat{\alpha}, \xi, \hat{\xi}, \mu, \hat{\mu})$<br>$=\frac{1}{2}|w|^{2}+C \sum<em>{i=1}^{m}\left(\xi</em>{i}+\widehat{\xi}<em>{i}\right)-\sum</em>{i=1}^{m} \xi<em>{i} \mu</em>{i}-\sum<em>{i=1}^{m} \widehat{\xi}</em>{i} \widehat{\mu<em>{i}}$<br>$+\sum</em>{i=1}^{m} \alpha<em>{i}\left(f\left(x</em>{i}\right)-y<em>{i}-\epsilon-\xi</em>{i}\right)+\sum<em>{i=1}^{m} \widehat{\alpha</em>{i}}\left(y<em>{i}-f\left(x</em>{i}\right)-\epsilon-\widehat{\xi}_{i}\right)$</p>
-<p>再令 $L(w, b, a, \hat{a}, \xi, \hat{\xi}, \mu, \mu)$ 对 $w, b, \xi<em>{i}, \hat{\xi}</em>{i}$ 的偏导为零可得:</p>
-<script type="math/tex; mode=display">
-w=\sum_{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}</script><p>上述过程中需满足KKT条件, 即要求:</p>
-<script type="math/tex; mode=display">
+\min _{w, b, \xi_{i}, \xi_{i}} &amp; \frac{1}{2}\|w\|^{2}+C
+\sum_{i=1}^{m}\left(\xi_{i}, \widehat{\xi}_{i}\right) \\
+\text { s.t. } &amp; f\left(x_{i}\right)-y_{i} \leq \epsilon+\xi_{i} \\
+&amp; y_{i}-f\left(x_{i}\right) \leq \epsilon+\widehat{\xi}_{i} \\
+&amp; \xi_{i} \geq 0, \hat{\xi}_{i} \geq 0, i=1,2, \ldots m
+\end{array}
+\]</span> 引入拉格朗日乘子 <span class="math inline">\(\mu_{i}\)</span>,</p>
+<p><span class="math inline">\(L(w, b, \alpha, \hat{\alpha}, \xi,
+\hat{\xi}, \mu, \hat{\mu})\)</span> <span class="math inline">\(=\frac{1}{2}\|w\|^{2}+C
+\sum_{i=1}^{m}\left(\xi_{i}+\widehat{\xi}_{i}\right)-\sum_{i=1}^{m}
+\xi_{i} \mu_{i}-\sum_{i=1}^{m} \widehat{\xi}_{i}
+\widehat{\mu_{i}}\)</span> <span class="math inline">\(+\sum_{i=1}^{m}
+\alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)+\sum_{i=1}^{m}
+\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)\)</span></p>
+<p>再令 <span class="math inline">\(L(w, b, a, \hat{a}, \xi, \hat{\xi},
+\mu, \mu)\)</span> 对 <span class="math inline">\(w, b, \xi_{i},
+\hat{\xi}_{i}\)</span> 的偏导为零可得: <span class="math display">\[
+w=\sum_{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}
+\]</span> 上述过程中需满足KKT条件, 即要求: <span class="math display">\[
 \left\{\begin{array}{c}
 \alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)=0 \\
-\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)=0 \\
+\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)=0
+\\
 \alpha_{i} \widehat{\alpha_{i}}=0, \xi_{i} \widehat{\xi}_{i}=0 \\
-\left(C-\alpha_{i}\right) \xi_{i}=0,\left(C-\widehat{\alpha_{i}}\right) \widehat{\xi}_{i}=0 .
-\end{array}\right.</script><h3><span id="57-多分类-svm">5.7 多分类 SVM</span></h3><h4><span id="571-多分类问题">5.7.1 多分类问题</span></h4><ul>
-<li>多分类问题拆解成若干个二分类问题，对于每个二分类训练一个分类器。<ul>
+\left(C-\alpha_{i}\right) \xi_{i}=0,\left(C-\widehat{\alpha_{i}}\right)
+\widehat{\xi}_{i}=0 .
+\end{array}\right.
+\]</span></p>
+<h3><span id="57-多分类-svm">5.7 多分类 SVM</span></h3>
+<h4><span id="571-多分类问题">5.7.1 多分类问题</span></h4>
+<ul>
+<li>多分类问题拆解成若干个二分类问题，对于每个二分类训练一个分类器。
+<ul>
 <li><strong>one vs one 拆解</strong>：K(K-1)/2 个分类器。</li>
 <li><strong>one vs Rest 拆解</strong>：K个分类器</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <p><img src="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png" alt="image-20220401192909167" style="zoom:50%;"></p>
 <ul>
 <li><p><strong>根据模型特点设计：多分类线性SVM</strong></p>
 <ul>
-<li><p><strong>层次支持向量机</strong></p>
-</li>
+<li><p><strong>层次支持向量机</strong></p></li>
 <li><p><strong>回顾二分类</strong>；</p>
-<p><img src="https://s2.loli.net/2023/04/17/YJLzqnSQGTyXFc3.png" alt="image-20220401193645250" style="zoom:50%;"></p>
-</li>
+<p><img src="https://s2.loli.net/2023/04/17/YJLzqnSQGTyXFc3.png" alt="image-20220401193645250" style="zoom:50%;"></p></li>
 <li><p><strong>多分类线性SVM</strong>：</p>
-<p><img src="https://s2.loli.net/2023/04/17/kZ19DcBfzWuMAaG.png" alt="image-20220401194059380" style="zoom:50%;"></p>
-</li>
+<p><img src="https://s2.loli.net/2023/04/17/kZ19DcBfzWuMAaG.png" alt="image-20220401194059380" style="zoom:50%;"></p></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h2><span id="六-优缺点">六、优缺点</span></h2><h3><span id="61-优点">6.1 优点</span></h3><ul>
+<h2><span id="六-优缺点">六、优缺点</span></h2>
+<h3><span id="61-优点">6.1 优点</span></h3>
+<ul>
 <li>有严格的<strong>数学理论支持</strong>，<strong>可解释性强</strong>，<strong>不依靠统计方法</strong>，从而<strong>简化了通常的分类和回归问题</strong>；</li>
 <li>能找出对任务至关重要的<strong>关键样本</strong>（即：<strong>支持向量</strong>）；</li>
 <li>采用<strong>核技巧</strong>之后，<strong>可以处理非线性分类/回归任务</strong>；</li>
 <li><strong>最终决策函数只由少数的支持向量所确定，计算的复杂性取决于支持向量的数目，而不是样本空间的维数，这在某种意义上避免了“维数灾难”。</strong></li>
 </ul>
-<h3><span id="62-缺点">6.2 缺点</span></h3><ul>
-<li><strong>训练时间长</strong>：当采用 SMO 算法时，由于每次都需要挑选一对参数，因此时间复杂度为$O(N^2)$ ，其中 N 为训练样本的数量；</li>
-<li><strong>存储空间大</strong>：当采用核技巧时，如果需要存储核矩阵，则空间复杂度为$O(N^2)$ ；</li>
+<h3><span id="62-缺点">6.2 缺点</span></h3>
+<ul>
+<li><strong>训练时间长</strong>：当采用 SMO
+算法时，由于每次都需要挑选一对参数，因此时间复杂度为<span class="math inline">\(O(N^2)\)</span> ，其中 N 为训练样本的数量；</li>
+<li><strong>存储空间大</strong>：当采用核技巧时，如果需要存储核矩阵，则空间复杂度为<span class="math inline">\(O(N^2)\)</span> ；</li>
 <li><strong>预测时间长</strong>：模型预测时，预测时间与支持向量的个数成正比。当支持向量的数量较大时，预测计算复杂度较高。</li>
 </ul>
 <p><strong>因此支持向量机目前只适合小批量样本的任务，无法适应百万甚至上亿样本的任务。</strong></p>
-<h2><span id="svm-qampa">SVM Q&amp;A</span></h2><blockquote>
-<p>  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93715996">https://zhuanlan.zhihu.com/p/93715996</a></p>
+<h2><span id="svm-qampa">SVM Q&amp;A</span></h2>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/93715996</p>
 </blockquote>
-<h4><span id="1-原理">1、原理：</span></h4><ul>
-<li>简单介绍SVM（详细原理）：从分类平面，到求两类间的最大间隔，到转化为求间隔分之一，等优化问题，然后就是优化问题的解决办法，首先是用拉格拉日乘子把约束优化转化为无约束优化，对各个变量求导令其为零，得到的式子带入拉格朗日式子从而转化为对偶问题， 最后再利用SMO（序列最小优化）来解决这个对偶问题。<strong>svm里面的超参数c有啥用：软间隔SVM去权衡优化目标和少量分错样本的目标。</strong></li>
-<li><p>SVM的推导，解释原问题和对偶问题，<strong>SVM原问题和对偶问题的关系</strong>，<strong>KKT限制条件</strong>，<strong>KKT条件用哪些</strong>，完整描述；软间隔问题，解释支持向量、核函数（哪个地方引入、画图解释高维映射，高斯核可以升到多少维，如何选择核函数），引入拉格朗日的优化方法的原因，最大的特点，损失函数解释</p>
+<h4><span id="1-原理">1、原理：</span></h4>
+<ul>
+<li>简单介绍SVM（详细原理）：从分类平面，到求两类间的最大间隔，到转化为求间隔分之一，等优化问题，然后就是优化问题的解决办法，首先是用拉格拉日乘子把约束优化转化为无约束优化，对各个变量求导令其为零，得到的式子带入拉格朗日式子从而转化为对偶问题，
+最后再利用SMO（序列最小优化）来解决这个对偶问题。<strong>svm里面的超参数c有啥用：软间隔SVM去权衡优化目标和少量分错样本的目标。</strong></li>
+<li>SVM的推导，解释原问题和对偶问题，<strong>SVM原问题和对偶问题的关系</strong>，<strong>KKT限制条件</strong>，<strong>KKT条件用哪些</strong>，完整描述；软间隔问题，解释支持向量、核函数（哪个地方引入、画图解释高维映射，高斯核可以升到多少维，如何选择核函数），引入拉格朗日的优化方法的原因，最大的特点，损失函数解释
 <ul>
 <li><strong>KKT限制</strong>：主问题可行、对偶问题可行、主变量最优、<strong>互补松弛</strong></li>
-</ul>
-</li>
-<li><p><strong>为什么要把原问题转换为对偶问题？</strong></p>
+</ul></li>
+<li><strong>为什么要把原问题转换为对偶问题？</strong>
 <ul>
 <li>因为原问题是凸二次规划问题，转换为对偶问题更加高效。为什么求解对偶问题更加高效？因为只用求解alpha系数，而alpha系数只有支持向量才非0，其他全部为0.alpha系数有多少个？样本点的个数</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h4><span id="2-svm与lr最大区别lr和svm对于outlier的敏感程度分析逻辑回归与svm的区别">2、SVM与LR最大区别，LR和SVM对于outlier的敏感程度分析，逻辑回归与SVM的区别？</span></h4><h4><span id="3-svm如何解决多分类问题-可以做回归吗怎么做">3、SVM如何解决多分类问题、可以做回归吗，怎么做？</span></h4><h4><span id="4-机器学习有很多关于核函数的说法核函数的定义和作用是什么">4、机器学习有很多关于核函数的说法，核函数的定义和作用是什么？</span></h4><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24627666">https://www.zhihu.com/question/24627666</a></p>
-<h4><span id="5-linear-svm-和-lr-有什么异同">5、Linear SVM 和 LR 有什么异同？</span></h4><h5><span id="svm和lr相同点">SVM和LR相同点：</span></h5><ul>
-<li>SVM和LR都属于机器学习的监督学习中的<strong>判别式模型</strong>（判别式模型对$p(y|x)$进行建模或直接基于x预测y，生成模型：$p(x|y)$和$p(y)$进行建模,预测后验概率）。</li>
+<h4><span id="2-svm与lr最大区别lr和svm对于outlier的敏感程度分析逻辑回归与svm的区别">2、SVM与LR最大区别，LR和SVM对于outlier的敏感程度分析，逻辑回归与SVM的区别？</span></h4>
+<h4><span id="3-svm如何解决多分类问题-可以做回归吗怎么做">3、SVM如何解决多分类问题、可以做回归吗，怎么做？</span></h4>
+<h4><span id="4-机器学习有很多关于核函数的说法核函数的定义和作用是什么">4、机器学习有很多关于核函数的说法，核函数的定义和作用是什么？</span></h4>
+<p>https://www.zhihu.com/question/24627666</p>
+<h4><span id="5-linear-svm-和-lr有什么异同">5、Linear SVM 和 LR
+有什么异同？</span></h4>
+<h5><span id="svm和lr相同点">SVM和LR相同点：</span></h5>
+<ul>
+<li>SVM和LR都属于机器学习的监督学习中的<strong>判别式模型</strong>（判别式模型对<span class="math inline">\(p(y|x)\)</span>进行建模或直接基于x预测y，生成模型：<span class="math inline">\(p(x|y)\)</span>和<span class="math inline">\(p(y)\)</span>进行建模,预测后验概率）。</li>
 <li>SVM和LR都是线性二分类模型，<strong>分类边界为一个超平面</strong>。</li>
 <li>线性SVM和对数几率回归都可以基于表示定理和<strong>核技巧处理非线性可分问题</strong>。</li>
 <li><strong>SVM的基本型和对数几率函数都属于参数模型。SVM的对偶性和核化对数几率回归都属于非参数模型</strong>。</li>
@@ -679,97 +897,118 @@ w=\sum_{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}</script><p>�
 <li>SVM和对数几率函数的优化目标相似，性能相当。</li>
 <li><strong>SVM多分类：多分类SVM；LR多分类：Softmax回归。</strong></li>
 </ul>
-<h5><span id="svm和lr的区别"><strong><font color="red"> SVM和LR的区别：</font></strong></span></h5><div class="table-container">
+<h5><span id="svm和lr的区别"><strong><font color="red">
+SVM和LR的区别：</font></strong></span></h5>
 <table>
+<colgroup>
+<col style="width: 11%">
+<col style="width: 44%">
+<col style="width: 44%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>算法</th>
 <th>SVM</th>
 <th>LR</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><strong>思想</strong></td>
-<td><strong>SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面</strong>。</td>
+<td><strong>SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面</strong>。</td>
 <td><strong>逻辑回归</strong>是使用线性回归模型的预测值逼近分类任务真实标记的对数几率。</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>输出</strong></td>
 <td><strong>非概率方法</strong>；</td>
-<td><strong>概率方法</strong>；需要对$p(y</td>
-<td>x)$进行假设，具有概率意义。</td>
+<td><strong>概率方法</strong>；需要对<span class="math inline">\(p(y|x)\)</span>进行假设，具有概率意义。</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>经验损失函数</strong></td>
 <td><strong>合页损失函数</strong>；有一段平的零区域、使得SVM的对偶性有稀疏性。</td>
 <td><strong>交叉熵损失函数</strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>训练样本</strong></td>
 <td>支持向量（少数样本），SVM的参数和假设函数只和支持向量有关。</td>
 <td>全样本</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>优化方法</strong></td>
 <td>次梯度下降和坐标梯度下降 【<strong>SMO算法</strong>】</td>
 <td><strong>梯度下降</strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td>多分类</td>
 <td><strong>多分类SVM</strong></td>
 <td><strong>Softmax回归</strong></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>敏感程度</strong></td>
 <td>SVM考虑分类边界线附近的样本（决定分类超平面的样本）。在支持向量外添加或减少任何样本点对分类决策面没有任何影响；</td>
 <td>LR受所有数据点的影响。直接依赖数据分布，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡。</td>
 </tr>
 </tbody>
 </table>
-</div>
-<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26768865">https://www.zhihu.com/question/26768865</a></p>
-<h4><span id="6-支持向量机svm是否适合大规模数据速度">6、支持向量机(SVM)是否适合大规模数据？【速度】</span></h4><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19591450">https://www.zhihu.com/question/19591450</a></p>
-<h4><span id="7-svm和逻辑斯特回归对同一样本a进行训练如果某类中增加一些数据点那么原来的决策边界分别会怎么变化">7、SVM和逻辑斯特回归对同一样本A进行训练，如果某类中增加一些数据点，那么原来的决策边界分别会怎么变化？</span></h4><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30123068">https://www.zhihu.com/question/30123068</a></p>
-<h4><span id="8-各种机器学习的应用场景分别是什么例如k近邻贝叶斯决策树svm逻辑斯蒂回归和最大熵模型">8、各种机器学习的应用场景分别是什么？例如，k近邻,贝叶斯，决策树，svm，逻辑斯蒂回归和最大熵模型。</span></h4><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26726794">https://www.zhihu.com/question/26726794</a></p>
-<h4><span id="9-svm与感知器的联系和优缺点比较">9、SVM与感知器的联系和优缺点比较</span></h4><p><strong>感知机用误分类样本点的几何距离之和</strong>来表示模型的损失函数，用梯度下降算法优化，直至没有误分类点。</p>
-<script type="math/tex; mode=display">
-L(w, b)=-\sum_{x^{(i)} \in M} y^{(i)}\left(w^{T} x^{(i)}+b\right)</script><h5><span id="感知机与svm区别"><strong><font color="red"> 感知机与SVM区别</font></strong></span></h5><p><strong>SVM可以视为对感知器的二阶改进</strong>：第一阶改进是加入了 <img src="https://www.zhihu.com/equation?tex=%5Cgamma" alt="[公式]"> 获得hinge loss，从而具备了产生大间隔的潜质；第二阶改进是加入了权向量的L2正则化项，从而避免产生无意义的大函数间隔，而是产生大的几何间隔。</p>
-<div class="table-container">
+<p>https://www.zhihu.com/question/26768865</p>
+<h4><span id="6-支持向量机svm是否适合大规模数据速度">6、支持向量机(SVM)是否适合大规模数据？【速度】</span></h4>
+<p>https://www.zhihu.com/question/19591450</p>
+<h4><span id="7-svm和逻辑斯特回归对同一样本a进行训练如果某类中增加一些数据点那么原来的决策边界分别会怎么变化">7、SVM和逻辑斯特回归对同一样本A进行训练，如果某类中增加一些数据点，那么原来的决策边界分别会怎么变化？</span></h4>
+<p>https://www.zhihu.com/question/30123068</p>
+<h4><span id="8-各种机器学习的应用场景分别是什么例如k近邻贝叶斯决策树svm逻辑斯蒂回归和最大熵模型">8、各种机器学习的应用场景分别是什么？例如，k近邻,贝叶斯，决策树，svm，逻辑斯蒂回归和最大熵模型。</span></h4>
+<p>https://www.zhihu.com/question/26726794</p>
+<h4><span id="9-svm与感知器的联系和优缺点比较">9、SVM与感知器的联系和优缺点比较</span></h4>
+<p><strong>感知机用误分类样本点的几何距离之和</strong>来表示模型的损失函数，用梯度下降算法优化，直至没有误分类点。
+<span class="math display">\[
+L(w, b)=-\sum_{x^{(i)} \in M} y^{(i)}\left(w^{T} x^{(i)}+b\right)
+\]</span></p>
+<h5><span id="感知机与svm区别"><strong><font color="red">
+感知机与SVM区别</font></strong></span></h5>
+<p><strong>SVM可以视为对感知器的二阶改进</strong>：第一阶改进是加入了
+<img src="https://www.zhihu.com/equation?tex=%5Cgamma" alt="[公式]">
+获得hinge
+loss，从而具备了产生大间隔的潜质；第二阶改进是加入了权向量的L2正则化项，从而避免产生无意义的大函数间隔，而是产生大的几何间隔。</p>
 <table>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 46%">
+<col style="width: 46%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>算法</th>
 <th>感知机</th>
 <th>SVM</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>思想</td>
-<td>分离超平面基于误分类的损失函数 $\min <em>{w, b} \frac{1}{n} \sum</em>{i=1}^n \max \left(0,-y_i\left(w^T x_i+b\right)\right.$</td>
-<td>$\min <em>{w, b} \frac{1}{n} \sum</em>{i=1}^n \max \left(0,1-y_i\left(w^T x_i+b\right)\right)+\alpha\</td>
-<td>w\</td>
-<td>_2^2$</td>
+<td>分离超平面基于误分类的损失函数 <span class="math inline">\(\min _{w,
+b} \frac{1}{n} \sum_{i=1}^n \max \left(0,-y_i\left(w^T
+x_i+b\right)\right.\)</span></td>
+<td><span class="math inline">\(\min _{w, b} \frac{1}{n} \sum_{i=1}^n
+\max \left(0,1-y_i\left(w^T
+x_i+b\right)\right)+\alpha\|w\|_2^2\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>超平面</td>
 <td>因采用的初值不同而得到不同的超平面</td>
 <td>让离划分超平面最近的样本到划分超平面距离尽可能远</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>关键样本</td>
 <td>每步的分错样本</td>
 <td><strong>支持向量</strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td>非线性问题</td>
 <td>无</td>
 <td>核化</td>
 </tr>
 </tbody>
 </table>
-</div>
 
     </div>
 

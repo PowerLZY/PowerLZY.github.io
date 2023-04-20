@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -278,66 +278,98 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="链表">链表</span></h2><blockquote>
-<p>  在对链表进行操作时，一种常用的技巧是添加一个哑节点（dummy node），它的 \textit{next}next 指针指向链表的头节点。这样一来，我们就不需要对头节点进行特殊的判断了。</p>
+          <h2><span id="链表">链表</span></h2>
+<blockquote>
+<p>在对链表进行操作时，一种常用的技巧是添加一个哑节点（dummy
+node），它的 next
+指针指向链表的头节点。这样一来，我们就不需要对头节点进行特殊的判断了。</p>
 </blockquote>
-<h4><span id="剑指-offer-06-从尾到头打印链表"></span></h4><ul>
+<h4><span id="剑指offer-06-从尾到头打印链表"></span></h4>
+<ul>
 <li><strong>递归、辅助栈</strong></li>
 </ul>
 <p>输入一个链表的头节点，<strong>从尾到头反过来返回每个节点的值（用数组返回）</strong>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">  	<span class="keyword">def</span> <span class="title function_">reversePrint</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">    		<span class="comment"># 递归法</span></span><br><span class="line">        <span class="keyword">return</span> self.reversePrint(head.<span class="built_in">next</span>) + [head.val] <span class="keyword">if</span> head <span class="keyword">else</span> []</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reversePrint</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">      	<span class="comment"># 辅助栈法</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">while</span> head:</span><br><span class="line">            ans.append(head.val)</span><br><span class="line">            head = head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">list</span>(<span class="built_in">reversed</span>(ans))</span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-24-反转链表"></span></h4><p>定义一个函数，输入一个链表的头节点，<strong>反转该链表并输出反转后链表的头节点</strong>。</p>
+<h4><span id="剑指-offer-24-反转链表"></span></h4>
+<p>定义一个函数，输入一个链表的头节点，<strong>反转该链表并输出反转后链表的头节点</strong>。</p>
 <ul>
 <li><strong>递归、迭代</strong></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">      	<span class="comment"># 迭代</span></span><br><span class="line">        cur, pre = head, <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            tmp = cur.<span class="built_in">next</span> <span class="comment"># 暂存后继节点 cur.next</span></span><br><span class="line">            cur.<span class="built_in">next</span> = pre <span class="comment"># 修改 next 引用指向</span></span><br><span class="line">            pre = cur      <span class="comment"># pre 暂存 cur</span></span><br><span class="line">            cur = tmp      <span class="comment"># cur 访问下一节点</span></span><br><span class="line">        <span class="keyword">return</span> pre</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">      	<span class="comment"># 递归</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">recur</span>(<span class="params">cur, pre</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> cur: <span class="keyword">return</span> pre     <span class="comment"># 终止条件</span></span><br><span class="line">            res = recur(cur.<span class="built_in">next</span>, cur) <span class="comment"># 递归后继节点</span></span><br><span class="line">            cur.<span class="built_in">next</span> = pre             <span class="comment"># 修改节点引用指向</span></span><br><span class="line">            <span class="keyword">return</span> res                 <span class="comment"># 返回反转链表的头节点</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> recur(head, <span class="literal">None</span>)       <span class="comment"># 调用递归并返回</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-35-复杂链表的复制"></span></h4><p>请实现 copyRandomList 函数，复制一个复杂链表。<strong>在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null</strong>。</p>
+<h4><span id="剑指offer-35-复杂链表的复制"></span></h4>
+<p>请实现 copyRandomList
+函数，复制一个复杂链表。<strong>在复杂链表中，每个节点除了有一个 next
+指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者
+null</strong>。</p>
 <ul>
-<li><p>defaultdict()，空为0</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">copyRandomList</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="comment"># 拼接+拆分 【哈希表】</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dic = collections.defaultdict()</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            dic[cur] = Node(cur.val)</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            dic[cur].<span class="built_in">next</span> = dic[cur.<span class="built_in">next</span>] <span class="keyword">if</span> cur.<span class="built_in">next</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">            dic[cur].random = dic[cur.random] <span class="keyword">if</span> cur.random <span class="keyword">else</span> <span class="literal">None</span><span class="comment"># keyerror</span></span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> dic[head]</span><br></pre></td></tr></table></figure>
-</li>
+<li>defaultdict()，空为0</li>
 </ul>
-<h4><span id="剑指-offer-ii-021-删除链表的倒数第-n-个结点"></span></h4><p>给定一个链表，<strong>删除链表的倒数第 <code>n</code> 个结点</strong>，并且返回链表的头结点。</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">copyRandomList</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="comment"># 拼接+拆分 【哈希表】</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dic = collections.defaultdict()</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            dic[cur] = Node(cur.val)</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            dic[cur].<span class="built_in">next</span> = dic[cur.<span class="built_in">next</span>] <span class="keyword">if</span> cur.<span class="built_in">next</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">            dic[cur].random = dic[cur.random] <span class="keyword">if</span> cur.random <span class="keyword">else</span> <span class="literal">None</span><span class="comment"># keyerror</span></span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> dic[head]</span><br></pre></td></tr></table></figure></p>
+<h4><span id="剑指-offer-ii-021删除链表的倒数第-n-个结点"></span></h4>
+<p>给定一个链表，<strong>删除链表的倒数第 <code>n</code>
+个结点</strong>，并且返回链表的头结点。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeNthFromEnd</span>(<span class="params">self, head: ListNode, n: <span class="built_in">int</span></span>) -&gt; ListNode:</span><br><span class="line">        dummy = ListNode(<span class="number">0</span>, head)</span><br><span class="line">        first = head</span><br><span class="line">        second = dummy</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            first = first.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">while</span> first:</span><br><span class="line">            first = first.<span class="built_in">next</span></span><br><span class="line">            second = second.<span class="built_in">next</span></span><br><span class="line">        second.<span class="built_in">next</span> = second.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-022-链表中环的入口节点"></span></h4><p>给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着 next 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回 null。</p>
-<p>为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意，pos 仅仅是用于标识环的情况，并不会作为参数传递到函数中。</p>
+<h4><span id="剑指-offer-ii-022链表中环的入口节点"></span></h4>
+<p>给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着
+next 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回
+null。</p>
+<p>为了表示给定链表中的环，我们使用整数 pos
+来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是
+-1，则在该链表中没有环。注意，pos
+仅仅是用于标识环的情况，并不会作为参数传递到函数中。</p>
 <p>说明：不允许修改给定的链表。</p>
 <p><strong>示例 1：</strong></p>
 <p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png" alt="img" style="zoom:50%;"></p>
 <blockquote>
-<p>  输入：head = [3,2,0,-4], pos = 1<br>  输出：返回索引为 1 的链表节点<br>  解释：链表中有一个环，其尾部连接到第二个节点。</p>
+<p>输入：head = [3,2,0,-4], pos = 1 输出：返回索引为 1 的链表节点
+解释：链表中有一个环，其尾部连接到第二个节点。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">detectCycle</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        fast = slow = head</span><br><span class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.<span class="built_in">next</span>:</span><br><span class="line">            fast = fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">            slow = slow.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">if</span> fast == slow:</span><br><span class="line">                fast = head</span><br><span class="line">                <span class="keyword">while</span> fast != slow:</span><br><span class="line">                    fast = fast.<span class="built_in">next</span></span><br><span class="line">                    slow = slow.<span class="built_in">next</span></span><br><span class="line">                <span class="keyword">return</span> slow</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-023-两个链表的第一个重合节点"></span></h4><p>给定两个单链表的头节点 <code>headA</code> 和 <code>headB</code> ，请找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 <code>null</code> 。</p>
+<h4><span id="剑指-offer-ii-023两个链表的第一个重合节点"></span></h4>
+<p>给定两个单链表的头节点 <code>headA</code> 和 <code>headB</code>
+，请找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回
+<code>null</code> 。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getIntersectionNode</span>(<span class="params">self, headA: ListNode, headB: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> headA <span class="keyword">and</span> <span class="keyword">not</span> headB:</span><br><span class="line">            <span class="keyword">return</span> headA</span><br><span class="line">        p, q = headA, headB</span><br><span class="line">        <span class="keyword">while</span> p != q:</span><br><span class="line">            p = p.<span class="built_in">next</span> <span class="keyword">if</span> p <span class="keyword">else</span> headB</span><br><span class="line">            q = q.<span class="built_in">next</span> <span class="keyword">if</span> q <span class="keyword">else</span> headA</span><br><span class="line">        <span class="keyword">return</span> p</span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-025-链表中的两数相加"></span></h4><p>给定两个 <strong>非空链表</strong> <code>l1</code>和 <code>l2</code> 来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。</p>
+<h4><span id="剑指-offer-ii-025-链表中的两数相加"></span></h4>
+<p>给定两个 <strong>非空链表</strong> <code>l1</code>和 <code>l2</code>
+来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。</p>
 <ul>
 <li>从后往前加【反转链表初始化】、倒序添加</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addTwoNumbers</span>(<span class="params">self, l1: ListNode, l2: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">                <span class="keyword">return</span> head</span><br><span class="line">            pre, cur = <span class="literal">None</span>, head</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                tmp = cur.<span class="built_in">next</span></span><br><span class="line">                cur.<span class="built_in">next</span> = pre</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = tmp</span><br><span class="line">            <span class="keyword">return</span> pre</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> l1 <span class="keyword">and</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> </span><br><span class="line">        l1 = reverseList(l1)</span><br><span class="line">        l2 = reverseList(l2)</span><br><span class="line">        more = <span class="number">0</span></span><br><span class="line">        p = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> l1 <span class="keyword">or</span> l2:</span><br><span class="line">            <span class="comment"># 倒序添加</span></span><br><span class="line">            val1 = l1.val <span class="keyword">if</span> l1 <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            val2 = l2.val <span class="keyword">if</span> l2 <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            total = val1 + val2 + more</span><br><span class="line">            more, cur = <span class="built_in">divmod</span>(total, <span class="number">10</span>)</span><br><span class="line">            p = ListNode(cur, p)</span><br><span class="line">            l1 = l1.<span class="built_in">next</span> <span class="keyword">if</span> l1 <span class="keyword">else</span> l1</span><br><span class="line">            l2 = l2.<span class="built_in">next</span> <span class="keyword">if</span> l2 <span class="keyword">else</span> l2</span><br><span class="line">        <span class="keyword">if</span> more != <span class="number">0</span>:</span><br><span class="line">            p = ListNode(more, p)</span><br><span class="line">        <span class="keyword">return</span> p</span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-026-重排链表"></span></h4><p>给定一个单链表 L 的头节点 head ，单链表 L 表示为：</p>
-<p> L0 → L1 → … → Ln-1 → Ln<br>请将其重新排列后变为：</p>
+<h4><span id="剑指-offer-ii-026重排链表"></span></h4>
+<p>给定一个单链表 L 的头节点 head ，单链表 L 表示为：</p>
+<p>L0 → L1 → … → Ln-1 → Ln 请将其重新排列后变为：</p>
 <p>L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …</p>
 <p>不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。</p>
 <ul>
 <li><strong>列表的中点、插入节点</strong>; 线性表存储</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reorderList</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Do not return anything, modify head in-place instead.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">            pre, cur = <span class="literal">None</span>, head</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                tmp = cur.<span class="built_in">next</span></span><br><span class="line">                cur.<span class="built_in">next</span> = pre</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = tmp</span><br><span class="line">            <span class="keyword">return</span> pre</span><br><span class="line">        fast, slow = head.<span class="built_in">next</span>, head</span><br><span class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.<span class="built_in">next</span>:</span><br><span class="line">            slow, fast = slow.<span class="built_in">next</span>, fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        mid, slow.<span class="built_in">next</span> = slow.<span class="built_in">next</span>, <span class="literal">None</span></span><br><span class="line">        left, cur = head, reverseList(mid)</span><br><span class="line">        slow.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            tmp = cur.<span class="built_in">next</span></span><br><span class="line">            cur.<span class="built_in">next</span> = left.<span class="built_in">next</span></span><br><span class="line">            left.<span class="built_in">next</span> = cur</span><br><span class="line">            left = cur.<span class="built_in">next</span></span><br><span class="line">            cur = tmp</span><br><span class="line">        <span class="keyword">return</span> head</span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-027-回文链表"></span></h4><p>给定一个链表的 <strong>头节点</strong> <code>head</code> <strong>，</strong>请判断其是否为回文链表。如果一个链表是回文，那么链表节点序列从前往后看和从后往前看是相同的。</p>
+<h4><span id="剑指-offer-ii-027回文链表"></span></h4>
+<p>给定一个链表的 <strong>头节点</strong> <code>head</code>
+<strong>，</strong>请判断其是否为回文链表。如果一个链表是回文，那么链表节点序列从前往后看和从后往前看是相同的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isPalindrome</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">            pre, cur = <span class="literal">None</span>, head</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                tmp = cur.<span class="built_in">next</span></span><br><span class="line">                cur.<span class="built_in">next</span> = pre</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = tmp</span><br><span class="line">            <span class="keyword">return</span> pre</span><br><span class="line">        slow = fast = head</span><br><span class="line">        <span class="keyword">while</span> fast.<span class="built_in">next</span> <span class="keyword">and</span> fast.<span class="built_in">next</span>.<span class="built_in">next</span>:</span><br><span class="line">            slow, fast = slow.<span class="built_in">next</span>, fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        left, right = head, slow.<span class="built_in">next</span></span><br><span class="line">        slow.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        right = reverseList(right)</span><br><span class="line">        <span class="keyword">while</span> left <span class="keyword">and</span> right:</span><br><span class="line">            <span class="keyword">if</span> left.val != right.val:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            left, right = left.<span class="built_in">next</span>, right.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-028-展平多级双向链表"></span></h4><p>多级双向链表中，除了指向下一个节点和前一个节点指针之外，它还有一个子链表指针，可能指向单独的双向链表。这些子列表也可能会有一个或多个自己的子项，依此类推，生成多级数据结构，如下面的示例所示。</p>
+<h4><span id="剑指-offer-ii-028-展平多级双向链表"></span></h4>
+<p>多级双向链表中，除了指向下一个节点和前一个节点指针之外，它还有一个子链表指针，可能指向单独的双向链表。这些子列表也可能会有一个或多个自己的子项，依此类推，生成多级数据结构，如下面的示例所示。</p>
 <p>给定位于列表第一级的头节点，请扁平化列表，即将这样的多级双向链表展平成普通的双向链表，使所有结点出现在单级双链表中。</p>
 <ul>
 <li><strong>深度优先搜索</strong>、<strong>栈迭代</strong></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">flatten</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">      	<span class="comment"># 栈迭代</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dummy = Node(-<span class="number">1</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">        pre = dummy</span><br><span class="line">        stk = [head]</span><br><span class="line">        <span class="keyword">while</span> stk:</span><br><span class="line">            x = stk.pop()</span><br><span class="line">            pre.<span class="built_in">next</span> = x</span><br><span class="line">            x.prev = pre</span><br><span class="line">            <span class="keyword">if</span> x.<span class="built_in">next</span>:</span><br><span class="line">                stk.append(x.<span class="built_in">next</span>)</span><br><span class="line">            <span class="keyword">if</span> x.child:</span><br><span class="line">                stk.append(x.child)</span><br><span class="line">                x.child = <span class="literal">None</span></span><br><span class="line">            pre = x</span><br><span class="line">        dummy.<span class="built_in">next</span>.prev = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="built_in">next</span></span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">flatten</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="keyword">if</span> head == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dummy = Node(-<span class="number">1</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">pre: <span class="string">&#x27;Node&#x27;</span>, cur: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cur == <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> pre   </span><br><span class="line">            pre.<span class="built_in">next</span> = cur</span><br><span class="line">            cur.prev = pre</span><br><span class="line"></span><br><span class="line">            nxt_head = cur.<span class="built_in">next</span>         <span class="comment">#相当于4</span></span><br><span class="line"></span><br><span class="line">            tail = dfs(cur, cur.child)  <span class="comment">#相当于dfs(3, 7)</span></span><br><span class="line">            cur.child = <span class="literal">None</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> dfs(tail, nxt_head)  <span class="comment">#相当于dfs(12, 4)</span></span><br><span class="line">        dfs(dummy, head)</span><br><span class="line">        dummy.<span class="built_in">next</span>.prev = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-029-排序的循环链表"></span></h4><p>给定<strong>循环单调非递减列表中的一个点</strong>，<strong>写一个函数向这个列表中插入一个新元素 insertVal</strong> ，使这个列表仍然是循环升序的。给定的可以是这个列表中任意一个顶点的指针，并不一定是这个列表中最小元素的指针。</p>
-<p>如果有多个满足条件的插入位置，可以选择任意一个位置插入新的值，插入后整个列表仍然保持有序。如果列表为空（给定的节点是 null），需要创建一个循环有序列表并返回这个节点。否则。请返回原先给定的节点。</p>
+<h4><span id="剑指-offer-ii-029排序的循环链表"></span></h4>
+<p>给定<strong>循环单调非递减列表中的一个点</strong>，<strong>写一个函数向这个列表中插入一个新元素
+insertVal</strong>
+，使这个列表仍然是循环升序的。给定的可以是这个列表中任意一个顶点的指针，并不一定是这个列表中最小元素的指针。</p>
+<p>如果有多个满足条件的插入位置，可以选择任意一个位置插入新的值，插入后整个列表仍然保持有序。如果列表为空（给定的节点是
+null），需要创建一个循环有序列表并返回这个节点。否则。请返回原先给定的节点。</p>
 <ul>
 <li>循环链表边界判断</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span>, insertVal: <span class="built_in">int</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            node =  Node(insertVal)</span><br><span class="line">            node.<span class="built_in">next</span> = node</span><br><span class="line">            <span class="keyword">return</span> node</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> cur.val &lt;= insertVal &lt;= cur.<span class="built_in">next</span>.val:</span><br><span class="line">                cur.<span class="built_in">next</span> = Node(insertVal, cur.<span class="built_in">next</span>)</span><br><span class="line">                <span class="keyword">return</span> head</span><br><span class="line">            <span class="keyword">elif</span> cur.<span class="built_in">next</span>.val &lt; cur.val:</span><br><span class="line">                <span class="keyword">if</span> insertVal &gt;= cur.val <span class="keyword">or</span> insertVal &lt;= cur.<span class="built_in">next</span>.val:</span><br><span class="line">                    cur.<span class="built_in">next</span> = Node(insertVal, cur.<span class="built_in">next</span>)</span><br><span class="line">                    <span class="keyword">return</span> head</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 走到原点了，还是没有</span></span><br><span class="line">                <span class="keyword">if</span> cur.<span class="built_in">next</span> == head:</span><br><span class="line">                    cur.<span class="built_in">next</span> = Node(insertVal, cur.<span class="built_in">next</span>)</span><br><span class="line">                    <span class="keyword">return</span> head</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
-<h4><span id="列表反转二">列表反转二</span></h4><h3><span id>#</span></h3>
+<h4><span id="列表反转二">列表反转二</span></h4>
+<h4><span id></span></h4>
+
       
     </div>
 
@@ -430,22 +462,31 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-前缀树">一、前缀树</span></h2><blockquote>
-<p>  一种好用的树结构：Trie树:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/508575094">https://zhuanlan.zhihu.com/p/508575094</a></p>
+          <h2><span id="一-前缀树">一、前缀树</span></h2>
+<blockquote>
+<p>一种好用的树结构：Trie树:https://zhuanlan.zhihu.com/p/508575094</p>
 </blockquote>
-<h3><span id="11-trie树简介-有限状态自动机-文本词频统计"><strong>1.1 Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3><p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
-<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward Fredkin把它读作/ˈtriː/ “tree”。但是，其他作者把它读作/ˈtraɪ/ “try”。</p>
-<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。 Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i” ，“in”，“inn”。</p>
+<h3><span id="11trie树简介-有限状态自动机-文本词频统计"><strong>1.1
+Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3>
+<p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
+<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward
+Fredkin把它读作/ˈtriː/ "tree"。但是，其他作者把它读作/ˈtraɪ/ "try"。</p>
+<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。
+Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i”
+，“in”，“inn”。</p>
 <p><img src="https://pic1.zhimg.com/80/v2-8740aeac82cd2fc980cd1148ab1a64dc_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p>另外，<strong>单词查找树，Trie树，是一种树形结构，是一种哈希树的变种</strong>。<strong>典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计</strong>。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。</p>
-<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3><p>它有3个基本性质：</p>
+<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3>
+<p>它有3个基本性质：</p>
 <ul>
 <li>根节点不包含字符，除根节点外每一个节点都只包含一个字符；</li>
 <li>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串；</li>
 <li>每个节点的所有子节点包含的字符都不相同。</li>
 </ul>
-<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3><p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
+<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3>
+<p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
 <h2><span id="二-lru">二、LRU</span></h2>
+
       
     </div>
 
@@ -544,117 +585,178 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-前缀树">一、前缀树</span></h2><blockquote>
-<p>  一种好用的树结构：Trie树:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/508575094">https://zhuanlan.zhihu.com/p/508575094</a></p>
+          <h2><span id="一-前缀树">一、前缀树</span></h2>
+<blockquote>
+<p>一种好用的树结构：Trie树:https://zhuanlan.zhihu.com/p/508575094</p>
 </blockquote>
-<h3><span id="11-trie树简介-有限状态自动机-文本词频统计"><strong>1.1 Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3><p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
-<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward Fredkin把它读作/ˈtriː/ “tree”。但是，其他作者把它读作/ˈtraɪ/ “try”。</p>
-<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。 Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i” ，“in”，“inn”。</p>
+<h3><span id="11trie树简介-有限状态自动机-文本词频统计"><strong>1.1
+Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3>
+<p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
+<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward
+Fredkin把它读作/ˈtriː/ "tree"。但是，其他作者把它读作/ˈtraɪ/ "try"。</p>
+<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。
+Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i”
+，“in”，“inn”。</p>
 <p><img src="https://pic1.zhimg.com/80/v2-8740aeac82cd2fc980cd1148ab1a64dc_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p>另外，<strong>单词查找树，Trie树，是一种树形结构，是一种哈希树的变种</strong>。<strong>典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计</strong>。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。</p>
-<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3><p>它有3个基本性质：</p>
+<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3>
+<p>它有3个基本性质：</p>
 <ul>
 <li>根节点不包含字符，除根节点外每一个节点都只包含一个字符；</li>
 <li>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串；</li>
 <li>每个节点的所有子节点包含的字符都不相同。</li>
 </ul>
-<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3><p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
-<h3><span id="14-实现方法"><strong>1.4 实现方法</strong></span></h3><p>搜索字典项目的方法为：</p>
+<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3>
+<p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
+<h3><span id="14-实现方法"><strong>1.4 实现方法</strong></span></h3>
+<p>搜索字典项目的方法为：</p>
 <ul>
 <li>从根结点开始一次搜索；</li>
 <li>取得要查找关键词的第一个字母，并根据该字母选择对应的子树并转到该子树继续进行检索；</li>
 <li>在相应的子树上，取得要查找关键词的第二个字母,并进一步选择对应的子树进行检索。</li>
 <li>迭代过程……</li>
-<li>在某个结点处，关键词的所有字母已被取出，则读取附在该结点上的信息，即完成查找。 其他操作类似处理</li>
+<li>在某个结点处，关键词的所有字母已被取出，则读取附在该结点上的信息，即完成查找。
+其他操作类似处理</li>
 </ul>
-<h3><span id="15-实现trie-前缀树">1.5 实现<strong>Trie (前缀树)</strong></span></h3><p>Trie（发音类似 “try”）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。</p>
+<h3><span id="15-实现trie-前缀树">1.5 实现<strong>Trie (前缀树)</strong></span></h3>
+<p>Trie（发音类似 "try"）或者说 前缀树
+是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。</p>
 <p><strong>请你实现 Trie 类：</strong></p>
 <ul>
-<li><p><strong>Trie()</strong> :初始化前缀树对象。</p>
+<li><strong>Trie()</strong> :初始化前缀树对象。
 <ul>
-<li>self.children = [None] <em> 26 , <em>*指向子节点的指针数组 children</em></em></li>
-<li>self.isEnd = False , 表示该节点<strong>是否为字符串的结尾</strong>。</li>
-</ul>
-</li>
-<li><p><strong>void insert(String word)</strong> :向前缀树中插入字符串 word 。</p>
+<li>self.children = [None] * 26 , <strong>指向子节点的指针数组
+children</strong></li>
+<li>self.isEnd = False ,
+表示该节点<strong>是否为字符串的结尾</strong>。</li>
+</ul></li>
+<li><strong>void insert(String word)</strong> :向前缀树中插入字符串 word
+。
 <ul>
-<li>我们<strong>从字典树的根开始</strong>，插入字符串。对于当前字符对应的子节点，有两种情况：<ul>
+<li>我们<strong>从字典树的根开始</strong>，插入字符串。对于当前字符对应的子节点，有两种情况：
+<ul>
 <li><strong>子节点存在</strong>。沿着指针移动到子节点，继续处理下一个字符。</li>
-<li><strong>子节点不存在</strong>。创建一个新的子节点，记录在children 数组的对应位置上，然后沿着指针移动到子节点，继续搜索下一个字符。</li>
-</ul>
-</li>
+<li><strong>子节点不存在</strong>。创建一个新的子节点，记录在children
+数组的对应位置上，然后沿着指针移动到子节点，继续搜索下一个字符。</li>
+</ul></li>
 <li>重复以上步骤，直到处理字符串的最后一个字符，然后将当前节点标记为字符串的结尾。</li>
-</ul>
-</li>
-<li><strong>boolean search(String word)</strong> 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。<ul>
-<li>我们从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：<ul>
+</ul></li>
+<li><strong>boolean search(String word)</strong> 如果字符串 word
+在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+<ul>
+<li>我们从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：
+<ul>
 <li>子节点存在。沿着指针移动到子节点，继续搜索下一个字符。</li>
 <li>子节点不存在。说明字典树中不包含该前缀，返回空指针。</li>
-</ul>
-</li>
+</ul></li>
 <li>重复以上步骤，直到返回空指针或搜索完前缀的最后一个字符。</li>
-</ul>
-</li>
-<li><strong>boolean startsWith(String prefix)</strong> 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。</li>
+</ul></li>
+<li><strong>boolean startsWith(String prefix)</strong>
+如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true
+；否则，返回 false 。</li>
 </ul>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">输入</span><br><span class="line">[&quot;Trie&quot;, &quot;insert&quot;, &quot;search&quot;, &quot;search&quot;, &quot;startsWith&quot;, &quot;insert&quot;, &quot;search&quot;]</span><br><span class="line">[[], [&quot;apple&quot;], [&quot;apple&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;]]</span><br><span class="line">输出</span><br><span class="line">[null, null, true, false, true, null, true]</span><br><span class="line"></span><br><span class="line">解释</span><br><span class="line">Trie trie = new Trie();</span><br><span class="line">trie.insert(&quot;apple&quot;);</span><br><span class="line">trie.search(&quot;apple&quot;);   // 返回 True</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 False</span><br><span class="line">trie.startsWith(&quot;app&quot;); // 返回 True</span><br><span class="line">trie.insert(&quot;app&quot;);</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 True</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.children = [<span class="literal">None</span>] * <span class="number">26</span></span><br><span class="line">        self.isEnd = <span class="literal">False</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">searchPrefix</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="string">&quot;Trie&quot;</span>:</span><br><span class="line">        node = self <span class="comment"># 根节点</span></span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> prefix:</span><br><span class="line">            ch = <span class="built_in">ord</span>(ch) - <span class="built_in">ord</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.children[ch]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            node = node.children[ch]</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        node = self</span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> word:</span><br><span class="line">            ch = <span class="built_in">ord</span>(ch) - <span class="built_in">ord</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.children[ch]:</span><br><span class="line">                node.children[ch] = Trie()</span><br><span class="line">            node = node.children[ch]</span><br><span class="line">        node.isEnd = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        node = self.searchPrefix(word)</span><br><span class="line">        <span class="keyword">return</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> node.isEnd</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">startsWith</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">return</span> self.searchPrefix(prefix) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h2><span id="二-lru">二、LRU</span></h2><h4><span id="146-lru-缓存"></span></h4><p>请你设计并实现一个满足 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/LRU">LRU (最近最少使用) 缓存</a> 约束的数据结构。</p>
+<h2><span id="二-lru">二、LRU</span></h2>
+<h4><span id="146lru-缓存"></span></h4>
+<p>请你设计并实现一个满足 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/LRU">LRU
+(最近最少使用) 缓存</a> 约束的数据结构。</p>
 <p>实现 <code>LRUCache</code> 类：</p>
 <ul>
-<li><code>LRUCache(int capacity)</code> 以 <strong>正整数</strong> 作为容量 <code>capacity</code> 初始化 LRU 缓存</li>
-<li><code>int get(int key)</code> 如果关键字 <code>key</code> 存在于缓存中，则返回关键字的值，否则返回 <code>-1</code> 。</li>
-<li><code>void put(int key, int value)</code> 如果关键字 <code>key</code> 已经存在，则变更其数据值 <code>value</code> ；如果不存在，则向缓存中插入该组 key-value 。如果插入操作导致关键字数量超过 capacity ，则应该 逐出 最久未使用的关键字。</li>
+<li><code>LRUCache(int capacity)</code> 以 <strong>正整数</strong>
+作为容量 <code>capacity</code> 初始化 LRU 缓存</li>
+<li><code>int get(int key)</code> 如果关键字 <code>key</code>
+存在于缓存中，则返回关键字的值，否则返回 <code>-1</code> 。</li>
+<li><code>void put(int key, int value)</code> 如果关键字
+<code>key</code> 已经存在，则变更其数据值 <code>value</code>
+；如果不存在，则向缓存中插入该组 key-value
+。如果插入操作导致关键字数量超过 capacity ，则应该 逐出
+最久未使用的关键字。</li>
 </ul>
-<p>函数 <code>get</code> 和 <code>put</code> 必须以 <code>O(1)</code> 的平均时间复杂度运行。</p>
+<p>函数 <code>get</code> 和 <code>put</code> 必须以 <code>O(1)</code>
+的平均时间复杂度运行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DLinkedNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, key = <span class="number">0</span>, value = <span class="number">0</span></span>):</span><br><span class="line">        self.key = key</span><br><span class="line">        self.value = value</span><br><span class="line">        self.prev = <span class="literal">None</span></span><br><span class="line">        self.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, capacity: <span class="built_in">int</span></span>):</span><br><span class="line">      	<span class="comment"># 使用伪头部和伪尾部节点    </span></span><br><span class="line">        self.cache = <span class="built_in">dict</span>()</span><br><span class="line">        self.head = DLinkedNode()</span><br><span class="line">        self.tail = DLinkedNode()</span><br><span class="line">        self.head.<span class="built_in">next</span> = self.tail</span><br><span class="line">        self.tail.prev = self.head</span><br><span class="line">        self.capacity = capacity</span><br><span class="line">        self.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, key: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.cache:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="comment"># 如果 key 存在，先通过哈希表定位，再移到头部</span></span><br><span class="line">        node = self.cache[key]</span><br><span class="line">        self.moveToHead(node)<span class="comment"># &quot;如果数据被访问过。那未来的访问几率更高&quot;</span></span><br><span class="line">        <span class="keyword">return</span> node.value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">put</span>(<span class="params">self, key: <span class="built_in">int</span>, value: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.cache:</span><br><span class="line">          	<span class="comment"># 如果 key 不存在，创建一个新的节点</span></span><br><span class="line">            node = DLinkedNode(key, value)</span><br><span class="line">            <span class="comment"># 添加进哈希表</span></span><br><span class="line">            self.cache[key] = node</span><br><span class="line">            <span class="comment"># 添加至双向链表的头部</span></span><br><span class="line">            self.size += <span class="number">1</span></span><br><span class="line">            self.addToHead(node)</span><br><span class="line">            <span class="keyword">if</span> self.size &gt; self.capacity:</span><br><span class="line">              	<span class="comment"># 如果超出容量，删除双向链表的尾部节点</span></span><br><span class="line">                removed = self.removeTail()</span><br><span class="line">                <span class="comment"># 删除哈希表中对应的项</span></span><br><span class="line">                self.cache.pop(removed.key)</span><br><span class="line">                self.size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          	<span class="comment"># 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部</span></span><br><span class="line">            node = self.cache[key]</span><br><span class="line">            node.value = value</span><br><span class="line">            self.moveToHead(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addToHead</span>(<span class="params">self, node</span>):</span><br><span class="line">        node.prev = self.head</span><br><span class="line">        node.<span class="built_in">next</span> = self.head.<span class="built_in">next</span></span><br><span class="line">        self.head.<span class="built_in">next</span>.prev = node</span><br><span class="line">        self.head.<span class="built_in">next</span> = node</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeNode</span>(<span class="params">self, node</span>): </span><br><span class="line">        node.prev.<span class="built_in">next</span> = node.<span class="built_in">next</span></span><br><span class="line">        node.<span class="built_in">next</span>.prev = node.prev</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">moveToHead</span>(<span class="params">self, node</span>):</span><br><span class="line">        self.removeNode(node)</span><br><span class="line">        self.addToHead(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeTail</span>(<span class="params">self</span>):</span><br><span class="line">        node = self.tail.prev</span><br><span class="line">        self.removeNode(node)</span><br><span class="line">        <span class="keyword">return</span> node</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>  <strong>LFU，最近不经常使用</strong>，把数据加入到链表中，按频次排序，一个数据被访问过，把它的频次+1，发生淘汰的时候，把频次低的淘汰掉。<br>   比如有数据 1，1，1，2，2，3<br>   缓存中有（1(3次)，2(2次)）<br>   当3加入的时候，得把后面的2淘汰，变成（1(3次)，3(1次)）<br>   区别：LRU 是得把 1 淘汰。</p>
+<p><strong>LFU，最近不经常使用</strong>，把数据加入到链表中，按频次排序，一个数据被访问过，把它的频次+1，发生淘汰的时候，把频次低的淘汰掉。
+比如有数据 1，1，1，2，2，3 缓存中有（1(3次)，2(2次)）
+当3加入的时候，得把后面的2淘汰，变成（1(3次)，3(1次)） 区别：LRU 是得把
+1 淘汰。</p>
 </blockquote>
-<h2><span id="三-并查集">三、并查集</span></h2><h4><span id="剑指-offer-ii-117-相似的字符串"></span></h4><p>如果交换字符串 <code>X</code> 中的两个不同位置的字母，使得它和字符串 <code>Y</code> 相等，那么称 <code>X</code> 和 <code>Y</code> 两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。例如，”tars” 和 “rats” 是相似的 (交换 0 与 2 的位置)； “rats” 和 “arts” 也是相似的，但是 “star” 不与 “tars”，”rats”，或 “arts” 相似。</p>
-<p>总之，它们通过相似性形成了两个关联组：{“tars”, “rats”, “arts”} 和 {“star”}。注意，”tars” 和 “arts” 是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。</p>
-<p>给定一个字符串列表 strs。列表中的每个字符串都是 strs 中其它所有字符串的一个 字母异位词 。请问 strs 中有多少个相似字符串组？</p>
+<h2><span id="三-并查集">三、并查集</span></h2>
+<h4><span id="剑指-offer-ii-117相似的字符串"></span></h4>
+<p>如果交换字符串 <code>X</code> 中的两个不同位置的字母，使得它和字符串
+<code>Y</code> 相等，那么称 <code>X</code> 和 <code>Y</code>
+两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。例如，"tars"
+和 "rats" 是相似的 (交换 0 与 2 的位置)； "rats" 和 "arts"
+也是相似的，但是 "star" 不与 "tars"，"rats"，或 "arts" 相似。</p>
+<p>总之，它们通过相似性形成了两个关联组：{"tars", "rats", "arts"} 和
+{"star"}。注意，"tars" 和 "arts"
+是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。</p>
+<p>给定一个字符串列表 strs。列表中的每个字符串都是 strs
+中其它所有字符串的一个 字母异位词 。请问 strs
+中有多少个相似字符串组？</p>
 <p><strong>字母异位词（anagram）</strong>，一种把某个字符串的字母的位置（顺序）加以改换所形成的新词。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UnionFind</span>:</span><br><span class="line">  	<span class="comment"># 并查集</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.parent = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        self.count = n</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">if</span> self.parent[x] == x:</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        self.parent[x] = self.find(self.parent[x])</span><br><span class="line">        <span class="keyword">return</span> self.parent[x]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">union</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        x, y = self.find(x), self.find(y)</span><br><span class="line">        <span class="keyword">if</span> x != y:</span><br><span class="line">            self.parent[x] = y</span><br><span class="line">            self.count -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numSimilarGroups</span>(<span class="params">self, strs: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">      	<span class="comment"># 相似的字符串</span></span><br><span class="line">        m, n = <span class="built_in">len</span>(strs), <span class="built_in">len</span>(strs[<span class="number">0</span>])</span><br><span class="line">        un = UnionFind(m)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, m):</span><br><span class="line">                cnt = <span class="number">0</span></span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                    <span class="keyword">if</span> strs[i][k] != strs[j][k]:</span><br><span class="line">                        cnt += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">if</span> cnt &gt; <span class="number">2</span>:</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>: <span class="comment"># 上下文管理器</span></span><br><span class="line">                    un.union(i, j)</span><br><span class="line">        <span class="keyword">return</span> un.count</span><br></pre></td></tr></table></figure>
-<h2><span id="四-序列化与反序列化">四、序列化与反序列化</span></h2><ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40462507">https://zhuanlan.zhihu.com/p/40462507</a></li>
+<h2><span id="四-序列化与反序列化">四、序列化与反序列化</span></h2>
+<ul>
+<li>https://zhuanlan.zhihu.com/p/40462507</li>
 </ul>
 <p><strong>序列化：</strong>把对象转化为可传输的字节序列过程称为序列化。</p>
 <p><strong>反序列化：</strong>把字节序列还原为对象的过程称为反序列化。</p>
-<h4><span id="41-序列化的定义">4.1 序列化的定义</span></h4><p><strong>序列化</strong>：把对象转化为可传输的字节序列过程称为序列化。</p>
+<h4><span id="41-序列化的定义">4.1 序列化的定义</span></h4>
+<p><strong>序列化</strong>：把对象转化为可传输的字节序列过程称为序列化。</p>
 <p><strong>反序列化</strong>：把字节序列还原为对象的过程称为反序列化。</p>
-<h4><span id="42-为什么要序列化">4.2 为什么要序列化？</span></h4><p>其实序列化最终的目的是为了对象可以<strong>跨平台存储，和进行网络传输</strong>。而我们进行跨平台存储和网络传输的方式就是IO，而我们的IO支持的数据格式就是字节数组。序列化只是一种拆装组装对象的规则，那么这种规则肯定也可能有多种多样，比如现在常见的序列化方式有：</p>
+<h4><span id="42-为什么要序列化">4.2 为什么要序列化？</span></h4>
+<p>其实序列化最终的目的是为了对象可以<strong>跨平台存储，和进行网络传输</strong>。而我们进行跨平台存储和网络传输的方式就是IO，而我们的IO支持的数据格式就是字节数组。序列化只是一种拆装组装对象的规则，那么这种规则肯定也可能有多种多样，比如现在常见的序列化方式有：</p>
 <p><strong>JDK（不支持跨语言）、JSON、XML、Hessian、Kryo（不支持跨语言）、Thrift、Protostuff、FST（不支持跨语言）</strong></p>
-<h4><span id="剑指-offer-37-序列化二叉树"></span></h4><p>请实现两个函数，分别用来序列化和反序列化二叉树。你需要设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。</p>
+<h4><span id="剑指offer-37-序列化二叉树"></span></h4>
+<p>请实现两个函数，分别用来序列化和反序列化二叉树。你需要设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列
+/
+反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。</p>
 <ul>
 <li><h5><span id="深度优先遍历">深度优先遍历</span></h5></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Codec</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">serialize</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="comment"># 后续遍历 比 前序遍历快很多 pop(), pop(0)</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DFS : ncodes a tree to a single string.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;None&#x27;</span></span><br><span class="line">        <span class="keyword">return</span>  <span class="built_in">str</span>(self.serialize(root.left)) + <span class="string">&#x27;,&#x27;</span> + <span class="built_in">str</span>(self.serialize(root.right)) + <span class="string">&#x27;,&#x27;</span> + <span class="built_in">str</span>(root.val) </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deserialize</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Decodes your encoded data to tree.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :type data: str</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">dfslist:<span class="built_in">list</span>(<span class="params"></span>)</span>):</span><br><span class="line">            val = dfslist.pop()</span><br><span class="line">            <span class="keyword">if</span> val == <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            root = TreeNode(<span class="built_in">int</span>(val))</span><br><span class="line">            root.right = dfs(dfslist)</span><br><span class="line">            root.left = dfs(dfslist)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        dfslist = data.split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> dfs(dfslist)</span><br></pre></td></tr></table></figure>
-<h2><span id="五-线段树">五、线段树</span></h2><ul>
-<li>算法学习笔记(14): 线段树：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106118909">https://zhuanlan.zhihu.com/p/106118909</a></li>
+<h2><span id="五-线段树">五、线段树</span></h2>
+<ul>
+<li>算法学习笔记(14):
+线段树：https://zhuanlan.zhihu.com/p/106118909</li>
 </ul>
-<p><strong>线段树</strong>（Segment Tree）几乎是算法竞赛最常用的数据结构了，它主要用于维护<strong>区间信息</strong>（要求满足结合律）。与树状数组相比，它可以实现 <img src="https://www.zhihu.com/equation?tex=O%28%5Clog+n%29" alt="[公式]"> 的<strong>区间修改</strong>，还可以同时支持<strong>多种操作</strong>（加、乘)，更具通用性。</p>
+<p><strong>线段树</strong>（Segment
+Tree）几乎是算法竞赛最常用的数据结构了，它主要用于维护<strong>区间信息</strong>（要求满足结合律）。与树状数组相比，它可以实现
+<img src="https://www.zhihu.com/equation?tex=O%28%5Clog+n%29" alt="[公式]">
+的<strong>区间修改</strong>，还可以同时支持<strong>多种操作</strong>（加、乘)，更具通用性。</p>
 <p><img src="https://pic1.zhimg.com/80/v2-5e9124a6147143e51cea46755e9a0398_1440w.jpg" alt="img" style="zoom: 33%;"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BIT</span>:</span><br><span class="line">    <span class="comment"># 线段树: 动态维护前缀和数据的结构</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.n = n</span><br><span class="line">        self.tree = [<span class="number">0</span>] * (n+<span class="number">1</span>)</span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lowbit</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="comment"># 二进制最小位1的位置</span></span><br><span class="line">        <span class="keyword">return</span> x&amp;(-x)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, x</span>):</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> x&gt;<span class="number">0</span>:</span><br><span class="line">            ans += self.tree[x]</span><br><span class="line">            x -= BIT.lowbit(x)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">while</span> x&lt;=self.n:</span><br><span class="line">            self.tree[x] += <span class="number">1</span></span><br><span class="line">            x += BIT.lowbit(x)</span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-51-数组中的逆序对"></span></h4><p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
+<h4><span id="剑指offer-51-数组中的逆序对"></span></h4>
+<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
 <ul>
-<li><h4><span id="离散化树状数组">离散化树状数组</span></h4><ul>
-<li><strong>单点更新 <code>update(i, v)</code>：</strong> 把序列 i<em>i</em> 位置的数加上一个值 v<em>，这题 v</em>=1</li>
-<li><strong>区间查询 <code>query(i)</code>：</strong> 查询序列 [1⋯<em>i</em>] 区间的区间和，即 i<em>i</em> 位置的前缀和</li>
+<li><h4><span id="离散化树状数组">离散化树状数组</span></h4>
+<ul>
+<li><strong>单点更新 <code>update(i, v)</code>：</strong> 把序列
+i<em>i</em> 位置的数加上一个值 v<em>，这题 v</em>=1</li>
+<li><strong>区间查询 <code>query(i)</code>：</strong> 查询序列
+[1⋯<em>i</em>] 区间的区间和，即 i<em>i</em> 位置的前缀和</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><strong>修改和查询的时间代价都是 O<em>(log</em>n<em>)，其中 n</em>为需要维护前缀和的序列的长度。</strong></p>
+<p><strong>修改和查询的时间代价都是 O<em>(log</em>n<em>)，其中
+n</em>为需要维护前缀和的序列的长度。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reversePairs</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 离散化+线性数组 nums = [7,5,6,4]</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="comment"># 求每个数比他小的有几个</span></span><br><span class="line">        tmp = <span class="built_in">sorted</span>(nums)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            nums[i] = bisect.bisect_left(tmp, nums[i]) + <span class="number">1</span></span><br><span class="line">        <span class="comment"># nums = [4,2,3,1]</span></span><br><span class="line">        bit = BIT(n) <span class="comment"># [0,0,0,0,0]</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            ans += bit.query(nums[i] - <span class="number">1</span>)</span><br><span class="line">            bit.update(nums[i])</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
-<h2><span id="自动机">自动机</span></h2><p><strong>字符串处理的题目往往涉及复杂的流程以及条件情况</strong>，如果直接上手写程序，一不小心就会写出极其臃肿的代码。</p>
+<h2><span id="自动机">自动机</span></h2>
+<p><strong>字符串处理的题目往往涉及复杂的流程以及条件情况</strong>，如果直接上手写程序，一不小心就会写出极其臃肿的代码。</p>
 <p>因此，为了有条理地分析每个输入字符的处理方法，我们可以使用自动机这个概念：</p>
-<p>我们的程序在每个时刻有一个状态 s，每次从序列中输入一个字符 c，并根据字符 c 转移到下一个状态 s’。这样，我们只需要建立一个覆盖所有情况的从 s 与 c 映射到 s’ 的表格即可解决题目中的问题。</p>
-<h4><span id="算法">算法：</span></h4><p>本题可以建立如下图所示的自动机：</p>
+<p>我们的程序在每个时刻有一个状态 s，每次从序列中输入一个字符
+c，并根据字符 c 转移到下一个状态
+s'。这样，我们只需要建立一个覆盖所有情况的从 s 与 c 映射到 s'
+的表格即可解决题目中的问题。</p>
+<h4><span id="算法">算法：</span></h4>
+<p>本题可以建立如下图所示的自动机：</p>
 <p><img src="https://assets.leetcode-cn.com/solution-static/8/fig1.png" alt="fig1" style="zoom: 50%;"></p>
 <p>我们也可以用下面的表格来表示这个自动机：</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220617125627816.png" alt="image-20220617125627816" style="zoom:50%;"></p>
-<p>接下来编程部分就非常简单了：我们只需要把上面这个状态转换表抄进代码即可。另外自动机也需要记录当前已经输入的数字，只要在 s’ 为 in_number 时，更新我们输入的数字，即可最终得到输入的数字。</p>
+<p>接下来编程部分就非常简单了：我们只需要把上面这个状态转换表抄进代码即可。另外自动机也需要记录当前已经输入的数字，只要在
+s' 为 in_number 时，更新我们输入的数字，即可最终得到输入的数字。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">INT_MAX = <span class="number">2</span> ** <span class="number">31</span> - <span class="number">1</span></span><br><span class="line">INT_MIN = -<span class="number">2</span> ** <span class="number">31</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Automaton</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.state = <span class="string">&#x27;start&#x27;</span></span><br><span class="line">        self.sign = <span class="number">1</span></span><br><span class="line">        self.ans = <span class="number">0</span></span><br><span class="line">        self.table = &#123;</span><br><span class="line">            <span class="string">&#x27;start&#x27;</span>: [<span class="string">&#x27;start&#x27;</span>, <span class="string">&#x27;signed&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;signed&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;in_number&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;end&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_col</span>(<span class="params">self, c</span>):</span><br><span class="line">        <span class="keyword">if</span> c.isspace():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">or</span> c == <span class="string">&#x27;-&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> c.isdigit():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, c</span>):</span><br><span class="line">        self.state = self.table[self.state][self.get_col(c)]</span><br><span class="line">        <span class="keyword">if</span> self.state == <span class="string">&#x27;in_number&#x27;</span>:</span><br><span class="line">            self.ans = self.ans * <span class="number">10</span> + <span class="built_in">int</span>(c)</span><br><span class="line">            self.ans = <span class="built_in">min</span>(self.ans, INT_MAX) <span class="keyword">if</span> self.sign == <span class="number">1</span> <span class="keyword">else</span> <span class="built_in">min</span>(self.ans, -INT_MIN)</span><br><span class="line">        <span class="keyword">elif</span> self.state == <span class="string">&#x27;signed&#x27;</span>:</span><br><span class="line">            self.sign = <span class="number">1</span> <span class="keyword">if</span> c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">else</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">myAtoi</span>(<span class="params">self, <span class="built_in">str</span>: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        automaton = Automaton()</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">str</span>:</span><br><span class="line">            automaton.get(c)</span><br><span class="line">        <span class="keyword">return</span> automaton.sign * automaton.ans</span><br></pre></td></tr></table></figure>
 
       
@@ -749,26 +851,37 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="特征工程与表示学习"></span></h2><h3><span id="1-表示学习"><strong>1. 表示学习</strong></span></h3><p>当我们学习一个复杂概念时，总想有一条捷径可以化繁为简。机器学习模型也不例外，如果有经过提炼的对于原始数据的更好表达，往往可以使得后续任务事倍功半。<strong>这也是表示学习的基本思路，即找到对于原始数据更好的表达，以方便后续任务（比如分类）</strong>。</p>
+          <h2><span id="特征工程与表示学习"></span></h2>
+<h3><span id="1-表示学习"><strong>1. 表示学习</strong></span></h3>
+<p>当我们学习一个复杂概念时，总想有一条捷径可以化繁为简。机器学习模型也不例外，如果有经过提炼的对于原始数据的更好表达，往往可以使得后续任务事倍功半。<strong>这也是表示学习的基本思路，即找到对于原始数据更好的表达，以方便后续任务（比如分类）</strong>。</p>
 <p>举个简单的例子，假设我们有 <img src="https://www.zhihu.com/equation?tex=%5C%7B%7Bx%2Cy%5C%7D%7D" alt="[公式]"> ，想要寻找<em>x</em>与<em>y</em>之间的关系。</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5C%5B+x%3D+%5Cbegin%7Bbmatrix%7D+1+%26+2+%26+1+%26+0+%5C%5C+2+%26+3+%26+2+%26+1+%5C%5C+1+%26+6+%26+1+%26+4+%5C%5C+0+%26+0+%26+0+%26+1+%5C%5C+1+%26+1+%26+1+%26+17+%5Cend%7Bbmatrix%7D+%5C%5D" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5C%5B+y%3D+%5Cbegin%7Bbmatrix%7D+6+%5C%5C+10+%5C%5C+14+%5C%5C+18+%5C%5C+22+%5Cend%7Bbmatrix%7D+%5C%5D" alt="[公式]"> </p>
-<p>如果单用肉眼看的话，<em>x</em>这个矩阵其实还是比较复杂的，无法直接发现与<em>y</em>间的关系。但如果我们非常幸运，发现<em>x</em>每行相加后的结果 <img src="https://www.zhihu.com/equation?tex=%5B4%2C8%2C12%2C16%2C20%5D%5ET" alt="[公式]"> ，就可以直接看出<em>x</em>与<em>y</em>之间的关系是 <img src="https://www.zhihu.com/equation?tex=y%3Dx%2B2" alt="[公式]"> 。这个例子是为了说明：<strong>同样的数据的不同表达，会直接决定后续任务的难易程度，==因此找到好的数据表示往往是机器学习的核心任务==</strong>。值得注意的是，在现实情况中我们所提炼的到表示往往是很复杂的，往往对于高维矩阵提取到特征也是高维矩阵。这个例子仅供抛砖引玉之用，表示学习不等于维度压缩或者特征选择。</p>
-<h3><span id="2-特征工程与表示学习人工-vs-自动"><strong>2. 特征工程与表示学习：人工 vs. 自动</strong></span></h3><p><strong>正因为数据表示的重要性，机器学习一般有两种思路来提升原始数据的表达</strong>：</p>
-<ol>
-<li>特征<strong>学习</strong>(feature <strong>learning</strong>)，又叫<strong>表示学习</strong>(representation learning)或者表征学习，一般指的是<strong>自动</strong>学习有用的数据特征。<strong>深度学习的最终目标，就是完全自动化的广义数据处理。</strong></li>
-<li>特征<strong>工程</strong>(feature <strong>engineering</strong>)，主要指对于数据的<strong>人为</strong>处理提取，有时候也代指“洗数据”。</li>
+<p><img src="https://www.zhihu.com/equation?tex=%5C%5B+x%3D+%5Cbegin%7Bbmatrix%7D+1+%26+2+%26+1+%26+0+%5C%5C+2+%26+3+%26+2+%26+1+%5C%5C+1+%26+6+%26+1+%26+4+%5C%5C+0+%26+0+%26+0+%26+1+%5C%5C+1+%26+1+%26+1+%26+17+%5Cend%7Bbmatrix%7D+%5C%5D" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5C%5B+y%3D+%5Cbegin%7Bbmatrix%7D+6+%5C%5C+10+%5C%5C+14+%5C%5C+18+%5C%5C+22+%5Cend%7Bbmatrix%7D+%5C%5D" alt="[公式]"></p>
+<p>如果单用肉眼看的话，<em>x</em>这个矩阵其实还是比较复杂的，无法直接发现与<em>y</em>间的关系。但如果我们非常幸运，发现<em>x</em>每行相加后的结果
+<img src="https://www.zhihu.com/equation?tex=%5B4%2C8%2C12%2C16%2C20%5D%5ET" alt="[公式]"> ，就可以直接看出<em>x</em>与<em>y</em>之间的关系是 <img src="https://www.zhihu.com/equation?tex=y%3Dx%2B2" alt="[公式]">
+。这个例子是为了说明：<strong>同样的数据的不同表达，会直接决定后续任务的难易程度，==因此找到好的数据表示往往是机器学习的核心任务==</strong>。值得注意的是，在现实情况中我们所提炼的到表示往往是很复杂的，往往对于高维矩阵提取到特征也是高维矩阵。这个例子仅供抛砖引玉之用，表示学习不等于维度压缩或者特征选择。</p>
+<h3><span id="2特征工程与表示学习人工-vs-自动"><strong>2.
+特征工程与表示学习：人工 vs. 自动</strong></span></h3>
+<p><strong>正因为数据表示的重要性，机器学习一般有两种思路来提升原始数据的表达</strong>：</p>
+<ol type="1">
+<li>特征<strong>学习</strong>(feature
+<strong>learning</strong>)，又叫<strong>表示学习</strong>(representation
+learning)或者表征学习，一般指的是<strong>自动</strong>学习有用的数据特征。<strong>深度学习的最终目标，就是完全自动化的广义数据处理。</strong></li>
+<li>特征<strong>工程</strong>(feature
+<strong>engineering</strong>)，主要指对于数据的<strong>人为</strong>处理提取，有时候也代指“洗数据”。</li>
 </ol>
 <p>不难看出，两者的主要区别在于前者是“<strong>学习的过程</strong>”，而后者被认为是一门“<strong>人为的工程</strong>”。用更加白话的方式来说，<strong>特征学习是</strong>从数据中自动抽取特征或者表示的方法，这个学习过程是<strong>模型自主的</strong>。而<strong>特征工程</strong>的过程是<strong>人为的</strong>对数据进行处理，<strong>得到我们认为的、适合后续模型使用的样式</strong>。根据这个思路，机器学习模型对于数据的处理可以被大致归类到两个方向：</p>
 <ul>
-<li>表示学习：<strong>模型自动</strong>对输入数据进行学习，得到更有利于使用的特征(*可能同时做出了预测)。代表的算法大致包括：<ul>
+<li>表示学习：<strong>模型自动</strong>对输入数据进行学习，得到更有利于使用的特征(*可能同时做出了预测)。代表的算法大致包括：
+<ul>
 <li>深度学习，包括大部分常见的模型如CNN/RNN/DBN等。</li>
-<li>某些无监督学习算法，如<strong>主成分分析(PCA) </strong>及 <strong>自编码器（autoencoder）</strong>通过对数据转化而使得输入数据更有意义。</li>
+<li>某些无监督学习算法，如<strong>主成分分析(PCA) </strong>及
+<strong>自编码器（autoencoder）</strong>通过对数据转化而使得输入数据更有意义。</li>
 <li>某些树模型可以自动的学习到数据中的特征并同时作出预测。</li>
-</ul>
-</li>
+</ul></li>
 <li>特征工程：模型依赖<strong>人为处理</strong>的数据特征，而模型的主要任务是预测，比如简单的线性回归期待良好的输入数据(如离散化后的数据)</li>
 </ul>
-<h3><span id="3-模型选择"><strong>3. 模型选择</strong></span></h3><p>回归到问题的本质，就要谈谈什么时候用「手工提取」什么时候用「表示学习」。一种简单的看法是，<strong>要想自动学习到数据的良好表达，就需要大量的数据。这个现象也解释了为什么「特征工程」往往在中小数据集上表现良好，而「表示学习」在大量复杂数据上更有用武之地。</strong></p>
+<h3><span id="3-模型选择"><strong>3. 模型选择</strong></span></h3>
+<p>回归到问题的本质，就要谈谈什么时候用「手工提取」什么时候用「表示学习」。一种简单的看法是，<strong>要想自动学习到数据的良好表达，就需要大量的数据。这个现象也解释了为什么「特征工程」往往在中小数据集上表现良好，而「表示学习」在大量复杂数据上更有用武之地。</strong></p>
 <p>而一切的根本，其实在于<strong>假设</strong>。比如我们会假设数据分布，会假设映射函数的性质，也会假设预测值与输入值间的关系。<strong>这一切假设其实并非凭空猜想，而是基于我们对于问题的理解，从某种角度来看，这是一种先验，是贝叶斯模型</strong>。在中小数据集上的机器学习往往使用的就是强假设模型（人类知识先验）+一个简单线性分类器。当数据愈发复杂，数据量逐渐加大后，我们对于数据的理解越来越肤浅，做出的假设也越来越倾向于随机，那么此时人工特征工程往往是有害的，而需要使用摆脱了人类先验的模型，比如深度学习或者集成模型。</p>
 <p><strong>换句话说，模型选择的过程其实也是在衡量我们对于问题及数据的理解是否深刻，是在人类先验与数据量之间的一场博弈。</strong>从这个角度来看，深度学习首先革的是传统机器学习模型的命：最先被淘汰的不是工人，而是特定场景下的传统机器学习模型。</p>
 <p>但话说回来，在很多领域数据依然是稀缺的，我们依然需要人工的手段来提炼数据。而这样的尝试其实并不罕见，我也写过一篇<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32896968">「Stacking」与「神经网络」</a>介绍如何模拟神经网络在中小数据集上无监督的抽取特征，并最终提升数据的表示。另一个相关的问题是，到底多少数据才算多？可以参考这篇文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34523880">「机器学习」到底需要多少数据？</a>。</p>
@@ -872,13 +985,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="特征工程数据清洗预处理-特征生成-特征拼接">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></h2><ul>
-<li>这或许是全网最全机器学习模型融合方法总结！：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/511246278">https://zhuanlan.zhihu.com/p/511246278</a></li>
+          <h2><span id="特征工程数据清洗预处理-特征生成-特征拼接">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></h2>
+<ul>
+<li>这或许是全网最全机器学习模型融合方法总结！：https://zhuanlan.zhihu.com/p/511246278</li>
 </ul>
-<p>特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt; 特征存储 -&gt; 特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。特征处理中还包括：数据清洗、特征生成、特征拼接、特征处理、特征转换、特征选择。本篇主要介绍<strong>数据清洗、特征生成、特征拼接</strong>。</p>
-<h3><span id="一-数据清洗">一、数据清洗：</span></h3><p>从特征工程角度讲，数据清洗是特征工程的前置阶段（但是也会贯穿整个数据应用过程），其本义是对数据进行重新的<strong>审查和校验</strong>，目的在于<strong>删除重复信息</strong>、纠正存在的错误数据，并保证数据的一致性。数据清洗是整个数据分析过程中不可缺少的一个环节，其结果质量直接关系到模型效果和最终结论。</p>
+<p>特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt;
+特征存储 -&gt;
+特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。特征处理中还包括：数据清洗、特征生成、特征拼接、特征处理、特征转换、特征选择。本篇主要介绍<strong>数据清洗、特征生成、特征拼接</strong>。</p>
+<h3><span id="一-数据清洗">一、数据清洗：</span></h3>
+<p>从特征工程角度讲，数据清洗是特征工程的前置阶段（但是也会贯穿整个数据应用过程），其本义是对数据进行重新的<strong>审查和校验</strong>，目的在于<strong>删除重复信息</strong>、纠正存在的错误数据，并保证数据的一致性。数据清洗是整个数据分析过程中不可缺少的一个环节，其结果质量直接关系到模型效果和最终结论。</p>
 <p>一个特征处理的完整流程可以表示为：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png" alt="img"></p>
+<figure>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/02kicEWsInicg2tpfKoZNzmSRj6mXo9Ppic3w2e5VGe7PqXlEiaibdcgmj8PMZqUOcLCrcDLNVkERGvib4MYOjJDu4Lw/640?wx_fmt=png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>因此基础数据的准确性、完备性、一致性决定了后续特征数据的有效性。在我们日常使用的公开数据集中，很多都是已经被处理后的了，比如学术界中使用很广泛的MovieLens数据集，但是在真实的业务场景中，我们拿到的数据其实直接是没有办法使用的，可能包含了<strong>大量的缺失值</strong>，可能包含<strong>大量的噪音</strong>，也可能因为人工录入错误导致有异常点存在，对我们挖据出有效信息造成了一定的困扰，所以我们需要通过一些方法，尽量提高数据的质量。</p>
 <p><strong>初期数据清洗更多的是针对单条样本数据的清洗和检测</strong>，包括：</p>
 <ul>
@@ -889,10 +1009,12 @@
 </ul>
 <p>在实际的业务场景中，数据是由系统收集或用户填写而来，有很大可能性在格式和内容上存在一些问题，同样类型的数据在不同的团队上报过程中产出的内容或格式会不一致，同样不同数据源采集而来的数据内容和格式也会不一致。</p>
 <blockquote>
-<p>  数据格式的一致性。比如<strong>时间信息</strong>（以2020年6月18日，11点11分12秒为例），有的用毫秒时间戳表示（1592449872000），有的用秒时间戳表示（1592449872），有的用带横线的时间表示（2020-06-18 11:11:12），有的则用不带横线的时间表示（20200618 11:11:12）。</p>
-<p>  数据类型的一致性。比如不同的数据表中，同样表示用户ID的字段，有的可能是string类型，有的是int类型。如果用string类型表示，如果用户id缺失的话，正常可以留空，但是不同团队，不同人对于缺失的id处理方式也会不一致，比如有的用None，有的用Null，有的则用0表示，可谓是千奇百怪。小编在日常工作中也会经常遇到这种情况，被折磨的体无完肤。</p>
+<p>数据格式的一致性。比如<strong>时间信息</strong>（以2020年6月18日，11点11分12秒为例），有的用毫秒时间戳表示（1592449872000），有的用秒时间戳表示（1592449872），有的用带横线的时间表示（2020-06-18
+11:11:12），有的则用不带横线的时间表示（20200618 11:11:12）。</p>
+<p>数据类型的一致性。比如不同的数据表中，同样表示用户ID的字段，有的可能是string类型，有的是int类型。如果用string类型表示，如果用户id缺失的话，正常可以留空，但是不同团队，不同人对于缺失的id处理方式也会不一致，比如有的用None，有的用Null，有的则用0表示，可谓是千奇百怪。小编在日常工作中也会经常遇到这种情况，被折磨的体无完肤。</p>
 </blockquote>
-<h3><span id="二-特征生成">二、特征生成</span></h3><p>对基础数据进行清理之后需要做的就是生成我们需要的特征，在特征设计部分提到特征主要分为四大维度，根据小编的经验特征又可以根据其值的属性划分为：</p>
+<h3><span id="二-特征生成">二、特征生成</span></h3>
+<p>对基础数据进行清理之后需要做的就是生成我们需要的特征，在特征设计部分提到特征主要分为四大维度，根据小编的经验特征又可以根据其值的属性划分为：</p>
 <ul>
 <li><strong>类别特征</strong>：即特征的属性值是一个有限的集合，比如用户性别、事物的类别、事物的ID编码类特征等</li>
 <li><strong>连续特征</strong>：即用户行为、类别、组合特征之类的统计值，比如用户观看的视频部数、某类别下事物的个数等</li>
@@ -901,26 +1023,37 @@
 <li><strong>文本特征</strong>：即和文本相关的特征，比如评论数据、商品描述、新闻内容等。</li>
 <li><strong>Embedding特征</strong>：即一些基础特征的高层次表示，比如用户ID编码的Embedding表示、事物ID编码的Embedding表示、<strong>用户访问事物序列的Embedding编码</strong>等。</li>
 </ul>
-<h3><span id="三-特征融合">==三、特征融合==</span></h3><blockquote>
-<p>  多模态特征融合三部曲: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390668652">https://zhuanlan.zhihu.com/p/390668652</a></p>
-<p>  推荐系统（六）—— 特征融合 :  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/459012483">https://zhuanlan.zhihu.com/p/459012483</a></p>
+<h3><span id="三-特征融合">==三、特征融合==</span></h3>
+<blockquote>
+<p>多模态特征融合三部曲: https://zhuanlan.zhihu.com/p/390668652</p>
+<p>推荐系统（六）—— 特征融合 :
+https://zhuanlan.zhihu.com/p/459012483</p>
 </blockquote>
-<h4><span id="31-特征处理">3.1 特征处理</span></h4><p>假设你有三种类型数据，或者说可以是三个不同维度的向量</p>
-<p><img src="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D" alt="[公式]"></p>
+<h4><span id="31-特征处理">3.1 特征处理</span></h4>
+<p>假设你有三种类型数据，或者说可以是三个不同维度的向量</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=x_1%5Cin%5Cmathbb%7BR%7D%5E%7Bn_1%7D%2Cx_2%5Cin%5Cmathbb%7BR%7D%5E%7Bn_2%7D%2Cx_3%5Cin%5Cmathbb%7BR%7D%5E%7Bn_3%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>第一种融合手段就是在训练前进行的</p>
-<ol>
+<ol type="1">
 <li><strong>三个向量直接concat，可能维度会比较高，再进行个PCA</strong></li>
 <li><strong>自编码器结构</strong>：三个向量通过MLP映射成一个维度后相加，用还原回去；融合特征再用来做后续的模型设计和训练就好了。</li>
 </ol>
 <p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220519212856682.png" alt="image-20220519212856682" style="zoom: 33%;"></p>
-<h4><span id="32-模型结构">3.2 模型结构</span></h4><p>一种直接的思想就是分而治之，多分支网络；还有一种比较出名的在中间层进行融合的方法，多模态双线性矩阵分解池化方法（MFB），本质上就是对不同模态数据进行双线性融合，借助矩阵分解的思想，再对原始特征进行高维映射，然后element-wise相乘后再做pooling操作。</p>
+<h4><span id="32-模型结构">3.2 模型结构</span></h4>
+<p>一种直接的思想就是分而治之，多分支网络；还有一种比较出名的在中间层进行融合的方法，多模态双线性矩阵分解池化方法（MFB），本质上就是对不同模态数据进行双线性融合，借助矩阵分解的思想，再对原始特征进行高维映射，然后element-wise相乘后再做pooling操作。</p>
 <p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220519220722481.png" alt="image-20220519220722481" style="zoom: 33%;"></p>
 <p><img src="https://pic3.zhimg.com/80/v2-c4ecc29092d26822fef3f420c2bf5bb2_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<h4><span id="33-后处理">3.3 后处理</span></h4><p>后处理其实也是分而治之的思想，多模态数据分别训练不同的模型，再将不同模型的预测输出进行融合，比如平均、加权，或者fix住原来的多个网络，后面再加一层进行微调。</p>
+<h4><span id="33-后处理">3.3 后处理</span></h4>
+<p>后处理其实也是分而治之的思想，多模态数据分别训练不同的模型，再将不同模型的预测输出进行融合，比如平均、加权，或者fix住原来的多个网络，后面再加一层进行微调。</p>
 <p><img src="https://pic3.zhimg.com/80/v2-3e0669ac057b924e8814f34578d4acee_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<h4><span id="34-特征融合是什么和特征交叉有什么区别呢">3.4 特征融合是什么？和特征交叉有什么区别呢？</span></h4><p>在上一篇文章（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457853657">yu-lzn：推荐系统（五）—— 特征交叉</a>）中，我们讨论了特征交叉，特征交叉也称为特征组合，旨在提高模型对非线性的建模能力，从而提高模型的性能。<strong>特征融合</strong>和特征交叉有相同的目的，都是为了提高模型的性能。特征融合是想更好地利用不同特性的特征。</p>
+<h4><span id="34特征融合是什么和特征交叉有什么区别呢">3.4
+特征融合是什么？和特征交叉有什么区别呢？</span></h4>
+<p>在上一篇文章（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457853657">yu-lzn：推荐系统（五）——
+特征交叉</a>）中，我们讨论了特征交叉，特征交叉也称为特征组合，旨在提高模型对非线性的建模能力，从而提高模型的性能。<strong>特征融合</strong>和特征交叉有相同的目的，都是为了提高模型的性能。特征融合是想更好地利用不同特性的特征。</p>
 <blockquote>
-<p>  随着信息时代的发展，<strong>在推荐系统中，多模态信息的融合也变得越来越重要</strong>。以淘宝购物为例，用户在决策是否购买物品时，会考虑<strong>物品的属性</strong>、<strong>物品图片的展示</strong>、其他<strong>用户的评论信息</strong>、甚至是观看<strong>物品的介绍视频</strong>等等。换句话说，这些<strong>多模态信息（文本、图片、视频）会影响用户的行为</strong>。所以如何利用这些多模态信息来建模，是提高推荐系统准确度的一个途径。那么如何去融合这些不同来源的信息便是一个关键的问题。</p>
+<p>随着信息时代的发展，<strong>在推荐系统中，多模态信息的融合也变得越来越重要</strong>。以淘宝购物为例，用户在决策是否购买物品时，会考虑<strong>物品的属性</strong>、<strong>物品图片的展示</strong>、其他<strong>用户的评论信息</strong>、甚至是观看<strong>物品的介绍视频</strong>等等。换句话说，这些<strong>多模态信息（文本、图片、视频）会影响用户的行为</strong>。所以如何利用这些多模态信息来建模，是提高推荐系统准确度的一个途径。那么如何去融合这些不同来源的信息便是一个关键的问题。</p>
 </blockquote>
 
       
@@ -1025,82 +1158,183 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1><span id="如何利用多杀软结果提取恶意软件标签">如何利用多杀软结果提取恶意软件标签</span></h1><ul>
+          <h1><span id="如何利用多杀软结果提取恶意软件标签">如何利用多杀软结果提取恶意软件标签</span></h1>
+<ul>
 <li>secrss.com/articles/33242</li>
 <li><strong>通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点</strong></li>
 </ul>
-<p><strong>从杀软标签中自动提取标签是对大量样本进行分类和索引的有效方法</strong>。此前的 AVClass 和 Euphony 等工作已经能够从杀软标签中提取家族名称。而杀软标签包含有价值的信息不止是家族，还有类别（例如勒索软件、下载器、广告软件）和行为（例如垃圾邮件、DDoS、信息窃取）等。</p>
-<p><strong>恶意软件属性枚举和表征（MAEC）等标准定义了一种用于共享恶意软件分析结果的语言</strong>。然而，由于使用严格的受控词汇表（即预定义标签），这些词汇表可能并不总是符合分析师的需求，需要频繁更新，并且必然是不完整的，因此它们的采用率很低，例如，MAEC 中就不包括<strong>恶意软件家族</strong>。</p>
-<p>杀软引擎有一些通用标签，标明恶意软件的类别、家族、文件属性和动态行为。也有一个通用标签（malicious, application）和特定杀软引擎（deepscan, cloud）才有的，或者是恶意软件家族变种（aghr, bcx）标签。</p>
-<h3><span id="工作设计">工作设计</span></h3><p><strong>AVClass2 的目标是分辨提供有用信息的 Token，识别不同杀软引擎 Token 之间的关系，最后转换成分类法的标签。</strong></p>
-<p>AVClass2 是一个自动恶意软件标记工具，可为样本提取一组干净的标签。AVClass2 附带一个默认的开放分类法，可将杀软标签的名词分类到不同的类别，捕获标签之间关系的默认标记规则和扩展规则。AVClass2 有一个更新模块，使用标签共现来识别标签之间的关系，以在杀软厂商引入新标签时保持工具更新。</p>
-<p>AVCalss2 基于 AVClass 进行了最少必要更改，继承了 AVClass 的主要特点：可扩展性好、杀软引擎独立性好、平台无关性好、不需要样本文件、开源。</p>
+<p><strong>从杀软标签中自动提取标签是对大量样本进行分类和索引的有效方法</strong>。此前的
+AVClass 和 Euphony
+等工作已经能够从杀软标签中提取家族名称。而杀软标签包含有价值的信息不止是家族，还有类别（例如勒索软件、下载器、广告软件）和行为（例如垃圾邮件、DDoS、信息窃取）等。</p>
+<p><strong>恶意软件属性枚举和表征（MAEC）等标准定义了一种用于共享恶意软件分析结果的语言</strong>。然而，由于使用严格的受控词汇表（即预定义标签），这些词汇表可能并不总是符合分析师的需求，需要频繁更新，并且必然是不完整的，因此它们的采用率很低，例如，MAEC
+中就不包括<strong>恶意软件家族</strong>。</p>
+<p>杀软引擎有一些通用标签，标明恶意软件的类别、家族、文件属性和动态行为。也有一个通用标签（malicious,
+application）和特定杀软引擎（deepscan,
+cloud）才有的，或者是恶意软件家族变种（aghr, bcx）标签。</p>
+<h3><span id="工作设计">工作设计</span></h3>
+<p><strong>AVClass2 的目标是分辨提供有用信息的 Token，识别不同杀软引擎
+Token 之间的关系，最后转换成分类法的标签。</strong></p>
+<p>AVClass2
+是一个自动恶意软件标记工具，可为样本提取一组干净的标签。AVClass2
+附带一个默认的开放分类法，可将杀软标签的名词分类到不同的类别，捕获标签之间关系的默认标记规则和扩展规则。AVClass2
+有一个更新模块，使用标签共现来识别标签之间的关系，以在杀软厂商引入新标签时保持工具更新。</p>
+<p>AVCalss2 基于 AVClass 进行了最少必要更改，继承了 AVClass
+的主要特点：可扩展性好、杀软引擎独立性好、平台无关性好、不需要样本文件、开源。</p>
 <p>基本架构如下所示：</p>
-<p><img src="https://s.secrss.com/anquanneican/13c4e4d7d81462e10c618bee59fbf971.png" alt="img"></p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/13c4e4d7d81462e10c618bee59fbf971.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p><strong>主要是两大模块：Labeling 模块和 Update 模块。</strong></p>
 <ul>
-<li>Labeling 模块将<strong>多个杀软的标签结果作为输入</strong>，同时可以提供使用的杀软引擎列表，如果不提供默认使用所有杀软引擎的标签结果。给出一组<strong>标记规则</strong>、一个<strong>可选扩展规则</strong>以及可将标签<strong>分类合并</strong>的分类法。</li>
-<li>Update 模块将<strong>共现统计、标记规则、扩展规则和分类法作为输入</strong>。识别标签之间的<strong>强关联</strong>，生成新的标记规则、扩展规则和分类法。</li>
+<li>Labeling
+模块将<strong>多个杀软的标签结果作为输入</strong>，同时可以提供使用的杀软引擎列表，如果不提供默认使用所有杀软引擎的标签结果。给出一组<strong>标记规则</strong>、一个<strong>可选扩展规则</strong>以及可将标签<strong>分类合并</strong>的分类法。</li>
+<li>Update
+模块将<strong>共现统计、标记规则、扩展规则和分类法作为输入</strong>。识别标签之间的<strong>强关联</strong>，生成新的标记规则、扩展规则和分类法。</li>
 </ul>
-<h3><span id="标签">标签</span></h3><p><strong>Labeling 模块分为三部分：标记化（Tokenization）、标记（Tagging）、扩展（Expansion）。</strong></p>
+<h3><span id="标签">标签</span></h3>
+<p><strong>Labeling
+模块分为三部分：标记化（Tokenization）、标记（Tagging）、扩展（Expansion）。</strong></p>
 <ul>
-<li><strong>标记化（Tokenization）将每个杀软标签拆分为一个 Token 列表</strong>。标记化是与厂商无关的，VirusTotal 现在已经支持超过一百个引擎。每个厂商的格式也不完全一致，经常修改。如果尝试为引擎的标签定义格式或者自动推断格式，可能会得到数百个格式模板。不仅选择正确格式进行解析很困难，遇到未知格式的标签还可能出现错误。</li>
-<li><strong>标记（Tagging）会用分类法中的一组 Tag 替换杀软标签中的 Token，即将杀软标签中的 Token 转换为分类法中概念明确的 Tag</strong>。大多数标记规则会映射到单个标记，例如 downldr、dloader 会被映射到 downloader 上；finloski 和 fynloski 会被映射到 darkkomet 上。也存在一对多的关系，比如 ircbot 会映射到 irc 和 bot。</li>
-<li><strong>扩展（Expansion）用于处理未知的 Token，使用扩展规则定义一个标签隐含一组其他标签</strong>。例如有 95% 的标签在带有 virut 的同时也带有 virus，virut 就会是 virus 的扩展规则。扩展规则一共分为两类，一类是类内规则一类是类间规则，处理顺序是先类间规则再类内规则。类内规则由分类法中统一类别的父子关系隐式定义，例如 adware 是 grayware 的子类。类间规则由分类法中不同类别的隐式关系定义，例如 filemodify 行为归属于 virus 类。</li>
+<li><strong>标记化（Tokenization）将每个杀软标签拆分为一个 Token
+列表</strong>。标记化是与厂商无关的，VirusTotal
+现在已经支持超过一百个引擎。每个厂商的格式也不完全一致，经常修改。如果尝试为引擎的标签定义格式或者自动推断格式，可能会得到数百个格式模板。不仅选择正确格式进行解析很困难，遇到未知格式的标签还可能出现错误。</li>
+<li><strong>标记（Tagging）会用分类法中的一组 Tag 替换杀软标签中的
+Token，即将杀软标签中的 Token 转换为分类法中概念明确的
+Tag</strong>。大多数标记规则会映射到单个标记，例如 downldr、dloader
+会被映射到 downloader 上；finloski 和 fynloski 会被映射到 darkkomet
+上。也存在一对多的关系，比如 ircbot 会映射到 irc 和 bot。</li>
+<li><strong>扩展（Expansion）用于处理未知的
+Token，使用扩展规则定义一个标签隐含一组其他标签</strong>。例如有 95%
+的标签在带有 virut 的同时也带有 virus，virut 就会是 virus
+的扩展规则。扩展规则一共分为两类，一类是类内规则一类是类间规则，处理顺序是先类间规则再类内规则。类内规则由分类法中统一类别的父子关系隐式定义，例如
+adware 是 grayware
+的子类。类间规则由分类法中不同类别的隐式关系定义，例如 filemodify
+行为归属于 virus 类。</li>
 </ul>
 <p><strong>整体流程如下所示：</strong></p>
-<p><img src="https://s.secrss.com/anquanneican/018d45d7ed61a0cca153cfd53d145ade.png" alt="img"></p>
-<h3><span id="分类法">分类法</span></h3><blockquote>
-<p>  <strong>行为、类型、文件属性和家族</strong></p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/018d45d7ed61a0cca153cfd53d145ade.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="分类法">分类法</span></h3>
+<blockquote>
+<p><strong>行为、类型、文件属性和家族</strong></p>
 </blockquote>
-<p>分类法定义了标记规则使用的标签之间的父子关系。AVClass2 的分类法被构造为树型结构，默认包含四个类型（<strong>行为 BEH、类型 CLASS、文件属性 FILE、家族 FAM</strong>）。</p>
-<p><img src="https://s.secrss.com/anquanneican/070902d5885e1c46d17142d43813a9fe.png" alt="img"></p>
+<p>分类法定义了标记规则使用的标签之间的父子关系。AVClass2
+的分类法被构造为树型结构，默认包含四个类型（<strong>行为 BEH、类型
+CLASS、文件属性 FILE、家族 FAM</strong>）。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/070902d5885e1c46d17142d43813a9fe.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>标签是自上而下进行描述的，例如 CLASS:grayware:adware。</p>
 <p><strong>自带的默认分类法如下所示：</strong></p>
-<p><img src="https://s.secrss.com/anquanneican/45bbf65333720324166aeab69f49ece1.png" alt="img"></p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/45bbf65333720324166aeab69f49ece1.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
-<li><strong>行为</strong>：例如 infosteal（信息窃取）、sendssms（发送短信）、spam（垃圾邮件）、mining（挖矿）等</li>
-<li><strong>类别</strong>：例如 worm（蠕虫）、virus（病毒）、ransomware（勒索）、downloader（下载）。Trojan 问题很大，原来特指某类，后来变成了默认类型，故而认为 Trojan 为通用 Token。</li>
-<li><strong>文件属性</strong>：例如<strong>文件类型</strong>（例如 pdf、flash、msword）、<strong>操作系统</strong>（android、linux、windows）、<strong>壳类型</strong>（pecompact、themida、vmprotect）、<strong>编程语言</strong>（autoit、delphi、java）</li>
+<li><strong>行为</strong>：例如
+infosteal（信息窃取）、sendssms（发送短信）、spam（垃圾邮件）、mining（挖矿）等</li>
+<li><strong>类别</strong>：例如
+worm（蠕虫）、virus（病毒）、ransomware（勒索）、downloader（下载）。Trojan
+问题很大，原来特指某类，后来变成了默认类型，故而认为 Trojan 为通用
+Token。</li>
+<li><strong>文件属性</strong>：例如<strong>文件类型</strong>（例如
+pdf、flash、msword）、<strong>操作系统</strong>（android、linux、windows）、<strong>壳类型</strong>（pecompact、themida、vmprotect）、<strong>编程语言</strong>（autoit、delphi、java）</li>
 <li><strong>家族</strong>：默认分类家族不包括父子关系</li>
 </ul>
-<h3><span id="update">Update</span></h3><p>为了新的家族、新的行为都能够通过 AVClass2 自动更新，需要根据共现关系识别数据集中的强关系，迭代更新到规则中。基于 VAMO 引用的杀软标签共现关系，在 AVClass 和 Euphony 中也用于合并家族。（Roberto Perdisci and U. ManChon. 2012. VAMO: Towards a Fully Automated Malware Clustering Validity Analysis. In Annual Computer Security Applications Conference.）。共现的判断需要确定阈值，以AVClass的经验选择 𝑛 = 20 和 𝑇 = 0.94。</p>
-<p><img src="https://s.secrss.com/anquanneican/9d67ba609a2c45feb86dcd605dd5c06f.png" alt="img"></p>
-<h3><span id="工作准备">工作准备</span></h3><p>使用 11 个数据集进行评估，数据集之间存在重复（例如 Drebin 是 MalGenome 的超集）但并未去重，为了便于单独映射结果。</p>
-<p><img src="https://s.secrss.com/anquanneican/18030348ab876b5fed8137aa52b61655.png" alt="img"></p>
-<h3><span id="工作评估">工作评估</span></h3><p>通过在 4200 万恶意样本中评估 AVClass2，并且与 AVClass 和 Euphony 进行了比较，测试其效果。</p>
-<h3><span id="标记覆盖">标记覆盖</span></h3><p>标签覆盖率如下所示：</p>
-<p><img src="https://s.secrss.com/anquanneican/0060066c74a362e126f439c6efc4b669.png" alt="img"></p>
+<h3><span id="update">Update</span></h3>
+<p>为了新的家族、新的行为都能够通过 AVClass2
+自动更新，需要根据共现关系识别数据集中的强关系，迭代更新到规则中。基于
+VAMO 引用的杀软标签共现关系，在 AVClass 和 Euphony
+中也用于合并家族。（Roberto Perdisci and U. ManChon. 2012. VAMO: Towards
+a Fully Automated Malware Clustering Validity Analysis. In Annual
+Computer Security Applications
+Conference.）。共现的判断需要确定阈值，以AVClass的经验选择 𝑛 = 20 和 𝑇 =
+0.94。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/9d67ba609a2c45feb86dcd605dd5c06f.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="工作准备">工作准备</span></h3>
+<p>使用 11 个数据集进行评估，数据集之间存在重复（例如 Drebin 是
+MalGenome 的超集）但并未去重，为了便于单独映射结果。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/18030348ab876b5fed8137aa52b61655.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="工作评估">工作评估</span></h3>
+<p>通过在 4200 万恶意样本中评估 AVClass2，并且与 AVClass 和 Euphony
+进行了比较，测试其效果。</p>
+<h3><span id="标记覆盖">标记覆盖</span></h3>
+<p>标签覆盖率如下所示：</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/0060066c74a362e126f439c6efc4b669.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
-<li><p>选择至少四个杀软引擎标记为恶意的样本，最近的研究表明 2-14 个杀软引擎判定的筛选范围有利于平衡精度和召回率。</p>
+<li><p>选择至少四个杀软引擎标记为恶意的样本，最近的研究表明 2-14
+个杀软引擎判定的筛选范围有利于平衡精度和召回率。</p>
 <blockquote>
-<p>  Shuofei Zhu, Jianjun Shi, Limin Yang, Boqin Qin, Ziyi Zhang, Linhai Song, and Gang Wang. 2020. <strong>Measuring and Modeling the Label Dynamics of Online Anti-Malware Engines</strong></p>
-</blockquote>
-</li>
-<li><p>AVClass2 可以为 89% 以上的样本提取至少一个标签，无法提取的基本都是检测结果较少的文件</p>
-</li>
-<li><p>测试时可识别的 975 个标签已经超过了 VirusTotal 的 335 个标签，VirusTotal 的标签基本都对应于文件属性和样本行为。其中，与 VirusTotal 重合的共有 259 个标签</p>
-</li>
+<p>Shuofei Zhu, Jianjun Shi, Limin Yang, Boqin Qin, Ziyi Zhang, Linhai
+Song, and Gang Wang. 2020. <strong>Measuring and Modeling the Label
+Dynamics of Online Anti-Malware Engines</strong></p>
+</blockquote></li>
+<li><p>AVClass2 可以为 89%
+以上的样本提取至少一个标签，无法提取的基本都是检测结果较少的文件</p></li>
+<li><p>测试时可识别的 975 个标签已经超过了 VirusTotal 的 335
+个标签，VirusTotal 的标签基本都对应于文件属性和样本行为。其中，与
+VirusTotal 重合的共有 259 个标签</p></li>
 </ul>
 <p>每个类别 TOP10 的标签如下所示：</p>
-<p><img src="https://s.secrss.com/anquanneican/9a1f118fb14f2944de07888d2beb9a08.png" alt="img"></p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/9a1f118fb14f2944de07888d2beb9a08.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
-<li>超过 10% 的样本对应了四个类别的标签。例如 CLASS:grayware:adware:multiplug 是通过浏览器插件进行广告推广的软件。</li>
+<li>超过 10% 的样本对应了四个类别的标签。例如
+CLASS:grayware:adware:multiplug
+是通过浏览器插件进行广告推广的软件。</li>
 <li>Trojan 如果不是通用Token被剔除的话，会被分配给 86% 的样本。</li>
 <li>最多的家族是 vobfus，占到了总数的十分一。</li>
-<li>除了恶意软件外，grayware 也是常见家族的大赢家（loadmoney、softpulse、installererex、domaiq、firseria）。</li>
+<li>除了恶意软件外，grayware
+也是常见家族的大赢家（loadmoney、softpulse、installererex、domaiq、firseria）。</li>
 </ul>
-<h3><span id="知识更新">知识更新</span></h3><p>使用 Andropup 数据集举例说明 update 模块的用法。首次测试观察到 65% 的样本包含一个未知标签，执行 update 模块后会下降到 16%。</p>
-<p><img src="https://s.secrss.com/anquanneican/78fad75a47f80238fc0ca5a40ea263b4.png" alt="img"></p>
-<p>共现关系共计 30107 个，有归属于 11 类的 968 个强关联。96% 的强关联涉及未知 Token，从中自动识别出了 486 个新类别实体、216 个新标记规则、461 个扩展规则。处理完成后只剩下 3 个强关联不能自动更新，需要手动处理。</p>
-<p>手动检查了更新的内容，1163 个更新中只有 11 个（0.9%）是需要调整的、3 个是需要手动检查的。</p>
-<h4><span id="执行速度">执行速度</span></h4><p><img src="https://s.secrss.com/anquanneican/3cee7fc69bc91ff6f01b24c764ed46ef.png" alt="img"></p>
+<h3><span id="知识更新">知识更新</span></h3>
+<p>使用 Andropup 数据集举例说明 update 模块的用法。首次测试观察到 65%
+的样本包含一个未知标签，执行 update 模块后会下降到 16%。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/78fad75a47f80238fc0ca5a40ea263b4.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>共现关系共计 30107 个，有归属于 11 类的 968 个强关联。96%
+的强关联涉及未知 Token，从中自动识别出了 486 个新类别实体、216
+个新标记规则、461 个扩展规则。处理完成后只剩下 3
+个强关联不能自动更新，需要手动处理。</p>
+<p>手动检查了更新的内容，1163 个更新中只有 11 个（0.9%）是需要调整的、3
+个是需要手动检查的。</p>
+<h4><span id="执行速度">执行速度</span></h4>
+<figure>
+<img src="https://s.secrss.com/anquanneican/3cee7fc69bc91ff6f01b24c764ed46ef.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
-<li>AVClass2 和 AVClass* 在四个数据集中获得了最好的 F1 成绩，而 AVClass 在 Malheur 上排名第一。</li>
-<li>AVClass 最快，AVClass2 其次，Euphony 则比 AVClass 慢 7 到 34 倍。对特大的数据集 Euphony 会很慢或者因内存不足而崩溃。</li>
+<li>AVClass2 和 AVClass* 在四个数据集中获得了最好的 F1 成绩，而 AVClass
+在 Malheur 上排名第一。</li>
+<li>AVClass 最快，AVClass2 其次，Euphony 则比 AVClass 慢 7 到 34
+倍。对特大的数据集 Euphony 会很慢或者因内存不足而崩溃。</li>
 </ul>
-<h2><span id="工作思考">工作思考</span></h2><p>AVClass2 对通过多杀软结果处理实现提取 VirusTotal 类的 Tag 标签很有帮助，实际上没有必要合并成一个完整的分类法的语法树结构。<strong>通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点</strong>，本文作者也在 AVClass 的基础上再进一步做出了 AVClass2，<strong>==两个工作分别发表在 RAID 2016 与 ACSAC 2020 都是很不错的成绩。==</strong></p>
-<p>像 AVClass++ 指出的那样，AVClass 在杀软引擎结果较少时效果较差，那些新提交到 VirusTotal 的样本会因此效果较差。另外就是杀软结果中也存在随机生成类的结果，这两点实际上都可能是未来在这条路上的研究进展，AVClass++ 的解决方法是否很优则见仁见智，但仍不失为一个极佳的参考。</p>
+<h2><span id="工作思考">工作思考</span></h2>
+<p>AVClass2 对通过多杀软结果处理实现提取 VirusTotal 类的 Tag
+标签很有帮助，实际上没有必要合并成一个完整的分类法的语法树结构。<strong>通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点</strong>，本文作者也在
+AVClass 的基础上再进一步做出了 AVClass2，<strong>==两个工作分别发表在
+RAID 2016 与 ACSAC 2020 都是很不错的成绩。==</strong></p>
+<p>像 AVClass++ 指出的那样，AVClass
+在杀软引擎结果较少时效果较差，那些新提交到 VirusTotal
+的样本会因此效果较差。另外就是杀软结果中也存在随机生成类的结果，这两点实际上都可能是未来在这条路上的研究进展，AVClass++
+的解决方法是否很优则见仁见智，但仍不失为一个极佳的参考。</p>
 
       
     </div>
@@ -1204,48 +1438,105 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-isolation-forest">==一、Isolation Forest==</span></h2><blockquote>
-<p>  孤立森林(isolation Forest)-一个通过瞎几把乱分进行异常检测的算法 - 小伍哥聊风控的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/484495545">https://zhuanlan.zhihu.com/p/484495545</a></p>
-<h5><span id="isolation-forest算法梳理isolation-forest算法梳理">Isolation Forest算法梳理🌳</span></h5></blockquote>
-<h3><span id="11-概述">1.1 概述</span></h3><p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028365.png" alt="Isolation Forest算法梳理🌳"></p>
-<p><strong>异常检测 (anomaly detection)</strong>，或者又被称为“<strong>离群点检测</strong>” (outlier detection)，是机器学习研究领域中跟现实紧密联系、有广泛应用需求的一类问题。但是，什么是异常，并没有标准答案，通常因具体应用场景而异。如果要给一个比较通用的定义，很多文献通常会引用 Hawkins 在文章开头那段话。很多后来者的说法，跟这个定义大同小异。这些定义虽然笼统，但其实暗含了认定“异常”的两个标准或者说假设：</p>
-<p><strong>孤立森林 <img src="https://www.zhihu.com/equation?tex=%28Isolation%5C+Forest%29" alt="[公式]"> 是一个基于 <img src="https://www.zhihu.com/equation?tex=Ensemble" alt="[公式]"> 的快速异常检测方法，具有线性时间复杂度和高精准度。</strong>其可以用于网络安全中的攻击检测，金融交易欺诈检测，疾病侦测，和噪声数据过滤等。</p>
+          <h2><span id="一-isolation-forest">==一、Isolation Forest==</span></h2>
+<blockquote>
+<p>孤立森林(isolation Forest)-一个通过瞎几把乱分进行异常检测的算法 -
+小伍哥聊风控的文章 - 知乎 https://zhuanlan.zhihu.com/p/484495545</p>
+<p>##### <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/131406753">Isolation
+Forest算法梳理🌳</a>Isolation Forest算法梳理🌳</p>
+</blockquote>
+<h3><span id="11-概述">1.1 概述</span></h3>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028365.png" alt="Isolation Forest算法梳理🌳">
+<figcaption aria-hidden="true">Isolation Forest算法梳理🌳</figcaption>
+</figure>
+<p><strong>异常检测 (anomaly
+detection)</strong>，或者又被称为“<strong>离群点检测</strong>” (outlier
+detection)，是机器学习研究领域中跟现实紧密联系、有广泛应用需求的一类问题。但是，什么是异常，并没有标准答案，通常因具体应用场景而异。如果要给一个比较通用的定义，很多文献通常会引用
+Hawkins
+在文章开头那段话。很多后来者的说法，跟这个定义大同小异。这些定义虽然笼统，但其实暗含了认定“异常”的两个标准或者说假设：</p>
+<p><strong>孤立森林 <img src="https://www.zhihu.com/equation?tex=%28Isolation%5C+Forest%29" alt="[公式]"> 是一个基于 <img src="https://www.zhihu.com/equation?tex=Ensemble" alt="[公式]">
+的快速异常检测方法，具有线性时间复杂度和高精准度。</strong>其可以用于网络安全中的攻击检测，金融交易欺诈检测，疾病侦测，和噪声数据过滤等。</p>
 <p>孤立森林算法的理论基础有两点：</p>
 <ul>
 <li>异常数据占总样本量的比列很小</li>
 <li>异常点的特征值与正常点的差异很大</li>
 </ul>
-<h3><span id="12-itree的构建">1.2 iTREE的构建</span></h3><p> <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 是一棵随机二叉树，每一个节点要么有两个孩子，要么就是叶子节点。假设给定一堆数据集 <img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BD%7D" alt="[公式]"> ，这里 <img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BD%7D" alt="[公式]"> 的所有属性都是连续型的变量， <img src="https://www.zhihu.com/equation?tex=+iTree" alt="[公式]"> 的构建过程如下：</p>
-<ol>
-<li><p><strong>随机选择一个属性</strong> <img src="https://www.zhihu.com/equation?tex=Attr" alt="[公式]"> ；</p>
-</li>
-<li><p><strong>随机选择该属性的一个值</strong> <img src="https://www.zhihu.com/equation?tex=Value" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5Cmin%5C%7BAttr%5C%7D%3CValue%3C%5Cmax%5C%7BAttr%5C%7D" alt="[公式]"> ;</p>
-</li>
-<li><p><strong>根据 <img src="https://www.zhihu.com/equation?tex=Attr+" alt="[公式]"> 对每条记录进行分类，把 <img src="https://www.zhihu.com/equation?tex=Attr" alt="[公式]"> 小于 <img src="https://www.zhihu.com/equation?tex=Value" alt="[公式]"> 的记录放在左子树，把大于等于 <img src="https://www.zhihu.com/equation?tex=Value" alt="[公式]"> 的记录放在右子树</strong>；</p>
-</li>
-<li><p><strong>递归构造左右子树，直到满足下列条件</strong>：（1）传入的数据集只有一条记录或者多条同样的记录；（2）树的深度达到了限定深度。</p>
-</li>
+<h3><span id="12-itree的构建">1.2 iTREE的构建</span></h3>
+<p><img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+是一棵随机二叉树，每一个节点要么有两个孩子，要么就是叶子节点。假设给定一堆数据集
+<img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BD%7D" alt="[公式]"> ，这里 <img src="https://www.zhihu.com/equation?tex=%5Cmathbb%7BD%7D" alt="[公式]"> 的所有属性都是连续型的变量， <img src="https://www.zhihu.com/equation?tex=+iTree" alt="[公式]">
+的构建过程如下：</p>
+<ol type="1">
+<li><p><strong>随机选择一个属性</strong> <img src="https://www.zhihu.com/equation?tex=Attr" alt="[公式]">
+；</p></li>
+<li><p><strong>随机选择该属性的一个值</strong> <img src="https://www.zhihu.com/equation?tex=Value" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5Cmin%5C%7BAttr%5C%7D%3CValue%3C%5Cmax%5C%7BAttr%5C%7D" alt="[公式]"> ;</p></li>
+<li><p><strong>根据 <img src="https://www.zhihu.com/equation?tex=Attr+" alt="[公式]"> 对每条记录进行分类，把 <img src="https://www.zhihu.com/equation?tex=Attr" alt="[公式]"> 小于 <img src="https://www.zhihu.com/equation?tex=Value" alt="[公式]">
+的记录放在左子树，把大于等于 <img src="https://www.zhihu.com/equation?tex=Value" alt="[公式]">
+的记录放在右子树</strong>；</p></li>
+<li><p><strong>递归构造左右子树，直到满足下列条件</strong>：（1）传入的数据集只有一条记录或者多条同样的记录；（2）树的深度达到了限定深度。</p></li>
 </ol>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028147.jpg" alt="img" style="zoom:50%;"></p>
-<p><img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 构建完成之后，只需要追踪测试数据落在 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 哪个叶子节点上即可评估该数据是否为异常数据，由图中 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 的构造过程可以发现异常数据通常会很快被分配到叶子节点上，因此可以使用叶子结点到根结点的路径长度（即边的条数） <img src="https://www.zhihu.com/equation?tex=h%28x%29" alt="[公式]"> 来判断一条记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 是否是异常点。</p>
-<h3><span id="13-iforest-构建">1.3 iForest 构建</span></h3><p>由于 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 是随机选择属性和随机选择属性值来构建的，因此可以预见对于单棵 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 的预测效果肯定不会很理想，因此通过引入多棵 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 共同来预测那么从效果上看肯定会更具有说服力。 <img src="https://www.zhihu.com/equation?tex=iForest" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=Random%5C+Forest" alt="[公式]"> 的方法有些类似，都是通过随机采样，利用部分采样数据来构造每一棵树，以保证不同树之间的差异性。在构建 <img src="https://www.zhihu.com/equation?tex=iForest" alt="[公式]"> 的过程中有，采样的样本大小 <img src="https://www.zhihu.com/equation?tex=+%5Cpsi" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 的数量 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 这两个超参数需要确定，样本采样大小超过 <img src="https://www.zhihu.com/equation?tex=256" alt="[公式]"> 效果就提升不大了。</p>
+<p><img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+构建完成之后，只需要追踪测试数据落在 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+哪个叶子节点上即可评估该数据是否为异常数据，由图中 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+的构造过程可以发现异常数据通常会很快被分配到叶子节点上，因此可以使用叶子结点到根结点的路径长度（即边的条数）
+<img src="https://www.zhihu.com/equation?tex=h%28x%29" alt="[公式]">
+来判断一条记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 是否是异常点。</p>
+<h3><span id="13-iforest-构建">1.3 iForest 构建</span></h3>
+<p>由于 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+是随机选择属性和随机选择属性值来构建的，因此可以预见对于单棵 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+的预测效果肯定不会很理想，因此通过引入多棵 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+共同来预测那么从效果上看肯定会更具有说服力。 <img src="https://www.zhihu.com/equation?tex=iForest" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=Random%5C+Forest" alt="[公式]">
+的方法有些类似，都是通过随机采样，利用部分采样数据来构造每一棵树，以保证不同树之间的差异性。在构建
+<img src="https://www.zhihu.com/equation?tex=iForest" alt="[公式]">
+的过程中有，采样的样本大小 <img src="https://www.zhihu.com/equation?tex=+%5Cpsi" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 的数量
+<img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
+这两个超参数需要确定，样本采样大小超过 <img src="https://www.zhihu.com/equation?tex=256" alt="[公式]">
+效果就提升不大了。</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028401.jpg" alt="img" style="zoom:67%;"></p>
 <p>通过采样数据不仅可以降低计算时间的上面的浪费，而且还能够解决一些其它的小问题：</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028205.jpg" alt="preview" style="zoom:67%;"></p>
-<p>左图是原始数据，右图是经过采样了的数据，蓝色代表正常样本，红色代表异常样本。可以看出，在采样之前，正常样本和异常样本出现了重叠，因此很难分开，但通过采样之后，异常样本和正常样本可以明显的分开。 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 控制了 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 的数量即 <img src="https://www.zhihu.com/equation?tex=Ensemble%5C+size" alt="[公式]"> ，孤立森林算法提出者通过实验发现，当 <img src="https://www.zhihu.com/equation?tex=+t%3D100" alt="[公式]"> 之前时，算法就会收敛，故通常设置 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 为默认值 <img src="https://www.zhihu.com/equation?tex=100" alt="[公式]"> ，训练一个 <img src="https://www.zhihu.com/equation?tex=+iForest" alt="[公式]"> 最差情况下的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28t%5Cpsi%5E2%29" alt="[公式]"> 空间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal++O%28t%5Cpsi%29+" alt="[公式]"> 。</p>
-<h3><span id="14-评估">1.4 评估</span></h3><p>为了更好的归一化和比较，<strong>孤立森林通过引入异常值函数</strong> <img src="https://www.zhihu.com/equation?tex=s%28x%2C+n%29" alt="[公式]"> 来衡量记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 是否为异常点。</p>
+<p>左图是原始数据，右图是经过采样了的数据，蓝色代表正常样本，红色代表异常样本。可以看出，在采样之前，正常样本和异常样本出现了重叠，因此很难分开，但通过采样之后，异常样本和正常样本可以明显的分开。
+<img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 控制了
+<img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]">
+的数量即 <img src="https://www.zhihu.com/equation?tex=Ensemble%5C+size" alt="[公式]"> ，孤立森林算法提出者通过实验发现，当 <img src="https://www.zhihu.com/equation?tex=+t%3D100" alt="[公式]">
+之前时，算法就会收敛，故通常设置 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 为默认值 <img src="https://www.zhihu.com/equation?tex=100" alt="[公式]"> ，训练一个
+<img src="https://www.zhihu.com/equation?tex=+iForest" alt="[公式]">
+最差情况下的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28t%5Cpsi%5E2%29" alt="[公式]"> 空间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal++O%28t%5Cpsi%29+" alt="[公式]"> 。</p>
+<h3><span id="14-评估">1.4 评估</span></h3>
+<p>为了更好的归一化和比较，<strong>孤立森林通过引入异常值函数</strong>
+<img src="https://www.zhihu.com/equation?tex=s%28x%2C+n%29" alt="[公式]"> 来衡量记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">
+是否为异常点。</p>
 <blockquote>
-<p>  给定一个包含 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个样本的数据集，<strong>树的平均路径长度为： c(n)</strong>。</p>
-<p>  <img src="https://www.zhihu.com/equation?tex=c(n" alt="[公式]">%3D2H(n-1)-\frac{2(n-1)}{n}+\)</p>
-<p>  其中， <img src="https://www.zhihu.com/equation?tex=H%28%2A%29" alt="[公式]"> 为调和数， <img src="https://www.zhihu.com/equation?tex=H%28%2A%29%3D%5Cln%28%2A%29%2B%5Cxi" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5Cxi" alt="[公式]"> 为欧拉常数，约为 <img src="https://www.zhihu.com/equation?tex=0.5772156649" alt="[公式]"> 。 <img src="https://www.zhihu.com/equation?tex=c%28n%29" alt="[公式]"> 为给定样本数 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 时，路径长度的平均值，用来标准化记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的路径长度 <img src="https://www.zhihu.com/equation?tex=h%28x%29" alt="[公式]"> 。</p>
+<p>给定一个包含 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个样本的数据集，<strong>树的平均路径长度为：
+c(n)</strong>。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=c(n)%3D2H(n-1)-\frac%7B2(n-1)%7D%7Bn%7D+\" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中， <img src="https://www.zhihu.com/equation?tex=H%28%2A%29" alt="[公式]"> 为调和数， <img src="https://www.zhihu.com/equation?tex=H%28%2A%29%3D%5Cln%28%2A%29%2B%5Cxi" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5Cxi" alt="[公式]"> 为欧拉常数，约为 <img src="https://www.zhihu.com/equation?tex=0.5772156649" alt="[公式]"> 。
+<img src="https://www.zhihu.com/equation?tex=c%28n%29" alt="[公式]">
+为给定样本数 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 时，路径长度的平均值，用来标准化记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的路径长度
+<img src="https://www.zhihu.com/equation?tex=h%28x%29" alt="[公式]">
+。</p>
 </blockquote>
-<p><strong>故记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的异常得分可以定义为：s(x, n)</strong>.其中， <strong><font color="red"> <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29" alt="[公式]"> 为记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 在多个 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 中的路径长度的期望值。</font></strong>可视化 <img src="https://www.zhihu.com/equation?tex=s%28x%2Cn%29" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29" alt="[公式]"> 的关系：</p>
-<p> <img src="https://www.zhihu.com/equation?tex=s%28x%2C+n%29%3D2%5E%7B-%5Cfrac%7BE%28h%28x%29%29%7D%7Bc%28n%29%7D%7D%5C%5C" alt="[公式]"></p>
+<p><strong>故记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的异常得分可以定义为：s(x, n)</strong>.其中，
+<strong><font color="red"> <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29" alt="[公式]">
+为记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">
+在多个 <img src="https://www.zhihu.com/equation?tex=iTree" alt="[公式]"> 中的路径长度的期望值。</font></strong>可视化 <img src="https://www.zhihu.com/equation?tex=s%28x%2Cn%29" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29" alt="[公式]"> 的关系：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=s%28x%2C+n%29%3D2%5E%7B-%5Cfrac%7BE%28h%28x%29%29%7D%7Bc%28n%29%7D%7D%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><img src="https://pic4.zhimg.com/80/v2-b7f0fe8132465c0b1919b7c283d1e887_1440w.jpg" alt="img" style="zoom: 67%;"></p>
 <p>可以得出以下结论：</p>
 <ul>
-<li>当 <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29%5Crightarrow+c%28n%29" alt="[公式]"> 时， <img src="https://www.zhihu.com/equation?tex=s%5Crightarrow+0.5" alt="[公式]"> ，即记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的平均长度与树的平均路径长度相近时，则不能区分是否为异常；</li>
-<li>当 <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29%5Crightarrow+0" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=s%5Crightarrow+1" alt="[公式]"> ，即记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的异常分数接近 <img src="https://www.zhihu.com/equation?tex=1" alt="[公式]"> 时，被判定为异常数据；</li>
+<li>当 <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29%5Crightarrow+c%28n%29" alt="[公式]"> 时， <img src="https://www.zhihu.com/equation?tex=s%5Crightarrow+0.5" alt="[公式]"> ，即记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">
+的平均长度与树的平均路径长度相近时，则不能区分是否为异常；</li>
+<li>当 <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29%5Crightarrow+0" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=s%5Crightarrow+1" alt="[公式]"> ，即记录 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的异常分数接近 <img src="https://www.zhihu.com/equation?tex=1" alt="[公式]">
+时，被判定为异常数据；</li>
 <li>当 <img src="https://www.zhihu.com/equation?tex=E%28h%28x%29%29%5Crightarrow+n-1" alt="[公式]"> 时， <img src="https://www.zhihu.com/equation?tex=s%5Crightarrow+0+" alt="[公式]"> ，被判定为正常数据。</li>
 </ul>
 
@@ -1341,19 +1632,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="四-autoeda-工具">四、AutoEDA 工具</span></h2><blockquote>
-<p>  盘点Kaggle中常见的AutoEDA工具库： <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/444405236">https://zhuanlan.zhihu.com/p/444405236</a></p>
+          <h2><span id="四-autoeda-工具">四、AutoEDA 工具</span></h2>
+<blockquote>
+<p>盘点Kaggle中常见的AutoEDA工具库：
+https://zhuanlan.zhihu.com/p/444405236</p>
 </blockquote>
-<h4><span id="41-pandas-profiling">4.1 <strong>Pandas Profiling</strong></span></h4><ul>
+<h4><span id="41-pandas-profiling">4.1 <strong>Pandas Profiling</strong></span></h4>
+<ul>
 <li><a href="http://link.zhihu.com/?target=https%3A//pandas-profiling.github.io/pandas-profiling/docs/master/index.html">https://pandas-profiling.github.io/pandas-profiling/docs/master/index.html</a></li>
 </ul>
-<p><strong>Pandas Profiling</strong>是款比较成熟的工具，可以直接传入DataFrame即可完成分析过程，将结果展示为HTML格式，同时分析功能也比较强大。</p>
+<p><strong>Pandas
+Profiling</strong>是款比较成熟的工具，可以直接传入DataFrame即可完成分析过程，将结果展示为HTML格式，同时分析功能也比较强大。</p>
 <ul>
 <li>功能：<strong>字段类型分析、变量分布分析、相关性分析、缺失值分析、重复行分析</strong></li>
 <li>耗时：较少</li>
 </ul>
 <p><img src="https://pic3.zhimg.com/v2-97af4843870e76e9d9ef1a4518a27bb2_720w.jpg?source=d16d100b" alt="img" style="zoom: 67%;"></p>
-<h4><span id="42-autoviz"><strong>4.2 AutoViz</strong></span></h4><ul>
+<h4><span id="42-autoviz"><strong>4.2 AutoViz</strong></span></h4>
+<ul>
 <li><a href="http://link.zhihu.com/?target=https%3A//github.com/AutoViML/AutoViz">https://github.com/AutoViML/AutoViz</a></li>
 </ul>
 <p><strong>AutoViz是款美观的数据分析工具</strong>，在进行可视化的同时将结果保存为图片格式。</p>
@@ -1362,7 +1658,8 @@
 <li>耗时：较多</li>
 </ul>
 <p><img src="https://pic2.zhimg.com/80/v2-cc73734146a68cd619ed33dd8e5525b1_1440w.jpg?source=d16d100b" alt="img" style="zoom: 67%;"></p>
-<h4><span id="43-dataprep">==4.3 <strong>Dataprep</strong>==</span></h4><ul>
+<h4><span id="43-dataprep">==4.3 <strong>Dataprep</strong>==</span></h4>
+<ul>
 <li><a href="http://link.zhihu.com/?target=https%3A//dataprep.ai/">https://dataprep.ai/</a></li>
 </ul>
 <p><strong>Dataprep是款比较灵活也比较强大的工具，也是笔者最喜欢的。它可以指定列进行分析，同时也可以在Notebook中进行交互式分析。</strong></p>
@@ -1371,7 +1668,8 @@
 <li>耗时：较多</li>
 </ul>
 <p><img src="https://pic1.zhimg.com/80/v2-622241d523ff43ded380d414d040c5d7_1440w.jpg?source=d16d100b" alt="img" style="zoom: 67%;"></p>
-<h4><span id="44-sweetviz"><strong>4.4 SweetViz</strong></span></h4><ul>
+<h4><span id="44-sweetviz"><strong>4.4 SweetViz</strong></span></h4>
+<ul>
 <li><a href="http://link.zhihu.com/?target=https%3A//github.com/fbdesignpro/sweetviz">https://github.com/fbdesignpro/sweetviz</a></li>
 </ul>
 <p><strong>SweetViz是款强大的数据分析工具，可以很好的分析训练集和测试集，以及目标标签与特征之间的关系</strong>。</p>
@@ -1379,7 +1677,8 @@
 <li>功能：数据集对比分析、字段类型分析、变量分布分析、目标变量分析</li>
 <li>耗时：中等<img src="https://pica.zhimg.com/80/v2-45b365b953f62a41680381891eedca9b_1440w.jpg?source=d16d100b" alt="img" style="zoom:67%;"></li>
 </ul>
-<h4><span id="45-d-tale">4.5 D-Tale</span></h4><ul>
+<h4><span id="45-d-tale">4.5 D-Tale</span></h4>
+<ul>
 <li><a href="http://link.zhihu.com/?target=https%3A//github.com/man-group/dtale">https://github.com/man-group/dtale</a></li>
 </ul>
 <p><code>D-Tale</code>是款功能最为强大的数据分析工具，对单变量的分析过程支持比较好。</p>
@@ -1388,50 +1687,70 @@
 <li>耗时：中等</li>
 </ul>
 <p><img src="https://pic2.zhimg.com/80/v2-7c66f31393a92e6ba7c87e03478277e1_1440w.jpg?source=d16d100b" alt="img" style="zoom:67%;"></p>
-<h2><span id="五-警惕特征工程中的陷阱">五、</span></h2><blockquote>
-<p>  特征工程(Feature Engineering)是机器学习中的重要环节。在传统的项目中，百分之七十以上的时间都花在了预处理数据上(Data Preprocessing)，其中特征工程消耗了很多时间。</p>
-<p>  一般来说，特征工程涵盖的内容非常广泛，包括从<strong>缺失值补全、特征选择、维度压缩，到对输入数据的范围进行变换（Data Scaling）等</strong>。举个简单的例子，一个K-近邻算法的输入数据有两个特征 <img src="https://www.zhihu.com/equation?tex=%7BX_1%2CX_2%7D" alt="[公式]"> ，但 <img src="https://www.zhihu.com/equation?tex=X_1" alt="[公式]"> 这个特征的取值范围在 <img src="https://www.zhihu.com/equation?tex=%5B0%2C1%5D" alt="[公式]"> 而 <img src="https://www.zhihu.com/equation?tex=X_2" alt="[公式]"> 的范围在<img src="https://www.zhihu.com/equation?tex=%5B-1000%2C1000%5D" alt="[公式]"> 。不可避免的，K-近邻的结果取决于距离，那么很容易被取值范围大的特征，也就是此处的 <img src="https://www.zhihu.com/equation?tex=X_2" alt="[公式]"> 所“垄断”。在这种情况下，把 <img src="https://www.zhihu.com/equation?tex=%7BX_1%2CX_2%7D" alt="[公式]"> 的取值调整到可比较的范围上就成了必须。常见的做法有归一化或者标准化，此处不再赘述，可以参考[1]。为了简化内容，本文中的例子仅以归一化作为唯一的特征工程。今天主要说的是：特征工程中的面临的进退两难。</p>
+<h2><span id="五-警惕特征工程中的陷阱">五、</span></h2>
+<blockquote>
+<p>特征工程(Feature
+Engineering)是机器学习中的重要环节。在传统的项目中，百分之七十以上的时间都花在了预处理数据上(Data
+Preprocessing)，其中特征工程消耗了很多时间。</p>
+<p>一般来说，特征工程涵盖的内容非常广泛，包括从<strong>缺失值补全、特征选择、维度压缩，到对输入数据的范围进行变换（Data
+Scaling）等</strong>。举个简单的例子，一个K-近邻算法的输入数据有两个特征
+<img src="https://www.zhihu.com/equation?tex=%7BX_1%2CX_2%7D" alt="[公式]"> ，但 <img src="https://www.zhihu.com/equation?tex=X_1" alt="[公式]"> 这个特征的取值范围在 <img src="https://www.zhihu.com/equation?tex=%5B0%2C1%5D" alt="[公式]"> 而
+<img src="https://www.zhihu.com/equation?tex=X_2" alt="[公式]">
+的范围在<img src="https://www.zhihu.com/equation?tex=%5B-1000%2C1000%5D" alt="[公式]">
+。不可避免的，K-近邻的结果取决于距离，那么很容易被取值范围大的特征，也就是此处的
+<img src="https://www.zhihu.com/equation?tex=X_2" alt="[公式]">
+所“垄断”。在这种情况下，把 <img src="https://www.zhihu.com/equation?tex=%7BX_1%2CX_2%7D" alt="[公式]">
+的取值调整到可比较的范围上就成了必须。常见的做法有归一化或者标准化，此处不再赘述，可以参考[1]。为了简化内容，本文中的例子仅以归一化作为唯一的特征工程。今天主要说的是：特征工程中的面临的进退两难。</p>
 </blockquote>
-<h4><span id="51-如何保证-训练集-测试集-预测数据-有相同的输入">5.1 <strong>如何保证 训练集、测试集、预测数据 有相同的输入？</strong></span></h4><p>以刚才的例子为基础，我们把所有数据按照70:30的比例分为训练集和测试集，并打算使用K-近邻进行训练。那么一个令人困扰的问题是，对训练集的特征做归一化后，测试集的特征怎么办？这是一个非常关键的问题，因为训练集<strong>特征归一化</strong>后，测试集的特征范围可能就不同了，因此模型失效。一般有几种思路：</p>
+<h4><span id="51-如何保证训练集-测试集-预测数据-有相同的输入">5.1 <strong>如何保证
+训练集、测试集、预测数据 有相同的输入？</strong></span></h4>
+<p>以刚才的例子为基础，我们把所有数据按照70:30的比例分为训练集和测试集，并打算使用K-近邻进行训练。那么一个令人困扰的问题是，对训练集的特征做归一化后，测试集的特征怎么办？这是一个非常关键的问题，因为训练集<strong>特征归一化</strong>后，测试集的特征范围可能就不同了，因此模型失效。一般有几种思路：</p>
 <ul>
 <li><strong>方法1：把训练集和测试集合在一起做归一化</strong>，这样特征范围就统一了。之后用训练集做训练，那测试集做测试。<strong>但很明显的，在训练模型时，不应该包括任何测试集的信息</strong>。这种做法会导致存在人为偏差的模型，不能用。</li>
 <li><strong>方法2：对训练集单独做归一化，之后对测试集单独做归一化</strong>。这种看法看似也可以，重点在于数据量以及数据的排列顺序。<strong>在数据量大且数据被充分打乱的前提下，这种做法是可行的</strong>。但换句话说，如果有这样的前提假设，那么方法1的结论也是可行的。</li>
 <li><strong>方法3：对训练集先做归一化，并保留其归一化参数（如最大、最小值），之后用训练集的归一化参数对测试集做处理。</strong>这种做法看似是可以的。<strong>但风险在于数据量有限的前提下，训练集的参数会导致测试集的结果异常，如产生极大或者极小的数值</strong>。</li>
 </ul>
 <blockquote>
-<p>  其实不难看出，从某种意义上说，三种做法是等价的。在数据量大且充分打乱的前提下，训练集和验证集有相同的分布假设，因此用任意一种其实差别不大。然而这样的假设过于乐观，<strong>且我们在真实情况下应该只有{==训练集+1个测试数据==}，因此方法2是明显不行的</strong>。</p>
-<p>  方法1常常被认为是错误的操作，原因是在训练阶段引入了测试数据，这属于未知数据。即使仅仅引入了1个测试数据，如果取值非常极端，依然会导致输出范围有较大的波动。其次，如果对于每一个测试数据都需要用整个训练集来归一的话，那么运算开销会非常大。</p>
-<p>  那么似乎备选的只有方案3，即保<strong>留验证集上的归一化参数</strong>，并运用于测试集。这样的做法看似可以，但有不少风险：</p>
+<p>其实不难看出，从某种意义上说，三种做法是等价的。在数据量大且充分打乱的前提下，训练集和验证集有相同的分布假设，因此用任意一种其实差别不大。然而这样的假设过于乐观，<strong>且我们在真实情况下应该只有{==训练集+1个测试数据==}，因此方法2是明显不行的</strong>。</p>
+<p>方法1常常被认为是错误的操作，原因是在训练阶段引入了测试数据，这属于未知数据。即使仅仅引入了1个测试数据，如果取值非常极端，依然会导致输出范围有较大的波动。其次，如果对于每一个测试数据都需要用整个训练集来归一的话，那么运算开销会非常大。</p>
+<p>那么似乎备选的只有方案3，即保<strong>留验证集上的归一化参数</strong>，并运用于测试集。这样的做法看似可以，但有不少风险：</p>
 <ul>
 <li><strong>不是每种特征工程都可以保存参数，很多特征工程是非常繁复的</strong>。</li>
 <li>如果测试集数据和训练集数据有很大的差别，那么用测试集的参数会产生异常数据。</li>
 </ul>
 </blockquote>
-<h4><span id="52-可能的解决方案">5.2 可能的解决方案</span></h4><p>在<strong>模型评估阶段</strong>，如果我们假设拥有大量数据，且充分打乱其顺序。那么在划分训练集和测试集前，可以对整体数据进行统一的特征工程。不难看出，这和统计学的大数定理有异曲同工之妙。这种做法是最为高效的，需要的运算量最小。而将“测试数据”暴露给训练模型的风险也并不大，因为大数据量使得分布比较稳定，可以忽略。换个角度来看，当数据量非常大的时候，使用其他方法进行特征工程的开销会过大，不利于模型评估。因此，在<strong>模型评估阶段</strong>，如果符合以上假设，可以用这种方法（也就是上文的方法1）。但退一步说，如果满足这个条件，那么方法3也是等价的。</p>
+<h4><span id="52-可能的解决方案">5.2 可能的解决方案</span></h4>
+<p>在<strong>模型评估阶段</strong>，如果我们假设拥有大量数据，且充分打乱其顺序。那么在划分训练集和测试集前，可以对整体数据进行统一的特征工程。不难看出，这和统计学的大数定理有异曲同工之妙。这种做法是最为高效的，需要的运算量最小。而将“测试数据”暴露给训练模型的风险也并不大，因为大数据量使得分布比较稳定，可以忽略。换个角度来看，当数据量非常大的时候，使用其他方法进行特征工程的开销会过大，不利于模型评估。因此，在<strong>模型评估阶段</strong>，如果符合以上假设，可以用这种方法（也就是上文的方法1）。但退一步说，如果满足这个条件，那么方法3也是等价的。</p>
 <p>在<strong>预测阶段</strong>，每次假设我们只有1个测试点，那么最佳方案还是保存训练集上特征工程的参数或者模型，并直接用于未知数据的特征工程（也就是上文的方法3）。</p>
-<p>但在<strong>预测阶段</strong>，一个一个数据的预测是非常昂贵的，我们一般会做<strong>“批处理”(batch operation)</strong>。换句话说，就是攒够一定量的预测数据后统一进行预测。在这种情况下，我们：</p>
+<p>但在<strong>预测阶段</strong>，一个一个数据的预测是非常昂贵的，我们一般会做<strong>“批处理”(batch
+operation)</strong>。换句话说，就是攒够一定量的预测数据后统一进行预测。在这种情况下，我们：</p>
 <ul>
 <li>利用方法3，按照顺序对每个训练数据进行处理</li>
 <li>利用方法1，风险在于（方法1）会影响训练数据且需要重新训模型</li>
 <li><strong>利用方法2，此时较为稳妥</strong>。在批的尺寸较大，且与训练数据分布相同（接近）时，效果应该与方法3一致，但效率可以得到提升</li>
 </ul>
-<h3><span id="53-总结"><strong>5.3 总结</strong></span></h3><p>这篇文章的重点是：“特征工程虽然重要，但极容易在使用中带来风险。”比如在训练时同时误用了测试数据进行特征工程，也叫做数据泄露(data leakage)。但数据泄露其实也是个伪命题，<strong>当数据量大且分布相同时，使用哪一种方法得到结果应该都近似等价，而更重要的是运行效率</strong>。分类讨论的话，方法1、2、3都有可能是适合的方法。</p>
+<h3><span id="53-总结"><strong>5.3 总结</strong></span></h3>
+<p>这篇文章的重点是：“特征工程虽然重要，但极容易在使用中带来风险。”比如在训练时同时误用了测试数据进行特征工程，也叫做数据泄露(data
+leakage)。但数据泄露其实也是个伪命题，<strong>当数据量大且分布相同时，使用哪一种方法得到结果应该都近似等价，而更重要的是运行效率</strong>。分类讨论的话，方法1、2、3都有可能是适合的方法。</p>
 <p>但我们依然希望能避免类似的风险，因此尽量避免不必要的特征工程，有以下建议：</p>
 <ul>
 <li><strong>选择对于特征学习能力强的模型，在数据量允许的情况下可以选择深度学习</strong></li>
 <li><strong>避免不必要的特征工程，数据范围比较良好的情况下省略某些特征工程</strong></li>
 <li><strong>优先选择对于特征工程要求低的模型，如xgboost等</strong></li>
 </ul>
-<h2><span id="六-业务角度看特征工程">六、业务角度看特征工程</span></h2><blockquote>
-<p>  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/505480353">如何从业务角度看特征工程</a></p>
+<h2><span id="六-业务角度看特征工程">六、业务角度看特征工程</span></h2>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/505480353">如何从业务角度看特征工程</a></p>
 </blockquote>
 <p>前两天刷某知名社交软件的时候看到有人问特征工程现在还重要吗？觉得是个很有意思的事情。其实工业界能够支持的起大规模稀疏向量的场景大概并不是想象中的那么多，大多数场景面对极为稀疏的行为数据下都很难在ID层面得到很好的emb表达。在这个前提下，没有好的特征工程，其余的模型结构优化或者各种花里胡哨的模型结构都是纸上谈兵。真正被小场景捶打过的朋友，比如我，绝对会在一次又一次的生活毒打中明白，抛弃那些ppt上的高级多塔多注意力，直面特征工程的人生吧！</p>
 <p>有竞赛经验的小伙伴都明白，一个强特能一飞冲天，一个灵机一动能直上top榜。但是，长久的可持续的特征工程决不能够靠简单的灵机一动来实现，特别是当手上有无数的芝麻大小的场景时，一个系统的特征工程思维就尤为重要了。本文将从以下几个方面来阐述特征工程中的方方面面。提前说明的是，一般的特征工程常用方法，例如one-hot，hash-encoding，分桶等等不会作为本文的重点，因为这是器的维度，文末有一篇非常全面的文章供参考，本文主要聚焦在术的维度，也就是怎么去思考和选用方法的层面。<strong>首先，我会给出一个特征工程树，这个属于一个主流版本，希望在屏蔽场景特殊性的情况下，给出一般场景的思考方法</strong>。接下来，我会介绍上文提到的特征树的细节，包括涉及到的具体特征例子。第三部分，则包括特征之间可能存在的相互作用和不同特征适合的模型类型。最后，我给出了一个具体场景的具体例子，并说明这个场景的一般性和特殊性，给出针对具体业务场景的特征工程思路。</p>
 <p>此外，一个基础认知是，这里的特征是指输入模型的信息，包括偏置或者先验，这些特征的使用方式除了作为模型的输入，也可以通过其他的方式引入，例如样本工程或者损失函数，这个就不在本文讨论范围之内了。当然还是那句老话，个人的认知是有限的，欢迎有经验的小伙伴交流和指正。</p>
-<h3><span id="6-1-基础特征树">6. 1 基础特征树</span></h3><p>不管是基于已有的模型迭代优化，又或者是从0到1构建一个场景的全部特征，都需要自己梳理一个完整的基础特征树。这是了解一个场景的开始。做这件事情我推荐的方法是<strong>先体验这个场景，然后分类列出所有可能影响你优化目标决策的因素以及优化目标的历史信息</strong>。</p>
+<h3><span id="6-1-基础特征树">6. 1 基础特征树</span></h3>
+<p>不管是基于已有的模型迭代优化，又或者是从0到1构建一个场景的全部特征，都需要自己梳理一个完整的基础特征树。这是了解一个场景的开始。做这件事情我推荐的方法是<strong>先体验这个场景，然后分类列出所有可能影响你优化目标决策的因素以及优化目标的历史信息</strong>。</p>
 <p>对于绝大多数业务来讲，基础的特征树都可以分为以下3大部分。</p>
 <ul>
-<li><strong>供给侧</strong>：对于大部分to c的互联网应用，供给侧都是item，可能是音乐，doc或者一条推送消息。</li>
+<li><strong>供给侧</strong>：对于大部分to
+c的互联网应用，供给侧都是item，可能是音乐，doc或者一条推送消息。</li>
 <li><strong>消费侧</strong>：有关用户的一切描述，其中比较特殊的是序列特征。</li>
 <li><strong>上下文</strong>：场景测的因素，包括特定的时刻，特定的展现形式等。</li>
 <li><strong>交叉特征</strong>：以上三个部分任意两部分或全部的交叉特征。</li>
@@ -1539,11 +1858,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="sleuth-real-time-attack-scenario-reconstruction-from-cots-audit-data">SLEUTH: Real-time Attack Scenario Reconstruction from COTS Audit Data</span></h2><ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Sc0fie1d/article/details/104273798">https://blog.csdn.net/Sc0fie1d/article/details/104273798</a></li>
+          <h2><span id="sleuthreal-time-attack-scenario-reconstruction-from-cots-audit-data">SLEUTH:
+Real-time Attack Scenario Reconstruction from COTS Audit Data</span></h2>
+<ul>
+<li>https://blog.csdn.net/Sc0fie1d/article/details/104273798</li>
 </ul>
-<h3><span id="摘要">摘要</span></h3><p>本文提出了一种实时重构企业主机上攻击场景的方法和系统。为了满足问题的<strong>可伸缩性</strong>和<strong>实时需求</strong>，我们开发了一个平台中立的、基于主存的、审计日志数据的依赖图抽象方法。然后，我们提出了高效的、基于标签的攻击检测和重建技术，包括源识别和影响分析。我们还开发了一些方法，通过构建紧凑的攻击步骤的可视化图来揭示攻击的大局。我们的系统参与了由DARPA组织的红色团队评估，并能够成功地检测并重建了红色团队对运行Windows、FreeBSD和Linux的主机的攻击细节</p>
-<h3><span id="一-说明">一、说明</span></h3><p>我们正在目睹由熟练的对手进行的有针对性的网络攻击(“企业高级和持续威胁(APTs))[1]的迅速升级。通过将社会工程技术（例如，鱼叉式网络钓鱼）与先进的开发技术相结合，这些对手通常会绕过广泛部署的软件保护系统，如ASLR、DEP和沙箱。因此，企业越来越依赖于二线防御，例如，<strong>入侵检测系统(IDS)、安全信息和事件管理(SIEM)工具、身份和访问管理工具，以及应用程序防火墙。虽然这些工具通常很有用，但它们通常会生成大量的信息，这使得安全分析师很难区分真正重要的攻击——众所周知的“大海捞针”——从背景噪音</strong>。此外，分析人员缺乏“连接这些点”的工具，即，将跨越多个应用程序或主机并在长时间扩展的攻击活动的碎片拼凑起来。相反，需要大量的手工努力和专业知识来整理由多个安全工具发出的众多警报。因此，许多攻击活动被错过了数周甚至数月的[7,40]。</p>
+<h3><span id="摘要">摘要</span></h3>
+<p>本文提出了一种实时重构企业主机上攻击场景的方法和系统。为了满足问题的<strong>可伸缩性</strong>和<strong>实时需求</strong>，我们开发了一个平台中立的、基于主存的、审计日志数据的依赖图抽象方法。然后，我们提出了高效的、基于标签的攻击检测和重建技术，包括源识别和影响分析。我们还开发了一些方法，通过构建紧凑的攻击步骤的可视化图来揭示攻击的大局。我们的系统参与了由DARPA组织的红色团队评估，并能够成功地检测并重建了红色团队对运行Windows、FreeBSD和Linux的主机的攻击细节</p>
+<h3><span id="一-说明">一、说明</span></h3>
+<p>我们正在目睹由熟练的对手进行的有针对性的网络攻击(“企业高级和持续威胁(APTs))[1]的迅速升级。通过将社会工程技术（例如，鱼叉式网络钓鱼）与先进的开发技术相结合，这些对手通常会绕过广泛部署的软件保护系统，如ASLR、DEP和沙箱。因此，企业越来越依赖于二线防御，例如，<strong>入侵检测系统(IDS)、安全信息和事件管理(SIEM)工具、身份和访问管理工具，以及应用程序防火墙。虽然这些工具通常很有用，但它们通常会生成大量的信息，这使得安全分析师很难区分真正重要的攻击——众所周知的“大海捞针”——从背景噪音</strong>。此外，分析人员缺乏“连接这些点”的工具，即，将跨越多个应用程序或主机并在长时间扩展的攻击活动的碎片拼凑起来。相反，需要大量的手工努力和专业知识来整理由多个安全工具发出的众多警报。因此，许多攻击活动被错过了数周甚至数月的[7,40]。</p>
 <p>为了有效地控制高级攻击活动，分析人员需要新一代的工具，不仅帮助检测，而且还生成一个总结攻击的因果链的紧凑总结。这样的摘要将使分析人员能够快速确定是否存在重大入侵，了解攻击者最初是如何违反安全规则的，并确定攻击的影响。</p>
 <p>将导致攻击的事件的因果链拼接在一起的问题首先在反向跟踪器[25,26]中进行了探索。随后的研究[31,37]提高了由反向跟踪器构建的依赖链的精度。然而，这些工作在一个纯粹的法医环境中运行，因此不处理实时进行分析的挑战。相比之下，本文提出了侦探（<strong>SLEUTH</strong>），一个系统，该系统可以实时提醒分析师一个正在进行的活动，并在攻击后的几秒钟或几分钟内为他们提供一个紧凑的、直观的活动摘要。这将使在对受害者企业造成巨大损害之前及时作出反应。实时攻击检测和场景重构提出以下几点：</p>
 <ul>
@@ -1554,17 +1877,18 @@
 <li><strong>快速、交互式推理</strong>：我们如何为分析人员提供通过数据进行有效推理的能力，比如说，用另一种假设？</li>
 </ul>
 <p>下面，我们将简要介绍侦探调查，并总结我们的贡献。侦探假设攻击最初来自企业外部。例如，对手可以通过外部提供的恶意输入劫持web浏览器、插入受感染的u盘或向企业内运行的网络服务器提供零日攻击来启动攻击。我们假设对手在侦探开始监视系统之前并没有在主机上植入持续的恶意软件。我们还假设操作系统内核和审计系统是值得信赖的</p>
-<h4><span id="11方法概述和贡献">1.1方法概述和贡献</span></h4><p>图1提供了我们的方法的概述。侦探是操作系统中立的，目前支持微软的Windows、Linux和FreeBSD。来自这些操作系统的审计数据被处理成平台中立的图形表示，其中顶点表示主题（<strong>进程</strong>）和对象（<strong>文件、套接字</strong>），边表示审计事件（例如，读、写、执行和连接等操作）。该图可作为攻击检测、因果关系分析和场景重建的基础。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191554457.png" alt="image-20220513135637994"></p>
+<h4><span id="11方法概述和贡献">1.1方法概述和贡献</span></h4>
+<p>图1提供了我们的方法的概述。侦探是操作系统中立的，目前支持微软的Windows、Linux和FreeBSD。来自这些操作系统的审计数据被处理成平台中立的图形表示，其中顶点表示主题（<strong>进程</strong>）和对象（<strong>文件、套接字</strong>），边表示审计事件（例如，读、写、执行和连接等操作）。该图可作为攻击检测、因果关系分析和场景重建的基础。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191554457.png" alt="image-20220513135637994">
+<figcaption aria-hidden="true">image-20220513135637994</figcaption>
+</figure>
 <ul>
-<li><p>本文的第一个贡献是<strong>针对高效事件存储依赖图表示的开发和紧凑的事件存储和分析（第2节）的挑战</strong>。主存表示上的图形算法可以比磁盘上的表示快几个数量级，这是实现实时分析能力的一个重要因素。<strong>在我们的实验中，我们能够在14秒内处理来自FreeBSD系统的79小时的审计数据，主存使用量为84MB。这种性能表示的分析速率比生成数据的速率快2万倍。</strong></p>
-</li>
-<li><p>本文的第二个主要贡献是<strong>开发了一种基于标签的方法</strong>，<strong>用以识别最有可能参与攻击的主题、对象和事件</strong>。标签使我们能够确定分析的优先级和重点，从而解决上面提到的第二个挑战。标签编码对数据（即对象）以及过程（主题）的可信度和敏感性进行评估。此评估是基于来自审计日志的数据来源。从这个意义上说，<strong>从审计数据中衍生出的标签类似于粗粒度信息流标签</strong>。我们的分析也可以很自然地支持更细粒度的标记，例如，细粒度的污染标记[42,58]，如果它们可用的话。在第3节中更详细地描述了标签，以及它们在攻击检测中的应用。</p>
-</li>
-<li><p>本文的第三个贡献是<strong>开发了利用标签进行根源识别和影响分析的新算法</strong>（第5节）。从图1中所示的攻击检测组件产生的警报开始。我们的反向分析算法遵循图中的依赖关系来识别攻击的来源。从源代码开始，我们使用前向搜索对对手的行动进行全面的影响分析。我们提出了几个标准，以生成一个紧凑的图。我们还给出了一些转换，进一步简化了这个图，并生成了一个图，以一种简洁和语义上有意义的方式直观地捕获攻击，例如，图中的图。 4.实验表明，我们基于标记的方法是非常有效的：例如，侦探可以分析3850万个事件，并生成一个只有130个事件的攻击场景图，代表事件量减少了5个数量级。</p>
-</li>
-<li><p>本文的第四个贡献，旨在解决上面提到的最后两个挑战，是一个用于<strong>标记初始化和传播的可定制策略框架</strong>(第4节)。我们的框架提供了合理的默认值，但是可以覆盖它们以适应特定于操作系统或应用程序的行为。这使我们能够调整检测和分析技术，以避免在良性应用程序表现出类似攻击行为的情况下出现误报。(参见第6.6节了解的尾部。)策略还使分析人员能够测试攻击的“备选假设”，方法是重新对认为为可信或敏感的内容进行分类，并重新运行分析。如果分析人员怀疑某些行为是攻击的结果，他们还可以使用策略捕获这些行为，并重新运行分析以发现其原因和影响。由于我们处理和分析审计数据的速度比它生成的速度快数万倍，因此可以有效地、并行地、实时地测试alternate假设。</p>
-</li>
+<li><p>本文的第一个贡献是<strong>针对高效事件存储依赖图表示的开发和紧凑的事件存储和分析（第2节）的挑战</strong>。主存表示上的图形算法可以比磁盘上的表示快几个数量级，这是实现实时分析能力的一个重要因素。<strong>在我们的实验中，我们能够在14秒内处理来自FreeBSD系统的79小时的审计数据，主存使用量为84MB。这种性能表示的分析速率比生成数据的速率快2万倍。</strong></p></li>
+<li><p>本文的第二个主要贡献是<strong>开发了一种基于标签的方法</strong>，<strong>用以识别最有可能参与攻击的主题、对象和事件</strong>。标签使我们能够确定分析的优先级和重点，从而解决上面提到的第二个挑战。标签编码对数据（即对象）以及过程（主题）的可信度和敏感性进行评估。此评估是基于来自审计日志的数据来源。从这个意义上说，<strong>从审计数据中衍生出的标签类似于粗粒度信息流标签</strong>。我们的分析也可以很自然地支持更细粒度的标记，例如，细粒度的污染标记[42,58]，如果它们可用的话。在第3节中更详细地描述了标签，以及它们在攻击检测中的应用。</p></li>
+<li><p>本文的第三个贡献是<strong>开发了利用标签进行根源识别和影响分析的新算法</strong>（第5节）。从图1中所示的攻击检测组件产生的警报开始。我们的反向分析算法遵循图中的依赖关系来识别攻击的来源。从源代码开始，我们使用前向搜索对对手的行动进行全面的影响分析。我们提出了几个标准，以生成一个紧凑的图。我们还给出了一些转换，进一步简化了这个图，并生成了一个图，以一种简洁和语义上有意义的方式直观地捕获攻击，例如，图中的图。
+4.实验表明，我们基于标记的方法是非常有效的：例如，侦探可以分析3850万个事件，并生成一个只有130个事件的攻击场景图，代表事件量减少了5个数量级。</p></li>
+<li><p>本文的第四个贡献，旨在解决上面提到的最后两个挑战，是一个用于<strong>标记初始化和传播的可定制策略框架</strong>(第4节)。我们的框架提供了合理的默认值，但是可以覆盖它们以适应特定于操作系统或应用程序的行为。这使我们能够调整检测和分析技术，以避免在良性应用程序表现出类似攻击行为的情况下出现误报。(参见第6.6节了解的尾部。)策略还使分析人员能够测试攻击的“备选假设”，方法是重新对认为为可信或敏感的内容进行分类，并重新运行分析。如果分析人员怀疑某些行为是攻击的结果，他们还可以使用策略捕获这些行为，并重新运行分析以发现其原因和影响。由于我们处理和分析审计数据的速度比它生成的速度快数万倍，因此可以有效地、并行地、实时地测试alternate假设。</p></li>
 </ul>
 <p>本文的最后贡献是一个实验评估（第6节），主要基于由<strong>DARPA组织</strong>的一个红色团队评估，作为其透明计算项目的一部分。在这项评估中，<strong>在Windows、FreeBSD和Linux主机</strong>上进行了类似现代apt的攻击活动。在这项评估中，侦探能够：</p>
 <ul>
@@ -1574,101 +1898,144 @@
 <li>并实现较低的假阳性和假阴性率。</li>
 </ul>
 <p>我们的评估并不是为了表明我们发现了最复杂的对手；相反，我们的观点是，给定几种未知的可能性，我们系统的优先级结果可以实时到位，没有任何人类的帮助。因此，它确实填补了今天存在的一个空白，即法医分析似乎主要是手动启动的。</p>
-<h3><span id="二-主内存依赖性图">二、 主内存依赖性图</span></h3><p>为了支持快速检测和实时分析，我们将依赖关系存储在图形数据结构中。存储此图的一个可能的选择是图形数据库。然而，诸如Neo4J[4]或Titan[6]等流行数据库的性能[39]在许多图形算法中都是有限的，除非主内存足够大，可以容纳大部分数据。此外，一般图数据库的内存使用太高，适合我们的问题。即使是毒刺[16]和NetworkX[5]，两个为主存性能而优化的图形数据库，每个图边[39]分别使用约250字节和3KB。<strong>在企业网络上报告的审计事件的数量每天很容易达到数十亿到数百亿亿美元之间，这将需要几tb范围内的主内存。相比之下，我们提出了一个更有效的空间依赖图设计，每条边只使用大约10个字节。在一个实验中，我们能够在329mb的主存中存储38m个事件</strong>。</p>
+<h3><span id="二-主内存依赖性图">二、 主内存依赖性图</span></h3>
+<p>为了支持快速检测和实时分析，我们将依赖关系存储在图形数据结构中。存储此图的一个可能的选择是图形数据库。然而，诸如Neo4J[4]或Titan[6]等流行数据库的性能[39]在许多图形算法中都是有限的，除非主内存足够大，可以容纳大部分数据。此外，一般图数据库的内存使用太高，适合我们的问题。即使是毒刺[16]和NetworkX[5]，两个为主存性能而优化的图形数据库，每个图边[39]分别使用约250字节和3KB。<strong>在企业网络上报告的审计事件的数量每天很容易达到数十亿到数百亿亿美元之间，这将需要几tb范围内的主内存。相比之下，我们提出了一个更有效的空间依赖图设计，每条边只使用大约10个字节。在一个实验中，我们能够在329mb的主存中存储38m个事件</strong>。</p>
 <p><strong>Subjects</strong>：</p>
 <ul>
 <li>表示进程；</li>
-<li>属性值包括：process id（pid）、命令行、所有者（owner）以及代码和数据的标签</li>
+<li>属性值包括：process
+id（pid）、命令行、所有者（owner）以及代码和数据的标签</li>
 </ul>
 <p><strong>Objects</strong>：</p>
 <ul>
 <li>表示实体，例如文件、pipes、网络连接</li>
 <li>属性值包括：名称、类型（文件、pipe、socket等）、所有者和标签</li>
 </ul>
-<p><strong>事件</strong>：subjects和objects之间或者两个subjects之间带标签的边，用read 、connect、 execveread、connect、execveread、connect、execve来表示。<br><strong>事件存储在subjects中</strong>，从而消除了subject-event的指针、事件标识符（event id）的需求。他们的表示采用<strong>可变长编码</strong>，在通常情况下可以采用4 bytes，当需要时可以扩展到8、12或者16 bytes。</p>
-<h3><span id="三-标签和攻击检测">三、 标签和攻击检测</span></h3><p>我们使用标签来描述<strong>objects和subjects的可信度和敏感度</strong>。对可信度和敏感度的评估基于以下三个因素：</p>
+<p><strong>事件</strong>：subjects和objects之间或者两个subjects之间带标签的边，用read
+、connect、 execveread、connect、execveread、connect、execve来表示。
+<strong>事件存储在subjects中</strong>，从而消除了subject-event的指针、事件标识符（event
+id）的需求。他们的表示采用<strong>可变长编码</strong>，在通常情况下可以采用4
+bytes，当需要时可以扩展到8、12或者16 bytes。</p>
+<h3><span id="三-标签和攻击检测">三、 标签和攻击检测</span></h3>
+<p>我们使用标签来描述<strong>objects和subjects的可信度和敏感度</strong>。对可信度和敏感度的评估基于以下三个因素：</p>
 <ul>
 <li><strong>起源（Provenance）</strong>：依赖图中，subject或object直接祖先的标记</li>
-<li><strong>系统先验知识</strong>：我们对一些重要应用行为的了解，比如远程接入服务器、软件安装程序和重要的文件（/etc/passwd 和 /dev/audio）</li>
+<li><strong>系统先验知识</strong>：我们对一些重要应用行为的了解，比如远程接入服务器、软件安装程序和重要的文件（/etc/passwd
+和 /dev/audio）</li>
 <li><strong>行为</strong>：观察subject的行为，并将其与预期行为进行比较</li>
 </ul>
 <p>一个默认的策略被用从从input到output传播标签：为output分配input的可信度标签中的最低值，以及机密性标签的最大值（也就是说，入口点的行为是危险的，出口点的行为也被标注为危险；入口点的数据是机密的，出口点的数据也被标注为是机密的）。这是一种保守的策略，该策略可能会导致一些良性事件被错误地识别为恶意事件（over-tainting），但绝不会漏掉攻击。</p>
 <p><strong>标签在SLEUTH中扮演了核心角色</strong>。它为攻击检测提供了重要的上下文信息，每个事件都在这些标记组成的上下文中进行解释，以确定其导致攻击的可能性。此外，标签对我们的前向和回溯分析的速度也很有用。最后，标签为消除大量与攻击无关的审计数据也起到了关键作用。</p>
-<h4><span id="31-标签设计">3.1 标签设计</span></h4><p>如下定义<strong>可信度标签（trustworthiness tags，t-tags）</strong>，可信度依次降低：</p>
+<h4><span id="31-标签设计">3.1 标签设计</span></h4>
+<p>如下定义<strong>可信度标签（trustworthiness
+tags，t-tags）</strong>，可信度依次降低：</p>
 <ul>
-<li><strong>良性可信标签（Benign authentic tag）</strong>：为<strong>数据和代码</strong>分配该标签，其来源（source）为<strong>良性</strong>且可靠性<strong>可被验证</strong>的</li>
-<li><p><strong>良性标签（Benign tag）</strong>：为<strong>数据和代码</strong>分配该标签，其来源为<strong>良性</strong>，但是来源可靠性<strong>未被充分验证</strong></p>
-</li>
-<li><p><strong>未知标签（Unknown tag）</strong>：为<strong>数据和代码</strong>分配该标签，但是其来源未知</p>
-</li>
+<li><p><strong>良性可信标签（Benign authentic
+tag）</strong>：为<strong>数据和代码</strong>分配该标签，其来源（source）为<strong>良性</strong>且可靠性<strong>可被验证</strong>的</p></li>
+<li><p><strong>良性标签（Benign
+tag）</strong>：为<strong>数据和代码</strong>分配该标签，其来源为<strong>良性</strong>，但是来源可靠性<strong>未被充分验证</strong></p></li>
+<li><p><strong>未知标签（Unknown
+tag）</strong>：为<strong>数据和代码</strong>分配该标签，但是其来源未知</p></li>
 </ul>
-<p><strong>策略（policy）定义了那些来源是良性的</strong>，哪些来源验证时充分的；策略的最简单情况是白名单。如果对于某个源，没有策略应用在它上面，那么这个源则被打上未知标签。如下定义<strong>机密性标签（confidentiality tags，c-tags）</strong>，机密性依次降低：</p>
+<p><strong>策略（policy）定义了那些来源是良性的</strong>，哪些来源验证时充分的；策略的最简单情况是白名单。如果对于某个源，没有策略应用在它上面，那么这个源则被打上未知标签。如下定义<strong>机密性标签（confidentiality
+tags，c-tags）</strong>，机密性依次降低：</p>
 <ul>
 <li><strong>Secret</strong>：高度敏感的信息，例如登陆凭证、私钥</li>
 <li><strong>Sensitive</strong>：数据的披露可能会对安全产生重大影响，例如，披露了系统中的漏洞，但没有为攻击者提供访问系统的直接途径。</li>
 <li><strong>Private</strong>：资料的披露涉及私隐，但未必构成安全威胁。</li>
 <li><strong>Public</strong>：可以被公开的数据</li>
 </ul>
-<p>我们设计的一个重要方面是分离<strong>代码和数据的t-tag</strong>。具体而言，即一个subject给定两个t-tag，一个表示其代码可信度（code trustworthiness，code t-tag），另一个表示其数据可信度（data trustworthiness，data t-tag）。这样的设计可以削减重建场景的规模，加快取证分析的速度。而机密性标签仅仅与数据相关联。</p>
+<p>我们设计的一个重要方面是分离<strong>代码和数据的t-tag</strong>。具体而言，即一个subject给定两个t-tag，一个表示其代码可信度（code
+trustworthiness，code t-tag），另一个表示其数据可信度（data
+trustworthiness，data
+t-tag）。这样的设计可以削减重建场景的规模，加快取证分析的速度。而机密性标签仅仅与数据相关联。</p>
 <p>已经存在的objects和subjects使用<strong>标签初始化策略</strong>分配初始标签。在系统执行过程中还会产生新的objects和subjects，它们由<strong>标签传播策略</strong>分配标签。最后，<strong>基于行为的检测策略</strong>来检测攻击。</p>
-<h4><span id="32-基于标签的攻击检测">3.2 基于标签的攻击检测</span></h4><p>检测方法不应该要求知晓特定应用的一些细节，因为这需要有关应用程序的专家知识，而在动态环境中，<strong>应用程序可能会频繁更新</strong>。</p>
-<p>我们不把着眼点放在变化的应用行为上，而是着眼于攻击者的高级别目标，比如后门插入和信息窃取。具体而言，我们结合了攻击者的动机和手段的推理，注意到我们提出的标签就是用来捕获攻击者的手段：如果一段数据或代码有未 知 标 签 未知标签未知标签，那么它就是由不受信任的源产生的。</p>
-<p>根据攻击者的攻击步骤，我们<strong>定义</strong>了下面包含<strong>攻击者目标和手段的策略</strong>（Detection Policy）：</p>
+<h4><span id="32-基于标签的攻击检测">3.2 基于标签的攻击检测</span></h4>
+<p>检测方法不应该要求知晓特定应用的一些细节，因为这需要有关应用程序的专家知识，而在动态环境中，<strong>应用程序可能会频繁更新</strong>。</p>
+<p>我们不把着眼点放在变化的应用行为上，而是着眼于攻击者的高级别目标，比如后门插入和信息窃取。具体而言，我们结合了攻击者的动机和手段的推理，注意到我们提出的标签就是用来捕获攻击者的手段：如果一段数据或代码有未
+知 标 签 未知标签未知标签，那么它就是由不受信任的源产生的。</p>
+<p>根据攻击者的攻击步骤，我们<strong>定义</strong>了下面包含<strong>攻击者目标和手段的策略</strong>（Detection
+Policy）：</p>
 <ul>
-<li><p><strong>不受信任的代码执行</strong>：当一个拥有高code t-tag的subject执行或<strong>加载拥有低t-tag的object</strong>时，便会引发警报</p>
-</li>
-<li><p><strong>被拥有低code t-tag的subject修改</strong>：当拥有低code t-tag的subject修改一个拥有高t-tag的object时，便会引发警报。修改的可能是文件内容或者文件名、文件权限等。</p>
-</li>
-<li><p><strong>机密文件泄露</strong>：当不可信的subjects泄漏敏感数据时，将触发警报。具体地说，也就是具有sensitive c-tag 和 unkonwn code t-tag的subject在网络中执行写操作时会触发警报。</p>
-</li>
-<li><strong>为执行准备不可信的数据</strong>：该策略由一个拥有unknown t-tag的subject的操作触发，该操作使一个object可执行。这样的操作会包含chmod和mprotect</li>
+<li><p><strong>不受信任的代码执行</strong>：当一个拥有高code
+t-tag的subject执行或<strong>加载拥有低t-tag的object</strong>时，便会引发警报</p></li>
+<li><p><strong>被拥有低code t-tag的subject修改</strong>：当拥有低code
+t-tag的subject修改一个拥有高t-tag的object时，便会引发警报。修改的可能是文件内容或者文件名、文件权限等。</p></li>
+<li><p><strong>机密文件泄露</strong>：当不可信的subjects泄漏敏感数据时，将触发警报。具体地说，也就是具有sensitive
+c-tag 和 unkonwn code
+t-tag的subject在网络中执行写操作时会触发警报。</p></li>
+<li><p><strong>为执行准备不可信的数据</strong>：该策略由一个拥有unknown
+t-tag的subject的操作触发，该操作使一个object可执行。这样的操作会包含chmod和mprotect</p></li>
 </ul>
 <blockquote>
-<p>  <strong>一点优势</strong>：值得注意的是，攻击者的手段并不会因为数据或代码经过了多个中间媒介之后而被“稀释”。啥意思呢？举个栗子：对于不受信任的代码执行策略来说，如果直接从未知网站加载数据的话，当然会触发警报。但是，当这些数据是被下载、提取、解压缩，甚至有可能是编译之后再加载的，在经过了重重转化之后，只要数据被加载，该策略仍然能够被触发。随后再进行回溯分析，就可以找到漏洞利用的第一步。</p>
-<p>  （与其它探测器合作的能力）另外，<strong>其它检测器的输入可以很容易地被集成到SLEUTH中</strong>。比如说，某个外部的检测器将一个subject标为可疑，这个时候再SLEUTH中可以将该subject的code t-tag标为unknown，从而后面的分析都会受益。此外该操作也会保留图节点之间的依赖关系。</p>
+<p><strong>一点优势</strong>：值得注意的是，攻击者的手段并不会因为数据或代码经过了多个中间媒介之后而被“稀释”。啥意思呢？举个栗子：对于不受信任的代码执行策略来说，如果直接从未知网站加载数据的话，当然会触发警报。但是，当这些数据是被下载、提取、解压缩，甚至有可能是编译之后再加载的，在经过了重重转化之后，只要数据被加载，该策略仍然能够被触发。随后再进行回溯分析，就可以找到漏洞利用的第一步。</p>
+<p>（与其它探测器合作的能力）另外，<strong>其它检测器的输入可以很容易地被集成到SLEUTH中</strong>。比如说，某个外部的检测器将一个subject标为可疑，这个时候再SLEUTH中可以将该subject的code
+t-tag标为unknown，从而后面的分析都会受益。此外该操作也会保留图节点之间的依赖关系。</p>
 </blockquote>
 <p>被不受信的代码执行所触发的策略，不应该被认为工作在静态环境中（需要动态匹配策略），静态环境意味着不允许新代码产生。实际上，我们期望可以连续地更新和升级，但在企业环境中，我们不希望用户下载未知代码。因此，下面会叙述如何支持标准化的软件更新机制。</p>
-<h3><span id="四-策略框架">四、策略框架</span></h3><p>本文开发了一个灵活的<strong>策略框架（policy framework）</strong>，用于标签的分配、传播和攻击检测。我们使用<strong>基于规则</strong>的记法来描述策略，例如：</p>
-<p><code>exec(s,o):o.ttag&lt;benign→alert(&quot;UntrustedExec&quot;)</code></p>
-<p>这条规则被触发的条件是：当一个subject s 执行了一个object o(比如文件），而o的t-tag要小于良性。<br>在该策略框架中，<strong>规则通常与事件关联</strong>，并且包含objects或subjects的<strong>属性的一些条件</strong>，这些属性包括：</p>
+<h3><span id="四-策略框架">四、策略框架</span></h3>
+<p>本文开发了一个灵活的<strong>策略框架（policy
+framework）</strong>，用于标签的分配、传播和攻击检测。我们使用<strong>基于规则</strong>的记法来描述策略，例如：</p>
+<p><code>exec(s,o):o.ttag&lt;benign→alert("UntrustedExec")</code></p>
+<p>这条规则被触发的条件是：当一个subject s 执行了一个object
+o(比如文件），而o的t-tag要小于良性。
+在该策略框架中，<strong>规则通常与事件关联</strong>，并且包含objects或subjects的<strong>属性的一些条件</strong>，这些属性包括：</p>
 <ul>
-<li><strong>name</strong>：使用Perl正则表达式来匹配<strong>object name</strong>和<strong>subject命令行</strong></li>
-<li><p><strong>tags</strong>: 条件中可以放置objects或subjects的t-tags或者c-tags。对于subjects来说，代码和数据的t-tag可以分别使用</p>
-</li>
-<li><p><strong>所有权和权限</strong>：条件中可以放置objects和subjects的所有权，或者objects和事件权限</p>
-</li>
+<li><p><strong>name</strong>：使用Perl正则表达式来匹配<strong>object
+name</strong>和<strong>subject命令行</strong></p></li>
+<li><p><strong>tags</strong>:
+条件中可以放置objects或subjects的t-tags或者c-tags。对于subjects来说，代码和数据的t-tag可以分别使用</p></li>
+<li><p><strong>所有权和权限</strong>：条件中可以放置objects和subjects的所有权，或者objects和事件权限</p></li>
 </ul>
 <p>不同类型的策略有不同的作用：</p>
 <ul>
 <li>检测策略：引发警报</li>
 <li>标签初始化和传播策略：修改标签</li>
 </ul>
-<p><strong>触发点（trigger points）</strong>：为了更好地控制不同类型策略的匹配，我们将策略与触发点联系起来。此外，触发点允许有相似目的的不同事件共享策略。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191554914.png" alt="在这里插入图片描述"></p>
-<p>上图展示了策略框架中定义的触发点，define表示一个新的object，比如一个新网络连接的建立、首次提及一个已经存在的文件、新文件的创建等。<br>（检测策略匹配过程）当事件出现时，检测策略就会被执行。后面，除非手动配置，否则仅当<strong>目标subject或object</strong>（某个信息流的终点，Target）发生变化时，检测策略才会被再次执行。</p>
+<p><strong>触发点（trigger
+points）</strong>：为了更好地控制不同类型策略的匹配，我们将策略与触发点联系起来。此外，触发点允许有相似目的的不同事件共享策略。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191554914.png" alt="在这里插入图片描述">
+<figcaption aria-hidden="true">在这里插入图片描述</figcaption>
+</figure>
+<p>上图展示了策略框架中定义的触发点，define表示一个新的object，比如一个新网络连接的建立、首次提及一个已经存在的文件、新文件的创建等。
+（检测策略匹配过程）当事件出现时，检测策略就会被执行。后面，除非手动配置，否则仅当<strong>目标subject或object</strong>（某个信息流的终点，Target）发生变化时，检测策略才会被再次执行。</p>
 <p>（标签策略）然后，标签策略按照指定的顺序进行尝试，一旦规则匹配，被规则指定的标签将会被分配给<strong>目标事件（Target，也就是subject/object）</strong></p>
-<h3><span id="五-基于标签的双向分析">五、基于标签的双向分析</span></h3><h4><span id="51-回溯分析">5.1 回溯分析</span></h4><p>回溯分析的目标是识别攻击的入口点，入口点是图中入度为0的节点，并且被标记为untrusted。通常是网络连接，但有时也会是其他形式，比如U盘中的文件。</p>
+<h3><span id="五-基于标签的双向分析">五、基于标签的双向分析</span></h3>
+<h4><span id="51-回溯分析">5.1 回溯分析</span></h4>
+<p>回溯分析的目标是识别攻击的入口点，入口点是图中入度为0的节点，并且被标记为untrusted。通常是网络连接，但有时也会是其他形式，比如U盘中的文件。</p>
 <p><strong>回溯分析的起点是检测策略产生警报的地方</strong>。每个警报都与一个或多个实体相关，这些实体在图中被标记为可疑节点。反向搜索涉及对图的反向遍历，从而识别由可疑节点连接到入口点的路径。我们注意到，在这样的遍历和接下来的讨论中，依赖关系边的方向是相反的。反向搜索带来了几个重大<strong>挑战</strong>:</p>
 <ul>
-<li><p><strong>性能</strong>：依赖图可能包含数亿条边。警报数可以达到数千。在这么大的图上执行反向搜索，会消耗大量的计算资源。</p>
-</li>
-<li><p><strong>多路径</strong>：通常，从可疑节点向后可访问多个入口点。然而，在APT攻击中，通常只有一个真正的入口点。因此，简单的反向搜索可能会导致大量的误报</p>
-</li>
+<li><p><strong>性能</strong>：依赖图可能包含数亿条边。警报数可以达到数千。在这么大的图上执行反向搜索，会消耗大量的计算资源。</p></li>
+<li><p><strong>多路径</strong>：通常，从可疑节点向后可访问多个入口点。然而，在APT攻击中，通常只有一个真正的入口点。因此，简单的反向搜索可能会导致大量的误报</p></li>
 </ul>
 <p>标签可以用来解决这两个挑战。一方面，标签的计算和传播本来就是一种简洁的路径计算。另一方面，如果节点的标签值是unknown，那么该节点很有可能会构成攻击路径。如果节点A的标签是unknown，这意味着至少存在一条路径，从不受信任的入口点指向节点A，这样节点A就比其他拥有良性标签的邻居节点更有可能是攻击的一部分。使用标签来进行反向搜索，消除许多无关节点，极大地减少了搜索空间。</p>
-<p>基于此，我们将反向分析当作<strong>最短路径问题</strong>的一个实例，<strong>标签</strong>被用来定义边的代价<strong>（cost）</strong>。一方面，标签能够“引导”搜索沿着攻击相关的路径，并远离不相关的路径。这使得搜索可以在不必遍历整个图的情况下完成，从而解决了性能方面的挑战。另一方面，最短路径算法通过选择最接近可疑节点的入口点（以路径成本衡量）来解决多个路径的挑战。<br>计算最短路径使用<strong>Dijkstra算法</strong>，当入口点被加入到路径中时，算法就停止。</p>
+<p>基于此，我们将反向分析当作<strong>最短路径问题</strong>的一个实例，<strong>标签</strong>被用来定义边的代价<strong>（cost）</strong>。一方面，标签能够“引导”搜索沿着攻击相关的路径，并远离不相关的路径。这使得搜索可以在不必遍历整个图的情况下完成，从而解决了性能方面的挑战。另一方面，最短路径算法通过选择最接近可疑节点的入口点（以路径成本衡量）来解决多个路径的挑战。
+计算最短路径使用<strong>Dijkstra算法</strong>，当入口点被加入到路径中时，算法就停止。</p>
 <p><strong>代价函数设计</strong>：对于那些表示节点依赖关系的<strong>边</strong>，如果其标签是<strong>“未知”</strong>，则为其分配<strong>较低的开销</strong>；其它节点分配较高的开胶，<strong>具体地说：</strong></p>
 <ul>
-<li>从一个“未知”数据/代码 t-tag 的节点，到一个“良性”代码/数据 t-tag 节点的边，为其分配<strong>代价为0</strong></li>
-<li>从一个“良性”代码/数据 t-tag 的节点引出的边，为其分配一个<strong>较高的代价</strong></li>
-<li>从已有“未知” tag 的节点之间引入边，为其分配<strong>代价为1</strong></li>
+<li>从一个“未知”数据/代码 t-tag 的节点，到一个“良性”代码/数据 t-tag
+节点的边，为其分配<strong>代价为0</strong></li>
+<li>从一个“良性”代码/数据 t-tag
+的节点引出的边，为其分配一个<strong>较高的代价</strong></li>
+<li>从已有“未知” tag
+的节点之间引入边，为其分配<strong>代价为1</strong></li>
 </ul>
-<p>与未知 subject/object 直接相关的良性 subject/object 表示图中恶意和良性部分之间的边界。因此，它们必须包含在搜索中，因此这些边的代价是0。</p>
+<p>与未知 subject/object 直接相关的良性 subject/object
+表示图中恶意和良性部分之间的边界。因此，它们必须包含在搜索中，因此这些边的代价是0。</p>
 <p>良性实体之间的信息流动不是攻击的一部分，因此我们将它们的代价设置得非常高，以便将它们排除在搜索之外。</p>
 <p>不可信节点之间的信息流可能是攻击的一部分，因此我们将它们的代价设置为一个较低的值。它们将被包括在搜索结果中，除非由较少边组成的可选路径可用。</p>
-<h4><span id="52-向前分析">5.2 向前分析</span></h4><p>前向分析的目的是为了评估攻击的影响。通过从一个入口点开始，发现所有依赖于入口点的可能影响。与反向分析类似，主要的挑战是图的大小。一种简单的方法是，标记所有从入口点可到达的 subject/object，这些 subject/object 是通过反向分析得到的。不幸的是，这种方法将导致影响图太大。<br>在实验中，利用这种方法得到的影响图包含数百万条边，利用我们的简化算法可以降低100到500倍。</p>
-<p>一个降低其大小的方法是使用距离阈值dth ，来排除那些距离可疑节点太远的点，分析人员可以调节该阈值。我们使用在回溯分析时使用到的 cost 。</p>
-<p>（为什么回溯分析不考虑？？）不同于回溯分析的是，我们考虑机密性。特别的，一条边两端的节点，一个由高机密性标签，另外一个具有低代码 integrity（可信度？？） 标签（如未知进程）或者低数据 integrity 标签（如未知socket），那么为这条边分配代价为0；而当另一个节点由良性标签时，为其分配较高代价值。</p>
+<h4><span id="52-向前分析">5.2 向前分析</span></h4>
+<p>前向分析的目的是为了评估攻击的影响。通过从一个入口点开始，发现所有依赖于入口点的可能影响。与反向分析类似，主要的挑战是图的大小。一种简单的方法是，标记所有从入口点可到达的
+subject/object，这些 subject/object
+是通过反向分析得到的。不幸的是，这种方法将导致影响图太大。
+在实验中，利用这种方法得到的影响图包含数百万条边，利用我们的简化算法可以降低100到500倍。</p>
+<p>一个降低其大小的方法是使用距离阈值dth
+，来排除那些距离可疑节点太远的点，分析人员可以调节该阈值。我们使用在回溯分析时使用到的
+cost 。</p>
+<p>（为什么回溯分析不考虑？？）不同于回溯分析的是，我们考虑机密性。特别的，一条边两端的节点，一个由高机密性标签，另外一个具有低代码
+integrity（可信度？？） 标签（如未知进程）或者低数据 integrity
+标签（如未知socket），那么为这条边分配代价为0；而当另一个节点由良性标签时，为其分配较高代价值。</p>
 
       
     </div>
@@ -1772,11 +2139,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="seqnet-an-efficient-neural-network-for-automatic-malware-detection">SeqNet: An Efficient Neural Network for Automatic Malware Detection</span></h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/Darren-8/SeqNet.git">https://github.com/Darren-8/SeqNet.git</a>.</li>
+          <h2><span id="seqnetan-efficient-neural-network-for-automatic-malware-detection">SeqNet:
+An Efficient Neural Network for Automatic Malware Detection</span></h2>
+<ul>
+<li>https://github.com/Darren-8/SeqNet.git.</li>
 </ul>
-<h3><span id="摘要">摘要</span></h3><p>恶意软件继续快速发展，每天捕获超过45万个新样本，这使得手动恶意软件分析变得不切实际。然而，现有的深度学习检测模型需要人工特征工程，或者需要很高的计算开销来进行长时间的训练，这可能会很难选择特征空间，并且很难再训练来缓解模型老化。因此，对探测器的一个关键要求是实现自动、高效的检测。在本文中，我们<strong>提出了一种轻量级的恶意软件检测模型SeqNet</strong>，该模型可以在原始二进制文件上以低内存进行高速训练。通过避免上下文混淆和减少语义丢失，SeqNet在将参数数量减少到仅136K时保持了检测精度。在我们的实验中，我们证明了我们的方法的有效性和SeqNet的低训练成本要求。此外，我们还公开了我们的数据集和代码，以促进进一步的学术研究。</p>
-<h3><span id="一-说明">一、说明</span></h3><p>恶意软件是一种严重的网络安全威胁，可能会对个人和公司系统造成严重损害，例如，急剧减速或崩溃、严重数据丢失或泄漏，以及灾难性的硬件故障。<strong>AVTest报告称，平均每天检测到超过45万个新的恶意程序和可能不需要的应用程序</strong>。[1]. 大量新的恶意软件变体使得手动恶意软件分析效率低下且耗时。为了更有效地检测恶意软件，许多研究人员提出了用于恶意软件分析和检测的高级工具[2,5,9,14]。这些工具通过对分析员的行为进行部分工作，帮助他们更高效地完成任务。然而，在处理如此大量的恶意软件时，这些解决方案无法从根本上减少工作量。为了解决这个问题，许多专家和学者将机器学习算法，尤其是深度学习应用于恶意软件检测和分类[7,12,15,16,18,22,26,28,34,37,45,50,51,53,55,58-60,62,63]。他们的努力为恶意软件分析神经网络的研究和实用的恶意软件自动检测做出了很大贡献。</p>
+<h3><span id="摘要">摘要</span></h3>
+<p>恶意软件继续快速发展，每天捕获超过45万个新样本，这使得手动恶意软件分析变得不切实际。然而，现有的深度学习检测模型需要人工特征工程，或者需要很高的计算开销来进行长时间的训练，这可能会很难选择特征空间，并且很难再训练来缓解模型老化。因此，对探测器的一个关键要求是实现自动、高效的检测。在本文中，我们<strong>提出了一种轻量级的恶意软件检测模型SeqNet</strong>，该模型可以在原始二进制文件上以低内存进行高速训练。通过避免上下文混淆和减少语义丢失，SeqNet在将参数数量减少到仅136K时保持了检测精度。在我们的实验中，我们证明了我们的方法的有效性和SeqNet的低训练成本要求。此外，我们还公开了我们的数据集和代码，以促进进一步的学术研究。</p>
+<h3><span id="一-说明">一、说明</span></h3>
+<p>恶意软件是一种严重的网络安全威胁，可能会对个人和公司系统造成严重损害，例如，急剧减速或崩溃、严重数据丢失或泄漏，以及灾难性的硬件故障。<strong>AVTest报告称，平均每天检测到超过45万个新的恶意程序和可能不需要的应用程序</strong>。[1].
+大量新的恶意软件变体使得手动恶意软件分析效率低下且耗时。为了更有效地检测恶意软件，许多研究人员提出了用于恶意软件分析和检测的高级工具[2,5,9,14]。这些工具通过对分析员的行为进行部分工作，帮助他们更高效地完成任务。然而，在处理如此大量的恶意软件时，这些解决方案无法从根本上减少工作量。为了解决这个问题，许多专家和学者将机器学习算法，尤其是深度学习应用于恶意软件检测和分类[7,12,15,16,18,22,26,28,34,37,45,50,51,53,55,58-60,62,63]。他们的努力为恶意软件分析神经网络的研究和实用的恶意软件自动检测做出了很大贡献。</p>
 <p>然而，这些模型通常需要各种特征工程来帮助神经网络做出判断，这可能很费劲，并且容易丢失一些关键信息。为了实现更加友好和自动的检测，提出了基于二进制的方法[31,37,41,42]。两种流行的原始二进制处理方法是文件剪切和二进制图像转换。然而，这两种方法可能会遇到<strong>语境混乱和语义丢失</strong>，这将在后面讨论。</p>
 <p><strong>此外，模型老化是神经网络的一个关键问题</strong>[25,40]。与计算机视觉和自然语言处理不同，恶意软件正在不断快速发展。恶意软件检测是攻击者和检测器之间的斗争。随着恶意软件的不断发展，深度学习模型可能已经过时。例如，五年前训练的模型在今天的恶意软件检测中可能非常薄弱。神经网络很难识别看不见的恶意行为，这可能会导致较低的检测精度和更容易的规避。模型不可能预测未来恶意软件的特征，但快速学习检测新恶意软件的知识是可行的。因此，再培训模式成为缓解老龄化问题的少数方法之一。我们可以让神经网络快速重新训练，学习新恶意软件的新特征，以便识别新的攻击方法。</p>
 <p><strong>由于模型的结构和规模，再培训可能会耗费时间和计算量，而且如此高的成本可能会导致模型更新困难</strong>。此外，恶意软件检测是几乎所有电子系统中的常见操作，对于计算能力较低的设备来说，进行检测是必要的。例如，笔记本电脑或其他移动设备很难运行一个庞大的模型来扫描所有文件以检测恶意软件。这些要求表明，检测模型应该足够小和有效，使其更实用，以便我们能够快速重新培训或执行检测。此外，无需复杂特征工程的自动检测对于各种场景中使用的模型至关重要。</p>
@@ -1784,19 +2156,23 @@
 <p>在本文中，我们提出了一个有效的恶意软件自动检测模型，该模型只有大约136K个参数，我们称之为SeqNet。在没有人工特征选择的情况下，SeqNet可以仅基于原始二进制文件自动分析样本并找出恶意程序和良性程序之间的差异。较小的神经网络通常具有较少的参数，这可能会导致较低的学习能力。这可能是因为较小的模型往往更难适应从原始二进制文件到恶意域的复杂映射。这个问题可能会导致小型深度学习模型中恶意软件检测的准确性较低。</p>
 <p>为了在减少参数数量时保持准确性，我们<strong>提出了一种新的二进制代码表示方法</strong>，以减少语义损失并避免上下文混淆。根据我们的方法，我们使SeqNet在无需特征工程的情况下，在可移植可执行（PE）恶意软件检测方面表现良好。基于这种表示方法，我们创建了一种新的卷积方法，称为<strong>序列深度可分离卷积（SDSC）</strong>，以进一步压缩检测模型的规模。我们在一个大型PE数据集上对SeqNet进行训练，发现与许多现有的基于二进制的方法和模型相比，它具有很好的性能。我们还在进一步的实验中证明了我们的模型收缩方法的有效性。此外，我们还公开了我们的代码和数据集以供进一步研究，我们希望深度学习算法能够更好地应用于恶意软件检测。</p>
 <p>我们在一个大型PE数据集上对SeqNet进行训练，发现与许多现有的基于二进制的方法和模型相比，它具有很好的性能。我们还在进一步的实验中证明了我们的模型收缩方法的有效性。此外，我们还公开了我们的代码和数据集以供进一步研究，我们希望深度学习算法能够更好地应用于恶意软件检测。</p>
-<h4><span id="本文的主要贡献包括">本文的主要贡献包括：</span></h4><ul>
+<h4><span id="本文的主要贡献包括">本文的主要贡献包括：</span></h4>
+<ul>
 <li>我们提出了一种<strong>新的方法来表示二进制代码</strong>，同时减少语义损失，避免上下文混淆。</li>
 <li>基于上述新的表示方法，我们提出了一种<strong>新的卷积压缩恶意软件检测模型的方法SDSC</strong>。</li>
 <li>我们<strong>设计了一个深度卷积神经网络（CNN），称为SeqNet</strong>，它具有更小的规模和更短的训练过程。</li>
 <li>我们将数据集和代码公开以供进一步研究。</li>
 </ul>
 <p>这是本文的布局。第2节介绍了深层恶意软件检测的主要方法和几个问题。第3节描述了我们应用于SeqNet的主要方法。第四部分阐述了我们的实验和相应的结果。</p>
-<h3><span id="二-背景">二、背景</span></h3><p>在本节中，我们将介绍使用深度学习进行恶意软件检测的背景。首先，我们列举了这方面的两种主要方法。然后进一步讨论了目前流行的二进制表示方法的几个问题。最后，我们解释了其中一种方法所基于的深度可分离卷积。</p>
-<h4><span id="21-深度恶意软件检测">2.1 深度恶意软件检测</span></h4><p>神经网络具有强大的学习能力，在计算机视觉和自然语言处理中得到了广泛的应用。深度学习算法已经被许多研究人员应用于恶意软件检测。据我们所知，我们认为有两种主流思想，类似于[47]。</p>
+<h3><span id="二-背景">二、背景</span></h3>
+<p>在本节中，我们将介绍使用深度学习进行恶意软件检测的背景。首先，我们列举了这方面的两种主要方法。然后进一步讨论了目前流行的二进制表示方法的几个问题。最后，我们解释了其中一种方法所基于的深度可分离卷积。</p>
+<h4><span id="21-深度恶意软件检测">2.1 深度恶意软件检测</span></h4>
+<p>神经网络具有强大的学习能力，在计算机视觉和自然语言处理中得到了广泛的应用。深度学习算法已经被许多研究人员应用于恶意软件检测。据我们所知，我们认为有两种主流思想，类似于[47]。</p>
 <p><strong>基于特征的方法</strong>。在早期作品中，深度学习模型是从精心制作的恶意软件功能中训练出来的[7、15、16、18、26、28、34、58、63]。在检查可疑样本时，模型需要提取特定特征，以特定方式处理它们，然后检测恶意代码以给出结果。所选功能可以是API调用、控制流图（CFG）或任何其他能够反映程序操作的信息。的确，人工特征学习是神经网络识别恶意样本和良性样本之间主要差异的有效方法。然而，特定的领域特征只能从一个角度很好地描述样本的关键信息。它不能完全覆盖二进制代码的语义，甚至会引发严重的信息丢失。例如，仅使用API调用作为特性会导致模型忽略控制流。此外，精心设计的功能需要足够的先验知识，这需要专家仔细选择。因此，耗时的手动特征提取可能会限制基于特征的模型的使用，并使其难以对抗恶意软件的持续演化。</p>
 <p><strong>基于二进制的方法</strong>。与传统的特征工程相比，自动特征提取是神经网络的发展趋势之一，人工干预更少，性能更好。我们读取文件的二进制文件，直接将其发送到检测模型，无需或几乎不需要预处理。该模型将自动找到可疑部分，并将二进制文件识别为恶意或良性。这种方法可以更有效地避免人们分析恶意软件的需要，并更好地减少分析人员的工作量。<strong>此外，通过减少手动特征工程造成的损失，直接从原始二进制文件学习可能会更好地保留语义和上下文信息。</strong></p>
 <p>为了使我们的模型更加自动化，避免信息丢失，<strong>我们将重点放在基于二进制的模型上</strong>，SeqNet将原始二进制文件用作输入。此外，较低的计算开销可以使模型更好地适应恶意软件的演变，并扩展应用场景，例如在物联网环境中。我们将一种新颖但简单的二进制代码表示方法应用于SeqNet，并在减少参数时保持其性能。</p>
-<h4><span id="22-二进制代码表示法">2.2 二进制代码表示法</span></h4><p>在这一部分中，我们将介绍几种主要的二进制代码表示方法，它们适用于基于二进制的模型。将样本转换为神经网络的输入会显著影响模型的性能。因此，<strong>正确的二进制代码表示方法是基于二进制的恶意软件检测神经网络的重要组成部分</strong>。目前，人们提出了两种主要的方法来完全表示原始二进制码。</p>
+<h4><span id="22-二进制代码表示法">2.2 二进制代码表示法</span></h4>
+<p>在这一部分中，我们将介绍几种主要的二进制代码表示方法，它们适用于基于二进制的模型。将样本转换为神经网络的输入会显著影响模型的性能。因此，<strong>正确的二进制代码表示方法是基于二进制的恶意软件检测神经网络的重要组成部分</strong>。目前，人们提出了两种主要的方法来完全表示原始二进制码。</p>
 <p><strong>文件剪切</strong>。<strong>由于内存限制的限制，许多作品对最大文件大小设置了人为限制，这种方法是从二进制程序的开头提取一段固定长度的代码片段</strong>。如果二进制程序的长度小于所需代码段的长度，则该代码段的末尾将填充零。文件剪切会导致语义信息丢失，因为如果二进制文件的结尾比固定长度长得多，就会忽略它。然而，恶意代码通常位于二进制文件的末尾。例如，嵌入的病毒通常嵌入在受感染文件的尾部，这可能有助于它们逃避基于这种方法的模型的检测。<strong>为了缓解这个问题，Mal-ConvGCT[42]通过扩展代码段大小限制来提高MalConv[41]的性能。</strong></p>
 <p><strong>二值图像转换</strong>。第二种方法将所有二进制代码转换为图像，并利用图像分类解决方案执行恶意软件检测。所有<strong>图像都可以使用双线性插值算法重新采样到相同的大小</strong>。然而，图像与序列不同，这可能会导致几个问题。我们认为这种方法会导致上下文信息混乱，下面列举了三个例子。</p>
 <ul>
@@ -1805,17 +2181,30 @@
 <li><strong>填充问题</strong>：填充操作可能会使模型难以识别原始序列的开始和结束，如图1（c）所示。为了确保卷积层输入和输出的一致性，我们通常在输入的边缘填充一些零，神经网络可能会根据填充得到空间信息[27]。与图像处理不同，识别出的空间信息可能会误导模型。</li>
 </ul>
 <p><strong>文件剪切导致的语义丢失</strong>和<strong>二值图像转换导致的上下文混乱</strong>阻碍了恶意软件检测模型的性能。这些问题可能会混淆神经网络，甚至误导它们做出截然相反的决定。通过缓解这些问题，我们可以帮助我们的模型在减少参数时保持其性能。</p>
-<h4><span id="23-卷积法">2.3 卷积法</span></h4><p>传统的卷积算法模拟动物视觉，在计算机视觉中具有很好的性能。这个简单的操作可以有效地提取图像中的视觉特征。低级卷积层检测图像中的纹理和简单特征，高级卷积层可以识别内容和整体语义[61]。这就是为什么计算机可以通过多个卷积层的叠加来识别复杂的物体。</p>
-<p>然而，传统卷积所需的参数数量往往使得深度学习模型太大，无法应用于计算能力较低的设备。此外，参数过多的模型可能需要很长的训练过程。例如，VGG有超过1.3亿个参数，已经接受了2年的培训  3周[49]。如此庞大的模型不适合在普通设备上运行。</p>
+<h4><span id="23-卷积法">2.3 卷积法</span></h4>
+<p>传统的卷积算法模拟动物视觉，在计算机视觉中具有很好的性能。这个简单的操作可以有效地提取图像中的视觉特征。低级卷积层检测图像中的纹理和简单特征，高级卷积层可以识别内容和整体语义[61]。这就是为什么计算机可以通过多个卷积层的叠加来识别复杂的物体。</p>
+<p>然而，传统卷积所需的参数数量往往使得深度学习模型太大，无法应用于计算能力较低的设备。此外，参数过多的模型可能需要很长的训练过程。例如，VGG有超过1.3亿个参数，已经接受了2年的培训 
+3周[49]。如此庞大的模型不适合在普通设备上运行。</p>
 <p>因此，我们将CNN架构应用于SeqNet，并将DSC的输入形式从2D调整为1D，从而更好地减少了训练参数的数量。因此，训练时间成本和新生成的模型的大小都进一步减小。我们的方法的细节在第3节中描述。</p>
-<h3><span id="三-方法">三、 方法</span></h3><p>在本节中，我们将介绍SeqNet的详细信息。首先，我们概述了我们的方法。其次，我们引入了可以减少语义损失和避免语境混淆的序列表征。第三部分描述了SDSC如何压缩模型的规模。最后，我们详细介绍了SeqNet的体系结构。</p>
-<h4><span id="31概述">3.1概述</span></h4><p>SeqNet的目标是以较低的培训成本实现高效、自动的恶意软件检测。在整个培训和检测过程中，操作员不需要专业的恶意软件分析知识来执行手动领域特定的功能工程。实际上，我们直接将原始二进制文件输入SeqNet，SeqNet将自动分析序列并提取特征。SeqNet的输出是可疑样本的恶意可能性，输入样本是否为恶意软件取决于模型给出的可能性。</p>
+<h3><span id="三-方法">三、 方法</span></h3>
+<p>在本节中，我们将介绍SeqNet的详细信息。首先，我们概述了我们的方法。其次，我们引入了可以减少语义损失和避免语境混淆的序列表征。第三部分描述了SDSC如何压缩模型的规模。最后，我们详细介绍了SeqNet的体系结构。</p>
+<h4><span id="31概述">3.1概述</span></h4>
+<p>SeqNet的目标是以较低的培训成本实现高效、自动的恶意软件检测。在整个培训和检测过程中，操作员不需要专业的恶意软件分析知识来执行手动领域特定的功能工程。实际上，我们直接将原始二进制文件输入SeqNet，SeqNet将自动分析序列并提取特征。SeqNet的输出是可疑样本的恶意可能性，输入样本是否为恶意软件取决于模型给出的可能性。</p>
 <p>准确检测是恶意软件检测模型的基本要求。我们认为恶意软件检测不同于图像分类。恶意软件检测可能需要更多地关注几个<strong>关键的恶意代码</strong>，而图像分类可能更关注整体。根据这一理论，我们对SeqNet的主要设计要点之一是减少上下文混淆和语义丢失。我们使用<strong>原始二进制序列作为SeqNet的输入</strong>，这样可以避免上下文混淆，减少语义损失。</p>
 <p>轻量级模型通常具有更广泛的应用场景和更快的检测性能。显然，小型模型的培训成本也很低。因此，压缩SeqNet的规模是必要的。新的卷积方法，称为序列深度可分离卷积（SDSC），有助于SeqNet满足这一要求。</p>
-<h4><span id="32-序列表征">3.2 序列表征</span></h4><p>输入格式对神经网络性能和模型大小至关重要。较大的输入往往导致较大的模型，适当的输入格式可以有效地提高神经网络的学习效果。SeqNet的输入是原始二进制序列，这些序列通过线性插值算法调整到相同的长度。原始二进制序列输入几乎不需要人工干预。在不转换为图像的情况下，很明显，我们可以避免上下文信息混淆，减少语义损失，如图所示</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182201637.png" alt="image-20220510151305157"></p>
+<h4><span id="32-序列表征">3.2 序列表征</span></h4>
+<p>输入格式对神经网络性能和模型大小至关重要。较大的输入往往导致较大的模型，适当的输入格式可以有效地提高神经网络的学习效果。SeqNet的输入是原始二进制序列，这些序列通过线性插值算法调整到相同的长度。原始二进制序列输入几乎不需要人工干预。在不转换为图像的情况下，很明显，我们可以避免上下文信息混淆，减少语义损失，如图所示</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182201637.png" alt="image-20220510151305157">
+<figcaption aria-hidden="true">image-20220510151305157</figcaption>
+</figure>
 <blockquote>
-<p>  一个例子表明，序列表征可以解决上下文混淆和语义丢失的问题。在图像中，二进制指令“BF 01 00”在边缘被切断，但它仍保留序列中的形状。插值后，我们可以看到，图像强制加强了“56”与“00”之间的关系，其中“56”表示“推esi”，而“00”在“0F 85 93 00 00 00 00 00”中表示“jnz loc 1000DF90”，但它忽略了具有更强关系的指令，例如“推edi”和“mov edi，1”。在序列中，指令“56”与前端结合，而不是“00”，并且在物理上与“57”保持接近，后者表示“推edi”。在图像中，输入到卷积层之前添加的填充提供了不正确的位置信息，但在序列中，它标记了开始和结束。</p>
+<p>一个例子表明，序列表征可以解决上下文混淆和语义丢失的问题。在图像中，二进制指令“BF
+01
+00”在边缘被切断，但它仍保留序列中的形状。插值后，我们可以看到，图像强制加强了“56”与“00”之间的关系，其中“56”表示“推esi”，而“00”在“0F
+85 93 00 00 00 00 00”中表示“jnz loc
+1000DF90”，但它忽略了具有更强关系的指令，例如“推edi”和“mov
+edi，1”。在序列中，指令“56”与前端结合，而不是“00”，并且在物理上与“57”保持接近，后者表示“推edi”。在图像中，输入到卷积层之前添加的填充提供了不正确的位置信息，但在序列中，它标记了开始和结束。</p>
 </blockquote>
 <ul>
 <li><strong>避免边缘丢失</strong>。由于序列只有两条边，即开始和结束，因此可以避免边缘丢失。序列格式符合代码的空间结构，因此任何指令都没有中断，这使得所有指令在输入模型时都完好无损。中断的消失也有效地保护了原始二进制序列的语义，因为相邻的指令是不分离的。</li>
@@ -1826,48 +2215,68 @@
 <p>在缩放到相同的长度之前，我们首先规范化整个序列，使元素的值介于-1和1之间，并以浮点格式存储。由于实数字段的连续性，浮点格式可以比整数格式代表更多的信息。因此，这个操作对于减少线性插值算法造成的语义损失是必要的，如图4所示。通过对数据集进行统计，<strong>我们发现大多数文件的大小约为256KB。因此，我们将所有输入序列扩展到2^18字节。</strong></p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191547964.png" alt="image-20220510152040055" style="zoom:50%;"></p>
 <blockquote>
-<p>  图4：如果我们在规范化之前调整序列的大小，结果不能代表原始二进制代码（a）中的所有信息。<strong>相反，如果我们在规范化后调整以浮点格式存储的序列的大小，我们可以有效地减少语义损失</strong>（b）。</p>
+<p>图4：如果我们在规范化之前调整序列的大小，结果不能代表原始二进制代码（a）中的所有信息。<strong>相反，如果我们在规范化后调整以浮点格式存储的序列的大小，我们可以有效地减少语义损失</strong>（b）。</p>
 </blockquote>
 <p>在序列格式中，指令之间的所有信息都将得到正确和更好的保留。两条指令之间的物理距离反映了关系的真实强度。这种表示方法还利用了代码中的空间局部性，因为模型将更多地关注附近的指令，而不是那些相关性较弱的指令。因此，该模型在学习和检测时接收到的干扰较小。</p>
 <p><strong>使用序列特征而不是二进制图像转换的另一个原因是，可执行文件的前后相关性比平面相关性更明显。这就是为什么序列可以更好地代表程序。</strong></p>
-<h4><span id="33-序列深度可分离卷积">3.3 序列深度可分离卷积</span></h4><p><strong>序列输入格式不仅解决了语义丢失和上下文混淆的问题，还压缩了SeqNet的规模</strong>。SeqNet的卷积核只需要在只有一维的序列上提取特征。与处理一维输入相比，提取二维特征需要更大的卷积核和更多的计算。例如，如图2（c）所示，a 3 3用于图像的内核至少需要10个参数（包括偏差），而3 1序列中使用的内核只需要至少四个参数（包括偏差）。</p>
+<h4><span id="33-序列深度可分离卷积">3.3 序列深度可分离卷积</span></h4>
+<p><strong>序列输入格式不仅解决了语义丢失和上下文混淆的问题，还压缩了SeqNet的规模</strong>。SeqNet的卷积核只需要在只有一维的序列上提取特征。与处理一维输入相比，提取二维特征需要更大的卷积核和更多的计算。例如，如图2（c）所示，a
+3 3用于图像的内核至少需要10个参数（包括偏差），而3 1序列中使用的内核只需要至少四个参数（包括偏差）。</p>
 <p><strong>基于序列输入和深度可分离卷积</strong>[21]，我们提出了一种称为序列深度可分离卷积（SDSC）的方法，它需要更少的参数和更少的计算。在SDSC中，我们使用3 1个内核替换DSC中的2D深度卷积内核。通过使用SDSC层，SeqNet的尺寸比现有模型小得多。<strong>在下文中，我们分析了与DSC相比计算量的减少</strong>。</p>
 <p>此外，SDSC的输入是一维数据，因此与DSC相比，它不太容易受到无关指令的影响。在实验中，我们发现SDSC具有良好的性能，并成功地保持了SeqNet的性能。基于SDSC，我们在SeqNet中使用了以下两种主要的卷积块架构。</p>
 <ul>
 <li><strong>标准SDSC块</strong>。如图5（a）所示，标准SDSC块由三部分组成。我们使用批量归一化层[23]来帮助模型更好地了解训练样本的概率分布。ReLU[38]激活函数可以通过使模型快速收敛来加速训练过程</li>
 <li><strong>残差SDSC块</strong>。如图5（b）所示，剩余SDSC块结合了ResNet[19]中使用的方法。通过跳过SDSC块，我们可以有效地防止梯度消失，并构建更深层的架构。</li>
 </ul>
-<h4><span id="34-模型架构">3.4 模型架构</span></h4><p>SeqNet的构建主要基于SDSC，图6解释了该架构。为了减少参数的数量，我们使用<strong>更小的核和更深的结构</strong>，这也可以扩大感受野。标准SDSC块用于在对序列进行下采样时提取特征。对于第一个卷积层，我们使用单个公共卷积层嵌入原始输入，内核大小为3<em>1.我们<strong>设置大小是因为经常使用的CPU指令的长度通常是三个字节</strong>。对于高层特征，我们使用五个剩余的SDSC块进行分析，与完全连接的层相比，这也可以更好地保留上下文和空间信息。此外，<em>*残差SDSC块可以防止梯度消失，使模型快速收敛</em></em>。最后两层是完全连接层和softmax层。全连通层用于对模型前端给出的分析结果进行分类。</p>
+<h4><span id="34-模型架构">3.4 模型架构</span></h4>
+<p>SeqNet的构建主要基于SDSC，图6解释了该架构。为了减少参数的数量，我们使用<strong>更小的核和更深的结构</strong>，这也可以扩大感受野。标准SDSC块用于在对序列进行下采样时提取特征。对于第一个卷积层，我们使用单个公共卷积层嵌入原始输入，内核大小为3*1.我们<strong>设置大小是因为经常使用的CPU指令的长度通常是三个字节</strong>。对于高层特征，我们使用五个剩余的SDSC块进行分析，与完全连接的层相比，这也可以更好地保留上下文和空间信息。此外，<strong>残差SDSC块可以防止梯度消失，使模型快速收敛</strong>。最后两层是完全连接层和softmax层。全连通层用于对模型前端给出的分析结果进行分类。</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191547603.png" alt="image-20220510152817964" style="zoom:50%;"></p>
 <p>在这个公式中，P表示转换后的结果，x表示softmax层的输入。对于池层，我们使用平均池。<strong>在我们的实验中，我们发现当剩余SDSC块的数量为5个，输入128个通道，并且完全连接的层的数量仅为1个时，该模型的性能最好</strong>。SeqNet输出样本的恶意可能性，如果可能性超过50%，模型将视其为恶意软件。根据输出，对于损失函数，我们使用交叉熵函数。SeqNet总共只有大约136K个参数，几乎是MalConv的十分之一，我们将在第4节中讨论。</p>
-<h3><span id="四-实验">四、实验</span></h3><h4><span id="41培训数据集">4.1培训数据集</span></h4><p>建立良好的培训数据集对于评估SeqNet的性能至关重要。正确的标签和足够的样本是展示SeqNet学习能力的必要条件。对于样本类型，我们认为PE恶意软件是电子系统的主要威胁之一。此外，有很多PE恶意样本，很容易获得足够的PE样本。</p>
+<h3><span id="四-实验">四、实验</span></h3>
+<h4><span id="41培训数据集">4.1培训数据集</span></h4>
+<p>建立良好的培训数据集对于评估SeqNet的性能至关重要。正确的标签和足够的样本是展示SeqNet学习能力的必要条件。对于样本类型，我们认为PE恶意软件是电子系统的主要威胁之一。此外，有很多PE恶意样本，很容易获得足够的PE样本。</p>
 <p>因此，以下实验适用于一组PE文件，因为它们很普遍。在这项工作中，所有恶意样本都来自VirusShare[4]。<strong>齐安信公司提供了约10000份良性样本。我们还从真实的个人电脑中收集了许多良性样本，以模拟我们日常生活中的真实环境。为了确保良性样本中没有混合病毒，我们使用VirusTotal[6]检测所有文件。如果在VirusTotal报告中没有AV引擎将其视为恶意软件，我们将其视为良性样本。操作系统文件和恶意软件通常具有类似的行为，这可能会混淆检测模型，甚至会混淆训练有素的分析师[8]</strong>。因此，为了帮助SeqNet观察恶意程序和良性程序之间的一般差异，并使SeqNet更加健壮，<strong>我们添加了大约10000个系统文件作为良性数据。</strong>VirusTotal[6]也会检查系统文件，以确保它们是良性的。我们总共获得了72329个二进制文件的训练数据集，其中37501个恶意文件和34828个良性文件，以及24110个二进制文件的验证数据集，其中12501个恶意文件和11609个良性文件。</p>
-<p>数据集中的所有文件都是PE文件，我们<strong>通过比较SHA256值来消除重复</strong>。我们将恶意和良性样本的比例设置为1左右，以确保结果可靠。例如，如果数据集只有恶意样本，模型可能会通过识别“4D 5A”来检测所有恶意软件。相反，如果我们向数据集中添加足够多的良性样本，模型就可以了解恶意样本和良性样本之间的真正区别。</p>
-<h4><span id="42-测量">4.2 测量</span></h4><p>在我们的实验中，我们从训练成本和准确性两个方面测量SeqNet。对于培训成本测量，我们使用参数的数量来表示模型的规模。更大的模型包含更多的神经元，需要更多的参数来构建。在训练和预测过程中，每个参数都会占用恒定的内存。因此，参数的数量显著影响模型训练和预测所需的记忆。为了准确测量模型推理的计算开销，我们通过输入一个随机二进制来计算每个模型上的浮点运算（Flops）。我们还通过记录一个历元所需的时间来测量模型的速度，包括训练和验证过程。</p>
-<h4><span id="43-培训">4.3 培训</span></h4><p>设置模型和培训设置会显著影响培训过程和结果。所有模型都经过70个阶段的训练，我们选择了过去30个阶段的验证结果，以获得平均精度和其他指标。<strong>我们将批量大小设置为32，并选择Adam[29]作为所有模型的优化器。为了保证训练的公平性，我们将交叉熵损失应用于所有模型。</strong></p>
+<p>数据集中的所有文件都是PE文件，我们<strong>通过比较SHA256值来消除重复</strong>。我们将恶意和良性样本的比例设置为1左右，以确保结果可靠。例如，如果数据集只有恶意样本，模型可能会通过识别“4D
+5A”来检测所有恶意软件。相反，如果我们向数据集中添加足够多的良性样本，模型就可以了解恶意样本和良性样本之间的真正区别。</p>
+<h4><span id="42-测量">4.2 测量</span></h4>
+<p>在我们的实验中，我们从训练成本和准确性两个方面测量SeqNet。对于培训成本测量，我们使用参数的数量来表示模型的规模。更大的模型包含更多的神经元，需要更多的参数来构建。在训练和预测过程中，每个参数都会占用恒定的内存。因此，参数的数量显著影响模型训练和预测所需的记忆。为了准确测量模型推理的计算开销，我们通过输入一个随机二进制来计算每个模型上的浮点运算（Flops）。我们还通过记录一个历元所需的时间来测量模型的速度，包括训练和验证过程。</p>
+<h4><span id="43-培训">4.3 培训</span></h4>
+<p>设置模型和培训设置会显著影响培训过程和结果。所有模型都经过70个阶段的训练，我们选择了过去30个阶段的验证结果，以获得平均精度和其他指标。<strong>我们将批量大小设置为32，并选择Adam[29]作为所有模型的优化器。为了保证训练的公平性，我们将交叉熵损失应用于所有模型。</strong></p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191547084.png" alt="image-20220510153236041" style="zoom:50%;"></p>
-<h4><span id="44-模型评估">4.4 模型评估</span></h4><p>我们选择几种最先进的基于二进制的方法作为基线。<strong>为了反映基于图像转换的模型的总体性能，我们选择著名的MobileNet[21]作为代表性模型</strong>。我们将程序转换为RGB图像作为MobileNet的输入。在转换过程中，一个字节映射一个通道中的一个像素。<strong>对于基于文件剪切的模型，我们选择MalConv[41]和MalConvGCT[42]</strong>。<strong>ResNet和MobileNet都是由Pytorh[39]实现的，我们使用ResNet18作为ResNet，而MobileNet v2作为MobileNet</strong>。我们使用MalConv和MalConvGCT作者提供的源代码，并将它们应用到我们的实验中。我们在每个模型的末尾添加一个softmax层，以便在验证时将结果转换为可能性格式。根据表1中的参数数量，我们可以发现SeqNet的最小参数仅为MalConv和Mal-ConvGCT的十分之一。此外，SeqNet在恶意软件检测方面保持了良好的性能。图7是精度和模型尺寸对比图，左上角的模型位置表明模型尺寸较小，精度较高。</p>
+<h4><span id="44-模型评估">4.4 模型评估</span></h4>
+<p>我们选择几种最先进的基于二进制的方法作为基线。<strong>为了反映基于图像转换的模型的总体性能，我们选择著名的MobileNet[21]作为代表性模型</strong>。我们将程序转换为RGB图像作为MobileNet的输入。在转换过程中，一个字节映射一个通道中的一个像素。<strong>对于基于文件剪切的模型，我们选择MalConv[41]和MalConvGCT[42]</strong>。<strong>ResNet和MobileNet都是由Pytorh[39]实现的，我们使用ResNet18作为ResNet，而MobileNet
+v2作为MobileNet</strong>。我们使用MalConv和MalConvGCT作者提供的源代码，并将它们应用到我们的实验中。我们在每个模型的末尾添加一个softmax层，以便在验证时将结果转换为可能性格式。根据表1中的参数数量，我们可以发现SeqNet的最小参数仅为MalConv和Mal-ConvGCT的十分之一。此外，SeqNet在恶意软件检测方面保持了良好的性能。图7是精度和模型尺寸对比图，左上角的模型位置表明模型尺寸较小，精度较高。</p>
 <p>精度还表明，SeqNet误解良性样本的可能性很低。此次召回意味着SeqNet可能有能力防止逃税。在训练过程中，我们发现大多数模型在第一个历元后达到90%的准确率。在我们的训练中，我们发现SeqNet只需要大约两分钟半就可以完成一个历元，而Mal-Conv大约需要一个小时。因此，我们可以看到，SeqNet的微小尺寸导致了较低的计算开销，基于卷积的体系结构加速了训练和推理。</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191547005.png" alt="image-20220510153439695" style="zoom:50%;"></p>
-<h4><span id="45-进一步评估和消融研究">4.5 进一步评估和消融研究</span></h4><p>接下来，我们将描述进一步的实验，以讨论SeqNet中的上下文混淆避免、模型收缩和架构设计。我们对SeqNet进行了几个简单的更改，以测试我们的假设。</p>
+<h4><span id="45-进一步评估和消融研究">4.5 进一步评估和消融研究</span></h4>
+<p>接下来，我们将描述进一步的实验，以讨论SeqNet中的上下文混淆避免、模型收缩和架构设计。我们对SeqNet进行了几个简单的更改，以测试我们的假设。</p>
 <ul>
-<li><strong>语境混乱</strong>。为了证明上下文混淆的存在，我们将SeqNet更改为SeqNet2D，可以输入512 <em> 512张图片。我们将图像大小设置为512 </em> 512，因为它可以提供与序列相同的信息量。<strong>SeqNet2D使用深度可分离卷积层的架构与SeqNet非常相似</strong>。表2确保了图像转换方法会导致混淆，在从程序学习功能时可能会混淆网络。MobileNet使用图像作为输入，因此表1还通过SeqNet和ResNet之间的比较反映了上下文混淆的存在。</li>
+<li><strong>语境混乱</strong>。为了证明上下文混淆的存在，我们将SeqNet更改为SeqNet2D，可以输入512
+* 512张图片。我们将图像大小设置为512 *
+512，因为它可以提供与序列相同的信息量。<strong>SeqNet2D使用深度可分离卷积层的架构与SeqNet非常相似</strong>。表2确保了图像转换方法会导致混淆，在从程序学习功能时可能会混淆网络。MobileNet使用图像作为输入，因此表1还通过SeqNet和ResNet之间的比较反映了上下文混淆的存在。</li>
 <li><strong>模型收缩</strong>。SDSC层通过降低输入维数和分解卷积来减少参数量。我们用SeqNet中的公共卷积层替换所有SDSC层，并将新模型命名为SeqNetConv，以反映因子分解卷积的效果。为了验证尺寸减小在模型收缩中的作用，我们使用SeqNet2D作为实验对象。我们还将公共卷积层应用于SeqNet2D，并调用新模型SeqNet2DConv来展示这两种方法的缩减效果。如表2所示，我们可以看到维数的有效降低减少了参数的数量，卷积分解进一步减少。通过结果可以看出，SDSC层在保持性能的情况下有效地缩小了模型。我们还发现，参数越少，模型在训练时收敛速度越快。</li>
 <li><strong>结构设计</strong>。在我们的实验中，我们还发现，更深层次的结构可能不会表现得更好。我们调整SeqNet的深度。具有更深层次架构的模型称为SeqNetDeep，而更浅层次的架构称为SeqNetShal。与我们的直觉类似，较浅的体系结构会显著降低模型的性能。然而，表2中的结果表明，更深层次的体系结构并不能明显提高性能，而是扩大了模型的规模。<strong>我们假设这种现象可能是因为从二进制到恶意软件的简单映射关系，而不需要复杂的神经网络来拟合。</strong>另一个可能的原因是，更深层次的结构使网络难以训练，这可能会导致精确度较低。我们发现的另一个现象是，扩张卷积不能有效地提高性能。我们认为这是因为与输入的长度相比，使用或不使用扩张卷积对模型的感受野没有太大影响。</li>
 </ul>
-<h4><span id="46-稳健性评估">4.6 稳健性评估</span></h4><p>我们还检查了SeqNet的健壮性，并将其与MalConv进行了比较。关于攻击深度模型有大量的研究[24,32,36,44,48,54,56]。<strong>然而，与针对图像相关任务的神经网络的传统攻击不同，我们不能直接在二进制文件上添加扰动，因为这可能会使二进制文件不可执行</strong>。此外，我们很难根据提取的特征[47]调整攻击策略以适应原始的二进制模型。因此，对于攻击策略，我们采用[30]中的方法，在输入端的填充部分注入一个短的有毒二进制文件。</p>
+<h4><span id="46-稳健性评估">4.6 稳健性评估</span></h4>
+<p>我们还检查了SeqNet的健壮性，并将其与MalConv进行了比较。关于攻击深度模型有大量的研究[24,32,36,44,48,54,56]。<strong>然而，与针对图像相关任务的神经网络的传统攻击不同，我们不能直接在二进制文件上添加扰动，因为这可能会使二进制文件不可执行</strong>。此外，我们很难根据提取的特征[47]调整攻击策略以适应原始的二进制模型。因此，对于攻击策略，我们采用[30]中的方法，在输入端的填充部分注入一个短的有毒二进制文件。</p>
 <p>由于Mal-Conv和SeqNet之间的输入格式不同，我们等效地采用了有毒二进制生成方法。与沿梯度选择最近的嵌入向量相比，SeqNet的毒药生成过程如下所示。</p>
 <p>为了使攻击策略在有限的二进制长度下有效，我们从验证恶意数据集中随机选择了500个可用样本。我们将毒药的长度设置为32000字节，MalConv的整个二进制文件固定为16000000字节，并逐步增加毒药生成迭代次数。我们测试了SeqNet和MalConv错误分类的样本数量。结果如图9所示。我们看到SeqNet对有毒二进制攻击有很强的防御能力。我们假设这种现象是由于文件剪切方法中的填充部分造成的漏洞。<strong>基于文件剪切的模型在训练时经常会看到不完整的二进制文件。</strong>因此，文件剪切中的填充使攻击者有机会混淆模型，而模型不确定有毒二进制文件是否是样本的一部分。与文件剪切相比，我们的方法可以通过输入整个二进制文件来缓解这个问题。然而，我们认为这一理论仍需进一步验证，我们可能会在未来的工作中对其进行研究。</p>
-<h4><span id="47-案例研究">4.7 案例研究</span></h4><p>为了更好地理解SeqNet所学到的知识，我们随机选择了四个样本，并使用Grad <strong>CAM</strong>[46]解释技术生成热图，以便我们能够可视化哪个部分对结果影响最大。此外，我们还手动分析相应的样本，以验证SeqNet是否找到了正确的恶意代码。在手动分析中，我们通过IDA Pro[3]分解样本，精确定位恶意功能或代码。为了更好地绘制结果，我们提取了热图的关键部分，并对片段应用以下归一化公式。</p>
+<h4><span id="47-案例研究">4.7 案例研究</span></h4>
+<p>为了更好地理解SeqNet所学到的知识，我们随机选择了四个样本，并使用Grad
+<strong>CAM</strong>[46]解释技术生成热图，以便我们能够可视化哪个部分对结果影响最大。此外，我们还手动分析相应的样本，以验证SeqNet是否找到了正确的恶意代码。在手动分析中，我们通过IDA
+Pro[3]分解样本，精确定位恶意功能或代码。为了更好地绘制结果，我们提取了热图的关键部分，并对片段应用以下归一化公式。</p>
 <p>其中X表示代码段。用于热图的激活图是由SeqNet的最后一个卷积层和ReLU层生成的，因为剩余的空间信息由卷积层编码。我们还在原始二进制文件上标记手动定位结果，以便更好地进行比较。图10显示了手动定位和基于梯度凸轮的解释之间的比较。我们看到，本地激活位置与分析人员定位的恶意部件接近，这反映了SeqNet可能会发现恶意代码并进行可靠的检测。在我们的解释中，我们发现在整个热图中有许多噪音。我们认为这可能是因为数据集中可能存在潜在的异常统计[10]和一些错误标签[43]。然而，遗憾的是，由于学术界对良性档案的忽视，我们很难收集到更多的良性样本。我们希望在未来的工作中能够探索这一现象。此外，我们还发现PE头通常会对SeqNet产生很大影响。这可能意味着PE头包含恶意软件中的恶意信息。更多细节见附录。</p>
-<h3><span id="5讨论">5.讨论</span></h3><p>在这一部分中，我们将讨论我们的工作的局限性，并提出一些未来需要进一步研究的工作。</p>
-<h4><span id="51局限性">5.1局限性</span></h4><p>尽管SeqNet表现良好，但我们的工作仍有一些局限性。仍然是<strong>语义缺失</strong>。虽然我们有效地减少了语义损失，但SeqNet的输入仍然不能包含所有语义。如果序列太长，在插值过程中会对序列进行压缩，压缩后的序列不能代表所有原始信息。此外，如果序列太短，序列将被扩展，这可能会混淆SeqNet。SeqNet的体系结构决定了输入必须具有相同的大小，这是SeqNet的一个限制。</p>
+<h3><span id="5讨论">5.讨论</span></h3>
+<p>在这一部分中，我们将讨论我们的工作的局限性，并提出一些未来需要进一步研究的工作。</p>
+<h4><span id="51局限性">5.1局限性</span></h4>
+<p>尽管SeqNet表现良好，但我们的工作仍有一些局限性。仍然是<strong>语义缺失</strong>。虽然我们有效地减少了语义损失，但SeqNet的输入仍然不能包含所有语义。如果序列太长，在插值过程中会对序列进行压缩，压缩后的序列不能代表所有原始信息。此外，如果序列太短，序列将被扩展，这可能会混淆SeqNet。SeqNet的体系结构决定了输入必须具有相同的大小，这是SeqNet的一个限制。</p>
 <p><strong>缺乏良性样本</strong>。我们面临的主要困难是缺乏良性样本。我们可以获得大量恶意软件收集网站，但很难找到权威的良性样本提供商。为了均匀采样，仅通过添加恶意样本来扩展训练数据集是不合适的，这可能会降低SeqNet的性能，并使实验结果不可靠。因此，很难在具有足够样本的更大数据集上训练神经网络。</p>
 <p><strong>标签的质量</strong>。除了缺乏良性样本，标签的质量可能是一个潜在问题。由于权威供应商寥寥无几，我们无法保证培训和验证数据集中的所有良性样本都正确标记。我们数据集中的所有恶意样本都是从VirusShare收集的，无需人工确认。几家报纸检查了恶意软件标签的质量，发现它可能达不到我们的预期[43]。虽然这些限制可能会对SeqNet的训练过程产生一些影响，但我们假设，几个不正确的标记样本不会显著影响整体性能。</p>
 <p><strong>可能存在的漏洞</strong>。对抗性攻击是大多数神经网络的风险，我们也不例外。有动机的对手可能会污染训练数据集，并逃避SeqNet的检测。<strong>此外，基于梯度的攻击是混淆深度学习模型的有效方法[17,30,32]。相反，这个问题也有很多解决方案[7,12,20,33,57]。</strong>虽然SeqNet可以抵御多次攻击，但我们仍然无法完全保证SeqNet的安全。此外，SeqNet的健壮性原则需要我们进一步探索。</p>
-<h4><span id="52-未来工作">5.2 未来工作</span></h4><p>我们提出了一种高效的恶意软件自动检测神经网络SeqNet。SeqNet的主要目标是实现自动、高效的检测，可以以较低的原始二进制文件培训成本快速进行培训。尽管如此，未来仍有许多工作需要完成。基于深度学习的恶意软件检测研究的最大障碍之一是<strong>缺乏工业规模的公共可用数据集</strong>。研究人员需要权威可靠的数据集，这些数据集不仅包含恶意特征，还包含原始二进制序列。我们将建立一个更大的数据集，以进一步评估SeqNet的性能。此外，还需要足够的良性样本进行进一步研究。<strong>我们认为，当使用深度学习模型进行检测时，恶意软件分析不仅应该关注恶意样本，还应该关注良性样本</strong>。由于神经网络是黑盒模型，恶意软件检测神经网络的可靠性可能会受到怀疑。虽然SeqNet给了我们很好的结果，但我们仍然无法完全解释原因。因此，在实践中使用深度学习算法检测恶意软件仍需进一步研究。通过我们的实验，<strong>我们认为神经网络在恶意软件检测方面可能具有巨大的潜力</strong>，我们期待着神经网络在这一领域取得重大突破。SeqNet的健壮性仍需进一步研究。我们仍然缺乏这方面的实验和研究。在未来的工作中，我们将更深入地探索该模型的稳健性，并对其进行更多的改进和分析。</p>
+<h4><span id="52-未来工作">5.2 未来工作</span></h4>
+<p>我们提出了一种高效的恶意软件自动检测神经网络SeqNet。SeqNet的主要目标是实现自动、高效的检测，可以以较低的原始二进制文件培训成本快速进行培训。尽管如此，未来仍有许多工作需要完成。基于深度学习的恶意软件检测研究的最大障碍之一是<strong>缺乏工业规模的公共可用数据集</strong>。研究人员需要权威可靠的数据集，这些数据集不仅包含恶意特征，还包含原始二进制序列。我们将建立一个更大的数据集，以进一步评估SeqNet的性能。此外，还需要足够的良性样本进行进一步研究。<strong>我们认为，当使用深度学习模型进行检测时，恶意软件分析不仅应该关注恶意样本，还应该关注良性样本</strong>。由于神经网络是黑盒模型，恶意软件检测神经网络的可靠性可能会受到怀疑。虽然SeqNet给了我们很好的结果，但我们仍然无法完全解释原因。因此，在实践中使用深度学习算法检测恶意软件仍需进一步研究。通过我们的实验，<strong>我们认为神经网络在恶意软件检测方面可能具有巨大的潜力</strong>，我们期待着神经网络在这一领域取得重大突破。SeqNet的健壮性仍需进一步研究。我们仍然缺乏这方面的实验和研究。在未来的工作中，我们将更深入地探索该模型的稳健性，并对其进行更多的改进和分析。</p>
 <blockquote>
-<p>  基于二进制的模型。与传统的特征工程相比，自动特征提取是神经网络的发展趋势之一，人工干预更少，性能更好。Raff等人设计了一种称为MalConv的架构，它可以直接从原始PE二进制样本中学习，而无需手动选择特征[41,42]。Krc al等人设计了一个简单的CNN，可以从PE原始字节序列中学习，而无需特定领域的特征选择，这项工作获得了较高的AUC分数，尤其是在小型PE恶意软件样本上[31]。</p>
+<p>基于二进制的模型。与传统的特征工程相比，自动特征提取是神经网络的发展趋势之一，人工干预更少，性能更好。Raff等人设计了一种称为MalConv的架构，它可以直接从原始PE二进制样本中学习，而无需手动选择特征[41,42]。Krc al等人设计了一个简单的CNN，可以从PE原始字节序列中学习，而无需特定领域的特征选择，这项工作获得了较高的AUC分数，尤其是在小型PE恶意软件样本上[31]。</p>
 </blockquote>
 
       
@@ -1888,7 +2297,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
