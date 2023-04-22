@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如何利用多杀软结果提取恶意软件标签  secrss.com&#x2F;articles&#x2F;33242 通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点  从杀软标签中自动提取标签是对大量样本进行分类和索引的有效方法。此前的 AVClass 和 Euphony 等工作已经能够从杀软标签中提取家族名称。而杀软标签包含有价值的信息不止是家族，还有类别（例如勒索软件、下载器、广告软件）和行为（例如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工业落地-AVClass2-自动恶意软件标记工具">
+<meta property="og:url" content="https://powerlzy.github.io/posts/3931MT5/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="如何利用多杀软结果提取恶意软件标签  secrss.com&#x2F;articles&#x2F;33242 通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点  从杀软标签中自动提取标签是对大量样本进行分类和索引的有效方法。此前的 AVClass 和 Euphony 等工作已经能够从杀软标签中提取家族名称。而杀软标签包含有价值的信息不止是家族，还有类别（例如勒索软件、下载器、广告软件）和行为（例如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/13c4e4d7d81462e10c618bee59fbf971.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/018d45d7ed61a0cca153cfd53d145ade.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/070902d5885e1c46d17142d43813a9fe.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/45bbf65333720324166aeab69f49ece1.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/9d67ba609a2c45feb86dcd605dd5c06f.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/18030348ab876b5fed8137aa52b61655.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/0060066c74a362e126f439c6efc4b669.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/9a1f118fb14f2944de07888d2beb9a08.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/78fad75a47f80238fc0ca5a40ea263b4.png">
+<meta property="og:image" content="https://s.secrss.com/anquanneican/3cee7fc69bc91ff6f01b24c764ed46ef.png">
+<meta property="article:published_time" content="2022-05-15T10:50:25.438Z">
+<meta property="article:modified_time" content="2023-04-18T07:17:21.862Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s.secrss.com/anquanneican/13c4e4d7d81462e10c618bee59fbf971.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/3931MT5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/3931MT5/","path":"posts/3931MT5/","title":"工业落地-AVClass2-自动恶意软件标记工具"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>工业落地-AVClass2-自动恶意软件标记工具 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">如何利用多杀软结果提取恶意软件标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">工作设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">分类法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">工作准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">工作评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">标记覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">知识更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">执行速度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">工作思考</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3931MT5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="工业落地-AVClass2-自动恶意软件标记工具 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          工业落地-AVClass2-自动恶意软件标记工具
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-15 18:50:25" itemprop="dateCreated datePublished" datetime="2022-05-15T18:50:25+08:00">2022-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 15:17:21" itemprop="dateModified" datetime="2023-04-18T15:17:21+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1><span id="如何利用多杀软结果提取恶意软件标签">如何利用多杀软结果提取恶意软件标签</span></h1>
+<ul>
+<li>secrss.com/articles/33242</li>
+<li><strong>通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点</strong></li>
+</ul>
+<p><strong>从杀软标签中自动提取标签是对大量样本进行分类和索引的有效方法</strong>。此前的
+AVClass 和 Euphony
+等工作已经能够从杀软标签中提取家族名称。而杀软标签包含有价值的信息不止是家族，还有类别（例如勒索软件、下载器、广告软件）和行为（例如垃圾邮件、DDoS、信息窃取）等。</p>
+<p><strong>恶意软件属性枚举和表征（MAEC）等标准定义了一种用于共享恶意软件分析结果的语言</strong>。然而，由于使用严格的受控词汇表（即预定义标签），这些词汇表可能并不总是符合分析师的需求，需要频繁更新，并且必然是不完整的，因此它们的采用率很低，例如，MAEC
+中就不包括<strong>恶意软件家族</strong>。</p>
+<p>杀软引擎有一些通用标签，标明恶意软件的类别、家族、文件属性和动态行为。也有一个通用标签（malicious,
+application）和特定杀软引擎（deepscan,
+cloud）才有的，或者是恶意软件家族变种（aghr, bcx）标签。</p>
+<h3><span id="工作设计">工作设计</span></h3>
+<p><strong>AVClass2 的目标是分辨提供有用信息的 Token，识别不同杀软引擎
+Token 之间的关系，最后转换成分类法的标签。</strong></p>
+<p>AVClass2
+是一个自动恶意软件标记工具，可为样本提取一组干净的标签。AVClass2
+附带一个默认的开放分类法，可将杀软标签的名词分类到不同的类别，捕获标签之间关系的默认标记规则和扩展规则。AVClass2
+有一个更新模块，使用标签共现来识别标签之间的关系，以在杀软厂商引入新标签时保持工具更新。</p>
+<p>AVCalss2 基于 AVClass 进行了最少必要更改，继承了 AVClass
+的主要特点：可扩展性好、杀软引擎独立性好、平台无关性好、不需要样本文件、开源。</p>
+<p>基本架构如下所示：</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/13c4e4d7d81462e10c618bee59fbf971.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>主要是两大模块：Labeling 模块和 Update 模块。</strong></p>
+<ul>
+<li>Labeling
+模块将<strong>多个杀软的标签结果作为输入</strong>，同时可以提供使用的杀软引擎列表，如果不提供默认使用所有杀软引擎的标签结果。给出一组<strong>标记规则</strong>、一个<strong>可选扩展规则</strong>以及可将标签<strong>分类合并</strong>的分类法。</li>
+<li>Update
+模块将<strong>共现统计、标记规则、扩展规则和分类法作为输入</strong>。识别标签之间的<strong>强关联</strong>，生成新的标记规则、扩展规则和分类法。</li>
+</ul>
+<h3><span id="标签">标签</span></h3>
+<p><strong>Labeling
+模块分为三部分：标记化（Tokenization）、标记（Tagging）、扩展（Expansion）。</strong></p>
+<ul>
+<li><strong>标记化（Tokenization）将每个杀软标签拆分为一个 Token
+列表</strong>。标记化是与厂商无关的，VirusTotal
+现在已经支持超过一百个引擎。每个厂商的格式也不完全一致，经常修改。如果尝试为引擎的标签定义格式或者自动推断格式，可能会得到数百个格式模板。不仅选择正确格式进行解析很困难，遇到未知格式的标签还可能出现错误。</li>
+<li><strong>标记（Tagging）会用分类法中的一组 Tag 替换杀软标签中的
+Token，即将杀软标签中的 Token 转换为分类法中概念明确的
+Tag</strong>。大多数标记规则会映射到单个标记，例如 downldr、dloader
+会被映射到 downloader 上；finloski 和 fynloski 会被映射到 darkkomet
+上。也存在一对多的关系，比如 ircbot 会映射到 irc 和 bot。</li>
+<li><strong>扩展（Expansion）用于处理未知的
+Token，使用扩展规则定义一个标签隐含一组其他标签</strong>。例如有 95%
+的标签在带有 virut 的同时也带有 virus，virut 就会是 virus
+的扩展规则。扩展规则一共分为两类，一类是类内规则一类是类间规则，处理顺序是先类间规则再类内规则。类内规则由分类法中统一类别的父子关系隐式定义，例如
+adware 是 grayware
+的子类。类间规则由分类法中不同类别的隐式关系定义，例如 filemodify
+行为归属于 virus 类。</li>
+</ul>
+<p><strong>整体流程如下所示：</strong></p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/018d45d7ed61a0cca153cfd53d145ade.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="分类法">分类法</span></h3>
+<blockquote>
+<p><strong>行为、类型、文件属性和家族</strong></p>
+</blockquote>
+<p>分类法定义了标记规则使用的标签之间的父子关系。AVClass2
+的分类法被构造为树型结构，默认包含四个类型（<strong>行为 BEH、类型
+CLASS、文件属性 FILE、家族 FAM</strong>）。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/070902d5885e1c46d17142d43813a9fe.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>标签是自上而下进行描述的，例如 CLASS:grayware:adware。</p>
+<p><strong>自带的默认分类法如下所示：</strong></p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/45bbf65333720324166aeab69f49ece1.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ul>
+<li><strong>行为</strong>：例如
+infosteal（信息窃取）、sendssms（发送短信）、spam（垃圾邮件）、mining（挖矿）等</li>
+<li><strong>类别</strong>：例如
+worm（蠕虫）、virus（病毒）、ransomware（勒索）、downloader（下载）。Trojan
+问题很大，原来特指某类，后来变成了默认类型，故而认为 Trojan 为通用
+Token。</li>
+<li><strong>文件属性</strong>：例如<strong>文件类型</strong>（例如
+pdf、flash、msword）、<strong>操作系统</strong>（android、linux、windows）、<strong>壳类型</strong>（pecompact、themida、vmprotect）、<strong>编程语言</strong>（autoit、delphi、java）</li>
+<li><strong>家族</strong>：默认分类家族不包括父子关系</li>
+</ul>
+<h3><span id="update">Update</span></h3>
+<p>为了新的家族、新的行为都能够通过 AVClass2
+自动更新，需要根据共现关系识别数据集中的强关系，迭代更新到规则中。基于
+VAMO 引用的杀软标签共现关系，在 AVClass 和 Euphony
+中也用于合并家族。（Roberto Perdisci and U. ManChon. 2012. VAMO: Towards
+a Fully Automated Malware Clustering Validity Analysis. In Annual
+Computer Security Applications
+Conference.）。共现的判断需要确定阈值，以AVClass的经验选择 𝑛 = 20 和 𝑇 =
+0.94。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/9d67ba609a2c45feb86dcd605dd5c06f.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="工作准备">工作准备</span></h3>
+<p>使用 11 个数据集进行评估，数据集之间存在重复（例如 Drebin 是
+MalGenome 的超集）但并未去重，为了便于单独映射结果。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/18030348ab876b5fed8137aa52b61655.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="工作评估">工作评估</span></h3>
+<p>通过在 4200 万恶意样本中评估 AVClass2，并且与 AVClass 和 Euphony
+进行了比较，测试其效果。</p>
+<h3><span id="标记覆盖">标记覆盖</span></h3>
+<p>标签覆盖率如下所示：</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/0060066c74a362e126f439c6efc4b669.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ul>
+<li><p>选择至少四个杀软引擎标记为恶意的样本，最近的研究表明 2-14
+个杀软引擎判定的筛选范围有利于平衡精度和召回率。</p>
+<blockquote>
+<p>Shuofei Zhu, Jianjun Shi, Limin Yang, Boqin Qin, Ziyi Zhang, Linhai
+Song, and Gang Wang. 2020. <strong>Measuring and Modeling the Label
+Dynamics of Online Anti-Malware Engines</strong></p>
+</blockquote></li>
+<li><p>AVClass2 可以为 89%
+以上的样本提取至少一个标签，无法提取的基本都是检测结果较少的文件</p></li>
+<li><p>测试时可识别的 975 个标签已经超过了 VirusTotal 的 335
+个标签，VirusTotal 的标签基本都对应于文件属性和样本行为。其中，与
+VirusTotal 重合的共有 259 个标签</p></li>
+</ul>
+<p>每个类别 TOP10 的标签如下所示：</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/9a1f118fb14f2944de07888d2beb9a08.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ul>
+<li>超过 10% 的样本对应了四个类别的标签。例如
+CLASS:grayware:adware:multiplug
+是通过浏览器插件进行广告推广的软件。</li>
+<li>Trojan 如果不是通用Token被剔除的话，会被分配给 86% 的样本。</li>
+<li>最多的家族是 vobfus，占到了总数的十分一。</li>
+<li>除了恶意软件外，grayware
+也是常见家族的大赢家（loadmoney、softpulse、installererex、domaiq、firseria）。</li>
+</ul>
+<h3><span id="知识更新">知识更新</span></h3>
+<p>使用 Andropup 数据集举例说明 update 模块的用法。首次测试观察到 65%
+的样本包含一个未知标签，执行 update 模块后会下降到 16%。</p>
+<figure>
+<img src="https://s.secrss.com/anquanneican/78fad75a47f80238fc0ca5a40ea263b4.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>共现关系共计 30107 个，有归属于 11 类的 968 个强关联。96%
+的强关联涉及未知 Token，从中自动识别出了 486 个新类别实体、216
+个新标记规则、461 个扩展规则。处理完成后只剩下 3
+个强关联不能自动更新，需要手动处理。</p>
+<p>手动检查了更新的内容，1163 个更新中只有 11 个（0.9%）是需要调整的、3
+个是需要手动检查的。</p>
+<h4><span id="执行速度">执行速度</span></h4>
+<figure>
+<img src="https://s.secrss.com/anquanneican/3cee7fc69bc91ff6f01b24c764ed46ef.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<ul>
+<li>AVClass2 和 AVClass* 在四个数据集中获得了最好的 F1 成绩，而 AVClass
+在 Malheur 上排名第一。</li>
+<li>AVClass 最快，AVClass2 其次，Euphony 则比 AVClass 慢 7 到 34
+倍。对特大的数据集 Euphony 会很慢或者因内存不足而崩溃。</li>
+</ul>
+<h2><span id="工作思考">工作思考</span></h2>
+<p>AVClass2 对通过多杀软结果处理实现提取 VirusTotal 类的 Tag
+标签很有帮助，实际上没有必要合并成一个完整的分类法的语法树结构。<strong>通过多杀软结果挖掘得到更多关于样本的上下文信息是一个经久不衰的研究点</strong>，本文作者也在
+AVClass 的基础上再进一步做出了 AVClass2，<strong>==两个工作分别发表在
+RAID 2016 与 ACSAC 2020 都是很不错的成绩。==</strong></p>
+<p>像 AVClass++ 指出的那样，AVClass
+在杀软引擎结果较少时效果较差，那些新提交到 VirusTotal
+的样本会因此效果较差。另外就是杀软结果中也存在随机生成类的结果，这两点实际上都可能是未来在这条路上的研究进展，AVClass++
+的解决方法是否很优则见仁见智，但仍不失为一个极佳的参考。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/3931MT5/" title="工业落地-AVClass2-自动恶意软件标记工具">https://powerlzy.github.io/posts/3931MT5/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/C7WFJN/" rel="prev" title="安全场景（4）Webshell检测">
+                  <i class="fa fa-chevron-left"></i> 安全场景（4）Webshell检测
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/13PH6XA/" rel="next" title="深度学习-GNN（2）DeepWalk">
+                  深度学习-GNN（2）DeepWalk <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

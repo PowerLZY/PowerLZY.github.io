@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、李宏毅-Self Attention自注意力机制 - p1  相关性查询（q, k）-softmax - 乘上v 视频链接：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1JK4y1D7Wb?p&#x3D;26&amp;vd_source&#x3D;29387dc08d18f642078183a6816e93e8   跟自己计算关联性重要吗？ 为什么用softmax？relu也行  到目前为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习（8）Self Attention*-p1">
+<meta property="og:url" content="https://powerlzy.github.io/posts/VR9NEX/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、李宏毅-Self Attention自注意力机制 - p1  相关性查询（q, k）-softmax - 乘上v 视频链接：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1JK4y1D7Wb?p&#x3D;26&amp;vd_source&#x3D;29387dc08d18f642078183a6816e93e8   跟自己计算关联性重要吗？ 为什么用softmax？relu也行  到目前为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://powerlzy.github.io/posts/VR9NEX/image-20220612171420908.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220612171433616.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220612171446043.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613211233215.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613211415203.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613211500443.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613211620957.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613212112611.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613212206065.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613212357947.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613212536289.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613221201944.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220613221501080.png">
+<meta property="article:published_time" content="2022-05-14T15:08:42.629Z">
+<meta property="article:modified_time" content="2022-08-25T15:34:26.196Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://powerlzy.github.io/posts/VR9NEX/image-20220612171420908.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/VR9NEX/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/VR9NEX/","path":"posts/VR9NEX/","title":"深度学习（8）Self Attention*-p1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习（8）Self Attention*-p1 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"> 一、李宏毅-Self
+Attention自注意力机制 - p1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 What is the output?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1.1
+每一个向量都有一个对应的Label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1.2
+一整个Sequence,只需要输出一个Label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1.3
+机器要自己决定,应该要输出多少个Label</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Sequence Labeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">方案一：Window</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">方案二：self-attention</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 Self-Attention过程</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/VR9NEX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习（8）Self Attention*-p1 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习（8）Self Attention*-p1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-14 23:08:42" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:42+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-25 23:34:26" itemprop="dateModified" datetime="2022-08-25T23:34:26+08:00">2022-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="一-李宏毅-selfattention自注意力机制-p1"><font color="red"> 一、李宏毅-Self
+Attention自注意力机制 - p1</font></span></h2>
+<blockquote>
+<p>相关性查询（q, k）-softmax - 乘上v</p>
+<p>视频链接：https://www.bilibili.com/video/BV1JK4y1D7Wb?p=26&amp;vd_source=29387dc08d18f642078183a6816e93e8</p>
+</blockquote>
+<blockquote>
+<p>跟自己计算关联性重要吗？</p>
+<p>为什么用softmax？relu也行</p>
+</blockquote>
+<p>到目前为止,我们的Network的<strong>Input</strong>都是<strong>一个向量</strong>,不管是在预测这个,YouTube观看人数的问题上啊,还是影像处理上啊,我们的输入都可以看作是一个向量,然后我们的输出,可能是一个<strong>数值</strong>,这个是<strong>Regression</strong>,可能是一个<strong>类别</strong>,这是<strong>Classification</strong></p>
+<h3><span id="11-what-is-the-output">1.1 What is the output?</span></h3>
+<p>我们刚才已经看说输入是一堆向量,它可以是文字,可以是语音,可以是Graph,那这个时候,我们有可能有什么样的<strong>输出呢,</strong>有三种可能性。</p>
+<h4><span id="111每一个向量都有一个对应的label">1.1.1
+每一个向量都有一个对应的Label</span></h4>
+<p>当你的模型,看到输入是四个向量的时候,它就要输出四个Label,而每一个Label,它可能是一个数值,那就是Regression的问题,如果每个Label是一个Class,那就是一个Classification的问题。</p>
+<p><img src="image-20220612171420908.png" alt="image-20220612171420908" style="zoom: 33%;"></p>
+<p>举例来说 在文字处理上,假设你今天要做的是==<strong>POS
+Tagging</strong>==,POS Tagging就是词性标註,你要让机器自动决定每一个词汇
+它是什么样的词性,它是名词 还是动词 还是形容词等等。</p>
+<p>这个任务啊,其实并没有很容易,举例来说,你现在看到一个句子,I saw a
+saw。这并不是打错,并不是“我看一个看”,而是“我看到一个锯子”,这个第二个saw当名词用的时候,它是锯子，那所以机器要知道,第一个saw是个动词,第二个saw虽然它也是个saw,但它是名词,但是每一个输入的词汇,都要有一个对应的输出的词性。</p>
+<h4><span id="112一整个sequence只需要输出一个label">1.1.2
+一整个Sequence,只需要输出一个Label</span></h4>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220612171433616.png" alt="image-20220612171433616" style="zoom:50%;"></p>
+<p>举例来说,如果是文字的话,我们就说<strong>Sentiment
+Analysis</strong>。Sentiment
+Analysis就是给机器看一段话,它要<strong>决定说这段话是正面的还是负面的</strong>。</p>
+<p>那你可以想像说这种应用很有用,假设你的公司开发了一个产品,这个产品上线了,你想要知道网友的评价怎么样,但是你又不可能一则一则网友的留言都去分析,那也许你就可以用这种,Sentiment
+Analysis的技术,让机器自动去判读说,当一则贴文里面有提到某个产品的时候,它是正面的
+还是负面的,那你就可以知道你的产品,在网友心中的评价怎么样,这个是Sentiment
+Analysis给一整个句子,只需要一个Label,那Positive或Negative,那这个就是第二类的输出。</p>
+<p>那如果是语音的例子的话呢,在作业四里面我们会做语者辨认,机器要听一段声音,然后决定他是谁讲的。或者是如果是Graph的话呢,今天你可能想要给一个分子,然后要预测说这个分子,比如说它有没有毒性,或者是它的亲水性如何,那这就是给一个Graph
+输出一个Label。</p>
+<h4><span id="113机器要自己决定应该要输出多少个label">1.1.3
+机器要自己决定,应该要输出多少个Label</span></h4>
+<p>我们不知道应该输出多少个Label,机器要自己决定,应该要输出多少个Label,可能你输入是N个向量,输出可能是N'个Label,为什么是N',机器自己决定。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220612171446043.png" alt="image-20220612171446043" style="zoom:50%;"></p>
+<p>这种任务又叫做==sequence to
+sequence==的任务,那我们在作业五会有sequence to
+sequence的作业,所以这个之后我们还会再讲</p>
+<ul>
+<li>翻译就是sequence to
+sequence的任务,因为输入输出是不同的语言,它们的词汇的数目本来就不会一样多</li>
+<li>或者是语音辨识也是,真正的语音辨识也是一个sequence to
+sequence的任务,输入一句话,然后输出一段文字,这也是一个sequence to
+sequence的任务</li>
+</ul>
+<p>第二种类型有作业四,感兴趣可以去看看作业四的程式，那因为上课时间有限,所以上课,我们今天就先只讲第一个类型,也就是输入跟输出数目一样多的状况。</p>
+<h3><span id="12-sequence-labeling">1.2 Sequence Labeling</span></h3>
+<p>那这种输入跟输出数目一样多的状况又叫做<strong>Sequence
+Labeling</strong>,你要给Sequence里面的每一个向量,都给它一个Label,那要怎么解Sequence
+Labeling的问题呢？那直觉的想法就是我们就拿个<strong>Fully-Connected的Network</strong>。</p>
+<p>然后虽然这个输入是一个Sequence,但我们就各个击破,不要管它是不是一个Sequence,把每一个向量,分别输入到Fully-Connected的Network里面，然后Fully-Connected的Network就会给我们输出,那现在看看,你要做的是Regression还是Classification,产生正确的对应的输出,就结束了,</p>
+<p><font color="red">
+那这么做显然有<strong>非常大的瑕疵</strong>,假设今天是,词性标记的问题,你给机器一个句子,I
+saw a saw,对Fully-Connected
+Network来说,<strong>后面这一个saw跟前面这个saw完全一模一样</strong>,它们是同一个词汇啊。</font></p>
+<h4><span id="方案一window">方案一：Window</span></h4>
+<p>既然Fully-Connected的Network<strong>输入同一个词汇,它没有理由输出不同的东西</strong>。但实际上,你期待第一个saw要输出动词,第二个saw要输出名词,但对Network来说它不可能做到,因为这两个saw
+明明是一模一样的,你叫它一个要输出动词,一个要输出名词,它会非常地困惑,完全不知道要怎么处理。所以怎么办,有没有可能<strong>让Fully-Connected的Network,考虑更多的,比如说上下文的Context的资讯</strong>呢。这是有可能的,你就<strong>把前后几个向量都串起来,一起丢到Fully-Connected的Network就结束了</strong>。</p>
+<p>所以我们可以给Fully-Connected的Network,一整个Window的资讯,让它可以考虑一些上下文的,跟我现在要考虑的这个向量,相邻的其他向量的资讯。把Window开大一点啊,大到可以把整个Sequence盖住就结束了。</p>
+<p>如果你今天说我真的要开一个Window,把整个Sequence盖住,那你可能要<strong>统计一下你的训练资料</strong>,然后看看你的训练资料里面,最长的Sequence有多长,然后开一个Window比最长的Sequence还要长,你才有可能把整个Sequence盖住但是你开一个这么大的Window,意味著说你的Fully-Connected的Network,它需要非常多的参数,那可能不只<strong>运算量很大,可能还容易Overfitting</strong>。</p>
+<h4><span id="方案二self-attention">方案二：self-attention</span></h4>
+<p>Self-Attention的运作方式就是,<strong>Self-Attention会吃一整个Sequence的资讯</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211233215.png" alt="image-20220613211233215" style="zoom:50%;"></p>
+<p>然后你Input几个Vector,它就输出几个Vector,比如说你这边Input一个深蓝色的Vector,这边就给你一个另外一个Vector。这边给个浅蓝色,它就给你另外一个Vector,这边输入4个Vector,它就Output
+4个Vector。那这4个Vector有什么特别的地方呢,<strong>这4个Vector,他们都是考虑一整个Sequence以后才得到的</strong>,那等一下我会讲说Self-Attention,怎么考虑一整个Sequence的资讯。</p>
+<p><strong><font color="red">
+如此一来你这个Fully-Connected的Network,它就不是只考虑一个非常小的范围,或一个小的Window,而是考虑整个Sequence的资讯,再来决定现在应该要输出什么样的结果，这个就是Self-Attention</font></strong>。<strong>Self-Attention不是只能用一次,你可以叠加很多次</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211415203.png" alt="image-20220613211415203" style="zoom:50%;"></p>
+<p>可以Self-Attention的输出,通过Fully-Connected
+Network以后,再做一次Self-Attention,Fully-Connected的Network,再过一次Self-Attention,再重新考虑一次整个Input
+Sequence的资讯,再丢到另外一个Fully-Connected的Network,最后再得到最终的结果。</p>
+<p>所以<strong>可以把Fully-Connected的Network,跟Self-Attention交替使用</strong></p>
+<ul>
+<li>Self-Attention处理整个Sequence的资讯</li>
+<li>Fully-Connected的Network,专注于处理某一个位置的资讯</li>
+<li>再用Self-Attention,再把整个Sequence资讯再处理一次</li>
+<li>然后交替使用Self-Attention跟Fully-Connected</li>
+</ul>
+<p>有关Self-Attention,最知名的相关的文章,就是《Attention is all you
+need》.那在这篇Paper里面呢,Google提出了==Transformer==这样的Network架构,那Transformer就是变形金刚,所以提到这个Network的时候呢,我们就会有变形金刚这个形象。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211500443.png" alt="image-20220613211500443" style="zoom:50%;"></p>
+<p>Transformer我们今天还不会讲到,但我们之后会讲到,Transformer里面一个最重要的Module就是Self-Attention,它就是变形金刚的火种源。那这篇Paper最厉害的地方,就是它有一个<strong>霸气的名字Attention
+is all you need.</strong></p>
+<p>那其实像Self-Attention这样的架构,最早我并不会说它是出现在《Attention
+is all you
+need》这样的Paper,因为其实很多更早的Paper,就有提出过类似的架构,只是不见得叫做Self-Attention,比如说叫做Self-Matching,或者是叫别的名字,不过呢是Attention
+is all you need.这篇Paper,把Self-Attention这个Module,把它发扬光大。</p>
+<h3><span id="13-self-attention过程">1.3 Self-Attention过程</span></h3>
+<p><strong><font color="red">
+Self-Attention的Input,它就是一串的Vector,那这个Vector可能是你整个Network的Input,它也可能是某个Hidden
+Layer的Output,所以我们这边不是用<span class="math inline">\(x\)</span>来表示它，用<span class="math inline">\(a\)</span>来表示它。</font></strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211620957.png" alt="image-20220613211620957" style="zoom:50%;"></p>
+<p>我们用<span class="math inline">\(a\)</span>来表示它，代表它有可能是前面已经做过一些处理,它是某个Hidden
+Layer的Output,那Input一排a这个向量以后,Self-Attention要Output另外一排b这个向量。那这<strong>每一个b都是考虑了所有的a以后才生成出来的</strong>,所以这边刻意画了非常非常多的箭头,告诉你$b^1
+<span class="math inline">\(考虑了\)</span>a<sup>1<span class="math inline">\(到\)</span>a</sup>4<span class="math inline">\(产生的,\)</span>b<sup>2<span class="math inline">\(考虑\)</span>a</sup>1<span class="math inline">\(到\)</span>a<sup>4<span class="math inline">\(产生的,\)</span>b</sup>3
+b^4$也是一样,考虑整个input的sequence,才产生出来的。</p>
+<p>那接下来呢就是要跟大家说明,<strong>怎么产生<span class="math inline">\(b^1\)</span>这个向量</strong>,那你知道怎么产生<span class="math inline">\(b^1\)</span>这个向量以后,你就知道怎么产生剩下<span class="math inline">\(b^1 b^2 b^3 b^4\)</span>剩下的向量。</p>
+<p><font color="red">
+这里有一个<strong>特别的机制</strong>,<strong>这个机制是根据<span class="math inline">\(a^1\)</span>这个向量,找出整个很长的sequence里面,到底哪些部分是重要的,哪些部分跟判断<span class="math inline">\(a^1\)</span>是哪一个label是有关系的,哪些部分是我们要决定<span class="math inline">\(a^1\)</span>的class,决定<span class="math inline">\(a^1\)</span>的regression数值的时候,所需要用到的资讯</strong>。</font></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212112611.png" alt="image-20220613212112611" style="zoom:50%;"></p>
+<p><strong>每一个向量跟<span class="math inline">\(a^1\)</span>的关联的程度,用一个数值叫α来表示</strong>，这个self-attention的module,<strong>怎么自动决定两个向量之间的关联性</strong>呢,你给它两个向量<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^4\)</span>,它怎么决定<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^4\)</span>有多相关,然后给它一个数值α呢,那这边呢你就需要一个<strong>计算attention的模组</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212206065.png" alt="image-20220613212206065" style="zoom:50%;"></p>
+<p>这个计算attention的模组,就是拿<strong>两个向量作为输入</strong>,然后它就直接输出α那个数值,计算这个α的数值有各种不同的做法：</p>
+<ul>
+<li><p>==dot
+product==：<strong>输入的这两个向量分别乘上两个不同的矩阵</strong>,左边这个向量乘上<span class="math inline">\(W^q\)</span>这个矩阵得到矩阵<span class="math inline">\(q\)</span>,右边这个向量乘上<span class="math inline">\(W^k\)</span>这个矩阵得到矩阵<span class="math inline">\(k\)</span></p>
+<p>再把<span class="math inline">\(q\)</span>跟<span class="math inline">\(k\)</span>做dot product,就是把他们做element-wise
+的相乘,再全部加起来以后就得到一个
+scalar,这个scalar就是α,这是一种计算α的方式</p></li>
+<li><p>==Additive==：把同样这两个向量通过<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span>,得到<span class="math inline">\(q\)</span>跟<span class="math inline">\(k\)</span>,那我们不是把它做Dot-Product,是把它这个串起来,然后丢到这个过一个Activation
+Function，然后再通过一个Transform,然后得到α。</p></li>
+</ul>
+<p>总之有非常多不同的方法,可以计算Attention,可以计算这个α的数值,可以计算这个关联的程度，但是在接下来的讨论里面,我们都<strong>只用左边这个方法</strong>,这也是今日最常用的方法,也<strong>是用在Transformer里面的方法</strong>。那你就要把这边的<span class="math inline">\(a^1\)</span>去跟这边的<span class="math inline">\(a^2 a^3
+a^4\)</span>,分别都去计算他们之间的关联性,也就是计算他们之间的α。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212357947.png" alt="image-20220613212357947" style="zoom:50%;"></p>
+<p>你把<span class="math inline">\(a^1\)</span>乘上$W^q <span class="math inline">\(得到\)</span>q^1$,那这个q有一个名字,我们叫做==Query==,它就像是你搜寻引擎的时候,去搜寻相关文章的问题,就像搜寻相关文章的关键字,所以这边叫做Query。</p>
+<p>然后接下来呢,<span class="math inline">\(a^2 a^3
+a^4\)</span>你都要去把它乘上<span class="math inline">\(W^k\)</span>,得到<span class="math inline">\(k\)</span>这个Vector,<span class="math inline">\(k\)</span>这个Vector叫做==Key==,那你把这个<font color="red">
+<strong>Query q1,跟这个Key k2,算 Inner-Product就得到 α‘
+（注意力矩阵）</strong>。</font>我们这边用<span class="math inline">\(α_{1,2}\)</span>来代表说,Query是1提供的,Key是2提供的时候,这个1跟2他们之间的关联性,这个α这个关联性叫做==Attention的Score==,叫做Attention的分数。</p>
+<p>接下来也要跟<span class="math inline">\(a^3
+a^4\)</span>来计算，把<span class="math inline">\(a_3\)</span>乘上<span class="math inline">\(W^k\)</span>,得到另外一个Key也就是<span class="math inline">\(k^3\)</span>,<span class="math inline">\(a^4\)</span>乘上<span class="math inline">\(W^k\)</span>得到<span class="math inline">\(k^4\)</span>,然后你再把<span class="math inline">\(k^3\)</span>这个Key,跟<span class="math inline">\(q^1\)</span>这个Query做Inner-Product,得到1跟3之间的关联性,得到1跟3的Attention,你把<span class="math inline">\(k^4\)</span>跟<span class="math inline">\(q^1\)</span>做Dot-Product,得到<span class="math inline">\(α_{1,4}\)</span>,得到1跟4之间的关联性。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212536289.png" alt="image-20220613212536289" style="zoom:50%;"></p>
+<p><font color="red"> 其实一般在实作时候,<strong><span class="math inline">\(q^1\)</span>也会跟自己算关联性</strong>,自己跟自己计算关联性这件事情有多重要。</font>计算出,a1跟每一个向量的关联性以后,接下来这边会<strong>接入一个Soft-Max</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613221201944.png" alt="image-20220613221201944" style="zoom:50%;"></p>
+<p><strong><font color="red">这个Soft-Max跟分类的时候的那个Soft-Max是一模一样的
+</font></strong>,所以Soft-Max的输出就是一排α,所以本来有一排α,通过Soft-Max就得到<span class="math inline">\(α&#39;\)</span>。</p>
+<p>这边你<strong>不一定要用Soft-Max,用别的替代也没问题</strong>,比如说有人尝试过说做个ReLU,这边通通做个ReLU,那结果发现还比Soft-Max好一点,所以这边你不一定要用Soft-Max,这边你要用什么Activation
+Function都行,你高兴就好,你可以试试看,那Soft-Max是最常见的,那你可以自己试试看,看能不能试出比Soft-Max更好的结果。</p>
+<p>接下来得到这个<span class="math inline">\(α&#39;\)</span>以后,我们就要根据这个<span class="math inline">\(α&#39;\)</span>去抽取出这个Sequence里面重要的资讯,根据这个α我们已经知道说,哪些向量跟<span class="math inline">\(a^1\)</span>是最有关系的,<strong>怎么抽取重要的资讯呢？</strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613221501080.png" alt="image-20220613221501080" style="zoom:50%;"></p>
+<ul>
+<li><p>首先把<span class="math inline">\(a^1\)</span>到<span class="math inline">\(a^4\)</span>这边每一个向量,乘上$W^v <span class="math inline">\(得到新的向量,这边分别就是用\)</span>v^1 v^2 v^3
+v^4$来表示</p></li>
+<li><p>接下来把这边的<span class="math inline">\(v^1\)</span>到<span class="math inline">\(v^4\)</span>,每一个向量都去乘上Attention的分数,都去乘上<span class="math inline">\(α&#39;\)</span></p></li>
+<li><p>然后再把它加起来,得到<span class="math inline">\(b^1\)</span></p></li>
+</ul>
+<p><span class="math display">\[
+b^1=\sum_i\alpha&#39;_{1,i}v^i
+\]</span></p>
+<p>如果某一个向量它得到的分数越高,比如说如果<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^2\)</span>的关联性很强,这个<span class="math inline">\(α&#39;\)</span>得到的值很大,那我们今天在做Weighted
+Sum以后,得到的<span class="math inline">\(b^1\)</span>的值,就可能会比较接近<span class="math inline">\(v^2\)</span>，所以<strong>谁的那个Attention的分数最大,谁的那个<span class="math inline">\(v\)</span>就会Dominant你抽出来的结果</strong>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/VR9NEX/" title="深度学习（8）Self Attention*-p1">https://powerlzy.github.io/posts/VR9NEX/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2Q8V137/" rel="prev" title="深度学习（8）Self Attention*-p2">
+                  <i class="fa fa-chevron-left"></i> 深度学习（8）Self Attention*-p2
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/QAPBHZ/" rel="next" title="深度学习（8）Attention">
+                  深度学习（8）Attention <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

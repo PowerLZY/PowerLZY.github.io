@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、DBSCAN算法【基于密度】  （3）聚类算法之DBSCAN算法 - GISer.Wang的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;77043965  密度聚类方法的指导思想是，只要样本点的密度大于某阈值，则将该样本添加到最近的簇中。这类算法能克服基于距离的算法只能发现“类圆”（凸）的聚类的缺点，可发现任意形状的聚类，且对噪声数据不敏感。但计算密度单元的计算复">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聚类（2）DBSCAN">
+<meta property="og:url" content="https://powerlzy.github.io/posts/1YHD4BN/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、DBSCAN算法【基于密度】  （3）聚类算法之DBSCAN算法 - GISer.Wang的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;77043965  密度聚类方法的指导思想是，只要样本点的密度大于某阈值，则将该样本添加到最近的簇中。这类算法能克服基于距离的算法只能发现“类圆”（凸）的聚类的缺点，可发现任意形状的聚类，且对噪声数据不敏感。但计算密度单元的计算复">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648998.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648520.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648223.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-7d15fc871942e0287be42a12d6d615dd_1440w.jpg">
+<meta property="article:published_time" content="2022-03-15T14:23:33.340Z">
+<meta property="article:modified_time" content="2023-04-22T09:24:29.791Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="聚类">
+<meta property="article:tag" content="DBSCAN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648998.jpg">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/1YHD4BN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/1YHD4BN/","path":"posts/1YHD4BN/","title":"聚类（2）DBSCAN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>聚类（2）DBSCAN | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、DBSCAN算法【基于密度】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 DBSCAN算法原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 若干概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 DBSCAN密度聚类思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 算法步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.5 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.6 OPTICS算法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1YHD4BN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="聚类（2）DBSCAN | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          聚类（2）DBSCAN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-15 22:23:33" itemprop="dateCreated datePublished" datetime="2022-03-15T22:23:33+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 17:24:29" itemprop="dateModified" datetime="2023-04-22T17:24:29+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E8%81%9A%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">聚类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="一-dbscan算法基于密度">一、DBSCAN算法【基于密度】</span></h3>
+<blockquote>
+<p>（3）聚类算法之DBSCAN算法 - GISer.Wang的文章 - 知乎
+https://zhuanlan.zhihu.com/p/77043965</p>
+</blockquote>
+<p>密度聚类方法的指导思想是，只要样本点的密度大于某阈值，则将该样本添加到最近的簇中。这类算法能克服基于距离的算法只能发现“类圆”（凸）的聚类的缺点，可发现任意形状的聚类，且对噪声数据不敏感。但计算密度单元的计算复杂度大，需要建立空间索引来降低计算量。其代表算法为<strong>DBSCAN算法</strong>和<strong>密度最大值</strong>算法。</p>
+<h4><span id="21-dbscan算法原理">2.1 DBSCAN算法原理</span></h4>
+<p><strong><font color="red"> DBCSAN（Density-Based Spatial Clustering
+of Applications with
+Noise）是一个比较有代表性的基于密度的聚类算法。</font></strong>与划分和层次聚类方法不同，它将簇定义为密度相连的点的最大集合，能够把具有足够高密度的区域划分为簇，并<strong>可在有“噪声”的数据中发现任意形状的聚类</strong>。</p>
+<h4><span id="22-若干概念">2.2 若干概念</span></h4>
+<p><strong>DBSCAN是基于一组邻域来描述样本集的紧密程度的, 参数 <span class="math inline">\((\epsilon, M i n P t s)\)</span>
+用来描述邻域的样本分布紧密程度。其 中, <span class="math inline">\(\epsilon\)</span> 描述了某一数据点的邻域距离阈值
+(半径)</strong>, MinPts 描述了数据点半径为 <span class="math inline">\(\epsilon\)</span> 的邻域中数据点个数的最
+小个数。下面是与密度聚类相关的定义 (假设我的样本集是 <span class="math inline">\(D=\left\{x_1, x_2, \ldots, x_m\right\}\)</span>
+):</p>
+<ul>
+<li><p><strong>对象的 <span class="math inline">\(\varepsilon\)</span>
+领域</strong>：给定对象在半径 <span class="math inline">\(\varepsilon\)</span> 内的区域; 对于 <span class="math inline">\(x_j \in D\)</span>, 其 <span class="math inline">\(\epsilon\)</span>-邻域包含样本集 <span class="math inline">\(D\)</span> 中与 <span class="math inline">\(x_j\)</span> 的距离不大于 <span class="math inline">\(\epsilon\)</span> 的子样本集。即 <span class="math inline">\(N_\epsilon\left(x_j\right)=\left\{x_i \in D \mid
+\operatorname{distance}\left(x_i, x_j\right) \leq
+\epsilon\right\}\)</span> ，这个子样本集的个数记为 <span class="math inline">\(\left|N_\epsilon\left(x_j\right)\right|\)</span>
+。 <span class="math inline">\(\epsilon\)</span>-邻域是
+一个集合</p></li>
+<li><p><strong>核心对象</strong>: 对于任一样本 <span class="math inline">\(x_j \in D\)</span>, 如果其 <span class="math inline">\(\epsilon\)</span>-邻域对应的 <span class="math inline">\(N_\epsilon\left(x_j\right)\)</span> 至少包含
+MinPts 个样本, 即如果 <span class="math inline">\(\left|N_\epsilon\left(x_j\right)\right|
+\geq\)</span> MinPts ，则 <span class="math inline">\(x_j\)</span>
+是核心对象。</p></li>
+<li><p><strong>直接密度可达</strong>: 如果 <span class="math inline">\(x_i\)</span> 位于 <span class="math inline">\(x_j\)</span> 的 <span class="math inline">\(\epsilon\)</span>-邻域中, 且 <span class="math inline">\(x_j\)</span> 是核心对象, 则称 <span class="math inline">\(x_i\)</span> 由 <span class="math inline">\(x_j\)</span> 密度直达。反之不一定成 立,
+即此时不能说 <span class="math inline">\(x_j\)</span> 由 <span class="math inline">\(x_i\)</span> 密度直达，除非 <span class="math inline">\(x_i\)</span> 也是核心对象,
+即<strong>密度直达不满足对称性</strong>。如图 <span class="math inline">\(\varepsilon=1, \mathrm{~m}=5, \mathrm{q}\)</span>
+是一个核心对象, 从对象q出发到对象p是直接密度可达的。</p></li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648998.jpg" alt="2019-05-18-061126.jpg" style="zoom:50%;"></p>
+<ul>
+<li>*密度可达<strong>: 对于 <span class="math inline">\(x_i\)</span> 和
+<span class="math inline">\(x_j\)</span> ，如果存在样本样本序列 <span class="math inline">\(p_1, p_2, \ldots, p_T\)</span> ，满足 <span class="math inline">\(p 1=x_i, p_T=x_j\)</span> ，且 <span class="math inline">\(p_{t+1}\)</span> 由 <span class="math inline">\(p_t\)</span> 密度 直达, 则称 <span class="math inline">\(x_j\)</span> 由 <span class="math inline">\(x_i\)</span> 密度可达。也就是说,
+密度可达满足传递性。此时序列中的传递样本 <span class="math inline">\(p_1, p_2, \ldots, p_{T-1}\)</span> 均 为核心对象,
+因为只有核心对象才能使其他样本密度直达。</strong>密度可达也不满足对称性**,
+这个可以由密度直达的 不对称性得出。</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648520.jpg" alt="2019-05-18-061154.jpg" style="zoom:50%;"></p>
+<ul>
+<li><strong>密度相连</strong>：对于 <span class="math inline">\(x_i\)</span> 和 <span class="math inline">\(x_j\)</span> ，如果存在核心对象样本 <span class="math inline">\(x_k\)</span>, 使 <span class="math inline">\(x_i\)</span> 和 <span class="math inline">\(x_j\)</span> 均由 <span class="math inline">\(x_k\)</span> 密度可达, 则称 <span class="math inline">\(x_i\)</span> 和 <span class="math inline">\(x_j\)</span> 密度
+相连。密度相连关系满足对称性。</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648223.jpg" alt="2019-05-18-061202.jpg" style="zoom:50%;"></p>
+<ul>
+<li><p><strong>簇</strong>：一个基于密度的簇是最大的密度相连对象的集合。</p></li>
+<li><p><strong>噪声</strong>：不包含在任何簇中的对象称为噪声。</p></li>
+</ul>
+<p>从下图可以很容易看出理解上述定义，图中 MinPts <span class="math inline">\(=5\)</span> ，红色的点都是核心对象, 因为其 <span class="math inline">\(\epsilon\)</span>-邻域至少有 5 个
+样本。黑色的样本是非核心对象。所有核心对象密度直达的样本在以红色核心对象为中心的圆内,
+如果不在圆内,
+则不能密度直达。图中用绿色箭头连起来的核心对象组成了密度可达的样本序列，此序列是一个簇集。在这些密度
+可达的样本序列的 <span class="math inline">\(\epsilon\)</span>-邻域内所有的样本相互都是密度相连的
+(<strong>注意, 此图中有两个簇集</strong>)。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-7d15fc871942e0287be42a12d6d615dd_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<h4><span id="23-dbscan密度聚类思想">2.3 DBSCAN密度聚类思想</span></h4>
+<p><strong>DBSCAN的聚类定义很简单：由密度可达关系导出的最大密度相连的样本集合,
+即为我们最终聚类的一个类别,
+或者说一个簇。（注意是密度相连的集合）</strong>,
+簇里面可以有一个或者多个核心对象。<strong>如果只有一个核心对象,
+则簇里其他的非核心对象样本都在这个核心对象的 <span class="math inline">\(\epsilon\)</span>-邻域里; 如果有多个核心对象,
+则簇里的任意一个核心对象的 <span class="math inline">\(\epsilon\)</span>
+-邻域中一定有一个其他的核心对象,
+否则这两个核心对象无法密度可达</strong>。这些核心对象的 <span class="math inline">\(\epsilon\)</span>-邻域里所有的样本的
+集合组成的一个DBSCAN聚类笶。</p>
+<p>那么怎么才能找到这样的簇样本集合呢？DBSCAN使用的方法很简单，它任意选择一个没有类别的核心对象作为种子，然后找到所有这个核心对象能够<strong>密度可达</strong>的样本集合，即为一个聚类簇。接着继续选择另一个没有类别的核心对象去寻找<strong>密度可达</strong>的样本集合，这样就得到另一个聚类簇
+<strong>（这样的得到都肯定是密度相连的）</strong>。一直运行到<strong>所有核心对象都有类别为止。</strong></p>
+<p>基本上这就是DBSCAN算法的主要内容了，是不是很简单？<strong>但是我们还是有三个问题没有考虑。</strong></p>
+<ul>
+<li><strong>异常点问题：</strong>一些异常样本点或者说少量游离于簇外的样本点，这些点不在任何一个核心对象在周围，在DBSCAN中，我们一般将这些样本点标记为噪音点。</li>
+<li><strong>距离度量问题</strong>：<strong><font color="red">
+即如何计算某样本和核心对象样本的距离</font></strong>。在DBSCAN中，一般采用最近邻思想，采用某一种距离度量来衡量<strong>样本距离，比如欧式距离、曼哈顿距离</strong>等。</li>
+<li><strong>数据点优先级分配问题</strong>：例如某些样本可能到两个核心对象的距离都小于
+<span class="math inline">\(\epsilon\)</span>,
+但是这两个核心对象由于不是 密度直达, 又不属于同一个聚类笶,
+那么如果界定这个样本的类别呢? 一般来说, 此时 DBSCAN采用先来后 到,
+先进行聚类的类别簇会标记这个样本为它的类别。也就是说<strong>DBSCAN的算法不是完全稳定的算法</strong>。</li>
+</ul>
+<h4><span id="24-算法步骤">2.4 算法步骤</span></h4>
+<p><strong>输入: 样本集</strong> <span class="math inline">\(D=\left\{x_1, x_2, \ldots, x_m\right\}\)</span>,
+<strong>邻域参数</strong> <span class="math inline">\((\epsilon\)</span>, MinPts <span class="math inline">\()\)</span></p>
+<ol type="1">
+<li>初始化核心对象集合 <span class="math inline">\(\Omega=\emptyset\)</span>, 初始化类别 <span class="math inline">\(k=0\)</span></li>
+<li>遍历 <span class="math inline">\(D\)</span> 的元素, 如果是核心对象,
+则将其加入到核心对象集合 <span class="math inline">\(\Omega\)</span>
+中</li>
+<li>如果核心对象集合 <span class="math inline">\(\Omega\)</span>
+中元素都已经被访问, 则算法结束, 否则转入步骤4.</li>
+<li>在核心对象集合 <span class="math inline">\(\Omega\)</span> 中,
+随机选择一个末访问的核心对象 <span class="math inline">\(o\)</span>,
+首先将 <span class="math inline">\(o\)</span> 标记为已访问, 然后将 <span class="math inline">\(o\)</span> 标记类别 <span class="math inline">\(k\)</span> , 最后将 <span class="math inline">\(o\)</span> 的 <span class="math inline">\(\epsilon\)</span>-邻域中末访问的数据，存放到种子集合
+Seeds 中。</li>
+<li>如果种子集合 <span class="math inline">\(S e e d
+s=\emptyset\)</span>, 则当前聚类簇 <span class="math inline">\(C_k\)</span> 生成完毕，且 <span class="math inline">\(k=k+1\)</span>, 跳转到3。否则, 从种子集合 <span class="math inline">\(S e e d s\)</span> 中挑选一个种子点 seed,
+首先将其标记为已访问、标记类别 <span class="math inline">\(k\)</span>,
+然后判断 seed 是否为核心对象, 如果是将 seed
+中末访问的种子点加入到种子集合中, 跳转到 5 。</li>
+</ol>
+<p><strong>从上述算法可知：</strong></p>
+<ul>
+<li><strong>每个簇至少包含一个核心对象</strong>；</li>
+<li>非核心对象可以是簇的一部分，构成了簇的边缘（edge）；</li>
+<li>包含过少对象的簇被认为是噪声；</li>
+</ul>
+<h4><span id="25-总结">2.5 总结</span></h4>
+<h5><span id="优点">优点</span></h5>
+<ol type="1">
+<li><strong>可以对任意形状的稠密数据集进行聚类</strong>，相对的，K-Means之类的聚类算法一般只适用于凸数据集。</li>
+<li><strong>可以在聚类的同时发现异常点</strong>，对数据集中的异常点不敏感。</li>
+<li>聚类结果没有偏倚，相对的，K-Means之类的聚类算法初始值对聚类结果有很大影响。</li>
+</ol>
+<h5><span id="缺点">缺点</span></h5>
+<ol type="1">
+<li><strong>不能处理密度差异过大（密度不均匀）的聚类</strong>：如果样本集的密度不均匀、聚类间距差相差很大时，聚类质量较差，这时用DBSCAN聚类一般不适合。</li>
+<li>如果样本集较大时，聚类收敛时间较长;<strong>此时可以对搜索最近邻时建立的KD树或者球树进行规模限制来改进；</strong></li>
+<li>调参相对于传统的K-Means之类的聚类算法稍复杂，<strong>主要需要对距离阈值ϵ，邻域样本数阈值MinPts联合调参，不同的参数组合对最后的聚类效果有较大影响</strong>。【OPTICS算法】</li>
+<li><strong>边界点不完全确定性</strong></li>
+</ol>
+<h4><span id="26-optics算法">2.6 OPTICS算法</span></h4>
+<p><strong>OPTICS主要针对输入参数 <span class="math inline">\(\epsilon\)</span> 过敏感做的改进</strong>,
+OPTICS和DBSCNA的输入参数一样 ( <span class="math inline">\(\epsilon\)</span> 和 MinPts ), 虽然
+OPTICS算法中也需要两个输入参数, 但该算法对 <span class="math inline">\(\epsilon\)</span> 输入不敏感（一般将 <span class="math inline">\(\epsilon\)</span> 固定为无穷大）,
+同时该算法中并不显式的生成数据聚类, 只是对数据集合中的对象进行排序,
+得到一个有序的对象列表, 通过该有序列表, 可以得到 一个决策图,
+通过决策图可以不同 <span class="math inline">\(\epsilon\)</span>
+参数的数据集中检测笶集, 即: 先通过固定的 MinPts 和无穷大的 <span class="math inline">\(\epsilon\)</span>
+得到有序列表，然后得到决策图，通过决策图可以知道当 <span class="math inline">\(\epsilon\)</span> 取特定值时（比如 <span class="math inline">\(\epsilon=3\)</span> ) 数据的聚类情况。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/1YHD4BN/" title="聚类（2）DBSCAN">https://powerlzy.github.io/posts/1YHD4BN/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E8%81%9A%E7%B1%BB/" rel="tag"># 聚类</a>
+              <a href="/tags/DBSCAN/" rel="tag"># DBSCAN</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/1P85MAS/" rel="prev" title="聚类（4）总结">
+                  <i class="fa fa-chevron-left"></i> 聚类（4）总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/X8CSWX/" rel="next" title="聚类（3）HDBSCAN">
+                  聚类（3）HDBSCAN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

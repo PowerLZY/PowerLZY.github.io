@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、Gradient Boosting Decision Tree  https:&#x2F;&#x2F;www.cnblogs.com&#x2F;modifyrong&#x2F;p&#x2F;7744987.html  GBDT（Gradient Boosting Decision Tree）是一种迭代的决策树算法，该算法由多棵决策树组成，从名字中我们可以看出来它是属于 Boosting 策略。GBDT 是被公认的泛化能力较强的算法。 1.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成学习（3）GBDT">
+<meta property="og:url" content="https://powerlzy.github.io/posts/F4BZ62/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、Gradient Boosting Decision Tree  https:&#x2F;&#x2F;www.cnblogs.com&#x2F;modifyrong&#x2F;p&#x2F;7744987.html  GBDT（Gradient Boosting Decision Tree）是一种迭代的决策树算法，该算法由多棵决策树组成，从名字中我们可以看出来它是属于 Boosting 策略。GBDT 是被公认的泛化能力较强的算法。 1.1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-11T13:14:35.439Z">
+<meta property="article:modified_time" content="2023-04-21T12:50:47.760Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="决策树">
+<meta property="article:tag" content="集成学习">
+<meta property="article:tag" content="GBDT">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/F4BZ62/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/F4BZ62/","path":"posts/F4BZ62/","title":"集成学习（3）GBDT"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>集成学习（3）GBDT | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Gradient Boosting
+Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 思想</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.1.1 回归树（Regression
+Decision Tree）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.1.2 梯度迭代（Gradient
+Boosting）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.1.3
+缩减（Shrinkage）添加权重、基数增大</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">优点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 GBDT 与 Adaboost 的对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">相同：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不同：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.4
+GBDT算法用于分类问题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/F4BZ62/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="集成学习（3）GBDT | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          集成学习（3）GBDT
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-11 21:14:35" itemprop="dateCreated datePublished" datetime="2022-03-11T21:14:35+08:00">2022-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-21 20:50:47" itemprop="dateModified" datetime="2023-04-21T20:50:47+08:00">2023-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">集成学习</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="一-gradient-boostingdecision-tree">一、Gradient Boosting
+Decision Tree</span></h3>
+<blockquote>
+<p>https://www.cnblogs.com/modifyrong/p/7744987.html</p>
+</blockquote>
+<p><strong>GBDT（Gradient Boosting Decision
+Tree）是一种迭代的决策树算法，该算法由多棵决策树组成，从名字中我们可以看出来它是属于
+Boosting 策略。GBDT 是被公认的泛化能力较强的算法。</strong></p>
+<h4><span id="11-思想">1.1 思想</span></h4>
+<p><strong>GBDT是boosting算法的一种，按照boosting的思想，在GBDT算法的每一步，用一棵决策树去拟合当前学习器的残差，获得一个新的弱学习器。将这每一步的决策树组合起来，就得到了一个强学习器</strong>。GBDT
+由三个概念组成：Regression Decision Tree（即 DT）、Gradient Boosting（即
+GB），和 Shrinkage（一个重要演变）</p>
+<h5><span id="111-回归树regressiondecision-tree">1.1.1 回归树（Regression
+Decision Tree）</span></h5>
+<p>如果认为 GBDT
+由很多分类树那就大错特错了（虽然调整后也可以分类）。对于分类树而言，其值加减无意义（如性别），而对于回归树而言，其值加减才是有意义的（如说年龄）。GBDT
+的核心在于累加所有树的结果作为最终结果，所以 GBDT
+中的树都是<strong>回归树</strong>，不是分类树，这一点相当重要。</p>
+<p><strong><font color="red">
+回归树在分枝时会穷举每一个特征的每个阈值以找到最好的分割点，衡量标准是最小化均方误差。</font></strong></p>
+<h5><span id="112-梯度迭代gradientboosting"><strong>1.1.2 梯度迭代（Gradient
+Boosting）</strong></span></h5>
+<p>上面说到 GBDT 的核心在于累加所有树的结果作为最终结果，GBDT
+的每一棵树都是以之前树得到的<strong>残差【负梯度】</strong>来更新目标值，这样每一棵树的<strong>值加起来</strong>即为
+GBDT 的预测值。</p>
+<p>模型的预测值可以表示为： <span class="math display">\[
+F_{k}(x)=\sum_{i=1}^{k} f_{i}(x)
+\]</span> <span class="math inline">\(f_i(x)\)</span>
+为基模型与其权重的乘积, 模型的训练目标是使预测值 <span class="math inline">\(F_k(x)\)</span> 逼近真实值 <span class="math inline">\(\mathrm{y}\)</span>,
+也就是说要让每个基模型的预测值逼近各自要预测的部分真实值。贪心的解决手段：每次只训练一个基模型。那么,
+现在改写整体模型为迭代式: <span class="math display">\[
+F_{k}(x)=F_{k-1}(x)+f_{k}(x)
+\]</span>
+其实很简单，其<strong>残差其实是最小均方损失函数关于预测值的反向梯度(划重点)</strong>：<strong>用负梯度的解作为样本新的真实值</strong>。基于残差
+GBDT 容易对异常值敏感。 <span class="math display">\[
+-\frac{\partial\left(\frac{1}{2}\left(y-F_{k}(x)\right)^{2}\right)}{\partial
+F_{k}(x)}=y-F_{k}(x)
+\]</span> 很明显后续的模型会对第 4
+个值关注过多，这不是一种好的现象，所以一般回归类的损失函数会用<strong>绝对损失或者
+Huber 损失函数</strong>来代替平方损失函数。 <span class="math display">\[
+L(y, F)=|y-F|
+\]</span></p>
+<p><span class="math display">\[
+L(y, F)= \begin{cases}\frac{1}{2}(y-F)^{2} &amp; |y-F| \leq \delta \\
+\delta(|y-F|-\delta / 2) &amp; |y-F|&gt;\delta\end{cases}
+\]</span></p>
+<p>GBDT 的 Boosting 不同于 Adaboost 的 Boosting，<strong>GBDT
+的每一步残差计算其实变相地增大了被分错样本的权重，而对与分对样本的权重趋于
+0</strong>，这样后面的树就能专注于那些被分错的样本。</p>
+<blockquote>
+<p><strong><font color="red">
+最后补充一点拟合残差的问题，无论损失函数是什么形式，每个决策树拟合的都是负梯度。只有当损失函数是均方损失时，负梯度刚好是残差</font></strong>，也就是说<strong>拟合残差只是针对均方损失的特例</strong>，并不能说GBDT的迭代的过程是拟合残差。</p>
+</blockquote>
+<h5><span id="113缩减shrinkage添加权重-基数增大"><strong>1.1.3
+缩减（Shrinkage）</strong>添加权重、基数增大</span></h5>
+<blockquote>
+<p><strong><font color="red">
+gbdt中的步长和参数中的学习率作用是什么？详细讲一讲？</font></strong></p>
+<ul>
+<li>参数中的学习率用于梯度下降</li>
+</ul>
+</blockquote>
+<p>Shrinkage
+的思想认为，每走一小步逐渐逼近结果的效果要比每次迈一大步很快逼近结果的方式更容易避免过拟合。即它并不是完全信任每一棵残差树。</p>
+<p>Shrinkage
+不直接用残差修复误差，而是只修复一点点，把大步切成小步。<strong>本质上
+Shrinkage 为每棵树设置了一个 weight，累加时要乘以这个 weight，当 weight
+降低时，基模型数会配合增大</strong>。</p>
+<h4><span id="12-优缺点">1.2 优缺点</span></h4>
+<h5><span id="优点"><strong>优点</strong></span></h5>
+<ol type="1">
+<li>可以自动进行特征组合，拟合非线性数据；在稠密数据集上泛化能力和表达能力很好。</li>
+<li>可以灵活处理各种类型的数据，不需要对数据预处理和归一化。</li>
+<li>预测可以并行，计算数据很快。</li>
+</ol>
+<h5><span id="缺点"><strong>缺点</strong></span></h5>
+<ol type="1">
+<li>对异常点敏感。</li>
+</ol>
+<h4><span id="13-gbdt-与-adaboost-的对比">1.3 GBDT 与 Adaboost 的对比</span></h4>
+<h4><span id="相同"><strong>相同：</strong></span></h4>
+<ol type="1">
+<li>都是 Boosting 家族成员，使用弱分类器；</li>
+<li>都使用前向分布算法；</li>
+</ol>
+<h4><span id="不同"><strong>不同：</strong></span></h4>
+<ol type="1">
+<li><strong>迭代思路不同</strong>：Adaboost
+是通过提升错分数据点的权重来弥补模型的不足（利用错分样本），而 GBDT
+是通过算梯度来弥补模型的不足（利用残差）；</li>
+<li><strong>损失函数不同</strong>：AdaBoost
+采用的是<strong>指数损失</strong>，GBDT
+使用的是<strong>绝对损失</strong>或者 <strong>Huber
+损失函数</strong>；</li>
+</ol>
+<h4><span id="14gbdt算法用于分类问题"><strong><font color="red"> 1.4
+GBDT算法用于分类问题</font></strong></span></h4>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/46445201</p>
+</blockquote>
+<p>将GBDT应用于回归问题，相对来说比较容易理解。因为<strong>回归问题的损失函数一般为平方差损失函数</strong>，这时的残差，恰好等于预测值与实际值之间的差值。每次拿一棵决策树去拟合这个差值，使得残差越来越小，这个过程还是比较intuitive的。</p>
+<p><strong><font color="red">
+将GBDT用于分类问题，类似于逻辑回归、FM模型用于分类问题，其实是在用一个线性模型或者包含交叉项的非
+线性模型, 去拟合所谓的对数几率 <span class="math inline">\(\ln
+\frac{p}{1-p}\)</span> 。</font></strong>而GBDT也是一样,
+只是用一系列的梯度提升树去拟合这个对数几 率,
+实际上最终得到的是一系列CART回归树。其分类模型可以表达为： <span class="math display">\[
+P(y=1 \mid x)=\frac{1}{1+e^{-\sum_{m=0}^M h_m(x)}}
+\]</span> 其中 <span class="math inline">\(h_m(x)\)</span>
+就是学习到的决策树。清楚了这一点之后, 我们便可以参考逻辑回归, 单样本
+<span class="math inline">\(\left(x_i, y_i\right)\)</span> 的损失函数可
+以表达为<strong>交叉熵</strong>： <span class="math display">\[
+\operatorname{loss}\left(x_i, y_i\right)=-y_i \log
+\hat{y_i}-\left(1-y_i\right) \log \left(1-\hat{y_i}\right)
+\]</span> 假设第 <span class="math inline">\(\mathrm{K}\)</span>
+步迭代之后当前学习器为 <span class="math inline">\(F(x)=\sum_{m=0}^k
+h_m(x)\)</span>, 将 <span class="math inline">\(\hat{y}_i\)</span>
+的表达式带入之后, 可将损失函数写为: <span class="math display">\[
+\operatorname{loss}\left(x_i, y_i \mid F(x)\right)=y_i \log
+\left(1+e^{-F\left(x_i\right)}\right)+\left(1-y_i\right)\left[F\left(x_i\right)+\log
+\left(1+e^{-F\left(x_i\right)}\right)\right]
+\]</span> <strong>可以求得损失函数相对于当前学习器的负梯度为</strong>：
+<span class="math display">\[
+-\left.\frac{\partial l o s s}{\partial F(x)}\right|_{x_i,
+y_i}=y_i-\frac{1}{1+e^{-F\left(x_i\right)}}=y_i-\hat{y_i}
+\]</span> 可以看到, 同回归问题很类似, 下一棵决策树的训练样本为: <span class="math inline">\(\left\{x_i,
+y_i-\hat{y}_i\right\}_{i=1}^n\)</span>, 其所需要拟合的残差为真实标签
+与预测概率之差。于是便有下面GBDT应用于二分类的算法：</p>
+<ul>
+<li><span class="math inline">\(F_0(x)=h_0(x)=\log
+\frac{p_1}{1-p_1}\)</span>, 其中 <span class="math inline">\(p_1\)</span> 是训练样本中 <span class="math inline">\(\mathrm{y}=1\)</span> 的比例,
+利用先验信息来初始化学习器</li>
+<li>For <span class="math inline">\(m=1,2, \ldots, M\)</span> :
+<ul>
+<li>计算 <span class="math inline">\(g_i=\hat{y}_i-y_i\)</span>,
+并使用训练集 <span class="math inline">\(\left\{\left(x_i,-g_i\right)\right\}_{i=1}^n\)</span>
+<strong>训练一棵回归树</strong> <span class="math inline">\(t_m(x)\)</span>, 其中 <span class="math inline">\(\hat{y}_i=\frac{1}{1+e^{-F_{m-1}(x)}}\)</span></li>
+<li>通过一维最小化损失函数找到树的最优权重: <span class="math inline">\(\quad
+\rho_m=\underset{\rho}{\operatorname{argmin}} \sum_i l o s s\left(x_i,
+y_i \mid F_{m-1}(x)+\rho t_m(x)\right)\)</span></li>
+</ul></li>
+<li><strong>考虑shrinkage,</strong> 可得这一轮迭代之后的学习器 <span class="math inline">\(F_m(x)=F_{m-1}(x)+\alpha \rho_m t_m(x),
+\alpha\)</span> 为学习率</li>
+<li>得到最终学习器为： <span class="math inline">\(F_M(x)\)</span></li>
+</ul>
+<p>以上就是将GBDT应用于二分类问题的算法流程。类似地, 对于多分类问题,
+则需要考虑以下softmax模型： <span class="math display">\[
+\begin{array}{r}
+P(y=1 \mid x)=\frac{e^{F_1(x)}}{\sum_{i=1}^k e^{F_i(x)}} \\
+P(y=2 \mid x)=\frac{e^{F_2(x)}}{\sum_{i=1}^k e^{F_i(x)}} \\
+\ldots \cdots \\
+P(y=k \mid x)=\frac{e^{F_k(x)}}{\sum_{i=1}^k e^{F_i(x)}}
+\end{array}
+\]</span> <strong>其中 <span class="math inline">\(F_1 ... F_k\)</span>
+是 <span class="math inline">\(k\)</span> 个不同的tree
+ensemble。每一轮的训练实际上是训练了 <span class="math inline">\(k\)</span> 棵树去拟合softmax的每一个分支
+模型的负梯度</strong>【one-hot中的一维】。softmax模型的单样本损失函数为:
+<span class="math display">\[
+\text { loss }=-\sum_{i=1}^k y_i \log P\left(y_i \mid
+x\right)=-\sum_{i=1}^k y_i \log \frac{e^{F_i(x)}}{\sum_{j=1}^k
+e^{F_j(x)}}
+\]</span> 这里的 <span class="math inline">\(y_i(i=1 \ldots k)\)</span>
+是样本label在 <span class="math inline">\(\mathbf{k}\)</span>
+个类别上作one-hot编码之后的取值, 只有一维为 1 , 其余都是 <span class="math inline">\(\mathbf{0}\)</span> 。由以上表 达式不难推导: <span class="math display">\[
+-\frac{\partial l o s s}{\partial
+F_q}=y_q-\frac{e^{F_q(x)}}{\sum_{j=1}^k e^{F_j(x)}}=y_q-\hat{y_q}
+\]</span> 可见, 这k棵树同样是拟合了样本的真实标签与预测概率之差,
+与二分类的过程非常类似。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/F4BZ62/" title="集成学习（3）GBDT">https://powerlzy.github.io/posts/F4BZ62/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/" rel="tag"># 决策树</a>
+              <a href="/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" rel="tag"># 集成学习</a>
+              <a href="/tags/GBDT/" rel="tag"># GBDT</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/SMMBFY/" rel="prev" title="集成学习（7）总结">
+                  <i class="fa fa-chevron-left"></i> 集成学习（7）总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/36WS4DK/" rel="next" title="集成学习（2）Adaboost">
+                  集成学习（2）Adaboost <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

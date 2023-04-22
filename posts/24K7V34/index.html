@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、t-SNE 高维数据可视化  高维数据可视化之t-SNE算法🌈:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57937096  T-SNE算法是用于可视化的算法中效果最好的算法之一，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者Laurens van der Maaten给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="降维（3）t-SNE">
+<meta property="og:url" content="https://powerlzy.github.io/posts/24K7V34/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、t-SNE 高维数据可视化  高维数据可视化之t-SNE算法🌈:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57937096  T-SNE算法是用于可视化的算法中效果最好的算法之一，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者Laurens van der Maaten给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg">
+<meta property="article:published_time" content="2022-03-16T08:35:35.044Z">
+<meta property="article:modified_time" content="2023-04-22T08:29:43.328Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="降维">
+<meta property="article:tag" content="t-SNE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/24K7V34/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/24K7V34/","path":"posts/24K7V34/","title":"降维（3）t-SNE"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>降维（3）t-SNE | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、t-SNE 高维数据可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 t-SNE数据算法的目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 SNE原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 目标函数求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 对称性-SNE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 t-SNE</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">\(t-S N E\) 算法其实就是在 \(S N E\) 算法的基础上增加了两个改进:</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/24K7V34/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="降维（3）t-SNE | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          降维（3）t-SNE
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 16:35:35" itemprop="dateCreated datePublished" datetime="2022-03-16T16:35:35+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 16:29:43" itemprop="dateModified" datetime="2023-04-22T16:29:43+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%99%8D%E7%BB%B4%E4%B8%8E%E5%BA%A6%E9%87%8F%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">降维与度量学习</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="一-t-sne-高维数据可视化">一、t-SNE 高维数据可视化</span></h3>
+<blockquote>
+<p>高维数据可视化之t-SNE算法🌈:https://zhuanlan.zhihu.com/p/57937096</p>
+</blockquote>
+<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens
+van der
+Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
+<h4><span id="11-t-sne数据算法的目的">1.1 t-SNE数据算法的目的</span></h4>
+<p><strong>主要是将数据从高维数据转到低维数据，并在低维空间里也保持其在高维空间里所携带的信息（比如高维空间里有的清晰的分布特征，转到低维度时也依然存在）。</strong></p>
+<p><strong><font color="red">
+t-SNE将欧氏距离距离转换为条件概率，来表达点与点之间的相似度，再优化两个分布之间的距离-KL散度，从而保证点与点之间的分布概率不变。</font></strong></p>
+<h4><span id="12-sne原理">1.2 SNE原理</span></h4>
+<p><span class="math inline">\(S N E\)</span>
+是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>,
+主要包括下面两个步骤: 1. 通过在高维空间中构建数据点之间的概率分布 <span class="math inline">\(P\)</span>, 使得相似的数据点有更高的概率被选择, 而
+不相似的数据点有较低的概率被选择; 2.
+然后在低维空间里重构这些点的概率分布 <span class="math inline">\(Q\)</span>, 使得这两个概率分布尽可能相似。</p>
+<p>令输入空间是 <span class="math inline">\(X \in
+\mathbb{R}^{n}\)</span>, 输出空间为 <span class="math inline">\(Y \in
+\mathbb{R}^{t}(t \ll n)\)</span> 。不妨假设含有 <span class="math inline">\(m\)</span> 个样本数据 <span class="math inline">\(\left\{x^{(1)}, x^{(2)}, \cdots,
+x^{(m)}\right\}\)</span>, 其中 <span class="math inline">\(x^{(i)} \in
+X\)</span>, 降维后的数据为 <span class="math inline">\(\left\{y^{(1)},
+y^{(2)}, \cdots, y^{(m)}\right\}, y^{(i)} \in Y\)</span> 。 <span class="math inline">\(S N E\)</span>
+是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>,
+即首先是计算条件概 率 <span class="math inline">\(p_{j \mid i}\)</span>,
+其正比于 <span class="math inline">\(x^{(i)}\)</span> 和 <span class="math inline">\(x^{(j)}\)</span> 之间的相似度, <span class="math inline">\(p_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+p_{j \mid i}=\frac{\exp
+\left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp
+\left(-\frac{\left\|x^{(i)}-x^{(k)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}
+\]</span> 在这里引入了一个参数 <span class="math inline">\(\sigma_{i}\)</span>, 对于不同的数据点 <span class="math inline">\(x^{(i)}\)</span> 取值亦不相同,
+因为我们关注的是不同数据 点两两之间的相似度, 故可设置 <span class="math inline">\(p_{i \mid i}=0\)</span> 。对于低维度下的数据点
+<span class="math inline">\(y^{(i)}\)</span>, 通过条件概率 <span class="math inline">\(q_{j \mid i}\)</span> 来 刻画 <span class="math inline">\(y^{(i)}\)</span> 与 <span class="math inline">\(y^{(j)}\)</span> 之间的相似度, <span class="math inline">\(q_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+q_{j \mid i}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^{2}\right)}{\sum_{k \neq i} \exp
+\left(-\left\|y^{(i)}-y^{(k)}\right\|^{2}\right)}
+\]</span> 同理, 设置 <span class="math inline">\(q_{i \mid i}=0\)</span>
+。 如果降维的效果比较好, 局部特征保留完整, 那么有 <span class="math inline">\(p_{i \mid j}=q_{i \mid j}\)</span> 成立,
+因此通过优化两个分布之 间的 <strong><span class="math inline">\(K
+L\)</span> 散度构造出的损失函数为</strong>: <span class="math display">\[
+C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} \| Q_{i}\right)=\sum_{i}
+\sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}
+\]</span> 这里的 <span class="math inline">\(P_{i}\)</span>
+表示在给定高维数据点 <span class="math inline">\(x^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布; <span class="math inline">\(Q_{i}\)</span>
+则表示在给定 低维数据点 <span class="math inline">\(y^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布。从损失函数可以看出, 当 <span class="math inline">\(p_{j \mid i}\)</span> 较大 <span class="math inline">\(q_{j \mid i}\)</span> 较小时, 惩罚较高; 而 <span class="math inline">\(p_{j \mid i}\)</span> 较小 <span class="math inline">\(q_{j \mid i}\)</span> 较大时,
+惩罚较低。换句话说就是高维空间中两个数据点距 离较近时,
+若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之,
+高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近,
+将得到一个很低的惩罚值。也就是说, <strong><span class="math inline">\(S
+N E\)</span> 的 损失函数更关注于局部特征,
+而忽视了全局结构</strong>。</p>
+<h4><span id="13-目标函数求解">1.3 目标函数求解</span></h4>
+<h4><span id="14-对称性-sne">1.4 对称性-SNE</span></h4>
+<p><strong>优化 <span class="math inline">\(K L(P \| Q)\)</span>
+的一种替换思路是使用联合概率分布来替换条件概率分布</strong>, 即 <span class="math inline">\(P\)</span> 是高维空间里数据点的联合概 率分布,
+<span class="math inline">\(Q\)</span>
+是低维空间里数据点的联合概率分布，此时的损失函数为: <span class="math display">\[
+C\left(y^{(i)}\right)=K L(P \| Q)=\sum_i \sum_j p_{i j} \log \frac{p_{i
+j}}{q_{i j}}
+\]</span> 同样的 <span class="math inline">\(p_{i i}=q_{i i}=0\)</span>
+，这种改进下的 <span class="math inline">\(S N E\)</span> 称为对称 <span class="math inline">\(S N E\)</span> ，因为它的先验假设为对 <span class="math inline">\(\forall i\)</span> 有 <span class="math inline">\(p_{i j}=p_{j i}, q_{i j}=q_{j i}\)</span>
+成立，故概率分布可以改写成: <span class="math display">\[
+p_{i j}=\frac{\exp \left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^2}{2
+\sigma^2}\right)}{\sum_{k \neq l} \exp
+\left(-\frac{\left\|x^{(k)}-x^{(l)}\right\|^2}{2 \sigma^2}\right)} \quad
+q_{i j}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^2\right)}{\sum_{k \neq l} \exp
+\left(-\left\|y^{(k)}-y^{(l)}\right\|^2\right)}
+\]</span> 这种改进方法使得表达式简洁很多, 但是容易受到异常点数据的影响,
+为了解决这个问题通过对联合概率分布定义修正为： <span class="math inline">\(p_{i j}=\frac{p_{j \mid i}+p_{i \mid
+j}}{2}\)</span>, 这保证了 <span class="math inline">\(\sum_j p_{i
+j}&gt;\frac{1}{2 m}\)</span> ，使得每个点对于损失函数都会有贡献。对称
+<span class="math inline">\(S N E\)</span> 最大的 优点是简化了梯度计算,
+梯度公式改写为: <span class="math display">\[
+\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4
+\sum_j\left(p_{i j}-q_{i j}\right)\left(y^{(i)}-y^{(j)}\right)
+\]</span> 研究表明, 对称 <span class="math inline">\(S N E\)</span> 和
+<span class="math inline">\(S N E\)</span> 的效果差不多,
+有时甚至更好一点。</p>
+<h4><span id="15-t-sne">1.5 t-SNE</span></h4>
+<p><span class="math inline">\(t-S N E\)</span> 在对称 <span class="math inline">\(S N E\)</span> 的改进是,
+首先通过在高维空间中使用高斯分布将距离转换为概率分布，然后<strong>在低维空间
+中，使用更加偏重长尾分布的方式来将距离转换为概率分布，使得高维度空间中的中低等距离在映射后能够有一个
+较大的距离</strong>。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p>从图中可以看到，在没有异常点时, <span class="math inline">\(t\)</span>
+分布与高斯分布的拟合结果基本一致。而在第二张图中, 出现了部分异常点,
+由于高斯分布的尾部较低, 对异常点比较敏感, 为了照顾这些异常点,
+高斯分布的拟合结果偏离了大多数样本所在位置,
+方差也较大。<strong>相比之下, <span class="math inline">\(t\)</span>
+分布的尾部较高, 对异常点不敏感, 保证了其鲁棒性, 因此拟合结果更为合理,
+较好的捕获了数据的全局特征。</strong></p>
+<p>使用 <span class="math inline">\(t\)</span> 分布替换高斯分布之后
+<span class="math inline">\(q_{i j}\)</span> 的变化如下: <span class="math display">\[
+q_{i
+j}=\frac{\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}{\sum_{k
+\neq l}\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}
+\]</span> 此外，随着自由度的逐渐增大, <span class="math inline">\(t\)</span>
+分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多, 优
+化后的梯度公式如下: <span class="math display">\[
+\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4
+\sum_j\left(p_{i j}-q_{i
+j}\right)\left(y^{(i)}-y^{(j)}\right)\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}
+\]</span> 总的来说, <span class="math inline">\(t-S N E\)</span>
+的梯度更新具有以下两个优势： -
+<strong>对于低维空间中不相似的数据点，用一个较小的距离会产生较大的梯度让这些数据点排斥开来;</strong>
+-
+<strong>这种排斥又不会无限大，因此避免了不相似的数据点距离太远。</strong></p>
+<h5><span id="t-s-n-e-算法其实就是在-s-n-e-算法的基础上增加了两个改进"><span class="math inline">\(t-S N E\)</span> 算法其实就是在 <span class="math inline">\(S N E\)</span> 算法的基础上增加了两个改进:</span></h5>
+<ul>
+<li>把 <span class="math inline">\(S N E\)</span> 修正为对称 <span class="math inline">\(S N E\)</span> ，提高了计算效率,
+效果稍有提升;</li>
+<li>在低维空间中采用了 <span class="math inline">\(t\)</span>
+分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题,
+优化 了 <span class="math inline">\(S N E\)</span>
+过于关注局部特征而忽略全局特征的问题。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/24K7V34/" title="降维（3）t-SNE">https://powerlzy.github.io/posts/24K7V34/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E9%99%8D%E7%BB%B4/" rel="tag"># 降维</a>
+              <a href="/tags/t-SNE/" rel="tag"># t-SNE</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/F3RYP7/" rel="prev" title="降维（4）AutoEncoder">
+                  <i class="fa fa-chevron-left"></i> 降维（4）AutoEncoder
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2Y0FFGH/" rel="next" title="降维（2）LDA">
+                  降维（2）LDA <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

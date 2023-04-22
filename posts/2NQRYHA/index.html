@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、李宏毅 - Transformer_Encoder   变形金刚的英文就是Transformer,那Transformer也跟我们之后会,提到的BERT有非常强烈的关系,所以这边有一个BERT探出头来,代表说Transformer跟BERT,是很有关系的。 1.1 Sequence-to-sequence (Seq2seq) Transformer就是一个,&#x3D;&#x3D;Sequence-to-seq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习（9）Transformer*-p1">
+<meta property="og:url" content="https://powerlzy.github.io/posts/2NQRYHA/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、李宏毅 - Transformer_Encoder   变形金刚的英文就是Transformer,那Transformer也跟我们之后会,提到的BERT有非常强烈的关系,所以这边有一个BERT探出头来,代表说Transformer跟BERT,是很有关系的。 1.1 Sequence-to-sequence (Seq2seq) Transformer就是一个,&#x3D;&#x3D;Sequence-to-seq">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614150150803.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614150604358.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614151056373.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614151449212.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614151522382.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614151845511.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614152636868.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614152900181.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614152931023.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614153244524.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614153801973.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614153842957.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614154211285.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614155147989.png">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614155555973.png">
+<meta property="og:image" content="https://github.com/unclestrong/DeepLearning_LHY21_Notes/blob/master/Notes_pic/image-20210429212721750.png?raw=true">
+<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614155914421.png">
+<meta property="article:published_time" content="2022-06-10T13:00:41.874Z">
+<meta property="article:modified_time" content="2023-03-18T11:22:24.648Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220614150150803.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/2NQRYHA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/2NQRYHA/","path":"posts/2NQRYHA/","title":"深度学习（9）Transformer*-p1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习（9）Transformer*-p1 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">
+一、李宏毅 - Transformer_Encoder </span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 Sequence-to-sequence
+(Seq2seq)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Question Answering (QA)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 Seq2seq for Syntactic
+Parsing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> 1.4
+multi-label classification</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 Encoder-Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5.1 Encoder</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Multi-self-attention +
+residual connection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Norm</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">To Learn more</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2NQRYHA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习（9）Transformer*-p1 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习（9）Transformer*-p1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-10 21:00:41" itemprop="dateCreated datePublished" datetime="2022-06-10T21:00:41+08:00">2022-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-18 19:22:24" itemprop="dateModified" datetime="2023-03-18T19:22:24+08:00">2023-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="一-李宏毅-transformer_encoder"><strong><font color="red">
+一、李宏毅 - Transformer_Encoder </font></strong></span></h2>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614150150803.png" alt="image-20220614150150803" style="zoom:50%;"></p>
+<p>变形金刚的英文就是Transformer,那Transformer也跟我们之后会,提到的BERT有非常强烈的关系,所以这边有一个BERT探出头来,代表说Transformer跟BERT,是很有关系的。</p>
+<h3><span id="11-sequence-to-sequenceseq2seq">1.1 Sequence-to-sequence
+(Seq2seq)</span></h3>
+<p>Transformer就是一个,==Sequence-to-sequence==的model,他的缩写,我们会写做==Seq2seq==,那Sequence-to-sequence的model,又是什么呢？</p>
+<p>举例来说,Seq2seq一个很好的应用就是 <strong>语音辨识</strong>：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614150604358.png" alt="image-20220614150604358" style="zoom:50%;"></p>
+<p>在做语音辨识的时候,输入是声音讯号<strong>,声音讯号其实就是一串的vector</strong>,输出是语音辨识的结果,也就是输出的这段声音讯号,所对应的文字。我们这边用圈圈来代表文字,每一个圈圈就代表,比如说中文里面的一个方块子,今天<strong>输入跟输出的长度,当然是有一些关系,但是却没有绝对的关系</strong>，输入的声音讯号,他的长度是大T,我们并没有办法知道说,根据大T输出的这个长度N一定是多少。<strong>输出的长度由机器自己决定</strong>,由机器自己去听这段声音讯号的内容,自己决定他应该要输出几个文字,他输出的语音辨识结果,输出的句子里面应该包含几个字,由机器自己来决定,这个是语音辨识。</p>
+<h3><span id="12-question-answering-qa">1.2 Question Answering (QA)</span></h3>
+<p>那事实上Seq2Seq model,在NLP的领域,在natural language
+processing的领域的使用,是比你想像的更为广泛,其实很多<strong>natural
+language processing的任务,都可以想成是==question
+answering,QA==的任务。</strong>Question
+Answering,就是给机器读一段文字,然后你问机器一个问题,希望他可以给你一个正确的答案。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151056373.png" alt="image-20220614151056373" style="zoom:50%;"></p>
+<ul>
+<li>假设你今天想做的是翻译,那机器读的文章就是一个英文句子,<strong>问题</strong>就是这个句子的德文翻译是什么,然后输出的<strong>答案</strong>就是德文</li>
+<li>或者是你想要叫机器自动作摘要,摘要就是给机器读一篇长的文章,叫他把长的文章的重点节录出来,那你就是给机器一段文字,<strong>问题</strong>是这段文字的摘要是什么,然后期待他<strong>答案</strong>可以输出一个摘要</li>
+<li>或者是你想要叫机器做Sentiment analysis,Sentiment
+analysis就是机器要自动判断一个句子,是正面的还是负面的；假设你有做了一个产品,然后上线以后,你想要知道网友的评价,但是你又不可能一直找人家ptt上面,把每一篇文章都读过,所以就做一个Sentiment
+analysis
+model,看到有一篇文章里面,有提到你的产品,然后就把这篇文章丢到,你的model里面,去判断这篇文章,是正面还是负面。你就给机器要判断正面还负面的文章,<strong>问题</strong>就是这个句子,是正面还是负面的,然后希望机器可以告诉你<strong>答案</strong></li>
+</ul>
+<p>必须要强调一下,对多数NLP的任务,或对多数的语音相关的任务而言,往往为这些任务<strong>客制化模型,你会得到更好的结果</strong>。但是各个任务客制化的模型,就不是我们这一门课的重点了,如果你对人类语言处理,包括语音
+包括自然语言处理,这些相关的任务有兴趣的话呢,可以参考一下以下课程网页的<a href="Source%20webpage:%20https://speech.ee.ntu.edu.tw/~hylee/dlhlp/2020-spring.html">连结</a>,就是去年上的深度学习,与人类语言处理,这门课的内容里面就会教你,各式各样的任务最好的模型,应该是什么。</p>
+<blockquote>
+<p>举例来说在做语音辨识,我们刚才讲的是一个Seq2Seq
+model,输入一段声音讯号,直接输出文字,今天啊 Google的
+pixel4,Google官方告诉你说,Google pixel4也是用,N to N的Neural
+network,pixel4里面就是,有一个Neural
+network,输入声音讯号,输出就直接是文字。</p>
+<p>但他其实用的不是Seq2Seq model,他用的是一个叫做,RNN transducer的
+model,像这些模型他就是为了,语音的某些特性所设计,这样其实可以表现得更好,至于每一个任务,有什么样客制化的模型,这个就是另外一门课的主题,就不是我们今天想要探讨的重点。</p>
+</blockquote>
+<h3><span id="13-seq2seq-for-syntacticparsing">1.3 Seq2seq for Syntactic
+Parsing</span></h3>
+<p>在语音还有自然语言处理上的应用,其实有很多应用,你<strong>不觉得他是一个Seq2Seq
+model的问题,但你都可以硬用Seq2Seq model的问题硬解他</strong>。</p>
+<p>举例来说<strong>文法剖析</strong>,给机器一段文字,比如Deep learning is
+very powerful</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151449212.png" alt="image-20220614151449212" style="zoom:50%;"></p>
+<p>机器要做的事情是产生,一个<strong>文法的剖析树</strong>
+告诉我们,deep加learning合起来,是一个名词片语,very加powerful合起来,是一个形容词片语,形容词片语加is以后会变成,一个动词片语,动词片语加名词片语合起来,是一个句子。</p>
+<p>那今天文法剖析要做的事情,就是产生这样子的一个Syntactic
+tree,所以在文法剖析的任务里面,假设你想要deep
+learning解的话,输入是一段文字,他是一个Sequence,但输出看起来不像是一个Sequence,输出是一个树状的结构,但<strong>事实上一个树状的结构,可以硬是把他看作是一个Sequence</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151522382.png" alt="image-20220614151522382" style="zoom:50%;"></p>
+<p>这个树状结构可以对应到一个,这样子的Sequence,从这个Sequence里面,你也可以看出</p>
+<ul>
+<li>这个树状的结构有一个S，有一个左括号,有一个右括号</li>
+<li>S里面有一个noun phrase,有一个左括号跟右括号</li>
+<li>NP里面有一个左括号跟右括号,NP里面有is</li>
+<li>然后有这个形容词片语,他有一个左括号右括号</li>
+</ul>
+<p>这一个<strong>Sequence就代表了这一个tree
+的structure</strong>,你先把tree
+的structure,转成一个Sequence以后,你就可以用Seq2Seq
+model硬解他。train一个Seq2Seq
+model,读这个句子,然后直接输入这一串文字,再把这串文字转成一个树状的结构,你就可以硬是用Seq2Seq
+model,来做文法剖析这件事,这个概念听起来非常的狂,但这是真的可以做得到的。</p>
+<h3><span id="14multi-label-classification"><strong><font color="red"> 1.4
+multi-label classification</font></strong></span></h3>
+<p>还有一些任务可以用seq2seq's model,举例来说
+==multi-label的classification==。==multi-class==的classification,跟==multi-label==的classification,听起来名字很像,但他们其实是不一样的事情,multi-class的classification意思是说,我们有不只一个class机器要做的事情,是从数个class里面,选择某一个class出来。</p>
+<p>但是multi-label的classification,意思是说<strong>同一个东西,它可以属于多个class</strong>,举例来说
+你在做文章分类的时候。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151845511.png" alt="image-20220614151845511" style="zoom:50%;"></p>
+<p>可能这篇文章 属于class 1跟3,这篇文章属于class 3 9
+17等等,你可能会说,这种multi-label
+classification的问题,能不能<strong>直接把它当作一个multi-class
+classification的问题来解</strong></p>
+<p>举例来说,我把这些文章丢到一个classifier里面：</p>
+<ul>
+<li><strong>本来classifier只会输出一个答案,输出分数最高的那个答案</strong></li>
+<li><strong>我现在就输出分数最高的前三名,看看能不能解,multi-label的classification的问题</strong></li>
+</ul>
+<p>但<strong>这种方法可能是行不通的</strong>,因为每一篇文章对应的class的数目,根本不一样
+有些东西 有些文章,对应的class的数目,是两个 有的是一个 有的是三个。所以
+如果你说 我直接取一个threshold,我直接取分数最高的前三名,class file
+output分数最高的前三名,来当作我的输出 显然,不一定能够得到好的结果
+那怎么办呢？</p>
+<p>这边可以用seq2seq硬做,<strong>输入一篇文章</strong>
+<strong>输出就是class</strong> 就结束了,机器自己决定
+它要输出几个class。我们说seq2seq
+model,就是由机器自己决定输出几个东西,输出的output
+sequence的长度是多少,既然你没有办法决定class的数目,那就让机器帮你决定,每篇文章
+要属于多少个class。</p>
+<h3><span id="15-encoder-decoder">1.5 Encoder-Decoder</span></h3>
+<p><strong><font color="red">
+我们现在就是要来学,怎么做seq2seq这件事,一般的seq2seq's
+model,它里面会分成两块一块是Encoder,另外一块是Decoder。</font></strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614152636868.png" alt="image-20220614152636868" style="zoom:50%;"></p>
+<p>你input一个sequence有Encoder,负责处理这个sequence,再把处理好的结果丢给Decoder,由Decoder决定,它要输出什么样的sequence,等一下
+我们都还会再细讲,Encoder跟 Decoder内部的架构。seq2seq
+model的起源,其实非常的早 在14年的9月,就有一篇seq2seq's
+model,用在翻译的文章 被放到Arxiv上。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614152900181.png" alt="image-20220614152900181" style="zoom:50%;"></p>
+<p><strong>可以想像当时的seq2seq's
+model,看起来还是比较年轻的,今天讲到seq2seq's
+model的时候,大家第一个会浮现在脑中的,可能都是我们今天的主角,也就是transformer</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614152931023.png" alt="image-20220614152931023" style="zoom: 50%;"></p>
+<p>它有一个Encoder架构,有一个Decoder架构,它里面有很多花花绿绿的block,等一下就会讲一下,这里面每一个花花绿绿的block,分别在做的事情是什么。</p>
+<h3><span id="151-encoder">1.5.1 Encoder</span></h3>
+<p><strong><font color="red"> seq2seq model
+==Encoder==要做的事情,就是给一排向量，输出另外一排向量</font></strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614153244524.png" alt="image-20220614153244524" style="zoom:50%;"></p>
+<p>给一排向量、输出一排向量这件事情,很多模型都可以做到,可能第一个想到的是,我们刚刚讲完的self-attention,其实不只self-attention,RNN
+CNN 其实也都能够做到,input一排向量, output另外一个同样长度的向量。</p>
+<p>在transformer里面,transformer的Encoder,用的就是self-attention,
+这边看起来有点复杂,我们用另外一张图,来仔细地解释一下,这个Encoder的架构,等一下再来跟原始的transformer的,论文里面的图进行比对。</p>
+<p>现在的Encoder里面,会<strong>分成很多很多的block</strong>：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614153801973.png" alt="image-20220614153801973" style="zoom:50%;"></p>
+<p>每一个block都是输入一排向量,输出一排向量,你输入一排向量
+第一个block,第一个block输出另外一排向量,再输给另外一个block,到最后一个block,会输出最终的vector
+sequence,<strong>每一个block 其实,并不是neural
+network的一层</strong>。</p>
+<p><strong>每一个block里面做的事情,是好几个layer在做的事情</strong>,在transformer的Encoder里面,每一个block做的事情,大概是这样子的：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614153842957.png" alt="image-20220614153842957" style="zoom:50%;"></p>
+<ul>
+<li><strong><font color="red">先做一个self-attention,input一排vector以后,做self-attention,考虑整个sequence的资讯，Output另外一排vector。</font></strong></li>
+<li><strong><font color="red"> 接下来这一排vector,会再丢到fully
+connected的feed forward
+network里面,再output另外一排vector,这一排vector就是block的输出。</font></strong></li>
+</ul>
+<h4><span id="multi-self-attention-residual-connection">Multi-self-attention +
+residual connection</span></h4>
+<p>事实上在原来的<strong>transformer里面,它做的事情是更复杂的</strong>。在之前self-attention的时候,我们说
+输入一排vector,就输出一排vector,这边的每一个vector,它是<strong>考虑了所有的input以后</strong>,所得到的结果：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614154211285.png" alt="image-20220614154211285" style="zoom:50%;"></p>
+<p>在transformer里面,它加入了一个设计,我们<strong>不只是输出这个vector</strong>,我们还要<strong>把这个vector加上它的input</strong>,它要把input拉过来
+直接加给输出,得到新的output。也就是说,这边假设这个vector叫做<span class="math inline">\(a\)</span>,这个vector叫做<span class="math inline">\(b\)</span> 你要把<span class="math inline">\(a+b\)</span>当作是新的输出。</p>
+<p><strong><font color="red"> 这样子的network架构,叫做==residual
+connection==,那其实这种residual connection</font></strong>,在deep
+learning的领域用的是非常的广泛,之后如果我们有时间的话,再来详细介绍,为什么要用residual
+connection。</p>
+<p>那你现在就先知道说,有一种network设计的架构,叫做<strong>residual
+connection,它会把input直接跟output加起来,得到新的vector。</strong></p>
+<h4><span id="norm">Norm</span></h4>
+<p>得到<strong>residual</strong>的结果以后,再把它做一件事情叫做<strong>normalization</strong>,这边用的不是batch
+normalization,这边用的叫做==<strong>layer normalization</strong>==。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614155147989.png" alt="image-20220614155147989" style="zoom:50%;"></p>
+<p>layer normalization做的事情,比bacth
+normalization更简单一点。输入一个向量，输出另外一个向量,不需要考虑batch,它会<strong>把输入的这个向量,计算它的mean跟standard
+deviation</strong>。</p>
+<p>但是要注意一下,<strong>==batch
+normalization==是对不同example,不同feature的同一个dimension,去计算mean跟standard
+deviation</strong>。但<strong>==layer
+normalization==,它是对同一个feature,同一个example里面,不同的dimension,去计算mean跟standard
+deviation</strong></p>
+<p>计算出mean,跟standard deviation以后,就可以做一个normalize,我们把input
+这个vector里面每一个,dimension减掉mean,再除以standard
+deviation以后得到x',就是layer normalization的输出。 <span class="math display">\[
+x&#39;_i=\frac{x_i-m}{\sigma}
+\]</span> <strong>得到layer normalization的输出以后,它的这个输出，才是FC
+network的输入。</strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614155555973.png" alt="image-20220614155555973" style="zoom:50%;"></p>
+<p>而<strong>FC network这边,也有residual的架构</strong>,所以 我们会把FC
+network的input,跟它的output加起来做一下residual,得到新的输出。这个FC
+network做完residual以后,还不是结束
+你要把residual的结果,<strong>再做一次layer
+normalization</strong>,得到的输出,才是residual
+network里面,一个block的输出。</p>
+<p><img src="https://github.com/unclestrong/DeepLearning_LHY21_Notes/blob/master/Notes_pic/image-20210429212721750.png?raw=true" alt="image-20210429212721750" style="zoom:50%;"></p>
+<ul>
+<li>首先有self-attention,其实在input的地方,还有加上<strong>positional
+encoding</strong>,我们之前已经有讲过,如果你只光用self-attention,你没有未知的资讯,所以你需要加上positional的information,然后在这个图上,有特别画出positional的information。</li>
+<li><strong>Multi-Head
+Attention</strong>,这个就是self-attention的block,这边有特别强调说,它是Multi-Head的self-attention。</li>
+<li><strong>Add&amp;norm</strong>,就是residual加layer
+normalization,我们刚才有说self-attention,有加上residual的connection,加下来还要过<strong>layer
+normalization</strong>,这边这个图上的Add&amp;norm,就是residual加layer
+norm的意思。</li>
+<li>接下来,要过<strong>feed forward network</strong>，fc的feed forward
+network以后再做一次<strong>Add&amp;norm</strong>,再做一次residual加layer
+norm,才是一个block的输出。</li>
+</ul>
+<p>然后这个block会重复n次,这个复杂的block,其实在之后会讲到的,一个非常重要的模型BERT里面,会再用到
+BERT,它其实就是transformer的encoder。</p>
+<h2><span id="to-learn-more">To Learn more</span></h2>
+<p>讲到这边 你心里一定充满了问号,就是为什么
+transformer的encoder,要这样设计 不这样设计行不行?</p>
+<p>行
+不一定要这样设计,这个encoder的network架构,现在设计的方式,本文是按照原始的论文讲给你听的,但<strong>原始论文的设计
+不代表它是最好的,最optimal的设计</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614155914421.png" alt="image-20220614155914421" style="zoom:50%;"></p>
+<ul>
+<li>有一篇文章叫,<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2002.04745">on layer
+normalization in the transformer
+architecture</a>，它问的问题就是<strong>为什么,layer
+normalization是放在那个地方呢,</strong>为什么我们是先做,residual再做layer
+normalization,能不能够把layer
+normalization,放到每一个block的input,也就是说 你做residual以后,再做layer
+normalization,再加进去
+你可以看到说左边这个图,是原始的transformer,右边这个图是稍微把block,更换一下顺序以后的transformer,更换一下顺序以后
+结果是会比较好的,这就代表说,原始的transformer
+的架构,并不是一个最optimal的设计,你永远可以思考看看,有没有更好的设计方式</li>
+<li><strong><font color="red"> 再来还有一个问题就是,为什么是layer norm
+为什么是别的,不是别的,为什么不做batch
+normalization</font></strong>,也许这篇paper可以回答你的问题,这篇paper是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2003.07845">Power Norm：,Rethinking Batch
+Normalization In Transformers</a>,它首先告诉你说 为什么,batch
+normalization不如,layer normalization,在Transformers里面为什么,batch
+normalization不如,layer
+normalization,接下来在说,它提出来一个<strong>power
+normalization</strong>,一听就是很power的意思,都可以比layer
+normalization,还要performance差不多或甚至好一点。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/2NQRYHA/" title="深度学习（9）Transformer*-p1">https://powerlzy.github.io/posts/2NQRYHA/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/PSEWDM/" rel="prev" title="深度学习（9）Transformer-code">
+                  <i class="fa fa-chevron-left"></i> 深度学习（9）Transformer-code
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/S7AAWG/" rel="next" title="深度学习（9）Transformer*-p2">
+                  深度学习（9）Transformer*-p2 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

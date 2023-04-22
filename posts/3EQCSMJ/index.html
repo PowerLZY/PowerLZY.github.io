@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="BatchNormalization的原理、作用和实现  Transformer中的归一化(一)：什么是归一化&amp;为什么要归一化 - Gordon Lee的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;476102712 Transformer中的归一化(二)：机器学习中的特征归一化方法 - Gordon Lee的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习（3）Normalization*">
+<meta property="og:url" content="https://powerlzy.github.io/posts/3EQCSMJ/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="BatchNormalization的原理、作用和实现  Transformer中的归一化(一)：什么是归一化&amp;为什么要归一化 - Gordon Lee的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;476102712 Transformer中的归一化(二)：机器学习中的特征归一化方法 - Gordon Lee的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=J%28w_1%2Cw_2%29%3Dw_1%5E2%2Bw_2%5E2%2B5">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=J">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28w_1%2Cw_2%29">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-d0eee8035b29ddc5d8e38befe80aef4f_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28w_1%2Cw_2%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%28w_1%3D0%2Cw_2%3D0%29">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-a3a1fe1d0f5b2ea45863d3ef342f79dc_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z%3Df%28x%2Cy%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z+%3D+c">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D++%5Cbegin%7Bcases%7D+z%3Df%28x%2Cy%29+%5C%5C+z%3Dc+%5C%5C+%5Cend%7Bcases%7D+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=f%28x%2Cy%29%3Dc">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=c">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7Bdy%7D%7Bdx%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=+f%27%28x%29%3D-%5Cfrac%7BF_x%28x%2Cy%29%7D%7BF_y%28x%2Cy%29%7D+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7Bdy%7D%7Bdx%7D+%3D+-%5Cfrac%7Bf_x%7D%7Bf_y%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=-1%2F%28%5Cfrac%7Bdy%7D%7Bdx%7D%29+%3D+-%5Cfrac%7B1%7D%7B-%5Cfrac%7Bf_x%7D%7Bf_y%7D%7D+%3D+%5Cfrac%7Bf_y%7D%7Bf_x%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=gradf%28x%2Cy%29%3D%5Cnabla+f%28x%2Cy%29%3D%28%5Cfrac%7B%5Cpartial+f%7D%7B%5Cpartial+x%7D%2C+%5Cfrac%7B%5Cpartial+f%7D%7B%5Cpartial+y%7D%29%3D%28f_x%2Cf_y%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7Bf_y%7D%7Bf_x%7D">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-0c7ae3e0fca14e787ef7e8f54b68a72f_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat%7By%7D+%3D+w_1+x_1+%2B+w_2x_2%2C+x_1%5Cin%5B0%2C1%5D%2C+x_2%5Cin%5B10%2C100%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=J%28w_1%2Cw_2%29%3D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%28y%5E%7B%28i%29%7D-%28w_1x_1%5E%7B%28i%29%7D%2Bw_2x_2%5E%7B%28i%29%7D%29%29%5E2+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_2+%3E%3E+x_1+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=w_1%2C+w_2+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z+">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-327e6fc1e096d387e2650b4057afd633_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%27+%3D+a+%2B+%5Cfrac%7B%28x-%5Crm%7Bmin%7D%28x%29%29%28b-a%29%7D%7B%5Crm%7Bmax%7D%28x%29-%5Crm%7Bmin%7D%28x%29%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ba%2Cb%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5B0%2C1%5D%2C%5B-1%2C1%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx-%5Crm%7Bmin%7D%28x%29%7D%7B%5Crm%7Bmax%7D%28x%29-%5Crm%7Bmin%7D%28x%29%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx-%5Cmu%7D%7B%5Crm%7Bmax%7D%28x%29-%5Crm%7Bmin%7D%28x%29%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx%7D%7B%5C%7Cx%5C%7C%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5C%7Cx%5C%7C_p+%3A%3D+%28%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dx_i%5Ep%29%5E%7B1%2Fp%7D">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-3858ff2916234963ad0dfcbdcf3ef724_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=p_s%28x%2Cy%29%5Cneq+p_t%28x%2Cy%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=p%28x%2Cy%29%3Dp%28x%7Cy%29p%28y%29%3Dp%28y%7Cx%29p%28x%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=p_s%28x%29%5Cneq+p_t%28x%29%3B+p_s%28y%7Cx%29%3Dp_t%28y%7Cx%29">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-91d6d1b0291a19917129c1147fa5f76f_1440w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-6590bf66e3ff3e7d561a6026975a3c0a_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%7Cf%28x_1%29-f%28x_2%29%7C%5Cleq+L+%5Cparallel+x_1-x_2%5Cparallel">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-3bb28e75a55d22b371a0038968a7e9e7_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=m%5Ctimes+d">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=m+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=j+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu_%7Bj%7D+%3D+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7DZ_j%5E%7B%28i%29%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=j+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%28Z_%7Bj%7D%5E%7B%28i%29%7D-%5Cmu_j%29%5E2">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat%7BZ_j%7D+%3D+%5Cfrac%7BZ_j-%5Cmu_j%7D%7B%5Csqrt%7B%5Csigma%5E2%2B%5Cepsilon%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cepsilon">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cgamma+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbeta+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctilde%7BZ_j%7D+%3D+%5Cgamma_j%5Chat%7BZ_j%7D+%2B+%5Cbeta_j">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cgamma%5E2%3D%5Csigma%5E2%2C%5Cbeta%3D%5Cmu">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctilde%7BZ_j%7D+%3D+%5Cgamma_j+%5Ccdot+%5Cfrac%7BZ_j-%5Cmu_j%7D%7B%5Csqrt%7B%5Csigma%5E2%2B%5Cepsilon%7D%7D+%2B+%5Cbeta_j">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=BN%28Wx%2Bb%29+%3D+BN%28Wx%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu_%7Bbatch%7D%2C+%5Csigma%5E2_%7Bbatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu_%7Btest%7D+%3D+%5Cmathbb%7BE%7D%28%5Cmu_%7Bbatch%7D%29%2C+%5Csigma%5E2_%7Btest%7D%3D+%5Cfrac%7Bm%7D%7Bm-1%7D%5Cmathbb%7BE%7D%28%5Csigma%5E2_%7Bbatch%7D%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=BN%28X_%7Btest%7D%29+%3D+%5Cgamma+%5Ccdot+%5Cfrac%7BX_%7Btest%7D-%5Cmu_%7Btest%7D%7D%7B%5Csqrt%7B%5Csigma%5E2%2B%5Cepsilon%7D%7D%2B%5Cbeta">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D+E%28%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28X_i-%5Coverline%7BX%7D%29%5E2%29+%3D+%5Cfrac%7B1%7D%7Bn%7DE%28%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28X_i-%5Cmu%2B%5Cmu-%5Coverline%7BX%7D%29%5E2%29+%5C%5C%3D+%5Cfrac%7B1%7D%7Bn%7D%28%5Csum_%7Bi%3D1%7D%5E%7Bn%7DE%28%28x_i-%5Cmu%29%5E2%29-nE%28%28%5Coverline%7BX%7D-%5Cmu%29%5E2%29%29+%5C%5C%3D+%5Cfrac%7B1%7D%7Bn%7D%28nVar%28X%29-nVar%28%5Coverline%7BX%7D%29%29%3DVar%28X%29-Var%28%5Coverline%7BX%7D%29%5C%5C%3D%5Csigma%5E2-%5Cfrac%7B%5Csigma%5E2%7D%7Bn%7D+%3D+%5Cfrac%7Bn-1%7D%7Bn%7D%5Csigma%5E2+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=W">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=aW">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=Wx+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu_1+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma_1%5E2+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=aWx">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu_2+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma_2%5E2">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu_2+%3D+a%5Cmu_1%2C%5Csigma_2%5E2%3Da%5E2%5Csigma_1%5E2">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cepsilon">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=BN%28aWx%29+%3D+%5Cgamma+%5Ccdot+%5Cfrac%7BaWx-%5Cmu_2%7D%7B%5Csqrt%7B%5Csigma_2%5E2%7D%7D%2B%5Cbeta%3D%5Cgamma+%5Ccdot+%5Cfrac%7BaWx-a%5Cmu_1%7D%7B%5Csqrt%7Ba%5E2%5Csigma_1%5E2%7D%7D%2B%5Cbeta+%3D+%5Cgamma+%5Ccdot+%5Cfrac%7BWx-%5Cmu_1%7D%7B%5Csqrt%7B%5Csigma_1%5E2%7D%7D%2B%5Cbeta+%3D+BN%28Wx%29">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BBN%28aWx%29%7D%7D%7B%5Cpartial+x%7D+%3D+%5Cgamma%5Ccdot+%5Cfrac%7BaW%7D%7B%5Csqrt%7B%5Csigma%5E2_2%7D%7D+%3D+%5Cgamma%5Ccdot++%5Cfrac%7BaW%7D%7B%5Csqrt%7Ba%5E2%5Csigma%5E2_1%7D%7D%3D+%5Cgamma%5Ccdot++%5Cfrac%7BW%7D%7B%5Csqrt%7B%5Csigma%5E2_1%7D%7D+%3D+%5Cfrac%7B%5Cpartial%7BBN%28Wx%29%7D%7D%7B%5Cpartial+x%7D+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BBN%28aWx%29%7D%7D%7B%5Cpartial+%28aW%29%7D+%3D+%5Cgamma%5Ccdot+%5Cfrac%7Bx%7D%7B%5Csqrt%7B%5Csigma%5E2_2%7D%7D+%3D+%5Cgamma%5Ccdot++%5Cfrac%7Bx%7D%7Ba%5Csqrt%7B%5Csigma%5E2_1%7D%7D%3D+%5Cfrac%7B1%7D%7Ba%7D%5Cfrac%7B%5Cpartial%7BBN%28Wx%29%7D%7D%7B%5Cpartial+W%7D+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x%5Cin+%5Cmathbb%7BR%7D%5E%7BN%5Ctimes+C+%5Ctimes+H+%5Ctimes+W%7D">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-6d444305489675100aef96293cc3a34d_1440w.jpg">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7Bloss%7D%7D%7B%5Cpartial+x%7D">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-0a891a1e26a9497616e3420bae11352a_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-beff996a551d1cbc78fbd2bf94df7af5_1440w.jpg">
+<meta property="article:published_time" content="2022-05-14T14:12:43.171Z">
+<meta property="article:modified_time" content="2023-04-18T13:10:47.230Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=J%28w_1%2Cw_2%29%3Dw_1%5E2%2Bw_2%5E2%2B5">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/3EQCSMJ/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/3EQCSMJ/","path":"posts/3EQCSMJ/","title":"深度学习（3）Normalization*"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习（3）Normalization* | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">BatchNormalization的原理、作用和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">归一化的作用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Batch Normalization 作用：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、什么是归一化&amp;为什么要归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 从函数的等高线说起</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">函数的等高线是什么</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 梯度与等高线的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 从等高线看为什么特征归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、机器学习中的特征归一化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 常见的特征归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">（1）rescaling
+(min-max normalization, range scaling)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">（2）mean
+normalization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">（3）标准化
+standard normalization (z-score normalization)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">（4）scaling to unit
+length</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 标准化和归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">差异</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">用处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">其他：log、sigmod、softmax 变换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、特征归一化在深度神经网络的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1 前置内容：Domain
+Adaption中的Covariate Shift</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 深度神经网络中归一化的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">（1）更好的尺度不变性(即不同层输入的取值范围或者分布都比较一致)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">（2）更平滑的”优化地形“（optimization
+landscape）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.3 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、BatchNormalization的原理、作用和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">概要</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 从缓解ICS现象出发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> 4.2
+Batch Normalization的算法过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">4.3 Batch
+Normalization在测试阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">为什么训练和测试的时候计算方差不一样呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">4.4 Batch Normalization的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">4.5 CNN中的Batch
+Normalization实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、Batch
+Normalization VS Layer Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.1 Batch
+Normalization的些许缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.2 Layer Normalization的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.3 Transformer中Layer
+Normalization的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">5.4
+讨论：Transformer 为什么使用 Layer
+normalization，而不是其他的归一化方法？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">(1)
+Understanding and Improving Layer Normalization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">(2)
+PowerNorm: Rethinking Batch Normalization in Transformers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">(3)
+Leveraging Batch Normalization for Vision Transformers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3EQCSMJ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习（3）Normalization* | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习（3）Normalization*
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-14 22:12:43" itemprop="dateCreated datePublished" datetime="2022-05-14T22:12:43+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 21:10:47" itemprop="dateModified" datetime="2023-04-18T21:10:47+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>27 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1><span id="batchnormalization的原理-作用和实现">BatchNormalization的原理、作用和实现</span></h1>
+<blockquote>
+<p>Transformer中的归一化(一)：什么是归一化&amp;为什么要归一化 - Gordon
+Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/476102712</p>
+<p>Transformer中的归一化(二)：机器学习中的特征归一化方法 - Gordon
+Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/477116352</p>
+<p>Transformer中的归一化(三)：特征归一化在深度神经网络的作用 - Gordon
+Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/481179310</p>
+<p><strong>Transformer中的归一化(四)：BatchNormalization的原理、作用和实现</strong>:https://zhuanlan.zhihu.com/p/481277619?utm_source=wechatMessage_undefined_bottom</p>
+<p><strong>Transformer中的归一化(五)：Layer Norm的原理和实现 &amp;
+为什么Transformer要用LayerNorm</strong> - Gordon Lee的文章 - 知乎
+https://zhuanlan.zhihu.com/p/492803886</p>
+</blockquote>
+<h4><span id="归一化的作用">归一化的作用：</span></h4>
+<ul>
+<li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>==回归系数无法直接解读==</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
+<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>==“距离”的计算==</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
+<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>==梯度下降==</strong>，在使用梯度下降的方法求解最优化问题时，
+归一化/标准化后可以加快梯度下降的求解速度，即<strong>==提升模型的收敛速度==</strong>。</li>
+</ul>
+<h4><span id="batch-normalization-作用">Batch Normalization 作用：</span></h4>
+<ul>
+<li><strong>更好的尺度不变性：</strong>也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
+<ul>
+<li><strong><font color="red">尺度不变性能够提高梯度下降算法的效率，从而加快收敛</font></strong>;</li>
+<li><strong><font color="red">归一化到均值为0，方差为1的分布也能够使得经过sigmoid，tanh等激活函数以后，尽可能落在梯度非饱和区，缓解梯度消失的问题。</font></strong>【<strong>bn和ln都可以比较好的抑制梯度消失和梯度爆炸的情况</strong>】;</li>
+</ul></li>
+<li><strong>更平滑的优化地形：</strong>更平滑的优化地形意味着<strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
+<li><strong><font color="red">
+对参数初始化和学习率大小不太敏感：</font></strong>BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
+<li><strong>隐性的正则化效果：（Batch）</strong>训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
+</ul>
+<span id="more"></span>
+<h2><span id="一-什么是归一化amp为什么要归一化">一、什么是归一化&amp;为什么要归一化</span></h2>
+<h3><span id="概要">概要</span></h3>
+<p>为了讲清楚Transformer中的归一化细节，我们首先需要了解下，什么是归一化，以及为什么要归一化。本文主要解决这两个问题：</p>
+<ul>
+<li><strong>什么是归一化</strong></li>
+<li><strong>为什要归一化</strong></li>
+</ul>
+<h3><span id="11-从函数的等高线说起">1.1 <strong>从函数的等高线说起</strong></span></h3>
+<h4><span id="函数的等高线是什么">函数的等高线是什么</span></h4>
+<p><strong>讨论一个二元损失函数的情况，即损失函数只有两个参数</strong>：
+<img src="https://www.zhihu.com/equation?tex=J%28w_1%2Cw_2%29%3Dw_1%5E2%2Bw_2%5E2%2B5" alt="[公式]"></p>
+<ul>
+<li>下图就是这个损失函数的图像，<strong>等高线就是函数 <img src="https://www.zhihu.com/equation?tex=J" alt="[公式]"> 在参数平面
+<img src="https://www.zhihu.com/equation?tex=%28w_1%2Cw_2%29" alt="[公式]"> 上的投影</strong></li>
+<li>等高的理解：<strong>在投影面上的任意一个环中，所有点的函数值都一样</strong></li>
+<li>等高的理解：在函数曲面上存在一个环，环上所有点的函数值一样，即距离投影平面的距离都一样</li>
+</ul>
+<p><img src="https://pic4.zhimg.com/80/v2-d0eee8035b29ddc5d8e38befe80aef4f_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<p><strong>具体看这个参数平面的话，绘制等高线图是：</strong></p>
+<ul>
+<li>任意一个环上的不同参数取值 <img src="https://www.zhihu.com/equation?tex=%28w_1%2Cw_2%29" alt="[公式]">
+，其函数值都一样</li>
+<li>可以看到，当 <img src="https://www.zhihu.com/equation?tex=%28w_1%3D0%2Cw_2%3D0%29" alt="[公式]"> 时，函数值=5，即全局最小点</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-a3a1fe1d0f5b2ea45863d3ef342f79dc_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<h3><span id="12-梯度与等高线的关系">1.2 梯度与等高线的关系</span></h3>
+<p>假设存在一个损失函数 <img src="https://www.zhihu.com/equation?tex=z%3Df%28x%2Cy%29" alt="[公式]"> ，在空间中是一个曲面，当其被一个平面 <img src="https://www.zhihu.com/equation?tex=z+%3D+c" alt="[公式]">
+，c为常数所截后，得到的曲线方程是：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D++%5Cbegin%7Bcases%7D+z%3Df%28x%2Cy%29+%5C%5C+z%3Dc+%5C%5C+%5Cend%7Bcases%7D+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>曲线在xoy平面上的投影是一个平面曲线，即 <img src="https://www.zhihu.com/equation?tex=f%28x%2Cy%29%3Dc" alt="[公式]">
+，即损失函数在xoy平面的某一条等高线，在这条等高线上，所有函数值均为 <img src="https://www.zhihu.com/equation?tex=c" alt="[公式]"> 。</p>
+<p>在这条等高线上，任意一点的切线斜率为 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bdy%7D%7Bdx%7D" alt="[公式]"> 。由隐函数存在定理：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=+f%27%28x%29%3D-%5Cfrac%7BF_x%28x%2Cy%29%7D%7BF_y%28x%2Cy%29%7D+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>可知： <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bdy%7D%7Bdx%7D+%3D+-%5Cfrac%7Bf_x%7D%7Bf_y%7D" alt="[公式]"></p>
+<p>任意一点的法线由于和切线垂直，所以斜率相乘为-1，则法线斜率为:</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=-1%2F%28%5Cfrac%7Bdy%7D%7Bdx%7D%29+%3D+-%5Cfrac%7B1%7D%7B-%5Cfrac%7Bf_x%7D%7Bf_y%7D%7D+%3D+%5Cfrac%7Bf_y%7D%7Bf_x%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>又由梯度的定义：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=gradf%28x%2Cy%29%3D%5Cnabla+f%28x%2Cy%29%3D%28%5Cfrac%7B%5Cpartial+f%7D%7B%5Cpartial+x%7D%2C+%5Cfrac%7B%5Cpartial+f%7D%7B%5Cpartial+y%7D%29%3D%28f_x%2Cf_y%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>梯度向量的斜率，即正切值= <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bf_y%7D%7Bf_x%7D" alt="[公式]">
+，可以看到恰好等于法线的斜率，因此：<strong>梯度的方向和等高线上的切线时时垂直。</strong></p>
+<h3><span id="13-从等高线看为什么特征归一化">1.3 从等高线看为什么特征归一化</span></h3>
+<p><strong><font color="red">
+采用梯度下降算法时，因为梯度的方向和等高线的切线是垂直的，所以沿着梯度反方向迭代时，实际就是垂直于等高线一步步迭代。</font></strong>如下图所示，这是两种不同的等高线采用梯度下降算法时的迭代情况。<strong><font color="red">
+很明显，左图也就是等高线呈现正圆形时能够有最少的迭代步数，因此收敛速度更快。</font></strong>然而在有些情况下，等高线是椭圆形的，会有更多的迭代步数才能到达函数最低点，收敛变慢。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-0c7ae3e0fca14e787ef7e8f54b68a72f_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p>那么，<strong>什么时候会出现这种椭圆形的等高线情况呢？我们对线性回归和逻辑回归分别进行分析。</strong></p>
+<p>以线性回归为例，假设某线性回归模型为 <img src="https://www.zhihu.com/equation?tex=%5Chat%7By%7D+%3D+w_1+x_1+%2B+w_2x_2%2C+x_1%5Cin%5B0%2C1%5D%2C+x_2%5Cin%5B10%2C100%5D" alt="[公式]"> 。目标函数为(忽略偏置)：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=J%28w_1%2Cw_2%29%3D%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%28y%5E%7B%28i%29%7D-%28w_1x_1%5E%7B%28i%29%7D%2Bw_2x_2%5E%7B%28i%29%7D%29%29%5E2+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>从上式可以看出，由于 <img src="https://www.zhihu.com/equation?tex=x_2+%3E%3E+x_1+" alt="[公式]">
+，那么当 <img src="https://www.zhihu.com/equation?tex=w_1%2C+w_2+" alt="[公式]">
+产生相同的增量时，后者能产生更大的函数变化值，从而产生椭圆形的环状等高线。本质上，这是因为输入的特征的尺度（即取值范围)不一样！</p>
+<p><strong><font color="red">
+因此，在线性回归中若各个特征变量之间的取值范围差异较大，则会导致目标函数收敛速度慢等问题，需要对输入特征进行归一化，尽量避免形成椭圆形的等高线。</font></strong></p>
+<p><strong>以逻辑回归为例，由于逻辑回归中特征组合的加权和还会作用上sigmoid函数</strong>，影响收敛的因素，除了梯度下降算法的效率外，更重要的是最后的输出
+<img src="https://www.zhihu.com/equation?tex=z+" alt="[公式]">
+的大小的影响。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-327e6fc1e096d387e2650b4057afd633_1440w.jpg" alt="img" style="zoom:33%;"></p>
+<p>从上图可以看出，当z的值小于-5左右时，函数值约等于0，当z的值大于5左右时，函数值约等于1。<strong>这两种情况下面，梯度趋近于0，使得参数无法得到更新</strong>。因此，对于逻辑回归来说，主要影响的是特征组合加权和后的sigmoid输出，而特征的输入范围又会影响最终的sigmoid输出，影响模型的收敛性，所以要对输入特征进行归一化，避免最后的输出处于梯度饱和区。</p>
+<h3><span id="14-总结">1.4 总结</span></h3>
+<p>总结来说，<strong>输入特征的尺度会影响梯度下降算法的迭代步数以及梯度更新的难度，从而影响训练的收敛性。</strong></p>
+<p><strong>因此，我们需要对特征进行归一化，即使得各个特征有相似的尺度。</strong></p>
+<h2><span id="二-机器学习中的特征归一化方法">二、机器学习中的特征归一化方法</span></h2>
+<p>在迈入深度神经网络之前，本文主要介绍下传统机器学习中有哪些特征归一化方法。</p>
+<h3><span id="21-常见的特征归一化">2.1 常见的特征归一化</span></h3>
+<p>上文我们讲了特征归一化，就是要让各个特征有相似的尺度。相似的尺度一般是讲要有相似的取值范围。因此我们可以通过一些方法<strong>把特征的取值范围约束到一个相同的区间</strong>。另一方面，这个尺度也可以理解为这些特征都是从一个相似的分布中采样得来。因此我们还可以通过一些方法<strong>使得不同特征的取值均符合相似的分布</strong>。这里我们介绍一些常见的特征归一化方法的细节，原理和实现。</p>
+<h4><span id="1rescalingmin-max-normalization-range-scaling">（1）rescaling
+(min-max normalization, range scaling)</span></h4>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=x%27+%3D+a+%2B+%5Cfrac%7B%28x-%5Crm%7Bmin%7D%28x%29%29%28b-a%29%7D%7B%5Crm%7Bmax%7D%28x%29-%5Crm%7Bmin%7D%28x%29%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>这里是把每一维的值都映射到目标区间</strong> <img src="https://www.zhihu.com/equation?tex=%5Ba%2Cb%5D" alt="[公式]">
+。一般常用的目标区间是 <img src="https://www.zhihu.com/equation?tex=%5B0%2C1%5D%2C%5B-1%2C1%5D" alt="[公式]"> 。特别的，映射到0和1区间的的计算方式为： <img src="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx-%5Crm%7Bmin%7D%28x%29%7D%7B%5Crm%7Bmax%7D%28x%29-%5Crm%7Bmin%7D%28x%29%7D" alt="[公式]"> 。</p>
+<h4><span id="2meannormalization">（2）<strong>mean
+normalization</strong></span></h4>
+<p><img src="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx-%5Cmu%7D%7B%5Crm%7Bmax%7D%28x%29-%5Crm%7Bmin%7D%28x%29%7D" alt="[公式]"> 。这里 <img src="https://www.zhihu.com/equation?tex=%5Cmu" alt="[公式]">
+指的向量的均值。与上面不同的是，这里减去的是均值。这样能<strong>够保证向量中所有元素的均值为0</strong>。</p>
+<h4><span id="3标准化standard-normalization-z-score-normalization">（3）<strong>标准化
+standard normalization (z-score normalization)</strong></span></h4>
+<p><img src="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx-%5Cmu%7D%7B%5Csigma%7D" alt="[公式]"> 。这里 <img src="https://www.zhihu.com/equation?tex=%5Csigma+" alt="[公式]">
+指的是向量的标准差。更常见的是这种，使得所有元素的均值为0，方差为1。</p>
+<h4><span id="4scaling-to-unitlength">（4）<strong>scaling to unit
+length</strong></span></h4>
+<p><img src="https://www.zhihu.com/equation?tex=x%27+%3D+%5Cfrac%7Bx%7D%7B%5C%7Cx%5C%7C%7D" alt="[公式]">
+。这里是把向量除以其长度，即对向量的长度进行归一化。长度度量一般采用L1范数或者L2范数。</p>
+<p><strong>范数（英语：Norm），是具有“长度”概念的函数</strong>。在线性代数、泛函分析及相关的数学领域，是一个函数，其为向量空间内的所有向量赋予非零的正长度或大小。Lp(p=1..n)范数:
+<img src="https://www.zhihu.com/equation?tex=%5C%7Cx%5C%7C_p+%3A%3D+%28%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dx_i%5Ep%29%5E%7B1%2Fp%7D" alt="[公式]"> 。</p>
+<h3><span id="22-原理">2.2 原理</span></h3>
+<p>总结来看，前三种特征归一化方法的计算方式是<strong>减一个统计量再除以一个统计量</strong>，最后一种为<strong>除以向量自身的长度。</strong></p>
+<ul>
+<li><strong>减去一个统计量可以看做选哪个值作为原点</strong>（是最小值或者均值），然后将整个数据集都平移到这个新的原点位置。如果特征之间的偏置不同会对后续过程产生负面影响，则该操作是有益的，可以看做某种偏置无关操作。如果原始特征值是有特殊意义的，则该操作可能会有害。<strong>如何理解</strong>：对于一堆二维数据，计算均值得到(a,b)，减去这个均值点，就相当于把整个平面直角坐标系平移到这个点上，为什么呢？因为(a,b)-(a,b)
+= (0,0)就是原点，其他的点在x轴和y轴上做相应移动。</li>
+<li><strong>除以一个统计量可以看做在坐标轴方向上对特征进行缩放</strong>，用于降低特征尺度的影响，可以看做某种特征无关操作。缩放可以采用最大值和最小值之间的跨度，也可以用标准差(到中心点的平均距离)。<strong>如何理解</strong>：(a,b)/
+3 = (a/3,
+b/3)，就相当于这些点在x轴上的值缩小三倍，在y轴上缩小三倍。</li>
+<li><strong>除以长度相当于把长度归一化，把所有特征都映射到单位球上，</strong>可以看作某种长度无关操作。比如词频特征要移除文章长度的影响，图像处理中某些特征要移除光照强度的影响，以及方便计算向量余弦相似度等。<strong>如何理解</strong>：除以向量的模，实际就是让向量的长度为1，这样子，若干个n维向量就分布在一个单位球上，只是方向不同。</li>
+</ul>
+<p>更直观地，可以从下图（来自于CS231n课程）观察上述方法的作用。下图是一堆二维数据点的可视化，<strong>可以看到，减去了每个维度的均值
+以后，数据点的中心移动到了原点位置，进一步的，每个维度用标准差缩放以后</strong>，在每个维度上，数据点的取值范围均保持相同。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-3858ff2916234963ad0dfcbdcf3ef724_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h3><span id="23-标准化和归一化">2.3 标准化和归一化</span></h3>
+<blockquote>
+<p>PCA、k-means、回归模型、神经网络</p>
+</blockquote>
+<h4><span id="定义">定义</span></h4>
+<p><strong>归一化和标准化</strong>都是对<strong>数据做变换</strong>的方式，将原始的一列数据转换到某个范围，或者某种形态，具体的：</p>
+<ul>
+<li><strong>归一化(Normalization)</strong>：将一列数据变化到某个固定区间(范围)中，通常，这个区间是[0,
+1]，广义的讲，可以是各种区间，比如映射到[0，1]一样可以继续映射到其他范围，图像中可能会映射到[0,255]，其他情况可能映射到[-1,1]；</li>
+<li><strong>标准化(Standardization)</strong>：将数据变换为均值为0，标准差为1的分布切记，<strong>==并非一定是正态的；==</strong></li>
+<li><strong>中心化</strong>：另外，还有一种处理叫做中心化，也叫零均值处理，就是将每个原始数据减去这些数据的均值。</li>
+</ul>
+<h4><span id="差异">差异</span></h4>
+<blockquote>
+<p><strong>归一化：对处理后的数据范围有严格要求;</strong></p>
+<p><strong>标准化: 数据不为稳定，存在极端的最大最小值;
+涉及距离度量、协方差计算的时候;</strong></p>
+</blockquote>
+<ul>
+<li><strong>归一化会严格的限定变换后数据的范围</strong>，比如按之前最大最小值处理的，它的范围严格在[
+0 , 1
+]之间；而<strong>标准化</strong>就没有严格的区间，变换后的数据没有范围，只是其均值是0，标准差为1。</li>
+<li><strong>归一化的缩放比例仅仅与极值有关</strong>，容易受到异常值的影响。</li>
+</ul>
+<h4><span id="用处">用处</span></h4>
+<ul>
+<li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>==回归系数无法直接解读==</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
+<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>==“距离”的计算==</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
+<li><strong>加速收敛</strong>：参数估计时使用<strong>==梯度下降==</strong>，在使用梯度下降的方法求解最优化问题时，
+归一化/标准化后可以加快梯度下降的求解速度，即<strong>==提升模型的收敛速度==</strong>。</li>
+<li><del><strong>L1、L2正则化减少过拟合</strong></del></li>
+</ul>
+<h4><span id="其他log-sigmod-softmax-变换">其他：log、sigmod、softmax 变换</span></h4>
+<h3><span id="三-特征归一化在深度神经网络的作用">三、特征归一化在深度神经网络的作用</span></h3>
+<p>今天我们开始介绍这些特征归一化方法在复杂的深度神经网络的作用</p>
+<h3><span id="31-前置内容domainadaption中的covariate-shift">3.1 前置内容：Domain
+Adaption中的Covariate Shift</span></h3>
+<p>在讲传统机器学习的特征归一化在深度网络中的应用之前，先要讲下迁移学习中的领域自适应（DA）。在迁移学习中，源域有很多标注数据，目标域没有或者只有少量的标注数据，但是有大量无标注数据。比如常见的问题就是机器学习模型的泛化性问题，希望在A领域上训练的模型，能够在B领域也有比较好的性能。</p>
+<p>在DA中，一般假设源领域和目标领域有相同的样本空间，比如猫狗分类问题，样本空间就是两个类：猫和狗，但是数据分布不同
+<img src="https://www.zhihu.com/equation?tex=p_s%28x%2Cy%29%5Cneq+p_t%28x%2Cy%29" alt="[公式]"> 。由贝叶斯公式可以把这个联合分布分解为 <img src="https://www.zhihu.com/equation?tex=p%28x%2Cy%29%3Dp%28x%7Cy%29p%28y%29%3Dp%28y%7Cx%29p%28x%29" alt="[公式]"> 。所以数据分布不一致有3种情况：(具体可以看我的回答：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/293820673/answer/2308925558">在迁移学习中，边缘概率分布和条件概率分布有什么含义？</a>)。这里主要介绍Covariate
+Shift现象。</p>
+<p>variate指的是一个随机变量，co-variate指的是随这个随机变量变化的另一个随机变量。Covariate
+Shift指的就是：<strong>源领域和目标领域的输入边缘分布不同</strong>，但是条件分布相同
+<img src="https://www.zhihu.com/equation?tex=p_s%28x%29%5Cneq+p_t%28x%29%3B+p_s%28y%7Cx%29%3Dp_t%28y%7Cx%29" alt="[公式]"> 。以猫狗识别问题为例：</p>
+<ul>
+<li>源领域中的狗都是哈士奇，而目标领域中的狗都是拉布拉多，所以输入的边缘分布不同。</li>
+<li>不管是什么狗，最后输出为狗的概率都为1，也就是输出的label都要是狗，也就是条件分布相同，也就是学习任务是相同的。</li>
+<li>解决这种情况的做法一般是学习一个domain
+invariant的representation，也就是不管是什么领域的狗，最后输出都要是狗这个标签。</li>
+</ul>
+<h3><span id="32-深度神经网络中归一化的作用">3.2 深度神经网络中归一化的作用</span></h3>
+<p>把传统机器学习中的特征归一化方法用在具有多个隐藏层的深度神经网络中，对隐藏层的输入进行归一化，也能够提升训练效率。其”可能“的原因有几派的观点：</p>
+<h4><span id="1更好的尺度不变性即不同层输入的取值范围或者分布都比较一致">（1）更好的尺度不变性(即不同层输入的取值范围或者分布都比较一致)</span></h4>
+<p>一般上认为，<strong>深度神经网络中存在一种叫做internal covariate
+shift
+(ICS)的现象</strong>：在深度神经网络中，一个神经层的输入是之前神经层的输出。给定一个神经层，它之前的所有神经层的参数变化会导致其输入的分布发生较大的改变。当使用随机梯度下降来训练网络时，每次参数更新都会导致该神经层的输入分布发生改变。越高的层，其输入分布会改变得越明显．就像一栋高楼，低楼层发生一个较小的偏移，可能会导致高楼层较大的偏移。</p>
+<p>该现象会导致下面几个问题：</p>
+<ul>
+<li><strong>在训练的过程中，网络需要不断适应新的输入数据分布（其实就是之前讲的梯度更新迭代步数增多），所以会大大降低学习速度</strong>。</li>
+<li>由于参数的分布不同，所以可能导致很多数据落入梯度饱和区，使得学习过早停止。</li>
+<li>某些参数分布偏离太大，对其他层或者输出产生了巨大影响。</li>
+</ul>
+<p>对比上面的概念就是：在神经网络的各层输出，由于它们经过了层内操作作用，其分布显然与各层对应的输入分布不同，而且差异会随着网络深度增大而增大。<strong>各层的输入和输出分布可以看作源领域和目标领域的输入边缘分布</strong>（因为这一层的输出分布也是下一层的输入分布），<strong>显然这两个分布已经变的不同了，但是其要预测的条件分布是相同的</strong>，因为两个输入预测出来的最后的label肯定要是一样的。</p>
+<p><strong>为了缓解ICS问题，需要对隐藏层的输入进行归一化</strong>，比如都归一化成标准正态分布，可以使得每个神经层对其输入具有更好的尺度不变性．不论低层的参数如何变化，高层的输入保持相对稳定。</p>
+<h4><span id="2更平滑的优化地形optimizationlandscape">（2）更平滑的”优化地形“（optimization
+landscape）</span></h4>
+<p>在NIPS2018的<a href="https://link.zhihu.com/?target=http%3A//cn.arxiv.org/abs/1805.11604">How
+Does Batch Normalization Help
+Optimization?</a>一文中，作者详细阐述了batch normalization
+(一种用在DNN上的归一化方法)真正起作用的原因。该文中对ICS有了更精要的阐述，即该层的输入分布会因为之前层的更新而发生改变。同时，论文提出了两个问题，即<strong>BN的作用是否与ICS相关，以及BN是否会消除或减少ICS</strong>。</p>
+<p>为了探究第一个问题，作者在BN层后面人为引入了一个随时间随机改变（该分布不容易被DNN学到）的噪声分布（即人为引入漂移现象，使得下一层的分布不再稳定）。结果发现，<strong>加了噪声以后，层的分布的稳定性（通过可视化每层采样一定神经元的激活值来度量分布的方差和均值）并不好，但是最后的效果依然很好，</strong>这说明BN层和ICS似乎没有啥关系。（因为加了BN层，虽然分布不稳定，但是效果依然好）。</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-91d6d1b0291a19917129c1147fa5f76f_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>为了探究第二个问题，作者又设计了指标来量化ICS现象：通过测量更新到前一层和当前层的梯度差异(L2距离)来量化一个层中的参数在多大程度上必须“调整”以应对前一层中的参数更新。理想来说<strong>，ICS现象越小，上一层参数更新对当前层的分布影响越小，梯度变化程度越小。</strong>最后实验发现BN并不能减少ICS，甚至可能还会有一定程度上的增加。</p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-6590bf66e3ff3e7d561a6026975a3c0a_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>由此，作者认为BN层的作用可能和ICS没啥关系，也不能减少ICS。而作者认为，<strong>BN的作用在于使得optimization
+landscape更加光滑。</strong></p>
+<p><strong>神经网络的高维损失函数构成了一个损失曲面，也被称为优化地形（optimization
+landscape）。</strong>这里用<img src="https://www.zhihu.com/equation?tex=L" alt="[公式]">-Lipschitz函数即<img src="https://www.zhihu.com/equation?tex=%7Cf%28x_1%29-f%28x_2%29%7C%5Cleq+L+%5Cparallel+x_1-x_2%5Cparallel" alt="[公式]">来定量描述这种光滑度。<strong>作者发现确实加了BN层以后，optimization
+landscape更加光滑了。</strong></p>
+<p><img src="https://pic4.zhimg.com/80/v2-3bb28e75a55d22b371a0038968a7e9e7_1440w.jpg" alt="img" style="zoom: 67%;"></p>
+<p>进一步地，作者还以平滑优化地形为目标设计了另一种方法，结果发现和BN的效果差不多。这也说明了BN层的作用在于使得优化地形更加平滑。</p>
+<h3><span id="33-总结">3.3 总结</span></h3>
+<p>今天我们主要介绍了<strong>归一化方法（Batch
+Normalization）在深度神经网络中的作用：有人认为是更好的尺度不变性来缓解ICS现象。有人认为是更平滑的优化地形。</strong>当然，BN层究竟怎么起作用的，现在还是没太探究清楚。实际上，咱们还没开始介绍BN是什么！！！哈哈哈，下一篇文章俺们就从缓解ICS现象的角度来讲解BN的原理和实现，并和之前讲过的机器学习中的归一化方法进行关联。</p>
+<h2><span id="四-batchnormalization的原理-作用和实现">四、BatchNormalization的原理、作用和实现</span></h2>
+<blockquote>
+<p><strong>归一化（白化）的方法有很多，为什么要设计BN这个样子的？</strong></p>
+</blockquote>
+<h3><span id="概要">概要</span></h3>
+<p>上一节介绍了<strong>归一化方法（Batch
+Normalization）在深度神经网络中的作用：有人认为是更好的尺度不变性来缓解ICS现象。有人认为是更平滑的优化地形。</strong>但实际上我们还没有介绍Batch
+Normalization究竟是什么东西。这一节我们从缓解ICS现象的角度来引出Batch
+Normalization，并介绍其原理和实现。</p>
+<p>必须要说明的是，这个出发点在现在看来很可能已经有问题了。。（参见上一篇文章对优化地形的讨论）</p>
+<h4><span id="41-从缓解ics现象出发">4.1 从缓解ICS现象出发</span></h4>
+<p>ICS现象指的是该层的输入分布会因为之前层的参数更新而发生改变。为了缓解这一问题，我们需要对输入分布进行归一化。上上节讲了==白化==（其实还没填坑）是一种机器学习中常见的归一化手段，其好处在于：</p>
+<ul>
+<li><strong>能够使得逐层的输入分布具有相同的均值和方差</strong>（<strong>PCA白化能够使得所有特征分布均值为0，方差为1</strong>）</li>
+<li>同时去除特征之间的相关性</li>
+</ul>
+<p><strong>通过白化这一方法，可以有效缓解ICS现象，加速收敛</strong>。然而呢，其存在一些问题：</p>
+<ul>
+<li>计算成本高（参见上上节还没填坑的计算过程，需要涉及到协方差，奇异值分解等）</li>
+<li>由于对输入分布进行了限制，会损害输入数据原本的表达能力（其实就是说原本数据的分布信息丢失了）</li>
+<li>均值为0，方差为1的输入分布容易使得经过sigmoid或者tanh的激活函数时，落入梯度饱和区</li>
+</ul>
+<p><strong><font color="red">
+解决思路很简单：设计一种简化计算的白化操作，归一化后让数据尽量保留原始的表达能力。</font></strong></p>
+<ul>
+<li><strong>单独对每一维特征进行归一化，使其满足均值为0，方差为1</strong></li>
+<li><strong>增加线性变换操作，让数据能够尽量恢复本身表达能力</strong></li>
+</ul>
+<h3><span id="42batch-normalization的算法过程"><strong><font color="red"> 4.2
+Batch Normalization的算法过程</font></strong></span></h3>
+<p><strong>首先是对每一维特征进行归一化</strong>，可以借助上上节介绍的归一化方法：<strong>本质上是减去一个统计量，再除以一个统计量</strong>。另一方面，BN的操作是在mini-batch层面进行计算，而不是full
+batch。具体来说：</p>
+<p>假设输入样本的形状是 <img src="https://www.zhihu.com/equation?tex=m%5Ctimes+d" alt="[公式]">
+，其中 <img src="https://www.zhihu.com/equation?tex=m+" alt="[公式]">
+指batch size。</p>
+<ul>
+<li>计算第 <img src="https://www.zhihu.com/equation?tex=i+" alt="[公式]"> 个样本的第<img src="https://www.zhihu.com/equation?tex=j+" alt="[公式]">
+个维度上的均值： <img src="https://www.zhihu.com/equation?tex=%5Cmu_%7Bj%7D+%3D+%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7DZ_j%5E%7B%28i%29%7D" alt="[公式]"></li>
+<li>计算第 <img src="https://www.zhihu.com/equation?tex=i+" alt="[公式]"> 个样本的第<img src="https://www.zhihu.com/equation?tex=j+" alt="[公式]">
+个维度上的方差： <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%28Z_%7Bj%7D%5E%7B%28i%29%7D-%5Cmu_j%29%5E2" alt="[公式]"></li>
+<li><strong>归一化</strong>： <img src="https://www.zhihu.com/equation?tex=%5Chat%7BZ_j%7D+%3D+%5Cfrac%7BZ_j-%5Cmu_j%7D%7B%5Csqrt%7B%5Csigma%5E2%2B%5Cepsilon%7D%7D" alt="[公式]"> (加 <img src="https://www.zhihu.com/equation?tex=%5Cepsilon" alt="[公式]">
+防止分母为0)</li>
+</ul>
+<p><strong>通过上述变换实现每个特征维度上的均值和方差为0和1。</strong></p>
+<p><strong>进一步的，为了保证输入数据的表达能力</strong>，引入两个可学习参数
+<img src="https://www.zhihu.com/equation?tex=%5Cgamma+" alt="[公式]">
+和 <img src="https://www.zhihu.com/equation?tex=%5Cbeta+" alt="[公式]"> (都是d维向量)来对归一化后的数据进行线性变换： <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7BZ_j%7D+%3D+%5Cgamma_j%5Chat%7BZ_j%7D+%2B+%5Cbeta_j" alt="[公式]"> 。特别地，当 <img src="https://www.zhihu.com/equation?tex=%5Cgamma%5E2%3D%5Csigma%5E2%2C%5Cbeta%3D%5Cmu" alt="[公式]"> 时，即可实现identity
+transform，并保留了原始输入特征的分布信息。</p>
+<p><strong>通过上述变换，在一定程度上保证了输入数据的表达能力。</strong></p>
+<p><strong>综上所述：</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7BZ_j%7D+%3D+%5Cgamma_j+%5Ccdot+%5Cfrac%7BZ_j-%5Cmu_j%7D%7B%5Csqrt%7B%5Csigma%5E2%2B%5Cepsilon%7D%7D+%2B+%5Cbeta_j" alt="[公式]"></p>
+<blockquote>
+<p>补充：在进行归一化过程中，由于归一化操作会减去均值，所以偏置项可以忽略或者置0，即
+<img src="https://www.zhihu.com/equation?tex=BN%28Wx%2Bb%29+%3D+BN%28Wx%29" alt="[公式]"></p>
+</blockquote>
+<h3><span id="43-batchnormalization在测试阶段">4.3 Batch
+Normalization在测试阶段</span></h3>
+<p>首先，在训练阶段，我们是对一个mini-batch的数据计算每个维度上的均值和方差。为什么不用全量数据的均值和方差呢？这样一来，不管哪个batch都用的一种分布了，会降低模型的鲁棒性。</p>
+<p>在测试阶段，有可能只需要预测一个样本或者很少样本，不足以拼成一个mini-batch，此时计算得到的均值和方差一定是有偏估计。为了解决这一问题，BN的原论文中提出下面的方法：</p>
+<p><strong><font color="red">
+保留训练阶段，每个mini-batch的均值和方差信息： <img src="https://www.zhihu.com/equation?tex=%5Cmu_%7Bbatch%7D%2C+%5Csigma%5E2_%7Bbatch%7D" alt="[公式]">
+。对测试集的数据，计算均值和方差的无偏估计</font></strong>：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmu_%7Btest%7D+%3D+%5Cmathbb%7BE%7D%28%5Cmu_%7Bbatch%7D%29%2C+%5Csigma%5E2_%7Btest%7D%3D+%5Cfrac%7Bm%7D%7Bm-1%7D%5Cmathbb%7BE%7D%28%5Csigma%5E2_%7Bbatch%7D%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=BN%28X_%7Btest%7D%29+%3D+%5Cgamma+%5Ccdot+%5Cfrac%7BX_%7Btest%7D-%5Cmu_%7Btest%7D%7D%7B%5Csqrt%7B%5Csigma%5E2%2B%5Cepsilon%7D%7D%2B%5Cbeta" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<h4><span id="为什么训练和测试的时候计算方差不一样呢"><strong>为什么训练和测试的时候计算方差不一样呢？</strong></span></h4>
+<p>训练时，计算当前batch
+var时，当前batch的样本就是该随机变量的所有样本了，因此除以n就好了。而测试时是全局样本的var，<strong>因此当前batch的样本只是该随机变量的部分采样样本，为了是无偏估计，必须乘以
+n/n-1</strong>。</p>
+<blockquote>
+<p>在计算随机变量的均值和方差时，一般情况下无法知道该随机变量的分布公式，因此我们通常会采样一些样本，然后计算这些样本的均值和方差作为该随机变量的均值和方差。<strong>由于计算这些样本的方差时减的是样本均值而不是随机变量的均值，而样本均值是和采样的样本有关的，是有偏估计，如果要得到无偏估计，需要乘以
+n/n-1。</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D+E%28%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28X_i-%5Coverline%7BX%7D%29%5E2%29+%3D+%5Cfrac%7B1%7D%7Bn%7DE%28%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28X_i-%5Cmu%2B%5Cmu-%5Coverline%7BX%7D%29%5E2%29+%5C%5C%3D+%5Cfrac%7B1%7D%7Bn%7D%28%5Csum_%7Bi%3D1%7D%5E%7Bn%7DE%28%28x_i-%5Cmu%29%5E2%29-nE%28%28%5Coverline%7BX%7D-%5Cmu%29%5E2%29%29+%5C%5C%3D+%5Cfrac%7B1%7D%7Bn%7D%28nVar%28X%29-nVar%28%5Coverline%7BX%7D%29%29%3DVar%28X%29-Var%28%5Coverline%7BX%7D%29%5C%5C%3D%5Csigma%5E2-%5Cfrac%7B%5Csigma%5E2%7D%7Bn%7D+%3D+%5Cfrac%7Bn-1%7D%7Bn%7D%5Csigma%5E2+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+</blockquote>
+<p>在实际中，<strong>采用的是moving
+average的方式来实现</strong>，也就是在每个batch训练时，用当前batch计算出的均值和方差(即sample_mean和sample_var)
+来更新
+running_mean和runing_var。<strong>最后测试使用的实际是running_mean和running_var</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">running_mean = momentum * running_mean + (<span class="number">1</span> - momentum) * sample_mean</span><br><span class="line">running_var = momentum * running_var + (<span class="number">1</span> - momentum) * sample_var</span><br><span class="line"></span><br><span class="line">x_stand = (x - running_mean) / np.sqrt(running_var)</span><br><span class="line">out = x_stand * gamma + beta</span><br></pre></td></tr></table></figure>
+<h3><span id="44-batch-normalization的作用">4.4 Batch Normalization的作用</span></h3>
+<p>总结起来就是为了<strong>稳定训练，加速收敛</strong>。具体来说，有下面几种作用：</p>
+<ul>
+<li><strong>更好的尺度不变性：</strong>也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
+<ul>
+<li><strong><font color="red">尺度不变性能够提高梯度下降算法的效率，从而加快收敛</font></strong>;</li>
+<li><strong><font color="red">归一化到均值为0，方差为1的分布也能够使得经过sigmoid，tanh等激活函数以后，尽可能落在梯度非饱和区，缓解梯度消失的问题。</font></strong>【<strong>bn和ln都可以比较好的抑制梯度消失和梯度爆炸的情况</strong>】;</li>
+</ul></li>
+<li><strong>更平滑的优化地形：</strong>更平滑的优化地形意味着<strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
+<li><strong>隐性的正则化效果：</strong>训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
+<li><strong><font color="red">
+对参数初始化和学习率大小不太敏感：</font></strong>BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
+</ul>
+<blockquote>
+<p>假设对网络参数 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]"> 进行缩放得到 <img src="https://www.zhihu.com/equation?tex=aW" alt="[公式]">
+。对于缩放前的值 <img src="https://www.zhihu.com/equation?tex=Wx+" alt="[公式]"> ，设其均值为 <img src="https://www.zhihu.com/equation?tex=%5Cmu_1+" alt="[公式]">
+，方差为 <img src="https://www.zhihu.com/equation?tex=%5Csigma_1%5E2+" alt="[公式]"> ；对于缩放值 <img src="https://www.zhihu.com/equation?tex=aWx" alt="[公式]">
+，设其均值为 <img src="https://www.zhihu.com/equation?tex=%5Cmu_2+" alt="[公式]"> ，方差为 <img src="https://www.zhihu.com/equation?tex=%5Csigma_2%5E2" alt="[公式]">
+，则有： <img src="https://www.zhihu.com/equation?tex=%5Cmu_2+%3D+a%5Cmu_1%2C%5Csigma_2%5E2%3Da%5E2%5Csigma_1%5E2" alt="[公式]"> 。忽略 <img src="https://www.zhihu.com/equation?tex=%5Cepsilon" alt="[公式]">
+，则有： <img src="https://www.zhihu.com/equation?tex=BN%28aWx%29+%3D+%5Cgamma+%5Ccdot+%5Cfrac%7BaWx-%5Cmu_2%7D%7B%5Csqrt%7B%5Csigma_2%5E2%7D%7D%2B%5Cbeta%3D%5Cgamma+%5Ccdot+%5Cfrac%7BaWx-a%5Cmu_1%7D%7B%5Csqrt%7Ba%5E2%5Csigma_1%5E2%7D%7D%2B%5Cbeta+%3D+%5Cgamma+%5Ccdot+%5Cfrac%7BWx-%5Cmu_1%7D%7B%5Csqrt%7B%5Csigma_1%5E2%7D%7D%2B%5Cbeta+%3D+BN%28Wx%29" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BBN%28aWx%29%7D%7D%7B%5Cpartial+x%7D+%3D+%5Cgamma%5Ccdot+%5Cfrac%7BaW%7D%7B%5Csqrt%7B%5Csigma%5E2_2%7D%7D+%3D+%5Cgamma%5Ccdot++%5Cfrac%7BaW%7D%7B%5Csqrt%7Ba%5E2%5Csigma%5E2_1%7D%7D%3D+%5Cgamma%5Ccdot++%5Cfrac%7BW%7D%7B%5Csqrt%7B%5Csigma%5E2_1%7D%7D+%3D+%5Cfrac%7B%5Cpartial%7BBN%28Wx%29%7D%7D%7B%5Cpartial+x%7D+" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BBN%28aWx%29%7D%7D%7B%5Cpartial+%28aW%29%7D+%3D+%5Cgamma%5Ccdot+%5Cfrac%7Bx%7D%7B%5Csqrt%7B%5Csigma%5E2_2%7D%7D+%3D+%5Cgamma%5Ccdot++%5Cfrac%7Bx%7D%7Ba%5Csqrt%7B%5Csigma%5E2_1%7D%7D%3D+%5Cfrac%7B1%7D%7Ba%7D%5Cfrac%7B%5Cpartial%7BBN%28Wx%29%7D%7D%7B%5Cpartial+W%7D+" alt="[公式]">
+<strong>经过BN操作后，权重的缩放会被抹去，保证输入分布稳定，同时权重的缩放也不会改变对输入的梯度</strong>，而当权重越大时（即a越大时)，权重的梯度越小，即变化越小，保证了梯度不会依赖于参数的尺度。</p>
+</blockquote>
+<p>注意一个问题是：计算特征x的统计量的时候，都是在统计每个特征维度上统计量，也就是对该维度上的所有样本求和取均值，或者求方差，axis=bsz那个维度！</p>
+<p><strong>还要注意一个问题：（一个简单的MLP）上面讨论的所有情况的shape都是</strong>：<code>(batch_size, hidden_dim)</code>
+，此时针对每个特征维度，我们对整个batch的样本在这个维度上计算统计量。但实际情况是，CV和NLP在应用normalization时，shape并没有这么简单。</p>
+<h3><span id="45-cnn中的batchnormalization实现">4.5 CNN中的Batch
+Normalization实现</span></h3>
+<p>针对CV，<strong>一个CNN的常见的输出shape是</strong>：(N, C, H, W)
+，针对BN的话，这个特征维度是Channel，也就是我们需要在一个batch中所有样本<em>所有H</em>所有W上进行统计。最后得到的均值和方差向量都是(C),
+因此两个参数也是C维的向量。</p>
+<p>卷积操作：最初输入的图片样本的 channels
+，取决于图片类型，比如RGB；常见的图像就是（N，3，H，W）。一开始，卷积核的shape可以是（3，3，3），第一个维度表示3个通道，也就是说通道有多少个，卷积核就有多少个。注意不同图像，图像不同位置使用的卷积核的参数都共享的。一个卷积核可以输出一个特征图（h1，w1），多个卷积核可以得到多个特征图，从而形成特征图的shape是（C，H，W），也就是说<strong>卷积核数=通道数</strong>。</p>
+<p>因为卷积核数=通道数，所以一个卷积核可以得到一个通道的特征图数据，我们<strong>希望不同图像，图像不同位置用这个卷积核执行卷积以后的数据分布是稳定的，所以需要在通道维度执行normalization</strong>。</p>
+<p>对于输入的特征图： <img src="https://www.zhihu.com/equation?tex=x%5Cin+%5Cmathbb%7BR%7D%5E%7BN%5Ctimes+C+%5Ctimes+H+%5Ctimes+W%7D" alt="[公式]">
+包含N个样本，每个样本的通道数为C，高为H，宽为W。求均值和方差时，是在N，H，W上操作，保留C的维度，最后形成维度为C的均值和方差向量。
+<span class="math display">\[
+\begin{gathered}
+\mu_{c}(x)=\frac{1}{N H W} \sum_{n=1}^{N} \sum_{h=1}^{H} \sum_{w=1}^{W}
+x_{n c h w} \\
+\sigma_{c}(x)=\sqrt{\frac{1}{N H W} \sum_{n=1}^{N} \sum_{h=1}^{H}
+\sum_{w=1}^{W}\left(x_{n c h w}-\mu_{c}(x)\right)^{2}+\epsilon}
+\end{gathered}
+\]</span>
+<strong>在实现中需要注意的一点是：到底是对哪个维度求均值和方差</strong></p>
+<ul>
+<li><strong>对于shape为b x
+d的张量来说，特征维度是最后一维</strong>：d。求均值和方差实际就是：对于d中的每一维，统计b个样本的均值和方差，均值和方差向量的形状为(d)。实现：x.mean(dim=0)。</li>
+<li><strong>对于shape为BCHW的张量来说，如果是batch
+Normalization，特征维度是channel：C</strong>。求均值和方差实际就是：先reshape：C,
+BHW，然后统计BHW个样本的均值和方差，均值和方差向量形状为(C)。实现：x.permute(1,0,2,3).view(3,-1).mean(dim=1)</li>
+<li>总结来说：batch
+Normalization实际是对特征的每一维统计所有样本的均值和方差，CNN里面特征维度是channel维，所以最后向量形状就是(C)。</li>
+<li><strong>提前说一下：Layer
+Normalization实际是对每个样本的所有维度统计均值和方差，所以求和取平均的是d维度，最后向量形状就是(B,
+max_len)</strong></li>
+</ul>
+<h2><span id="五-batchnormalization-vs-layer-normalization">五、Batch
+Normalization VS Layer Normalization</span></h2>
+<h3><span id="概要">概要</span></h3>
+<p><strong>上一节介绍了Batch
+Normalization的原理，作用和实现（既讲了MLP的情况，又讲了CNN的情况）</strong>。然而我们知道，<strong>Transformer里面实际使用的Layer
+Normalization</strong>。因此，本文将对比Batch Normalization介绍Layer
+Normalization。</p>
+<h3><span id="51-batchnormalization的些许缺陷">5.1 Batch
+Normalization的些许缺陷</span></h3>
+<p>要讲Layer Normalization，先讲讲Batch
+Normalization存在的一些问题：即不适用于什么场景。</p>
+<ul>
+<li><strong>BN在mini-batch较小的情况下不太适用</strong>。BN是对整个mini-batch的样本统计均值和方差，当训练样本数很少时，<strong>样本的均值和方差不能反映全局的统计分布信息</strong>，从而导致效果下降。</li>
+<li><strong>BN无法应用于RNN（Sq2Sq）</strong>，RNN实际是共享的MLP，在时间维度上展开，每个step的输出是(bsz,
+hidden_dim)。由于不同句子的同一位置的分布大概率是不同的，所以应用BN来约束是没意义的。注：<strong>而BN应用在CNN可以的原因是同一个channel的特征图都是由同一个卷积核产生的</strong>。</li>
+</ul>
+<p><strong>LN原文的说法是</strong>：在训练时，对BN来说需要保存每个step的统计信息（均值和方差）。在测试时，由于变长句子的特性，测试集可能出现比训练集更长的句子，所以对于后面位置的step，是没有训练的统计量使用的。（不过实践中的话都是固定了maxlen，然后padding的。）<strong>不同句子的长度不一样，对所有的样本统计均值是无意义的，因为某些样本在后面的timestep时其实是padding。</strong></p>
+<h3><span id="52-layer-normalization的原理">5.2 Layer Normalization的原理</span></h3>
+<p><img src="https://pic2.zhimg.com/80/v2-6d444305489675100aef96293cc3a34d_1440w.jpg" alt="img" style="zoom: 50%;"></p>
+<p><strong>BN是对batch的维度去做归一化，也就是针对不同样本的同一特征做操作。LN是对hidden的维度去做归一化，也就是针对单个样本的不同特征做操作。</strong>因此<strong>LN可以不受样本数的限制。</strong></p>
+<p><strong>BN就是在每个特征维度上统计所有样本的值，计算均值和方差；LN就是在每个样本上统计所有维度的值，计算均值和方差</strong>（注意，这里都是指的简单的MLP情况，输入特征是（<strong>bsz，hidden_dim</strong>））。所以BN在每个特征维度上分布是稳定的，LN是每个样本的分布是稳定的。</p>
+<h3><span id="53-transformer中layernormalization的实现">5.3 Transformer中Layer
+Normalization的实现</span></h3>
+<p>对于一个输入tensor：(batch_size, max_len, hidden_dim)
+应该如何应用LN层呢？</p>
+<blockquote>
+<p>注意，和Batch
+Normalization一样，同样会施以线性映射的。区别就是操作的维度不同而已！公式都是统一的：<strong>减去均值除以标准差，施以线性映射</strong>。同时LN也有BN的那些个好处！</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># features: (bsz, max_len, hidden_dim)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, features, eps=<span class="number">1e-6</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(LayerNorm, self).__init__()</span><br><span class="line">        self.a_2 = nn.Parameter(torch.ones(features))</span><br><span class="line">        self.b_2 = nn.Parameter(torch.zeros(features))</span><br><span class="line">        self.eps = eps</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 就是在统计每个样本所有维度的值，求均值和方差，所以就是在hidden dim上操作</span></span><br><span class="line">        <span class="comment"># 相当于变成[bsz*max_len, hidden_dim], 然后再转回来, 保持是三维</span></span><br><span class="line">        mean = x.mean(-<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># mean: [bsz, max_len, 1]</span></span><br><span class="line">        std = x.std(-<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># std: [bsz, max_len, 1]</span></span><br><span class="line">        <span class="comment"># 注意这里也在最后一个维度发生了广播</span></span><br><span class="line">        <span class="keyword">return</span> self.a_2 * (x - mean) / (std + self.eps) + self.b_2</span><br></pre></td></tr></table></figure>
+<h3><span id="54讨论transformer-为什么使用-layernormalization而不是其他的归一化方法">5.4
+讨论：Transformer 为什么使用 Layer
+normalization，而不是其他的归一化方法？</span></h3>
+<p>当然这个问题还没有啥定论，包括BN和LN为啥能work也众说纷纭。这里先列出一些相关的研究论文。</p>
+<ul>
+<li>Leveraging Batch Normalization for Vision Transformers</li>
+<li>PowerNorm: Rethinking Batch Normalization in Transformers</li>
+<li>Understanding and Improving Layer Normalization</li>
+</ul>
+<h4><span id="1understanding-and-improving-layer-normalization">(1)
+Understanding and Improving Layer Normalization</span></h4>
+<p>这篇文章主要研究LN为啥work，除了一般意义上认为可以稳定前向输入分布，加快收敛快，还有没有啥原因。最后的结论有：</p>
+<ul>
+<li><strong>相比于稳定前向输入分布，反向传播时mean和variance计算引入的梯度更有用，可以稳定反向传播的梯度</strong>（让
+<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7Bloss%7D%7D%7B%5Cpartial+x%7D" alt="[公式]">
+梯度的均值趋于0，同时降低其方差，相当于re-zeros和re-scales操作），起名叫gradient
+normalization（其实就是ablation了下，把mean和variance的梯度断掉，看看效果)</li>
+<li><strong>去掉
+gain和bias这两个参数可以在很多数据集上有提升，可能是因为这两个参数会带来过拟合</strong>，因为这两个参数是在训练集上学出来的</li>
+</ul>
+<blockquote>
+<p>注：Towards Stabilizing Batch Statistics in Backward Propagation
+也讨论了额外两个统计量：mean和variance的梯度的影响。实验中看到了对于小的batch
+size，在反向传播中这两个统计量的方差甚至大于前向输入分布的统计量的方差，其实说白了就是这两个与梯度相关的统计量的不稳定是BN在小batch
+size下不稳定的关键原因之一。</p>
+</blockquote>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-0a891a1e26a9497616e3420bae11352a_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="2powernorm-rethinking-batch-normalization-in-transformers">(2)
+PowerNorm: Rethinking Batch Normalization in Transformers</span></h4>
+<p><strong>这篇文章就主要研究Transformer中BN为啥表现不太好</strong>。研究了训练中的四个统计量：batch的均值和方差，以及他们的梯度的均值和方差。对于batch的均值和方差，计算了他们和running
+statistics（就是用移动平均法累积的均值和方差，见前面的文章）的欧氏距离。可以看到NLP任务上（IWSLT14）batch的均值和方差一直震荡，偏离全局的running
+statistics，而CV任务也相对稳定。对于他们梯度的均值和方差，研究了其magnitude（绝对值），可以看到CV任务上震荡更小，且训练完成后，也没有离群点。</p>
+<p>总结来说，<strong>Transformer中BN表现不太好的原因可能在于CV和NLP数据特性的不同，对于NLP数据，前向和反向传播中，batch统计量及其梯度都不太稳定。</strong></p>
+<h4><span id="3leveraging-batch-normalization-for-vision-transformers">(3)
+Leveraging Batch Normalization for Vision Transformers</span></h4>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-beff996a551d1cbc78fbd2bf94df7af5_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>刚刚讲了对于NLP
+data，为啥Transformer的BN表现不好。这篇文章就是去研究对于CV
+data，VIT中能不能用BN呢。有一些有意思的观点：</p>
+<ul>
+<li><strong>LN特别适合处理变长数据，因为是对channel维度做操作(这里指NLP中的hidden维度)，和句子长度和batch大小无关</strong></li>
+<li><strong>BN比LN在inference的时候快，因为不需要计算mean和variance，直接用running
+mean和running variance就行</strong></li>
+<li><strong>直接把VIT中的LN替换成BN，容易训练不收敛，原因是FFN没有被Normalized，所以还要在FFN
+block里面的两层之间插一个BN层。（可以加速20% VIT的训练）</strong></li>
+</ul>
+<h3><span id="总结">总结</span></h3>
+<ul>
+<li><strong>Layer Normalization和Batch
+Normalization一样都是一种归一化方法，因此，BatchNorm的好处LN也有</strong></li>
+<li>然而BN无法胜任mini-batch size很小的情况，也很难应用于RNN。</li>
+<li>LN特别适合处理变长数据，因为是对channel维度做操作(这里指NLP中的hidden维度)，和句子长度和batch大小无关。</li>
+<li>BN比LN在inference的时候快，因为不需要计算mean和variance，直接用running
+mean和running variance就行。</li>
+<li>BN和LN在实现上的区别仅仅是：BN是对batch的维度去做归一化，也就是针对不同样本的同一特征做操作。LN是对hidden的维度去做归一化，也就是针对单个样本的不同特征做操作。因此，他们都可以归结为：减去均值除以标准差，施以线性映射。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/3EQCSMJ/" title="深度学习（3）Normalization*">https://powerlzy.github.io/posts/3EQCSMJ/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/ZQ2GRE/" rel="prev" title="异常检测（2）Isolation Forest">
+                  <i class="fa fa-chevron-left"></i> 异常检测（2）Isolation Forest
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/32X3GH2/" rel="next" title="深度学习（7）Seq2Seq">
+                  深度学习（7）Seq2Seq <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>
