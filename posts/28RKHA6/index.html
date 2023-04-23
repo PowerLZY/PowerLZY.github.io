@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="FastText   FastText代码详解(一) - BlockheadLS的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;52154254 【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;442768234 fastText原理及实践 - 陈运文的文章 - 知乎 ht">
+    <meta name="description" content="FastText  FastText代码详解(一) - BlockheadLS的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;52154254 【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;442768234 fastText原理及实践 - 陈运文的文章 - 知乎 htt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习-NLP（6）【Nan】FastText">
 <meta property="og:url" content="https://powerlzy.github.io/posts/28RKHA6/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="FastText   FastText代码详解(一) - BlockheadLS的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;52154254 【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;442768234 fastText原理及实践 - 陈运文的文章 - 知乎 ht">
+<meta property="og:description" content="FastText  FastText代码详解(一) - BlockheadLS的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;52154254 【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;442768234 fastText原理及实践 - 陈运文的文章 - 知乎 htt">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-13T08:58:03.800Z">
 <meta property="article:modified_time" content="2023-04-21T14:02:29.631Z">
@@ -156,7 +156,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -167,7 +167,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -297,47 +297,33 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="fasttext">FastText</span></h2>
-<blockquote>
+        <h2><span id="fasttext">FastText</span></h2><blockquote>
 <ul>
-<li>FastText代码详解(一) - BlockheadLS的文章 - 知乎
-https://zhuanlan.zhihu.com/p/52154254</li>
-<li>【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎
-https://zhuanlan.zhihu.com/p/442768234</li>
-<li><strong>fastText原理及实践 - 陈运文的文章</strong> - 知乎
-https://zhuanlan.zhihu.com/p/32965521</li>
+<li>FastText代码详解(一) - BlockheadLS的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/52154254">https://zhuanlan.zhihu.com/p/52154254</a></li>
+<li>【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/442768234">https://zhuanlan.zhihu.com/p/442768234</a></li>
+<li><strong>fastText原理及实践 - 陈运文的文章</strong> - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32965521">https://zhuanlan.zhihu.com/p/32965521</a></li>
 </ul>
 </blockquote>
-<h3><span id="abstract">Abstract</span></h3>
-<p>“本文探索了一种简单有效的文本分类基准（方法）。我们的实验表明，我们的快速文本分类器fastText在准确性方面与深度学习分类器平分秋色，其训练和评估速度（相比深度学习模型更是）要快许多个数量级。我们可以使用标准的多核CPU在不到10分钟的时间内用fastText训练超过10亿个单词，并在一分钟之内将50万个句子在31万2千个类中做分类。”</p>
+<h3><span id="abstract">Abstract</span></h3><p>“本文探索了一种简单有效的文本分类基准（方法）。我们的实验表明，我们的快速文本分类器fastText在准确性方面与深度学习分类器平分秋色，其训练和评估速度（相比深度学习模型更是）要快许多个数量级。我们可以使用标准的多核CPU在不到10分钟的时间内用fastText训练超过10亿个单词，并在一分钟之内将50万个句子在31万2千个类中做分类。”</p>
 <p>作者中又出现了托老师，不知道是不是受他影响，这篇文章在表述上也很有word2vec的味道，更不用说模型本身。fastText和word2vec的卖点都是简单高效（快）。</p>
-<h3><span id="一-什么是fasttext">一、什么是fastText？</span></h3>
-<p>先说结论，fastText在不同语境中至少有两个含义：</p>
-<ol type="1">
-<li>在文章Bag of Tricks for Efficient Text Classification[<a href="#ref_1">1]</a>中，fastText是作者提出的文本分类器的名字。<strong>与sub-word无关！也不是新的词嵌入训练模型！是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=word2vec&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">word2vec</a>中CBOW模型的简单变种。</strong></li>
-<li>作为Facebook开源包，<a href="https://link.zhihu.com/?target=https%3A//fasttext.cc/">fastText</a>是用来训练词嵌入或句嵌入的，其不仅包括1中论文的代码实现，还包括Enriching
-Word Vectors with Subword Information[<a href="#ref_2">2]</a>及FastText.zip: Compressing text classification
-models[<a href="#ref_3">3]</a>两文的代码实现。</li>
+<h3><span id="一-什么是fasttext">一、什么是fastText？</span></h3><p>先说结论，fastText在不同语境中至少有两个含义：</p>
+<ol>
+<li>在文章Bag of Tricks for Efficient Text Classification<a href="#ref_1">[1]</a>中，fastText是作者提出的文本分类器的名字。<strong>与sub-word无关！也不是新的词嵌入训练模型！是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=word2vec&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;138019676&quot;}">word2vec</a>中CBOW模型的简单变种。</strong></li>
+<li>作为Facebook开源包，<a href="https://link.zhihu.com/?target=https%3A//fasttext.cc/">fastText</a>是用来训练词嵌入或句嵌入的，其不仅包括1中论文的代码实现，还包括Enriching Word Vectors with Subword Information<a href="#ref_2">[2]</a>及FastText.zip: Compressing text classification models<a href="#ref_3">[3]</a>两文的代码实现。</li>
 </ol>
-<p>本来觉得这些含义区别不重要，直到连我自己都被弄迷糊了。在写这篇解读前，我心中的fastText一直是第三种含义：<strong>用sub-word信息加强词嵌入训练，解决OOV（Out-Of-Vocabulary）表征的方法</strong>。结果带着这个预先的理解读Bag
-of Tricks for Efficient Text Classification，越读越迷惑。</p>
-<p>为理清思路，fastText（一）中我们就先讲讲Bag of Tricks for Efficient
-Text Classification中的fastText，fastText（二）则围绕Enriching Word
-Vectors with Subword Information。</p>
-<h3><span id="二-一句话介绍fasttext">二、一句话介绍fastText</span></h3>
-<p>word2vec的CBOW模型中将中心词替换为类别标签就得到了fastText。</p>
+<p>本来觉得这些含义区别不重要，直到连我自己都被弄迷糊了。在写这篇解读前，我心中的fastText一直是第三种含义：<strong>用sub-word信息加强词嵌入训练，解决OOV（Out-Of-Vocabulary）表征的方法</strong>。结果带着这个预先的理解读Bag of Tricks for Efficient Text Classification，越读越迷惑。</p>
+<p>为理清思路，fastText（一）中我们就先讲讲Bag of Tricks for Efficient Text Classification中的fastText，fastText（二）则围绕Enriching Word Vectors with Subword Information。</p>
+<h3><span id="二-一句话介绍fasttext">二、一句话介绍fastText</span></h3><p>word2vec的CBOW模型中将中心词替换为类别标签就得到了fastText。</p>
 <p>具体到一些小区别：</p>
 <ul>
 <li>CBOW中词袋的大小由window_size决定，而fastText中就是整个要分类的文本。</li>
-<li>CBOW实际运行中用Hierarchical <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=softmax&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">softmax</a>，fastText用softmax或Hierarchical
-softmax，具体试类的数量决定。</li>
+<li>CBOW实际运行中用Hierarchical <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=softmax&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;138019676&quot;}">softmax</a>，fastText用softmax或Hierarchical softmax，具体试类的数量决定。</li>
 </ul>
 <p>这就是一个标配版且可以实际应用的fastText了，我要再强调三点它和CBOW无区别的地方，因为在别的讲该论文的文章中看到了一些错误的理解：</p>
 <ul>
 <li>CBOW和fastText都是用平均值来预测的。（CBOW不是求和，是求平均）</li>
 <li>N-gram对于CBOW和fastText都是锦上添花的元素，不是标配。</li>
-<li><strong><font color="red">
-词向量初始化都是随机的</font></strong>，fastText并没有在word2vec预训练词嵌入的基础上再训练。</li>
+<li><strong><font color="red"> 词向量初始化都是随机的</font></strong>，fastText并没有在word2vec预训练词嵌入的基础上再训练。</li>
 </ul>
 
     </div>

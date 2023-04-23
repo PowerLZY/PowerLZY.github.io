@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="朴素贝叶斯 Q&amp;A   朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点； 解释贝叶斯公式和朴素贝叶斯分类。 贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的">
+    <meta name="description" content="朴素贝叶斯 Q&amp;A  朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点； 解释贝叶斯公式和朴素贝叶斯分类。 贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="贝叶斯分类器（3）总结">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1RM9XFV/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="朴素贝叶斯 Q&amp;A   朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点； 解释贝叶斯公式和朴素贝叶斯分类。 贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的">
+<meta property="og:description" content="朴素贝叶斯 Q&amp;A  朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点； 解释贝叶斯公式和朴素贝叶斯分类。 贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-15T14:43:32.081Z">
 <meta property="article:modified_time" content="2023-04-21T09:15:39.013Z">
@@ -145,11 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">朴素贝叶斯 Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
-1、朴素贝叶斯、SVM和LR的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2、
-朴素贝叶斯“朴素”在哪里？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3、在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4、先验概率和后验概率都是？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5、朴素贝叶斯算法的前提假设是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6、面试的时候怎么标准回答朴素贝叶斯呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">生成模式和判别模式的区别(常见)：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7、为什么属性独立性假设在实际情况中很难成立，但朴素贝叶斯仍能取得较好的效果?【排序能力】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
-8、朴素贝叶斯中概率计算的下溢问题如何解决？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">9、朴素贝叶斯分类器对异常值和缺失值敏感吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">10、朴素贝叶斯中有没有超参数可以调？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">11、朴素贝叶斯有哪三个模型？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
-12、朴素贝叶斯为什么适合增量计算？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">最大似然估计、最大后验估计、贝叶斯估计的对比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jiangxinyang&#x2F;p&#x2F;9378535.html</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">朴素贝叶斯 Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1、朴素贝叶斯、SVM和LR的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2、 朴素贝叶斯“朴素”在哪里？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3、在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4、先验概率和后验概率都是？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5、朴素贝叶斯算法的前提假设是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6、面试的时候怎么标准回答朴素贝叶斯呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">生成模式和判别模式的区别(常见)：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7、为什么属性独立性假设在实际情况中很难成立，但朴素贝叶斯仍能取得较好的效果?【排序能力】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 8、朴素贝叶斯中概率计算的下溢问题如何解决？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">9、朴素贝叶斯分类器对异常值和缺失值敏感吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">10、朴素贝叶斯中有没有超参数可以调？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">11、朴素贝叶斯有哪三个模型？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 12、朴素贝叶斯为什么适合增量计算？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">最大似然估计、最大后验估计、贝叶斯估计的对比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -175,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -305,30 +301,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h3><span id="朴素贝叶斯-qampa">朴素贝叶斯 Q&amp;A</span></h3>
-<blockquote>
+        <h3><span id="朴素贝叶斯-qampa">朴素贝叶斯 Q&amp;A</span></h3><blockquote>
 <ul>
-<li>朴素贝叶斯分类器原理以及公式，出现估计概率值为 0
-怎么处理（拉普拉斯平滑），缺点；</li>
+<li>朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点；</li>
 <li>解释贝叶斯公式和朴素贝叶斯分类。</li>
 <li>贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的的数据，那么你要能推到这个过程。给出最后的分类器公式。</li>
 <li>那你说说贝叶斯怎么分类啊？<strong>比如说看看今天天气怎么样？</strong>我：blabla，，，利用天气的历史数据，可以知道天气类型的先验分布，以及每种类型下特征数据（比如天气数据的特征：温度啊，湿度啊）的条件分布，这样我们根据贝叶斯公式就能求得天气类型的后验分布了。。。。面试官：en（估计也比较满意吧）<strong>那你了解关于求解模型的优化方法吗？一般用什么优化方法来解？</strong></li>
 <li>贝叶斯分类器的优化和特殊情况的处理</li>
 </ul>
 </blockquote>
-<h4><span id="1-朴素贝叶斯-svm和lr的区别"><strong><font color="red">
-1、朴素贝叶斯、SVM和LR的区别？</font></strong></span></h4>
-<p><strong>朴素贝叶斯是生成模型</strong>，根据已有样本进行贝叶斯估计学习出先验概率P(Y)和条件概率P(X|Y)，进而求出联合分布概率P(XY),最后利用贝叶斯定理求解P(Y|X)。</p>
+<h4><span id="1-朴素贝叶斯-svm和lr的区别"><strong><font color="red"> 1、朴素贝叶斯、SVM和LR的区别？</font></strong></span></h4><p><strong>朴素贝叶斯是生成模型</strong>，根据已有样本进行贝叶斯估计学习出先验概率P(Y)和条件概率P(X|Y)，进而求出联合分布概率P(XY),最后利用贝叶斯定理求解P(Y|X)。</p>
 <p><strong>LR是判别模型</strong>，根据极大化对数似然函数直接求出条件概率P(Y|X)；朴素贝叶斯是基于很强的条件独立假设（在已知分类Y的条件下，各个特征变量取值是相互独立的），而LR则对此没有要求；<strong>朴素贝叶斯适用于数据集少的情景，而LR适用于大规模数据集。</strong></p>
+<div class="table-container">
 <table>
-<colgroup>
-<col style="width: 8%">
-<col style="width: 30%">
-<col style="width: 30%">
-<col style="width: 30%">
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>算法</th>
 <th>SVM</th>
 <th>LR</th>
@@ -336,43 +323,44 @@
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><strong>思想</strong></td>
 <td><strong>想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面</strong>。</td>
 <td>使用线性回归模型的预测值逼近分类任务真实标记的对数几率。</td>
 <td>基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。选出各个分类类别后验概率最大的作为最终分类。</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>输出</strong></td>
 <td>判别模型、<strong>非概率方法</strong>；</td>
-<td><strong>概率方法</strong>；需要对<span class="math inline">\(p(y|x)\)</span>进行假设，具有概率意义。</td>
+<td><strong>概率方法</strong>；需要对$p(y</td>
+<td>x)$进行假设，具有概率意义。</td>
 <td>生成模型</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>经验损失函数</strong></td>
 <td><strong>合页损失函数</strong>；有一段平的零区域、使得SVM的对偶性有稀疏性。</td>
 <td><strong>交叉熵损失函数</strong></td>
 <td><strong>后验概率最大</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>训练样本</strong></td>
 <td><strong>支持向量</strong>（少数样本），SVM的参数和假设函数只和支持向量有关。</td>
 <td>全样本</td>
 <td>全样本</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>优化方法</strong></td>
 <td>次梯度下降和坐标梯度下降 【<strong>SMO算法</strong>】</td>
 <td><strong>梯度下降</strong></td>
 <td>无</td>
 </tr>
-<tr class="even">
+<tr>
 <td>多分类</td>
 <td><strong>多分类SVM</strong></td>
 <td><strong>Softmax回归</strong></td>
 <td>后验概率最大</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>敏感程度</strong></td>
 <td><strong>SVM考虑分类边界线附近的样本</strong>（决定分类超平面的样本）。在支持向量外添加或减少任何样本点对分类决策面没有任何影响；【不敏感】</td>
 <td><strong>LR受所有数据点的影响</strong>。直接依赖数据分布，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡。【敏感】</td>
@@ -380,72 +368,49 @@
 </tr>
 </tbody>
 </table>
-<h4><span id="2-朴素贝叶斯朴素在哪里">2、<strong><font color="red">
-朴素贝叶斯“朴素”在哪里？</font></strong></span></h4>
-<p>简单来说：它假定<strong>所有的特征在数据集中的作用是同样重要和独立的</strong>，正如我们所知，这个假设在现实世界中是很不真实的，因此，说朴素贝叶斯真的很“朴素”。</p>
-<p>利用贝叶斯定理求解联合概率<span class="math inline">\(P(XY)\)</span>时，需要计算条件概率<span class="math inline">\(P(X|Y)\)</span>。在计算<span class="math inline">\(P(X|Y)\)</span>时，朴素贝叶斯做了一个很强的条件独立假设（当Y确定时，X的各个分量取值之间相互独立），即<span class="math inline">\(P(X1=x1,X2=x2,…Xj=xj|Y=yk) =
-P(X1=x1|Y=yk)…*P(Xj=xj|Y=yk)\)</span>。
-多个特征全是独立的，需要分别相乘。</p>
-<h4><span id="3-在估计条件概率pxy时出现概率为0的情况怎么办">3、<strong>在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</strong></span></h4>
-<p><strong>拉普拉斯平滑法</strong>是朴素贝叶斯中处理零概率问题的一种修正方式。在进行分类的时候，可能会出现某个属性在训练集中没有与某个类同时出现过的情况，如果直接基于朴素贝叶斯分类器的表达式进行计算的话就会出现<strong>零概率现象</strong>。</p>
-<p>为了避免其他属性所携带的信息被训练集中未出现过的属性值“抹去”，所以才使用拉普拉斯估计器进行修正。具体的方法是：<strong>在分子上加1,对于先验概率，在分母上加上训练集中label的类别数；对于特征i
-在label下的条件概率，则在分母上加上第i个属性可能的取值数（特征 i
-的unique()）</strong></p>
-<p>先验概率的贝叶斯估计: <span class="math display">\[
-P_\lambda\left(Y=c_k\right)=\frac{\sum_{i=1}^N
-I\left(y_i=c_k\right)+\lambda}{N+K \lambda}
-\]</span> 条件概率的贝叶斯估计：【离散型】 <span class="math display">\[
-P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N
-I\left(x_i^{(j)}=a_{j l}, y_{i=} c_k\right)+\lambda}{\sum_{i=1}^N
-I\left(y_i=c_k\right)+S_j \lambda}
-\]</span></p>
-<h4><span id="4-先验概率和后验概率都是">4、<strong>先验概率和后验概率都是？</strong></span></h4>
-<p><strong>先验概率是指根据以往经验和分析得到的概率</strong>,如全概率公式,它往往作为"由因求果"问题中的"因"出现.<strong>后验概率是基于新的信息，修正原来的先验概率后所获得的更接近实际情况的概率估计。</strong></p>
+</div>
+<h4><span id="2-朴素贝叶斯朴素在哪里">2、<strong><font color="red"> 朴素贝叶斯“朴素”在哪里？</font></strong></span></h4><p>简单来说：它假定<strong>所有的特征在数据集中的作用是同样重要和独立的</strong>，正如我们所知，这个假设在现实世界中是很不真实的，因此，说朴素贝叶斯真的很“朴素”。</p>
+<p>利用贝叶斯定理求解联合概率$P(XY)$时，需要计算条件概率$P(X|Y)$。在计算$P(X|Y)$时，朴素贝叶斯做了一个很强的条件独立假设（当Y确定时，X的各个分量取值之间相互独立），即$P(X1=x1,X2=x2,…Xj=xj|Y=yk) = P(X1=x1|Y=yk)…*P(Xj=xj|Y=yk)$。 多个特征全是独立的，需要分别相乘。</p>
+<h4><span id="3-在估计条件概率pxy时出现概率为0的情况怎么办">3、<strong>在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</strong></span></h4><p><strong>拉普拉斯平滑法</strong>是朴素贝叶斯中处理零概率问题的一种修正方式。在进行分类的时候，可能会出现某个属性在训练集中没有与某个类同时出现过的情况，如果直接基于朴素贝叶斯分类器的表达式进行计算的话就会出现<strong>零概率现象</strong>。</p>
+<p>为了避免其他属性所携带的信息被训练集中未出现过的属性值“抹去”，所以才使用拉普拉斯估计器进行修正。具体的方法是：<strong>在分子上加1,对于先验概率，在分母上加上训练集中label的类别数；对于特征i 在label下的条件概率，则在分母上加上第i个属性可能的取值数（特征 i 的unique()）</strong></p>
+<p>先验概率的贝叶斯估计:</p>
+<script type="math/tex; mode=display">
+P_\lambda\left(Y=c_k\right)=\frac{\sum_{i=1}^N I\left(y_i=c_k\right)+\lambda}{N+K \lambda}</script><p>条件概率的贝叶斯估计：【离散型】</p>
+<script type="math/tex; mode=display">
+P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j)}=a_{j l}, y_{i=} c_k\right)+\lambda}{\sum_{i=1}^N I\left(y_i=c_k\right)+S_j \lambda}</script><h4><span id="4-先验概率和后验概率都是">4、<strong>先验概率和后验概率都是？</strong></span></h4><p><strong>先验概率是指根据以往经验和分析得到的概率</strong>,如全概率公式,它往往作为”由因求果”问题中的”因”出现.<strong>后验概率是基于新的信息，修正原来的先验概率后所获得的更接近实际情况的概率估计。</strong></p>
 <p><strong>先验概率和后验概率是相对的。</strong>如果以后还有新的信息引入，更新了现在所谓的后验概率，得到了新的概率值，那么这个新的概率值被称为后验概率。</p>
-<h4><span id="5-朴素贝叶斯算法的前提假设是什么">5、<strong>朴素贝叶斯算法的前提假设是什么？</strong></span></h4>
-<ol type="1">
+<h4><span id="5-朴素贝叶斯算法的前提假设是什么">5、<strong>朴素贝叶斯算法的前提假设是什么？</strong></span></h4><ol>
 <li>特征之间相互独立</li>
 <li>每个特征同等重要</li>
 </ol>
-<h4><span id="6-面试的时候怎么标准回答朴素贝叶斯呢">6、<strong>面试的时候怎么标准回答朴素贝叶斯呢？</strong></span></h4>
-<p>首先朴素贝斯是一个<strong>生成模型（很重要）</strong>，其次它通过学习已知样本，计算出联合概率，再求条件概率。</p>
-<h5><span id="生成模式和判别模式的区别常见"><strong>生成模式和判别模式的区别(常见)：</strong></span></h5>
-<p><strong>生成模式</strong>：由数据学得<strong>联合概率分布，求出条件概率分布P(Y|X)的预测模型</strong>；<strong>比较在乎数据是怎么生成的</strong>；常见的生成模型有：朴素贝叶斯、隐马尔可夫模型、高斯混合模型、文档主题生成模型（LDA）、限制玻尔兹曼机。</p>
+<h4><span id="6-面试的时候怎么标准回答朴素贝叶斯呢">6、<strong>面试的时候怎么标准回答朴素贝叶斯呢？</strong></span></h4><p>首先朴素贝斯是一个<strong>生成模型（很重要）</strong>，其次它通过学习已知样本，计算出联合概率，再求条件概率。</p>
+<h5><span id="生成模式和判别模式的区别常见"><strong>生成模式和判别模式的区别(常见)：</strong></span></h5><p><strong>生成模式</strong>：由数据学得<strong>联合概率分布，求出条件概率分布P(Y|X)的预测模型</strong>；<strong>比较在乎数据是怎么生成的</strong>；常见的生成模型有：朴素贝叶斯、隐马尔可夫模型、高斯混合模型、文档主题生成模型（LDA）、限制玻尔兹曼机。</p>
 <p><strong>判别模式</strong>：由数据学得<strong>决策函数或条件概率分布作为预测模型</strong>，<strong>要关注在数据的差异分布上，而不是生成</strong>；常见的判别模型有：K近邻、SVM、决策树、感知机、线性判别分析（LDA）、线性回归、传统的神经网络、逻辑斯蒂回归、boosting、条件随机场。</p>
-<h4><span id="7-为什么属性独立性假设在实际情况中很难成立但朴素贝叶斯仍能取得较好的效果排序能力">7、<strong>为什么属性独立性假设在实际情况中很难成立，但朴素贝叶斯仍能取得较好的效果?</strong>【排序能力】</span></h4>
-<p>首先独立性假设在实际中不存在，确实会导致朴素贝叶斯不如一些其他算法，但是就算法本身而言，朴素贝叶斯也会有不错的分类效果，原因是：</p>
+<h4><span id="7-为什么属性独立性假设在实际情况中很难成立但朴素贝叶斯仍能取得较好的效果排序能力">7、<strong>为什么属性独立性假设在实际情况中很难成立，但朴素贝叶斯仍能取得较好的效果?</strong>【排序能力】</span></h4><p>首先独立性假设在实际中不存在，确实会导致朴素贝叶斯不如一些其他算法，但是就算法本身而言，朴素贝叶斯也会有不错的分类效果，原因是：</p>
 <ul>
 <li><strong>分类问题看中的是类别的条件概率的排序</strong>，而不是具体的概率值，所以这里面对精准概率值的计算是有一定的容错的。</li>
 <li>如果特征属性之间的依赖对所有类别影响相同，或依赖关系的影响能相互抵消，则属性条件独立性假设在降低计算开销的同时不会对性能产生负面影响。</li>
 </ul>
-<h4><span id="8-朴素贝叶斯中概率计算的下溢问题如何解决"><strong><font color="red">
-8、朴素贝叶斯中概率计算的下溢问题如何解决？</font></strong></span></h4>
-<p><strong>在朴素贝叶斯的计算过程中，需要对特定分类中各个特征出现的概率进行连乘</strong>，小数相乘，越乘越小，这样就造成下溢出。在程序中，在相应小数位置进行四舍五入，计算结果可能就变成0了。</p>
+<h4><span id="8-朴素贝叶斯中概率计算的下溢问题如何解决"><strong><font color="red"> 8、朴素贝叶斯中概率计算的下溢问题如何解决？</font></strong></span></h4><p><strong>在朴素贝叶斯的计算过程中，需要对特定分类中各个特征出现的概率进行连乘</strong>，小数相乘，越乘越小，这样就造成下溢出。在程序中，在相应小数位置进行四舍五入，计算结果可能就变成0了。</p>
 <p>为了解决这个问题，<strong>对乘积结果取自然对数</strong>。将小数的乘法操作转化为取对数后的加法操作，规避了变为0的风险同时并不影响分类结果。</p>
-<h4><span id="9-朴素贝叶斯分类器对异常值和缺失值敏感吗">9、<strong>朴素贝叶斯分类器对异常值和缺失值敏感吗？</strong></span></h4>
-<p>回想朴素贝叶斯的计算过程，它在推理的时候，输入的某个特征组合，<strong>他们的特征值在训练的时候在贝叶斯公式中都是基于频数进行统计的。</strong>所以一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，就算微微影响最终概率值的获得，由于<strong>分类问题只关注概率的排序而不关注概率的值，所以影响不大</strong>，保留异常值还可以提高模型的泛化性能。</p>
+<h4><span id="9-朴素贝叶斯分类器对异常值和缺失值敏感吗">9、<strong>朴素贝叶斯分类器对异常值和缺失值敏感吗？</strong></span></h4><p>回想朴素贝叶斯的计算过程，它在推理的时候，输入的某个特征组合，<strong>他们的特征值在训练的时候在贝叶斯公式中都是基于频数进行统计的。</strong>所以一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，就算微微影响最终概率值的获得，由于<strong>分类问题只关注概率的排序而不关注概率的值，所以影响不大</strong>，保留异常值还可以提高模型的泛化性能。</p>
 <p>缺失值也是一样，如果一个数据实例缺失了一个属性的数值，在建模的时将被忽略，不影响类条件概率的计算，在预测时，计算数据实例是否属于某类的概率时也将忽略缺失属性，不影响最终结果。</p>
-<h4><span id="10-朴素贝叶斯中有没有超参数可以调">10、<strong>朴素贝叶斯中有没有超参数可以调？</strong></span></h4>
-<p><strong>朴素贝叶斯是没有超参数可以调的，所以它不需要调参</strong>，朴素贝叶斯是根据训练集进行分类，分类出来的结果基本上就是确定了的，拉普拉斯估计器不是朴素贝叶斯中的参数，不能通过拉普拉斯估计器来对朴素贝叶斯调参。</p>
-<h4><span id="11-朴素贝叶斯有哪三个模型">11、<strong>朴素贝叶斯有哪三个模型？</strong></span></h4>
-<ul>
+<h4><span id="10-朴素贝叶斯中有没有超参数可以调">10、<strong>朴素贝叶斯中有没有超参数可以调？</strong></span></h4><p><strong>朴素贝叶斯是没有超参数可以调的，所以它不需要调参</strong>，朴素贝叶斯是根据训练集进行分类，分类出来的结果基本上就是确定了的，拉普拉斯估计器不是朴素贝叶斯中的参数，不能通过拉普拉斯估计器来对朴素贝叶斯调参。</p>
+<h4><span id="11-朴素贝叶斯有哪三个模型">11、<strong>朴素贝叶斯有哪三个模型？</strong></span></h4><ul>
 <li><strong>多项式模型对应于离散变量</strong>，其中离散变量指的是category型变量，也就是类别变量，比如性别；连续变量一般是数字型变量，比如年龄，身高，体重。</li>
 <li><strong>高斯模型 对应于连续变量</strong>（每一维服从正态分布）</li>
-<li><strong>伯努利模型</strong> <strong>对应于文本分类</strong>
-（特征只能是0或者1）</li>
+<li><strong>伯努利模型</strong> <strong>对应于文本分类</strong> （特征只能是0或者1）</li>
 </ul>
-<h4><span id="12-朴素贝叶斯为什么适合增量计算"><strong><font color="red">
-12、朴素贝叶斯为什么适合增量计算？</font></strong></span></h4>
-<p>朴素贝叶斯在训练过程中实际上需要<strong>计算出各个类别的概率和各个特征的条件概率</strong>，这些概率以频数统计比值（对于多项式模型而言）的形式产生概率值，<strong>可以快速根据增量数据进行更新，无需重新全量训练，所以其十分适合增量计算。</strong></p>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li><p>https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes</p></li>
-<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2017/02/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%EF%BC%8810%EF%BC%89%EF%BC%9A%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">FREE
-WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
-<li><h5><span id="最大似然估计-最大后验估计-贝叶斯估计的对比">最大似然估计、最大后验估计、贝叶斯估计的对比</span></h5>
-<ul>
-<li><h5><span id="httpswwwcnblogscomjiangxinyangp9378535html">https://www.cnblogs.com/jiangxinyang/p/9378535.html</span></h5></li>
-</ul></li>
+<h4><span id="12-朴素贝叶斯为什么适合增量计算"><strong><font color="red"> 12、朴素贝叶斯为什么适合增量计算？</font></strong></span></h4><p>朴素贝叶斯在训练过程中实际上需要<strong>计算出各个类别的概率和各个特征的条件概率</strong>，这些概率以频数统计比值（对于多项式模型而言）的形式产生概率值，<strong>可以快速根据增量数据进行更新，无需重新全量训练，所以其十分适合增量计算。</strong></p>
+<h3><span id="参考文献">参考文献</span></h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes">https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2017/02/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%EF%BC%8810%EF%BC%89%EF%BC%9A%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">FREE WILL 机器学习算法系列（10）：朴素贝叶斯</a></p>
+</li>
+<li><h5><span id="最大似然估计-最大后验估计-贝叶斯估计的对比">最大似然估计、最大后验估计、贝叶斯估计的对比</span></h5><ul>
+<li><h5><span id="httpswwwcnblogscomjiangxinyangp9378535html"></span></h5></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -483,8 +448,8 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/12XTPRK/" rel="prev" title="机器学习（5）SVM">
-                  <i class="fa fa-chevron-left"></i> 机器学习（5）SVM
+                <a href="/posts/2P1GDXT/" rel="prev" title="支持向量机（1）硬间隔对偶性">
+                  <i class="fa fa-chevron-left"></i> 支持向量机（1）硬间隔对偶性
                 </a>
             </div>
             <div class="post-nav-item">

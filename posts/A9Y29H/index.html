@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="支持向量机（3）核函数">
+<meta property="og:url" content="https://powerlzy.github.io/posts/A9Y29H/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔表">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/BpDe2wT9zZQrJVn.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/JhEDzmfuGyPK7A6.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/uFims1jZcWSPBRx.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/8d9UGWZyzBoAhjJ.png">
+<meta property="article:published_time" content="2022-03-15T14:38:05.332Z">
+<meta property="article:modified_time" content="2023-04-22T11:37:37.159Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="支持向量机">
+<meta property="article:tag" content="SVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/A9Y29H/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/A9Y29H/","path":"posts/A9Y29H/","title":"支持向量机（3）核函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>支持向量机（3）核函数 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、核函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 线性不可分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 核函数的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 常见核函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 如何选择核函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 核方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">核化LR [非线性] 正类: y &#x3D; +1 负类 y&#x3D; -1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">梯度下降求解：</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/A9Y29H/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="支持向量机（3）核函数 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          支持向量机（3）核函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-15 22:38:05" itemprop="dateCreated datePublished" datetime="2022-03-15T22:38:05+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 19:37:37" itemprop="dateModified" datetime="2023-04-22T19:37:37+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">支持向量机</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong><font color="red">SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+<p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
+<p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<span id="more"></span>
+<h3><span id="一-核函数">一、核函数</span></h3><h4><span id="11-线性不可分">1.1 线性不可分</span></h4><blockquote>
+<p>  <strong>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里，再通过间隔最大化的方式，学习得到支持向量机，就是非线性 SVM。</strong></p>
+</blockquote>
+<p>我们刚刚讨论的<strong>硬间隔</strong>和<strong>软间隔</strong>都是在说样本的完全线性可分或者大部分样本点的线性可分。</p>
+<p>但我们可能会碰到的一种情况是样本点不是线性可分的，比如：</p>
+<p><img src="https://s2.loli.net/2023/04/17/BpDe2wT9zZQrJVn.jpg" alt="img" style="zoom:50%;"></p>
+<p>这种情况的解决方法就是：将<strong>二维线性不可分样本映射到高维空间中，让样本点在高维空间线性可分</strong>，比如：</p>
+<p><img src="https://s2.loli.net/2023/04/17/JhEDzmfuGyPK7A6.jpg" alt="img" style="zoom:50%;"></p>
+<p>对于在有限维度向量空间中线性不可分的样本，我们将其映射到更高维度的向量空间里, 再通过间隔最大化的方 式，学习得到支持向量机，就是非线性 SVM。<br>我们用 $\mathrm{x}$ 表示原来的样本点, 用 $\phi(x)$ 表示 $\mathrm{x}$ 映射到特征新的特征空间后到新向量。那么分割超平面可以表示为: $f(x)=w \phi(x)+b$ 。<br>对于非线性 SVM 的对偶问题就变成了：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \min _\lambda\left[\frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \lambda_i \lambda_j y_i y_j\left(\phi\left(x_i\right) \cdot \phi\left(x_j\right)\right)-\sum_{j=1}^n \lambda_i\right] \\
+& \text { s.t. } \quad \sum_{i=1}^n \lambda_i y_i=0, \quad \lambda_i \geq 0, \quad C-\lambda_i-\mu_i=0
+\end{aligned}</script><p>可以看到与线性 SVM 唯一的不同就是：之前的 $\left(x_i \cdot x_j\right)$ 变成了 $\left(\phi\left(x_i\right) \cdot \phi\left(x_j\right)\right)$ 。</p>
+<h4><span id="12-核函数的作用">1.2 核函数的作用</span></h4><p>我们不禁有个疑问：只是做个内积运算, 为什么要有核函数的呢?</p>
+<p>这是因为<font color="red"> 低维空间映射到高维空间后维度可能会很大, 如果将全部样本的点乘全部计算好, 这样的计算量太大了。</font></p>
+<p>但如果我们有这样的一核函数 $k(x, y)=(\phi(x), \phi(y)) ， \quad x_i$ 与 $x_j$ 在特征空间的内积等于它们在原始样本空间中通 过函数 $k(x, y)$ 计算的结果, 我们就不需要计算高维甚至无穷维空间的内积了。<br>举个例子：假设我们有一个多项式核函数：</p>
+<script type="math/tex; mode=display">
+k(x, y)=(x \cdot y+1)^2</script><p>带进样本点的后:</p>
+<script type="math/tex; mode=display">
+k(x, y)=\left(\sum_{i=1}^n\left(x_i \cdot y_i\right)+1\right)^2</script><p>而它的展开项是:</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n x_i^2 y_i^2+\sum_{i=2}^n \sum_{j=1}^{i-1}\left(\sqrt{2} x_i x_j\right)\left(\sqrt{2} y_i y_j\right)+\sum_{i=1} n\left(\sqrt{2} x_i\right)\left(\sqrt{2} y_i\right)+1</script><p>如果没有核函数，我们则需要把向量映射成:</p>
+<script type="math/tex; mode=display">
+x^{\prime}=\left(x_1^2, \ldots, x_n^2, \ldots \sqrt{2} x_1, \ldots, \sqrt{2} x_n, 1\right)</script><p>然后在进行内积计算, 才能与多项式核函数达到相同的效果。可见核函数的引入一方面减少了我们计算量, 另一方面也减少了我们存储数据的内存使用量。</p>
+<h4><span id="13-常见核函数">1.3 常见核函数</span></h4><p>我们常用核函数有:<br><strong>线性核函数</strong>【无映射】</p>
+<script type="math/tex; mode=display">
+k\left(x_i, x_j\right)=x_i^T x_j</script><ul>
+<li>优点: 有加速算法库、没有特征映射、过拟合风险低</li>
+<li>缺点：只能处理线性</li>
+</ul>
+<p><strong>多项式核函数【映射，超参数】</strong></p>
+<script type="math/tex; mode=display">
+k\left(x_i, x_j\right)=\left(x_i^T x_j\right)^d</script><p><strong>高斯核函数【映射，超参数】</strong></p>
+<script type="math/tex; mode=display">
+k\left(x_i, x_j\right)=\exp \left(-\frac{\left\|x_i-x_j\right\|}{2 \delta^2}\right)</script><ul>
+<li><strong>表示能力强，但容易过拟合</strong></li>
+<li><strong>高斯核没有多项核不稳定的问题</strong></li>
+<li><strong>只有一个超参数</strong></li>
+</ul>
+<h4><span id="14-如何选择核函数">1.4 <strong>如何选择核函数？</strong></span></h4><blockquote>
+<p>  <strong>其他核函数：拉普拉斯、sigmod、卡方、直方图交叉</strong></p>
+<p>  可自定义和组合核函数</p>
+</blockquote>
+<ul>
+<li>如果特征的数量大到和样本数量差不多，则选用LR或者线性核的SVM；</li>
+<li>如果特征的数量小，样本的数量正常，则选用SVM+高斯核函数；</li>
+<li>如果特征的数量小，而样本的数量很大，则需要手工添加一些特征从而变成第一种情况。</li>
+</ul>
+<p><img src="https://s2.loli.net/2023/04/17/uFims1jZcWSPBRx.png" alt="image-20220331203905843" style="zoom:50%;"></p>
+<h4><span id="15-核方法">1.5 核方法</span></h4><h5><span id="核化lr-非线性-正类-y-1-负类-y-1">核化LR [非线性] 正类: y = +1 负类 y= -1</span></h5><script type="math/tex; mode=display">
+\min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \log \left(1+\exp \left(-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b\right)\right)\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2</script><p>在本文由于通篇使用 $\pm 1$ 表示正负类, 因此我们采用上述第二种记号方法。目前已经有对数几率回 归模型的实现, 比如 <strong>sklearn. linear_model.LogisticRegression</strong>。为了使得对数几率回归能解决非线性问题, 参考 SVM 的做法, 我们可以进行特征映射, 在特 征映射后的空间使用对数几率回归, 称为核化对数几率回归 (Kernel Logistic Regression), 其属 于正类的概率为:</p>
+<script type="math/tex; mode=display">
+\operatorname{Pr}(y=1 \mid \boldsymbol{x}):=\operatorname{sigm}\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})+b\right)=\frac{1}{1+\exp \left(-\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}(\boldsymbol{x})+b\right)\right)} \in[0,1] .</script><p>相应地优化目标改写为</p>
+<script type="math/tex; mode=display">
+\min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \log \left(1+\exp \left(-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right)\right)\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2</script><p>和原优化目标（公式 148）的区别在于 $\boldsymbol{x} \in \mathbb{R}^d$ 变为了特征映射后的向量 $\boldsymbol{\phi}(\boldsymbol{x}) \in \mathbb{R}^{\tilde{d}}$, 相应地核化对 数几率回归的参数 $\boldsymbol{w} \in \mathbb{R}^{\tilde{d}}$ 的维度也提高至 $\tilde{d}$ 。<br>注意到核化对数几率回归的目标函数满足表示定理, 因此参数的最优值 $\boldsymbol{w}^{\star}$ 是特征映射后样本 的线性组合</p>
+<script type="math/tex; mode=display">
+\boldsymbol{w}^{\star}=\sum_{i=1}^m \alpha_i \phi\left(\boldsymbol{x}_i\right)</script><p>其中线性组合系数 $\left{\alpha<em>i\right}</em>{i=1}^m$ 待定, 将其代入公式 150 ,</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\min _{\boldsymbol{w}, b} & \frac{1}{m} \sum_{i=1}^m \log \left(1+\exp \left(-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right)\right)\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2 \\
+=\min _{\boldsymbol{\alpha}, b} & \frac{1}{m} \sum_{i=1}^m \log \left(1+\exp \left(-y_i\left(\left(\sum_{j=1}^m \alpha_j \boldsymbol{\phi}\left(\boldsymbol{x}_j\right)\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right)\right)\right) \\
+& \left.+\frac{\lambda}{2}\left\|\sum_{i=1}^m \alpha_i \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)\right\|^2\right) \\
+=\min _{\boldsymbol{\alpha}, b} & \frac{1}{m} \sum_{i=1}^m \log \left(1+\exp \left(-y_i\left(\sum_{j=1}^m \alpha_j \boldsymbol{\phi}\left(\boldsymbol{x}_j\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right)\right)\right) \\
+& +\frac{\lambda}{2} \sum_{i=1}^m \sum_{j=1}^m \alpha_i \alpha_j \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_j\right) \\
+= & \frac{1}{m} \sum_{\boldsymbol{\alpha}, b}^m \log \left(1+\exp \left(-y_i\left(\sum_{j=1}^m \alpha_j \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_j\right)+b\right)\right)\right) \\
+& +\frac{\lambda}{2} \sum_{i=1}^m \sum_{j=1}^m \alpha_i \alpha_j \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_j\right) \\
+& +\frac{1}{2} \sum_{i=1}^m \log \left(1+\exp \left(-y_i \sum_{j=1}^m \alpha_j \kappa\left(\boldsymbol{x}_i, \boldsymbol{x}_j\right)-y_i b\right)\right)
+\end{aligned}</script><h5><span id="梯度下降求解"><strong>梯度下降求解：</strong></span></h5><p>核化LR的参数通常都非0，并且几乎用到所有训练的样本，预测效率比较低。</p>
+<p><img src="https://s2.loli.net/2023/04/17/8d9UGWZyzBoAhjJ.png" alt="image-20220331212433609" style="zoom:50%;"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/A9Y29H/" title="支持向量机（3）核函数">https://powerlzy.github.io/posts/A9Y29H/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="tag"># 支持向量机</a>
+              <a href="/tags/SVM/" rel="tag"># SVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/349WYTC/" rel="prev" title="支持向量机（2）软间隔对偶性">
+                  <i class="fa fa-chevron-left"></i> 支持向量机（2）软间隔对偶性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2P1GDXT/" rel="next" title="支持向量机（1）硬间隔对偶性">
+                  支持向量机（1）硬间隔对偶性 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

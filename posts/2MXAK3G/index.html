@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="TF-IDF  https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010417185&#x2F;article&#x2F;details&#x2F;87905899  TF-IDF(Term Frequency-Inverse Document Frequency, 词频-逆文件频率)是一种用于资讯检索与资讯探勘的常用加权技术。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重">
+    <meta name="description" content="一、TF-IDF   https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010417185&#x2F;article&#x2F;details&#x2F;87905899  TF-IDF(Term Frequency-Inverse Document Frequency, 词频-逆文件频率)是一种用于资讯检索与资讯探勘的常用加权技术。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习（18）TF-IDF">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2MXAK3G/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="TF-IDF  https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010417185&#x2F;article&#x2F;details&#x2F;87905899  TF-IDF(Term Frequency-Inverse Document Frequency, 词频-逆文件频率)是一种用于资讯检索与资讯探勘的常用加权技术。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重">
+<meta property="og:description" content="一、TF-IDF   https:&#x2F;&#x2F;blog.csdn.net&#x2F;u010417185&#x2F;article&#x2F;details&#x2F;87905899  TF-IDF(Term Frequency-Inverse Document Frequency, 词频-逆文件频率)是一种用于资讯检索与资讯探勘的常用加权技术。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=TF_%7Bi%2Cj%7D%3D%5Cfrac%7Bn_%7Bi%2Cj%7D%7D%7B%5Csum_%7Bk%7D%7Bn_%7Bk%2Cj%7D%7D%7D%5Ctag%7B1%7D+%5C%5C">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=n_%7Bi%2Cj%7D">
@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=t_i">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=TF+%5Ctext%7B-%7DIDF%3D+TF+%5Ccdot+IDF%5Ctag%7B3%7D+%5C%5C">
 <meta property="article:published_time" content="2022-03-16T13:06:42.966Z">
-<meta property="article:modified_time" content="2022-07-19T14:50:55.253Z">
+<meta property="article:modified_time" content="2023-04-22T11:17:05.245Z">
 <meta property="article:author" content="lzy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://www.zhihu.com/equation?tex=TF_%7Bi%2Cj%7D%3D%5Cfrac%7Bn_%7Bi%2Cj%7D%7D%7B%5Csum_%7Bk%7D%7Bn_%7Bk%2Cj%7D%7D%7D%5Ctag%7B1%7D+%5C%5C">
@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">TF-IDF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 TF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 IDF</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">TF-IDF Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1、究竟应该是对整个语料库进行tf-idf呢？还是先对训练集进行tf-idf，然后再对xtest进行tf-idf呢？两者有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2、TF-IDF 模型加载太慢</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、TF-IDF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 TF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 IDF</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">TF-IDF Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1、究竟应该是对整个语料库进行tf-idf呢？还是先对训练集进行tf-idf，然后再对xtest进行tf-idf呢？两者有什么区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">fit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">transform 训练集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">transform 测试集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2、TF-IDF 模型加载太慢</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -182,7 +182,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -260,7 +260,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-19 22:50:55" itemprop="dateModified" datetime="2022-07-19T22:50:55+08:00">2022-07-19</time>
+      <time title="修改时间：2023-04-22 19:17:05" itemprop="dateModified" datetime="2023-04-22T19:17:05+08:00">2023-04-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -272,7 +272,7 @@
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
         </span>
     </span>
 
@@ -290,7 +290,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>1.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -308,62 +308,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="tf-idf">TF-IDF</span></h2>
-<blockquote>
-<p>https://blog.csdn.net/u010417185/article/details/87905899</p>
+        <h3><span id="一-tf-idf">一、TF-IDF</span></h3><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://blog.csdn.net/u010417185/article/details/87905899">https://blog.csdn.net/u010417185/article/details/87905899</a></p>
 </blockquote>
-<p><strong>TF-IDF(Term Frequency-Inverse Document Frequency,
-词频-逆文件频率)</strong>是一种用于资讯检索与资讯探勘的常用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=加权技术&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2297273457%22%7D">加权技术</a>。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。</p>
-<p>上述引用总结就是, <strong>一个词语在一篇文章中出现次数越多,
-同时在所有文档中出现次数越少,
-越能够代表该文章。</strong>这也就是TF-IDF的含义。</p>
-<h4><span id="11-tf"><strong>1.1 TF</strong></span></h4>
-<p><strong>TF(Term Frequency,
-==词频==)</strong>表示词条在文本中出现的频率，这个数字通常会被归一化(一般是词频除以文章总词数),
-以防止它偏向长的文件（同一个词语在长文件里可能会比短文件有更高的词频，而不管该词语重要与否）。TF用公式表示如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=TF_%7Bi%2Cj%7D%3D%5Cfrac%7Bn_%7Bi%2Cj%7D%7D%7B%5Csum_%7Bk%7D%7Bn_%7Bk%2Cj%7D%7D%7D%5Ctag%7B1%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中，<img src="https://www.zhihu.com/equation?tex=n_%7Bi%2Cj%7D" alt="[公式]"> 表示词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]"> 在文档 <img src="https://www.zhihu.com/equation?tex=d_j" alt="[公式]">
-中出现的次数，<img src="https://www.zhihu.com/equation?tex=TF_%7Bi%2Cj%7D" alt="[公式]">
-就是表示词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]"> 在文档 <img src="https://www.zhihu.com/equation?tex=d_j" alt="[公式]"> 中出现的频率。</p>
-<p>但是，需要注意，
-一些<strong>通用的词语对于主题并没有太大的作用</strong>，
-<strong>反倒是一些出现频率较少的词才能够表达文章的主题</strong>，
-所以单纯使用是TF不合适的。权重的设计必须满足：一个词预测主题的能力越强，权重越大，反之，权重越小。所有统计的文章中，一些词只是在其中很少几篇文章中出现，那么这样的词对文章的主题的作用很大，这些词的权重应该设计的较大。IDF就是在完成这样的工作。</p>
-<h4><span id="12-idf"><strong>1.2 IDF</strong></span></h4>
-<p><strong>IDF(Inverse Document Frequency,
-==逆文件频率==)</strong>表示关键词的普遍程度。如果包含词条 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 的文档越少，
-<strong>IDF</strong>越大，则说明该词条具有很好的类别区分能力。某一特定词语的<strong>IDF</strong>，可以由总文件数目除以包含该词语之文件的数目，再将得到的商取对数得到:</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=IDF_i%3D%5Clog%5Cfrac%7B%5Cleft%7CD+%5Cright%7C%7D%7B1%2B%5Cleft%7Cj%3A+t_i+%5Cin+d_j%5Cright%7C%7D%5Ctag%7B2%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中，<img src="https://www.zhihu.com/equation?tex=%5Cleft%7CD+%5Cright%7C" alt="[公式]"> 表示所有<strong>文档的数量</strong>，<img src="https://www.zhihu.com/equation?tex=%5Cleft%7Cj%3A+t_i+%5Cin+d_j%5Cright%7C" alt="[公式]"> 表示包<strong>含词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]">
-的文档数量</strong>，为什么这里要加 1 呢？主要是<strong>防止包含词条
-<img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]">
-的数量为 0 从而导致运算出错的现象发生</strong>。</p>
+<p><strong>TF-IDF(Term Frequency-Inverse Document Frequency, 词频-逆文件频率)</strong>是一种用于资讯检索与资讯探勘的常用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=加权技术&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;97273457&quot;}">加权技术</a>。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。</p>
+<p>上述引用总结就是, <strong>一个词语在一篇文章中出现次数越多, 同时在所有文档中出现次数越少, 越能够代表该文章。</strong>这也就是TF-IDF的含义。</p>
+<h4><span id="11-tf"><strong>1.1 TF</strong></span></h4><p><strong>TF(Term Frequency, 词频)</strong>表示词条在文本中出现的频率，这个数字通常会被归一化(一般是词频除以文章总词数), 以防止它偏向长的文件（同一个词语在长文件里可能会比短文件有更高的词频，而不管该词语重要与否）。TF用公式表示如下：</p>
+<p><img src="https://www.zhihu.com/equation?tex=TF_%7Bi%2Cj%7D%3D%5Cfrac%7Bn_%7Bi%2Cj%7D%7D%7B%5Csum_%7Bk%7D%7Bn_%7Bk%2Cj%7D%7D%7D%5Ctag%7B1%7D+%5C%5C" alt="[公式]"></p>
+<p>其中，<img src="https://www.zhihu.com/equation?tex=n_%7Bi%2Cj%7D" alt="[公式]"> 表示词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]"> 在文档 <img src="https://www.zhihu.com/equation?tex=d_j" alt="[公式]"> 中出现的次数，<img src="https://www.zhihu.com/equation?tex=TF_%7Bi%2Cj%7D" alt="[公式]"> 就是表示词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]"> 在文档 <img src="https://www.zhihu.com/equation?tex=d_j" alt="[公式]"> 中出现的频率。</p>
+<p>但是，需要注意， 一些<strong>通用的词语对于主题并没有太大的作用</strong>， <strong>反倒是一些出现频率较少的词才能够表达文章的主题</strong>， 所以单纯使用是TF不合适的。权重的设计必须满足：一个词预测主题的能力越强，权重越大，反之，权重越小。所有统计的文章中，一些词只是在其中很少几篇文章中出现，那么这样的词对文章的主题的作用很大，这些词的权重应该设计的较大。IDF就是在完成这样的工作。</p>
+<h4><span id="12-idf"><strong>1.2 IDF</strong></span></h4><p><strong>IDF(Inverse Document Frequency, 逆文件频率)</strong>表示关键词的普遍程度。如果包含词条 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 的文档越少， <strong>IDF</strong>越大，则说明该词条具有很好的类别区分能力。某一特定词语的<strong>IDF</strong>，可以由总文件数目除以包含该词语之文件的数目，再将得到的商取对数得到:</p>
+<p><img src="https://www.zhihu.com/equation?tex=IDF_i%3D%5Clog%5Cfrac%7B%5Cleft%7CD+%5Cright%7C%7D%7B1%2B%5Cleft%7Cj%3A+t_i+%5Cin+d_j%5Cright%7C%7D%5Ctag%7B2%7D+%5C%5C" alt="[公式]"></p>
+<p>其中，<img src="https://www.zhihu.com/equation?tex=%5Cleft%7CD+%5Cright%7C" alt="[公式]"> 表示所有<strong>文档的数量</strong>，<img src="https://www.zhihu.com/equation?tex=%5Cleft%7Cj%3A+t_i+%5Cin+d_j%5Cright%7C" alt="[公式]"> 表示包<strong>含词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]"> 的文档数量</strong>，为什么这里要加 1 呢？主要是<strong>防止包含词条 <img src="https://www.zhihu.com/equation?tex=t_i" alt="[公式]"> 的数量为 0 从而导致运算出错的现象发生</strong>。</p>
 <p>某一特定文件内的高词语频率，以及该词语在整个文件集合中的低文件频率，可以产生出高权重的TF-IDF。因此，TF-IDF倾向于<strong>过滤掉常见的词语，保留重要的词语</strong>，表达为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=TF+%5Ctext%7B-%7DIDF%3D+TF+%5Ccdot+IDF%5Ctag%7B3%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>==<strong>最后</strong>在计算完文档中每个字符的tfidf之后，对其进行归一化，将值保留在0-1之间，并保存成稀疏矩阵。==</p>
-<h2><span id="tf-idf-qampa">TF-IDF Q&amp;A</span></h2>
-<h3><span id="1-究竟应该是对整个语料库进行tf-idf呢还是先对训练集进行tf-idf然后再对xtest进行tf-idf呢两者有什么区别"><strong>1、究竟应该是对整个语料库进行tf-idf呢？还是先对训练集进行tf-idf，然后再对xtest进行tf-idf呢？两者有什么区别？</strong></span></h3>
-<blockquote>
-<p>#### fit</p>
-<p>学习输入的数据有多少个不同的单词，以及每个单词的idf</p>
-<p>#### transform 训练集</p>
-<p>返回我们一个document-term matrix.</p>
-<p>#### transform 测试集</p>
-</blockquote>
+<p><img src="https://www.zhihu.com/equation?tex=TF+%5Ctext%7B-%7DIDF%3D+TF+%5Ccdot+IDF%5Ctag%7B3%7D+%5C%5C" alt="[公式]"></p>
+<p><strong>最后</strong>在计算完文档中每个字符的tfidf之后，对其进行归一化，将值保留在0-1之间，并保存成稀疏矩阵。</p>
+<h3><span id="tf-idf-qampa">TF-IDF Q&amp;A</span></h3><h4><span id="1-究竟应该是对整个语料库进行tf-idf呢还是先对训练集进行tf-idf然后再对xtest进行tf-idf呢两者有什么区别"><strong>1、究竟应该是对整个语料库进行tf-idf呢？还是先对训练集进行tf-idf，然后再对xtest进行tf-idf呢？两者有什么区别？</strong></span></h4><blockquote>
+<h4><span id="fit">fit</span></h4><p>  学习输入的数据有多少个不同的单词，以及每个单词的idf</p>
+<h4><span id="transform-训练集">transform 训练集</span></h4><p>  返回我们一个document-term matrix.</p>
+<h4><span id="transform-测试集">transform 测试集</span></h4></blockquote>
 <p>transform的过程也很让人好奇。要知道，他是将测试集的数据中的文档数量纳入进来，重新计算每个词的idf呢，还是<strong>直接用训练集学习到的idf去计算测试集里面每一个tf-idf</strong>呢？</p>
 <p><strong>如果纳入了测试集新词，就等于预先知道测试集中有什么词，影响了idf的权重。这样预知未来的行为，会导致算法丧失了泛化性。</strong></p>
-<h3><span id="2-tf-idf-模型加载太慢">2、TF-IDF 模型加载太慢</span></h3>
-<blockquote>
-<p>https://thiagomarzagao.com/2015/12/08/saving-TfidfVectorizer-without-pickles/</p>
+<h4><span id="2-tf-idf-模型加载太慢">2、TF-IDF 模型加载太慢</span></h4><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://thiagomarzagao.com/2015/12/08/saving-TfidfVectorizer-without-pickles/">https://thiagomarzagao.com/2015/12/08/saving-TfidfVectorizer-without-pickles/</a></p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scipy.sparse <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">from</span> idfs <span class="keyword">import</span> idfs <span class="comment"># numpy array with our pre-computed idfs</span></span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer</span><br><span class="line"></span><br><span class="line"><span class="comment"># subclass TfidfVectorizer</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyVectorizer</span>(<span class="title class_ inherited__">TfidfVectorizer</span>):</span><br><span class="line">    <span class="comment"># plug our pre-computed IDFs</span></span><br><span class="line">    TfidfVectorizer.idf_ = idfs</span><br><span class="line"></span><br><span class="line"><span class="comment"># instantiate vectorizer</span></span><br><span class="line">vectorizer = MyVectorizer(lowercase = <span class="literal">False</span>,</span><br><span class="line">                          min_df = <span class="number">2</span>,</span><br><span class="line">                          norm = <span class="string">&#x27;l2&#x27;</span>,</span><br><span class="line">                          smooth_idf = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># plug _tfidf._idf_diag</span></span><br><span class="line">vectorizer._tfidf._idf_diag = sp.spdiags(idfs,</span><br><span class="line">                                         diags = <span class="number">0</span>,</span><br><span class="line">                                         m = <span class="built_in">len</span>(idfs),</span><br><span class="line">                                         n = <span class="built_in">len</span>(idfs))</span><br></pre></td></tr></table></figure>
 

@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="[PyTorch 学习笔记] 损失函数 一、损失函数 损失函数是衡量模型输出与真实标签之间的差异。我们还经常听到代价函数和目标函数，它们之间差异如下：  损失函数(Loss Function)是计算一个样本的模型输出与真实标签的差异 Loss  代价函数(Cost Function)是计算整个样本集的模型输出与真实标签的差异，是所有样本损失函数的平均值  目标函数(Objective Functi">
+    <meta name="description" content="[PyTorch 学习笔记] 损失函数一、损失函数损失函数是衡量模型输出与真实标签之间的差异。我们还经常听到代价函数和目标函数，它们之间差异如下：  损失函数(Loss Function)是计算一个样本的模型输出与真实标签的差异 Loss  代价函数(Cost Function)是计算整个样本集的模型输出与真实标签的差异，是所有样本损失函数的平均值   目标函数(Objective Functio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pytorch（10）模型训练-损失函数">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1TPZG47/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="[PyTorch 学习笔记] 损失函数 一、损失函数 损失函数是衡量模型输出与真实标签之间的差异。我们还经常听到代价函数和目标函数，它们之间差异如下：  损失函数(Loss Function)是计算一个样本的模型输出与真实标签的差异 Loss  代价函数(Cost Function)是计算整个样本集的模型输出与真实标签的差异，是所有样本损失函数的平均值  目标函数(Objective Functi">
+<meta property="og:description" content="[PyTorch 学习笔记] 损失函数一、损失函数损失函数是衡量模型输出与真实标签之间的差异。我们还经常听到代价函数和目标函数，它们之间差异如下：  损失函数(Loss Function)是计算一个样本的模型输出与真实标签的差异 Loss  代价函数(Cost Function)是计算整个样本集的模型输出与真实标签的差异，是所有样本损失函数的平均值   目标函数(Objective Functio">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=%3Df%5Cleft%28y%5E%7B%5Cwedge%7D%2C+y%5Cright%29">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccos+t%3D%5Cfrac%7B1%7D%7BN%7D+%5Csum_%7Bi%7D%5E%7BN%7D+f%5Cleft%28y_%7Bi%7D%5E%7B%5Cwedge%7D%2C+y_%7Bi%7D%5Cright%29">
@@ -192,13 +192,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1
-nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 nn.NLLLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 nn.BCELoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4
-nn.BCEWithLogitsLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 nn.L1Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6 nn.MSELoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7 nn.SmoothL1Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.8 nn.PoissonNLLLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.9 nn.KLDivLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.10
-nn.MarginRankingLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.11 nn.SoftMarginLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.12
-nn.MultiMarginLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.13
-nn.CosineEmbeddingLoss</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、损失函数Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1
-nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.CrossEntropyLoss</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 nn.NLLLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 nn.BCELoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 nn.BCEWithLogitsLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 nn.L1Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6 nn.MSELoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7 nn.SmoothL1Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.8 nn.PoissonNLLLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.9 nn.KLDivLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.10 nn.MarginRankingLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.11 nn.SoftMarginLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.12 nn.MultiMarginLoss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.13 nn.CosineEmbeddingLoss</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、损失函数Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.CrossEntropyLoss</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -213,7 +207,7 @@ nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss?</span></a></li><li clas
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -224,7 +218,7 @@ nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss?</span></a></li><li clas
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -354,232 +348,164 @@ nn.CrossEntropyLoss &#x3D; softmax(x)+log(x)+nn.NLLLoss?</span></a></li><li clas
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pytorch-学习笔记-损失函数">[PyTorch 学习笔记] 损失函数</span></h2>
-<h3><span id="一-损失函数">一、损失函数</span></h3>
-<p><strong>损失函数是衡量模型输出与真实标签之间的差异</strong>。我们还经常听到<strong>代价函数</strong>和<strong>目标函数</strong>，它们之间差异如下：</p>
+        <h2><span id="pytorch-学习笔记-损失函数">[PyTorch 学习笔记] 损失函数</span></h2><h3><span id="一-损失函数">一、损失函数</span></h3><p><strong>损失函数是衡量模型输出与真实标签之间的差异</strong>。我们还经常听到<strong>代价函数</strong>和<strong>目标函数</strong>，它们之间差异如下：</p>
 <ul>
-<li><p><strong>损失函数</strong>(Loss
-Function)是计算<strong>一个样本</strong>的模型输出与真实标签的差异 Loss
-<img src="https://www.zhihu.com/equation?tex=%3Df%5Cleft%28y%5E%7B%5Cwedge%7D%2C+y%5Cright%29" alt="[公式]"></p></li>
-<li><p><strong>代价函数</strong>(Cost
-Function)是计算整个<strong>样本集</strong>的模型输出与真实标签的差异，是所有样本损失函数的平均值
-<img src="https://www.zhihu.com/equation?tex=%5Ccos+t%3D%5Cfrac%7B1%7D%7BN%7D+%5Csum_%7Bi%7D%5E%7BN%7D+f%5Cleft%28y_%7Bi%7D%5E%7B%5Cwedge%7D%2C+y_%7Bi%7D%5Cright%29" alt="[公式]"></p></li>
-<li><p><strong>目标函数</strong>(Objective
-Function)就是代价函数加上正则项</p></li>
+<li><strong>损失函数</strong>(Loss Function)是计算<strong>一个样本</strong>的模型输出与真实标签的差异 Loss <img src="https://www.zhihu.com/equation?tex=%3Df%5Cleft%28y%5E%7B%5Cwedge%7D%2C+y%5Cright%29" alt="[公式]"></li>
+<li><p><strong>代价函数</strong>(Cost Function)是计算整个<strong>样本集</strong>的模型输出与真实标签的差异，是所有样本损失函数的平均值 <img src="https://www.zhihu.com/equation?tex=%5Ccos+t%3D%5Cfrac%7B1%7D%7BN%7D+%5Csum_%7Bi%7D%5E%7BN%7D+f%5Cleft%28y_%7Bi%7D%5E%7B%5Cwedge%7D%2C+y_%7Bi%7D%5Cright%29" alt="[公式]"></p>
+</li>
+<li><p><strong>目标函数</strong>(Objective Function)就是代价函数加上正则项</p>
+</li>
 </ul>
-<p><strong>在 PyTorch
-中的损失函数也是继承于<code>nn.Module</code>，所以损失函数也可以看作网络层。</strong></p>
-<p>在逻辑回归的实验中，我使用了交叉熵损失函数<code>loss_fn = nn.BCELoss()</code>，<img src="https://www.zhihu.com/equation?tex=BCELoss" alt="[公式]">
-的继承关系：<code>nn.BCELoss() -&gt; _WeightedLoss -&gt; _Loss -&gt; Module</code>。在计算具体的损失时<code>loss = loss_fn(y_pred.squeeze(), train_y)</code>，这里实际上在
-Loss
-中进行一次前向传播，<strong>最终调用<code>BCELoss()</code>的<code>forward()</code>函数<code>F.binary_cross_entropy(input, target, weight=self.weight, reduction=self.reduction)</code>。</strong></p>
-<h4><span id="11nncrossentropyloss-softmaxxlogxnnnllloss">1.1
-<strong>nn.CrossEntropyLoss</strong> = softmax(x)+log(x)+nn.NLLLoss</span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.CrossEntropyLoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, ignore_index=-<span class="number">100</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>功能：把<code>nn.LogSoftmax()</code>和<code>nn.NLLLoss()</code>结合，计算交叉熵。<code>nn.LogSoftmax()</code>的作用是把输出值归一化到了
-[0,1] 之间。</p>
+<p><strong>在 PyTorch 中的损失函数也是继承于<code>nn.Module</code>，所以损失函数也可以看作网络层。</strong></p>
+<p>在逻辑回归的实验中，我使用了交叉熵损失函数<code>loss_fn = nn.BCELoss()</code>，<img src="https://www.zhihu.com/equation?tex=BCELoss" alt="[公式]"> 的继承关系：<code>nn.BCELoss() -&gt; _WeightedLoss -&gt; _Loss -&gt; Module</code>。在计算具体的损失时<code>loss = loss_fn(y_pred.squeeze(), train_y)</code>，这里实际上在 Loss 中进行一次前向传播，<strong>最终调用<code>BCELoss()</code>的<code>forward()</code>函数<code>F.binary_cross_entropy(input, target, weight=self.weight, reduction=self.reduction)</code>。</strong></p>
+<h4><span id="11-nncrossentropyloss-softmaxxlogxnnnllloss">1.1 <strong>nn.CrossEntropyLoss</strong> = softmax(x)+log(x)+nn.NLLLoss</span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.CrossEntropyLoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, ignore_index=-<span class="number">100</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>功能：把<code>nn.LogSoftmax()</code>和<code>nn.NLLLoss()</code>结合，计算交叉熵。<code>nn.LogSoftmax()</code>的作用是把输出值归一化到了 [0,1] 之间。</p>
 <ul>
 <li>weight：各类别的 loss 设置权值</li>
 <li>ignore_index：忽略某个类别的 loss 计算</li>
-<li><strong>reduction：计算模式</strong>，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li><strong>reduction：计算模式</strong>，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
 <blockquote>
-<p><strong>==下面介绍熵的一些基本概念==</strong></p>
+<p>  <strong>==下面介绍熵的一些基本概念==</strong></p>
 <ul>
 <li><strong>自信息</strong>：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BI%7D%28x%29%3D-%5Clog+%5Bp%28x%29%5D" alt="[公式]"></li>
 <li>信息熵就是求自信息的期望：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D%28%5Cmathrm%7BP%7D%29%3DE_%7Bx+%5Csim+p%7D%5BI%28x%29%5D%3D-%5Csum_%7Bi%7D%5E%7BN%7D+P%5Cleft%28x_%7Bi%7D%5Cright%29+%5Clog+P%5Cleft%28x_%7Bi%7D%5Cright%29" alt="[公式]"></li>
-<li><strong>相对熵</strong>，也被称为 KL
-散度，用于衡量两个分布的相似性(距离)：<img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7BD%7D_%7BK+L%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D%5Cboldsymbol%7BE%7D_%7B%5Cboldsymbol%7Bx%7D+%5Csim+p%7D%5Cleft%5B%5Clog+%5Cfrac%7B%5Cboldsymbol%7BP%7D%28%5Cboldsymbol%7Bx%7D%29%7D%7BQ%28%5Cboldsymbol%7Bx%7D%29%7D%5Cright%5D" alt="[公式]">。其中 <img src="https://www.zhihu.com/equation?tex=P%28X%29" alt="[公式]">
-是真实分布，<img src="https://www.zhihu.com/equation?tex=Q%28X%29" alt="[公式]"> 是拟合的分布</li>
-<li><strong>交叉熵</strong>：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D-%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%5Cboldsymbol%7BP%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5Clog+%5Cboldsymbol%7BQ%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29" alt="[公式]"></li>
-</ul>
+<li><strong>相对熵</strong>，也被称为 KL 散度，用于衡量两个分布的相似性(距离)：<img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7BD%7D_%7BK+L%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D%5Cboldsymbol%7BE%7D_%7B%5Cboldsymbol%7Bx%7D+%5Csim+p%7D%5Cleft%5B%5Clog+%5Cfrac%7B%5Cboldsymbol%7BP%7D%28%5Cboldsymbol%7Bx%7D%29%7D%7BQ%28%5Cboldsymbol%7Bx%7D%29%7D%5Cright%5D" alt="[公式]">。其中 <img src="https://www.zhihu.com/equation?tex=P%28X%29" alt="[公式]"> 是真实分布，<img src="https://www.zhihu.com/equation?tex=Q%28X%29" alt="[公式]"> 是拟合的分布</li>
+<li><p><strong>交叉熵</strong>：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D-%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%5Cboldsymbol%7BP%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5Clog+%5Cboldsymbol%7BQ%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29" alt="[公式]"></p>
 <p>相对熵展开可得：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cboldsymbol%7BD%7D_%7BK+L%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29+%26%3D%5Cboldsymbol%7BE%7D_%7B%5Cboldsymbol%7Bx%7D+%5Csim+p%7D%5Cleft%5B%5Clog+%5Cfrac%7BP%28x%29%7D%7BQ%28%5Cboldsymbol%7Bx%7D%29%7D%5Cright%5D+%5C%5C+%26%3D%5Cboldsymbol%7BE%7D_%7B%5Cboldsymbol%7Bx%7D+%5Csim+p%7D%5B%5Clog+P%28%5Cboldsymbol%7Bx%7D%29-%5Clog+Q%28%5Cboldsymbol%7Bx%7D%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28x_%7Bi%7D%5Cright%29%5Cleft%5B%5Clog+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29-%5Clog+Q%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29%5Cright%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5Clog+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29-%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5Clog+%5Cboldsymbol%7BQ%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5C%5C+%26%3D+H%28P%2CQ%29+-H%28P%29+%5Cend%7Baligned%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>所以<strong>交叉熵 = 信息熵 + 相对熵</strong>，即 <img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D%5Cboldsymbol%7BD%7D_%7BK+%5Cboldsymbol%7BL%7D%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%2B%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%29" alt="[公式]">，又由于信息熵 <img src="https://www.zhihu.com/equation?tex=H%28P%29" alt="[公式]">
-是固定的，因此<strong>==优化交叉熵 <img src="https://www.zhihu.com/equation?tex=H%28P%2CQ%29" alt="[公式]">
-等价于优化相对熵==</strong> <img src="https://www.zhihu.com/equation?tex=D_%7BKL%7D%28P%2CQ%29" alt="[公式]">。</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cboldsymbol%7BD%7D_%7BK+L%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29+%26%3D%5Cboldsymbol%7BE%7D_%7B%5Cboldsymbol%7Bx%7D+%5Csim+p%7D%5Cleft%5B%5Clog+%5Cfrac%7BP%28x%29%7D%7BQ%28%5Cboldsymbol%7Bx%7D%29%7D%5Cright%5D+%5C%5C+%26%3D%5Cboldsymbol%7BE%7D_%7B%5Cboldsymbol%7Bx%7D+%5Csim+p%7D%5B%5Clog+P%28%5Cboldsymbol%7Bx%7D%29-%5Clog+Q%28%5Cboldsymbol%7Bx%7D%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28x_%7Bi%7D%5Cright%29%5Cleft%5B%5Clog+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29-%5Clog+Q%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29%5Cright%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5Clog+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29-%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5Clog+%5Cboldsymbol%7BQ%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7Bi%7D%5Cright%29+%5C%5C+%26%3D+H%28P%2CQ%29+-H%28P%29+%5Cend%7Baligned%7D" alt="[公式]"></p>
+<p>所以<strong>交叉熵 = 信息熵 + 相对熵</strong>，即 <img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D%5Cboldsymbol%7BD%7D_%7BK+%5Cboldsymbol%7BL%7D%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%2B%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%29" alt="[公式]">，又由于信息熵 <img src="https://www.zhihu.com/equation?tex=H%28P%29" alt="[公式]"> 是固定的，因此<strong>==优化交叉熵 <img src="https://www.zhihu.com/equation?tex=H%28P%2CQ%29" alt="[公式]"> 等价于优化相对熵==</strong> <img src="https://www.zhihu.com/equation?tex=D_%7BKL%7D%28P%2CQ%29" alt="[公式]">。</p>
+</li>
+</ul>
 </blockquote>
 <p>所以对于<strong>每一个样本</strong>的 Loss 计算公式为：</p>
 <p><img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D%28%5Cboldsymbol%7BP%7D%2C+%5Cboldsymbol%7BQ%7D%29%3D-%5Csum_%7Bi%3D1%7D%5E%7BN%7D+%5Cboldsymbol%7BP%7D%5Cleft%28%5Cboldsymbol%7Bx%7D_%7B%5Cboldsymbol%7Bi%7D%7D%5Cright%29+%5Clog+Q%5Cleft%28%5Cboldsymbol%7Bx%7D_%7B%5Cboldsymbol%7Bi%7D%7D%5Cright%29+%3D+logQ%28x_%7Bi%7D%29" alt="[公式]">，因为 <img src="https://www.zhihu.com/equation?tex=N%3D1" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=P%28x_%7Bi%7D%29%3D1" alt="[公式]">。</p>
 <p>所以 <img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+%5Ctext+%7B+class+%7D%29%3D-%5Clog+%5Cleft%28%5Cfrac%7B%5Cexp+%28x%5B%5Ctext+%7B+class+%7D%5D%29%7D%7B%5Csum_%7Bj%7D+%5Cexp+%28x%5Bj%5D%29%7D%5Cright%29%3D-x%5B%5Ctext+%7B+class+%7D%5D%2B%5Clog+%5Cleft%28%5Csum_%7Bj%7D+%5Cexp+%28x%5Bj%5D%29%5Cright%29" alt="[公式]">。</p>
 <p>如果了类别的权重，则 <img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+%5Ctext+%7B+class+%7D%29%3D%5Coperatorname%7Bweight%7D%5B%5Ctext+%7B+class+%7D%5D%5Cleft%28-x%5B%5Ctext+%7B+class+%7D%5D%2B%5Clog+%5Cleft%28%5Csum_%7Bj%7D+%5Cexp+%28x%5Bj%5D%29%5Cright%29%5Cright%29" alt="[公式]">。</p>
-<p>下面设有 3 个样本做 2 分类。inputs 的形状为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+2" alt="[公式]">，表示每个样本有两个神经元输出两个分类。target 的形状为
-<img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+1" alt="[公式]">，注意类别从 0 开始，类型为<code>torch.long</code>。</p>
+<p>下面设有 3 个样本做 2 分类。inputs 的形状为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+2" alt="[公式]">，表示每个样本有两个神经元输出两个分类。target 的形状为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+1" alt="[公式]">，注意类别从 0 开始，类型为<code>torch.long</code>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># fake data</span></span><br><span class="line">inputs = torch.tensor([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">3</span>]], dtype=torch.<span class="built_in">float</span>)</span><br><span class="line">target = torch.tensor([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>], dtype=torch.long)</span><br><span class="line"></span><br><span class="line"><span class="comment"># def loss function</span></span><br><span class="line">loss_f_none = nn.CrossEntropyLoss(weight=<span class="literal">None</span>, reduction=<span class="string">&#x27;none&#x27;</span>)</span><br><span class="line">loss_f_sum = nn.CrossEntropyLoss(weight=<span class="literal">None</span>, reduction=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line">loss_f_mean = nn.CrossEntropyLoss(weight=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># forward</span></span><br><span class="line">loss_none = loss_f_none(inputs, target)</span><br><span class="line">loss_sum = loss_f_sum(inputs, target)</span><br><span class="line">loss_mean = loss_f_mean(inputs, target)</span><br><span class="line"></span><br><span class="line"><span class="comment"># view</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Cross Entropy Loss:&quot;</span>, loss_none, loss_sum, loss_mean)</span><br></pre></td></tr></table></figure>
 <p>输出为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cross Entropy Loss: tensor([<span class="number">1.3133</span>, <span class="number">0.1269</span>, <span class="number">0.1269</span>]) tensor(<span class="number">1.5671</span>) tensor(<span class="number">0.5224</span>)</span><br></pre></td></tr></table></figure>
-<h4><span id="12-nnnllloss">1.2 <strong>nn.NLLLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.NLLLoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, ignore_index=-<span class="number">100</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="12-nnnllloss">1.2 <strong>nn.NLLLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.NLLLoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, ignore_index=-<span class="number">100</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：实现<strong>负对数似然函数</strong>中的符号功能</p>
 <p>主要参数：</p>
 <ul>
 <li><strong>weight</strong>：各类别的 loss 权值设置</li>
 <li><strong>ignore_index</strong>：忽略某个类别</li>
-<li><strong>reduction：计算模式</strong>，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li><strong>reduction：计算模式</strong>，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
-<p><strong>每个样本的 loss 公式为：</strong><img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3D-w_%7By_%7Bn%7D%7D+x_%7Bn%2C+y_%7Bn%7D%7D" alt="[公式]">。还是使用上面的例子，第一个样本的输出为 [1,2]，类别为
-0，则第一个样本的 loss 为 -1；第一个样本的输出为 [1,3]，类别为
-1，则第一个样本的 loss 为 -3。</p>
-<h4><span id="13-nnbceloss"><strong>1.3 nn.BCELoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.BCELoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>功能：<strong>计算二分类的交叉熵</strong>。需要注意的是：输出值区间为
-[0,1]。</p>
+<p><strong>每个样本的 loss 公式为：</strong><img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3D-w_%7By_%7Bn%7D%7D+x_%7Bn%2C+y_%7Bn%7D%7D" alt="[公式]">。还是使用上面的例子，第一个样本的输出为 [1,2]，类别为 0，则第一个样本的 loss 为 -1；第一个样本的输出为 [1,3]，类别为 1，则第一个样本的 loss 为 -3。</p>
+<h4><span id="13-nnbceloss"><strong>1.3 nn.BCELoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.BCELoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>功能：<strong>计算二分类的交叉熵</strong>。需要注意的是：输出值区间为 [0,1]。</p>
 <p>主要参数：</p>
 <ul>
 <li>weight：各类别的 loss 权值设置</li>
 <li>ignore_index：忽略某个类别</li>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
 <p><strong>计算公式</strong>为：<img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3D-w_%7Bn%7D%5Cleft%5By_%7Bn%7D+%5Ccdot+%5Clog+x_%7Bn%7D%2B%5Cleft%281-y_%7Bn%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%281-x_%7Bn%7D%5Cright%29%5Cright%5D" alt="[公式]"></p>
 <p>使用这个函数有两个不同的地方：</p>
 <ul>
 <li><strong>预测的标签需要经过 sigmoid 变换到 [0,1] 之间</strong>。</li>
-<li><strong>真实的标签需要转换为 one hot
-向量，类型为<code>torch.float</code>。</strong></li>
+<li><strong>真实的标签需要转换为 one hot 向量，类型为<code>torch.float</code>。</strong></li>
 </ul>
-<h4><span id="14nnbcewithlogitsloss">1.4
-<strong>nn.BCEWithLogitsLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.BCEWithLogitsLoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>, pos_weight=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>功能：<strong>结合 sigmoid
-与二分类交叉熵</strong>。需要注意的是，网络最后的输出不用经过 sigmoid
-函数。这个 loss 出现的原因是有时网络模型最后一层输出不希望是归一化到
-[0,1] 之间，但是在计算 loss 时又需要归一化到 [0,1] 之间。</p>
+<h4><span id="14-nnbcewithlogitsloss">1.4 <strong>nn.BCEWithLogitsLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.BCEWithLogitsLoss(weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>, pos_weight=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>功能：<strong>结合 sigmoid 与二分类交叉熵</strong>。需要注意的是，网络最后的输出不用经过 sigmoid 函数。这个 loss 出现的原因是有时网络模型最后一层输出不希望是归一化到 [0,1] 之间，但是在计算 loss 时又需要归一化到 [0,1] 之间。</p>
 <p>主要参数：</p>
 <ul>
-<li><strong>weight</strong>：<strong>各输出类别的 loss
-权值设置</strong></li>
-<li><strong>pos_weight</strong>：<strong>==设置输入样本类别对应的神经元的输出的
-loss 权值==</strong></li>
+<li><strong>weight</strong>：<strong>各输出类别的 loss 权值设置</strong></li>
+<li><strong>pos_weight</strong>：<strong>==设置输入样本类别对应的神经元的输出的 loss 权值==</strong></li>
 <li>ignore_index：忽略某个类别</li>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
-<h4><span id="15-nnl1loss">1.5 <strong>nn.L1Loss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.L1Loss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="15-nnl1loss">1.5 <strong>nn.L1Loss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.L1Loss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：<strong>计算 inputs 与 target 之差的绝对值</strong></p>
 <p>主要参数：</p>
 <ul>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
 <p>公式：<img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3D%5Cleft%7Cx_%7Bn%7D-y_%7Bn%7D%5Cright%7C" alt="[公式]"></p>
-<h4><span id="16-nnmseloss">1.6 <strong>nn.MSELoss</strong></span></h4>
-<p>功能：计算 inputs 与 target 之差的平方</p>
+<h4><span id="16-nnmseloss">1.6 <strong>nn.MSELoss</strong></span></h4><p>功能：计算 inputs 与 target 之差的平方</p>
 <p>公式：<img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3D%5Cleft%28x_%7Bn%7D-y_%7Bn%7D%5Cright%29%5E%7B2%7D" alt="[公式]"></p>
 <p>主要参数：</p>
 <ul>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
-<h4><span id="17-nnsmoothl1loss"><strong>1.7 nn.SmoothL1Loss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.SmoothL1Loss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="17-nnsmoothl1loss"><strong>1.7 nn.SmoothL1Loss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.SmoothL1Loss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：平滑的 L1Loss</p>
 <p>公式：<img src="https://www.zhihu.com/equation?tex=z_%7Bi%7D%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D0.5%5Cleft%28x_%7Bi%7D-y_%7Bi%7D%5Cright%29%5E%7B2%7D%2C+%26+%5Ctext+%7B+if+%7D%5Cleft%7Cx_%7Bi%7D-y_%7Bi%7D%5Cright%7C%3C1+%5C%5C+%5Cleft%7Cx_%7Bi%7D-y_%7Bi%7D%5Cright%7C-0.5%2C+%26+%5Ctext+%7B+otherwise+%7D%5Cend%7Barray%7D%5Cright." alt="[公式]"></p>
 <p>下图中橙色曲线是 L1Loss，蓝色曲线是 Smooth L1Loss</p>
 <p><img src="https://pic3.zhimg.com/80/v2-59bedd97c18dff6fe2bf9fd96494cac2_1440w.jpg" alt="img" style="zoom: 50%;"></p>
 <p>主要参数：</p>
 <ul>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
-<h4><span id="18-nnpoissonnllloss">1.8 <strong>nn.PoissonNLLLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.PoissonNLLLoss(log_input=<span class="literal">True</span>, full=<span class="literal">False</span>, size_average=<span class="literal">None</span>, eps=<span class="number">1e-08</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="18-nnpoissonnllloss">1.8 <strong>nn.PoissonNLLLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.PoissonNLLLoss(log_input=<span class="literal">True</span>, full=<span class="literal">False</span>, size_average=<span class="literal">None</span>, eps=<span class="number">1e-08</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：<strong>泊松分布的负对数似然损失函数</strong></p>
 <p>主要参数：</p>
 <ul>
-<li><p>log_input：输入是否为对数形式，决定计算公式</p></li>
+<li><p>log_input：输入是否为对数形式，决定计算公式</p>
+</li>
 <li><ul>
-<li>当 log_input =
-True，表示输入数据已经是经过对数运算之后的，loss(input, target) =
-exp(input) - target * input</li>
-<li>当 log_input = False，，表示输入数据还没有取对数，loss(input,
-target) = input - target * log(input+eps)</li>
-</ul></li>
-<li><p>full：计算所有 loss，默认为 loss</p></li>
-<li><p>eps：修正项，避免 log(input) 为 nan</p></li>
+<li>当 log_input = True，表示输入数据已经是经过对数运算之后的，loss(input, target) = exp(input) - target * input</li>
+<li>当 log_input = False，，表示输入数据还没有取对数，loss(input, target) = input - target * log(input+eps)</li>
 </ul>
-<h4><span id="19-nnkldivloss">1.9 <strong>nn.KLDivLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.KLDivLoss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>full：计算所有 loss，默认为 loss</p>
+</li>
+<li><p>eps：修正项，避免 log(input) 为 nan</p>
+</li>
+</ul>
+<h4><span id="19-nnkldivloss">1.9 <strong>nn.KLDivLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.KLDivLoss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：<strong>计算 KLD(divergence)，KL 散度，相对熵</strong></p>
-<p>注意事项：需要提前将输入计算
-log-probabilities，如通过<code>nn.logsoftmax()</code></p>
+<p>注意事项：需要提前将输入计算 log-probabilities，如通过<code>nn.logsoftmax()</code></p>
 <p>主要参数：</p>
 <ul>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)，batchmean(batchsize
-维度求平均值)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)，batchmean(batchsize 维度求平均值)</li>
 </ul>
 <p>公式：<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+D_%7BK+L%7D%28P+%5C%7C+Q%29%3DE_%7Bx-p%7D%5Cleft%5B%5Clog+%5Cfrac%7BP%28x%29%7D%7BQ%28x%29%7D%5Cright%5D+%26%3DE_%7Bx-p%7D%5B%5Clog+P%28x%29-%5Clog+Q%28x%29%5D+%3D%5Csum_%7Bi%3D1%7D%5E%7BN%7D+P%5Cleft%28x_%7Bi%7D%5Cright%29%5Cleft%28%5Clog+P%5Cleft%28x_%7Bi%7D%5Cright%29-%5Clog+Q%5Cleft%28x_%7Bi%7D%5Cright%29%5Cright%29+%5Cend%7Baligned%7D" alt="[公式]"></p>
-<p>对于每个样本来说，计算公式如下，其中 <img src="https://www.zhihu.com/equation?tex=y_%7Bn%7D" alt="[公式]">
-是真实值 <img src="https://www.zhihu.com/equation?tex=P%28x%29" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=x_%7Bn%7D" alt="[公式]"> 是经过对数运算之后的预测值 <img src="https://www.zhihu.com/equation?tex=logQ%28x%29" alt="[公式]">。</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3Dy_%7Bn%7D+%5Ccdot%5Cleft%28%5Clog+y_%7Bn%7D-x_%7Bn%7D%5Cright%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="110nnmarginrankingloss">1.10
-<strong>nn.MarginRankingLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.MarginRankingLoss(margin=<span class="number">0.0</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>对于每个样本来说，计算公式如下，其中 <img src="https://www.zhihu.com/equation?tex=y_%7Bn%7D" alt="[公式]"> 是真实值 <img src="https://www.zhihu.com/equation?tex=P%28x%29" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=x_%7Bn%7D" alt="[公式]"> 是经过对数运算之后的预测值 <img src="https://www.zhihu.com/equation?tex=logQ%28x%29" alt="[公式]">。</p>
+<p><img src="https://www.zhihu.com/equation?tex=l_%7Bn%7D%3Dy_%7Bn%7D+%5Ccdot%5Cleft%28%5Clog+y_%7Bn%7D-x_%7Bn%7D%5Cright%29" alt="[公式]"></p>
+<h4><span id="110-nnmarginrankingloss">1.10 <strong>nn.MarginRankingLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.MarginRankingLoss(margin=<span class="number">0.0</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：<strong>计算两个向量之间的相似度，用于排序任务</strong></p>
-<p>特别说明：<strong>该方法计算 两组数据之间的差异，返回一个 <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+n" alt="[公式]"> 的
-loss 矩阵</strong></p>
+<p>特别说明：<strong>该方法计算 两组数据之间的差异，返回一个 <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+n" alt="[公式]"> 的 loss 矩阵</strong></p>
 <p>主要参数：</p>
 <ul>
-<li>margin：边界值，<img src="https://www.zhihu.com/equation?tex=x_%7B1%7D" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=x_%7B2%7D" alt="[公式]">
-之间的差异值</li>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>margin：边界值，<img src="https://www.zhihu.com/equation?tex=x_%7B1%7D" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=x_%7B2%7D" alt="[公式]"> 之间的差异值</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
 <p>计算公式：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+y%29%3D%5Cmax+%280%2C-y+%2A%28x+1-x+2%29%2B%5Coperatorname%7Bmargin%7D%29" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的取值有 +1 和 -1。</p>
 <ul>
 <li>当 <img src="https://www.zhihu.com/equation?tex=y%3D1" alt="[公式]"> 时，希望 <img src="https://www.zhihu.com/equation?tex=x_%7B1%7D+%3E+x_%7B2%7D" alt="[公式]">，当 <img src="https://www.zhihu.com/equation?tex=x_%7B1%7D+%3E+x_%7B2%7D" alt="[公式]">，不产生 loss</li>
 <li>当 <img src="https://www.zhihu.com/equation?tex=y%3D-1" alt="[公式]"> 时，希望 <img src="https://www.zhihu.com/equation?tex=x_%7B1%7D+%3C+x_%7B2%7D" alt="[公式]">，当 <img src="https://www.zhihu.com/equation?tex=x_%7B1%7D+%3C+x_%7B2%7D" alt="[公式]">，不产生 loss</li>
 </ul>
-<h4><span id="111-nnsoftmarginloss">1.11 <strong>nn.SoftMarginLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.SoftMarginLoss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="111-nnsoftmarginloss">1.11 <strong>nn.SoftMarginLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.SoftMarginLoss(size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：<strong>计算二分类的 logistic 损失</strong></p>
 <p>主要参数：</p>
 <ul>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
 <p>计算公式：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+y%29%3D%5Csum_%7Bi%7D+%5Cfrac%7B%5Clog+%281%2B%5Cexp+%28-y%5Bi%5D+%2A+x%5Bi%5D%29%29%7D%7B%5Ctext+%7B+x.nelement+%7D+0%7D" alt="[公式]"></p>
-<h4><span id="112nnmultimarginloss">1.12
-<strong>nn.MultiMarginLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.MultiMarginLoss(p=<span class="number">1</span>, margin=<span class="number">1.0</span>, weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="112-nnmultimarginloss">1.12 <strong>nn.MultiMarginLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.MultiMarginLoss(p=<span class="number">1</span>, margin=<span class="number">1.0</span>, weight=<span class="literal">None</span>, size_average=<span class="literal">None</span>, reduce=<span class="literal">None</span>, reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：计算多分类的折页损失</p>
 <p>主要参数：</p>
 <ul>
 <li>p：可以选择 1 或 2</li>
 <li>weight：各类别的 loss 权值设置</li>
 <li>margin：边界值</li>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
-<p>计算公式：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+y%29%3D%5Cfrac%7B%5Cleft.%5Csum_%7Bi%7D+%5Cmax+%280%2C+%5Coperatorname%7Bmargin%7D-x%5By%5D%2Bx%5Bi%5D%29%5Cright%29%5E%7Bp%7D%7D%7B%5Cquad+%5Ctext+%7B+x.size+%7D%280%29%7D" alt="[公式]">，其中 y 表示真实标签对应的神经元输出，x
-表示其他神经元的输出。</p>
-<h4><span id="113nncosineembeddingloss">1.13
-<strong>nn.CosineEmbeddingLoss</strong></span></h4>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.CosineEmbeddingLoss(margin=0.0, size_average=None, reduce=None, reduction=&#x27;mean&#x27;)</span><br></pre></td></tr></table></figure>
+<p>计算公式：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+y%29%3D%5Cfrac%7B%5Cleft.%5Csum_%7Bi%7D+%5Cmax+%280%2C+%5Coperatorname%7Bmargin%7D-x%5By%5D%2Bx%5Bi%5D%29%5Cright%29%5E%7Bp%7D%7D%7B%5Cquad+%5Ctext+%7B+x.size+%7D%280%29%7D" alt="[公式]">，其中 y 表示真实标签对应的神经元输出，x 表示其他神经元的输出。</p>
+<h4><span id="113-nncosineembeddingloss">1.13 <strong>nn.CosineEmbeddingLoss</strong></span></h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.CosineEmbeddingLoss(margin=0.0, size_average=None, reduce=None, reduction=&#x27;mean&#x27;)</span><br></pre></td></tr></table></figure>
 <p>功能：采用余弦相似度计算两个输入的相似性</p>
 <p>主要参数：</p>
 <ul>
 <li>margin：边界值，可取值 [-1, 1]，推荐为 [0, 0.5]</li>
-<li>reduction：计算模式，，可以为
-none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
+<li>reduction：计算模式，，可以为 none(逐个元素计算)，sum(所有元素求和，返回标量)，mean(加权平均，返回标量)</li>
 </ul>
 <p>计算公式：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bloss%7D%28x%2C+y%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D1-%5Ccos+%5Cleft%28x_%7B1%7D%2C+x_%7B2%7D%5Cright%29%2C+%26+%5Ctext+%7B+if+%7D+y%3D1+%5C%5C+%5Cmax+%5Cleft%280%2C+%5Ccos+%5Cleft%28x_%7B1%7D%2C+x_%7B2%7D%5Cright%29-%5Coperatorname%7Bmargin%7D%5Cright%29%2C+%26+%5Ctext+%7B+if+%7D+y%3D-1%5Cend%7Barray%7D%5Cright." alt="[公式]"></p>
 <p>其中 <img src="https://www.zhihu.com/equation?tex=%5Ccos+%28%5Ctheta%29%3D%5Cfrac%7BA+%5Ccdot+B%7D%7B%5C%7CA%5C%7C%5C%7CB%5C%7C%7D%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D+A_%7Bi%7D+%5Ctimes+B_%7Bi%7D%7D%7B%5Csqrt%7B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Cleft%28A_%7Bi%7D%5Cright%29%5E%7B2%7D%7D+%5Ctimes+%5Csqrt%7B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Cleft%28B_%7Bi%7D%5Cright%29%5E%7B2%7D%7D%7D" alt="[公式]"></p>
-<h2><span id="二-损失函数qampa">二、损失函数Q&amp;A</span></h2>
-<h4><span id="21nncrossentropyloss-softmaxxlogxnnnllloss">2.1
-nn.CrossEntropyLoss = softmax(x)+log(x)+nn.NLLLoss?</span></h4>
-<p>在各种深度学习框架中，我们最常用的损失函数就是交叉熵（torch.nn.CrossEntropyLoss），<strong>熵是用来描述一个系统的混乱程度,通过交叉熵我们就能够确定预测数据与真是数据之间的相近程度</strong>。交叉熵越小，表示数据越接近真实样本。</p>
+<h2><span id="二-损失函数qampa">二、损失函数Q&amp;A</span></h2><h4><span id="21-nncrossentropyloss-softmaxxlogxnnnllloss">2.1 nn.CrossEntropyLoss = softmax(x)+log(x)+nn.NLLLoss?</span></h4><p>在各种深度学习框架中，我们最常用的损失函数就是交叉熵（torch.nn.CrossEntropyLoss），<strong>熵是用来描述一个系统的混乱程度,通过交叉熵我们就能够确定预测数据与真是数据之间的相近程度</strong>。交叉熵越小，表示数据越接近真实样本。</p>
 <p><strong>交叉熵计算公式：</strong></p>
 <p><img src="https://img-blog.csdnimg.cn/20191024155805924.png" alt="img" style="zoom:50%;"></p>
 <p><strong>softmax函数</strong>又称为归一化指数函数，它可以把一个多维向量压缩在（0，1）之间，并且它们的和为1.</p>
@@ -591,8 +517,7 @@ nn.CrossEntropyLoss = softmax(x)+log(x)+nn.NLLLoss?</span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="built_in">input</span>=torch.randn(<span class="number">3</span>,<span class="number">3</span>)</span><br><span class="line">soft_input = torch.nn.Softmax(dim=<span class="number">0</span>)</span><br><span class="line">soft_input(<span class="built_in">input</span>)</span><br><span class="line">Out[<span class="number">20</span>]: </span><br><span class="line">tensor([[<span class="number">0.7284</span>, <span class="number">0.7364</span>, <span class="number">0.3343</span>],</span><br><span class="line">        [<span class="number">0.1565</span>, <span class="number">0.0365</span>, <span class="number">0.0408</span>],</span><br><span class="line">        [<span class="number">0.1150</span>, <span class="number">0.2270</span>, <span class="number">0.6250</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment">#对softmax结果取log</span></span><br><span class="line">torch.log(soft_input(<span class="built_in">input</span>))</span><br><span class="line">Out[<span class="number">21</span>]: </span><br><span class="line">tensor([[-<span class="number">0.3168</span>, -<span class="number">0.3059</span>, -<span class="number">1.0958</span>],</span><br><span class="line">        [-<span class="number">1.8546</span>, -<span class="number">3.3093</span>, -<span class="number">3.1995</span>],</span><br><span class="line">        [-<span class="number">2.1625</span>, -<span class="number">1.4827</span>, -<span class="number">0.4701</span>]])</span><br></pre></td></tr></table></figure>
 <p>假设标签是[0,1,2]，第一行取第0个元素，第二行取第1个，第三行取第2个，去掉负号，即[0.3168,3.3093,0.4701],求平均值，就可以得到损失值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">0.3168</span>+<span class="number">3.3093</span>+<span class="number">0.4701</span>)/<span class="number">3</span></span><br><span class="line">Out[<span class="number">22</span>]: <span class="number">1.3654000000000002</span></span><br><span class="line"><span class="comment">#验证一下</span></span><br><span class="line">loss=torch.nn.NLLLoss()</span><br><span class="line">target=torch.tensor([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">loss(<span class="built_in">input</span>,target)</span><br><span class="line">Out[<span class="number">26</span>]: tensor(<span class="number">0.1365</span>)</span><br></pre></td></tr></table></figure>
-<h4><span id="nncrossentropyloss"><strong>nn.CrossEntropyLoss</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">loss=torch.nn.NLLLoss()</span><br><span class="line">target=torch.tensor([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">loss(<span class="built_in">input</span>,target)</span><br><span class="line">Out[<span class="number">26</span>]: tensor(-<span class="number">0.1399</span>)</span><br><span class="line">loss =torch.nn.CrossEntropyLoss()</span><br><span class="line"><span class="built_in">input</span> = torch.tensor([[ <span class="number">1.1879</span>,  <span class="number">1.0780</span>,  <span class="number">0.5312</span>],</span><br><span class="line">        [-<span class="number">0.3499</span>, -<span class="number">1.9253</span>, -<span class="number">1.5725</span>],</span><br><span class="line">        [-<span class="number">0.6578</span>, -<span class="number">0.0987</span>,  <span class="number">1.1570</span>]])</span><br><span class="line">target = torch.tensor([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">loss(<span class="built_in">input</span>,target)</span><br><span class="line">Out[<span class="number">30</span>]: tensor(<span class="number">0.1365</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="nncrossentropyloss"><strong>nn.CrossEntropyLoss</strong></span></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">loss=torch.nn.NLLLoss()</span><br><span class="line">target=torch.tensor([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">loss(<span class="built_in">input</span>,target)</span><br><span class="line">Out[<span class="number">26</span>]: tensor(-<span class="number">0.1399</span>)</span><br><span class="line">loss =torch.nn.CrossEntropyLoss()</span><br><span class="line"><span class="built_in">input</span> = torch.tensor([[ <span class="number">1.1879</span>,  <span class="number">1.0780</span>,  <span class="number">0.5312</span>],</span><br><span class="line">        [-<span class="number">0.3499</span>, -<span class="number">1.9253</span>, -<span class="number">1.5725</span>],</span><br><span class="line">        [-<span class="number">0.6578</span>, -<span class="number">0.0987</span>,  <span class="number">1.1570</span>]])</span><br><span class="line">target = torch.tensor([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">loss(<span class="built_in">input</span>,target)</span><br><span class="line">Out[<span class="number">30</span>]: tensor(<span class="number">0.1365</span>)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -623,13 +548,13 @@ nn.CrossEntropyLoss = softmax(x)+log(x)+nn.NLLLoss?</span></h4>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/3W41PJ7/" rel="prev" title="Pytorch（12）可视化">
-                  <i class="fa fa-chevron-left"></i> Pytorch（12）可视化
+                <a href="/posts/3ACJRH6/" rel="prev" title="Pytorch（17）模型应用">
+                  <i class="fa fa-chevron-left"></i> Pytorch（17）模型应用
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/21HN90E/" rel="next" title="恶意软件检测（10）Dos and Don'ts of Machine Learning in Computer Security">
-                  恶意软件检测（10）Dos and Don'ts of Machine Learning in Computer Security <i class="fa fa-chevron-right"></i>
+                <a href="/posts/3W41PJ7/" rel="next" title="Pytorch（12）可视化">
+                  Pytorch（12）可视化 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

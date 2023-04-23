@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="DeepWalk【图神经网络论文精读】：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1o94y197vf&#x2F;?spm_id_from&#x3D;pageDriver&amp;vd_source&#x3D;29387dc08d18f642078183a6816e93e8 https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1322582255018184704 图神经网络—基于随机游走">
+    <meta name="description" content="DeepWalk【图神经网络论文精读】：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1o94y197vf&#x2F;?spm_id_from&#x3D;pageDriver&amp;vd_source&#x3D;29387dc08d18f642078183a6816e93e8 https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1322582255018184704 图神经网络—基于随机游走的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习-GNN（2）DeepWalk">
 <meta property="og:url" content="https://powerlzy.github.io/posts/13PH6XA/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="DeepWalk【图神经网络论文精读】：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1o94y197vf&#x2F;?spm_id_from&#x3D;pageDriver&amp;vd_source&#x3D;29387dc08d18f642078183a6816e93e8 https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1322582255018184704 图神经网络—基于随机游走">
+<meta property="og:description" content="DeepWalk【图神经网络论文精读】：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1o94y197vf&#x2F;?spm_id_from&#x3D;pageDriver&amp;vd_source&#x3D;29387dc08d18f642078183a6816e93e8 https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1322582255018184704 图神经网络—基于随机游走的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://powerlzy.github.io/posts/13PH6XA/image-20230311111100589.png">
 <meta property="og:image" content="https://powerlzy.github.io/posts/13PH6XA/image-20230311113705926.png">
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -171,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -283,7 +283,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -301,46 +301,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="graphembeddingdeepwalk算法原理实现和应用"></span></h2>
-<ul>
-<li><strong>DeepWalk【图神经网络论文精读】</strong>：https://www.bilibili.com/video/BV1o94y197vf/?spm_id_from=pageDriver&amp;vd_source=29387dc08d18f642078183a6816e93e8</li>
-<li>https://www.zhihu.com/column/c_1322582255018184704</li>
-<li>图神经网络—基于随机游走的早期研究（一）：DeepWalk &amp;
-Node2Vec：https://zhuanlan.zhihu.com/p/343041065</li>
+        <h2><span id="graph-embeddingdeepwalk算法原理实现和应用"></span></h2><ul>
+<li><strong>DeepWalk【图神经网络论文精读】</strong>：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1o94y197vf/?spm_id_from=pageDriver&amp;vd_source=29387dc08d18f642078183a6816e93e8">https://www.bilibili.com/video/BV1o94y197vf/?spm_id_from=pageDriver&amp;vd_source=29387dc08d18f642078183a6816e93e8</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1322582255018184704">https://www.zhihu.com/column/c_1322582255018184704</a></li>
+<li>图神经网络—基于随机游走的早期研究（一）：DeepWalk &amp; Node2Vec：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343041065">https://zhuanlan.zhihu.com/p/343041065</a></li>
 </ul>
-<h3><span id="一-deepwalk">一、DeepWalk</span></h3>
-<p><img src="image-20230311111100589.png" alt="image-20230311111100589" style="zoom:33%;"></p>
+<h3><span id="一-deepwalk">一、DeepWalk</span></h3><p><img src="image-20230311111100589.png" alt="image-20230311111100589" style="zoom:33%;"></p>
 <p>DeepWalk[1]是一篇14年的文章，它极大的受到word2vec[4]的启发。</p>
-<p>在图机器学习的早期研究中，人们主要希望模型能够捕捉到节点之间的连接关系。那在word2vec中人们希望模型学习的是什么呢？没错，就是token与token之间的"连接性"。word2vec的skip-gram
-(with negative sampling)
-模型本质上在回答：给定两个token，它们是否有在同一个context
-window中出现过？<strong>从图的角度来说，word2vec的任务目标可以翻译为：给定两个节点，判断它们是否有任意k阶<em>内</em>的连接关系，其中k即为context
-window的大小。</strong></p>
+<p>在图机器学习的早期研究中，人们主要希望模型能够捕捉到节点之间的连接关系。那在word2vec中人们希望模型学习的是什么呢？没错，就是token与token之间的”连接性”。word2vec的skip-gram (with negative sampling) 模型本质上在回答：给定两个token，它们是否有在同一个context window中出现过？<strong>从图的角度来说，word2vec的任务目标可以翻译为：给定两个节点，判断它们是否有任意k阶<em>内</em>的连接关系，其中k即为context window的大小。</strong></p>
 <p>因此，一个自然的想法就是，能不能利用word2vec训练模型，来捕捉图数据结构中节点之间的连接关系呢？出于此intuition，研究者们提出了DeepWalk。</p>
-<h4><span id="11-overview-of-the-model">1.1 Overview of the Model</span></h4>
-<p><strong>DeepWalk非常简单粗暴，它基本上就是以下两个模块的结合，甚至各个模块都没有太大的改动：</strong></p>
+<h4><span id="11-overview-of-the-model">1.1 Overview of the Model</span></h4><p><strong>DeepWalk非常简单粗暴，它基本上就是以下两个模块的结合，甚至各个模块都没有太大的改动：</strong></p>
 <ul>
-<li>基于随机游走在图上进行<strong>游走采样</strong>，将节点邻接结构映射成序列结构。</li>
+<li>基于随机游走在图上进行<strong>游走采样</strong>，将节点邻接结构映射成序列结构。 </li>
 <li>利用采样得到的序列，训练Skip-gram模型，使习得的表达能够捕捉节点间的连接性。</li>
 </ul>
-<p><strong>第一部分：</strong>原论文提出在进行随机游走时，每次从给定起点出发，不停的利用uniform
-sampling来采样邻居进行游走，直到该采样序列长度达到给定最大长度。因为每步游走仅需做一次uniform
-sampling，所以DeepWalk可以在不需要额外存储计算的情况下，在O(1)的时间内采样一步随机游走。</p>
-<p>假设给定模型l的walk
-length，并且以每个节点为起点进行k次游走，那么总计会生成k|V|个长度为l的序列。最终完成整张图的随机游走的时间复杂度为O(lk|V|)。</p>
-<p><strong>第二部分：</strong>原论文提出基于Hierarchical Softmax (HS)
-来训练一个Skip-gram模型。但从今天的眼光来看，HS已经逐步退出历史的舞台。人们现在往往直接在GPU上计算softmax，并不再特别需要HS加速softmax计算。并且，若softmax计算量难以接受，人们也往往利用Noise
-Contractive Estimation (NCE) or <strong>Negative Sampling</strong>
-(NS)，来规避softmax的使用。<strong>因此，今天人们更常利用skip-gram with
-negative sampling训练DeepWalk/Node2Vec模型。</strong></p>
-<figure>
-<img src="image-20230311113705926.png" alt="image-20230311113705926">
-<figcaption aria-hidden="true">image-20230311113705926</figcaption>
-</figure>
-<figure>
-<img src="image-20230311114014622.png" alt="image-20230311114014622">
-<figcaption aria-hidden="true">image-20230311114014622</figcaption>
-</figure>
+<p><strong>第一部分：</strong>原论文提出在进行随机游走时，每次从给定起点出发，不停的利用uniform sampling来采样邻居进行游走，直到该采样序列长度达到给定最大长度。因为每步游走仅需做一次uniform sampling，所以DeepWalk可以在不需要额外存储计算的情况下，在O(1)的时间内采样一步随机游走。</p>
+<p>假设给定模型l的walk length，并且以每个节点为起点进行k次游走，那么总计会生成k|V|个长度为l的序列。最终完成整张图的随机游走的时间复杂度为O(lk|V|)。</p>
+<p><strong>第二部分：</strong>原论文提出基于Hierarchical Softmax (HS) 来训练一个Skip-gram模型。但从今天的眼光来看，HS已经逐步退出历史的舞台。人们现在往往直接在GPU上计算softmax，并不再特别需要HS加速softmax计算。并且，若softmax计算量难以接受，人们也往往利用Noise Contractive Estimation (NCE) or <strong>Negative Sampling</strong> (NS)，来规避softmax的使用。<strong>因此，今天人们更常利用skip-gram with negative sampling训练DeepWalk/Node2Vec模型。</strong></p>
+<p><img src="image-20230311113705926.png" alt="image-20230311113705926"></p>
+<p><img src="image-20230311114014622.png" alt="image-20230311114014622"></p>
 
     </div>
 

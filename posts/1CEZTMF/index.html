@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="[PyTorch 学习笔记] 卷积层与nn.Conv 一、1D&#x2F;2D&#x2F;3D 卷积 卷积有一维卷积、二维卷积、三维卷积。一般情况下，卷积核在几个维度上滑动，就是几维卷积。比如在图片上的卷积就是二维卷积。 一维卷积：  二维卷积：  三维卷积：  二、nn.Conv2d() 二维卷积 123nn.Conv2d(self, in_channels, out_channels, kernel_size,">
+    <meta name="description" content="[PyTorch 学习笔记] 卷积层与nn.Conv一、1D&#x2F;2D&#x2F;3D 卷积卷积有一维卷积、二维卷积、三维卷积。一般情况下，卷积核在几个维度上滑动，就是几维卷积。比如在图片上的卷积就是二维卷积。 一维卷积： 二维卷积： 三维卷积： 二、nn.Conv2d() 二维卷积123nn.Conv2d(self, in_channels, out_channels, kernel_size, stride">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pytorch（7）模型构建-nn">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1CEZTMF/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="[PyTorch 学习笔记] 卷积层与nn.Conv 一、1D&#x2F;2D&#x2F;3D 卷积 卷积有一维卷积、二维卷积、三维卷积。一般情况下，卷积核在几个维度上滑动，就是几维卷积。比如在图片上的卷积就是二维卷积。 一维卷积：  二维卷积：  三维卷积：  二、nn.Conv2d() 二维卷积 123nn.Conv2d(self, in_channels, out_channels, kernel_size,">
+<meta property="og:description" content="[PyTorch 学习笔记] 卷积层与nn.Conv一、1D&#x2F;2D&#x2F;3D 卷积卷积有一维卷积、二维卷积、三维卷积。一般情况下，卷积核在几个维度上滑动，就是几维卷积。比如在图片上的卷积就是二维卷积。 一维卷积： 二维卷积： 三维卷积： 二、nn.Conv2d() 二维卷积123nn.Conv2d(self, in_channels, out_channels, kernel_size, stride">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic3.zhimg.com/v2-00ab31bd2533a6368ea01a09d2f3c0d6_b.webp">
 <meta property="og:image" content="https://pic4.zhimg.com/v2-15fea61b768f7561648dbea164fcb75f_b.webp">
@@ -186,11 +186,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记]
-卷积层与nn.Conv</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、1D&#x2F;2D&#x2F;3D 卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">一维卷积：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">二维卷积：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">三维卷积：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、nn.Conv2d()
-二维卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1
-卷积尺寸计算（简化版）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 卷积网络示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、nn.ConvTranspose()
-转置卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 转置卷积原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 转置卷积尺寸计算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">简化版转置卷积尺寸计算</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 DCGAN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、卷积参数更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 正向传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">如何对卷积核数量和卷积步长进行选择?</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 卷积层与nn.Conv</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、1D&#x2F;2D&#x2F;3D 卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">一维卷积：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">二维卷积：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">三维卷积：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、nn.Conv2d() 二维卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 卷积尺寸计算（简化版）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 卷积网络示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、nn.ConvTranspose() 转置卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 转置卷积原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 转置卷积尺寸计算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">简化版转置卷积尺寸计算</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 DCGAN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、卷积参数更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 正向传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">如何对卷积核数量和卷积步长进行选择?</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -205,7 +201,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -216,7 +212,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -328,7 +324,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.8k</span>
+      <span>5.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -346,119 +342,65 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pytorch-学习笔记卷积层与nnconv">[PyTorch 学习笔记]
-卷积层与nn.Conv</span></h2>
-<h3><span id="一-1d2d3d-卷积"><strong>一、1D/2D/3D 卷积</strong></span></h3>
-<p>卷积有一维卷积、二维卷积、三维卷积。一般情况下，卷积核在几个维度上滑动，就是几维卷积。比如在图片上的卷积就是二维卷积。</p>
-<h4><span id="一维卷积"><strong>一维卷积</strong>：</span></h4>
-<p><img src="https://pic3.zhimg.com/v2-00ab31bd2533a6368ea01a09d2f3c0d6_b.webp" alt="img" style="zoom:50%;"></p>
-<h4><span id="二维卷积"><strong>二维卷积</strong>：</span></h4>
-<p><img src="https://pic4.zhimg.com/v2-15fea61b768f7561648dbea164fcb75f_b.webp" alt="img" style="zoom:50%;"></p>
-<h4><span id="三维卷积"><strong>三维卷积</strong>：</span></h4>
-<p><img src="https://pic2.zhimg.com/v2-0083d388fd6739d22ac67d35940a9025_b.webp" alt="img" style="zoom:50%;"></p>
-<h3><span id="二-nnconv2d二维卷积"><strong>二、nn.Conv2d()
-二维卷积</strong></span></h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nn.Conv2d(self, in_channels, out_channels, kernel_size, stride=<span class="number">1</span>,</span><br><span class="line">                 padding=<span class="number">0</span>, dilation=<span class="number">1</span>, groups=<span class="number">1</span>,</span><br><span class="line">                 bias=<span class="literal">True</span>, padding_mode=<span class="string">&#x27;zeros&#x27;</span>)</span><br></pre></td></tr></table></figure>
+        <h2><span id="pytorch-学习笔记-卷积层与nnconv">[PyTorch 学习笔记] 卷积层与nn.Conv</span></h2><h3><span id="一-1d2d3d-卷积"><strong>一、1D/2D/3D 卷积</strong></span></h3><p>卷积有一维卷积、二维卷积、三维卷积。一般情况下，卷积核在几个维度上滑动，就是几维卷积。比如在图片上的卷积就是二维卷积。</p>
+<h4><span id="一维卷积"><strong>一维卷积</strong>：</span></h4><p><img src="https://pic3.zhimg.com/v2-00ab31bd2533a6368ea01a09d2f3c0d6_b.webp" alt="img" style="zoom:50%;"></p>
+<h4><span id="二维卷积"><strong>二维卷积</strong>：</span></h4><p><img src="https://pic4.zhimg.com/v2-15fea61b768f7561648dbea164fcb75f_b.webp" alt="img" style="zoom:50%;"></p>
+<h4><span id="三维卷积"><strong>三维卷积</strong>：</span></h4><p><img src="https://pic2.zhimg.com/v2-0083d388fd6739d22ac67d35940a9025_b.webp" alt="img" style="zoom:50%;"></p>
+<h3><span id="二-nnconv2d-二维卷积"><strong>二、nn.Conv2d() 二维卷积</strong></span></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nn.Conv2d(self, in_channels, out_channels, kernel_size, stride=<span class="number">1</span>,</span><br><span class="line">                 padding=<span class="number">0</span>, dilation=<span class="number">1</span>, groups=<span class="number">1</span>,</span><br><span class="line">                 bias=<span class="literal">True</span>, padding_mode=<span class="string">&#x27;zeros&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>这个函数的功能是对多个二维信号进行二维卷积，主要参数如下：</p>
 <ul>
 <li><strong>in_channels</strong>：<strong>输入通道数</strong></li>
 <li><strong>out_channels</strong>：<strong>输出通道数，等价于卷积核个数</strong></li>
 <li><strong>kernel_size</strong>：<strong>卷积核尺寸</strong></li>
 <li><strong>stride</strong>：<strong>步长</strong></li>
-<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把
-padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
-<li>dilation：空洞卷积大小，默认为
-1，这时是标准卷积，常用于图像分割任务中，主要是为了提升感受野</li>
-<li>groups：分组卷积设置，主要是为了模型的轻量化，如在
-ShuffleNet、MobileNet、SqueezeNet 中用到</li>
+<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把 padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
+<li>dilation：空洞卷积大小，默认为 1，这时是标准卷积，常用于图像分割任务中，主要是为了提升感受野</li>
+<li>groups：分组卷积设置，主要是为了模型的轻量化，如在 ShuffleNet、MobileNet、SqueezeNet 中用到</li>
 <li>bias：偏置</li>
 </ul>
-<h4><span id="21卷积尺寸计算简化版"><strong>2.1
-卷积尺寸计算（简化版）</strong></span></h4>
-<p>这里不考虑空洞卷积，假设输入图片大小为 <img src="https://www.zhihu.com/equation?tex=+I+%5Ctimes+I" alt="[公式]">，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=k+%5Ctimes+k" alt="[公式]">，stride 为 <img src="https://www.zhihu.com/equation?tex=s" alt="[公式]">，padding
-的像素数为 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]">，图片经过卷积之后的尺寸 <img src="https://www.zhihu.com/equation?tex=+O+" alt="[公式]"> 如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=O+%3D+%5Cdisplaystyle%5Cfrac%7BI+-k+%2B+2+%5Ctimes+p%7D%7Bs%7D+%2B1" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<h4><span id="21-卷积尺寸计算简化版"><strong>2.1 卷积尺寸计算（简化版）</strong></span></h4><p>这里不考虑空洞卷积，假设输入图片大小为 <img src="https://www.zhihu.com/equation?tex=+I+%5Ctimes+I" alt="[公式]">，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=k+%5Ctimes+k" alt="[公式]">，stride 为 <img src="https://www.zhihu.com/equation?tex=s" alt="[公式]">，padding 的像素数为 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]">，图片经过卷积之后的尺寸 <img src="https://www.zhihu.com/equation?tex=+O+" alt="[公式]"> 如下：</p>
+<p><img src="https://www.zhihu.com/equation?tex=O+%3D+%5Cdisplaystyle%5Cfrac%7BI+-k+%2B+2+%5Ctimes+p%7D%7Bs%7D+%2B1" alt="[公式]"></p>
 <p>下面例子的输入图片大小为 <img src="https://www.zhihu.com/equation?tex=5+%5Ctimes+5" alt="[公式]">，卷积大小为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]">，stride 为 1，padding 为 0，所以输出图片大小为 <img src="https://www.zhihu.com/equation?tex=%5Cdisplaystyle%5Cfrac%7B5+-3+%2B+2+%5Ctimes+0%7D%7B1%7D+%2B1+%3D+3" alt="[公式]">。</p>
-<h4><span id="22-卷积网络示例"><strong>2.2 卷积网络示例</strong></span></h4>
-<p>这里使用 input * channel 为 3，output_channel 为 1 ，卷积核大小为
-<img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]"> 的卷积核 <strong>nn.Conv2d(3, 1, 3)</strong>，使用
-<strong>nn.init.xavier_normal_()</strong>
-方法初始化网络的权值。代码如下：</p>
+<h4><span id="22-卷积网络示例"><strong>2.2 卷积网络示例</strong></span></h4><p>这里使用 input <em> channel 为 3，output<em>channel 为 1 ，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]"> 的卷积核 <strong>nn.Conv2d(3, 1, 3)</strong>，使用 **nn.init.xavier_normal</em>()*</em> 方法初始化网络的权值。代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conv_layer = nn.Conv2d(<span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>)   </span><br><span class="line"><span class="comment"># 初始化卷积层权值</span></span><br><span class="line">nn.init.xavier_normal_(conv_layer.weight.data)</span><br><span class="line">img_conv = conv_layer(img_tensor)</span><br></pre></td></tr></table></figure>
-<p>我们通过<code>conv_layer.weight.shape</code>查看卷积核的 shape
-是<code>(1, 3, 3, 3)</code>，对应是<code>(output_channel, input_channel, kernel_size, kernel_size)</code>。所以第一个维度对应的是<strong>卷积核的个数</strong>，每个卷积核都是<code>(3,3,3)</code>。虽然每个卷积核都是
-3 维的，执行的却是 2 维卷积。下面这个图展示了这个过程。</p>
+<p>我们通过<code>conv_layer.weight.shape</code>查看卷积核的 shape 是<code>(1, 3, 3, 3)</code>，对应是<code>(output_channel, input_channel, kernel_size, kernel_size)</code>。所以第一个维度对应的是<strong>卷积核的个数</strong>，每个卷积核都是<code>(3,3,3)</code>。虽然每个卷积核都是 3 维的，执行的却是 2 维卷积。下面这个图展示了这个过程。</p>
 <p><img src="https://pic4.zhimg.com/80/v2-b34951f3454a10c6a9eb343f3822aee3_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>也就是每个卷积核在 input_channel 维度再划分，这里 input_channel 为
-3，那么这时每个卷积核的 shape 是<code>(3, 3)</code>。<strong>3
-个卷积核在输入图像的每个 channel 上卷积后得到 3 个数，把这 3
-个数相加，再加上 bias</strong>，得到最后的一个输出。</p>
+<p>也就是每个卷积核在 input_channel 维度再划分，这里 input_channel 为 3，那么这时每个卷积核的 shape 是<code>(3, 3)</code>。<strong>3 个卷积核在输入图像的每个 channel 上卷积后得到 3 个数，把这 3 个数相加，再加上 bias</strong>，得到最后的一个输出。</p>
 <p><img src="https://pic3.zhimg.com/80/v2-bcf2370e45db4607f99b6af57f1974fa_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<h3><span id="三-nnconvtranspose转置卷积">三、nn.ConvTranspose()
-转置卷积</span></h3>
-<h4><span id="31-转置卷积原理">3.1 转置卷积原理</span></h4>
-<p>转置卷积又称为反卷积 (Deconvolution) 和部分跨越卷积 (Fractionally
-strided Convolution)，用于对图像进行<strong>上采样</strong>。</p>
+<h3><span id="三-nnconvtranspose-转置卷积">三、nn.ConvTranspose() 转置卷积</span></h3><h4><span id="31-转置卷积原理">3.1 转置卷积原理</span></h4><p>转置卷积又称为反卷积 (Deconvolution) 和部分跨越卷积 (Fractionally strided Convolution)，用于对图像进行<strong>上采样</strong>。</p>
 <p><strong>正常卷积如下：</strong></p>
-<figure>
-<img src="https://pic3.zhimg.com/v2-705305fee5a050575544c64067405fce_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>原始的图片尺寸为 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+4" alt="[公式]">，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=padding+%3D0" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=stride+%3D+1" alt="[公式]">。由于卷积操作可以通过矩阵运算来解决，因此原始图片可以看作
-<img src="https://www.zhihu.com/equation?tex=16+%5Ctimes+1" alt="[公式]"> 的矩阵 <img src="https://www.zhihu.com/equation?tex=I_%7B16+%5Ctimes+1%7D" alt="[公式]">，卷积核可以看作 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+16" alt="[公式]">
-的矩阵 <img src="https://www.zhihu.com/equation?tex=K_%7B4+%5Ctimes+16%7D" alt="[公式]">，那么输出是 <img src="https://www.zhihu.com/equation?tex=K_%7B4+%5Ctimes+16%7D+%5Ctimes+I_%7B16+%5Ctimes+1%7D+%3D+O_%7B4+%5Ctimes+1%7D" alt="[公式]"> 。</p>
+<p><img src="https://pic3.zhimg.com/v2-705305fee5a050575544c64067405fce_b.jpg" alt="img"></p>
+<p>原始的图片尺寸为 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+4" alt="[公式]">，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=padding+%3D0" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=stride+%3D+1" alt="[公式]">。由于卷积操作可以通过矩阵运算来解决，因此原始图片可以看作 <img src="https://www.zhihu.com/equation?tex=16+%5Ctimes+1" alt="[公式]"> 的矩阵 <img src="https://www.zhihu.com/equation?tex=I_%7B16+%5Ctimes+1%7D" alt="[公式]">，卷积核可以看作 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+16" alt="[公式]"> 的矩阵 <img src="https://www.zhihu.com/equation?tex=K_%7B4+%5Ctimes+16%7D" alt="[公式]">，那么输出是 <img src="https://www.zhihu.com/equation?tex=K_%7B4+%5Ctimes+16%7D+%5Ctimes+I_%7B16+%5Ctimes+1%7D+%3D+O_%7B4+%5Ctimes+1%7D" alt="[公式]"> 。</p>
 <p><strong>转置卷积如下：</strong></p>
 <p><img src="https://pic4.zhimg.com/v2-286ac2cfb69abf4d8aa06b8eeb39ced3_b.jpg" alt="img" style="zoom: 67%;"></p>
-<p>原始的<strong>图片尺寸</strong>为 <img src="https://www.zhihu.com/equation?tex=2+%5Ctimes+2" alt="[公式]">，<strong>卷积核大小</strong>为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=padding+%3D0" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=stride+%3D+1" alt="[公式]">。由于卷积操作可以通过矩阵运算来解决，因此原始图片可以看作
-<img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+1" alt="[公式]"> 的矩阵 <img src="https://www.zhihu.com/equation?tex=I_%7B4+%5Ctimes+1%7D" alt="[公式]">，卷积核可以看作 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+16" alt="[公式]">
-的矩阵 <img src="https://www.zhihu.com/equation?tex=K_%7B16+%5Ctimes+4%7D" alt="[公式]">，那么输出是 <img src="https://www.zhihu.com/equation?tex=K_%7B16+%5Ctimes+4%7D+%5Ctimes+I_%7B4+%5Ctimes+1%7D+%3D+O_%7B16+%5Ctimes+1%7D" alt="[公式]"> 。</p>
+<p>原始的<strong>图片尺寸</strong>为 <img src="https://www.zhihu.com/equation?tex=2+%5Ctimes+2" alt="[公式]">，<strong>卷积核大小</strong>为 <img src="https://www.zhihu.com/equation?tex=3+%5Ctimes+3" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=padding+%3D0" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=stride+%3D+1" alt="[公式]">。由于卷积操作可以通过矩阵运算来解决，因此原始图片可以看作 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+1" alt="[公式]"> 的矩阵 <img src="https://www.zhihu.com/equation?tex=I_%7B4+%5Ctimes+1%7D" alt="[公式]">，卷积核可以看作 <img src="https://www.zhihu.com/equation?tex=4+%5Ctimes+16" alt="[公式]"> 的矩阵 <img src="https://www.zhihu.com/equation?tex=K_%7B16+%5Ctimes+4%7D" alt="[公式]">，那么输出是 <img src="https://www.zhihu.com/equation?tex=K_%7B16+%5Ctimes+4%7D+%5Ctimes+I_%7B4+%5Ctimes+1%7D+%3D+O_%7B16+%5Ctimes+1%7D" alt="[公式]"> 。</p>
 <p>正常卷积核转置卷积矩阵的形状刚好是转置关系，因此称为转置卷积，但里面的权值不是一样的，<strong>卷积操作也是不可逆的</strong>。</p>
 <p>PyTorch 中的转置卷积函数如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nn.ConvTranspose2d(self, in_channels, out_channels, kernel_size, stride=<span class="number">1</span>,</span><br><span class="line">                 padding=<span class="number">0</span>, output_padding=<span class="number">0</span>, groups=<span class="number">1</span>, bias=<span class="literal">True</span>,</span><br><span class="line">                 dilation=<span class="number">1</span>, padding_mode=<span class="string">&#x27;zeros&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>和普通卷积的参数基本相同，不再赘述。</p>
-<h4><span id="32-转置卷积尺寸计算">3.2 <strong>转置卷积尺寸计算</strong></span></h4>
-<h5><span id="简化版转置卷积尺寸计算"><strong>简化版转置卷积尺寸计算</strong></span></h5>
-<p>这里不考虑空洞卷积，假设输入图片大小为 <img src="https://www.zhihu.com/equation?tex=+I+%5Ctimes+I" alt="[公式]">，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=k+%5Ctimes+k" alt="[公式]">，stride 为 <img src="https://www.zhihu.com/equation?tex=s" alt="[公式]">，padding
-的像素数为 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]">，图片经过卷积之后的尺寸 <img src="https://www.zhihu.com/equation?tex=+O+" alt="[公式]">
-如下，刚好和普通卷积的计算是相反的：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=O+%3D+%28I-1%29+%5Ctimes+s+%2B+k" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<h4><span id="32-转置卷积尺寸计算">3.2 <strong>转置卷积尺寸计算</strong></span></h4><h5><span id="简化版转置卷积尺寸计算"><strong>简化版转置卷积尺寸计算</strong></span></h5><p>这里不考虑空洞卷积，假设输入图片大小为 <img src="https://www.zhihu.com/equation?tex=+I+%5Ctimes+I" alt="[公式]">，卷积核大小为 <img src="https://www.zhihu.com/equation?tex=k+%5Ctimes+k" alt="[公式]">，stride 为 <img src="https://www.zhihu.com/equation?tex=s" alt="[公式]">，padding 的像素数为 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]">，图片经过卷积之后的尺寸 <img src="https://www.zhihu.com/equation?tex=+O+" alt="[公式]"> 如下，刚好和普通卷积的计算是相反的：</p>
+<p><img src="https://www.zhihu.com/equation?tex=O+%3D+%28I-1%29+%5Ctimes+s+%2B+k" alt="[公式]"></p>
 <p>转置卷积代码示例如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> common_tools <span class="keyword">import</span> transform_invert, set_seed</span><br><span class="line"></span><br><span class="line">set_seed(<span class="number">3</span>)  <span class="comment"># 设置随机种子</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># load img </span></span><br><span class="line">path_img = os.path.join(os.path.dirname(os.path.abspath(__file__)), <span class="string">&quot;imgs&quot;</span>, <span class="string">&quot;lena.png&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(path_img)</span><br><span class="line">img = Image.<span class="built_in">open</span>(path_img).convert(<span class="string">&#x27;RGB&#x27;</span>)  <span class="comment"># 0~255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># convert to tensor</span></span><br><span class="line">img_transform = transforms.Compose([transforms.ToTensor()])</span><br><span class="line">img_tensor = img_transform(img)</span><br><span class="line"><span class="comment"># 添加 batch 维度</span></span><br><span class="line">img_tensor.unsqueeze_(dim=<span class="number">0</span>)    <span class="comment"># C*H*W to B*C*H*W</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># create convolution layer </span></span><br><span class="line"><span class="comment"># flag = 1</span></span><br><span class="line">flag = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    conv_layer = nn.Conv2d(<span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>)   <span class="comment"># input:(i, o, size) weights:(o, i , h, w)</span></span><br><span class="line">    <span class="comment"># 初始化卷积层权值</span></span><br><span class="line">    nn.init.xavier_normal_(conv_layer.weight.data)</span><br><span class="line">    <span class="comment"># nn.init.xavier_uniform_(conv_layer.weight.data)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># calculation</span></span><br><span class="line">    img_conv = conv_layer(img_tensor)</span><br><span class="line"></span><br><span class="line"><span class="comment">#  transposed</span></span><br><span class="line">flag = <span class="number">1</span></span><br><span class="line"><span class="comment"># flag = 0</span></span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    conv_layer = nn.ConvTranspose2d(<span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>, stride=<span class="number">2</span>)   <span class="comment"># input:(input_channel, output_channel, size)</span></span><br><span class="line">    <span class="comment"># 初始化网络层的权值</span></span><br><span class="line">    nn.init.xavier_normal_(conv_layer.weight.data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># calculation</span></span><br><span class="line">    img_conv = conv_layer(img_tensor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ================================= visualization ==================================</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;卷积前尺寸:&#123;&#125;\n卷积后尺寸:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(img_tensor.shape, img_conv.shape))</span><br><span class="line">img_conv = transform_invert(img_conv[<span class="number">0</span>, <span class="number">0</span>:<span class="number">1</span>, ...], img_transform)</span><br><span class="line">img_raw = transform_invert(img_tensor.squeeze(), img_transform)</span><br><span class="line">plt.subplot(<span class="number">122</span>).imshow(img_conv, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.subplot(<span class="number">121</span>).imshow(img_raw)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p>转置卷积前后图片显示如下，左边原图片的尺寸是 (512,
-512)，右边转置卷积后的图片尺寸是 (1025, 1025)。</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-3dd1bd7f3e487b1837b51bed00ebf546_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p>转置卷积前后图片显示如下，左边原图片的尺寸是 (512, 512)，右边转置卷积后的图片尺寸是 (1025, 1025)。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-3dd1bd7f3e487b1837b51bed00ebf546_1440w.jpg" alt="img"></p>
 <p>转置卷积后的图片一般都会有棋盘效应，像一格一格的棋盘，这是转置卷积的通病。</p>
-<p>关于棋盘效应的解释以及解决方法，推荐阅读<strong>Deconvolution And
-Checkerboard Artifacts[1]</strong>。</p>
-<h4><span id="33-dcgan">3.3 DCGAN</span></h4>
-<ul>
-<li><strong>生成器</strong>
-<ul>
+<p>关于棋盘效应的解释以及解决方法，推荐阅读<strong>Deconvolution And Checkerboard Artifacts[1]</strong>。</p>
+<h4><span id="33-dcgan">3.3 DCGAN</span></h4><ul>
+<li><strong>生成器</strong><ul>
 <li>nz = 100 : 潜在向量 z 的大小</li>
 <li>ngf = 64 : 生成器中特征图的大小</li>
 <li>ndf = 64 : 判别器中的特征映射的大小</li>
-</ul></li>
 </ul>
-<figure>
-<img src="https://pytorch.org/tutorials/_images/dcgan_generator.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+</li>
+</ul>
+<p><img src="https://pytorch.org/tutorials/_images/dcgan_generator.png" alt="img"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成器代码</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Generator</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ngpu</span>):</span><br><span class="line">        <span class="built_in">super</span>(Generator, self).__init__()</span><br><span class="line">        self.ngpu = ngpu</span><br><span class="line">        self.main = nn.Sequential(</span><br><span class="line">            <span class="comment"># 输入是Z，进入卷积</span></span><br><span class="line">            nn.ConvTranspose2d(nz, ngf * <span class="number">8</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf * <span class="number">8</span>),</span><br><span class="line">            nn.ReLU(<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ngf*8) x 4 x 4</span></span><br><span class="line">            nn.ConvTranspose2d(ngf * <span class="number">8</span>, ngf * <span class="number">4</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf * <span class="number">4</span>),</span><br><span class="line">            nn.ReLU(<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ngf*4) x 8 x 8</span></span><br><span class="line">            nn.ConvTranspose2d( ngf * <span class="number">4</span>, ngf * <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf * <span class="number">2</span>),</span><br><span class="line">            nn.ReLU(<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ngf*2) x 16 x 16</span></span><br><span class="line">            nn.ConvTranspose2d( ngf * <span class="number">2</span>, ngf, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ngf),</span><br><span class="line">            nn.ReLU(<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ngf) x 32 x 32</span></span><br><span class="line">            nn.ConvTranspose2d( ngf, nc, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.Tanh()</span><br><span class="line">            <span class="comment"># state size. (nc) x 64 x 64</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">        <span class="keyword">return</span> self.main(<span class="built_in">input</span>)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>判别器代码</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Discriminator</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ngpu</span>):</span><br><span class="line">        <span class="built_in">super</span>(Discriminator, self).__init__()</span><br><span class="line">        self.ngpu = ngpu</span><br><span class="line">        self.main = nn.Sequential(</span><br><span class="line">            <span class="comment"># input is (nc) x 64 x 64</span></span><br><span class="line">            nn.Conv2d(nc, ndf, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ndf) x 32 x 32</span></span><br><span class="line">            nn.Conv2d(ndf, ndf * <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ndf * <span class="number">2</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ndf*2) x 16 x 16</span></span><br><span class="line">            nn.Conv2d(ndf * <span class="number">2</span>, ndf * <span class="number">4</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ndf * <span class="number">4</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ndf*4) x 8 x 8</span></span><br><span class="line">            nn.Conv2d(ndf * <span class="number">4</span>, ndf * <span class="number">8</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(ndf * <span class="number">8</span>),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="literal">True</span>),</span><br><span class="line">            <span class="comment"># state size. (ndf*8) x 4 x 4</span></span><br><span class="line">            nn.Conv2d(ndf * <span class="number">8</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.Sigmoid()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">        <span class="keyword">return</span> self.main(<span class="built_in">input</span>)</span><br></pre></td></tr></table></figure>
-<h3><span id="三-卷积参数更新">三、卷积参数更新</span></h3>
-<p><img src="https://pic1.zhimg.com/80/v2-f73cc6d82689ff3239cd7954913eb81b_1440w.jpg" alt="img"></p>
+<h3><span id="三-卷积参数更新">三、卷积参数更新</span></h3><p><img src="https://pic1.zhimg.com/80/v2-f73cc6d82689ff3239cd7954913eb81b_1440w.jpg" alt="img"></p>
 <p>与全连接<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=神经网络&amp;spm=1001.2101.3001.7020">神经网络</a>不同，卷积神经网络每一层中的节点并不是与前一层的所有神经元节点相连，而是只与前一层的部分节点相连。并且和每一个节点相连的那些通路的权重都是相同的。举例来说，<strong>对于二维卷积神经网络，其权重就是卷积核里面的那些值，这些值从上而下，从左到右要将图像中每个对应区域卷积一遍然后将积求和输入到下一层节点中激活，得到下一层的特征图</strong>。因此其权重和偏置更新公式与全连接神经网络不通。</p>
 <ul>
 <li>降低的计算量</li>
@@ -466,21 +408,13 @@ Checkerboard Artifacts[1]</strong>。</p>
 </ul>
 <p>根据《Deep learning》这本书的描述，<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=卷积神经网络&amp;spm=1001.2101.3001.7020">卷积神经网络</a>有3个核心思想：</p>
 <ul>
-<li><strong>稀疏交互</strong>（sparse
-interactions），即每个节点通过固定个（一般等于卷积核元素的数目，远小于前一层节点数）连接与下一层的神经元节点相连;
-尽管是稀疏连接，但是在更深层的神经单元中，其可以间接地连接到全部或大部分输入图像。如果采用了步幅卷积或者池化操作，那么这种间接连接全部图像的可能性将会增加。</li>
-<li><strong>参数共享</strong>（parameter
-sharing），以2D卷积为例，每一层都通过固定的卷积核产生下一层的特征图，而这个卷积核将从上到下、从左到右遍历图像每一个对应区域；</li>
-<li><strong>等变表示</strong>（equivariant
-representations），卷积和参数共享的形式使得神经网络具有平移等变形，即f(g(x))=g(f(x))。另外，pooling操作也可以使网络具有局部平移不变形。局部平移不变形是一个很有用的性质，尤其是当我们只关心某个特征是否出现而不关心它出现的具体位置时。池化可以看作增加了一个无线强的先验，这一层学的函数必须具有对少量平移的不变形。</li>
+<li><strong>稀疏交互</strong>（sparse interactions），即每个节点通过固定个（一般等于卷积核元素的数目，远小于前一层节点数）连接与下一层的神经元节点相连; 尽管是稀疏连接，但是在更深层的神经单元中，其可以间接地连接到全部或大部分输入图像。如果采用了步幅卷积或者池化操作，那么这种间接连接全部图像的可能性将会增加。</li>
+<li><strong>参数共享</strong>（parameter sharing），以2D卷积为例，每一层都通过固定的卷积核产生下一层的特征图，而这个卷积核将从上到下、从左到右遍历图像每一个对应区域；</li>
+<li><strong>等变表示</strong>（equivariant representations），卷积和参数共享的形式使得神经网络具有平移等变形，即f(g(x))=g(f(x))。另外，pooling操作也可以使网络具有局部平移不变形。局部平移不变形是一个很有用的性质，尤其是当我们只关心某个特征是否出现而不关心它出现的具体位置时。池化可以看作增加了一个无线强的先验，这一层学的函数必须具有对少量平移的不变形。</li>
 </ul>
-<h4><span id="31-正向传播">3.1 正向传播</span></h4>
-<h4><span id="如何对卷积核数量和卷积步长进行选择">如何对卷积核数量和卷积步长进行选择?</span></h4>
-<ul>
-<li>卷积核的数量越多，意味着提取的特征种类越多，通常会取2^n个;</li>
-<li>步长通常不会超过卷积核宽度或长度，步长大于1的时候有下采样的效果，比如步长为2时，可以让feature
-map的尺寸缩小一半。</li>
-<li></li>
+<h4><span id="31-正向传播">3.1 正向传播</span></h4><h4><span id="如何对卷积核数量和卷积步长进行选择">如何对卷积核数量和卷积步长进行选择?</span></h4><ul>
+<li>卷积核的数量越多，意味着提取的特征种类越多，通常会取2^n个; </li>
+<li>步长通常不会超过卷积核宽度或长度，步长大于1的时候有下采样的效果，比如步长为2时，可以让feature map的尺寸缩小一半。<br>+</li>
 </ul>
 
     </div>

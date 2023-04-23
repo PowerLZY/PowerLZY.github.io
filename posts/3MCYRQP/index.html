@@ -21,29 +21,34 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="特征工程-数据清洗  特征工程 - 未来达摩大师的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;476659737 这9个特征工程使用技巧，解决90%机器学习问题！ - Python与数据挖掘的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;462744763 有哪些精彩的特征工程案例？ - 京东科技风险算法与技术的回答 - 知乎 https:">
+    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:type" content="article">
-<meta property="og:title" content="特征工程（0）【Nan】数据清洗">
-<meta property="og:url" content="https://powerlzy.github.io/posts/29WR3P/index.html">
+<meta property="og:title" content="支持向量机（4）支持向量回归 &amp; 多分类">
+<meta property="og:url" content="https://powerlzy.github.io/posts/3MCYRQP/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="特征工程-数据清洗  特征工程 - 未来达摩大师的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;476659737 这9个特征工程使用技巧，解决90%机器学习问题！ - Python与数据挖掘的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;462744763 有哪些精彩的特征工程案例？ - 京东科技风险算法与技术的回答 - 知乎 https:">
+<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pic1.zhimg.com/v2-3baead31deae5b339481aa843a13e21c_b.jpg">
-<meta property="article:published_time" content="2022-07-08T09:48:29.490Z">
-<meta property="article:modified_time" content="2022-07-18T08:48:00.772Z">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png">
+<meta property="article:published_time" content="2022-03-15T14:38:05.332Z">
+<meta property="article:modified_time" content="2023-04-22T11:44:29.721Z">
 <meta property="article:author" content="lzy">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="支持向量机">
+<meta property="article:tag" content="SVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://pic1.zhimg.com/v2-3baead31deae5b339481aa843a13e21c_b.jpg">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
 
 
-<link rel="canonical" href="https://powerlzy.github.io/posts/29WR3P/">
+<link rel="canonical" href="https://powerlzy.github.io/posts/3MCYRQP/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/29WR3P/","path":"posts/29WR3P/","title":"特征工程（0）【Nan】数据清洗"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/3MCYRQP/","path":"posts/3MCYRQP/","title":"支持向量机（4）支持向量回归 & 多分类"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>特征工程（0）【Nan】数据清洗 | PowerLZY's Blog</title>
+<title>支持向量机（4）支持向量回归 & 多分类 | PowerLZY's Blog</title>
   
 
 
@@ -143,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">特征工程-数据清洗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">采样</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、支持向量回归 SVR</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 SVR与一般线性回归的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、多分类 SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 多分类问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 多分类线性SVM</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -158,7 +163,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">239</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -169,7 +174,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -211,7 +216,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/29WR3P/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3MCYRQP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -224,12 +229,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="特征工程（0）【Nan】数据清洗 | PowerLZY's Blog">
+      <meta itemprop="name" content="支持向量机（4）支持向量回归 & 多分类 | PowerLZY's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          特征工程（0）【Nan】数据清洗
+          支持向量机（4）支持向量回归 & 多分类
         </h1>
 
         <div class="post-meta-container">
@@ -240,14 +245,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-08 17:48:29" itemprop="dateCreated datePublished" datetime="2022-07-08T17:48:29+08:00">2022-07-08</time>
+      <time title="创建时间：2022-03-15 22:38:05" itemprop="dateCreated datePublished" datetime="2022-03-15T22:38:05+08:00">2022-03-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-18 16:48:00" itemprop="dateModified" datetime="2022-07-18T16:48:00+08:00">2022-07-18</time>
+      <time title="修改时间：2023-04-22 19:44:29" itemprop="dateModified" datetime="2023-04-22T19:44:29+08:00">2023-04-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -259,7 +264,11 @@
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">支持向量机</span></a>
         </span>
     </span>
 
@@ -277,14 +286,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>536</span>
+      <span>2.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -295,29 +304,81 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="特征工程-数据清洗">特征工程-数据清洗</span></h2>
-<blockquote>
-<p>特征工程 - 未来达摩大师的文章 - 知乎
-https://zhuanlan.zhihu.com/p/476659737</p>
-<p>这9个特征工程使用技巧，解决90%机器学习问题！ - Python与数据挖掘的文章
-- 知乎 https://zhuanlan.zhihu.com/p/462744763</p>
-<p>有哪些精彩的特征工程案例？ - 京东科技风险算法与技术的回答 - 知乎
-https://www.zhihu.com/question/400064722/answer/1308358333</p>
+        <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+<p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
+<p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<span id="more"></span>
+<h3><span id="一-支持向量回归-svr">一、支持向量回归 SVR</span></h3><blockquote>
+<p>  <a target="_blank" rel="noopener" href="https://blog.csdn.net/ch18328071580/article/details/94168411">https://blog.csdn.net/ch18328071580/article/details/94168411</a></p>
+<p>  <strong>支持向量在隔代之外</strong></p>
 </blockquote>
-<figure>
-<img src="https://pic1.zhimg.com/v2-3baead31deae5b339481aa843a13e21c_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>数据格式内容错误数据来源有多种，有些是传感器采集，然后算法提取的特征数据；有些是采集的控制器的数据；还有一些应用场合，则是用户/访客产生的，数据肯定存在格式和内容上不一致的情况，所以在进行模型构建之前需要先进行数据的格式内容清洗操作。逻辑错误清洗主要是通过简单的逻辑推理发现数据中的问题数据，防止分析结果走偏，主要包含以下几个步骤：</p>
-<p><strong><em>1.数据去重，去除或替换不合理的值；</em></strong></p>
-<p><strong><em>2.去除或重构不可靠的字段值（修改矛盾的内容）；</em></strong></p>
-<p><strong><em>3.去除异常点数据。</em></strong></p>
-<h2><span id="采样">采样</span></h2>
-<blockquote>
-<p>随机采样方法整理与讲解（MCMC、Gibbs Sampling等） - 向阳树的文章 -
-知乎 https://zhuanlan.zhihu.com/p/109978580</p>
-</blockquote>
-
+<h4><span id="11-svr与一般线性回归的区别">1.1 SVR与一般线性回归的区别</span></h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>SVR</th>
+<th>线性回归</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据在间隔带内则不计算损失，<strong>当且仅当f(x)与y之间的差距的绝对值大于ϵ才计算损失</strong></td>
+<td>只要f(x)与y不相等时，就计算损失</td>
+</tr>
+<tr>
+<td><strong>通过最大化间隔带的宽度与最小化总损失</strong>来优化模型</td>
+<td>通过梯度下降之后求均值来优化模型</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>岭回归：</strong><img src="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png" alt="image-20220401144206172" style="zoom:50%;"></p>
+<h5><span id="支持向量回归我们假设fx与y之间最多有一定的偏差大于偏差才计数损失">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></h5><script type="math/tex; mode=display">
+\min _{w, b} \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m} l_{\epsilon}\left(f\left(x_{i}\right), y_{i}\right)</script><p>其中C为正则化常数, $l_{\epsilon}$ 是图中所示的 $\epsilon$-不敏感损失 ( $\epsilon$-insensitive loss)函数:</p>
+<script type="math/tex; mode=display">
+l_{\epsilon}(\mathrm{z})= \begin{cases}0, & \text { if }|z| \leq \epsilon \\ |z|-\epsilon, & \text { otherwise }\end{cases}</script><p>引入松弛变量 $\xi<em>{i}$ 和 $\left(\xi</em>{i}\right)$, 可将式重写为:</p>
+<script type="math/tex; mode=display">
+\begin{array}{ll}
+\min _{w, b, \xi_{i}, \xi_{i}} & \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m}\left(\xi_{i}, \widehat{\xi}_{i}\right) \\
+\text { s.t. } & f\left(x_{i}\right)-y_{i} \leq \epsilon+\xi_{i} \\
+& y_{i}-f\left(x_{i}\right) \leq \epsilon+\widehat{\xi}_{i} \\
+& \xi_{i} \geq 0, \hat{\xi}_{i} \geq 0, i=1,2, \ldots m
+\end{array}</script><p>引入拉格朗日乘子 $\mu_{i}$,</p>
+<p>$L(w, b, \alpha, \hat{\alpha}, \xi, \hat{\xi}, \mu, \hat{\mu})$<br>$=\frac{1}{2}|w|^{2}+C \sum<em>{i=1}^{m}\left(\xi</em>{i}+\widehat{\xi}<em>{i}\right)-\sum</em>{i=1}^{m} \xi<em>{i} \mu</em>{i}-\sum<em>{i=1}^{m} \widehat{\xi}</em>{i} \widehat{\mu<em>{i}}$<br>$+\sum</em>{i=1}^{m} \alpha<em>{i}\left(f\left(x</em>{i}\right)-y<em>{i}-\epsilon-\xi</em>{i}\right)+\sum<em>{i=1}^{m} \widehat{\alpha</em>{i}}\left(y<em>{i}-f\left(x</em>{i}\right)-\epsilon-\widehat{\xi}_{i}\right)$</p>
+<p>再令 $L(w, b, a, \hat{a}, \xi, \hat{\xi}, \mu, \mu)$ 对 $w, b, \xi<em>{i}, \hat{\xi}</em>{i}$ 的偏导为零可得:</p>
+<script type="math/tex; mode=display">
+w=\sum_{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}</script><p>上述过程中需满足KKT条件, 即要求:</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{c}
+\alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)=0 \\
+\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)=0 \\
+\alpha_{i} \widehat{\alpha_{i}}=0, \xi_{i} \widehat{\xi}_{i}=0 \\
+\left(C-\alpha_{i}\right) \xi_{i}=0,\left(C-\widehat{\alpha_{i}}\right) \widehat{\xi}_{i}=0 .
+\end{array}\right.</script><h3><span id="二-多分类-svm">二、多分类 SVM</span></h3><h4><span id="21-多分类问题">2.1 多分类问题</span></h4><ul>
+<li>多分类问题拆解成若干个二分类问题，对于每个二分类训练一个分类器。<ul>
+<li><strong>one vs one 拆解</strong>：K(K-1)/2 个分类器。</li>
+<li><strong>one vs Rest 拆解</strong>：K个分类器</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png" alt="image-20220401192909167" style="zoom:50%;"></p>
+<h4><span id="22-多分类线性svm">2.2 多分类线性SVM</span></h4><ul>
+<li><strong>层次支持向量机</strong></li>
+</ul>
+<ul>
+<li><strong>回顾二分类</strong></li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \max \left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b, 0\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2\right. \\
+= & \min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \max \left(1-y_i s\left(\boldsymbol{x}_i\right), 0\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2 .
+\end{aligned}</script><ul>
+<li><strong>多分类线性SVM</strong></li>
+</ul>
+<script type="math/tex; mode=display">
+\min _{\boldsymbol{W}, \boldsymbol{b}} \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \mathbb{I}\left(k \neq y_i\right) \cdot \max \left(1-s\left(\boldsymbol{x}_i\right)_{y_i}+s\left(\boldsymbol{x}_i\right)_k, 0\right)+\frac{\lambda}{2} \sum_{k=1}^K\left\|\boldsymbol{w}_k\right\|^2,</script>
     </div>
 
     
@@ -334,7 +395,7 @@ https://www.zhihu.com/question/400064722/answer/1308358333</p>
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://powerlzy.github.io/posts/29WR3P/" title="特征工程（0）【Nan】数据清洗">https://powerlzy.github.io/posts/29WR3P/</a>
+      <a href="https://powerlzy.github.io/posts/3MCYRQP/" title="支持向量机（4）支持向量回归 &amp; 多分类">https://powerlzy.github.io/posts/3MCYRQP/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -342,18 +403,23 @@ https://www.zhihu.com/question/400064722/answer/1308358333</p>
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" rel="tag"># 支持向量机</a>
+              <a href="/tags/SVM/" rel="tag"># SVM</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/67Q9G2/" rel="prev" title="风控算法（4）特征工程-时间滑窗统计特征体系">
-                  <i class="fa fa-chevron-left"></i> 风控算法（4）特征工程-时间滑窗统计特征体系
+                <a href="/posts/2DSARR9/" rel="prev" title="聚类（1）K-means">
+                  <i class="fa fa-chevron-left"></i> 聚类（1）K-means
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/1WZGAE8/" rel="next" title="高级威胁发现（6）UNICORN: Provenance-Based Detector for APTs">
-                  高级威胁发现（6）UNICORN: Provenance-Based Detector for APTs <i class="fa fa-chevron-right"></i>
+                <a href="/posts/2NSQX65/" rel="next" title="支持向量机（5）总结">
+                  支持向量机（5）总结 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
