@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="二、李宏毅 - Transformer_decoder P22.1 Decoder – Autoregressive (AT)Decoder其实有两种,接下来会花比较多时间介绍,比较常见的 &#x3D;&#x3D;Autoregressive  Decoder（自回归解码器）&#x3D;&#x3D;,这个 Autoregressive 的 Decoder,是怎么运作的。 用语音辨识,来当作例子来说明,或用在作业里面的机器翻译,其实是一模">
+    <meta name="description" content="二、李宏毅 - Transformer_decoder P2 2.1 Decoder – Autoregressive (AT) Decoder其实有两种,接下来会花比较多时间介绍,比较常见的 &#x3D;&#x3D;Autoregressive Decoder（自回归解码器）&#x3D;&#x3D;,这个 Autoregressive 的 Decoder,是怎么运作的。 用语音辨识,来当作例子来说明,或用在作业里面的机器翻译,其实是一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习（9）Transformer*-p2">
 <meta property="og:url" content="https://powerlzy.github.io/posts/S7AAWG/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="二、李宏毅 - Transformer_decoder P22.1 Decoder – Autoregressive (AT)Decoder其实有两种,接下来会花比较多时间介绍,比较常见的 &#x3D;&#x3D;Autoregressive  Decoder（自回归解码器）&#x3D;&#x3D;,这个 Autoregressive 的 Decoder,是怎么运作的。 用语音辨识,来当作例子来说明,或用在作业里面的机器翻译,其实是一模">
+<meta property="og:description" content="二、李宏毅 - Transformer_decoder P2 2.1 Decoder – Autoregressive (AT) Decoder其实有两种,接下来会花比较多时间介绍,比较常见的 &#x3D;&#x3D;Autoregressive Decoder（自回归解码器）&#x3D;&#x3D;,这个 Autoregressive 的 Decoder,是怎么运作的。 用语音辨识,来当作例子来说明,或用在作业里面的机器翻译,其实是一">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615160428118.png">
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615160726062.png">
@@ -179,7 +179,14 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、李宏毅 - Transformer_decoder P2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 Decoder – Autoregressive (AT)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Decoder 怎么产生这个语音辨识的结果？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Decoder 怎么产生一段文字？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Vocabulary Size 则是什么意思?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 那为什么会这样,为什么需要加 Masked ？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Decoder – Non-autoregressive (NAT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 Encoder-Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.5 Tips</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Copy Mechanism</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Guided Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Optimizing Evaluation Metrics?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Scheduled Sampling （计划采样）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">所以要怎么解决这个问题呢？</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、李宏毅 -
+Transformer_decoder P2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 Decoder – Autoregressive
+(AT)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Decoder
+怎么产生这个语音辨识的结果？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Decoder 怎么产生一段文字？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
+那为什么会这样,为什么需要加 Masked ？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Decoder – Non-autoregressive
+(NAT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 Encoder-Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 Training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.5 Tips</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Copy Mechanism</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Guided Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Optimizing Evaluation
+Metrics?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Scheduled Sampling
+（计划采样）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">所以要怎么解决这个问题呢？</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -317,7 +324,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>11k</span>
+      <span>12k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -335,185 +342,429 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="二-李宏毅-transformer_decoder-p2">二、李宏毅 - Transformer_decoder P2</span></h2><h3><span id="21-decoder-autoregressive-at">2.1 Decoder – Autoregressive (AT)</span></h3><p>Decoder其实有两种,接下来会花比较多时间介绍,比较常见的 ==<strong>Autoregressive  Decoder（自回归解码器）</strong>==,这个 Autoregressive 的 Decoder,是怎么运作的。</p>
-<p>用<strong>语音辨识</strong>,来当作例子来说明,或用在作业里面的<strong>机器翻译</strong>,其实是一模一样的,你只是把输入输出,改成不同的东西而已。<strong>语音辨识</strong>就是<strong>输入一段声音,输出一串文字</strong>,你会把一段声音输入给 Encoder,比如说你对机器说,机器学习,机器收到一段声音讯号,声音讯号 进入 Encoder以后,输出会是什么,输出会变成一排 Vector。</p>
+        <h2><span id="二-李宏毅-transformer_decoder-p2">二、李宏毅 -
+Transformer_decoder P2</span></h2>
+<h3><span id="21-decoder-autoregressiveat">2.1 Decoder – Autoregressive
+(AT)</span></h3>
+<p>Decoder其实有两种,接下来会花比较多时间介绍,比较常见的
+==<strong>Autoregressive Decoder（自回归解码器）</strong>==,这个
+Autoregressive 的 Decoder,是怎么运作的。</p>
+<p>用<strong>语音辨识</strong>,来当作例子来说明,或用在作业里面的<strong>机器翻译</strong>,其实是一模一样的,你只是把输入输出,改成不同的东西而已。<strong>语音辨识</strong>就是<strong>输入一段声音,输出一串文字</strong>,你会把一段声音输入给
+Encoder,比如说你对机器说,机器学习,机器收到一段声音讯号,声音讯号 进入
+Encoder以后,输出会是什么,输出会变成一排 Vector。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615160428118.png" alt="image-20220615160428118" style="zoom:50%;"></p>
-<p><strong>Encoder</strong> 做的事情,就是<strong>输入一个 Vector Sequence</strong>,<strong>输出另外一个 Vector Sequence</strong>。接下来,就轮到 Decoder 运作了,<strong>Decoder 要做的事情就是产生输出</strong>,也就是<strong>产生语音辨识的结果</strong>, </p>
-<h4><span id="decoder-怎么产生这个语音辨识的结果">Decoder 怎么产生这个语音辨识的结果？</span></h4><p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615160726062.png" alt="image-20220615160726062" style="zoom:50%;"></p>
-<p>Decoder 做的事情,就是<strong>把 Encoder 的输出先读进去</strong>,至于怎么读进去,这个我们等一下再讲 我们先,你先假设 Somehow 就是有某种方法,把 Encoder 的输出读到 Decoder 里面,这步我们等一下再处理。</p>
-<h4><span id="decoder-怎么产生一段文字">Decoder 怎么产生一段文字？</span></h4><p><strong>首先,你要先给它一个特殊的符号,这个特殊的符号,代表开始,在助教的投影片里面,是写 Begin Of Sentence,缩写是 BOS</strong>。</p>
+<p><strong>Encoder</strong> 做的事情,就是<strong>输入一个 Vector
+Sequence</strong>,<strong>输出另外一个 Vector
+Sequence</strong>。接下来,就轮到 Decoder 运作了,<strong>Decoder
+要做的事情就是产生输出</strong>,也就是<strong>产生语音辨识的结果</strong>,</p>
+<h4><span id="decoder怎么产生这个语音辨识的结果">Decoder
+怎么产生这个语音辨识的结果？</span></h4>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615160726062.png" alt="image-20220615160726062" style="zoom:50%;"></p>
+<p>Decoder 做的事情,就是<strong>把 Encoder
+的输出先读进去</strong>,至于怎么读进去,这个我们等一下再讲
+我们先,你先假设 Somehow 就是有某种方法,把 Encoder 的输出读到 Decoder
+里面,这步我们等一下再处理。</p>
+<h4><span id="decoder-怎么产生一段文字">Decoder 怎么产生一段文字？</span></h4>
+<p><strong>首先,你要先给它一个特殊的符号,这个特殊的符号,代表开始,在助教的投影片里面,是写
+Begin Of Sentence,缩写是 BOS</strong>。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615160908630.png" alt="image-20220615160908630" style="zoom:50%;"></p>
-<p>BOS就是 Begin 的意思,这个是一个 Special 的 Token,你就是在你的个 Lexicon 里面,你就在你可能,本来 Decoder 可能产生的文字里面,多加一个特殊的字,这个字就代表了 BEGIN,代表了开始这个事情。</p>
-<p>在这个机器学习里面,假设你要处理 NLP 的问题,<strong>每一个 Token,你都可以把它用一个 One-Hot 的 Vector 来表示</strong>,One-Hot Vector 就其中一维是 1,其他都是 0,所以 <strong>BEGIN 也是用 One-Hot Vector 来表示</strong>,其中一维是 1,其他是 0。<strong><font color="red"> 接下来Decoder 会吐出一个向量,这个 Vector 的长度很长,跟你的 Vocabulary 的 Size 是一样的。</font></strong></p>
+<p>BOS就是 Begin 的意思,这个是一个 Special 的 Token,你就是在你的个
+Lexicon 里面,你就在你可能,本来 Decoder
+可能产生的文字里面,多加一个特殊的字,这个字就代表了
+BEGIN,代表了开始这个事情。</p>
+<p>在这个机器学习里面,假设你要处理 NLP 的问题,<strong>每一个
+Token,你都可以把它用一个 One-Hot 的 Vector 来表示</strong>,One-Hot
+Vector 就其中一维是 1,其他都是 0,所以 <strong>BEGIN 也是用 One-Hot
+Vector 来表示</strong>,其中一维是 1,其他是 0。<strong><font color="red">
+接下来Decoder 会吐出一个向量,这个 Vector 的长度很长,跟你的 Vocabulary 的
+Size 是一样的。</font></strong></p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615161211480.png" alt="image-20220615161211480" style="zoom:50%;"></p>
 <blockquote>
-<h4><span id="vocabulary-size-则是什么意思">Vocabulary Size 则是什么意思?</span></h4><p>  你就先想好说,你的 Decoder <strong>输出的单位</strong>是什么,假设我们今天做的是中文的语音辨识,我们 Decoder 输出的是中文,你这边的 Vocabulary 的 Size ,可能就是中文的方块字的数目。用 Subword 当作英文的单位,就有一些方法,可以把英文的字首字根切出来,拿字首字根当作单位,如果中文的话,我觉得就比较单纯,通常今天你可能就用中文的这个方块字,来当作单位。</p>
-<p>  每一个中文的字,都会对应到一个数值,因为在<strong>产生这个向量之前,你通常会先跑一个 Softmax</strong>,就跟做分类一样,所以这一个向量里面的分数,它是一个 Distribution,也就是,它这个向量里面的值,它全部加起来,总和 会是 1</p>
+<p>#### Vocabulary Size 则是什么意思?</p>
+<p>你就先想好说,你的 Decoder
+<strong>输出的单位</strong>是什么,假设我们今天做的是中文的语音辨识,我们
+Decoder 输出的是中文,你这边的 Vocabulary 的 Size
+,可能就是中文的方块字的数目。用 Subword
+当作英文的单位,就有一些方法,可以把英文的字首字根切出来,拿字首字根当作单位,如果中文的话,我觉得就比较单纯,通常今天你可能就用中文的这个方块字,来当作单位。</p>
+<p>每一个中文的字,都会对应到一个数值,因为在<strong>产生这个向量之前,你通常会先跑一个
+Softmax</strong>,就跟做分类一样,所以这一个向量里面的分数,它是一个
+Distribution,也就是,它这个向量里面的值,它全部加起来,总和 会是 1</p>
 </blockquote>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615162226148.png" alt="image-20220615162226148" style="zoom:50%;"></p>
-<p><strong>分数最高的一个中文字,它就是最终的输出</strong>。在这个例子里面,机的分数最高,所以机,就当做是这个 Decoder 第一个输出。然后接下来,你<strong>把“机”当做是 Decoder 新的 Input</strong>,原来 Decoder 的 Input,只有 BEGIN 这个特别的符号,现在它除了 BEGIN 以外,它还有“机”作为它的 Input。</p>
+<p><strong>分数最高的一个中文字,它就是最终的输出</strong>。在这个例子里面,机的分数最高,所以机,就当做是这个
+Decoder 第一个输出。然后接下来,你<strong>把“机”当做是 Decoder 新的
+Input</strong>,原来 Decoder 的 Input,只有 BEGIN
+这个特别的符号,现在它除了 BEGIN 以外,它还有“机”作为它的 Input。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615162308793.png" alt="image-20220615162308793" style="zoom:50%;"></p>
 <p>所以 Decoder <strong>现在它有两个输入</strong></p>
 <ul>
 <li>一个是 <strong>BEGIN</strong> 这个符号</li>
 <li>一个是<strong>“机”</strong></li>
 </ul>
-<p>根据这两个输入,它输出一个蓝色的向量,根据这个蓝色的向量里面,给每一个中文的字的分数,我们会决定第二个输出，哪一个字的分数最高,它就是输出,假设”器”的分数最高,<strong>“器”就是输出</strong>。</p>
-<p>然后现在 Decoder </p>
+<p>根据这两个输入,它输出一个蓝色的向量,根据这个蓝色的向量里面,给每一个中文的字的分数,我们会决定第二个输出，哪一个字的分数最高,它就是输出,假设"器"的分数最高,<strong>"器"就是输出</strong>。</p>
+<p>然后现在 Decoder</p>
 <ul>
 <li>看到了 BEGIN</li>
-<li>看到了”机” </li>
-<li>看到了”器”</li>
+<li>看到了"机"</li>
+<li>看到了"器"</li>
 </ul>
-<p>它接下来,还要再决定接下来要输出什么,它可能,就输出”学”,这一个过程就反覆的持续下去</p>
-<p>所以现在 Decode </p>
+<p>它接下来,还要再决定接下来要输出什么,它可能,就输出"学",这一个过程就反覆的持续下去</p>
+<p>所以现在 Decode</p>
 <ul>
-<li><p>看到了 BEGIN </p>
-</li>
-<li><p>看到了”机” </p>
-</li>
-<li><p>看到了”器”</p>
-</li>
-<li><p>还有”学”</p>
-</li>
+<li><p>看到了 BEGIN</p></li>
+<li><p>看到了"机"</p></li>
+<li><p>看到了"器"</p></li>
+<li><p>还有"学"</p></li>
 </ul>
-<p><strong>Encoder 这边其实也有输入</strong>,等一下再讲 Encoder 的输入,Decoder 是怎么处理的,所以 Decoder 看到 Encoder 这边的输入,看到”机”  看到”器” 看到”学”,决定接下来输出一个向量,这个向量里面,”习”这个中文字的分数最高的,所以它就输出”习”。</p>
+<p><strong>Encoder 这边其实也有输入</strong>,等一下再讲 Encoder
+的输入,Decoder 是怎么处理的,所以 Decoder 看到 Encoder
+这边的输入,看到"机" 看到"器"
+看到"学",决定接下来输出一个向量,这个向量里面,"习"这个中文字的分数最高的,所以它就输出"习"。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615162732493.png" alt="image-20220615162732493" style="zoom:50%;"></p>
-<p><strong>然后这个 Process ,就反覆持续下去</strong>,这边有一个关键的地方,我们特别用红色的虚线把它标出来。</p>
+<p><strong>然后这个 Process
+,就反覆持续下去</strong>,这边有一个关键的地方,我们特别用红色的虚线把它标出来。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615162754592.png" alt="image-20220615162754592" style="zoom:50%;"></p>
-<p><strong><font color="red"> Decoder 看到的输入,其实是它在前一个时间点自己的输出,Decoder 会把自己的输出,当做接下来的输入。</font></strong></p>
+<p><strong><font color="red"> Decoder
+看到的输入,其实是它在前一个时间点自己的输出,Decoder
+会把自己的输出,当做接下来的输入。</font></strong></p>
 <blockquote>
-<p>  如果Decoder 看到<strong>错误的输入</strong>,让 Decoder 看到自己产生出来的错误的输入,再被 Decoder 自己吃进去,会不会造成 ==Error Propagation== 的问题.</p>
-<p>  Error Propagation 的问题就是,<strong>一步错 步步错</strong>这样,就是在这个地方,如果不小心把机器的“器”,不小心写成天气的”气”,会不会接下来就整个句子都坏掉了,都没有办法再产生正确的词汇了?</p>
-<p>  有可能,这个等一下,我们最后会稍微讲一下,这个问题要怎么处理,我们现在,先无视这个问题,继续走下去</p>
+<p>如果Decoder 看到<strong>错误的输入</strong>,让 Decoder
+看到自己产生出来的错误的输入,再被 Decoder 自己吃进去,会不会造成 ==Error
+Propagation== 的问题.</p>
+<p>Error Propagation 的问题就是,<strong>一步错
+步步错</strong>这样,就是在这个地方,如果不小心把机器的“器”,不小心写成天气的"气",会不会接下来就整个句子都坏掉了,都没有办法再产生正确的词汇了?</p>
+<p>有可能,这个等一下,我们最后会稍微讲一下,这个问题要怎么处理,我们现在,先无视这个问题,继续走下去</p>
 </blockquote>
 <p>我们来看一下这个 <strong>Decoder内部的结构</strong>长什么样子?</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615162953318.png" alt="image-20220615162953318" style="zoom:50%;"></p>
-<p>那我们这边,<strong>把 Encoder 的部分先暂时省略掉</strong>,那在 Transformer 里面,Decoder 的结构,长得是这个样子的,看起来有点复杂,比 Encoder 还稍微复杂一点,那我们现在先把 Encoder 跟 Decoder 放在一起。</p>
+<p>那我们这边,<strong>把 Encoder 的部分先暂时省略掉</strong>,那在
+Transformer 里面,Decoder 的结构,长得是这个样子的,看起来有点复杂,比
+Encoder 还稍微复杂一点,那我们现在先把 Encoder 跟 Decoder 放在一起。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163023898.png" alt="image-20220615163023898" style="zoom:50%;"></p>
-<p>稍微比较一下它们之间的差异,那你会发现说,如果我们把 Decoder 中间这一块,<strong>中间这一块把它盖起来,其实 Encoder 跟 Decoder,并没有那么大的差别</strong>。</p>
+<p>稍微比较一下它们之间的差异,那你会发现说,如果我们把 Decoder
+中间这一块,<strong>中间这一块把它盖起来,其实 Encoder 跟
+Decoder,并没有那么大的差别</strong>。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163100379.png" alt="image-20220615163100379" style="zoom:50%;"></p>
-<p>你看 Encoder 这边,<strong>Multi-Head Attention</strong>,然后 <strong>Add &amp; Norm</strong>,<strong>Feed Forward,Add &amp; Norm</strong>,重复 N 次,Decoder 其实也是一样。</p>
-<p>当我们把中间这一块遮起来以后,我们等一下再讲,遮起来这一块里面做了什么事,但当我们把中间这块遮起来以后, 那 Decoder 也是,有一个 Multi-Head Attention,Add &amp; Norm,然后 Feed Forward,然后 Add &amp; Norm,所以 Encoder 跟 Decoder,其实并没有非常大的差别,除了中间这一块不一样的地方,那只是最后,我们可能会再做一个 Softmax,使得它的输出变成一个机率,那这边有一个<strong>稍微不一样的地方</strong>是,在 Decoder 这边,Multi-Head Attention 这一个 Block 上面,还<strong>加了一个 ==Masked==</strong>,</p>
-<p>这个 Masked 的意思是这样子的,这是我们原来的 Self-Attention ，Input 一排 Vector,Output 另外一排 Vector,这一排 Vector <strong>每一个输出</strong>,都要看过完整的 Input 以后,才做决定,所以输出 $b^1$ 的时候,其实是根据 $a^1$ 到 $a^4$ 所有的资讯,去输出 $b^1$。</p>
+<p>你看 Encoder 这边,<strong>Multi-Head Attention</strong>,然后
+<strong>Add &amp; Norm</strong>,<strong>Feed Forward,Add &amp;
+Norm</strong>,重复 N 次,Decoder 其实也是一样。</p>
+<p>当我们把中间这一块遮起来以后,我们等一下再讲,遮起来这一块里面做了什么事,但当我们把中间这块遮起来以后,
+那 Decoder 也是,有一个 Multi-Head Attention,Add &amp; Norm,然后 Feed
+Forward,然后 Add &amp; Norm,所以 Encoder 跟
+Decoder,其实并没有非常大的差别,除了中间这一块不一样的地方,那只是最后,我们可能会再做一个
+Softmax,使得它的输出变成一个机率,那这边有一个<strong>稍微不一样的地方</strong>是,在
+Decoder 这边,Multi-Head Attention 这一个 Block 上面,还<strong>加了一个
+==Masked==</strong>,</p>
+<p>这个 Masked 的意思是这样子的,这是我们原来的 Self-Attention ，Input
+一排 Vector,Output 另外一排 Vector,这一排 Vector
+<strong>每一个输出</strong>,都要看过完整的 Input 以后,才做决定,所以输出
+<span class="math inline">\(b^1\)</span> 的时候,其实是根据 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span> 所有的资讯,去输出 <span class="math inline">\(b^1\)</span>。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163239723.png" alt="image-20220615163239723" style="zoom:50%;"></p>
-<p><strong><font color="red"> 当我们把 Self-Attention,转成 Masked Attention 的时候,它的不同点是,现在我们不能再看右边的部分,也就是产生 $b^1$ 的时候,我们只能考虑 $a^1$ 的资讯,你不能够再考虑 $a^2$ $a^3$ $a^4$</font></strong>。产生 $b^2$ 的时候,你只能考虑 $a^1$ $a^2$ 的资讯,不能再考虑 $a^3$ $a^4$ 的资讯。产生 $b^3$ 的时候,你就不能考虑 $a^4$ 的资讯。产生 $b^4$ 的时候,你可以用整个 Input Sequence 的资讯,这个就是 Masked 的 Self-Attention。</p>
+<p><strong><font color="red"> 当我们把 Self-Attention,转成 Masked
+Attention 的时候,它的不同点是,现在我们不能再看右边的部分,也就是产生
+<span class="math inline">\(b^1\)</span> 的时候,我们只能考虑 <span class="math inline">\(a^1\)</span> 的资讯,你不能够再考虑 <span class="math inline">\(a^2\)</span> <span class="math inline">\(a^3\)</span> <span class="math inline">\(a^4\)</span></font></strong>。产生 <span class="math inline">\(b^2\)</span> 的时候,你只能考虑 <span class="math inline">\(a^1\)</span> <span class="math inline">\(a^2\)</span> 的资讯,不能再考虑 <span class="math inline">\(a^3\)</span> <span class="math inline">\(a^4\)</span> 的资讯。产生 <span class="math inline">\(b^3\)</span> 的时候,你就不能考虑 <span class="math inline">\(a^4\)</span> 的资讯。产生 <span class="math inline">\(b^4\)</span> 的时候,你可以用整个 Input Sequence
+的资讯,这个就是 Masked 的 Self-Attention。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163708618.png" alt="image-20220615163708618" style="zoom:50%;"></p>
-<p>讲得更具体一点,你做的事情是,当我们要产生 $b^2$ 的时候,我们只拿第二个位置的 Query $b^2$,去跟第一个位置的 Key,和第二个位置的 Key,去计算 Attention,第三个位置跟第四个位置,就不管它,不去计算 Attention。</p>
+<p>讲得更具体一点,你做的事情是,当我们要产生 <span class="math inline">\(b^2\)</span> 的时候,我们只拿第二个位置的 Query
+<span class="math inline">\(b^2\)</span>,去跟第一个位置的
+Key,和第二个位置的 Key,去计算
+Attention,第三个位置跟第四个位置,就不管它,不去计算 Attention。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163452245.png" alt="image-20220615163452245" style="zoom:50%;"></p>
-<p>我们这样子不去管这个 $a^2$ 右边的地方,只考虑 $a^1$ 跟 $a^2$,只考虑 $q^1$ $q^2$,只考虑 $k^1$ $k^2$,$q^2$ 只跟 $k^1$ 跟 $k^2$ 去计算 Attention,然后最后只计算 $b^1$ 跟 $b^2$ 的 Weighted Sum。然后当我们输出这个 $b^2$ 的时候,$b^2$ 就只考虑了 $a^1$ 跟 $a^2$,就没有考虑到 $a^3$ 跟 $a^4$。</p>
-<h4><span id="那为什么会这样为什么需要加-masked"><strong><font color="red"> 那为什么会这样,为什么需要加 Masked ？</font></strong></span></h4><p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163642567.png" alt="image-20220615163642567" style="zoom:50%;"></p>
-<p>这件事情其实非常地直觉:我们一开始 Decoder 的运作方式,它是<strong>一个一个输出</strong>,所以是先有 $a^1$ 再有 $a^2$,再有 $a^3$ 再有 $a^4$。<strong>这跟原来的 Self-Attention 不一样</strong>,原来的 Self-Attention,$a^1$ 跟 $a^4$ 是一次整个输进去你的 Model 里面的,在我们讲 Encoder 的时候,Encoder 是一次把 $a^1$ 跟 $a^4$,都整个都读进去。但是对 Decoder 而言,先有 $a^1$ 才有 $a^2$,才有 $a^3$ 才有 $a^4$,所以实际上,当你有 $a^2$,你要计算 $b^2$ 的时候,你是没有 $a^3$ 跟 $a^4$ 的,所以你根本就没有办法把 $a^3$ $a^4$ 考虑进来。</p>
-<p>所以这就是为什么,在那个 Decoder 的那个图上面,Transformer 原始的 Paper 特别跟你强调说,<strong>那不是一个一般的 Attention,</strong> <strong><font color="red"> 这是一个 Masked 的 Self-Attention,意思只是想要告诉你说,Decoder 它的 Tokent,它输出的东西是一个一个产生的,所以它只能考虑它左边的东西,它没有办法考虑它右边的东西。</font></strong></p>
-<p>讲了 Decoder 的运作方式,但是这边,还有一个非常关键的问题,<strong>Decoder 必须自己决定,输出的 Sequence 的长度</strong></p>
+<p>我们这样子不去管这个 <span class="math inline">\(a^2\)</span>
+右边的地方,只考虑 <span class="math inline">\(a^1\)</span> 跟 <span class="math inline">\(a^2\)</span>,只考虑 <span class="math inline">\(q^1\)</span> <span class="math inline">\(q^2\)</span>,只考虑 <span class="math inline">\(k^1\)</span> <span class="math inline">\(k^2\)</span>,<span class="math inline">\(q^2\)</span> 只跟 <span class="math inline">\(k^1\)</span> 跟 <span class="math inline">\(k^2\)</span> 去计算 Attention,然后最后只计算 <span class="math inline">\(b^1\)</span> 跟 <span class="math inline">\(b^2\)</span> 的 Weighted Sum。然后当我们输出这个
+<span class="math inline">\(b^2\)</span> 的时候,<span class="math inline">\(b^2\)</span> 就只考虑了 <span class="math inline">\(a^1\)</span> 跟 <span class="math inline">\(a^2\)</span>,就没有考虑到 <span class="math inline">\(a^3\)</span> 跟 <span class="math inline">\(a^4\)</span>。</p>
+<h4><span id="那为什么会这样为什么需要加-masked"><strong><font color="red">
+那为什么会这样,为什么需要加 Masked ？</font></strong></span></h4>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615163642567.png" alt="image-20220615163642567" style="zoom:50%;"></p>
+<p>这件事情其实非常地直觉:我们一开始 Decoder
+的运作方式,它是<strong>一个一个输出</strong>,所以是先有 <span class="math inline">\(a^1\)</span> 再有 <span class="math inline">\(a^2\)</span>,再有 <span class="math inline">\(a^3\)</span> 再有 <span class="math inline">\(a^4\)</span>。<strong>这跟原来的 Self-Attention
+不一样</strong>,原来的 Self-Attention,<span class="math inline">\(a^1\)</span> 跟 <span class="math inline">\(a^4\)</span> 是一次整个输进去你的 Model
+里面的,在我们讲 Encoder 的时候,Encoder 是一次把 <span class="math inline">\(a^1\)</span> 跟 <span class="math inline">\(a^4\)</span>,都整个都读进去。但是对 Decoder
+而言,先有 <span class="math inline">\(a^1\)</span> 才有 <span class="math inline">\(a^2\)</span>,才有 <span class="math inline">\(a^3\)</span> 才有 <span class="math inline">\(a^4\)</span>,所以实际上,当你有 <span class="math inline">\(a^2\)</span>,你要计算 <span class="math inline">\(b^2\)</span> 的时候,你是没有 <span class="math inline">\(a^3\)</span> 跟 <span class="math inline">\(a^4\)</span> 的,所以你根本就没有办法把 <span class="math inline">\(a^3\)</span> <span class="math inline">\(a^4\)</span> 考虑进来。</p>
+<p>所以这就是为什么,在那个 Decoder 的那个图上面,Transformer 原始的 Paper
+特别跟你强调说,<strong>那不是一个一般的 Attention,</strong>
+<strong><font color="red"> 这是一个 Masked 的
+Self-Attention,意思只是想要告诉你说,Decoder 它的
+Tokent,它输出的东西是一个一个产生的,所以它只能考虑它左边的东西,它没有办法考虑它右边的东西。</font></strong></p>
+<p>讲了 Decoder
+的运作方式,但是这边,还有一个非常关键的问题,<strong>Decoder
+必须自己决定,输出的 Sequence 的长度</strong></p>
 <p>可是到底输出的 Sequence 的长度应该是多少,我们不知道。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615164352622.png" alt="image-20220615164352622" style="zoom:50%;"></p>
-<p>你没有办法轻易的从输入的 Sequence 的长度,就知道输出的 Sequence 的长度是多少,并不是说,输入是 4 个向量,输出一定就是 4 个向量。这边在这个例子里面,输入跟输出的长度是一样的,但是你知道实际上在你真正的应用里面,并不是这样,输入跟输出长度的关係,是非常复杂的,我们其实是期待机器可以自己学到,今天给它一个 Input Sequence 的时候,Output 的 Sequence 应该要多长。</p>
-<p>但在我们目前的这整个 Decoder的这个运作的机制里面,<strong>机器不知道它什么时候应该停下来</strong>,它产生完习以后,它还可以继续重复一模一样的 Process,就把习,当做输入,然后也许 Decoder ,就会接一个惯,然后接下来,就一直持续下去,<strong>永远都不会停下来</strong>。</p>
-<p><strong><font color="red"> 我们要让 Decoder 做的事情,也是一样,要让它可以输出一个断,所以你要特别准备一个特别的符号,这个符号,就叫做断,我们这边,用 END 来表示这个特殊的符号。</font></strong></p>
+<p>你没有办法轻易的从输入的 Sequence 的长度,就知道输出的 Sequence
+的长度是多少,并不是说,输入是 4 个向量,输出一定就是 4
+个向量。这边在这个例子里面,输入跟输出的长度是一样的,但是你知道实际上在你真正的应用里面,并不是这样,输入跟输出长度的关係,是非常复杂的,我们其实是期待机器可以自己学到,今天给它一个
+Input Sequence 的时候,Output 的 Sequence 应该要多长。</p>
+<p>但在我们目前的这整个
+Decoder的这个运作的机制里面,<strong>机器不知道它什么时候应该停下来</strong>,它产生完习以后,它还可以继续重复一模一样的
+Process,就把习,当做输入,然后也许 Decoder
+,就会接一个惯,然后接下来,就一直持续下去,<strong>永远都不会停下来</strong>。</p>
+<p><strong><font color="red"> 我们要让 Decoder
+做的事情,也是一样,要让它可以输出一个断,所以你要特别准备一个特别的符号,这个符号,就叫做断,我们这边,用
+END 来表示这个特殊的符号。</font></strong></p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615164518484.png" alt="image-20220615164518484" style="zoom:50%;"></p>
-<p>所以除了所有中文的方块字,还有 BEGIN 以外,你还要<strong>准备一个特殊的符号,叫做”断”</strong>,那其实在助教的程式里面,它是把 BEGIN 跟 END,就是开始跟这个断,用同一个符号来表示。</p>
-<p>反正这个,这个 BEGIN 只会在输入的时候出现,断只会在输出的时候出现,所以在助教的程式里面,如果你仔细研究一下的话,会发现说 END 跟 BEGIN,用的其实是同一个符号,但你用不同的符号,也是完全可以的,也完全没有问题</p>
-<p>所以我们现在,当把”习”当作输入以后,就 Decoder 看到 Encoder 输出的这个 Embedding,看到了 “BEGIN”,然后”机” “器” “学” “习”以后,看到这些资讯以后 它要知道说,这个语音辨识的结果已经结束了,不需要再产生更多的词汇了。</p>
-<p>它产生出来的向量END,就是断的那个符号,它的机率必须要是最大的,然后你就输出断这个符号,那整个运作的过程,整个 Decoder 产生 Sequence 的过程,就结束了这个就是 ==Autoregressive  Decoder==,它运作的方式。</p>
-<h3><span id="22-decoder-non-autoregressive-nat">2.2 Decoder – Non-autoregressive (NAT)</span></h3><p>Non-Autoregressive ,通常缩写成 NAT,所以有时候 Autoregressive 的 Model,也缩写成 AT,Non-Autoregressive 的 Model 是怎么运作的。<strong>先输入 BEGIN</strong>,<strong>然后</strong>出现 w1,然后<strong>再</strong>把 w1 当做输入,<strong>再</strong>输出 w2,<strong>直到输出 END 为止</strong></p>
+<p>所以除了所有中文的方块字,还有 BEGIN
+以外,你还要<strong>准备一个特殊的符号,叫做"断"</strong>,那其实在助教的程式里面,它是把
+BEGIN 跟 END,就是开始跟这个断,用同一个符号来表示。</p>
+<p>反正这个,这个 BEGIN
+只会在输入的时候出现,断只会在输出的时候出现,所以在助教的程式里面,如果你仔细研究一下的话,会发现说
+END 跟
+BEGIN,用的其实是同一个符号,但你用不同的符号,也是完全可以的,也完全没有问题</p>
+<p>所以我们现在,当把"习"当作输入以后,就 Decoder 看到 Encoder 输出的这个
+Embedding,看到了 "BEGIN",然后"机" "器" "学" "习"以后,看到这些资讯以后
+它要知道说,这个语音辨识的结果已经结束了,不需要再产生更多的词汇了。</p>
+<p>它产生出来的向量END,就是断的那个符号,它的机率必须要是最大的,然后你就输出断这个符号,那整个运作的过程,整个
+Decoder 产生 Sequence 的过程,就结束了这个就是 ==Autoregressive
+Decoder==,它运作的方式。</p>
+<h3><span id="22-decoder-non-autoregressivenat">2.2 Decoder – Non-autoregressive
+(NAT)</span></h3>
+<p>Non-Autoregressive ,通常缩写成 NAT,所以有时候 Autoregressive 的
+Model,也缩写成 AT,Non-Autoregressive 的 Model
+是怎么运作的。<strong>先输入 BEGIN</strong>,<strong>然后</strong>出现
+w1,然后<strong>再</strong>把 w1 当做输入,<strong>再</strong>输出
+w2,<strong>直到输出 END 为止</strong></p>
 <p>那 ==NAT== 是这样,它<strong>不是依次产生</strong>。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615164801974.png" alt="image-20220615164801974" style="zoom:50%;"></p>
-<p>就假设我们现在产生是中文的句子,它不是依次产生一个字,它是<strong>一次把整个句子都产生出来</strong>。NAT 的 Decoder<strong>可能吃的是一整排的 BEGIN 的 Token</strong>,你就把一堆一排 BEGIN 的 Token 都丢给它,让它一次产生一排 Token 就结束了</p>
-<p>举例来说,如果你丢给它 4 个 BEGIN 的 Token,它就产生 4 个中文的字,变成一个句子,就结束了，所以它只要一个步骤,就可以完成句子的生成，这边你可能会问一个问题：刚才不是说不知道输出的长度应该是多少吗,那我们这边<strong>怎么知道 BEGIN 要放多少个</strong>,当做 NAT Decoder 的收入？</p>
+<p>就假设我们现在产生是中文的句子,它不是依次产生一个字,它是<strong>一次把整个句子都产生出来</strong>。NAT
+的 Decoder<strong>可能吃的是一整排的 BEGIN 的
+Token</strong>,你就把一堆一排 BEGIN 的 Token 都丢给它,让它一次产生一排
+Token 就结束了</p>
+<p>举例来说,如果你丢给它 4 个 BEGIN 的 Token,它就产生 4
+个中文的字,变成一个句子,就结束了，所以它只要一个步骤,就可以完成句子的生成，这边你可能会问一个问题：刚才不是说不知道输出的长度应该是多少吗,那我们这边<strong>怎么知道
+BEGIN 要放多少个</strong>,当做 NAT Decoder 的收入？</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615172838842.png" alt="image-20220615172838842" style="zoom:50%;"></p>
-<p>没错 这件事没有办法很自然的知道,没有办法很直接的知道,所以有几个,所以有几个做法</p>
+<p>没错
+这件事没有办法很自然的知道,没有办法很直接的知道,所以有几个,所以有几个做法</p>
 <ul>
-<li>一个做法是,你<strong>另外learn一个 Classifier</strong>,这个 Classifier ,它吃 Encoder 的 Input,然后输出是一个数字,这个数字代表 Decoder 应该要输出的长度,这是一种可能的做法</li>
-<li>另一种可能做法就是,你就不管三七二十一,<strong>给它一堆 BEGIN 的 Token</strong>,你就假设说,你现在输出的句子的长度,绝对不会超过 300 个字,你就假设一个句子长度的上限,然后 BEGIN ,你就给它 300 个 BEGIN,然后就会输出 300 个字嘛,然后,你再看看<strong>什么地方输出 END</strong>,输出 END 右边的,就当做它没有输出,就结束了,这是另外一种处理 NAT 的这个 Decoder,它应该输出的长度的方法</li>
+<li>一个做法是,你<strong>另外learn一个 Classifier</strong>,这个
+Classifier ,它吃 Encoder 的 Input,然后输出是一个数字,这个数字代表
+Decoder 应该要输出的长度,这是一种可能的做法</li>
+<li>另一种可能做法就是,你就不管三七二十一,<strong>给它一堆 BEGIN 的
+Token</strong>,你就假设说,你现在输出的句子的长度,绝对不会超过 300
+个字,你就假设一个句子长度的上限,然后 BEGIN ,你就给它 300 个
+BEGIN,然后就会输出 300 个字嘛,然后,你再看看<strong>什么地方输出
+END</strong>,输出 END 右边的,就当做它没有输出,就结束了,这是另外一种处理
+NAT 的这个 Decoder,它应该输出的长度的方法</li>
 </ul>
-<p>NAT 的 Decoder,最近它之所以是一个热门研究主题,就是它虽然表面上看起来有种种的厉害之处,尤其是<strong>平行化是它最大的优势</strong>,但是 <strong>NAT 的 Decoder ,它的 Performance,往往都不如 AT 的 Decoder</strong>。</p>
-<h3><span id="23-encoder-decoder">2.3 Encoder-Decoder</span></h3><p>接下来就要讲<strong>Encoder 跟 Decoder它们中间是怎么传递资讯</strong>的了,也就是我们要讲,刚才我们刻意把它遮起来的那一块。</p>
+<p>NAT 的
+Decoder,最近它之所以是一个热门研究主题,就是它虽然表面上看起来有种种的厉害之处,尤其是<strong>平行化是它最大的优势</strong>,但是
+<strong>NAT 的 Decoder ,它的 Performance,往往都不如 AT 的
+Decoder</strong>。</p>
+<h3><span id="23-encoder-decoder">2.3 Encoder-Decoder</span></h3>
+<p>接下来就要讲<strong>Encoder 跟
+Decoder它们中间是怎么传递资讯</strong>的了,也就是我们要讲,刚才我们刻意把它遮起来的那一块。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173000109.png" alt="image-20220615173000109"></p>
-<p><strong><font color="red"> 这块叫做 ==Cross Attention==,它是连接 Encoder 跟 Decoder 之间的桥樑,那这一块里面啊,会发现有两个输入来自于 Encoder,Encoder 提供两个箭头,然后 Decoder 提供了一个箭头,所以从左边这两个箭头,Decoder 可以读到 Encoder 的输出。</font></strong></p>
-<p>那这个模组实际上是怎么运作的呢,那我们就实际把它运作的过程跟大家展示一下，这个是你的 Encoder：</p>
+<p><strong><font color="red"> 这块叫做 ==Cross Attention==,它是连接
+Encoder 跟 Decoder 之间的桥樑,那这一块里面啊,会发现有两个输入来自于
+Encoder,Encoder 提供两个箭头,然后 Decoder
+提供了一个箭头,所以从左边这两个箭头,Decoder 可以读到 Encoder
+的输出。</font></strong></p>
+<p>那这个模组实际上是怎么运作的呢,那我们就实际把它运作的过程跟大家展示一下，这个是你的
+Encoder：</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173054575.png" alt="image-20220615173054575" style="zoom:50%;"></p>
-<p>输入一排向量,输出一排向量,我们叫它 $a^1 a^2 a^3$。</p>
-<p>接下来 轮到你的 Decoder,你的 Decoder 呢,会先吃 BEGIN 当做,BEGIN 这个 Special 的 Token,那 BEGIN 这个 Special 的 Token 读进来以后,你可能会经过 Self-Attention,这个 Self-Attention 是有做 Mask 的,然后得到一个向量,就是 <strong>Self-Attention 就算是有做 Mask,还是一样输入多少长度的向量,输出就是多少向量</strong>。</p>
-<p>所以输入一个向量 输出一个向量,然后接下来把这个向量呢,乘上一个矩阵做一个 Transform,得到一个 Query 叫做 q：</p>
+<p>输入一排向量,输出一排向量,我们叫它 <span class="math inline">\(a^1
+a^2 a^3\)</span>。</p>
+<p>接下来 轮到你的 Decoder,你的 Decoder 呢,会先吃 BEGIN 当做,BEGIN 这个
+Special 的 Token,那 BEGIN 这个 Special 的 Token 读进来以后,你可能会经过
+Self-Attention,这个 Self-Attention 是有做 Mask 的,然后得到一个向量,就是
+<strong>Self-Attention 就算是有做
+Mask,还是一样输入多少长度的向量,输出就是多少向量</strong>。</p>
+<p>所以输入一个向量
+输出一个向量,然后接下来把这个向量呢,乘上一个矩阵做一个
+Transform,得到一个 Query 叫做 q：</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173148542.png" alt="image-20220615173148542" style="zoom:50%;"></p>
-<p>然后这边的 $a^1 a^2 a^3$ 呢,也都产生 Key,Key1 Key2 Key3,那把这个 q 跟 $k^1 k^2 k^3$,去计算 Attention 的分数,得到 $α_1 α_2 α_3$,当然你可能一样会做 Softmax,把它稍微做一下 Normalization,所以我这边加一个 ‘,代表它可能是做过 Normalization。接下来再把 $α_1 α_2 α_3$,就乘上 $v^1 v^2 v^3$,再把它 Weighted Sum 加起来会得到 v。</p>
+<p>然后这边的 <span class="math inline">\(a^1 a^2 a^3\)</span>
+呢,也都产生 Key,Key1 Key2 Key3,那把这个 q 跟 <span class="math inline">\(k^1 k^2 k^3\)</span>,去计算 Attention 的分数,得到
+<span class="math inline">\(α_1 α_2 α_3\)</span>,当然你可能一样会做
+Softmax,把它稍微做一下 Normalization,所以我这边加一个 ',代表它可能是做过
+Normalization。接下来再把 <span class="math inline">\(α_1 α_2
+α_3\)</span>,就乘上 <span class="math inline">\(v^1 v^2
+v^3\)</span>,再把它 Weighted Sum 加起来会得到 v。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173220252.png" alt="image-20220615173220252" style="zoom:50%;"></p>
-<p>那这一个 V,就是接下来会丢到 Fully-Connected 的,Network 做接下来的处理,那这个步骤就是 q 来自于 Decoder,k 跟 v 来自于 Encoder,这个步骤就叫做 Cross Attention。 <strong><font color="red"> Decoder 就是凭藉著产生一个 q,去 Encoder 这边抽取资讯出来,当做接下来的 Decoder 的,Fully-Connected 的 Network 的 Input。</font></strong></p>
+<p>那这一个 V,就是接下来会丢到 Fully-Connected 的,Network
+做接下来的处理,那这个步骤就是 q 来自于 Decoder,k 跟 v 来自于
+Encoder,这个步骤就叫做 Cross Attention。 <strong><font color="red">
+Decoder 就是凭藉著产生一个 q,去 Encoder 这边抽取资讯出来,当做接下来的
+Decoder 的,Fully-Connected 的 Network 的 Input。</font></strong></p>
 <p>当然这个,就现在假设产生第二个,第一个这个中文的字产生一个“机”,接下来的运作也是一模一样的。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173332499.png" alt="image-20220615173332499" style="zoom:50%;"></p>
-<p>输入 BEGIN 输入机,产生一个向量,这个向量一样乘上一个 Linear 的 Transform,得到 q’,得到一个 Query,这个 Query 一样跟 $k^1 k^2 k^3$,去计算 Attention 的分数,一样跟 $v^1 v^2 v^3$ 做 Weighted Sum 做加权,然后加起来得到 v’,交给接下来 Fully-Connected Network 做处理，所以这就是Cross Attention 的运作的过程。</p>
-<p>也许有人会有<strong>疑问</strong>：那这个 Encoder 有很多层啊,Decoder 也有很多层啊,从刚才的讲解里面好像听起来,这个 Decoder 不管哪一层,都是<strong>拿 Encoder 的最后一层的输出</strong>这样对吗？</p>
-<p>对,<strong>在原始 Paper 里面的实做是这样子</strong>,那一定要这样吗？</p>
-<p><strong>不一定要这样</strong>,你永远可以自己兜一些新的想法,所以我这边就是引用一篇论文告诉你说,也有人尝试不同的 Cross Attension 的方式。</p>
+<p>输入 BEGIN 输入机,产生一个向量,这个向量一样乘上一个 Linear 的
+Transform,得到 q',得到一个 Query,这个 Query 一样跟 <span class="math inline">\(k^1 k^2 k^3\)</span>,去计算 Attention
+的分数,一样跟 <span class="math inline">\(v^1 v^2 v^3\)</span> 做
+Weighted Sum 做加权,然后加起来得到 v',交给接下来 Fully-Connected Network
+做处理，所以这就是Cross Attention 的运作的过程。</p>
+<p>也许有人会有<strong>疑问</strong>：那这个 Encoder 有很多层啊,Decoder
+也有很多层啊,从刚才的讲解里面好像听起来,这个 Decoder
+不管哪一层,都是<strong>拿 Encoder
+的最后一层的输出</strong>这样对吗？</p>
+<p>对,<strong>在原始 Paper
+里面的实做是这样子</strong>,那一定要这样吗？</p>
+<p><strong>不一定要这样</strong>,你永远可以自己兜一些新的想法,所以我这边就是引用一篇论文告诉你说,也有人尝试不同的
+Cross Attension 的方式。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173812815.png" alt="image-20220615173812815" style="zoom:50%;"></p>
-<p>Encoder 这边有很多层,Decoder 这边有很多层,为什么 Decoder 这边每一层都一定要看,Encoder 的最后一层输出呢,能不能够有各式各样不同的连接方式,这完全可以当做一个研究的问题来 Study。</p>
-<h3><span id="24-training">2.4 Training</span></h3><p>已经清楚说 Input 一个 Sequence,是怎么得到最终的输出,那接下来就进入训练的部分。</p>
+<p>Encoder 这边有很多层,Decoder 这边有很多层,为什么 Decoder
+这边每一层都一定要看,Encoder
+的最后一层输出呢,能不能够有各式各样不同的连接方式,这完全可以当做一个研究的问题来
+Study。</p>
+<h3><span id="24-training">2.4 Training</span></h3>
+<p>已经清楚说 Input 一个
+Sequence,是怎么得到最终的输出,那接下来就进入训练的部分。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173844330.png" alt="image-20220615173844330" style="zoom:50%;"></p>
-<p>刚才讲的都还只是,假设你模型训练好以后它是怎么运作的,它是怎么做 Testing 的,它是怎么做 Inference 的,Inference 就是 Testing ，那是怎么做训练的呢？</p>
+<p>刚才讲的都还只是,假设你模型训练好以后它是怎么运作的,它是怎么做
+Testing 的,它是怎么做 Inference 的,Inference 就是 Testing
+，那是怎么做训练的呢？</p>
 <p>接下来就要讲怎么做训练,那如果是做语音辨识,那你要有<strong>训练资料</strong>,你要收集一大堆的声音讯号,每一句声音讯号都要有工读生来听打一下,打出说它的这个对应的词汇是什么？</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615173903283.png" alt="image-20220615173903283"></p>
-<p>工读生听这段是机器学习,他就把机器学习四个字打出来,所以就知道说你的这个 Transformer,应该要学到 听到这段声音讯号,它的输出就是机器学习这四个中文字。</p>
-<p>那怎么让机器学到这件事呢? 我们已经知道说输入这段声音讯号,第一个应该要输出的中文字是“机”,所以今天当我们把 BEGIN,丢给这个 Encoder 的时候,它第一个输出应该要跟“机”越接近越好。</p>
+<p>工读生听这段是机器学习,他就把机器学习四个字打出来,所以就知道说你的这个
+Transformer,应该要学到
+听到这段声音讯号,它的输出就是机器学习这四个中文字。</p>
+<p>那怎么让机器学到这件事呢?
+我们已经知道说输入这段声音讯号,第一个应该要输出的中文字是“机”,所以今天当我们把
+BEGIN,丢给这个 Encoder 的时候,它第一个输出应该要跟“机”越接近越好。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615174107627.png" alt="image-20220615174107627" style="zoom:50%;"></p>
-<p><strong>“机”这个字会被表示成一个 One-Hot 的 Vector</strong>,在这个 Vector 里面,只有机对应的那个维度是 1,其他都是 0,这是正确答案,那我们的 Decoder,它的输出是一个 Distribution,是一个机率的分布,我们会希望这一个机率的分布,跟这个 One-Hot 的 Vector 越接近越好。所以你会去计算这个 Ground Truth,跟这个 Distribution 它们之间的 Cross Entropy,然后我们希望这个 ==Cross Entropy== 的值,越小越好。</p>
+<p><strong>“机”这个字会被表示成一个 One-Hot 的 Vector</strong>,在这个
+Vector 里面,只有机对应的那个维度是 1,其他都是 0,这是正确答案,那我们的
+Decoder,它的输出是一个
+Distribution,是一个机率的分布,我们会希望这一个机率的分布,跟这个 One-Hot
+的 Vector 越接近越好。所以你会去计算这个 Ground Truth,跟这个
+Distribution 它们之间的 Cross Entropy,然后我们希望这个 ==Cross Entropy==
+的值,越小越好。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615174938615.png" alt="image-20220615174938615" style="zoom:50%;"></p>
-<p>它就<strong>跟分类很像</strong>,刚才助教在讲解作业的时候也有提到这件事情,你可以想成每一次我们在产生,每一次 Decoder 在产生一个中文字的时候,其实就是做了一次分类的问题,中文字假设有四千个,那就是<strong>做有四千个类别的分类的问题</strong></p>
-<p>所以实际上训练的时候这个样子,我们已经知道输出应该是“机器学习”这四个字,就告诉你的 Decoder ,现在你第一次的输出 第二次的输出,第三次的输出 第四次输出,应该分别就是“机” “器” “学”跟“习”,这四个中文字的 One-Hot Vector,我们<strong>希望我们的输出,跟这四个字的 One-Hot Vector 越接近越好</strong>。</p>
+<p>它就<strong>跟分类很像</strong>,刚才助教在讲解作业的时候也有提到这件事情,你可以想成每一次我们在产生,每一次
+Decoder
+在产生一个中文字的时候,其实就是做了一次分类的问题,中文字假设有四千个,那就是<strong>做有四千个类别的分类的问题</strong></p>
+<p>所以实际上训练的时候这个样子,我们已经知道输出应该是“机器学习”这四个字,就告诉你的
+Decoder ,现在你第一次的输出 第二次的输出,第三次的输出
+第四次输出,应该分别就是“机” “器” “学”跟“习”,这四个中文字的 One-Hot
+Vector,我们<strong>希望我们的输出,跟这四个字的 One-Hot Vector
+越接近越好</strong>。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615175011374.png" alt="image-20220615175011374" style="zoom:50%;"></p>
-<p><strong><font color="red"> 在训练的时候,每一个输出都会有一个 Cross Entropy,每一个输出跟 One-Hot Vector,跟它对应的正确答案都有一个 Cross Entropy,我们要希望所有的 Cross Entropy 的总和最小越小越好。</font></strong>所以这边做了四次分类的问题,我们希望这些分类的问题,它总合起来的 Cross Entropy 越小越好,<strong>还有 END 这个符号</strong>。</p>
+<p><strong><font color="red"> 在训练的时候,每一个输出都会有一个 Cross
+Entropy,每一个输出跟 One-Hot Vector,跟它对应的正确答案都有一个 Cross
+Entropy,我们要希望所有的 Cross Entropy
+的总和最小越小越好。</font></strong>所以这边做了四次分类的问题,我们希望这些分类的问题,它总合起来的
+Cross Entropy 越小越好,<strong>还有 END 这个符号</strong>。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615175531572.png" alt="image-20220615175531572" style="zoom:50%;"></p>
-<p>那这个就是 Decoder 的训练，<strong>把 Ground Truth ,正确答案给它,希望 Decoder 的输出跟正确答案越接近越好</strong>。</p>
-<p>那这边有一件值得我们注意的事情,在<strong>训练</strong>的时候我们会给 Decoder 看<strong>正确答案</strong>,也就是我们会告诉它说</p>
+<p>那这个就是 Decoder 的训练，<strong>把 Ground Truth ,正确答案给它,希望
+Decoder 的输出跟正确答案越接近越好</strong>。</p>
+<p>那这边有一件值得我们注意的事情,在<strong>训练</strong>的时候我们会给
+Decoder 看<strong>正确答案</strong>,也就是我们会告诉它说</p>
 <ul>
-<li>在已经有 “BEGIN”,在有”机”的情况下你就要输出”器”</li>
-<li>有 “BEGIN” 有”机” 有”器”的情况下输出”学”</li>
-<li>有 “BEGIN” 有”机” 有”器” 有”学”的情况下输出”习”</li>
-<li>有 “BEGIN” 有”机” 有”器” 有”学” 有”习”的情况下,你就要输出”断”</li>
+<li>在已经有 "BEGIN",在有"机"的情况下你就要输出"器"</li>
+<li>有 "BEGIN" 有"机" 有"器"的情况下输出"学"</li>
+<li>有 "BEGIN" 有"机" 有"器" 有"学"的情况下输出"习"</li>
+<li>有 "BEGIN" 有"机" 有"器" 有"学" 有"习"的情况下,你就要输出"断"</li>
 </ul>
-<p>在 Decoder 训练的时候,我们会在输入的时候给它<strong>正确的答案</strong>,那这件事情叫做 ==Teacher Forcing==</p>
+<p>在 Decoder
+训练的时候,我们会在输入的时候给它<strong>正确的答案</strong>,那这件事情叫做
+==Teacher Forcing==</p>
 <p>那这个时候你马上就会有一个问题了？</p>
 <ul>
 <li>训练的时候,Decoder 有偷看到正确答案了</li>
 <li>但是测试的时候,显然没有正确答案可以给 Decoder 看</li>
 </ul>
-<p>刚才也有强调说在真正使用这个模型,在 Inference 的时候,Decoder 看到的是自己的输入,这<strong>中间显然有一个 ==Mismatch==</strong>,那等一下我们会有一页投影片的说明,有什么样可能的解决方式。</p>
-<h3><span id="25-tips">2.5 Tips</span></h3><p>那接下来,不侷限于 Transformer ,讲一些训练这种 Sequence To Sequence Model 的Tips</p>
-<h4><span id="copy-mechanism">Copy Mechanism</span></h4><p>在我们刚才的讨论里面,我们都要求 Decoder 自己产生输出,但是对很多任务而言,也许 <strong>Decoder 没有必要自己创造输出</strong>出来,它需要做的事情,也许是<strong>从输入的东西里面复製</strong>一些东西出来。</p>
+<p>刚才也有强调说在真正使用这个模型,在 Inference 的时候,Decoder
+看到的是自己的输入,这<strong>中间显然有一个
+==Mismatch==</strong>,那等一下我们会有一页投影片的说明,有什么样可能的解决方式。</p>
+<h3><span id="25-tips">2.5 Tips</span></h3>
+<p>那接下来,不侷限于 Transformer ,讲一些训练这种 Sequence To Sequence
+Model 的Tips</p>
+<h4><span id="copy-mechanism">Copy Mechanism</span></h4>
+<p>在我们刚才的讨论里面,我们都要求 Decoder
+自己产生输出,但是对很多任务而言,也许 <strong>Decoder
+没有必要自己创造输出</strong>出来,它需要做的事情,也许是<strong>从输入的东西里面复製</strong>一些东西出来。</p>
 <p>像这种复製的行为在哪些任务会用得上呢,一个例子是做聊天机器人。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615175700028.png" alt="image-20220615175700028" style="zoom:50%;"></p>
 <ul>
-<li><p>人对机器说:你好 我是库洛洛,</p>
-</li>
-<li><p>机器应该回答说:库洛洛你好 很高兴认识你</p>
-</li>
+<li><p>人对机器说:你好 我是库洛洛,</p></li>
+<li><p>机器应该回答说:库洛洛你好 很高兴认识你</p></li>
 </ul>
 <p>对机器来说,它其实<strong>没有必要创造</strong>库洛洛这个词汇,这对机器来说一定会是一个非常怪异的词汇,所以它可能很难,在训练资料里面可能一次也没有出现过,所以它不太可能正确地产生这段词汇出来。</p>
 <p>但是假设今天机器它在学的时候,它学到的是看到输入的时候说我是某某某,就直接把某某某,不管这边是什么复製出来说某某某你好。</p>
-<p>那这样子机器的<strong>训练显然会比较容易</strong>,它显然比较有可能得到正确的结果,所以复製对于对话来说,可能是一个需要的技术 需要的能力。</p>
-<h4><span id="guided-attention">Guided Attention</span></h4><p>机器就是一个黑盒子,有时候它里面学到什么东西,你实在是搞不清楚,那有时候它会犯<strong>非常低级的错误</strong>。但是<strong>对语音辨识 语音合成,Guiding Attention,可能就是一个比较重要的技术</strong>。</p>
-<p><strong><font color="red"> Guiding Attention 要做的事情就是,要求机器它在做 Attention 的时候,是有固定的方式的,举例来说,对语音合成或者是语音辨识来说,我们想像中的 Attention,应该就是由左向右。</font></strong></p>
+<p>那这样子机器的<strong>训练显然会比较容易</strong>,它显然比较有可能得到正确的结果,所以复製对于对话来说,可能是一个需要的技术
+需要的能力。</p>
+<h4><span id="guided-attention">Guided Attention</span></h4>
+<p>机器就是一个黑盒子,有时候它里面学到什么东西,你实在是搞不清楚,那有时候它会犯<strong>非常低级的错误</strong>。但是<strong>对语音辨识
+语音合成,Guiding Attention,可能就是一个比较重要的技术</strong>。</p>
+<p><strong><font color="red"> Guiding Attention
+要做的事情就是,要求机器它在做 Attention
+的时候,是有固定的方式的,举例来说,对语音合成或者是语音辨识来说,我们想像中的
+Attention,应该就是由左向右。</font></strong></p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615175853638.png" alt="image-20220615175853638" style="zoom:50%;"></p>
-<p>在这个例子里面,我们用红色的这个曲线,来代表 Attention 的分数,这个越高就代表 Attention 的值越大</p>
+<p>在这个例子里面,我们用红色的这个曲线,来代表 Attention
+的分数,这个越高就代表 Attention 的值越大</p>
 <p>我们以语音合成为例,那你的输入就是一串文字,那你在合成声音的时候,显然是<strong>由左念到右</strong>,所以机器应该是,先看最左边输入的词汇产生声音,再看中间的词汇产生声音,再看右边的词汇产生声音</p>
-<p>如果你今天在做语音合成的时候,你发现机器的 Attention,是<strong>颠三倒四的</strong>,它先看最后面,接下来再看前面,那再胡乱看整个句子,那显然有些是做错了,显然有些是,Something is wrong,有些是做错了,</p>
-<p>所以 Guiding Attention 要做的事情就是,强迫 Attention 有一个固定的样貌,那如果你对这个问题,本身就已经有理解知道说,语音合成 TTS 这样的问题,你的 Attention 的分数,Attention 的位置都应该由左向右,那不如就直接把这个限制,放进你的 Training 里面,要求机器学到 Attention,就应该要由左向右。</p>
-<h4><span id="optimizing-evaluation-metrics">Optimizing Evaluation Metrics?</span></h4><p><strong><font color="red"> 在作业里面,我们评估的标准用的是,BLEU Score,BLEU Score 是你的 Decoder,先产生一个完整的句子以后,再去跟正确的答案一整句做比较,我们是拿两个句子之间做比较,才算出 BLEU Score。</font></strong></p>
-<p>但我们在训练的时候显然不是这样,<strong>训练</strong>的时候,<strong>每一个词汇是分开考虑的</strong>,训练的时候,我们 Minimize 的是 Cross Entropy,Minimize Cross Entropy,真的可以 Maximize BLEU Score 吗？</p>
+<p>如果你今天在做语音合成的时候,你发现机器的
+Attention,是<strong>颠三倒四的</strong>,它先看最后面,接下来再看前面,那再胡乱看整个句子,那显然有些是做错了,显然有些是,Something
+is wrong,有些是做错了,</p>
+<p>所以 Guiding Attention 要做的事情就是,强迫 Attention
+有一个固定的样貌,那如果你对这个问题,本身就已经有理解知道说,语音合成 TTS
+这样的问题,你的 Attention 的分数,Attention
+的位置都应该由左向右,那不如就直接把这个限制,放进你的 Training
+里面,要求机器学到 Attention,就应该要由左向右。</p>
+<h4><span id="optimizing-evaluationmetrics">Optimizing Evaluation
+Metrics?</span></h4>
+<p><strong><font color="red"> 在作业里面,我们评估的标准用的是,BLEU
+Score,BLEU Score 是你的
+Decoder,先产生一个完整的句子以后,再去跟正确的答案一整句做比较,我们是拿两个句子之间做比较,才算出
+BLEU Score。</font></strong></p>
+<p>但我们在训练的时候显然不是这样,<strong>训练</strong>的时候,<strong>每一个词汇是分开考虑的</strong>,训练的时候,我们
+Minimize 的是 Cross Entropy,Minimize Cross Entropy,真的可以 Maximize
+BLEU Score 吗？</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615180128331.png" alt="image-20220615180128331" style="zoom:67%;"></p>
-<p>不一定,因为这两个根本就是,它们可能有一点点的关联,但它们又没有那么直接相关,它们根本就是两个不同的数值,所以我们 Minimize Cross Entropy,不见得可以让 BLEU Score 比较大。</p>
-<p><strong>所以你发现说在助教的程式里面,助教在做 Validation 的时候,并不是拿 Cross Entropy 来挑最好的 Model,而是挑 BLEU Score 最高的那一个 Model,所以我们训练的时候,是看 Cross Entropy,但是我们实际上你作业真正评估的时候,看的是 BLEU Score,所以你 Validation Set,其实应该考虑用 BLEU Score</strong>。</p>
-<p>那接下来有人就会想说,那我们能不能<strong>在 Training 的时候,就考虑 BLEU Score 呢</strong>,我们能不能够训练的时候就说,我的 Loss 就是,BLEU Score 乘一个负号,那我们要 Minimize 那个 Loss,假设你的 Loss 是,BLEU Score乘一个负号,它也等于就是 Maximize BLEU Score。但是<strong>这件事实际上没有那么容易</strong>,你当然可以把 BLEU Score,当做你训练的时候,你要最大化的一个目标,但是 BLEU Score 本身很复杂,它是不能微分的。</p>
-<p>这边之所以採用 Cross Entropy,而且是每一个中文的字分开来算,就是因为这样我们才有办法处理,如果你是要计算,两个句子之间的 BLEU Score,这一个 Loss,根本就没有办法做微分,那怎么办呢？这边就教大家一个口诀,遇到你在 Optimization 无法解决的问题,==用 RL 硬 Train 一发==就对了这样,遇到你无法 Optimize 的 Loss Function,把它当做是 RL 的 Reward,把你的 Decoder 当做是 Agent,它当作是 RL,Reinforcement Learning 的问题硬做。</p>
-<h4><span id="scheduled-sampling-计划采样">Scheduled Sampling （计划采样）</span></h4><p>那我们要讲到,我们刚才反覆提到的问题了,就是<strong>训练跟测试居然是不一致</strong>的</p>
-<p><strong><font color="red"> 测试的时候,Decoder 看到的是自己的输出,所以测试的时候,Decoder 会看到一些错误的东西,但是在训练的时候,Decoder 看到的是完全正确的,那这个不一致的现象叫做,==Exposure Bias==。</font></strong></p>
+<p>不一定,因为这两个根本就是,它们可能有一点点的关联,但它们又没有那么直接相关,它们根本就是两个不同的数值,所以我们
+Minimize Cross Entropy,不见得可以让 BLEU Score 比较大。</p>
+<p><strong>所以你发现说在助教的程式里面,助教在做 Validation
+的时候,并不是拿 Cross Entropy 来挑最好的 Model,而是挑 BLEU Score
+最高的那一个 Model,所以我们训练的时候,是看 Cross
+Entropy,但是我们实际上你作业真正评估的时候,看的是 BLEU Score,所以你
+Validation Set,其实应该考虑用 BLEU Score</strong>。</p>
+<p>那接下来有人就会想说,那我们能不能<strong>在 Training 的时候,就考虑
+BLEU Score 呢</strong>,我们能不能够训练的时候就说,我的 Loss 就是,BLEU
+Score 乘一个负号,那我们要 Minimize 那个 Loss,假设你的 Loss 是,BLEU
+Score乘一个负号,它也等于就是 Maximize BLEU
+Score。但是<strong>这件事实际上没有那么容易</strong>,你当然可以把 BLEU
+Score,当做你训练的时候,你要最大化的一个目标,但是 BLEU Score
+本身很复杂,它是不能微分的。</p>
+<p>这边之所以採用 Cross
+Entropy,而且是每一个中文的字分开来算,就是因为这样我们才有办法处理,如果你是要计算,两个句子之间的
+BLEU Score,这一个
+Loss,根本就没有办法做微分,那怎么办呢？这边就教大家一个口诀,遇到你在
+Optimization 无法解决的问题,==用 RL 硬 Train 一发==就对了这样,遇到你无法
+Optimize 的 Loss Function,把它当做是 RL 的 Reward,把你的 Decoder 当做是
+Agent,它当作是 RL,Reinforcement Learning 的问题硬做。</p>
+<h4><span id="scheduled-sampling计划采样">Scheduled Sampling
+（计划采样）</span></h4>
+<p>那我们要讲到,我们刚才反覆提到的问题了,就是<strong>训练跟测试居然是不一致</strong>的</p>
+<p><strong><font color="red"> 测试的时候,Decoder
+看到的是自己的输出,所以测试的时候,Decoder
+会看到一些错误的东西,但是在训练的时候,Decoder
+看到的是完全正确的,那这个不一致的现象叫做,==Exposure
+Bias==。</font></strong></p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615181122702.png" alt="image-20220615181122702" style="zoom: 67%;"></p>
-<p>假设 Decoder 在训练的时候,永远只看过正确的东西,那在测试的时候,你只要有一个错,那就会<strong>一步错 步步错</strong>,因为对 Decoder 来说,它从来没有看过错的东西,它看到错的东西会非常的惊奇,然后接下来它产生的结果可能都会错掉。</p>
-<h4><span id="所以要怎么解决这个问题呢">所以要怎么解决这个问题呢？</span></h4><p>有一个可以的思考的方向是,<strong>给 Decoder 的输入加一些错误的东西</strong>,就这么直觉,你不要给 Decoder 都是正确的答案,偶尔给它一些错的东西,它反而会学得更好,这一招叫做,==Scheduled Sampling==,它不是那个 Schedule Learning Rate,刚才助教有讲 Schedule Learning Rate,那是另外一件事,不相干的事情,这个是 Scheduled Sampling。</p>
+<p>假设 Decoder
+在训练的时候,永远只看过正确的东西,那在测试的时候,你只要有一个错,那就会<strong>一步错
+步步错</strong>,因为对 Decoder
+来说,它从来没有看过错的东西,它看到错的东西会非常的惊奇,然后接下来它产生的结果可能都会错掉。</p>
+<h4><span id="所以要怎么解决这个问题呢">所以要怎么解决这个问题呢？</span></h4>
+<p>有一个可以的思考的方向是,<strong>给 Decoder
+的输入加一些错误的东西</strong>,就这么直觉,你不要给 Decoder
+都是正确的答案,偶尔给它一些错的东西,它反而会学得更好,这一招叫做,==Scheduled
+Sampling==,它不是那个 Schedule Learning Rate,刚才助教有讲 Schedule
+Learning Rate,那是另外一件事,不相干的事情,这个是 Scheduled
+Sampling。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615181204628.png" alt="image-20220615181204628" style="zoom: 67%;"></p>
-<p>Scheduled Sampling 其实很早就有了,这个是 15 年的 Paper,很早就有 Scheduled Sampling,在还没有 Transformer,只有 LSTM 的时候,就已经有 Scheduled Sampling,但是 Scheduled Sampling 这一招,它其实会伤害到,Transformer 的平行化的能力,那细节可以再自己去了解一下,所以对 Transformer 来说,它的 Scheduled Sampling,另有招数跟传统的招数,跟原来最早提在,这个 LSTM上被提出来的招数,也不太一样,那我把一些 Reference 的,列在这边给大家参考。</p>
+<p>Scheduled Sampling 其实很早就有了,这个是 15 年的 Paper,很早就有
+Scheduled Sampling,在还没有 Transformer,只有 LSTM 的时候,就已经有
+Scheduled Sampling,但是 Scheduled Sampling
+这一招,它其实会伤害到,Transformer
+的平行化的能力,那细节可以再自己去了解一下,所以对 Transformer 来说,它的
+Scheduled Sampling,另有招数跟传统的招数,跟原来最早提在,这个
+LSTM上被提出来的招数,也不太一样,那我把一些 Reference
+的,列在这边给大家参考。</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615181229880.png" alt="image-20220615181229880" style="zoom:67%;"></p>
-<p>Transformer 和种种的训练技巧,这个我们已经讲完了 Encoder,讲完了 Decoder,也讲完了它们中间的关係,也讲了怎么训练,也讲了种种的 Tip。</p>
+<p>Transformer 和种种的训练技巧,这个我们已经讲完了 Encoder,讲完了
+Decoder,也讲完了它们中间的关係,也讲了怎么训练,也讲了种种的 Tip。</p>
 
     </div>
 
@@ -544,13 +795,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/2N47FT1/" rel="prev" title="【Nan】General Guidance">
-                  <i class="fa fa-chevron-left"></i> 【Nan】General Guidance
+                <a href="/posts/PSEWDM/" rel="prev" title="深度学习（9）Transformer-code">
+                  <i class="fa fa-chevron-left"></i> 深度学习（9）Transformer-code
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/PSEWDM/" rel="next" title="深度学习（9）Transformer-code">
-                  深度学习（9）Transformer-code <i class="fa fa-chevron-right"></i>
+                <a href="/posts/2NQRYHA/" rel="next" title="深度学习（9）Transformer*-p1">
+                  深度学习（9）Transformer*-p1 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

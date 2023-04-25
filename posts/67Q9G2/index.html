@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="风控特征—时间滑窗统计特征体系风控业务背景俗话说，路遥知马力，日久见人心。在风控中也是如此，我们常从时间维度提取借款人在不同时间点的特征，以此来判断借款人的风险。在实践中，这类特征通常会占到80%以上。由于是通过时间切片和聚合统计函数来构造，因此一般被称为时间滑窗统计特征。 一、观察期、观察点及表现期理解这三者的概念是风控建模前期样本准备的基础，在此简单介绍。  观察点（Observation P">
+    <meta name="description" content="风控特征—时间滑窗统计特征体系 风控业务背景 俗话说，路遥知马力，日久见人心。在风控中也是如此，我们常从时间维度提取借款人在不同时间点的特征，以此来判断借款人的风险。在实践中，这类特征通常会占到80%以上。由于是通过时间切片和聚合统计函数来构造，因此一般被称为时间滑窗统计特征。 一、观察期、观察点及表现期 理解这三者的概念是风控建模前期样本准备的基础，在此简单介绍。  观察点（Observatio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="风控算法（4）特征工程-时间滑窗统计特征体系">
 <meta property="og:url" content="https://powerlzy.github.io/posts/67Q9G2/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="风控特征—时间滑窗统计特征体系风控业务背景俗话说，路遥知马力，日久见人心。在风控中也是如此，我们常从时间维度提取借款人在不同时间点的特征，以此来判断借款人的风险。在实践中，这类特征通常会占到80%以上。由于是通过时间切片和聚合统计函数来构造，因此一般被称为时间滑窗统计特征。 一、观察期、观察点及表现期理解这三者的概念是风控建模前期样本准备的基础，在此简单介绍。  观察点（Observation P">
+<meta property="og:description" content="风控特征—时间滑窗统计特征体系 风控业务背景 俗话说，路遥知马力，日久见人心。在风控中也是如此，我们常从时间维度提取借款人在不同时间点的特征，以此来判断借款人的风险。在实践中，这类特征通常会占到80%以上。由于是通过时间切片和聚合统计函数来构造，因此一般被称为时间滑窗统计特征。 一、观察期、观察点及表现期 理解这三者的概念是风控建模前期样本准备的基础，在此简单介绍。  观察点（Observatio">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic3.zhimg.com/80/v2-c47416a557f573a72acccb00ec5a37fe_1440w.jpg">
 <meta property="article:published_time" content="2022-07-08T06:52:55.958Z">
@@ -293,15 +293,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="风控特征时间滑窗统计特征体系">风控特征—时间滑窗统计特征体系</span></h2><h4><span id="风控业务背景"><strong>风控业务背景</strong></span></h4><p>俗话说，路遥知马力，日久见人心。在风控中也是如此，我们常<strong>从时间维度提取借款人在不同时间点的特征</strong>，以此来判断借款人的风险。在实践中，这类特征通常会占到80%以上。由于是<strong>通过时间切片和聚合统计函数来构造，因此一般被称为时间滑窗统计特征。</strong></p>
-<h3><span id="一-观察期-观察点及表现期">一、<strong>观察期、观察点及表现期</strong></span></h3><p>理解这三者的概念是风控建模前期样本准备的基础，在此简单介绍。</p>
+        <h2><span id="风控特征时间滑窗统计特征体系">风控特征—时间滑窗统计特征体系</span></h2>
+<h4><span id="风控业务背景"><strong>风控业务背景</strong></span></h4>
+<p>俗话说，路遥知马力，日久见人心。在风控中也是如此，我们常<strong>从时间维度提取借款人在不同时间点的特征</strong>，以此来判断借款人的风险。在实践中，这类特征通常会占到80%以上。由于是<strong>通过时间切片和聚合统计函数来构造，因此一般被称为时间滑窗统计特征。</strong></p>
+<h3><span id="一-观察期-观察点及表现期">一、<strong>观察期、观察点及表现期</strong></span></h3>
+<p>理解这三者的概念是风控建模前期样本准备的基础，在此简单介绍。</p>
 <ul>
-<li><strong>观察点（</strong>Observation Point<strong>）</strong>：并非是一个具体的时间点，而是一个时间区间，表示的是客户申请贷款的时间。在该时间段申请的客户<strong>可能</strong>会是我们用来建模的样本 。（提示：为什么用“可能”这个描述，因为还需剔除一些强规则命中的异常样本，这部分样本将不会加入建模）</li>
-<li><strong>观察期</strong>（Observation Window）：用以<strong>构造特征X</strong>的时间窗口。相对于观察点而言，是<strong>历史</strong>时间。观察期的选择依赖于用户数据的厚薄程度。通常数据越厚，可提取的信息也就越全面、可靠。</li>
-<li><strong>表现期</strong>（Performance Window）：定义<strong>好坏标签Y</strong>的时间窗口。相对于观察点而言，是<strong>未来</strong>时间。由于风险需要有一定时间窗才能表现出来，因此信贷风险具有<strong>滞后性</strong>。表现期的长短可以通过Vintage分析和滚动率分析来确定，在此不做展开。<br><img src="https://pic3.zhimg.com/80/v2-c47416a557f573a72acccb00ec5a37fe_1440w.jpg" alt="img"></li>
+<li><strong>观察点（</strong>Observation
+Point<strong>）</strong>：并非是一个具体的时间点，而是一个时间区间，表示的是客户申请贷款的时间。在该时间段申请的客户<strong>可能</strong>会是我们用来建模的样本
+。（提示：为什么用“可能”这个描述，因为还需剔除一些强规则命中的异常样本，这部分样本将不会加入建模）</li>
+<li><strong>观察期</strong>（Observation
+Window）：用以<strong>构造特征X</strong>的时间窗口。相对于观察点而言，是<strong>历史</strong>时间。观察期的选择依赖于用户数据的厚薄程度。通常数据越厚，可提取的信息也就越全面、可靠。</li>
+<li><strong>表现期</strong>（Performance
+Window）：定义<strong>好坏标签Y</strong>的时间窗口。相对于观察点而言，是<strong>未来</strong>时间。由于风险需要有一定时间窗才能表现出来，因此信贷风险具有<strong>滞后性</strong>。表现期的长短可以通过Vintage分析和滚动率分析来确定，在此不做展开。
+<img src="https://pic3.zhimg.com/80/v2-c47416a557f573a72acccb00ec5a37fe_1440w.jpg" alt="img"></li>
 </ul>
 <p>表现期越长，信用风险暴露将越彻底，但意味着观察期离当前将越远，用以提取样本特征的历史数据将越陈旧，建模样本和未来样本的差异也越大。反之，表现期越短，风险还未暴露完全，但好处是能用到更近的样本。</p>
-<h3><span id="二-rfm模型介绍">二、<strong>RFM模型介绍</strong></span></h3><p><strong>RFM模型最早是用来衡量客户价值和客户创利能力</strong>。理解RFM框架的思想是构造统计类特征的基础，其含义为：</p>
+<h3><span id="二-rfm模型介绍">二、<strong>RFM模型介绍</strong></span></h3>
+<p><strong>RFM模型最早是用来衡量客户价值和客户创利能力</strong>。理解RFM框架的思想是构造统计类特征的基础，其含义为：</p>
 <ul>
 <li><strong>R（Recency）</strong>：客户最近一次交易消费时间的间隔。R值越大，表示客户交易发生的日期越久，反之则表示客户交易发生的日期越近。</li>
 <li><strong>F（Frequency）</strong>：客户在最近一段时间内交易消费的次数。F值越大，表示客户交易越频繁，反之则表示客户交易不够活跃。</li>

@@ -268,14 +268,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.5k</span>
+      <span>3.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -286,97 +286,378 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-线性判别分析lda监督">一、线性判别分析（LDA）【监督】</span></h2><blockquote>
-<p>  <strong>“投影后类内方差最小，类间方差最大”</strong></p>
+          <h2><span id="一-线性判别分析lda监督">一、线性判别分析（LDA）【监督】</span></h2>
+<blockquote>
+<p><strong>“投影后类内方差最小，类间方差最大”</strong></p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuweiyuxiang/article/details/78874106">https://blog.csdn.net/liuweiyuxiang/article/details/78874106</a></li>
+<li>https://blog.csdn.net/liuweiyuxiang/article/details/78874106</li>
 </ul>
 </blockquote>
-<h3><span id="11-概念">1.1 概念</span></h3><p><strong>线性判别分析（Linear Discriminant Analysis，LDA）是一种经典的降维方法。和主成分分析PCA不考虑样本类别输出的无监督降维技术不同，LDA是一种监督学习的降维技术，数据集的每个样本有类别输出。</strong></p>
+<h3><span id="11-概念">1.1 概念</span></h3>
+<p><strong>线性判别分析（Linear Discriminant
+Analysis，LDA）是一种经典的降维方法。和主成分分析PCA不考虑样本类别输出的无监督降维技术不同，LDA是一种监督学习的降维技术，数据集的每个样本有类别输出。</strong></p>
 <p><strong>LDA分类思想简单总结如下：</strong></p>
-<ol>
+<ol type="1">
 <li>多维空间中，数据处理分类问题较为复杂，LDA算法将多维空间中的数据投影到一条直线上，将d维数据转化成1维数据进行处理。</li>
 <li>对于训练数据，设法将多维数据投影到一条直线上，<strong>同类数据的投影点尽可能接近，异类数据点尽可能远离</strong>。</li>
 <li>对数据进行分类时，将其投影到同样的这条直线上，再根据投影点的位置来确定样本的类别。</li>
 </ol>
-<p><strong><font color="red"> 如果用一句话概括LDA思想，即“投影后类内方差最小，类间方差最大”。</font></strong></p>
+<p><strong><font color="red">
+如果用一句话概括LDA思想，即“投影后类内方差最小，类间方差最大”。</font></strong></p>
 <p>假设有红、蓝两类数据，这些数据特征均为二维，如下图所示。我们的目标是将这些数据投影到一维，让每一类相近的数据的投影点尽可能接近，不同类别数据尽可能远，即图中红色和蓝色数据中心之间的距离尽可能大。</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221634387.png" alt="image-20220526135646769"></p>
-<p> 从上图直观看出，右图红色数据和蓝色数据在各自的区域来说相对集中，根据数据分布直方图也可看出，所以右图的投影效果好于左图，左图中间直方图部分有明显交集。 以上例子是基于数据是二维的，分类后的投影是一条直线。如果原始数据是多维的，则投影后的分类面是一低维的超平面。</p>
-<h3><span id="12-原理">1.2 原理</span></h3><p> LDA的原理是，将带上标签的数据（点），通过投影的方法，投影到维度更低的空间中，使得投影后的点，会形成按类别区分，一簇一簇的情况，相同类别的点，将会在投影后的空间中更接近。要说明白LDA，首先得弄明白线性分类器(<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Linear_classifier">Linear Classifier</a>)：因为LDA是一种线性分类器。对于<strong>K-分类的一个分类问题，会有K个线性函数</strong>：</p>
-<script type="math/tex; mode=display">
-y_k(x)=w_k^T x+w_{k 0}</script><p>当满足条件：对于所有的j，都有Yk &gt; Yj,的时候，我们就说x属于类别k。对于每一个分类，都有一个公式去算一个分值，在所有的公式得到的分值中，找一个最大的就是所属的分类了。</p>
+<p>从上图直观看出，右图红色数据和蓝色数据在各自的区域来说相对集中，根据数据分布直方图也可看出，所以右图的投影效果好于左图，左图中间直方图部分有明显交集。
+以上例子是基于数据是二维的，分类后的投影是一条直线。如果原始数据是多维的，则投影后的分类面是一低维的超平面。</p>
+<h3><span id="12-原理">1.2 原理</span></h3>
+<p>LDA的原理是，将带上标签的数据（点），通过投影的方法，投影到维度更低的空间中，使得投影后的点，会形成按类别区分，一簇一簇的情况，相同类别的点，将会在投影后的空间中更接近。要说明白LDA，首先得弄明白线性分类器(<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Linear_classifier">Linear
+Classifier</a>)：因为LDA是一种线性分类器。对于<strong>K-分类的一个分类问题，会有K个线性函数</strong>：</p>
+<p><span class="math display">\[
+y_k(x)=w_k^T x+w_{k 0}
+\]</span></p>
+<p>当满足条件：对于所有的j，都有Yk &gt;
+Yj,的时候，我们就说x属于类别k。对于每一个分类，都有一个公式去算一个分值，在所有的公式得到的分值中，找一个最大的就是所属的分类了。</p>
 <p>上式实际上就是一种投影，是将一个高维的点投影到一条高维的直线上，LDA最求的目标是，给出一个标注了类别的数据集，投影到了一条直线之后，能够使得点尽量的按类别区分开，当k=2即二分类问题的时候，如下图所示：</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221635862.gif" alt="clip_image002" style="zoom:67%;"></p>
-<p>红色的方形的点为0类的原始点、蓝色的方形点为1类的原始点，经过原点的那条线就是投影的直线，从图上可以清楚的看到，红色的点和蓝色的点被<strong>原点</strong>明显的分开了，这个数据只是随便画的，如果在高维的情况下，看起来会更好一点。下面我来推导一下二分类LDA问题的公式：假设用来区分二分类的直线（投影函数)为：</p>
-<script type="math/tex; mode=display">
-y_k(x)=w_k^T x+w_{k 0}</script><p>当满足条件：对于所有的j, 都有 $Y k&gt;Y j$,的时候, 我们就说 $x$ 属于类别 $k$ 。对于每一个分类, 都有一个公式去算一个 分值，在所有的公式得到的分值中, 找一个最大的就是所属的分类了。</p>
-<p>上式实际上就是一种投影, 是将一个高维的点投影到一条高维的直线上, LDA最求的目标是, 给出一个标注了类别 的数据集, 投影到了一条直线之后, 能够使得点尽量的按类别区分开, 当 $k=2$ 即二分类问题的时候, 如下图所示:</p>
-<p>红色的方形的点为 0 类的原始点、蓝色的方形点为 1 类的原始点，经过原点的那条线就是投影的直线，从图上可以 清楚的看到, 红色的点和蓝色的点被原点明显的分开了, 这个数据只是随便画的, 如果在高维的情况下, 看起来会 更好一点。下面我来推导一下二分类LDA问题的公式：假设用来区分二分类的直线（投影函数)为：</p>
-<script type="math/tex; mode=display">
-y=w^T x</script><p><strong>LDA分类的一个目标是使得不同类别之间的距离越远越好, 同一类别之中的距离越近越好</strong>, 所以我们需要定义几 个关键的值。</p>
+<p>红色的方形的点为0类的原始点、蓝色的方形点为1类的原始点，经过原点的那条线就是投影的直线，从图上可以清楚的看到，红色的点和蓝色的点被<strong>原点</strong>明显的分开了，这个数据只是随便画的，如果在高维的情况下，看起来会更好一点。下面我来推导一下二分类LDA问题的公式：假设用来区分二分类的直线（投影函数)为：
+<span class="math display">\[
+y_k(x)=w_k^T x+w_{k 0}
+\]</span> 当满足条件：对于所有的j, 都有 <span class="math inline">\(Y
+k&gt;Y j\)</span>,的时候, 我们就说 <span class="math inline">\(x\)</span> 属于类别 <span class="math inline">\(k\)</span> 。对于每一个分类, 都有一个公式去算一个
+分值，在所有的公式得到的分值中, 找一个最大的就是所属的分类了。</p>
+<p>上式实际上就是一种投影, 是将一个高维的点投影到一条高维的直线上,
+LDA最求的目标是, 给出一个标注了类别 的数据集, 投影到了一条直线之后,
+能够使得点尽量的按类别区分开, 当 <span class="math inline">\(k=2\)</span> 即二分类问题的时候, 如下图所示:</p>
+<p>红色的方形的点为 0 类的原始点、蓝色的方形点为 1
+类的原始点，经过原点的那条线就是投影的直线，从图上可以 清楚的看到,
+红色的点和蓝色的点被原点明显的分开了, 这个数据只是随便画的,
+如果在高维的情况下, 看起来会
+更好一点。下面我来推导一下二分类LDA问题的公式：假设用来区分二分类的直线（投影函数)为：
+<span class="math display">\[
+y=w^T x
+\]</span> <strong>LDA分类的一个目标是使得不同类别之间的距离越远越好,
+同一类别之中的距离越近越好</strong>, 所以我们需要定义几 个关键的值。</p>
 <ul>
 <li><strong>类别的原始中心点为</strong>：(Di表示属于类别的点)</li>
 </ul>
-<script type="math/tex; mode=display">
-m_i=\frac{1}{n_i} \sum_{x \in D_i} x</script><ul>
+<p><span class="math display">\[
+m_i=\frac{1}{n_i} \sum_{x \in D_i} x
+\]</span></p>
+<ul>
 <li>类别投影后的中心点为:</li>
 </ul>
-<script type="math/tex; mode=display">
-\widetilde{m_i}=w^T m_i</script><ul>
-<li><strong>衡量类别i投影后, 类别点之间的分散程度 (方差) 为</strong>:</li>
+<p><span class="math display">\[
+\widetilde{m_i}=w^T m_i
+\]</span></p>
+<ul>
+<li><strong>衡量类别i投影后, 类别点之间的分散程度 (方差)
+为</strong>:</li>
 </ul>
-<script type="math/tex; mode=display">
-\tilde{s_i}=\sum_{y \in Y_i}\left(y-\tilde{m_i}\right)^2</script><ul>
-<li><strong>最终我们可以得到一个下面的公式, 表示LDA投影到w后的损失函数</strong>:</li>
+<p><span class="math display">\[
+\tilde{s_i}=\sum_{y \in Y_i}\left(y-\tilde{m_i}\right)^2
+\]</span></p>
+<ul>
+<li><strong>最终我们可以得到一个下面的公式,
+表示LDA投影到w后的损失函数</strong>:</li>
 </ul>
-<script type="math/tex; mode=display">
-J(w)=\frac{\left|\widetilde{m_1}-\widetilde{m_2}\right|^2}{\widetilde{s}_1^2+\widetilde{s}_2^2}</script><p>我们<strong>分类的目标是，使得类别内的点距离越近越好（集中），类别间的点越远越好。</strong>分母表示每一个类别内的方差之和，方差越大表示一个类别内的点越分散，分子为两个类别各自的中心点的距离的平方，我们最大化J(w)就可以求出最优的w了。想要求出最优的w，可以使用拉格朗日乘子法，但是现在我们得到的J(w)里面，w是不能被单独提出来的，我们就得想办法将w单独提出来。</p>
-<p> 我们定义一个<strong>投影前的各类别分散程度的矩阵</strong>，这个矩阵看起来有一点麻烦，其实意思是，如果某一个分类的<strong>输入点集Di里面的点距离这个分类的中心店mi越近</strong>，则Si里面元素的值就越小，如果分类的点都紧紧地围绕着mi，则Si里面的元素值越更接近0.</p>
-<script type="math/tex; mode=display">
-S_{i}=\sum_{x \in D_{i}}\left(x-m_{i}\right)\left(x-m_{i}\right)^{T}</script><p>带入 $\mathrm{Si}$, 将 $\mathrm{J}(\mathrm{w})$ 分母化为:</p>
-<p>$\tilde{s}<em>{i}=\sum</em>{x \in D<em>{i}}\left(w^{T} x-w^{T} m</em>{i}\right)^{2}=\sum<em>{x \in D</em>{i}} w^{T}\left(x-m<em>{i}\right)\left(x-m</em>{i}\right)^{T} w=w^{T} S_{i} w$</p>
-<script type="math/tex; mode=display">{\tilde{S_{1}}}^{2}+{\tilde{S_{2}}}^{2}=w^{T}\left(S_{1}+S_{2}\right) w=w^{T} S_{w} w</script><p>同样的将 $\mathrm{J}(\mathrm{w})$ 分子化为:</p>
-<script type="math/tex; mode=display">
-\left|\widetilde{m_{1}}-\widetilde{m_{2}}\right|^{2}=w^{T}\left(m_{1}-m_{2}\right)\left(m_{1}-m_{2}\right)^{T} w=w^{T} S_{B} w</script><p>这样<strong>损失函数</strong>可以化成下面的形式:</p>
-<script type="math/tex; mode=display">
-J(w)=\frac{w^{T} S_{B} w}{w^{T} S_{w} w}</script><p>这样就可以用最喜欢的<strong>拉格朗日乘子法</strong>了, 但是还有一个问题, 如果分子、分母是都可以取任意值的, 那就会 使得有无穷解, 我们将分母限制为长度为 1, 并作为拉格朗日乘子法的限制条件, 带入得到:</p>
-<script type="math/tex; mode=display">
+<p><span class="math display">\[
+J(w)=\frac{\left|\widetilde{m_1}-\widetilde{m_2}\right|^2}{\widetilde{s}_1^2+\widetilde{s}_2^2}
+\]</span></p>
+<p>我们<strong>分类的目标是，使得类别内的点距离越近越好（集中），类别间的点越远越好。</strong>分母表示每一个类别内的方差之和，方差越大表示一个类别内的点越分散，分子为两个类别各自的中心点的距离的平方，我们最大化J(w)就可以求出最优的w了。想要求出最优的w，可以使用拉格朗日乘子法，但是现在我们得到的J(w)里面，w是不能被单独提出来的，我们就得想办法将w单独提出来。</p>
+<p>我们定义一个<strong>投影前的各类别分散程度的矩阵</strong>，这个矩阵看起来有一点麻烦，其实意思是，如果某一个分类的<strong>输入点集Di里面的点距离这个分类的中心店mi越近</strong>，则Si里面元素的值就越小，如果分类的点都紧紧地围绕着mi，则Si里面的元素值越更接近0.
+<span class="math display">\[
+S_{i}=\sum_{x \in D_{i}}\left(x-m_{i}\right)\left(x-m_{i}\right)^{T}
+\]</span> 带入 <span class="math inline">\(\mathrm{Si}\)</span>, 将
+<span class="math inline">\(\mathrm{J}(\mathrm{w})\)</span>
+分母化为:</p>
+<p><span class="math inline">\(\tilde{s}_{i}=\sum_{x \in
+D_{i}}\left(w^{T} x-w^{T} m_{i}\right)^{2}=\sum_{x \in D_{i}}
+w^{T}\left(x-m_{i}\right)\left(x-m_{i}\right)^{T} w=w^{T} S_{i}
+w\)</span></p>
+<p><span class="math display">\[{\tilde{S_{1}}}^{2}+{\tilde{S_{2}}}^{2}=w^{T}\left(S_{1}+S_{2}\right)
+w=w^{T} S_{w} w\]</span></p>
+<p>同样的将 <span class="math inline">\(\mathrm{J}(\mathrm{w})\)</span>
+分子化为: <span class="math display">\[
+\left|\widetilde{m_{1}}-\widetilde{m_{2}}\right|^{2}=w^{T}\left(m_{1}-m_{2}\right)\left(m_{1}-m_{2}\right)^{T}
+w=w^{T} S_{B} w
+\]</span> 这样<strong>损失函数</strong>可以化成下面的形式: <span class="math display">\[
+J(w)=\frac{w^{T} S_{B} w}{w^{T} S_{w} w}
+\]</span> 这样就可以用最喜欢的<strong>拉格朗日乘子法</strong>了,
+但是还有一个问题, 如果分子、分母是都可以取任意值的, 那就会 使得有无穷解,
+我们将分母限制为长度为 1, 并作为拉格朗日乘子法的限制条件, 带入得到:
+<span class="math display">\[
 \begin{aligned}
-&c(w)=w^{T} S_{B} w-\lambda\left(w^{T} S_{w} w-1\right) \\
-&\Rightarrow \frac{d c}{d w}=2 S_{B} w-2 \lambda S_{w} w=0 \\
-&\Rightarrow S_{B} w=\lambda S_{w} w
-\end{aligned}</script><p><strong>这样的式子就是一个求特征值的问题了。</strong><br>对于 $N(N&gt;2)$ 分类的问题, 我就直接写出下面的结论了:</p>
-<script type="math/tex; mode=display">
+&amp;c(w)=w^{T} S_{B} w-\lambda\left(w^{T} S_{w} w-1\right) \\
+&amp;\Rightarrow \frac{d c}{d w}=2 S_{B} w-2 \lambda S_{w} w=0 \\
+&amp;\Rightarrow S_{B} w=\lambda S_{w} w
+\end{aligned}
+\]</span> <strong>这样的式子就是一个求特征值的问题了。</strong> 对于
+<span class="math inline">\(N(N&gt;2)\)</span> 分类的问题,
+我就直接写出下面的结论了: <span class="math display">\[
 \begin{aligned}
-&S_{W}=\sum_{i=1}^{c} S_{i} \\
-&S_{B}=\sum_{i=1}^{c} n_{i}\left(m_{i}-m\right)\left(m_{i}-m\right)^{T} \\
-&S_{B} w_{i}=\lambda S_{w} w_{i}
-\end{aligned}</script><p>这同样是一个求特征值的问题，我们求出的第i大的特征向量，就是对应的Wi了。</p>
+&amp;S_{W}=\sum_{i=1}^{c} S_{i} \\
+&amp;S_{B}=\sum_{i=1}^{c}
+n_{i}\left(m_{i}-m\right)\left(m_{i}-m\right)^{T} \\
+&amp;S_{B} w_{i}=\lambda S_{w} w_{i}
+\end{aligned}
+\]</span>
+这同样是一个求特征值的问题，我们求出的第i大的特征向量，就是对应的Wi了。</p>
 <blockquote>
-<p>  这里想多谈谈特征值，特征值在纯数学、量子力学、固体力学、计算机等等领域都有广泛的应用，特征值表示的是矩阵的性质，当我们取到矩阵的前N个最大的特征值的时候，我们可以说提取到的矩阵主要的成分（这个和之后的PCA相关，但是不是完全一样的概念）。在机器学习领域，不少的地方都要用到特征值的计算，比如说图像识别、pagerank、LDA、还有之后将会提到的PCA等等。</p>
+<p>这里想多谈谈特征值，特征值在纯数学、量子力学、固体力学、计算机等等领域都有广泛的应用，特征值表示的是矩阵的性质，当我们取到矩阵的前N个最大的特征值的时候，我们可以说提取到的矩阵主要的成分（这个和之后的PCA相关，但是不是完全一样的概念）。在机器学习领域，不少的地方都要用到特征值的计算，比如说图像识别、pagerank、LDA、还有之后将会提到的PCA等等。</p>
 </blockquote>
 <p><strong>优缺点</strong></p>
-<div class="table-container">
 <table>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 90%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>优缺点</th>
 <th>简要说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>优点</td>
-<td>1. 可以使用类别的先验知识； 2. 以标签、类别衡量差异性的有监督降维方式，相对于PCA的模糊性，其目的更明确，更能反映样本间的差异；</td>
+<td>1. 可以使用类别的先验知识； 2.
+以标签、类别衡量差异性的有监督降维方式，相对于PCA的模糊性，其目的更明确，更能反映样本间的差异；</td>
 </tr>
-<tr>
+<tr class="even">
 <td>缺点</td>
-<td>1. LDA不适合对非高斯分布样本进行降维； 2. <strong>LDA降维最多降到分类数k-1维</strong>； 3. LDA在样本分类信息依赖方差而不是均值时，降维效果不好； 4. LDA可能过度拟合数据。</td>
+<td>1. LDA不适合对非高斯分布样本进行降维； 2.
+<strong>LDA降维最多降到分类数k-1维</strong>； 3.
+LDA在样本分类信息依赖方差而不是均值时，降维效果不好； 4.
+LDA可能过度拟合数据。</td>
 </tr>
 </tbody>
 </table>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
 </div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/24K7V34/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/24K7V34/" class="post-title-link" itemprop="url">降维（3）t-SNE</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 16:35:35" itemprop="dateCreated datePublished" datetime="2022-03-16T16:35:35+08:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 16:29:43" itemprop="dateModified" datetime="2023-04-22T16:29:43+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%99%8D%E7%BB%B4%E4%B8%8E%E5%BA%A6%E9%87%8F%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">降维与度量学习</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-t-sne-高维数据可视化">一、t-SNE 高维数据可视化</span></h3>
+<blockquote>
+<p>高维数据可视化之t-SNE算法🌈:https://zhuanlan.zhihu.com/p/57937096</p>
+</blockquote>
+<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens
+van der
+Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
+<h4><span id="11-t-sne数据算法的目的">1.1 t-SNE数据算法的目的</span></h4>
+<p><strong>主要是将数据从高维数据转到低维数据，并在低维空间里也保持其在高维空间里所携带的信息（比如高维空间里有的清晰的分布特征，转到低维度时也依然存在）。</strong></p>
+<p><strong><font color="red">
+t-SNE将欧氏距离距离转换为条件概率，来表达点与点之间的相似度，再优化两个分布之间的距离-KL散度，从而保证点与点之间的分布概率不变。</font></strong></p>
+<h4><span id="12-sne原理">1.2 SNE原理</span></h4>
+<p><span class="math inline">\(S N E\)</span>
+是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>,
+主要包括下面两个步骤: 1. 通过在高维空间中构建数据点之间的概率分布 <span class="math inline">\(P\)</span>, 使得相似的数据点有更高的概率被选择, 而
+不相似的数据点有较低的概率被选择; 2.
+然后在低维空间里重构这些点的概率分布 <span class="math inline">\(Q\)</span>, 使得这两个概率分布尽可能相似。</p>
+<p>令输入空间是 <span class="math inline">\(X \in
+\mathbb{R}^{n}\)</span>, 输出空间为 <span class="math inline">\(Y \in
+\mathbb{R}^{t}(t \ll n)\)</span> 。不妨假设含有 <span class="math inline">\(m\)</span> 个样本数据 <span class="math inline">\(\left\{x^{(1)}, x^{(2)}, \cdots,
+x^{(m)}\right\}\)</span>, 其中 <span class="math inline">\(x^{(i)} \in
+X\)</span>, 降维后的数据为 <span class="math inline">\(\left\{y^{(1)},
+y^{(2)}, \cdots, y^{(m)}\right\}, y^{(i)} \in Y\)</span> 。 <span class="math inline">\(S N E\)</span>
+是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>,
+即首先是计算条件概 率 <span class="math inline">\(p_{j \mid i}\)</span>,
+其正比于 <span class="math inline">\(x^{(i)}\)</span> 和 <span class="math inline">\(x^{(j)}\)</span> 之间的相似度, <span class="math inline">\(p_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+p_{j \mid i}=\frac{\exp
+\left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp
+\left(-\frac{\left\|x^{(i)}-x^{(k)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}
+\]</span> 在这里引入了一个参数 <span class="math inline">\(\sigma_{i}\)</span>, 对于不同的数据点 <span class="math inline">\(x^{(i)}\)</span> 取值亦不相同,
+因为我们关注的是不同数据 点两两之间的相似度, 故可设置 <span class="math inline">\(p_{i \mid i}=0\)</span> 。对于低维度下的数据点
+<span class="math inline">\(y^{(i)}\)</span>, 通过条件概率 <span class="math inline">\(q_{j \mid i}\)</span> 来 刻画 <span class="math inline">\(y^{(i)}\)</span> 与 <span class="math inline">\(y^{(j)}\)</span> 之间的相似度, <span class="math inline">\(q_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+q_{j \mid i}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^{2}\right)}{\sum_{k \neq i} \exp
+\left(-\left\|y^{(i)}-y^{(k)}\right\|^{2}\right)}
+\]</span> 同理, 设置 <span class="math inline">\(q_{i \mid i}=0\)</span>
+。 如果降维的效果比较好, 局部特征保留完整, 那么有 <span class="math inline">\(p_{i \mid j}=q_{i \mid j}\)</span> 成立,
+因此通过优化两个分布之 间的 <strong><span class="math inline">\(K
+L\)</span> 散度构造出的损失函数为</strong>: <span class="math display">\[
+C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} \| Q_{i}\right)=\sum_{i}
+\sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}
+\]</span> 这里的 <span class="math inline">\(P_{i}\)</span>
+表示在给定高维数据点 <span class="math inline">\(x^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布; <span class="math inline">\(Q_{i}\)</span>
+则表示在给定 低维数据点 <span class="math inline">\(y^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布。从损失函数可以看出, 当 <span class="math inline">\(p_{j \mid i}\)</span> 较大 <span class="math inline">\(q_{j \mid i}\)</span> 较小时, 惩罚较高; 而 <span class="math inline">\(p_{j \mid i}\)</span> 较小 <span class="math inline">\(q_{j \mid i}\)</span> 较大时,
+惩罚较低。换句话说就是高维空间中两个数据点距 离较近时,
+若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之,
+高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近,
+将得到一个很低的惩罚值。也就是说, <strong><span class="math inline">\(S
+N E\)</span> 的 损失函数更关注于局部特征,
+而忽视了全局结构</strong>。</p>
+<h4><span id="13-目标函数求解">1.3 目标函数求解</span></h4>
+<h4><span id="14-对称性-sne">1.4 对称性-SNE</span></h4>
+<p><strong>优化 <span class="math inline">\(K L(P \| Q)\)</span>
+的一种替换思路是使用联合概率分布来替换条件概率分布</strong>, 即 <span class="math inline">\(P\)</span> 是高维空间里数据点的联合概 率分布,
+<span class="math inline">\(Q\)</span>
+是低维空间里数据点的联合概率分布，此时的损失函数为: <span class="math display">\[
+C\left(y^{(i)}\right)=K L(P \| Q)=\sum_i \sum_j p_{i j} \log \frac{p_{i
+j}}{q_{i j}}
+\]</span> 同样的 <span class="math inline">\(p_{i i}=q_{i i}=0\)</span>
+，这种改进下的 <span class="math inline">\(S N E\)</span> 称为对称 <span class="math inline">\(S N E\)</span> ，因为它的先验假设为对 <span class="math inline">\(\forall i\)</span> 有 <span class="math inline">\(p_{i j}=p_{j i}, q_{i j}=q_{j i}\)</span>
+成立，故概率分布可以改写成: <span class="math display">\[
+p_{i j}=\frac{\exp \left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^2}{2
+\sigma^2}\right)}{\sum_{k \neq l} \exp
+\left(-\frac{\left\|x^{(k)}-x^{(l)}\right\|^2}{2 \sigma^2}\right)} \quad
+q_{i j}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^2\right)}{\sum_{k \neq l} \exp
+\left(-\left\|y^{(k)}-y^{(l)}\right\|^2\right)}
+\]</span> 这种改进方法使得表达式简洁很多, 但是容易受到异常点数据的影响,
+为了解决这个问题通过对联合概率分布定义修正为： <span class="math inline">\(p_{i j}=\frac{p_{j \mid i}+p_{i \mid
+j}}{2}\)</span>, 这保证了 <span class="math inline">\(\sum_j p_{i
+j}&gt;\frac{1}{2 m}\)</span> ，使得每个点对于损失函数都会有贡献。对称
+<span class="math inline">\(S N E\)</span> 最大的 优点是简化了梯度计算,
+梯度公式改写为: <span class="math display">\[
+\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4
+\sum_j\left(p_{i j}-q_{i j}\right)\left(y^{(i)}-y^{(j)}\right)
+\]</span> 研究表明, 对称 <span class="math inline">\(S N E\)</span> 和
+<span class="math inline">\(S N E\)</span> 的效果差不多,
+有时甚至更好一点。</p>
+<h4><span id="15-t-sne">1.5 t-SNE</span></h4>
+<p><span class="math inline">\(t-S N E\)</span> 在对称 <span class="math inline">\(S N E\)</span> 的改进是,
+首先通过在高维空间中使用高斯分布将距离转换为概率分布，然后<strong>在低维空间
+中，使用更加偏重长尾分布的方式来将距离转换为概率分布，使得高维度空间中的中低等距离在映射后能够有一个
+较大的距离</strong>。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p>从图中可以看到，在没有异常点时, <span class="math inline">\(t\)</span>
+分布与高斯分布的拟合结果基本一致。而在第二张图中, 出现了部分异常点,
+由于高斯分布的尾部较低, 对异常点比较敏感, 为了照顾这些异常点,
+高斯分布的拟合结果偏离了大多数样本所在位置,
+方差也较大。<strong>相比之下, <span class="math inline">\(t\)</span>
+分布的尾部较高, 对异常点不敏感, 保证了其鲁棒性, 因此拟合结果更为合理,
+较好的捕获了数据的全局特征。</strong></p>
+<p>使用 <span class="math inline">\(t\)</span> 分布替换高斯分布之后
+<span class="math inline">\(q_{i j}\)</span> 的变化如下: <span class="math display">\[
+q_{i
+j}=\frac{\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}{\sum_{k
+\neq l}\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}
+\]</span> 此外，随着自由度的逐渐增大, <span class="math inline">\(t\)</span>
+分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多, 优
+化后的梯度公式如下: <span class="math display">\[
+\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4
+\sum_j\left(p_{i j}-q_{i
+j}\right)\left(y^{(i)}-y^{(j)}\right)\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}
+\]</span> 总的来说, <span class="math inline">\(t-S N E\)</span>
+的梯度更新具有以下两个优势： -
+<strong>对于低维空间中不相似的数据点，用一个较小的距离会产生较大的梯度让这些数据点排斥开来;</strong>
+-
+<strong>这种排斥又不会无限大，因此避免了不相似的数据点距离太远。</strong></p>
+<h5><span id="t-s-n-e-算法其实就是在-s-n-e-算法的基础上增加了两个改进"><span class="math inline">\(t-S N E\)</span> 算法其实就是在 <span class="math inline">\(S N E\)</span> 算法的基础上增加了两个改进:</span></h5>
+<ul>
+<li>把 <span class="math inline">\(S N E\)</span> 修正为对称 <span class="math inline">\(S N E\)</span> ，提高了计算效率,
+效果稍有提升;</li>
+<li>在低维空间中采用了 <span class="math inline">\(t\)</span>
+分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题,
+优化 了 <span class="math inline">\(S N E\)</span>
+过于关注局部特征而忽略全局特征的问题。</li>
+</ul>
 
       
     </div>
@@ -484,293 +765,29 @@ J(w)=\frac{w^{T} S_{B} w}{w^{T} S_{w} w}</script><p>这样就可以用最喜欢�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="autoencoder">AutoEncoder</span></h3><blockquote>
+          <h3><span id="autoencoder">AutoEncoder</span></h3>
+<blockquote>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80377698">【全】一文带你了解自编码器（<em>AutoEncoder</em>）</a></li>
 </ul>
 </blockquote>
 <p>理解为：（下图）高维数据（左测蓝色）通过某种网络变成低位数据（中间红色）后，又经过某种网络变回高维数据（右侧蓝色）。数据经过该模型前后没有变化，而中间的低维数据完全具有输入输出的高维数据的全部信息，所以可以用低维数据代表高维数据。</p>
-<p>之所以叫AutoEncoder，而不叫AutoEncoderDecoder，是因为训练好之后只有encoder部分有用，<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=decoder&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={&quot;sourceType&quot;%3A&quot;article&quot;%2C&quot;sourceId&quot;%3A&quot;157482881&quot;}">decoder</a>部分就不用了。</p>
+<p>之所以叫AutoEncoder，而不叫AutoEncoderDecoder，是因为训练好之后只有encoder部分有用，<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=decoder&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22157482881%22%7D">decoder</a>部分就不用了。</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221552166.jpg" alt="img" style="zoom: 67%;"></p>
 <p>进入深度学习的思路之后，编码的网络是开放的，可以自由设计的。一个思路是端到端，将网络的输出设为你任务要的结果（如类别、序列等），<strong>过程中的某层嵌入都可以作为降维的低维结果</strong>。当然，这种低维结果其实是模型的副产品，因为任务已经解决。比如bert模型得到（中文的）字嵌入。</p>
-<h4><span id="优点">优点：</span></h4><ul>
+<h4><span id="优点">优点：</span></h4>
+<ul>
 <li>能够学习到非线性特性</li>
 <li>降低数据维度</li>
 </ul>
-<h4><span id="缺点">缺点：</span></h4><ul>
+<h4><span id="缺点">缺点：</span></h4>
+<ul>
 <li>训练的<strong>计算成本高</strong></li>
 <li><strong>可解释性较差</strong></li>
 <li>背后的数学知识复杂</li>
 <li>容易产生<strong>过度拟合</strong>的问题，尽管可以通过引入正则化策略缓解</li>
 </ul>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/24K7V34/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/24K7V34/" class="post-title-link" itemprop="url">降维（3）t-SNE</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-16 16:35:35" itemprop="dateCreated datePublished" datetime="2022-03-16T16:35:35+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 16:29:43" itemprop="dateModified" datetime="2023-04-22T16:29:43+08:00">2023-04-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%99%8D%E7%BB%B4%E4%B8%8E%E5%BA%A6%E9%87%8F%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">降维与度量学习</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-t-sne-高维数据可视化">一、t-SNE 高维数据可视化</span></h3><blockquote>
-<p>  高维数据可视化之t-SNE算法🌈:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/57937096">https://zhuanlan.zhihu.com/p/57937096</a></p>
-</blockquote>
-<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens van der Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
-<h4><span id="11-t-sne数据算法的目的">1.1 t-SNE数据算法的目的</span></h4><p><strong>主要是将数据从高维数据转到低维数据，并在低维空间里也保持其在高维空间里所携带的信息（比如高维空间里有的清晰的分布特征，转到低维度时也依然存在）。</strong></p>
-<p><strong><font color="red"> t-SNE将欧氏距离距离转换为条件概率，来表达点与点之间的相似度，再优化两个分布之间的距离-KL散度，从而保证点与点之间的分布概率不变。</font></strong></p>
-<h4><span id="12-sne原理">1.2 SNE原理</span></h4><p>$S N E$ 是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>, 主要包括下面两个步骤:</p>
-<ol>
-<li>通过在高维空间中构建数据点之间的概率分布 $P$, 使得相似的数据点有更高的概率被选择, 而 不相似的数据点有较低的概率被选择;</li>
-<li>然后在低维空间里重构这些点的概率分布 $Q$, 使得这两个概率分布尽可能相似。</li>
-</ol>
-<p>令输入空间是 $X \in \mathbb{R}^{n}$, 输出空间为 $Y \in \mathbb{R}^{t}(t \ll n)$ 。不妨假设含有 $m$ 个样本数据 $\left{x^{(1)}, x^{(2)}, \cdots, x^{(m)}\right}$, 其中 $x^{(i)} \in X$, 降维后的数据为 $\left{y^{(1)}, y^{(2)}, \cdots, y^{(m)}\right}, y^{(i)} \in Y$ 。 $S N E$ 是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>, 即首先是计算条件概 率 $p<em>{j \mid i}$, 其正比于 $x^{(i)}$ 和 $x^{(j)}$ 之间的相似度, $p</em>{j \mid i}$ 的计算公式为:</p>
-<script type="math/tex; mode=display">
-p_{j \mid i}=\frac{\exp \left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^{2}}{2 \sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp \left(-\frac{\left\|x^{(i)}-x^{(k)}\right\|^{2}}{2 \sigma_{i}^{2}}\right)}</script><p>在这里引入了一个参数 $\sigma<em>{i}$, 对于不同的数据点 $x^{(i)}$ 取值亦不相同, 因为我们关注的是不同数据 点两两之间的相似度, 故可设置 $p</em>{i \mid i}=0$ 。对于低维度下的数据点 $y^{(i)}$, 通过条件概率 $q<em>{j \mid i}$ 来 刻画 $y^{(i)}$ 与 $y^{(j)}$ 之间的相似度, $q</em>{j \mid i}$ 的计算公式为:</p>
-<script type="math/tex; mode=display">
-q_{j \mid i}=\frac{\exp \left(-\left\|y^{(i)}-y^{(j)}\right\|^{2}\right)}{\sum_{k \neq i} \exp \left(-\left\|y^{(i)}-y^{(k)}\right\|^{2}\right)}</script><p>同理, 设置 $q<em>{i \mid i}=0$ 。<br>如果降维的效果比较好, 局部特征保留完整, 那么有 $p</em>{i \mid j}=q_{i \mid j}$ 成立, 因此通过优化两个分布之 间的 <strong>$K L$ 散度构造出的损失函数为</strong>:</p>
-<script type="math/tex; mode=display">
-C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} \| Q_{i}\right)=\sum_{i} \sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}</script><p>这里的 $P<em>{i}$ 表示在给定高维数据点 $x^{(i)}$ 时, 其他所有数据点的条件概率分布; $Q</em>{i}$ 则表示在给定 低维数据点 $y^{(i)}$ 时, 其他所有数据点的条件概率分布。从损失函数可以看出, 当 $p<em>{j \mid i}$ 较大 $q</em>{j \mid i}$ 较小时, 惩罚较高; 而 $p<em>{j \mid i}$ 较小 $q</em>{j \mid i}$ 较大时, 惩罚较低。换句话说就是高维空间中两个数据点距 离较近时, 若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之, 高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近, 将得到一个很低的惩罚值。也就是说, <strong>$S N E$ 的 损失函数更关注于局部特征, 而忽视了全局结构</strong>。</p>
-<h4><span id="13-目标函数求解">1.3 目标函数求解</span></h4><h4><span id="14-对称性-sne">1.4 对称性-SNE</span></h4><p><strong>优化 $K L(P | Q)$ 的一种替换思路是使用联合概率分布来替换条件概率分布</strong>, 即 $P$ 是高维空间里数据点的联合概 率分布, $Q$ 是低维空间里数据点的联合概率分布，此时的损失函数为:</p>
-<script type="math/tex; mode=display">
-C\left(y^{(i)}\right)=K L(P \| Q)=\sum_i \sum_j p_{i j} \log \frac{p_{i j}}{q_{i j}}</script><p>同样的 $p<em>{i i}=q</em>{i i}=0$ ，这种改进下的 $S N E$ 称为对称 $S N E$ ，因为它的先验假设为对 $\forall i$ 有 $p<em>{i j}=p</em>{j i}, q<em>{i j}=q</em>{j i}$ 成立，故概率分布可以改写成:</p>
-<script type="math/tex; mode=display">
-p_{i j}=\frac{\exp \left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^2}{2 \sigma^2}\right)}{\sum_{k \neq l} \exp \left(-\frac{\left\|x^{(k)}-x^{(l)}\right\|^2}{2 \sigma^2}\right)} \quad q_{i j}=\frac{\exp \left(-\left\|y^{(i)}-y^{(j)}\right\|^2\right)}{\sum_{k \neq l} \exp \left(-\left\|y^{(k)}-y^{(l)}\right\|^2\right)}</script><p>这种改进方法使得表达式简洁很多, 但是容易受到异常点数据的影响, 为了解决这个问题通过对联合概率分布定义修正为： $p<em>{i j}=\frac{p</em>{j \mid i}+p<em>{i \mid j}}{2}$, 这保证了 $\sum_j p</em>{i j}&gt;\frac{1}{2 m}$ ，使得每个点对于损失函数都会有贡献。对称 $S N E$ 最大的 优点是简化了梯度计算, 梯度公式改写为:</p>
-<script type="math/tex; mode=display">
-\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4 \sum_j\left(p_{i j}-q_{i j}\right)\left(y^{(i)}-y^{(j)}\right)</script><p>研究表明, 对称 $S N E$ 和 $S N E$ 的效果差不多, 有时甚至更好一点。</p>
-<h4><span id="15-t-sne">1.5 t-SNE</span></h4><p>$t-S N E$ 在对称 $S N E$ 的改进是, 首先通过在高维空间中使用高斯分布将距离转换为概率分布，然后<strong>在低维空间 中，使用更加偏重长尾分布的方式来将距离转换为概率分布，使得高维度空间中的中低等距离在映射后能够有一个 较大的距离</strong>。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img" style="zoom: 33%;"></p>
-<p>从图中可以看到，在没有异常点时, $t$ 分布与高斯分布的拟合结果基本一致。而在第二张图中, 出现了部分异常点, 由于高斯分布的尾部较低, 对异常点比较敏感, 为了照顾这些异常点, 高斯分布的拟合结果偏离了大多数样本所在位置, 方差也较大。<strong>相比之下, $t$ 分布的尾部较高, 对异常点不敏感, 保证了其鲁棒性, 因此拟合结果更为合理, 较好的捕获了数据的全局特征。</strong></p>
-<p>使用 $t$ 分布替换高斯分布之后 $q_{i j}$ 的变化如下:</p>
-<script type="math/tex; mode=display">
-q_{i j}=\frac{\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}{\sum_{k \neq l}\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}</script><p>此外，随着自由度的逐渐增大, $t$ 分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多, 优 化后的梯度公式如下:</p>
-<script type="math/tex; mode=display">
-\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4 \sum_j\left(p_{i j}-q_{i j}\right)\left(y^{(i)}-y^{(j)}\right)\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}</script><p>总的来说, $t-S N E$ 的梯度更新具有以下两个优势：</p>
-<ul>
-<li><strong>对于低维空间中不相似的数据点，用一个较小的距离会产生较大的梯度让这些数据点排斥开来;</strong></li>
-<li><strong>这种排斥又不会无限大，因此避免了不相似的数据点距离太远。</strong></li>
-</ul>
-<h5><span id="t-s-n-e-算法其实就是在-s-n-e-算法的基础上增加了两个改进">$t-S N E$ 算法其实就是在 $S N E$ 算法的基础上增加了两个改进:</span></h5><ul>
-<li>把 $S N E$ 修正为对称 $S N E$ ，提高了计算效率, 效果稍有提升;</li>
-<li>在低维空间中采用了 $t$ 分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题, 优化 了 $S N E$ 过于关注局部特征而忽略全局特征的问题。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3KD4010/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3KD4010/" class="post-title-link" itemprop="url">贝叶斯分类器（1）朴素贝叶斯</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-15 22:43:32" itemprop="dateCreated datePublished" datetime="2022-03-15T22:43:32+08:00">2022-03-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-21 17:15:46" itemprop="dateModified" datetime="2023-04-21T17:15:46+08:00">2023-04-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">贝叶斯分类器</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>朴素贝叶斯（Naive Bayes）是基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入、输出的联合分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。朴素贝叶斯是<strong>选出各个分类类别后验概率最大</strong>的作为最终分类。</p>
-<ul>
-<li><strong>优点</strong>：对小规模的数据表现很好，适合多分类任务，<strong>适合增量式训练</strong>。</li>
-<li><strong>缺点</strong>：对输入数据的表达形式很敏感<strong>（离散、连续，值极大极小之类的）。</strong></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3KD4010/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
@@ -877,28 +894,173 @@ q_{i j}=\frac{\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}{\sum_{k \neq
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-最大似然估计-最大后验估计-贝叶斯估计的对比">一、最大似然估计、最大后验估计、贝叶斯估计的对比</span></h3><h4><span id="11-贝叶斯公式">1.1 <strong>贝叶斯公式</strong></span></h4><p>这三种方法都和贝叶斯公式有关，所以我们先来了解下贝叶斯公式：</p>
-<script type="math/tex; mode=display">
-p(\theta \mid X)=\frac{p(X \mid \theta) p(\theta)}{p(X)}</script><p>每一项的表示如下:</p>
-<script type="math/tex; mode=display">
-\text { posterior }=\frac{\text { likehood } * \text { prior }}{\text { evidence }}</script><ul>
-<li>posterior: 通过样本X得到参数 $\theta$ 的概率, 也就是后验概率。</li>
-<li>likehood: 通过参数 $\theta$ 得到样本X的概率, 似然函数, 通常就是我们的数据集的表现。</li>
-<li>prior: 参数 $\theta$ 的先验概率, 一般是根据人的先验知识来得出的。</li>
-</ul>
-<h4><span id="12-极大似然估计-mle">1.2 极大似然估计 (MLE)</span></h4><p>极大似然估计的核心思想是: 认为当前发生的事件是概率最大的事件。<strong>因此就可以给定的数据集, 使得该数据集发生的概率最大来求得模型中的参数</strong>。似然函数如下:</p>
-<script type="math/tex; mode=display">
-p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)</script><p>为了便于计算, 我们对似然函数两边取对数, 生成新的对数似然函数（因为对数函数是单调增函数, 因此求似然函数最大化就可 以转换成对数似然函数最大化）：</p>
-<script type="math/tex; mode=display">
-p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n} \log p(x i \mid \theta)</script><p>求对数似然函数最大化, 可以通过导数为 0 来求解。<strong><font color="red"> 极大似然估计只关注当前的样本, 也就是只关注当前发生的事情, 不考虑事情的先验情况</font></strong>。由于计算简单, 而且不需要关注先验 知识, 因此在机器学习中的应用非常广, 最常见的就是逻辑回归。</p>
-<h4><span id="13-最大后验估计-map">1.3 最大后验估计 (MAP)</span></h4><p>和最大似然估计不同的是, 最大后验估计中引入了<strong>先验概率</strong>（先验分布属于贝叶斯学派引入的, 像L1, L2正则化就是对参数引入 了拉普拉斯先验分布和高斯先验分布）, 而且最大后验估计要求的是 $p(\theta \mid X)$</p>
-<p>最大后验估计可以写成下面的形式:</p>
-<script type="math/tex; mode=display">
-\operatorname{argmaxp}(\theta \mid X)=\operatorname{argmax} \frac{p(X \mid \theta) p(\theta)}{p(X)}=\operatorname{argmax}\left(\prod_{x 1}^{x n} p(x i \mid \theta)\right) p(\theta)</script><p>在求最大后验概率时, 可以忽略分母 $p(x)$, 因为该值不影响对 $\theta$ 的估计。同样为了便于计算, 对两边取对数, 后验概率最大化就变成了:</p>
-<script type="math/tex; mode=display">
-\operatorname{argmax}\left(\sum_{x 1}^{x n} \operatorname{logp}(x i \mid \theta)+\log p(\theta)\right)</script><p><strong><font color="red"> 最大后验估计不只是关注当前的样本的情况，还关注已经发生过的先验知识。在朴素贝叶斯中会有最大后验概率的应用，但并没有用上最大后验估计来求参数（因为朴素贝叶斯中的θ其实就是分类的类别）。</font></strong></p>
+          <h3><span id="一-最大似然估计-最大后验估计-贝叶斯估计的对比">一、最大似然估计、最大后验估计、贝叶斯估计的对比</span></h3>
+<h4><span id="11-贝叶斯公式">1.1 <strong>贝叶斯公式</strong></span></h4>
+<p>这三种方法都和贝叶斯公式有关，所以我们先来了解下贝叶斯公式：</p>
+<p><span class="math display">\[
+p(\theta \mid X)=\frac{p(X \mid \theta) p(\theta)}{p(X)}
+\]</span> 每一项的表示如下: <span class="math display">\[
+\text { posterior }=\frac{\text { likehood } * \text { prior }}{\text {
+evidence }}
+\]</span> + posterior: 通过样本X得到参数 <span class="math inline">\(\theta\)</span> 的概率, 也就是后验概率。 +
+likehood: 通过参数 <span class="math inline">\(\theta\)</span>
+得到样本X的概率, 似然函数, 通常就是我们的数据集的表现。 + prior: 参数
+<span class="math inline">\(\theta\)</span> 的先验概率,
+一般是根据人的先验知识来得出的。</p>
+<h4><span id="12-极大似然估计-mle">1.2 极大似然估计 (MLE)</span></h4>
+<p>极大似然估计的核心思想是:
+认为当前发生的事件是概率最大的事件。<strong>因此就可以给定的数据集,
+使得该数据集发生的概率最大来求得模型中的参数</strong>。似然函数如下:
+<span class="math display">\[
+p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)
+\]</span> 为了便于计算, 我们对似然函数两边取对数,
+生成新的对数似然函数（因为对数函数是单调增函数, 因此求似然函数最大化就可
+以转换成对数似然函数最大化）： <span class="math display">\[
+p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n}
+\log p(x i \mid \theta)
+\]</span> 求对数似然函数最大化, 可以通过导数为 0
+来求解。<strong><font color="red"> 极大似然估计只关注当前的样本,
+也就是只关注当前发生的事情,
+不考虑事情的先验情况</font></strong>。由于计算简单, 而且不需要关注先验
+知识, 因此在机器学习中的应用非常广, 最常见的就是逻辑回归。</p>
+<h4><span id="13-最大后验估计-map">1.3 最大后验估计 (MAP)</span></h4>
+<p>和最大似然估计不同的是,
+最大后验估计中引入了<strong>先验概率</strong>（先验分布属于贝叶斯学派引入的,
+像L1, L2正则化就是对参数引入 了拉普拉斯先验分布和高斯先验分布）,
+而且最大后验估计要求的是 <span class="math inline">\(p(\theta \mid
+X)\)</span></p>
+<p>最大后验估计可以写成下面的形式: <span class="math display">\[
+\operatorname{argmaxp}(\theta \mid X)=\operatorname{argmax} \frac{p(X
+\mid \theta) p(\theta)}{p(X)}=\operatorname{argmax}\left(\prod_{x 1}^{x
+n} p(x i \mid \theta)\right) p(\theta)
+\]</span> 在求最大后验概率时, 可以忽略分母 <span class="math inline">\(p(x)\)</span>, 因为该值不影响对 <span class="math inline">\(\theta\)</span> 的估计。同样为了便于计算,
+对两边取对数, 后验概率最大化就变成了: <span class="math display">\[
+\operatorname{argmax}\left(\sum_{x 1}^{x n} \operatorname{logp}(x i \mid
+\theta)+\log p(\theta)\right)
+\]</span> <strong><font color="red">
+最大后验估计不只是关注当前的样本的情况，还关注已经发生过的先验知识。在朴素贝叶斯中会有最大后验概率的应用，但并没有用上最大后验估计来求参数（因为朴素贝叶斯中的θ其实就是分类的类别）。</font></strong></p>
 <p><strong>最大后验估计和最大似然估计的区别：</strong>最大后验估计允许我们把先验知识加入到估计模型中，<strong>这在样本很少的时候是很有用的（因此朴素贝叶斯在较少的样本下就能有很好的表现）</strong>，因为样本很少的时候我们的观测结果很可能出现偏差，此时先验知识会把估计的结果“拉”向先验，实际的预估结果将会在先验结果的两侧形成一个顶峰。通过调节先验分布的参数，比如beta分布的α，β，我们还可以调节把估计的结果“拉”向先验的幅度，α，β越大，这个顶峰越尖锐。这样的参数，我们叫做预估模型的“超参数”。</p>
 
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3KD4010/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3KD4010/" class="post-title-link" itemprop="url">贝叶斯分类器（1）朴素贝叶斯</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-15 22:43:32" itemprop="dateCreated datePublished" datetime="2022-03-15T22:43:32+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-21 17:15:46" itemprop="dateModified" datetime="2023-04-21T17:15:46+08:00">2023-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">贝叶斯分类器</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>朴素贝叶斯（Naive
+Bayes）是基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入、输出的联合分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。朴素贝叶斯是<strong>选出各个分类类别后验概率最大</strong>的作为最终分类。</p>
+<ul>
+<li><strong>优点</strong>：对小规模的数据表现很好，适合多分类任务，<strong>适合增量式训练</strong>。</li>
+<li><strong>缺点</strong>：对输入数据的表达形式很敏感<strong>（离散、连续，值极大极小之类的）。</strong></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/3KD4010/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1005,21 +1167,30 @@ p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n} \log p(x 
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="朴素贝叶斯-qampa">朴素贝叶斯 Q&amp;A</span></h3><blockquote>
+          <h3><span id="朴素贝叶斯-qampa">朴素贝叶斯 Q&amp;A</span></h3>
+<blockquote>
 <ul>
-<li>朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点；</li>
+<li>朴素贝叶斯分类器原理以及公式，出现估计概率值为 0
+怎么处理（拉普拉斯平滑），缺点；</li>
 <li>解释贝叶斯公式和朴素贝叶斯分类。</li>
 <li>贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的的数据，那么你要能推到这个过程。给出最后的分类器公式。</li>
 <li>那你说说贝叶斯怎么分类啊？<strong>比如说看看今天天气怎么样？</strong>我：blabla，，，利用天气的历史数据，可以知道天气类型的先验分布，以及每种类型下特征数据（比如天气数据的特征：温度啊，湿度啊）的条件分布，这样我们根据贝叶斯公式就能求得天气类型的后验分布了。。。。面试官：en（估计也比较满意吧）<strong>那你了解关于求解模型的优化方法吗？一般用什么优化方法来解？</strong></li>
 <li>贝叶斯分类器的优化和特殊情况的处理</li>
 </ul>
 </blockquote>
-<h4><span id="1-朴素贝叶斯-svm和lr的区别"><strong><font color="red"> 1、朴素贝叶斯、SVM和LR的区别？</font></strong></span></h4><p><strong>朴素贝叶斯是生成模型</strong>，根据已有样本进行贝叶斯估计学习出先验概率P(Y)和条件概率P(X|Y)，进而求出联合分布概率P(XY),最后利用贝叶斯定理求解P(Y|X)。</p>
+<h4><span id="1-朴素贝叶斯-svm和lr的区别"><strong><font color="red">
+1、朴素贝叶斯、SVM和LR的区别？</font></strong></span></h4>
+<p><strong>朴素贝叶斯是生成模型</strong>，根据已有样本进行贝叶斯估计学习出先验概率P(Y)和条件概率P(X|Y)，进而求出联合分布概率P(XY),最后利用贝叶斯定理求解P(Y|X)。</p>
 <p><strong>LR是判别模型</strong>，根据极大化对数似然函数直接求出条件概率P(Y|X)；朴素贝叶斯是基于很强的条件独立假设（在已知分类Y的条件下，各个特征变量取值是相互独立的），而LR则对此没有要求；<strong>朴素贝叶斯适用于数据集少的情景，而LR适用于大规模数据集。</strong></p>
-<div class="table-container">
 <table>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>算法</th>
 <th>SVM</th>
 <th>LR</th>
@@ -1027,44 +1198,43 @@ p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n} \log p(x 
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><strong>思想</strong></td>
 <td><strong>想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面</strong>。</td>
 <td>使用线性回归模型的预测值逼近分类任务真实标记的对数几率。</td>
 <td>基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。选出各个分类类别后验概率最大的作为最终分类。</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>输出</strong></td>
 <td>判别模型、<strong>非概率方法</strong>；</td>
-<td><strong>概率方法</strong>；需要对$p(y</td>
-<td>x)$进行假设，具有概率意义。</td>
+<td><strong>概率方法</strong>；需要对<span class="math inline">\(p(y|x)\)</span>进行假设，具有概率意义。</td>
 <td>生成模型</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>经验损失函数</strong></td>
 <td><strong>合页损失函数</strong>；有一段平的零区域、使得SVM的对偶性有稀疏性。</td>
 <td><strong>交叉熵损失函数</strong></td>
 <td><strong>后验概率最大</strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>训练样本</strong></td>
 <td><strong>支持向量</strong>（少数样本），SVM的参数和假设函数只和支持向量有关。</td>
 <td>全样本</td>
 <td>全样本</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>优化方法</strong></td>
 <td>次梯度下降和坐标梯度下降 【<strong>SMO算法</strong>】</td>
 <td><strong>梯度下降</strong></td>
 <td>无</td>
 </tr>
-<tr>
+<tr class="even">
 <td>多分类</td>
 <td><strong>多分类SVM</strong></td>
 <td><strong>Softmax回归</strong></td>
 <td>后验概率最大</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>敏感程度</strong></td>
 <td><strong>SVM考虑分类边界线附近的样本</strong>（决定分类超平面的样本）。在支持向量外添加或减少任何样本点对分类决策面没有任何影响；【不敏感】</td>
 <td><strong>LR受所有数据点的影响</strong>。直接依赖数据分布，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡。【敏感】</td>
@@ -1072,49 +1242,72 @@ p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n} \log p(x 
 </tr>
 </tbody>
 </table>
-</div>
-<h4><span id="2-朴素贝叶斯朴素在哪里">2、<strong><font color="red"> 朴素贝叶斯“朴素”在哪里？</font></strong></span></h4><p>简单来说：它假定<strong>所有的特征在数据集中的作用是同样重要和独立的</strong>，正如我们所知，这个假设在现实世界中是很不真实的，因此，说朴素贝叶斯真的很“朴素”。</p>
-<p>利用贝叶斯定理求解联合概率$P(XY)$时，需要计算条件概率$P(X|Y)$。在计算$P(X|Y)$时，朴素贝叶斯做了一个很强的条件独立假设（当Y确定时，X的各个分量取值之间相互独立），即$P(X1=x1,X2=x2,…Xj=xj|Y=yk) = P(X1=x1|Y=yk)…*P(Xj=xj|Y=yk)$。 多个特征全是独立的，需要分别相乘。</p>
-<h4><span id="3-在估计条件概率pxy时出现概率为0的情况怎么办">3、<strong>在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</strong></span></h4><p><strong>拉普拉斯平滑法</strong>是朴素贝叶斯中处理零概率问题的一种修正方式。在进行分类的时候，可能会出现某个属性在训练集中没有与某个类同时出现过的情况，如果直接基于朴素贝叶斯分类器的表达式进行计算的话就会出现<strong>零概率现象</strong>。</p>
-<p>为了避免其他属性所携带的信息被训练集中未出现过的属性值“抹去”，所以才使用拉普拉斯估计器进行修正。具体的方法是：<strong>在分子上加1,对于先验概率，在分母上加上训练集中label的类别数；对于特征i 在label下的条件概率，则在分母上加上第i个属性可能的取值数（特征 i 的unique()）</strong></p>
-<p>先验概率的贝叶斯估计:</p>
-<script type="math/tex; mode=display">
-P_\lambda\left(Y=c_k\right)=\frac{\sum_{i=1}^N I\left(y_i=c_k\right)+\lambda}{N+K \lambda}</script><p>条件概率的贝叶斯估计：【离散型】</p>
-<script type="math/tex; mode=display">
-P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j)}=a_{j l}, y_{i=} c_k\right)+\lambda}{\sum_{i=1}^N I\left(y_i=c_k\right)+S_j \lambda}</script><h4><span id="4-先验概率和后验概率都是">4、<strong>先验概率和后验概率都是？</strong></span></h4><p><strong>先验概率是指根据以往经验和分析得到的概率</strong>,如全概率公式,它往往作为”由因求果”问题中的”因”出现.<strong>后验概率是基于新的信息，修正原来的先验概率后所获得的更接近实际情况的概率估计。</strong></p>
+<h4><span id="2-朴素贝叶斯朴素在哪里">2、<strong><font color="red">
+朴素贝叶斯“朴素”在哪里？</font></strong></span></h4>
+<p>简单来说：它假定<strong>所有的特征在数据集中的作用是同样重要和独立的</strong>，正如我们所知，这个假设在现实世界中是很不真实的，因此，说朴素贝叶斯真的很“朴素”。</p>
+<p>利用贝叶斯定理求解联合概率<span class="math inline">\(P(XY)\)</span>时，需要计算条件概率<span class="math inline">\(P(X|Y)\)</span>。在计算<span class="math inline">\(P(X|Y)\)</span>时，朴素贝叶斯做了一个很强的条件独立假设（当Y确定时，X的各个分量取值之间相互独立），即<span class="math inline">\(P(X1=x1,X2=x2,…Xj=xj|Y=yk) =
+P(X1=x1|Y=yk)…*P(Xj=xj|Y=yk)\)</span>。
+多个特征全是独立的，需要分别相乘。</p>
+<h4><span id="3-在估计条件概率pxy时出现概率为0的情况怎么办">3、<strong>在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</strong></span></h4>
+<p><strong>拉普拉斯平滑法</strong>是朴素贝叶斯中处理零概率问题的一种修正方式。在进行分类的时候，可能会出现某个属性在训练集中没有与某个类同时出现过的情况，如果直接基于朴素贝叶斯分类器的表达式进行计算的话就会出现<strong>零概率现象</strong>。</p>
+<p>为了避免其他属性所携带的信息被训练集中未出现过的属性值“抹去”，所以才使用拉普拉斯估计器进行修正。具体的方法是：<strong>在分子上加1,对于先验概率，在分母上加上训练集中label的类别数；对于特征i
+在label下的条件概率，则在分母上加上第i个属性可能的取值数（特征 i
+的unique()）</strong></p>
+<p>先验概率的贝叶斯估计: <span class="math display">\[
+P_\lambda\left(Y=c_k\right)=\frac{\sum_{i=1}^N
+I\left(y_i=c_k\right)+\lambda}{N+K \lambda}
+\]</span> 条件概率的贝叶斯估计：【离散型】 <span class="math display">\[
+P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N
+I\left(x_i^{(j)}=a_{j l}, y_{i=} c_k\right)+\lambda}{\sum_{i=1}^N
+I\left(y_i=c_k\right)+S_j \lambda}
+\]</span></p>
+<h4><span id="4-先验概率和后验概率都是">4、<strong>先验概率和后验概率都是？</strong></span></h4>
+<p><strong>先验概率是指根据以往经验和分析得到的概率</strong>,如全概率公式,它往往作为"由因求果"问题中的"因"出现.<strong>后验概率是基于新的信息，修正原来的先验概率后所获得的更接近实际情况的概率估计。</strong></p>
 <p><strong>先验概率和后验概率是相对的。</strong>如果以后还有新的信息引入，更新了现在所谓的后验概率，得到了新的概率值，那么这个新的概率值被称为后验概率。</p>
-<h4><span id="5-朴素贝叶斯算法的前提假设是什么">5、<strong>朴素贝叶斯算法的前提假设是什么？</strong></span></h4><ol>
+<h4><span id="5-朴素贝叶斯算法的前提假设是什么">5、<strong>朴素贝叶斯算法的前提假设是什么？</strong></span></h4>
+<ol type="1">
 <li>特征之间相互独立</li>
 <li>每个特征同等重要</li>
 </ol>
-<h4><span id="6-面试的时候怎么标准回答朴素贝叶斯呢">6、<strong>面试的时候怎么标准回答朴素贝叶斯呢？</strong></span></h4><p>首先朴素贝斯是一个<strong>生成模型（很重要）</strong>，其次它通过学习已知样本，计算出联合概率，再求条件概率。</p>
-<h5><span id="生成模式和判别模式的区别常见"><strong>生成模式和判别模式的区别(常见)：</strong></span></h5><p><strong>生成模式</strong>：由数据学得<strong>联合概率分布，求出条件概率分布P(Y|X)的预测模型</strong>；<strong>比较在乎数据是怎么生成的</strong>；常见的生成模型有：朴素贝叶斯、隐马尔可夫模型、高斯混合模型、文档主题生成模型（LDA）、限制玻尔兹曼机。</p>
+<h4><span id="6-面试的时候怎么标准回答朴素贝叶斯呢">6、<strong>面试的时候怎么标准回答朴素贝叶斯呢？</strong></span></h4>
+<p>首先朴素贝斯是一个<strong>生成模型（很重要）</strong>，其次它通过学习已知样本，计算出联合概率，再求条件概率。</p>
+<h5><span id="生成模式和判别模式的区别常见"><strong>生成模式和判别模式的区别(常见)：</strong></span></h5>
+<p><strong>生成模式</strong>：由数据学得<strong>联合概率分布，求出条件概率分布P(Y|X)的预测模型</strong>；<strong>比较在乎数据是怎么生成的</strong>；常见的生成模型有：朴素贝叶斯、隐马尔可夫模型、高斯混合模型、文档主题生成模型（LDA）、限制玻尔兹曼机。</p>
 <p><strong>判别模式</strong>：由数据学得<strong>决策函数或条件概率分布作为预测模型</strong>，<strong>要关注在数据的差异分布上，而不是生成</strong>；常见的判别模型有：K近邻、SVM、决策树、感知机、线性判别分析（LDA）、线性回归、传统的神经网络、逻辑斯蒂回归、boosting、条件随机场。</p>
-<h4><span id="7-为什么属性独立性假设在实际情况中很难成立但朴素贝叶斯仍能取得较好的效果排序能力">7、<strong>为什么属性独立性假设在实际情况中很难成立，但朴素贝叶斯仍能取得较好的效果?</strong>【排序能力】</span></h4><p>首先独立性假设在实际中不存在，确实会导致朴素贝叶斯不如一些其他算法，但是就算法本身而言，朴素贝叶斯也会有不错的分类效果，原因是：</p>
+<h4><span id="7-为什么属性独立性假设在实际情况中很难成立但朴素贝叶斯仍能取得较好的效果排序能力">7、<strong>为什么属性独立性假设在实际情况中很难成立，但朴素贝叶斯仍能取得较好的效果?</strong>【排序能力】</span></h4>
+<p>首先独立性假设在实际中不存在，确实会导致朴素贝叶斯不如一些其他算法，但是就算法本身而言，朴素贝叶斯也会有不错的分类效果，原因是：</p>
 <ul>
 <li><strong>分类问题看中的是类别的条件概率的排序</strong>，而不是具体的概率值，所以这里面对精准概率值的计算是有一定的容错的。</li>
 <li>如果特征属性之间的依赖对所有类别影响相同，或依赖关系的影响能相互抵消，则属性条件独立性假设在降低计算开销的同时不会对性能产生负面影响。</li>
 </ul>
-<h4><span id="8-朴素贝叶斯中概率计算的下溢问题如何解决"><strong><font color="red"> 8、朴素贝叶斯中概率计算的下溢问题如何解决？</font></strong></span></h4><p><strong>在朴素贝叶斯的计算过程中，需要对特定分类中各个特征出现的概率进行连乘</strong>，小数相乘，越乘越小，这样就造成下溢出。在程序中，在相应小数位置进行四舍五入，计算结果可能就变成0了。</p>
+<h4><span id="8-朴素贝叶斯中概率计算的下溢问题如何解决"><strong><font color="red">
+8、朴素贝叶斯中概率计算的下溢问题如何解决？</font></strong></span></h4>
+<p><strong>在朴素贝叶斯的计算过程中，需要对特定分类中各个特征出现的概率进行连乘</strong>，小数相乘，越乘越小，这样就造成下溢出。在程序中，在相应小数位置进行四舍五入，计算结果可能就变成0了。</p>
 <p>为了解决这个问题，<strong>对乘积结果取自然对数</strong>。将小数的乘法操作转化为取对数后的加法操作，规避了变为0的风险同时并不影响分类结果。</p>
-<h4><span id="9-朴素贝叶斯分类器对异常值和缺失值敏感吗">9、<strong>朴素贝叶斯分类器对异常值和缺失值敏感吗？</strong></span></h4><p>回想朴素贝叶斯的计算过程，它在推理的时候，输入的某个特征组合，<strong>他们的特征值在训练的时候在贝叶斯公式中都是基于频数进行统计的。</strong>所以一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，就算微微影响最终概率值的获得，由于<strong>分类问题只关注概率的排序而不关注概率的值，所以影响不大</strong>，保留异常值还可以提高模型的泛化性能。</p>
+<h4><span id="9-朴素贝叶斯分类器对异常值和缺失值敏感吗">9、<strong>朴素贝叶斯分类器对异常值和缺失值敏感吗？</strong></span></h4>
+<p>回想朴素贝叶斯的计算过程，它在推理的时候，输入的某个特征组合，<strong>他们的特征值在训练的时候在贝叶斯公式中都是基于频数进行统计的。</strong>所以一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，就算微微影响最终概率值的获得，由于<strong>分类问题只关注概率的排序而不关注概率的值，所以影响不大</strong>，保留异常值还可以提高模型的泛化性能。</p>
 <p>缺失值也是一样，如果一个数据实例缺失了一个属性的数值，在建模的时将被忽略，不影响类条件概率的计算，在预测时，计算数据实例是否属于某类的概率时也将忽略缺失属性，不影响最终结果。</p>
-<h4><span id="10-朴素贝叶斯中有没有超参数可以调">10、<strong>朴素贝叶斯中有没有超参数可以调？</strong></span></h4><p><strong>朴素贝叶斯是没有超参数可以调的，所以它不需要调参</strong>，朴素贝叶斯是根据训练集进行分类，分类出来的结果基本上就是确定了的，拉普拉斯估计器不是朴素贝叶斯中的参数，不能通过拉普拉斯估计器来对朴素贝叶斯调参。</p>
-<h4><span id="11-朴素贝叶斯有哪三个模型">11、<strong>朴素贝叶斯有哪三个模型？</strong></span></h4><ul>
+<h4><span id="10-朴素贝叶斯中有没有超参数可以调">10、<strong>朴素贝叶斯中有没有超参数可以调？</strong></span></h4>
+<p><strong>朴素贝叶斯是没有超参数可以调的，所以它不需要调参</strong>，朴素贝叶斯是根据训练集进行分类，分类出来的结果基本上就是确定了的，拉普拉斯估计器不是朴素贝叶斯中的参数，不能通过拉普拉斯估计器来对朴素贝叶斯调参。</p>
+<h4><span id="11-朴素贝叶斯有哪三个模型">11、<strong>朴素贝叶斯有哪三个模型？</strong></span></h4>
+<ul>
 <li><strong>多项式模型对应于离散变量</strong>，其中离散变量指的是category型变量，也就是类别变量，比如性别；连续变量一般是数字型变量，比如年龄，身高，体重。</li>
 <li><strong>高斯模型 对应于连续变量</strong>（每一维服从正态分布）</li>
-<li><strong>伯努利模型</strong> <strong>对应于文本分类</strong> （特征只能是0或者1）</li>
+<li><strong>伯努利模型</strong> <strong>对应于文本分类</strong>
+（特征只能是0或者1）</li>
 </ul>
-<h4><span id="12-朴素贝叶斯为什么适合增量计算"><strong><font color="red"> 12、朴素贝叶斯为什么适合增量计算？</font></strong></span></h4><p>朴素贝叶斯在训练过程中实际上需要<strong>计算出各个类别的概率和各个特征的条件概率</strong>，这些概率以频数统计比值（对于多项式模型而言）的形式产生概率值，<strong>可以快速根据增量数据进行更新，无需重新全量训练，所以其十分适合增量计算。</strong></p>
-<h3><span id="参考文献">参考文献</span></h3><ul>
-<li><p><a target="_blank" rel="noopener" href="https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes">https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2017/02/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%EF%BC%8810%EF%BC%89%EF%BC%9A%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">FREE WILL 机器学习算法系列（10）：朴素贝叶斯</a></p>
-</li>
-<li><h5><span id="最大似然估计-最大后验估计-贝叶斯估计的对比">最大似然估计、最大后验估计、贝叶斯估计的对比</span></h5><ul>
-<li><h5><span id="httpswwwcnblogscomjiangxinyangp9378535html"></span></h5></li>
-</ul>
-</li>
+<h4><span id="12-朴素贝叶斯为什么适合增量计算"><strong><font color="red">
+12、朴素贝叶斯为什么适合增量计算？</font></strong></span></h4>
+<p>朴素贝叶斯在训练过程中实际上需要<strong>计算出各个类别的概率和各个特征的条件概率</strong>，这些概率以频数统计比值（对于多项式模型而言）的形式产生概率值，<strong>可以快速根据增量数据进行更新，无需重新全量训练，所以其十分适合增量计算。</strong></p>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><p>https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2017/02/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%EF%BC%8810%EF%BC%89%EF%BC%9A%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">FREE
+WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
+<li><h5><span id="最大似然估计-最大后验估计-贝叶斯估计的对比">最大似然估计、最大后验估计、贝叶斯估计的对比</span></h5>
+<ul>
+<li><h5><span id="httpswwwcnblogscomjiangxinyangp9378535html">https://www.cnblogs.com/jiangxinyang/p/9378535.html</span></h5></li>
+</ul></li>
 </ul>
 
       
@@ -1205,14 +1398,14 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.3k</span>
+      <span>6.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -1223,133 +1416,16 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2P1GDXT/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/A9Y29H/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/A9Y29H/" class="post-title-link" itemprop="url">支持向量机（3）核函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-15 22:38:05" itemprop="dateCreated datePublished" datetime="2022-03-15T22:38:05+08:00">2022-03-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 19:37:37" itemprop="dateModified" datetime="2023-04-22T19:37:37+08:00">2023-04-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">支持向量机</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red">SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
-<p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
-<p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/A9Y29H/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1443,14 +1519,14 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -1461,8 +1537,10 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
@@ -1499,7 +1577,7 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2NSQX65/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/A9Y29H/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -1517,7 +1595,7 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2NSQX65/" class="post-title-link" itemprop="url">支持向量机（5）总结</a>
+          <a href="/posts/A9Y29H/" class="post-title-link" itemprop="url">支持向量机（3）核函数</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1535,7 +1613,7 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 19:49:07" itemprop="dateModified" datetime="2023-04-22T19:49:07+08:00">2023-04-22</time>
+      <time title="修改时间：2023-04-22 19:37:37" itemprop="dateModified" datetime="2023-04-22T19:37:37+08:00">2023-04-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1562,7 +1640,128 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong><font color="red">SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+<p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
+<p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/A9Y29H/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3MCYRQP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3MCYRQP/" class="post-title-link" itemprop="url">支持向量机（4）支持向量回归 & 多分类</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-15 22:38:05" itemprop="dateCreated datePublished" datetime="2022-03-15T22:38:05+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 19:44:29" itemprop="dateModified" datetime="2023-04-22T19:44:29+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">支持向量机</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1580,14 +1779,16 @@ P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="一、支持向量机-SVM"><a href="#一、支持向量机-SVM" class="headerlink" title="一、支持向量机 SVM"></a>一、支持向量机 SVM</h3><p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/posts/2NSQX65/#more" rel="contents">
+              <a class="btn" href="/posts/3MCYRQP/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

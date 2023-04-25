@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Python 函数装饰器和闭包   函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。  修饰器和闭包经常在一起讨论, 因为修饰器就是闭包的一种形式. 闭包还是回调式异步编程和函数式编程风格的基础.装饰器是语法糖, 它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:  把被装饰的函数替换成其他函数  **装饰器在加载模块时立即执行">
+    <meta name="description" content="Python 函数装饰器和闭包  函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。  修饰器和闭包经常在一起讨论, 因为修饰器就是闭包的一种形式. 闭包还是回调式异步编程和函数式编程风格的基础.装饰器是语法糖, 它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:  把被装饰的函数替换成其他函数  装饰器在加载模块时立即执行  一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python-装饰器">
 <meta property="og:url" content="https://powerlzy.github.io/posts/X5SQ7R/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="Python 函数装饰器和闭包   函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。  修饰器和闭包经常在一起讨论, 因为修饰器就是闭包的一种形式. 闭包还是回调式异步编程和函数式编程风格的基础.装饰器是语法糖, 它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:  把被装饰的函数替换成其他函数  **装饰器在加载模块时立即执行">
+<meta property="og:description" content="Python 函数装饰器和闭包  函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。  修饰器和闭包经常在一起讨论, 因为修饰器就是闭包的一种形式. 闭包还是回调式异步编程和函数式编程风格的基础.装饰器是语法糖, 它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:  把被装饰的函数替换成其他函数  装饰器在加载模块时立即执行  一">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-06-11T07:51:56.335Z">
 <meta property="article:modified_time" content="2022-07-01T08:51:06.231Z">
@@ -275,7 +275,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.1k</span>
+      <span>3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -293,40 +293,81 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="python-函数装饰器和闭包">Python 函数装饰器和闭包</span></h2><blockquote>
-<p>  函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。</p>
+        <h2><span id="python-函数装饰器和闭包">Python 函数装饰器和闭包</span></h2>
+<blockquote>
+<p>函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。</p>
 </blockquote>
-<p>修饰器和闭包经常在一起讨论, 因为<strong>修饰器就是闭包的一种形式</strong>. 闭包还是<strong>回调式异步编程</strong>和<strong>函数式编程风格</strong>的基础.装饰器是语法糖, 它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:</p>
+<p>修饰器和闭包经常在一起讨论,
+因为<strong>修饰器就是闭包的一种形式</strong>.
+闭包还是<strong>回调式异步编程</strong>和<strong>函数式编程风格</strong>的基础.装饰器是语法糖,
+它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:</p>
 <ul>
 <li><strong>把被装饰的函数替换成其他函数</strong></li>
-<li><font color="red"> **装饰器在加载模块时立即执行**</font>
-
-</li>
+<li><font color="red">
+<strong>装饰器在加载模块时立即执行</strong></font></li>
 </ul>
-<h3><span id="一-装饰器基础知识">一、装饰器基础知识</span></h3><p><strong>装饰器</strong>是<strong>可调用的对象</strong>, 其<strong>参数是另一个函数</strong>(被装饰的函数). 装饰器可能会处理被装饰的函数, 然后把它返回, 或者将其替换成<strong>另一个函数或可调用对象</strong>.</p>
+<h3><span id="一-装饰器基础知识">一、装饰器基础知识</span></h3>
+<p><strong>装饰器</strong>是<strong>可调用的对象</strong>,
+其<strong>参数是另一个函数</strong>(被装饰的函数).
+装饰器可能会处理被装饰的函数, 然后把它返回,
+或者将其替换成<strong>另一个函数或可调用对象</strong>.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorate</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)复制代码</span><br></pre></td></tr></table></figure>
 <p>这种写法与下面写法完全等价:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)</span><br><span class="line">target = decorate(target)</span><br></pre></td></tr></table></figure>
-<p>要理解立即执行看下等价的代码就知道了, <code>target = decorate(target)</code> 这句调用了函数. 一般情况下装饰函数都会将某个函数作为返回值.</p>
-<h3><span id="二-变量作用域规则">二、变量作用域规则</span></h3><p>要理解装饰器中变量的作用域, 应该要理解闭包, 我觉得书里将闭包和作用域的顺序换一下比较好. <strong>在python中, 一个变量的查找顺序是 <code>LEGB</code> (L：Local 局部环境，E：Enclosing 闭包，G：Global 全局，B：Built-in 内置).</strong></p>
+<p>要理解立即执行看下等价的代码就知道了,
+<code>target = decorate(target)</code> 这句调用了函数.
+一般情况下装饰函数都会将某个函数作为返回值.</p>
+<h3><span id="二-变量作用域规则">二、变量作用域规则</span></h3>
+<p>要理解装饰器中变量的作用域, 应该要理解闭包,
+我觉得书里将闭包和作用域的顺序换一下比较好. <strong>在python中,
+一个变量的查找顺序是 <code>LEGB</code> (L：Local 局部环境，E：Enclosing
+闭包，G：Global 全局，B：Built-in 内置).</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">base = <span class="number">20</span> <span class="comment"># 3</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_compare</span>():</span><br><span class="line">    base = <span class="number">10</span> <span class="comment"># 2</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">real_compare</span>(<span class="params">value</span>):</span><br><span class="line">    		base = <span class="number">5</span> <span class="comment"># 1</span></span><br><span class="line">        <span class="keyword">return</span> value &gt; base</span><br><span class="line">    <span class="keyword">return</span> real_compare</span><br><span class="line">    </span><br><span class="line">compare_10 = get_compare()</span><br><span class="line"><span class="built_in">print</span>(compare_10(<span class="number">5</span>))复制代码</span><br></pre></td></tr></table></figure>
-<p>在闭包的函数 <code>real_compare</code> 中, 使用的变量 <code>base</code> 其实是 <code>base = 10</code> 的. 因为base这个变量在闭包中就能命中, 而不需要去 <code>global</code> 中获取.</p>
-<h3><span id="三-闭包">三、闭包</span></h3><p>闭包其实挺好理解的, 当匿名函数出现的时候, 才使得这部分难以掌握. 简单简短的解释闭包就是:</p>
+<p>在闭包的函数 <code>real_compare</code> 中, 使用的变量
+<code>base</code> 其实是 <code>base = 10</code> 的.
+因为base这个变量在闭包中就能命中, 而不需要去 <code>global</code>
+中获取.</p>
+<h3><span id="三-闭包">三、闭包</span></h3>
+<p>闭包其实挺好理解的, 当匿名函数出现的时候, 才使得这部分难以掌握.
+简单简短的解释闭包就是:</p>
 <p><strong>名字空间与函数捆绑后的结果被称为一个闭包(closure).</strong></p>
-<p>这个名字空间就是 <code>LEGB</code> 中的 <code>E</code> . 所以闭包不仅仅是将函数作为返回值. 而是将名字空间和函数捆绑后作为返回值的. 多少人忘了理解这个 <code>&quot;捆绑&quot;</code> , 不知道变量最终取的哪和哪啊. 哎.</p>
-<h4><span id="标准库中的装饰器">标准库中的装饰器</span></h4><p>python内置了三个用于装饰方法的函数: <code>property</code> 、 <code>classmethod</code> 和 <code>staticmethod</code> .<br>这些是用来丰富类的.</p>
+<p>这个名字空间就是 <code>LEGB</code> 中的 <code>E</code> .
+所以闭包不仅仅是将函数作为返回值.
+而是将名字空间和函数捆绑后作为返回值的. 多少人忘了理解这个
+<code>"捆绑"</code> , 不知道变量最终取的哪和哪啊. 哎.</p>
+<h4><span id="标准库中的装饰器">标准库中的装饰器</span></h4>
+<p>python内置了三个用于装饰方法的函数: <code>property</code> 、
+<code>classmethod</code> 和 <code>staticmethod</code> .
+这些是用来丰富类的.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">age</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="number">12</span></span><br></pre></td></tr></table></figure>
-<h3><span id="四-应用">四、应用</span></h3><p>非常适合有切面需求的场景，比如<strong>权限校验，日志记录和性能测试</strong>等等。比如你想要执行某个函数前记录日志或者记录时间来统计性能，又不想改动这个函数，就可以通过装饰器来实现。</p>
-<h5><span id="不用装饰器我们会这样来实现在函数执行前插入日志">不用装饰器，我们会这样来实现在函数执行前插入日志：</span></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;foo is running&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3><span id="四-应用">四、应用</span></h3>
+<p>非常适合有切面需求的场景，比如<strong>权限校验，日志记录和性能测试</strong>等等。比如你想要执行某个函数前记录日志或者记录时间来统计性能，又不想改动这个函数，就可以通过装饰器来实现。</p>
+<h5><span id="不用装饰器我们会这样来实现在函数执行前插入日志">不用装饰器，我们会这样来实现在函数执行前插入日志：</span></h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;foo is running&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>虽然这样写是满足了需求，但是改动了原有的代码，如果有其他的函数也需要插入日志的话，就需要改写所有的函数，不能复用代码。<strong>可以这么写</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logg</span>(<span class="params">func</span>):</span><br><span class="line">    logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">    func()</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line">use_log(bar)    <span class="comment">#将函数作为参数传入</span></span><br></pre></td></tr></table></figure>
 <p>这样写的确可以复用插入的日志，缺点就是显示的封装原来的函数，我们希望透明的做这件事。<strong>用装饰器来写</strong>:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        logging.warn(<span class="string">&#x27;%s is running&#x27;</span> % func.__name___)</span><br><span class="line">        <span class="keyword">return</span> func(*args,**kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am bar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">bar = use_log(bar)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
-<p><code>use_log()</code> 就是装饰器，它把真正我们想要执行的函数 <code>bar()</code> 封装在里面，返回一个封装了加入代码的新函数，看起来就像是 <code>bar()</code> 被装饰了一样。这个例子中的切面就是函数进入的时候，在这个时候，我们插入了一句记录日志的代码。这样写还是不够透明，通过@语法糖来起到 <code>bar = use_log(bar)</code> 的作用。</p>
+<p><code>use_log()</code> 就是装饰器，它把真正我们想要执行的函数
+<code>bar()</code>
+封装在里面，返回一个封装了加入代码的新函数，看起来就像是
+<code>bar()</code>
+被装饰了一样。这个例子中的切面就是函数进入的时候，在这个时候，我们插入了一句记录日志的代码。这样写还是不够透明，通过@语法糖来起到
+<code>bar = use_log(bar)</code> 的作用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bar = use_log(bar)<span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        logging.warn(<span class="string">&#x27;%s is running&#x27;</span> % func.__name___)</span><br><span class="line">        <span class="keyword">return</span> func(*args,**kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am bar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@use_log</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">haha</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am haha&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">bar()</span><br><span class="line">haha()</span><br></pre></td></tr></table></figure>
-<h5><span id="装饰器也是可以带参数的这位装饰器提供了更大的灵活性">装饰器也是可以带参数的，这位装饰器提供了更大的灵活性。</span></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">level</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">func</span>): </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">if</span> level == <span class="string">&quot;warn&quot;</span>:</span><br><span class="line">                logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">            <span class="keyword">return</span> func(*args)</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log(<span class="params">level=<span class="string">&quot;warn&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">name=<span class="string">&#x27;foo&#x27;</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;i am %s&quot;</span> % name)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-<p><font color="red"><strong>实际上是对装饰器的一个函数封装，并返回一个装饰器。</strong></font><strong>这里涉及到作用域的概念，之前有一篇博客提到过。可以把它看成一个带参数的闭包</strong>。当使用 <code>@use_log(level=&#39;warn&#39;)</code> 时，会将 <code>level</code> 的值传给装饰器的环境中。它的效果相当于 <code>use_log(level=&#39;warn&#39;)(foo)</code> ，也就是一个三层的调用。</p>
-<p>这里有一个美中不足，<code>decorator</code> 不会改变装饰的函数的功能，但会悄悄的改变一个 <code>__name__</code> 的属性(还有其他一些元信息)，因为 <code>__name__</code> 是跟着函数命名走的。<font color="red"> <strong>可以用 <code>@functools.wraps(func)</code> 来让装饰器仍然使用 <code>func</code> 的名字。</strong></font><strong>functools.wraps 也是一个装饰器，它将原函数的元信息拷贝到装饰器环境中，从而不会被所替换的新函数覆盖掉。</strong></p>
+<h5><span id="装饰器也是可以带参数的这位装饰器提供了更大的灵活性">装饰器也是可以带参数的，这位装饰器提供了更大的灵活性。</span></h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">level</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">func</span>): </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">if</span> level == <span class="string">&quot;warn&quot;</span>:</span><br><span class="line">                logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">            <span class="keyword">return</span> func(*args)</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log(<span class="params">level=<span class="string">&quot;warn&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">name=<span class="string">&#x27;foo&#x27;</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;i am %s&quot;</span> % name)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+<p><font color="red"><strong>实际上是对装饰器的一个函数封装，并返回一个装饰器。</strong></font><strong>这里涉及到作用域的概念，之前有一篇博客提到过。可以把它看成一个带参数的闭包</strong>。当使用
+<code>@use_log(level='warn')</code> 时，会将 <code>level</code>
+的值传给装饰器的环境中。它的效果相当于
+<code>use_log(level='warn')(foo)</code> ，也就是一个三层的调用。</p>
+<p>这里有一个美中不足，<code>decorator</code>
+不会改变装饰的函数的功能，但会悄悄的改变一个 <code>__name__</code>
+的属性(还有其他一些元信息)，因为 <code>__name__</code>
+是跟着函数命名走的。<font color="red"> <strong>可以用
+<code>@functools.wraps(func)</code> 来让装饰器仍然使用 <code>func</code>
+的名字。</strong></font><strong>functools.wraps
+也是一个装饰器，它将原函数的元信息拷贝到装饰器环境中，从而不会被所替换的新函数覆盖掉。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">log</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kw</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;call %s():&#x27;</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kw)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
 
     </div>

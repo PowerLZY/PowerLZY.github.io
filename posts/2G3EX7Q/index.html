@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、前缀树   一种好用的树结构：Trie树:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;508575094  1.1 Trie树简介 [有限状态自动机] [文本词频统计]在计算机科学中，trie，又称前缀树或字典树，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个">
+    <meta name="description" content="一、前缀树  一种好用的树结构：Trie树:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;508575094  1.1 Trie树简介 [有限状态自动机] [文本词频统计] 在计算机科学中，trie，又称前缀树或字典树，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法长征（13）结构设计">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2G3EX7Q/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、前缀树   一种好用的树结构：Trie树:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;508575094  1.1 Trie树简介 [有限状态自动机] [文本词频统计]在计算机科学中，trie，又称前缀树或字典树，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个">
+<meta property="og:description" content="一、前缀树  一种好用的树结构：Trie树:https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;508575094  1.1 Trie树简介 [有限状态自动机] [文本词频统计] 在计算机科学中，trie，又称前缀树或字典树，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-8740aeac82cd2fc980cd1148ab1a64dc_1440w.jpg">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=O%28%5Clog+n%29">
@@ -147,7 +147,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、前缀树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 Trie树简介 [有限状态自动机] [文本词频统计]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Trie树性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 实现方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 实现Trie (前缀树)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、LRU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、并查集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、序列化与反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 序列化的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2 为什么要序列化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">深度优先遍历</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、线段树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">离散化树状数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">算法：</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、前缀树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1
+Trie树简介 [有限状态自动机] [文本词频统计]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Trie树性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 实现方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 实现Trie (前缀树)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、LRU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、并查集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">四、序列化与反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 序列化的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2 为什么要序列化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">深度优先遍历</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">五、线段树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">离散化树状数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">算法：</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -299,117 +300,178 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="一-前缀树">一、前缀树</span></h2><blockquote>
-<p>  一种好用的树结构：Trie树:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/508575094">https://zhuanlan.zhihu.com/p/508575094</a></p>
+        <h2><span id="一-前缀树">一、前缀树</span></h2>
+<blockquote>
+<p>一种好用的树结构：Trie树:https://zhuanlan.zhihu.com/p/508575094</p>
 </blockquote>
-<h3><span id="11-trie树简介-有限状态自动机-文本词频统计"><strong>1.1 Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3><p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
-<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward Fredkin把它读作/ˈtriː/ “tree”。但是，其他作者把它读作/ˈtraɪ/ “try”。</p>
-<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。 Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i” ，“in”，“inn”。</p>
+<h3><span id="11trie树简介-有限状态自动机-文本词频统计"><strong>1.1
+Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3>
+<p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
+<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward
+Fredkin把它读作/ˈtriː/ "tree"。但是，其他作者把它读作/ˈtraɪ/ "try"。</p>
+<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。
+Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i”
+，“in”，“inn”。</p>
 <p><img src="https://pic1.zhimg.com/80/v2-8740aeac82cd2fc980cd1148ab1a64dc_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p>另外，<strong>单词查找树，Trie树，是一种树形结构，是一种哈希树的变种</strong>。<strong>典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计</strong>。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。</p>
-<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3><p>它有3个基本性质：</p>
+<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3>
+<p>它有3个基本性质：</p>
 <ul>
 <li>根节点不包含字符，除根节点外每一个节点都只包含一个字符；</li>
 <li>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串；</li>
 <li>每个节点的所有子节点包含的字符都不相同。</li>
 </ul>
-<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3><p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
-<h3><span id="14-实现方法"><strong>1.4 实现方法</strong></span></h3><p>搜索字典项目的方法为：</p>
+<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3>
+<p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
+<h3><span id="14-实现方法"><strong>1.4 实现方法</strong></span></h3>
+<p>搜索字典项目的方法为：</p>
 <ul>
 <li>从根结点开始一次搜索；</li>
 <li>取得要查找关键词的第一个字母，并根据该字母选择对应的子树并转到该子树继续进行检索；</li>
 <li>在相应的子树上，取得要查找关键词的第二个字母,并进一步选择对应的子树进行检索。</li>
 <li>迭代过程……</li>
-<li>在某个结点处，关键词的所有字母已被取出，则读取附在该结点上的信息，即完成查找。 其他操作类似处理</li>
+<li>在某个结点处，关键词的所有字母已被取出，则读取附在该结点上的信息，即完成查找。
+其他操作类似处理</li>
 </ul>
-<h3><span id="15-实现trie-前缀树">1.5 实现<strong>Trie (前缀树)</strong></span></h3><p>Trie（发音类似 “try”）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。</p>
+<h3><span id="15-实现trie-前缀树">1.5 实现<strong>Trie (前缀树)</strong></span></h3>
+<p>Trie（发音类似 "try"）或者说 前缀树
+是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。</p>
 <p><strong>请你实现 Trie 类：</strong></p>
 <ul>
-<li><p><strong>Trie()</strong> :初始化前缀树对象。</p>
+<li><strong>Trie()</strong> :初始化前缀树对象。
 <ul>
-<li>self.children = [None] <em> 26 , <em>*指向子节点的指针数组 children</em></em></li>
-<li>self.isEnd = False , 表示该节点<strong>是否为字符串的结尾</strong>。</li>
-</ul>
-</li>
-<li><p><strong>void insert(String word)</strong> :向前缀树中插入字符串 word 。</p>
+<li>self.children = [None] * 26 , <strong>指向子节点的指针数组
+children</strong></li>
+<li>self.isEnd = False ,
+表示该节点<strong>是否为字符串的结尾</strong>。</li>
+</ul></li>
+<li><strong>void insert(String word)</strong> :向前缀树中插入字符串 word
+。
 <ul>
-<li>我们<strong>从字典树的根开始</strong>，插入字符串。对于当前字符对应的子节点，有两种情况：<ul>
+<li>我们<strong>从字典树的根开始</strong>，插入字符串。对于当前字符对应的子节点，有两种情况：
+<ul>
 <li><strong>子节点存在</strong>。沿着指针移动到子节点，继续处理下一个字符。</li>
-<li><strong>子节点不存在</strong>。创建一个新的子节点，记录在children 数组的对应位置上，然后沿着指针移动到子节点，继续搜索下一个字符。</li>
-</ul>
-</li>
+<li><strong>子节点不存在</strong>。创建一个新的子节点，记录在children
+数组的对应位置上，然后沿着指针移动到子节点，继续搜索下一个字符。</li>
+</ul></li>
 <li>重复以上步骤，直到处理字符串的最后一个字符，然后将当前节点标记为字符串的结尾。</li>
-</ul>
-</li>
-<li><strong>boolean search(String word)</strong> 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。<ul>
-<li>我们从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：<ul>
+</ul></li>
+<li><strong>boolean search(String word)</strong> 如果字符串 word
+在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+<ul>
+<li>我们从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：
+<ul>
 <li>子节点存在。沿着指针移动到子节点，继续搜索下一个字符。</li>
 <li>子节点不存在。说明字典树中不包含该前缀，返回空指针。</li>
-</ul>
-</li>
+</ul></li>
 <li>重复以上步骤，直到返回空指针或搜索完前缀的最后一个字符。</li>
-</ul>
-</li>
-<li><strong>boolean startsWith(String prefix)</strong> 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。</li>
+</ul></li>
+<li><strong>boolean startsWith(String prefix)</strong>
+如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true
+；否则，返回 false 。</li>
 </ul>
 <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">输入</span><br><span class="line">[&quot;Trie&quot;, &quot;insert&quot;, &quot;search&quot;, &quot;search&quot;, &quot;startsWith&quot;, &quot;insert&quot;, &quot;search&quot;]</span><br><span class="line">[[], [&quot;apple&quot;], [&quot;apple&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;]]</span><br><span class="line">输出</span><br><span class="line">[null, null, true, false, true, null, true]</span><br><span class="line"></span><br><span class="line">解释</span><br><span class="line">Trie trie = new Trie();</span><br><span class="line">trie.insert(&quot;apple&quot;);</span><br><span class="line">trie.search(&quot;apple&quot;);   // 返回 True</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 False</span><br><span class="line">trie.startsWith(&quot;app&quot;); // 返回 True</span><br><span class="line">trie.insert(&quot;app&quot;);</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 True</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.children = [<span class="literal">None</span>] * <span class="number">26</span></span><br><span class="line">        self.isEnd = <span class="literal">False</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">searchPrefix</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="string">&quot;Trie&quot;</span>:</span><br><span class="line">        node = self <span class="comment"># 根节点</span></span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> prefix:</span><br><span class="line">            ch = <span class="built_in">ord</span>(ch) - <span class="built_in">ord</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.children[ch]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            node = node.children[ch]</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        node = self</span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> word:</span><br><span class="line">            ch = <span class="built_in">ord</span>(ch) - <span class="built_in">ord</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.children[ch]:</span><br><span class="line">                node.children[ch] = Trie()</span><br><span class="line">            node = node.children[ch]</span><br><span class="line">        node.isEnd = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        node = self.searchPrefix(word)</span><br><span class="line">        <span class="keyword">return</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> node.isEnd</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">startsWith</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">return</span> self.searchPrefix(prefix) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h2><span id="二-lru">二、LRU</span></h2><h4><span id="146-lru-缓存"></span></h4><p>请你设计并实现一个满足 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/LRU">LRU (最近最少使用) 缓存</a> 约束的数据结构。</p>
+<h2><span id="二-lru">二、LRU</span></h2>
+<h4><span id="146lru-缓存"></span></h4>
+<p>请你设计并实现一个满足 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/LRU">LRU
+(最近最少使用) 缓存</a> 约束的数据结构。</p>
 <p>实现 <code>LRUCache</code> 类：</p>
 <ul>
-<li><code>LRUCache(int capacity)</code> 以 <strong>正整数</strong> 作为容量 <code>capacity</code> 初始化 LRU 缓存</li>
-<li><code>int get(int key)</code> 如果关键字 <code>key</code> 存在于缓存中，则返回关键字的值，否则返回 <code>-1</code> 。</li>
-<li><code>void put(int key, int value)</code> 如果关键字 <code>key</code> 已经存在，则变更其数据值 <code>value</code> ；如果不存在，则向缓存中插入该组 key-value 。如果插入操作导致关键字数量超过 capacity ，则应该 逐出 最久未使用的关键字。</li>
+<li><code>LRUCache(int capacity)</code> 以 <strong>正整数</strong>
+作为容量 <code>capacity</code> 初始化 LRU 缓存</li>
+<li><code>int get(int key)</code> 如果关键字 <code>key</code>
+存在于缓存中，则返回关键字的值，否则返回 <code>-1</code> 。</li>
+<li><code>void put(int key, int value)</code> 如果关键字
+<code>key</code> 已经存在，则变更其数据值 <code>value</code>
+；如果不存在，则向缓存中插入该组 key-value
+。如果插入操作导致关键字数量超过 capacity ，则应该 逐出
+最久未使用的关键字。</li>
 </ul>
-<p>函数 <code>get</code> 和 <code>put</code> 必须以 <code>O(1)</code> 的平均时间复杂度运行。</p>
+<p>函数 <code>get</code> 和 <code>put</code> 必须以 <code>O(1)</code>
+的平均时间复杂度运行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DLinkedNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, key = <span class="number">0</span>, value = <span class="number">0</span></span>):</span><br><span class="line">        self.key = key</span><br><span class="line">        self.value = value</span><br><span class="line">        self.prev = <span class="literal">None</span></span><br><span class="line">        self.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, capacity: <span class="built_in">int</span></span>):</span><br><span class="line">      	<span class="comment"># 使用伪头部和伪尾部节点    </span></span><br><span class="line">        self.cache = <span class="built_in">dict</span>()</span><br><span class="line">        self.head = DLinkedNode()</span><br><span class="line">        self.tail = DLinkedNode()</span><br><span class="line">        self.head.<span class="built_in">next</span> = self.tail</span><br><span class="line">        self.tail.prev = self.head</span><br><span class="line">        self.capacity = capacity</span><br><span class="line">        self.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, key: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.cache:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="comment"># 如果 key 存在，先通过哈希表定位，再移到头部</span></span><br><span class="line">        node = self.cache[key]</span><br><span class="line">        self.moveToHead(node)<span class="comment"># &quot;如果数据被访问过。那未来的访问几率更高&quot;</span></span><br><span class="line">        <span class="keyword">return</span> node.value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">put</span>(<span class="params">self, key: <span class="built_in">int</span>, value: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.cache:</span><br><span class="line">          	<span class="comment"># 如果 key 不存在，创建一个新的节点</span></span><br><span class="line">            node = DLinkedNode(key, value)</span><br><span class="line">            <span class="comment"># 添加进哈希表</span></span><br><span class="line">            self.cache[key] = node</span><br><span class="line">            <span class="comment"># 添加至双向链表的头部</span></span><br><span class="line">            self.size += <span class="number">1</span></span><br><span class="line">            self.addToHead(node)</span><br><span class="line">            <span class="keyword">if</span> self.size &gt; self.capacity:</span><br><span class="line">              	<span class="comment"># 如果超出容量，删除双向链表的尾部节点</span></span><br><span class="line">                removed = self.removeTail()</span><br><span class="line">                <span class="comment"># 删除哈希表中对应的项</span></span><br><span class="line">                self.cache.pop(removed.key)</span><br><span class="line">                self.size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          	<span class="comment"># 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部</span></span><br><span class="line">            node = self.cache[key]</span><br><span class="line">            node.value = value</span><br><span class="line">            self.moveToHead(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addToHead</span>(<span class="params">self, node</span>):</span><br><span class="line">        node.prev = self.head</span><br><span class="line">        node.<span class="built_in">next</span> = self.head.<span class="built_in">next</span></span><br><span class="line">        self.head.<span class="built_in">next</span>.prev = node</span><br><span class="line">        self.head.<span class="built_in">next</span> = node</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeNode</span>(<span class="params">self, node</span>): </span><br><span class="line">        node.prev.<span class="built_in">next</span> = node.<span class="built_in">next</span></span><br><span class="line">        node.<span class="built_in">next</span>.prev = node.prev</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">moveToHead</span>(<span class="params">self, node</span>):</span><br><span class="line">        self.removeNode(node)</span><br><span class="line">        self.addToHead(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeTail</span>(<span class="params">self</span>):</span><br><span class="line">        node = self.tail.prev</span><br><span class="line">        self.removeNode(node)</span><br><span class="line">        <span class="keyword">return</span> node</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>  <strong>LFU，最近不经常使用</strong>，把数据加入到链表中，按频次排序，一个数据被访问过，把它的频次+1，发生淘汰的时候，把频次低的淘汰掉。<br>   比如有数据 1，1，1，2，2，3<br>   缓存中有（1(3次)，2(2次)）<br>   当3加入的时候，得把后面的2淘汰，变成（1(3次)，3(1次)）<br>   区别：LRU 是得把 1 淘汰。</p>
+<p><strong>LFU，最近不经常使用</strong>，把数据加入到链表中，按频次排序，一个数据被访问过，把它的频次+1，发生淘汰的时候，把频次低的淘汰掉。
+比如有数据 1，1，1，2，2，3 缓存中有（1(3次)，2(2次)）
+当3加入的时候，得把后面的2淘汰，变成（1(3次)，3(1次)） 区别：LRU 是得把
+1 淘汰。</p>
 </blockquote>
-<h2><span id="三-并查集">三、并查集</span></h2><h4><span id="剑指-offer-ii-117-相似的字符串"></span></h4><p>如果交换字符串 <code>X</code> 中的两个不同位置的字母，使得它和字符串 <code>Y</code> 相等，那么称 <code>X</code> 和 <code>Y</code> 两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。例如，”tars” 和 “rats” 是相似的 (交换 0 与 2 的位置)； “rats” 和 “arts” 也是相似的，但是 “star” 不与 “tars”，”rats”，或 “arts” 相似。</p>
-<p>总之，它们通过相似性形成了两个关联组：{“tars”, “rats”, “arts”} 和 {“star”}。注意，”tars” 和 “arts” 是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。</p>
-<p>给定一个字符串列表 strs。列表中的每个字符串都是 strs 中其它所有字符串的一个 字母异位词 。请问 strs 中有多少个相似字符串组？</p>
+<h2><span id="三-并查集">三、并查集</span></h2>
+<h4><span id="剑指-offer-ii-117相似的字符串"></span></h4>
+<p>如果交换字符串 <code>X</code> 中的两个不同位置的字母，使得它和字符串
+<code>Y</code> 相等，那么称 <code>X</code> 和 <code>Y</code>
+两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。例如，"tars"
+和 "rats" 是相似的 (交换 0 与 2 的位置)； "rats" 和 "arts"
+也是相似的，但是 "star" 不与 "tars"，"rats"，或 "arts" 相似。</p>
+<p>总之，它们通过相似性形成了两个关联组：{"tars", "rats", "arts"} 和
+{"star"}。注意，"tars" 和 "arts"
+是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。</p>
+<p>给定一个字符串列表 strs。列表中的每个字符串都是 strs
+中其它所有字符串的一个 字母异位词 。请问 strs
+中有多少个相似字符串组？</p>
 <p><strong>字母异位词（anagram）</strong>，一种把某个字符串的字母的位置（顺序）加以改换所形成的新词。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UnionFind</span>:</span><br><span class="line">  	<span class="comment"># 并查集</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.parent = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        self.count = n</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">if</span> self.parent[x] == x:</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        self.parent[x] = self.find(self.parent[x])</span><br><span class="line">        <span class="keyword">return</span> self.parent[x]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">union</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        x, y = self.find(x), self.find(y)</span><br><span class="line">        <span class="keyword">if</span> x != y:</span><br><span class="line">            self.parent[x] = y</span><br><span class="line">            self.count -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numSimilarGroups</span>(<span class="params">self, strs: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">      	<span class="comment"># 相似的字符串</span></span><br><span class="line">        m, n = <span class="built_in">len</span>(strs), <span class="built_in">len</span>(strs[<span class="number">0</span>])</span><br><span class="line">        un = UnionFind(m)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, m):</span><br><span class="line">                cnt = <span class="number">0</span></span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                    <span class="keyword">if</span> strs[i][k] != strs[j][k]:</span><br><span class="line">                        cnt += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">if</span> cnt &gt; <span class="number">2</span>:</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>: <span class="comment"># 上下文管理器</span></span><br><span class="line">                    un.union(i, j)</span><br><span class="line">        <span class="keyword">return</span> un.count</span><br></pre></td></tr></table></figure>
-<h2><span id="四-序列化与反序列化">四、序列化与反序列化</span></h2><ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40462507">https://zhuanlan.zhihu.com/p/40462507</a></li>
+<h2><span id="四-序列化与反序列化">四、序列化与反序列化</span></h2>
+<ul>
+<li>https://zhuanlan.zhihu.com/p/40462507</li>
 </ul>
 <p><strong>序列化：</strong>把对象转化为可传输的字节序列过程称为序列化。</p>
 <p><strong>反序列化：</strong>把字节序列还原为对象的过程称为反序列化。</p>
-<h4><span id="41-序列化的定义">4.1 序列化的定义</span></h4><p><strong>序列化</strong>：把对象转化为可传输的字节序列过程称为序列化。</p>
+<h4><span id="41-序列化的定义">4.1 序列化的定义</span></h4>
+<p><strong>序列化</strong>：把对象转化为可传输的字节序列过程称为序列化。</p>
 <p><strong>反序列化</strong>：把字节序列还原为对象的过程称为反序列化。</p>
-<h4><span id="42-为什么要序列化">4.2 为什么要序列化？</span></h4><p>其实序列化最终的目的是为了对象可以<strong>跨平台存储，和进行网络传输</strong>。而我们进行跨平台存储和网络传输的方式就是IO，而我们的IO支持的数据格式就是字节数组。序列化只是一种拆装组装对象的规则，那么这种规则肯定也可能有多种多样，比如现在常见的序列化方式有：</p>
+<h4><span id="42-为什么要序列化">4.2 为什么要序列化？</span></h4>
+<p>其实序列化最终的目的是为了对象可以<strong>跨平台存储，和进行网络传输</strong>。而我们进行跨平台存储和网络传输的方式就是IO，而我们的IO支持的数据格式就是字节数组。序列化只是一种拆装组装对象的规则，那么这种规则肯定也可能有多种多样，比如现在常见的序列化方式有：</p>
 <p><strong>JDK（不支持跨语言）、JSON、XML、Hessian、Kryo（不支持跨语言）、Thrift、Protostuff、FST（不支持跨语言）</strong></p>
-<h4><span id="剑指-offer-37-序列化二叉树"></span></h4><p>请实现两个函数，分别用来序列化和反序列化二叉树。你需要设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。</p>
+<h4><span id="剑指offer-37-序列化二叉树"></span></h4>
+<p>请实现两个函数，分别用来序列化和反序列化二叉树。你需要设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列
+/
+反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。</p>
 <ul>
 <li><h5><span id="深度优先遍历">深度优先遍历</span></h5></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Codec</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">serialize</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="comment"># 后续遍历 比 前序遍历快很多 pop(), pop(0)</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DFS : ncodes a tree to a single string.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;None&#x27;</span></span><br><span class="line">        <span class="keyword">return</span>  <span class="built_in">str</span>(self.serialize(root.left)) + <span class="string">&#x27;,&#x27;</span> + <span class="built_in">str</span>(self.serialize(root.right)) + <span class="string">&#x27;,&#x27;</span> + <span class="built_in">str</span>(root.val) </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deserialize</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Decodes your encoded data to tree.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :type data: str</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">dfslist:<span class="built_in">list</span>(<span class="params"></span>)</span>):</span><br><span class="line">            val = dfslist.pop()</span><br><span class="line">            <span class="keyword">if</span> val == <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            root = TreeNode(<span class="built_in">int</span>(val))</span><br><span class="line">            root.right = dfs(dfslist)</span><br><span class="line">            root.left = dfs(dfslist)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        dfslist = data.split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> dfs(dfslist)</span><br></pre></td></tr></table></figure>
-<h2><span id="五-线段树">五、线段树</span></h2><ul>
-<li>算法学习笔记(14): 线段树：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106118909">https://zhuanlan.zhihu.com/p/106118909</a></li>
+<h2><span id="五-线段树">五、线段树</span></h2>
+<ul>
+<li>算法学习笔记(14):
+线段树：https://zhuanlan.zhihu.com/p/106118909</li>
 </ul>
-<p><strong>线段树</strong>（Segment Tree）几乎是算法竞赛最常用的数据结构了，它主要用于维护<strong>区间信息</strong>（要求满足结合律）。与树状数组相比，它可以实现 <img src="https://www.zhihu.com/equation?tex=O%28%5Clog+n%29" alt="[公式]"> 的<strong>区间修改</strong>，还可以同时支持<strong>多种操作</strong>（加、乘)，更具通用性。</p>
+<p><strong>线段树</strong>（Segment
+Tree）几乎是算法竞赛最常用的数据结构了，它主要用于维护<strong>区间信息</strong>（要求满足结合律）。与树状数组相比，它可以实现
+<img src="https://www.zhihu.com/equation?tex=O%28%5Clog+n%29" alt="[公式]">
+的<strong>区间修改</strong>，还可以同时支持<strong>多种操作</strong>（加、乘)，更具通用性。</p>
 <p><img src="https://pic1.zhimg.com/80/v2-5e9124a6147143e51cea46755e9a0398_1440w.jpg" alt="img" style="zoom: 33%;"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BIT</span>:</span><br><span class="line">    <span class="comment"># 线段树: 动态维护前缀和数据的结构</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.n = n</span><br><span class="line">        self.tree = [<span class="number">0</span>] * (n+<span class="number">1</span>)</span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lowbit</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="comment"># 二进制最小位1的位置</span></span><br><span class="line">        <span class="keyword">return</span> x&amp;(-x)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, x</span>):</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> x&gt;<span class="number">0</span>:</span><br><span class="line">            ans += self.tree[x]</span><br><span class="line">            x -= BIT.lowbit(x)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">while</span> x&lt;=self.n:</span><br><span class="line">            self.tree[x] += <span class="number">1</span></span><br><span class="line">            x += BIT.lowbit(x)</span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-51-数组中的逆序对"></span></h4><p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
+<h4><span id="剑指offer-51-数组中的逆序对"></span></h4>
+<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
 <ul>
-<li><h4><span id="离散化树状数组">离散化树状数组</span></h4><ul>
-<li><strong>单点更新 <code>update(i, v)</code>：</strong> 把序列 i<em>i</em> 位置的数加上一个值 v<em>，这题 v</em>=1</li>
-<li><strong>区间查询 <code>query(i)</code>：</strong> 查询序列 [1⋯<em>i</em>] 区间的区间和，即 i<em>i</em> 位置的前缀和</li>
+<li><h4><span id="离散化树状数组">离散化树状数组</span></h4>
+<ul>
+<li><strong>单点更新 <code>update(i, v)</code>：</strong> 把序列
+i<em>i</em> 位置的数加上一个值 v<em>，这题 v</em>=1</li>
+<li><strong>区间查询 <code>query(i)</code>：</strong> 查询序列
+[1⋯<em>i</em>] 区间的区间和，即 i<em>i</em> 位置的前缀和</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><strong>修改和查询的时间代价都是 O<em>(log</em>n<em>)，其中 n</em>为需要维护前缀和的序列的长度。</strong></p>
+<p><strong>修改和查询的时间代价都是 O<em>(log</em>n<em>)，其中
+n</em>为需要维护前缀和的序列的长度。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reversePairs</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 离散化+线性数组 nums = [7,5,6,4]</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="comment"># 求每个数比他小的有几个</span></span><br><span class="line">        tmp = <span class="built_in">sorted</span>(nums)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            nums[i] = bisect.bisect_left(tmp, nums[i]) + <span class="number">1</span></span><br><span class="line">        <span class="comment"># nums = [4,2,3,1]</span></span><br><span class="line">        bit = BIT(n) <span class="comment"># [0,0,0,0,0]</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            ans += bit.query(nums[i] - <span class="number">1</span>)</span><br><span class="line">            bit.update(nums[i])</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
-<h2><span id="自动机">自动机</span></h2><p><strong>字符串处理的题目往往涉及复杂的流程以及条件情况</strong>，如果直接上手写程序，一不小心就会写出极其臃肿的代码。</p>
+<h2><span id="自动机">自动机</span></h2>
+<p><strong>字符串处理的题目往往涉及复杂的流程以及条件情况</strong>，如果直接上手写程序，一不小心就会写出极其臃肿的代码。</p>
 <p>因此，为了有条理地分析每个输入字符的处理方法，我们可以使用自动机这个概念：</p>
-<p>我们的程序在每个时刻有一个状态 s，每次从序列中输入一个字符 c，并根据字符 c 转移到下一个状态 s’。这样，我们只需要建立一个覆盖所有情况的从 s 与 c 映射到 s’ 的表格即可解决题目中的问题。</p>
-<h4><span id="算法">算法：</span></h4><p>本题可以建立如下图所示的自动机：</p>
+<p>我们的程序在每个时刻有一个状态 s，每次从序列中输入一个字符
+c，并根据字符 c 转移到下一个状态
+s'。这样，我们只需要建立一个覆盖所有情况的从 s 与 c 映射到 s'
+的表格即可解决题目中的问题。</p>
+<h4><span id="算法">算法：</span></h4>
+<p>本题可以建立如下图所示的自动机：</p>
 <p><img src="https://assets.leetcode-cn.com/solution-static/8/fig1.png" alt="fig1" style="zoom: 50%;"></p>
 <p>我们也可以用下面的表格来表示这个自动机：</p>
 <p><img src="../../../../../Library/Application Support/typora-user-images/image-20220617125627816.png" alt="image-20220617125627816" style="zoom:50%;"></p>
-<p>接下来编程部分就非常简单了：我们只需要把上面这个状态转换表抄进代码即可。另外自动机也需要记录当前已经输入的数字，只要在 s’ 为 in_number 时，更新我们输入的数字，即可最终得到输入的数字。</p>
+<p>接下来编程部分就非常简单了：我们只需要把上面这个状态转换表抄进代码即可。另外自动机也需要记录当前已经输入的数字，只要在
+s' 为 in_number 时，更新我们输入的数字，即可最终得到输入的数字。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">INT_MAX = <span class="number">2</span> ** <span class="number">31</span> - <span class="number">1</span></span><br><span class="line">INT_MIN = -<span class="number">2</span> ** <span class="number">31</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Automaton</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.state = <span class="string">&#x27;start&#x27;</span></span><br><span class="line">        self.sign = <span class="number">1</span></span><br><span class="line">        self.ans = <span class="number">0</span></span><br><span class="line">        self.table = &#123;</span><br><span class="line">            <span class="string">&#x27;start&#x27;</span>: [<span class="string">&#x27;start&#x27;</span>, <span class="string">&#x27;signed&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;signed&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;in_number&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;end&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_col</span>(<span class="params">self, c</span>):</span><br><span class="line">        <span class="keyword">if</span> c.isspace():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">or</span> c == <span class="string">&#x27;-&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> c.isdigit():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, c</span>):</span><br><span class="line">        self.state = self.table[self.state][self.get_col(c)]</span><br><span class="line">        <span class="keyword">if</span> self.state == <span class="string">&#x27;in_number&#x27;</span>:</span><br><span class="line">            self.ans = self.ans * <span class="number">10</span> + <span class="built_in">int</span>(c)</span><br><span class="line">            self.ans = <span class="built_in">min</span>(self.ans, INT_MAX) <span class="keyword">if</span> self.sign == <span class="number">1</span> <span class="keyword">else</span> <span class="built_in">min</span>(self.ans, -INT_MIN)</span><br><span class="line">        <span class="keyword">elif</span> self.state == <span class="string">&#x27;signed&#x27;</span>:</span><br><span class="line">            self.sign = <span class="number">1</span> <span class="keyword">if</span> c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">else</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">myAtoi</span>(<span class="params">self, <span class="built_in">str</span>: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        automaton = Automaton()</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">str</span>:</span><br><span class="line">            automaton.get(c)</span><br><span class="line">        <span class="keyword">return</span> automaton.sign * automaton.ans</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -441,13 +503,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/1SP3CDD/" rel="prev" title="算法长征-Hot100">
-                  <i class="fa fa-chevron-left"></i> 算法长征-Hot100
+                <a href="/posts/3J7GHQ3/" rel="prev" title="安全场景（3）高级威胁发现">
+                  <i class="fa fa-chevron-left"></i> 安全场景（3）高级威胁发现
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/2T4SP03/" rel="next" title="算法长征（2）链表">
-                  算法长征（2）链表 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/1SP3CDD/" rel="next" title="算法长征-Hot100">
+                  算法长征-Hot100 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

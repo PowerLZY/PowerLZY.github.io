@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="ELMO-具有上下文语境的词嵌入   https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;504527165   1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）词嵌入：将词用一个具有语义信息的多维向量来表示 静态词嵌入：多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变， 没办法结合语境给出正确的词向量，即一词多义的问题 动态词嵌入：根据不同的上下文语境调整词的语义，能较好的">
+    <meta name="description" content="ELMO-具有上下文语境的词嵌入  https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;504527165   1.从静态词嵌入到动态词嵌入（具有语境的词嵌入） 词嵌入：将词用一个具有语义信息的多维向量来表示 静态词嵌入：多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变， 没办法结合语境给出正确的词向量，即一词多义的问题 动态词嵌入：根据不同的上下文语境调整词的语义，能较好的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习-NLP（7）ELMO">
 <meta property="og:url" content="https://powerlzy.github.io/posts/181HVAR/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="ELMO-具有上下文语境的词嵌入   https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;504527165   1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）词嵌入：将词用一个具有语义信息的多维向量来表示 静态词嵌入：多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变， 没办法结合语境给出正确的词向量，即一词多义的问题 动态词嵌入：根据不同的上下文语境调整词的语义，能较好的">
+<meta property="og:description" content="ELMO-具有上下文语境的词嵌入  https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;504527165   1.从静态词嵌入到动态词嵌入（具有语境的词嵌入） 词嵌入：将词用一个具有语义信息的多维向量来表示 静态词嵌入：多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变， 没办法结合语境给出正确的词向量，即一词多义的问题 动态词嵌入：根据不同的上下文语境调整词的语义，能较好的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic3.zhimg.com/v2-17095ae7e4d6965c968518e446e64475_720w.png?source=d16d100b">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=%28x_1%2Cx_2%2C...%2Cx_N%29">
@@ -35,6 +35,7 @@
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x_3">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x_1%2Cx_2">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x_N+%5Crightarrow+x_%7BN-1%7D%2C...%2C+%5Crightarrow+x_%7B2%7D+%5Crightarrow+x_1%2C+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3">
 <meta property="article:published_time" content="2022-06-22T14:08:00.225Z">
 <meta property="article:modified_time" content="2022-06-22T14:19:51.767Z">
@@ -150,7 +151,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">ELMO-具有上下文语境的词嵌入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.ELMO：Deep Contextualized Word Representations</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">ELMO-具有上下文语境的词嵌入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.ELMO：Deep
+Contextualized Word Representations</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -282,7 +284,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>962</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -300,24 +302,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="elmo-具有上下文语境的词嵌入">ELMO-具有上下文语境的词嵌入</span></h2><blockquote>
-<p>  <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/504527165">https://zhuanlan.zhihu.com/p/504527165</a></p>
+        <h2><span id="elmo-具有上下文语境的词嵌入">ELMO-具有上下文语境的词嵌入</span></h2>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/504527165</p>
 </blockquote>
 <p><img src="https://pic3.zhimg.com/v2-17095ae7e4d6965c968518e446e64475_720w.png?source=d16d100b" alt="ELMO-具有上下文语境的词嵌入-长文多图预警" style="zoom:67%;"></p>
-<h4><span id="1从静态词嵌入到动态词嵌入具有语境的词嵌入">1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）</span></h4><p><strong>词嵌入：</strong>将词用一个具有语义信息的多维向量来表示</p>
-<p><strong>静态词嵌入：</strong>多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变， <strong>没办法结合语境给出正确的词向量，即一词多义的问题</strong></p>
+<h4><span id="1从静态词嵌入到动态词嵌入具有语境的词嵌入">1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）</span></h4>
+<p><strong>词嵌入：</strong>将词用一个具有语义信息的多维向量来表示</p>
+<p><strong>静态词嵌入：</strong>多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变，
+<strong>没办法结合语境给出正确的词向量，即一词多义的问题</strong></p>
 <p><strong>动态词嵌入：</strong>根据不同的上下文语境调整词的语义，能较好的应对<strong>一词多义(polysemy)</strong>问题</p>
-<p>如何做到动态词嵌入呢？NAACL 2018 best paper <strong>ELMO(Embeddings from Language Model)</strong>能给你一个较好的答案</p>
-<h4><span id="2elmodeep-contextualized-word-representations">2.ELMO：Deep Contextualized Word Representations</span></h4><p>可以看到模型整体由 <strong>前向+后向LSTM</strong> 与 <strong>CNN</strong> 字符嵌入组成，详情见下图，还是非常直观的</p>
+<p>如何做到动态词嵌入呢？NAACL 2018 best paper <strong>ELMO(Embeddings
+from Language Model)</strong>能给你一个较好的答案</p>
+<h4><span id="2elmodeepcontextualized-word-representations">2.ELMO：Deep
+Contextualized Word Representations</span></h4>
+<p>可以看到模型整体由 <strong>前向+后向LSTM</strong> 与
+<strong>CNN</strong> 字符嵌入组成，详情见下图，还是非常直观的</p>
 <ul>
-<li><strong>CNN字符嵌入:</strong> 输入一句话(多个word) 先由CNN字符嵌入进行编码 得到每个word的词向量,简单来说就是<strong>把一个词分解成字母，然后对字母进行卷积操作获得词向量</strong>;</li>
-<li><strong>将词向量按照顺序分别输入到前向 后向 LSTM中进行嵌入：</strong>其实就是基于已知的词预测下一个词，对词的编码采用LSTM架构（不熟悉LSTM的话就简单看成是一个编码器就行了）前向+后向分别是从前到后和从后到前，<strong>注意：前向和后向的LSTM之间并不连接，why? 假如连接了预测过程就相当于泄题了，这个地方比较抽象，让我再深入一下：</strong><ul>
-<li>假如这里有一句话，由N个词组成 <img src="https://www.zhihu.com/equation?tex=%28x_1%2Cx_2%2C...%2Cx_N%29" alt="[公式]"> 组成,LSTM具有较好的记忆能力，能够记忆已经给出序列的信息，前向LSTM从前向后扫的时候会不停的记忆已知的信息，每一时刻预测结果出来以后会将其信息存储起来，这样每次预测下一时刻信息的时候都会已知前面词的信息，比如：预测 <img src="https://www.zhihu.com/equation?tex=x_2" alt="[公式]"> 时已知 <img src="https://www.zhihu.com/equation?tex=x_1" alt="[公式]"> ；预测 <img src="https://www.zhihu.com/equation?tex=x_3" alt="[公式]"> 时已知 <img src="https://www.zhihu.com/equation?tex=x_1%2Cx_2" alt="[公式]">.</li>
-<li>相应的，后向LSTM也一样，只不过词的输入顺序反过来了，在这里是从 <img src="https://www.zhihu.com/equation?tex=x_N+%5Crightarrow+x_%7BN-1%7D%2C...%2C+%5Crightarrow+x_%7B2%7D+%5Crightarrow+x_1%2C+" alt="[公式]"> 当t=N-1的时候,<strong>（就相当于前向LSTM的t=2时刻）</strong>， 后向LSTM会存储着 <img src="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3" alt="[公式]"> 的信息</li>
-<li>对于前向LSTM来说，<strong>在t=3时刻</strong>，预测x<em>3, 后向LSTM存储着的 ![[公式]](<a target="_blank" rel="noopener" href="https://www.zhihu.com/equation?tex=x_N%2Cx">https://www.zhihu.com/equation?tex=x_N%2Cx</a></em>%7BN-1%7D%2C…%2Cx_4%2Cx_3) 信息，<strong>由于前向LSTM与后向LSTM的连接给了两者信息交互的机会（泄题的机会)</strong>，因此这时候后向的LSTM会告诉前向LSTM：嘿 boy，不要再猜了，答案就是X3</li>
-</ul>
-</li>
-<li><strong>将CNN层的输出与多个LSTM层的输出拼接在一起 就得到一个词的表示了</strong></li>
+<li><strong>CNN字符嵌入:</strong> 输入一句话(多个word)
+先由CNN字符嵌入进行编码
+得到每个word的词向量,简单来说就是<strong>把一个词分解成字母，然后对字母进行卷积操作获得词向量</strong>;</li>
+<li><strong>将词向量按照顺序分别输入到前向 后向
+LSTM中进行嵌入：</strong>其实就是基于已知的词预测下一个词，对词的编码采用LSTM架构（不熟悉LSTM的话就简单看成是一个编码器就行了）前向+后向分别是从前到后和从后到前，<strong>注意：前向和后向的LSTM之间并不连接，why?
+假如连接了预测过程就相当于泄题了，这个地方比较抽象，让我再深入一下：</strong>
+<ul>
+<li>假如这里有一句话，由N个词组成 <img src="https://www.zhihu.com/equation?tex=%28x_1%2Cx_2%2C...%2Cx_N%29" alt="[公式]">
+组成,LSTM具有较好的记忆能力，能够记忆已经给出序列的信息，前向LSTM从前向后扫的时候会不停的记忆已知的信息，每一时刻预测结果出来以后会将其信息存储起来，这样每次预测下一时刻信息的时候都会已知前面词的信息，比如：预测
+<img src="https://www.zhihu.com/equation?tex=x_2" alt="[公式]"> 时已知
+<img src="https://www.zhihu.com/equation?tex=x_1" alt="[公式]"> ；预测
+<img src="https://www.zhihu.com/equation?tex=x_3" alt="[公式]"> 时已知
+<img src="https://www.zhihu.com/equation?tex=x_1%2Cx_2" alt="[公式]">.</li>
+<li>相应的，后向LSTM也一样，只不过词的输入顺序反过来了，在这里是从 <img src="https://www.zhihu.com/equation?tex=x_N+%5Crightarrow+x_%7BN-1%7D%2C...%2C+%5Crightarrow+x_%7B2%7D+%5Crightarrow+x_1%2C+" alt="[公式]">
+当t=N-1的时候,<strong>（就相当于前向LSTM的t=2时刻）</strong>，
+后向LSTM会存储着 <img src="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3" alt="[公式]"> 的信息</li>
+<li>对于前向LSTM来说，<strong>在t=3时刻</strong>，预测x_3,
+后向LSTM存储着的 <img src="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3" alt="[公式]">
+信息，<strong>由于前向LSTM与后向LSTM的连接给了两者信息交互的机会（泄题的机会)</strong>，因此这时候后向的LSTM会告诉前向LSTM：嘿
+boy，不要再猜了，答案就是X3</li>
+</ul></li>
+<li><strong>将CNN层的输出与多个LSTM层的输出拼接在一起
+就得到一个词的表示了</strong></li>
 </ul>
 
     </div>

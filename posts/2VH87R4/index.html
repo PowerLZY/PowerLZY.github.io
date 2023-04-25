@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Doc2Vec   论文｜Doc2vec的算法原理、代码实现及应用启发 - Thinkgamer的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;336921474  Doc2vec主要为了解决word2vec只包含局部窗口内的语义信息的问题，在进行词向量表示的时候融入了句子的语义表示。 Doc2vec其实包含了两种算法：  PV-DM（Distributed Memor">
+    <meta name="description" content="Doc2Vec  论文｜Doc2vec的算法原理、代码实现及应用启发 - Thinkgamer的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;336921474  Doc2vec主要为了解决word2vec只包含局部窗口内的语义信息的问题，在进行词向量表示的时候融入了句子的语义表示。 Doc2vec其实包含了两种算法：  PV-DM（Distributed Memory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习-NLP（3）doc2vec（PV-DM）">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2VH87R4/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="Doc2Vec   论文｜Doc2vec的算法原理、代码实现及应用启发 - Thinkgamer的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;336921474  Doc2vec主要为了解决word2vec只包含局部窗口内的语义信息的问题，在进行词向量表示的时候融入了句子的语义表示。 Doc2vec其实包含了两种算法：  PV-DM（Distributed Memor">
+<meta property="og:description" content="Doc2Vec  论文｜Doc2vec的算法原理、代码实现及应用启发 - Thinkgamer的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;336921474  Doc2vec主要为了解决word2vec只包含局部窗口内的语义信息的问题，在进行词向量表示的时候融入了句子的语义表示。 Doc2vec其实包含了两种算法：  PV-DM（Distributed Memory">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://powerlzy.github.io/Users/apple/Library/Application%20Support/typora-user-images/image-20220712163125902.png">
 <meta property="article:published_time" content="2022-05-27T13:21:08.983Z">
@@ -299,22 +299,39 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="doc2vec">Doc2Vec</span></h2><blockquote>
-<p>  论文｜Doc2vec的算法原理、代码实现及应用启发 - Thinkgamer的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/336921474">https://zhuanlan.zhihu.com/p/336921474</a></p>
+        <h2><span id="doc2vec">Doc2Vec</span></h2>
+<blockquote>
+<p>论文｜Doc2vec的算法原理、代码实现及应用启发 - Thinkgamer的文章 - 知乎
+https://zhuanlan.zhihu.com/p/336921474</p>
 </blockquote>
 <p>Doc2vec主要为了解决word2vec只包含局部窗口内的语义信息的问题，在进行词向量表示的时候融入了句子的语义表示。</p>
 <p><strong>Doc2vec其实包含了两种算法：</strong></p>
 <ul>
-<li>PV-DM（Distributed Memory Model of Paragraph Vector）:PV-DM类似于Word2vec中的CBOW模型</li>
+<li>PV-DM（Distributed Memory Model of Paragraph
+Vector）:PV-DM类似于Word2vec中的CBOW模型</li>
 <li>PV-DBOW（Distributed Bag of Words version of Paragraph Vector）</li>
 </ul>
-<h4><span id="原理">原理</span></h4><p><strong>doc2vec与word2vec的不同点</strong>：在输入层增加了Paragraph id向量，来作为句子的表示向量，该向量在<strong>同一句子的不同词训练</strong>中是<strong>权值共享</strong>的</p>
-<p><strong>原因</strong>：在word2vec训练中，<strong>每次只会选择句子中窗口内的词来进行训练学习当前词的向量表达，而忽略了窗口外的词，最终的句子向量也只是每个词的简单累加，</strong>加入Paragraph id向量在同一个句子的若干次训练中是共享的，所以同一句话会有多次训练，每次训练中输入都包含Paragraph vector，它可以被看作是句子的主旨，这样训练在获得词向量的同时也能获得准确的句子向量表示。</p>
+<h4><span id="原理">原理</span></h4>
+<p><strong>doc2vec与word2vec的不同点</strong>：在输入层增加了Paragraph
+id向量，来作为句子的表示向量，该向量在<strong>同一句子的不同词训练</strong>中是<strong>权值共享</strong>的</p>
+<p><strong>原因</strong>：在word2vec训练中，<strong>每次只会选择句子中窗口内的词来进行训练学习当前词的向量表达，而忽略了窗口外的词，最终的句子向量也只是每个词的简单累加，</strong>加入Paragraph
+id向量在同一个句子的若干次训练中是共享的，所以同一句话会有多次训练，每次训练中输入都包含Paragraph
+vector，它可以被看作是句子的主旨，这样训练在获得词向量的同时也能获得准确的句子向量表示。</p>
 <p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20220712163125902.png" alt="image-20220712163125902" style="zoom:50%;"></p>
-<p><strong>PV-DM模型的输入是固定长度的，其从段落的上下文的滑动窗口中进行采样，这一点和Word2vec是一致的，在基于同一段落构造好的样本中， 段落的向量是共享的，但是在基于不同段落构造好的样本中，段落的向量是不共享的。在所有的样本中，word的向量是一致的（共享的）。</strong></p>
-<p>在整个训练过程中，paragraph vector能够记忆整个句子的意义，word vector则能够基于全局部分学习到其具体的含义。</p>
-<h4><span id="训练">训练</span></h4><p>每次从一句话中滑动采样固定长度的词，取其中一个词作预测词，其他的作输入词。<strong>输入词对应的词向量word vector和本句话对应的句子向量Paragraph vector作为输入层的输入</strong>，将本句话的向量和本次采样的词向量相加求平均或者累加构成一个新的向量X，进而使用这个向量X预测此次窗口内的预测词（softmax）。</p>
-<h4><span id="预测">预测</span></h4><p>首先将新句子对应的Paragraph vector随机初始化，<strong>固定词向量还有投影层到输出层的softmax weights参数</strong>，对句子中的单词进行预测，根据结果<strong>进行Paragraph vector更新</strong>，获得最终的Paragraph vector。利用最终Paragraph vector进行词向量预测。</p>
+<p><strong>PV-DM模型的输入是固定长度的，其从段落的上下文的滑动窗口中进行采样，这一点和Word2vec是一致的，在基于同一段落构造好的样本中，
+段落的向量是共享的，但是在基于不同段落构造好的样本中，段落的向量是不共享的。在所有的样本中，word的向量是一致的（共享的）。</strong></p>
+<p>在整个训练过程中，paragraph vector能够记忆整个句子的意义，word
+vector则能够基于全局部分学习到其具体的含义。</p>
+<h4><span id="训练">训练</span></h4>
+<p>每次从一句话中滑动采样固定长度的词，取其中一个词作预测词，其他的作输入词。<strong>输入词对应的词向量word
+vector和本句话对应的句子向量Paragraph
+vector作为输入层的输入</strong>，将本句话的向量和本次采样的词向量相加求平均或者累加构成一个新的向量X，进而使用这个向量X预测此次窗口内的预测词（softmax）。</p>
+<h4><span id="预测">预测</span></h4>
+<p>首先将新句子对应的Paragraph
+vector随机初始化，<strong>固定词向量还有投影层到输出层的softmax
+weights参数</strong>，对句子中的单词进行预测，根据结果<strong>进行Paragraph
+vector更新</strong>，获得最终的Paragraph vector。利用最终Paragraph
+vector进行词向量预测。</p>
 
     </div>
 

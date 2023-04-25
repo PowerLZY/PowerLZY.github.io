@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="分布式 XGBoost4J - Spark 基本原理XGBoost4J-Spark是一个项目，旨在通过使XGBoost适应Apache Spark的MLLIB框架，无缝集成XGBoost和Apache Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：  特征工程：特征提取，变换，降维和选择等。 管道：构造，评估和调整ML管道">
+    <meta name="description" content="分布式 XGBoost4J - Spark 基本原理 XGBoost4J-Spark是一个项目，旨在通过使XGBoost适应Apache Spark的MLLIB框架，无缝集成XGBoost和Apache Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：  特征工程：特征提取，变换，降维和选择等。 管道：构造，评估和调整ML管">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工程设计-XGBoost4J">
 <meta property="og:url" content="https://powerlzy.github.io/posts/27C0J2T/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="分布式 XGBoost4J - Spark 基本原理XGBoost4J-Spark是一个项目，旨在通过使XGBoost适应Apache Spark的MLLIB框架，无缝集成XGBoost和Apache Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：  特征工程：特征提取，变换，降维和选择等。 管道：构造，评估和调整ML管道">
+<meta property="og:description" content="分布式 XGBoost4J - Spark 基本原理 XGBoost4J-Spark是一个项目，旨在通过使XGBoost适应Apache Spark的MLLIB框架，无缝集成XGBoost和Apache Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：  特征工程：特征提取，变换，降维和选择等。 管道：构造，评估和调整ML管">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-28T12:41:49.210Z">
 <meta property="article:modified_time" content="2022-04-28T12:43:17.664Z">
@@ -141,7 +141,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">分布式 XGBoost4J - Spark 基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">分布式 XGBoost4J - Spark
+基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -287,7 +288,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="分布式-xgboost4j-spark-基本原理">分布式 XGBoost4J - Spark 基本原理</span></h2><p><strong>XGBoost4J-Spark</strong>是一个项目，旨在通过使XGBoost适应Apache Spark的MLLIB框架，无缝集成XGBoost和Apache Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：</p>
+        <h2><span id="分布式-xgboost4j-spark基本原理">分布式 XGBoost4J - Spark
+基本原理</span></h2>
+<p><strong>XGBoost4J-Spark</strong>是一个项目，旨在通过使XGBoost适应Apache
+Spark的MLLIB框架，无缝集成XGBoost和Apache
+Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：</p>
 <ul>
 <li>特征工程：特征提取，变换，降维和选择等。</li>
 <li>管道：构造，评估和调整ML管道</li>
@@ -301,7 +306,9 @@
 <li>使用XGBoost4J-Spark构建机器学习管道</li>
 <li>在生产中运行XGBoost4J-Spark</li>
 </ul>
-<h3><span id="模型上线之模型即服务三自动上线框架"></span></h3><h3><span id="机器学习中的并行计算"></span></h3>
+<h3><span id="模型上线之模型即服务三自动上线框架"></span></h3>
+<h3><span id="机器学习中的并行计算"></span></h3>
+
     </div>
 
     

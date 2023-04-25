@@ -293,9 +293,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4><span id="剑指-offer-17-打印从1到最大的n位数"></span></h4><p>输入数字 <code>n</code>，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。【分治】【==<strong>大数打印解法</strong>==】</p>
+        <h4><span id="剑指offer-17-打印从1到最大的n位数"></span></h4>
+<p>输入数字 <code>n</code>，按顺序打印出从 1 到最大的 n
+位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数
+999。【分治】【==<strong>大数打印解法</strong>==】</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">printNumbers</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">index, num, digit</span>):</span><br><span class="line">            <span class="keyword">if</span> index == digit:</span><br><span class="line">                res.append(<span class="built_in">int</span>(<span class="string">&#x27;&#x27;</span>.join(num)))</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">                num.append(<span class="built_in">str</span>(i))</span><br><span class="line">                dfs(index + <span class="number">1</span>, num, digit)</span><br><span class="line">                num.pop()</span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">for</span> digit <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> first <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">                num = [<span class="built_in">str</span>(first)]</span><br><span class="line">                dfs(<span class="number">1</span>, num, digit)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-<h4><span id="560-和为-k-的子数组"></span></h4><p>给你一个整数数组 <code>nums</code> 和一个整数 <code>k</code> ，请你统计并返回 <em>该数组中和为 <code>k</code> 的<strong>==子数组==</strong>的个数</em> 。</p>
+<h4><span id="560-和为-k的子数组"></span></h4>
+<p>给你一个整数数组 <code>nums</code> 和一个整数 <code>k</code>
+，请你统计并返回 <em>该数组中和为 <code>k</code>
+的<strong>==子数组==</strong>的个数</em> 。</p>
 <ul>
 <li><code>-1000 &lt;= nums[i] &lt;= 1000</code></li>
 <li>前缀和 + 哈希表优化</li>

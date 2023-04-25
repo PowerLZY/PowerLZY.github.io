@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="[PyTorch 学习笔记] 静态图与动态图机制计算图深度学习就是对张量进行一系列的操作，随着操作种类和数量的增多，会出现各种值得思考的问题。比如多个操作之间是否可以并行，如何协同底层的不同设备，如何避免冗余的操作，以实现最高效的计算效率，同时避免一些 bug。因此产生了计算图 (Computational Graph)。 计算图是用来描述运算的有向无环图，有两个主要元素：节点 (Node) 和边">
+    <meta name="description" content="[PyTorch 学习笔记] 静态图与动态图机制 计算图 深度学习就是对张量进行一系列的操作，随着操作种类和数量的增多，会出现各种值得思考的问题。比如多个操作之间是否可以并行，如何协同底层的不同设备，如何避免冗余的操作，以实现最高效的计算效率，同时避免一些 bug。因此产生了计算图 (Computational Graph)。 计算图是用来描述运算的有向无环图，有两个主要元素：节点 (Node)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pytorch（2）静态图与动态图机制">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2DYJWRV/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="[PyTorch 学习笔记] 静态图与动态图机制计算图深度学习就是对张量进行一系列的操作，随着操作种类和数量的增多，会出现各种值得思考的问题。比如多个操作之间是否可以并行，如何协同底层的不同设备，如何避免冗余的操作，以实现最高效的计算效率，同时避免一些 bug。因此产生了计算图 (Computational Graph)。 计算图是用来描述运算的有向无环图，有两个主要元素：节点 (Node) 和边">
+<meta property="og:description" content="[PyTorch 学习笔记] 静态图与动态图机制 计算图 深度学习就是对张量进行一系列的操作，随着操作种类和数量的增多，会出现各种值得思考的问题。比如多个操作之间是否可以并行，如何协同底层的不同设备，如何避免冗余的操作，以实现最高效的计算效率，同时避免一些 bug。因此产生了计算图 (Computational Graph)。 计算图是用来描述运算的有向无环图，有两个主要元素：节点 (Node)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=y%3D%28x%2Bw%29%2A%28w%2B1%29">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-464ea7ee4475f3c7f08c389f65fd3e89_1440w.jpg">
@@ -156,7 +156,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 静态图与动态图机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">计算图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">计算图与梯度求导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">PyTorch 的动态图机制</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记]
+静态图与动态图机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">计算图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">计算图与梯度求导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">PyTorch 的动态图机制</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -312,23 +313,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pytorch-学习笔记-静态图与动态图机制">[PyTorch 学习笔记] 静态图与动态图机制</span></h2><h3><span id="计算图">计算图</span></h3><p>深度学习就是对张量进行一系列的操作，随着操作种类和数量的增多，会出现各种值得思考的问题。比如<strong>多个操作之间是否可以并行</strong>，<strong>如何协同底层的不同设备</strong>，如<strong>何避免冗余</strong>的操作，以实现最<strong>高效的计算效率</strong>，同时避免一些 bug。因此产生了<strong>计算图 (Computational Graph)</strong>。</p>
-<p>计算图是用来描述运算的有向无环图，有两个主要元素：<strong>节点 (Node)</strong> 和<strong>边 (Edge)</strong>。节点表示数据，如向量、矩阵、张量。边表示运算，如加减乘除卷积等。</p>
+        <h2><span id="pytorch-学习笔记静态图与动态图机制">[PyTorch 学习笔记]
+静态图与动态图机制</span></h2>
+<h3><span id="计算图">计算图</span></h3>
+<p>深度学习就是对张量进行一系列的操作，随着操作种类和数量的增多，会出现各种值得思考的问题。比如<strong>多个操作之间是否可以并行</strong>，<strong>如何协同底层的不同设备</strong>，如<strong>何避免冗余</strong>的操作，以实现最<strong>高效的计算效率</strong>，同时避免一些
+bug。因此产生了<strong>计算图 (Computational Graph)</strong>。</p>
+<p>计算图是用来描述运算的有向无环图，有两个主要元素：<strong>节点
+(Node)</strong> 和<strong>边
+(Edge)</strong>。节点表示数据，如向量、矩阵、张量。边表示运算，如加减乘除卷积等。</p>
 <p>用计算图表示：<img src="https://www.zhihu.com/equation?tex=y%3D%28x%2Bw%29%2A%28w%2B1%29" alt="[公式]">，如下所示：</p>
 <p><img src="https://pic2.zhimg.com/80/v2-464ea7ee4475f3c7f08c389f65fd3e89_1440w.jpg" alt="img" style="zoom: 67%;"></p>
 <p>可以看作， <img src="https://www.zhihu.com/equation?tex=y%3Da+%5Ctimes+b" alt="[公式]"> ，其中 <img src="https://www.zhihu.com/equation?tex=a%3Dx%2Bw" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=b%3Dw%2B1" alt="[公式]">。</p>
-<h3><span id="计算图与梯度求导">计算图与梯度求导</span></h3><p>这里求 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 对 <img src="https://www.zhihu.com/equation?tex=w" alt="[公式]"> 的导数。根复合函数的求导法则，可以得到如下过程。</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cfrac%7B%5Cpartial+y%7D%7B%5Cpartial+w%7D+%26%3D%5Cfrac%7B%5Cpartial+y%7D%7B%5Cpartial+a%7D+%5Cfrac%7B%5Cpartial+a%7D%7B%5Cpartial+w%7D%2B%5Cfrac%7B%5Cpartial+y%7D%7B%5Cpartial+b%7D+%5Cfrac%7B%5Cpartial+b%7D%7B%5Cpartial+w%7D+%5C%5C+%26%3Db+%2A+1%2Ba+%2A+1+%5C%5C+%26%3Db%2Ba+%5C%5C+%26%3D%28w%2B1%29%2B%28x%2Bw%29+%5C%5C+%26%3D2+%2A+w%2Bx%2B1+%5C%5C+%26%3D2+%2A+1%2B2%2B1%3D5%5Cend%7Baligned%7D" alt="[公式]"></p>
-<p>体现到计算图中，就是根节点 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 到叶子节点 <img src="https://www.zhihu.com/equation?tex=w" alt="[公式]"> 有两条路径 <code>y -&gt; a -&gt; w</code>和<code>y -&gt;b -&gt; w</code>。根节点依次对每条路径的孩子节点求导，一直到叶子节点<code>w</code>，最后把每条路径的导数相加即可。</p>
+<h3><span id="计算图与梯度求导">计算图与梯度求导</span></h3>
+<p>这里求 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 对 <img src="https://www.zhihu.com/equation?tex=w" alt="[公式]"> 的导数。根复合函数的求导法则，可以得到如下过程。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cfrac%7B%5Cpartial+y%7D%7B%5Cpartial+w%7D+%26%3D%5Cfrac%7B%5Cpartial+y%7D%7B%5Cpartial+a%7D+%5Cfrac%7B%5Cpartial+a%7D%7B%5Cpartial+w%7D%2B%5Cfrac%7B%5Cpartial+y%7D%7B%5Cpartial+b%7D+%5Cfrac%7B%5Cpartial+b%7D%7B%5Cpartial+w%7D+%5C%5C+%26%3Db+%2A+1%2Ba+%2A+1+%5C%5C+%26%3Db%2Ba+%5C%5C+%26%3D%28w%2B1%29%2B%28x%2Bw%29+%5C%5C+%26%3D2+%2A+w%2Bx%2B1+%5C%5C+%26%3D2+%2A+1%2B2%2B1%3D5%5Cend%7Baligned%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>体现到计算图中，就是根节点 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 到叶子节点
+<img src="https://www.zhihu.com/equation?tex=w" alt="[公式]">
+有两条路径
+<code>y -&gt; a -&gt; w</code>和<code>y -&gt;b -&gt; w</code>。根节点依次对每条路径的孩子节点求导，一直到叶子节点<code>w</code>，最后把每条路径的导数相加即可。</p>
 <p><img src="https://pic2.zhimg.com/80/v2-d4c05b194d2e123cb246115e90ec917d_1440w.jpg" alt="img" style="zoom:67%;"></p>
 <p>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">w = torch.tensor([<span class="number">1.</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">x = torch.tensor([<span class="number">2.</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># y=(x+w)*(w+1)</span></span><br><span class="line">a = torch.add(w, x)     <span class="comment"># retain_grad()</span></span><br><span class="line">b = torch.add(w, <span class="number">1</span>)</span><br><span class="line">y = torch.mul(a, b)</span><br><span class="line"><span class="comment"># y 求导</span></span><br><span class="line">y.backward()</span><br><span class="line"><span class="comment"># 打印 w 的梯度，就是 y 对 w 的导数</span></span><br><span class="line"><span class="built_in">print</span>(w.grad)</span><br></pre></td></tr></table></figure>
-<p>结果为<code>tensor([5.])</code>，我们回顾前面说过的 Tensor 中有一个属性<code>is_leaf</code>标记是否为叶子节点。</p>
+<p>结果为<code>tensor([5.])</code>，我们回顾前面说过的 Tensor
+中有一个属性<code>is_leaf</code>标记是否为叶子节点。</p>
 <p><img src="https://pic2.zhimg.com/80/v2-3bc1ff0ab920582a3491111b81a32fe5_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>在上面的例子中，<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=w" alt="[公式]"> 是叶子节点，其他所有节点都依赖于叶子节点。<strong>叶子节点的概念主要是为了节省内存，在计算图中的一轮反向传播结束之后，非叶子节点的梯度是会被释放的</strong>。</p>
-<h3><span id="pytorch-的动态图机制">PyTorch 的动态图机制</span></h3><p><strong>PyTorch 采用的是动态图机制 (Dynamic Computational Graph)，而 Tensorflow 采用的是静态图机制 (Static Computational Graph)。</strong></p>
-<p><strong>动态图是运算和搭建同时进行，也就是可以先计算前面的节点的值，再根据这些值搭建后面的计算图</strong>。优点是<strong>灵活，易调节，易调试</strong>。PyTorch 里的很多写法跟其他 Python 库的代码的使用方法是完全一致的，没有任何额外的学习成本。</p>
-<p><strong>静态图是先搭建图，然后再输入数据进行运算</strong>。优点是<strong>高效</strong>，因为静态计算是通过先定义后运行的方式，之后再次运行的时候就不再需要重新构建计算图，所以速度会比动态图更快。但是不灵活。<strong>TensorFlow 每次运行的时候图都是一样的，是不能够改变的，所以不能直接使用 Python 的 while 循环语句，需要使用辅助函数 tf.while_loop 写成 TensorFlow 内部的形式。</strong></p>
+<p>在上面的例子中，<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=w" alt="[公式]">
+是叶子节点，其他所有节点都依赖于叶子节点。<strong>叶子节点的概念主要是为了节省内存，在计算图中的一轮反向传播结束之后，非叶子节点的梯度是会被释放的</strong>。</p>
+<h3><span id="pytorch-的动态图机制">PyTorch 的动态图机制</span></h3>
+<p><strong>PyTorch 采用的是动态图机制 (Dynamic Computational Graph)，而
+Tensorflow 采用的是静态图机制 (Static Computational
+Graph)。</strong></p>
+<p><strong>动态图是运算和搭建同时进行，也就是可以先计算前面的节点的值，再根据这些值搭建后面的计算图</strong>。优点是<strong>灵活，易调节，易调试</strong>。PyTorch
+里的很多写法跟其他 Python
+库的代码的使用方法是完全一致的，没有任何额外的学习成本。</p>
+<p><strong>静态图是先搭建图，然后再输入数据进行运算</strong>。优点是<strong>高效</strong>，因为静态计算是通过先定义后运行的方式，之后再次运行的时候就不再需要重新构建计算图，所以速度会比动态图更快。但是不灵活。<strong>TensorFlow
+每次运行的时候图都是一样的，是不能够改变的，所以不能直接使用 Python 的
+while 循环语句，需要使用辅助函数 tf.while_loop 写成 TensorFlow
+内部的形式。</strong></p>
 
     </div>
 
