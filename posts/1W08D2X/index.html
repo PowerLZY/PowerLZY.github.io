@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="机器学习在恶意软件检测中的应用  http:&#x2F;&#x2F;www.hackdig.com&#x2F;04&#x2F;hack-645468.htm  现状 挑战  鲁棒性：因为这种模式毕竟是数据驱动的，在数据集上得出的结论往往会与现实世界有偏差，极高准确率下的检测结果往往是由于模型对于数据的过拟合造成的，这样的模型一旦投入生产反而会成为黑客组织攻击的对象。所以如何提高模型鲁棒性泛化性也是学术界一直在探讨的热点问题。 可解释性：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安全场景（1）恶意软件检测*">
+<meta property="og:url" content="https://powerlzy.github.io/posts/1W08D2X/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="机器学习在恶意软件检测中的应用  http:&#x2F;&#x2F;www.hackdig.com&#x2F;04&#x2F;hack-645468.htm  现状 挑战  鲁棒性：因为这种模式毕竟是数据驱动的，在数据集上得出的结论往往会与现实世界有偏差，极高准确率下的检测结果往往是由于模型对于数据的过拟合造成的，这样的模型一旦投入生产反而会成为黑客组织攻击的对象。所以如何提高模型鲁棒性泛化性也是学术界一直在探讨的热点问题。 可解释性：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191543253.png">
+<meta property="article:published_time" content="2022-05-15T09:19:58.501Z">
+<meta property="article:modified_time" content="2023-04-26T08:35:01.389Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="恶意软件检测">
+<meta property="article:tag" content="静态分析">
+<meta property="article:tag" content="动态分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191543253.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/1W08D2X/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/1W08D2X/","path":"posts/1W08D2X/","title":"安全场景（1）恶意软件检测*"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安全场景（1）恶意软件检测* | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">机器学习在恶意软件检测中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、恶意软件静态分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、恶意软件动态行为</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 执行控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 流量跟踪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3
+分析恶意软件在执行过程中留下的痕迹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（1）易失性内存分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（2）内纯转储图像表示法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（3）视觉特征提取</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.4 侧信道分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">综述：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、常见系统可执行文件格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 Windows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2 Android</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.3 MAC</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、机器学习算法在工业界的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">材料整理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1W08D2X/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="安全场景（1）恶意软件检测* | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安全场景（1）恶意软件检测*
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-15 17:19:58" itemprop="dateCreated datePublished" datetime="2022-05-15T17:19:58+08:00">2022-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 16:35:01" itemprop="dateModified" datetime="2023-04-26T16:35:01+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="机器学习在恶意软件检测中的应用">机器学习在恶意软件检测中的应用</span></h3>
+<ul>
+<li>http://www.hackdig.com/04/hack-645468.htm</li>
+</ul>
+<p>现状</p>
+<p>挑战</p>
+<ul>
+<li>鲁棒性：因为这种模式毕竟是数据驱动的，在数据集上得出的结论往往会与现实世界有偏差，极高准确率下的检测结果往往是由于模型对于数据的过拟合造成的，这样的模型一旦投入生产反而会成为黑客组织攻击的对象。所以如何提高模型鲁棒性泛化性也是学术界一直在探讨的热点问题。</li>
+<li>可解释性：</li>
+<li>概念漂移：由于恶意软件是随着时间不断进化的，所以通过现有数据集训练好的机器学习模型可能在未来某个时候会不再适用，而重新训练模型往往伴随着巨大的成本。所以如何在低成本的条件下让模型持久使用也是一个亟待解决的问题。</li>
+</ul>
+<h3><span id="二-恶意软件静态分析">二、恶意软件静态分析</span></h3>
+<h3><span id="三-恶意软件动态行为">三、恶意软件动态行为</span></h3>
+<ul>
+<li>[Zhang+, 2020] Dynamic Malware Analysis with Feature Engineering and
+Feature Learning</li>
+<li>https://github.com/joddiy/DynamicMalwareAnalysis</li>
+<li>[Chen+, 2021] Ransomware Early Detection Method Based on Short API
+Sequence</li>
+<li>Behavioral Malware Classification using Convolutional Recurrent
+Neural Networks</li>
+</ul>
+<p><strong>An Inside Look into the Practice of Malware
+Analysis</strong></p>
+<table>
+<colgroup>
+<col style="width: 38%">
+<col style="width: 61%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>技术思路</strong></th>
+<th><strong>相关工具</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>函数调用分析</strong></td>
+<td>TTAnalyze[Bayer+, 2006]/Anubis[Mandl+,
+2009]/Lastline、CWSandbox[Willems+,
+2007]/ThreatAnalyzer、Capture[Seifert+, 2007]、MalTRAK[Vasudevan+,
+2008]、dAnubis[Neugschwandtner+, 2010]</td>
+</tr>
+<tr class="even">
+<td><strong>执行控制</strong></td>
+<td>DynamoRIO[Bruening+, 2004]、VAMPiRE[Vasudevan+,
+2005]、SPiKE[Vasudevan+, 2006]、Cobra[Vasudevan+,
+2006]、MineSweeper[Brumley+, 2007]、Ether[Dinaburg+,
+2008]、Arancino[Polino+, 2017]</td>
+</tr>
+<tr class="odd">
+<td><strong>流量跟踪</strong></td>
+<td>Vigilante[Costa+, 2005]、Panorama[Yin+, 2007]、Dytan[Clause+,
+2007]、TQana[Egele+, 2007]</td>
+</tr>
+<tr class="even">
+<td><strong>分析恶意软件在执行过程中留下的痕迹</strong></td>
+<td>HookFinder[Liang+, 2008]、LiveDM[Rhee+, 2010]、TrumanBox[Gorecki+,
+2011]、Vis[Yu+, 2012]、Actaeon[Graziano+, 2013]、MASHKA[Korkin+,
+2014]、AMAL[Mohaisen+, 2015]、CIASandbox[Lin+, 2016]/VTCSandbox[Lin+,
+2018]</td>
+</tr>
+<tr class="odd">
+<td><strong>侧信道分析</strong></td>
+<td>WattsUpDoc[Clark+, 2013]、NumChecker[Wang+, 2013]</td>
+</tr>
+</tbody>
+</table>
+<h4><span id="31-执行控制"><strong>3.1 执行控制</strong></span></h4>
+<p>偶尔停止恶意软件的执行，并检查恶意进程和操作系统的状态</p>
+<h4><span id="32-流量跟踪">3.2 <strong>流量跟踪</strong></span></h4>
+<p>跟踪通过恶意软件执行代码产生的流信息</p>
+<h4><span id="33分析恶意软件在执行过程中留下的痕迹">3.3
+<strong>分析恶意软件在执行过程中留下的痕迹</strong></span></h4>
+<h5><span id="1易失性内存分析">（1）<strong>易失性内存分析</strong></span></h5>
+<p>如果检查近年来进行的恶意软件检测研究，可以认为经常使用位于易失性内存中的数据，<strong>因为内存转储可以存储与便携式可执行程序（PE）的行为和结构相关的信息</strong>。此外，在大多数情况下，<strong><font color="red">
+内存转储对混淆和打包技术都很健壮。</font></strong>根据定义，内存转储过程是提取存在于计算机物理和虚拟内存中的临时数据。内存转储也在不同的命名约定下引用，例如核心转储或系统转储，并且它主要由软件开发人员在调试阶段使用。<strong>通过内存转储，可以提取物理内存中所有进程或特定进程的数据</strong>。<strong>转储目标进程时，可以显示进程的线程堆栈、文本段、数据段、堆区域和DLL调用的布局。</strong>内存转储过程有很多工具。然而，在研究过程中，我们使用了<strong>Procdump</strong>（Procdump
+v9.0，Microsoft 2019）v9.0，这是Microsoft开发的命令行应用程序。</p>
+<p><strong><font color="red">
+Procdump工具允许用户监视进程并获取转储文件。</font></strong>作为一种命令行实用程序，它首先可用于Microsoft
+Windows操作系统，后来也提供了Linux支持。Procdump的一个优点是，它还使我们能够捕获进程占用的虚拟地址空间。</p>
+<blockquote>
+<p>dump文件是一个进程或者系统在某一个给定的时间的快照。dump文件中包含了程序运行的模块信息、线程信息、堆栈调用信息、异常信息等数据。</p>
+</blockquote>
+<p>Dumpware10数据集中涉及的PE文件是在1903版Windows
+10附带的Windows沙盒环境中运行的，以使其内容位于物理和虚拟地址空间中。通过这种方式，我们还保护我们的物理系统免受恶意活动的影响。为了获得转储文件，我们通过提供–ma和–w启动参数来执行Prodcump。第一个参数“-ma”告诉工具收集属于目标进程的完整内存转储，而“-w”强制工具等待进程运行。在我们的实验中，我们首先运行Procdump工具，然后故意延迟5000毫秒。在第三阶段，运行PE文件并完成转储操作。延迟的基本原理只是为了确保Procdump和指定的恶意应用程序处于活动状态。请注意，生成的转储文件的扩展名会根据主机的操作系统而变化。例如，Windows版本的Procdump创建。dmp文件，而Linux版本生成的转储文件具有。vmcore扩展。接下来，我们找到了所有。dmp文件根据其类别放入各自的文件夹中。</p>
+<p>另一个重要的一点是，转储文件的大小因多个因素（即依赖的DLL文件）而异。<strong>此外，通过我们语料库的PE文件生成的转储文件大小在10
+MB到100 MB之间。</strong>如（Dai et
+al.，2018）所述，<strong>每个进程都由内存空间中的几个区域组成，以存储不同的块，如DLL、环境变量、进程堆、线程堆栈、数据段和文本段</strong>。此外，根据（Korkin
+和Nesterov，2015），操作系统采用地址空间布局随机化（ASLR）方案，表明这些块的位置是随机的，尤其是在可用内存相对较小的情况下。因此，为了收集更一致和统一的内存转储，我们为沙盒环境分配了足够大的内存（&gt;16
+GB）。</p>
+<h5><span id="2内纯转储图像表示法">（2）内纯转储图像表示法：</span></h5>
+<p><strong>Nataraj等人（2011）发明的二进制到图像转换的激增激发了许多新的反恶意软件研究</strong>。这种二进制文件的可视化填补了计算机视觉与可执行文件字节级序列之间的空白。在整个研究过程中，为了获得合适的表示，我们基本上（a）<strong>采用基于RGB的编码将转储文件转换为图像</strong>，（b）<strong>在这些字节到图像的渲染过程中使用各种列宽方案。</strong></p>
+<p>我们在整个研究过程中收集的内存转储数据的内容大小非常大，而且变化很大。因此，与其他应用灰度编码的研究（如Nataraj
+et al.，2011，Dai et al.，2018，Yuan et
+al.，2020）不同，我们更倾向于使用RGB编码从恶意软件转储文件生成图像。请注意，<strong>在（Bozkir
+et
+al.，2019）中，作者采用了相同的方法从静态恶意软件文件生成恶意软件图像。在这方面，每个像素代表产生颜色的3个序列字节。</strong>这种方法的主要动机是在图像的每一行中存储更多的字节，以便在字节级对齐方面具有更好的一致性。通过这种方式，可以在图像的每一行中放置更多的信息，这样，属于相似样本的视觉相似性将更加明显，并且易于识别。其次，基于RGB的编码使图像更加紧凑，因为在图像调整后，像素空间将以1/3的比例减少，从而减少失真。然而，应该注意的是，与8位灰度编码相比，当内存转储中的字节级变化变得显著时，这种方法可能存在缺点。</p>
+<p>同时，对于字节到图像的转换，我们首先更新和修改了年发布的名为“bin2png”的Python脚本https://github.com/ESultanik/bin2png.接下来，我们运行这个脚本来创建源输入图像。该脚本是用Python
+2.7编写的。但是，我们修改了它，使其在Python
+3平台下运行。同时，与有损JPG格式相比，我们更喜欢无损PNG
+for-mat格式。</p>
+<p>在恶意软件检测文献的研究中，存在各种字节到图像的呈现方案。<strong>例如，在他们的研究中，Dai等人（2018）将内存转储数据转换为。png编码的灰度图像，根据文件大小具有2048或4096像素的恒定宽度。</strong>然而，据我们所知，没有人对这些渲染影响分类精度的方式进行过比较研究。换句话说，这里我们要讨论的是如何为分析选择列宽。如图2所示，<strong>我们选择了4种不同的列宽，例如（1）224px，（2）300px，（3）4096，最后是（4）平方根方案。</strong>正如前3个方案的名称所指，它们与初始图像宽度相对应，而与内存转储文件大小无关。我们应用的最后一个方案（即平方根）遵循不同的策略。我们计算了表示（转储文件大小）/3的数字的平方根，而不是预先确定的图像宽度。这里，由于采用了3通道颜色编码，我们将PE的字节大小除以3，并调整了正方形的边缘，使其在必要时包含零填充元素。这样，我们获得了4种不同类型的输入图像，用于表示相同的训练集和评估集。因此，作为一个研究问题，我们还研究了初始图像渲染的效果，如图3所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191543253.png" alt="image-20220624153009565" style="zoom: 33%;"></p>
+<p>方形尺寸转换背后的基本原理描述如下。众所周知，机器学习方法需要等长的特征向量来进行分类、聚类等。因此，在大量情况下，任何基于计算机视觉的方法都必须产生大小相等的特征向量（即签名）来表示图像。正如下一小节所指出的，我们在签名生成阶段提取基于GIST和HOG的图像描述符。除了要点之外，由于有向梯度直方图算法的性质，它需要对大小相等的图像进行处理，以生成具有相同长度的特征。</p>
+<p>此外，<strong>HOG计算中的一些重要参数，如单元大小、每个块中的单元数，会产生大小不同的特征向量</strong>。因此，有一个规范的图像大小是必不可少的义务。还应注意的是，将图像调整为正方形大小无疑会导致视觉信息损失到一定程度，因为这种转换会扭曲图像。尽管如此，之前的研究（Dai
+et al.，2018，Bozkir et al.，2019，Yuan et
+al.，2020）和我们目前的工作表明，这种损失并没有那么显著，辨别性视觉线索和模式仍然存在。为此，我们取得了两个重要的优势：（1）<strong>我们通过HOG描述符“均衡”了图像的大小</strong>；（2）<strong>我们使数据准备好用现代卷积神经网络建模</strong>。</p>
+<p>因此，我们已将PEs的字节序列转换为可称为内存转储图像的区分性视觉元素。此外，我们还调查了不同预处理技术的结果并进行了比较。</p>
+<h5><span id="3视觉特征提取">（3）视觉特征提取</span></h5>
+<p>为了在内存转储图像中提取可能的有区别的视觉模式，我们使用了两种不同的视觉特征描述符，即GIST和HOG。<strong>为了获取GIST描述符，我们使用了名为“leargist”的Python包</strong>（Pyleargist
+2019）。之所以选择此实现，不仅是因为它速度快，而且使我们能够计算具有960维向量的彩色GIST描述符。在整个研究过程中，我们使用了一台配备Intel
+8750处理器和24 GB内存的计算机。GIST特征计算所需的时间平均为1.67秒。</p>
+<p><strong>我们还使用“Skimage.features”Python包计算了内存转储图像的HOG特性</strong>。这个包提供了一组有用的描述符，如HOG、SIFT和局部二进制模式。在HOG特征生成过程中，我们首先将输入图像的大小调整为256×256。此操作可以被视为300×300图像的缩小，而可以被视为224×224图像的放大过程。接下来，我们将cellize参数设置为32，方向设置为9，同时将cellerlock参数定义为2×2。此外，我们还采用了“L2
+Normsys”块规范化方案。作为结果，我们获得了1764个d特征向量。计算HOG特征所需的时间平均为1.12秒。</p>
+<h4><span id="34-侧信道分析">3.4 <strong>侧信道分析</strong></span></h4>
+<p>通过监测电子设备物理组件的功耗和电磁辐射或内部CPU事件来分析恶意软件</p>
+<h4><span id="综述"><strong>综述：</strong></span></h4>
+<ul>
+<li><p>Deep Learning and Open Set Malware Classification: A
+Survey.</p></li>
+<li><p><strong>A Survey of Machine Learning Methods and Challenges for
+Windows Malware Classification</strong></p></li>
+<li><p><strong>Survey of machine learning techniques for malware
+analysis</strong></p></li>
+<li><p>A Survey on malware analysis and mitigation techniques</p></li>
+<li><p><strong>Dynamic Malware Analysis in the Modern Era - A State of
+the Art Survey</strong></p></li>
+<li><p>A survey of similarities in banking malware behaviours</p></li>
+<li><p>A state-of-the-art survey of malware detection approaches using
+data mining techniques</p></li>
+<li><p>A survey of malware behavior description and analysis</p></li>
+<li><p>A Survey on Metamorphic Malware Detection based on Hidden Markov
+Model</p></li>
+<li><p>Machine Learning Aided Static Malware Analysis: A Survey and
+Tutorial</p></li>
+<li><p>Malware Dynamic Analysis Evasion Techniques: A Survey</p></li>
+<li><p>A Survey of Stealth Malware Attacks, Mitigation Measures, and
+Steps Toward Autonomous Open World Solutions(无文件攻击）</p></li>
+<li><p><strong>A Survey on Malware Detection Using Data Mining
+Techniques</strong></p></li>
+<li><p>Malware Methodologies and Its Future: A Survey</p></li>
+<li><p>On the Security of Machine Learning in Malware C&amp;C Detection:
+A Survey</p></li>
+<li><p>Kernel Malware Core Implementation: A Survey.</p></li>
+<li><p>A Survey of Visualization Systems for Malware Analysis.</p></li>
+<li><p>A Survey on Mining Program-Graph Features for Malware
+Analysis.</p></li>
+<li><p>Evolution and Detection of Polymorphic and Metamorphic Malwares:
+A Survey</p></li>
+</ul>
+<h3><span id="四-常见系统可执行文件格式">四、常见系统可执行文件格式</span></h3>
+<h4><span id="41-windows">4.1 Windows</span></h4>
+<h4><span id="42-android">4.2 Android</span></h4>
+<h4><span id="43-mac">4.3 MAC</span></h4>
+<p>macho和elf是指格式</p>
+<h3><span id="五-机器学习算法在工业界的应用">五、机器学习算法在工业界的应用</span></h3>
+<p><strong>首先普及一个概念——NGAV。NGAV（Next-Gen
+AntiVirus）是下一代反病毒软件简称</strong>，它是一些厂商提出来的新的病毒检测概念，旨在用新技术弥补传统恶意软件检测的短板。</p>
+<ul>
+<li>多家杀毒引擎厂商将机器学习视作NGAV的重要技术，包括McAfee[11],
+Vmware[9], CrowdStrike[10], Avast[6]</li>
+<li>越来越多的厂商开始关注机器学习技术，并发表相关的研究(卡巴斯基[7],火眼[8])，火眼还是用机器学习技术对APT进行分析（组织相似度溯源）</li>
+</ul>
+<p>越来越多的安全厂商将机器学习视为反病毒软件的一个关键技术，但需要注意，NGAV并不是一个清晰的定义，你没法去界定一个反病毒软件是上一代产品还是下一代产品。衡量反病毒软件的性能只有对恶意软件的检测率、计算消耗、误报率等，我们只是从现状分析得到越来越多安全领域结合了机器学习。</p>
+<p><strong>作为安全从业人员或科研人员，机器学习技术也是我们必须要关注的一个技术。</strong></p>
+<p>机器学习算法需要解决的问题如下：</p>
+<ul>
+<li><strong>算力问题</strong>：机器学习和深度学习算法需要大量的算力，如果我们在本地部署还需要GPU的支持，这样就带来了一个硬件配置问题，所以如何减小模型的size及提升模型的检测能力是一个关键性的问题。</li>
+<li><strong>大规模的特征数据</strong>：特征对于分类训练非常关键，如何抽取这些数据特征呢？</li>
+<li><strong>可解释性</strong>：这个问题可以说是机器学习算法和深度学习算法在反病毒软件应用中最关键的一个问题，病毒的对抗是黑客与安全从业人员的对抗的前线，如果我们训练的模型是不可解释的，那么一旦被黑客发现某些规则存在的弱点，他们就可以针对这些弱点设计免杀方法，从而绕过造成重大安全隐患。另一方面，如果机器学习算法是不可解释黑盒的，用户他也是不可接受的，难以起到保护重要。</li>
+<li><strong>误报需要维持极度的低水平</strong>：误报是反病毒软件用户体验的一个重要指标，传统的特征码技术、主动防御技术都具有误报低的特性，而机器学习是一个预测技术，会存在一些误报，如何避免这些误报并且提高检测的查全率也是重要的问题。</li>
+<li>算法需要根据恶意软件作者的变化快速适应新的检测特征：这也是关键性问题，在机器学习模型应用中，恶意软件是不断变化的，而机器学习算法部署到本地中，它的参数是不变的，所以在长时间的恶意演化中其模型或参数不再适用，其检测结果会有影响。目前，云沙箱、在线更新病毒库特征是一些解决方法。</li>
+</ul>
+<blockquote>
+<p>McAfee[11]:
+https://www.mcafee.com/enterprise/en-us/security-awareness/endpoint/what-is-next-gen-endpoint-protection.html</p>
+<p>Vmware[9]:https://www.carbonblack.com/resources/definitions/what-is-next-generation-antivirus/</p>
+<p>CrowdStrike[10]:https://www.crowdstrike.com/epp-101/next-generation-antivirus-ngav/</p>
+<p>Avast[6]:https://www.avast.com/technology/malware-detection-and-blocking</p>
+<p>卡巴斯基[7]:https://media.kaspersky.com/en/enterprise-security/Kaspersky-Lab-Whitepaper-Machine-Learning.pdf</p>
+<p>火眼[8]:https://www.fireeye.com/blog/threat-research/2019/03/clustering-and-associating-attacker-activity-at-scale.html</p>
+</blockquote>
+<hr>
+<h3><span id="材料整理">材料整理</span></h3>
+<p>清华整理的综述</p>
+<p>git项目</p>
+<p>论文</p>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><p>杨航峰：DataCon大数据安全分析比赛冠军思路分享 - 杨航锋的文章 -
+知乎 https://zhuanlan.zhihu.com/p/64252076</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/islem-esi/DeepMalwareDetector">DeepMalwareDetector</a>:<strong>A
+Deep Learning framework that analyses Windows PE files to detect
+malicious Softwares</strong></p></li>
+<li><p>secml</p></li>
+<li><p>Lief</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/1W08D2X/" title="安全场景（1）恶意软件检测*">https://powerlzy.github.io/posts/1W08D2X/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E6%A3%80%E6%B5%8B/" rel="tag"># 恶意软件检测</a>
+              <a href="/tags/%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90/" rel="tag"># 静态分析</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E5%88%86%E6%9E%90/" rel="tag"># 动态分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/QAPBHZ/" rel="prev" title="深度学习（8）Attention">
+                  <i class="fa fa-chevron-left"></i> 深度学习（8）Attention
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/C7WFJN/" rel="next" title="安全场景（4）Webshell检测">
+                  安全场景（4）Webshell检测 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

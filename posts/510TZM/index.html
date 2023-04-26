@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、回归问题评价指标  均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute Error Loss、Huber Loss、分位数损失 Quantile Loss  机器学习中的监督学习本质上是给定一系列训练样本 \(\left(x_i, y_i\right)\), 尝试学习 \(x \rightarrow y\) 的映射关系, 使得给定一个 \(x\), 即">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理论基础（4）回归评价指标">
+<meta property="og:url" content="https://powerlzy.github.io/posts/510TZM/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、回归问题评价指标  均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute Error Loss、Huber Loss、分位数损失 Quantile Loss  机器学习中的监督学习本质上是给定一系列训练样本 \(\left(x_i, y_i\right)\), 尝试学习 \(x \rightarrow y\) 的映射关系, 使得给定一个 \(x\), 即">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232148454.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151110.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151431.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151667.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151641.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232152365.jpg">
+<meta property="article:published_time" content="2022-03-24T06:08:32.809Z">
+<meta property="article:modified_time" content="2023-04-26T04:03:27.200Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/510TZM/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/510TZM/","path":"posts/510TZM/","title":"理论基础（4）回归评价指标"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>理论基础（4）回归评价指标 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、回归问题评价指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 均方差损失 MSE、L2 loss</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.1.1 基本形式与原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.1.2 背后的假设</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">
+hulu 百面机器学习 —— 平方根误差的”意外“</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 平均绝对误差 MAE</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.1 基本形式与原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1.2.2 背后的假设</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 MAE 与 MSE 区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 Huber Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 分位数损失 Quantile Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6 平均绝对百分误差 MAPE</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/510TZM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="理论基础（4）回归评价指标 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          理论基础（4）回归评价指标
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 12:03:27" itemprop="dateModified" datetime="2023-04-26T12:03:27+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="一-回归问题评价指标">一、回归问题评价指标</span></h3>
+<blockquote>
+<p><strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute
+Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
+</blockquote>
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
+<span class="math inline">\(x\)</span>, 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
+<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
+则是这个过 程中关键的一个组成部分, 用来<strong>衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距</strong>,
+给模型的优化指明方向。</p>
+<h4><span id="11-均方差损失-mse-l2-loss">1.1 均方差损失 MSE、L2 loss</span></h4>
+<h5><span id="111-基本形式与原理">1.1.1 <strong>基本形式与原理</strong></span></h5>
+<p><strong>均方差Mean Squared Error
+(MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数, 也称为 L2
+Loss</strong>。其基本形式如下: <span class="math display">\[
+J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span> 从直觉上理解均方差损失，这个损失函数的最小值为 0
+（当预测等于真实值时），最大值为无穷大。下图是对于真 实值 <span class="math inline">\(y=0\)</span>, 不同的预测值 <span class="math inline">\([-1.5,1.5]\)</span>
+的均方差损失的变化图。横轴是不同的预测值, 纵轴是均方差损失, 可以
+看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加,
+均方差损失呈二次方地增加。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="112-背后的假设">1.1.2 背后的假设</span></h5>
+<p><strong>【独立同分布-中心极限定理】</strong>： 如果 <span class="math inline">\(\left\{X_n\right\}\)</span> 独立同分布, 且 <span class="math inline">\(\mathbb{E} X=\mu, \mathbb{D}
+X=\sigma^2&gt;0\)</span> ，则 <span class="math inline">\(\mathrm{n}\)</span> 足够大时 <span class="math inline">\(\bar{X}_n\)</span> 近似服从正态分布 <span class="math inline">\(N\left(\mu, \frac{\sigma^2}{n}\right)\)</span> 即
+<span class="math display">\[
+\lim _{n \rightarrow \infty} P\left(\frac{\bar{X}_n-\mu}{\sigma /
+\sqrt{n}}&lt;a\right)=\Phi(a)=\int_{-\infty}^a \frac{1}{\sqrt{2 \pi}}
+e^{-t^2 / 2} d t
+\]</span> 实际上在一定的假设下,
+我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>
+<span class="math inline">\((\mu=0, \sigma=1)\)</span> ，则给定一个
+<span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
+p\left(y_i \mid x_i\right)=\frac{1}{\sqrt{2 \pi}} \exp
+\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
+\]</span> <strong>进一步我们假设数据集中 <span class="math inline">\(\mathrm{N}\)</span> 个样本点之间相互独立,
+则给定所有 <span class="math inline">\(x\)</span> 输出所有真实值 <span class="math inline">\(y\)</span> 的概率, 即似然 Likelihood</strong>,
+为所有 <span class="math inline">\(p\left(y_i \mid x_i\right)\)</span>
+的累乘 <span class="math display">\[
+L(x, y)=\prod_{i=1}^N \frac{1}{\sqrt{2 \pi}} \exp
+\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
+\]</span> 通常为了计算方便，我们通常最大化对数似然Log-Likelihood <span class="math display">\[
+L L(x, y)=\log (L(x, y))=-\frac{N}{2} \log 2 \pi-\frac{1}{2}
+\sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span> 去掉与 <span class="math inline">\(\hat{y_i}\)</span>
+无关的第一项, 然后转化为最小化负对数似然 Negative Log-Likelihood <span class="math display">\[
+N L L(x, y)=\frac{1}{2} \sum_{i=1}^N\left(y_i-\hat{y}_i\right)^2
+\]</span>
+可以看到这个实际上就是均方差损失的形式。<strong>也就是说在模型输出与真实值的误差服从高斯分布的假设下,
+最小化均方差损失函数与极大似然估计本质上是一致的</strong>,
+因此在这个假设能被满足的场景中（比如回归）,
+均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一
+个好的选择。</p>
+<h5><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red">
+hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h5>
+<p><strong>95%的时间区间效果很好，RMSE指标居高不下的原因？</strong>
+<span class="math display">\[
+J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span>
+一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>数据预处理将噪音去掉</li>
+<li>将离群点的产生机制建模进去</li>
+<li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
+</ul>
+<h4><span id="12-平均绝对误差-mae">1.2 <strong>平均绝对误差 MAE</strong></span></h4>
+<h5><span id="121-基本形式与原理">1.2.1 <strong>基本形式与原理</strong></span></h5>
+<p><strong>平均绝对误差 Mean Absolute Error (MAE)
+是另一类常用的损失函数, 也称为 L1 Loss</strong>。其基本形式如下 <span class="math display">\[
+J_{M A E}=\frac{1}{N} \sum_{i=1}^N\left|y_i-\hat{y_i}\right|
+\]</span> 同样的我们可以对这个损失函数进行可视化如下图, MAE
+损失的最小值为 0 (当预测等于真实值时），最大值为
+无穷大。可以看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加, MAE
+损失呈线性增长。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232148454.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="122-背后的假设">1.2.2 背后的假设</span></h5>
+<p>同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式,
+假设模型预测与真实值之间的误差服 从拉普拉斯分布 Laplace distribution
+<span class="math inline">\((\mu=0, b=1)\)</span>, 则给定一个 <span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
+p\left(y_i \mid x_i\right)=\frac{1}{2} \exp
+\left(-\left|y_i-\hat{y_i}\right|\right)
+\]</span> 与上面推导 MSE 时类似, 我们可以得到的负对数似然实际上就是 MAE
+损失的形式 <span class="math display">\[
+\begin{gathered}
+L(x, y)=\prod_{i=1}^N \frac{1}{2} \exp
+\left(-\left|y_i-\hat{y}_i\right|\right) \\
+L L(x, y)=N \ln \frac{1}{2}-\sum_{i=1}^N\left|y_i-\hat{y}_i\right| \\
+N L L(x, y)=\sum_{i=1}^N\left|y_i-\hat{y}_i\right|
+\end{gathered}
+\]</span></p>
+<h4><span id="13-mae-与-mse-区别">1.3 MAE 与 MSE 区别</span></h4>
+<p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE
+通常可以更快地收敛，但 MAE 损失对于 outlier
+更加健壮</strong>，即更加不易受到 outlier 影响。</p>
+<ul>
+<li><p><strong>MSE 通常比 MAE
+可以更快地收敛</strong>。当使用梯度下降算法时, MSE 损失的梯度为 <span class="math inline">\(-\hat{y}_i\)</span>, 而 MAE 损失的梯度为 <span class="math inline">\(\pm 1\)</span> , 即 MSE 的梯度的 scale
+会随误差大小变化, 而 MAE 的梯度的 scale 则一直保持为 1 , 即便在绝对误 差
+<span class="math inline">\(\left|y_i-\hat{y}_i\right|\)</span>
+很小的时候 MAE 的梯度 scale 也同样为 1 ,
+这实际上是非常不利于模型的训练的。当然你可以通
+过在训练过程中动态调整学习率缓解这个问题, 但是总的来说,
+损失函数梯度之间的差异导致了 MSE 在大部 分时候比 MAE
+收敛地更快。这个也是 MSE 更为流行的原因。</p></li>
+<li><p><strong>MAE 对于异常值（outlier） 更加
+robust</strong>。我们可以从两个角度来理解这一点：</p>
+<ul>
+<li><p>第一个角度是直观地理解，下图是 MAE 和 MSE
+损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE
+损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE
+损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE
+会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151110.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure></li>
+<li><p>第二个角度是从两个损失函数的假设出发，MSE
+假设了误差服从高斯分布，MAE
+假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加
+robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine
+Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution
+Figure 2.8），当右图右侧出现了 outliers
+时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的
+MAE 对 outlier 比高斯分布为假设的 MSE 更加
+robust。<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151431.jpg" alt="img" style="zoom: 67%;"></p></li>
+</ul></li>
+</ul>
+<h4><span id="14-huber-loss">1.4 Huber Loss</span></h4>
+<blockquote>
+<ul>
+<li>在误差接近 0 时使用 MSE，使损失函数可导并且梯度更加稳定</li>
+<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier
+更加健壮。</li>
+</ul>
+</blockquote>
+<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点, MSE
+损失收玫快但容易受 outlier 影响, MAE 对 outlier 更加健壮但是收玫慢,
+Huber LosS 则是一种将 MSE 与 MAE 结合起来, 取两者优点的损失函数,
+也被称作 Smooth Mean Absolute Error Loss 。其原理很简单, 就是在误差接近
+0 时使用 MSE, 误差较大时使用 MAE, 公 式为 <span class="math display">\[
+J_{\text {huber }}=\frac{1}{N} \sum_{i=1}^N
+\mathbb{I}_{\left|y_i-\hat{y_i}\right| \leq \delta}
+\frac{\left(y_i-\hat{y_i}\right)^2}{2}+\mathbb{I}_{\left|y_i-\hat{y}_i\right|&gt;\delta}\left(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
+\delta^2\right)
+\]</span> 上式中 <span class="math inline">\(\delta\)</span> 是 Huber
+Loss 的一个超参数, <span class="math inline">\(\delta\)</span> 的值是
+MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分, 第二项是
+MAE 部分, 在 MAE 的部分公式为 <span class="math inline">\(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
+\delta^2\)</span> 是为了保证误差 <span class="math inline">\(|y-\hat{y}|= \pm \delta\)</span> 时 MAE 和 MSE
+的取值一致，进而保证 Huber Loss 损失连续可导。</p>
+<p>下图是 <span class="math inline">\(\delta=1.0\)</span> 时的 Huber
+Loss, 可以看到在 <span class="math inline">\([-\delta, \delta]\)</span>
+的区间内实际上就是 MSE 损失, 在 <span class="math inline">\((-\infty,
+\delta)\)</span> 和 <span class="math inline">\((\delta,
+\infty)\)</span> 区 间内为 MAE损失。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151667.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="15-分位数损失-quantile-loss">1.5 分位数损失 Quantile Loss</span></h4>
+<blockquote>
+<p><strong>MAE
+中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
+</blockquote>
+<p><strong>分位数回归 Quantile Regression
+是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151641.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的,
+分位数损失形式如下, 式中的 r 分位数系数</strong>。 <span class="math display">\[
+J_{\text {quant }}=\frac{1}{N} \sum_{i=1}^N \mathbb{I}_{\hat{y}_i \geq
+y_i}(1-r)\left|y_i-\hat{y_i}\right|+\mathbb{I}_{\hat{y}_i&lt;y_i}
+r\left|y_i-\hat{y_i}\right|
+\]</span> 我们如何理解这个损失函数呢? 这个损失函数是一个分段的函数, 将
+<span class="math inline">\(\hat{y}_i \geq y_i \quad\)</span> (高估) 和
+<span class="math inline">\(\hat{y}_i&lt;y_i \quad\)</span> (低估) 两种
+情况分开来, 并分别给予不同的系数。当 <span class="math inline">\(r&gt;0.5\)</span> 时,
+低估的损失要比高估的损失更大, 反过来当 <span class="math inline">\(r&lt;0.5\)</span> 时, 高估的损失比低估的损失大;
+分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失,
+进而实现分位数回归</strong>。 特别地, 当 <span class="math inline">\(r=0.5\)</span> 时, 分位数损失退化为 MAE 损失,
+从这里可以看出 MAE 损失实际上是分位数损失的一个特 例 一 中位数回归。</p>
+<p>下图是取不同的分位点 <span class="math inline">\(0.2 、 0.5 、
+0.6\)</span> 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6
+在高估和低 估两种情况下损失是不同的, 而 0.5 实际上就是 MAE。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232152365.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="16-平均绝对百分误差-mape">1.6 平均绝对百分误差 MAPE</span></h4>
+<p>虽然平均绝对误差能够获得一个评价值,
+但是你并不知道这个值代表模型拟合是优还是劣, 只有通过对比才能达到
+效果。当需要以相对的观点来衡量误差时, 则使用MAPE。
+平均绝对百分误差（Mean Absolute Percentage Error, MAPE）是对 MAE
+的一种改进, 考虑了绝对误差相对 真实值的比例。 -
+优点：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。 <span class="math display">\[
+M A P E=\frac{100}{m}
+\sum_{i=1}^m\left|\frac{y_i-f\left(x_i\right)}{y_i}\right|
+\]</span> 在某些场景下, 如房价从 <span class="math inline">\(5
+K\)</span> 到 <span class="math inline">\(50 K\)</span> 之间, <span class="math inline">\(5 K\)</span> 预测成 <span class="math inline">\(10
+K\)</span> 与 <span class="math inline">\(50 K\)</span> 预测成 <span class="math inline">\(45 K\)</span> 的差别是非常大的, 而平均
+绝对百分误差考虑到了这点。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/510TZM/" title="理论基础（4）回归评价指标">https://powerlzy.github.io/posts/510TZM/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/1PQETBX/" rel="prev" title="理论基础（4）分类评价指标">
+                  <i class="fa fa-chevron-left"></i> 理论基础（4）分类评价指标
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/2Z6ZKRX/" rel="next" title="理论基础（4）聚类评价指标">
+                  理论基础（4）聚类评价指标 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

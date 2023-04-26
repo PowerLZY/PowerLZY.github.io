@@ -21,26 +21,17 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="异常检测 (anomaly detection)   「异常检测」开源工具库推荐 - 微调的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;37132428 数据挖掘中常见的「异常检测」算法有哪些？ - 微调的回答 - 知乎 https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;280696035&#x2F;answer&#x2F;417091151 不得不推荐这门课：CS259D:">
+    <meta name="description" content="异常检测 (anomaly detection) 异常检测工具  PyOD:超过30种算法，从经典模型到深度学习模型一应俱全，和sklearn的用法一致 Scikit-Learn:包含了4种常见的算法，简单易用 TODS:与PyOD类似，包含多种时间序列上的异常检测算法  异常检测算法  线性模型：PCA 基于相似度度量的算法：KNN、LOF、HBOS 基于概率的算法：COPOD 集成检测：孤立森">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异常检测（1）概述">
 <meta property="og:url" content="https://powerlzy.github.io/posts/WH7C02/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="异常检测 (anomaly detection)   「异常检测」开源工具库推荐 - 微调的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;37132428 数据挖掘中常见的「异常检测」算法有哪些？ - 微调的回答 - 知乎 https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;280696035&#x2F;answer&#x2F;417091151 不得不推荐这门课：CS259D:">
+<meta property="og:description" content="异常检测 (anomaly detection) 异常检测工具  PyOD:超过30种算法，从经典模型到深度学习模型一应俱全，和sklearn的用法一致 Scikit-Learn:包含了4种常见的算法，简单易用 TODS:与PyOD类似，包含多种时间序列上的异常检测算法  异常检测算法  线性模型：PCA 基于相似度度量的算法：KNN、LOF、HBOS 基于概率的算法：COPOD 集成检测：孤立森">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026280.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026218.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026012.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026886.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026098.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026442.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026675.png">
-<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026797.png">
 <meta property="article:published_time" content="2022-03-24T06:12:56.778Z">
-<meta property="article:modified_time" content="2023-04-18T12:27:42.335Z">
+<meta property="article:modified_time" content="2023-04-26T07:23:16.712Z">
 <meta property="article:author" content="lzy">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026280.png">
 
 
 <link rel="canonical" href="https://powerlzy.github.io/posts/WH7C02/">
@@ -150,9 +141,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">异常检测 (anomaly detection)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">异常检测工具：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">评估方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">什么是异常检测？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">异常检测面临的挑战</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">异常的种类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">异常检测数据集：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">异常检测的应用领域 [1]
-：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">基于标签的可获得性划分异常检测：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">基于传统方法的异常检测模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、常见异常检测算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 无监督异常检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Isolation Forest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、HBOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 HBOS算法流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">1、静态宽度直方图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">2、动态宽度直方图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">3、算法推导过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、 XGBOD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">四、COPOD：用「统计」+「机器学习」检测异常</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、More about Anomaly
-Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">异常检测系统的评估？</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">异常检测 (anomaly detection)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 什么是异常检测？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 异常检测面临的挑战</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 异常的种类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 异常检测数据集：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 异常检测的应用领域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6
+基于标签的可获得性划分异常检测：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7 基于传统方法的异常检测模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、常见异常检测算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 无监督异常检测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,18 +157,18 @@ Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a cl
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">251</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -256,7 +246,7 @@ Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a cl
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 20:27:42" itemprop="dateModified" datetime="2023-04-18T20:27:42+08:00">2023-04-18</time>
+      <time title="修改时间：2023-04-26 15:23:16" itemprop="dateModified" datetime="2023-04-26T15:23:16+08:00">2023-04-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -290,14 +280,14 @@ Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a cl
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.3k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
+      <span>10 分钟</span>
     </span>
 </div>
 
@@ -308,55 +298,38 @@ Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a cl
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1><span id="异常检测-anomaly-detection">异常检测 (anomaly detection)</span></h1>
-<blockquote>
+        <h3><span id="异常检测-anomaly-detection">异常检测 (anomaly detection)</span></h3>
+<p><strong>异常检测工具</strong></p>
 <ul>
-<li><p>「异常检测」开源工具库推荐 - 微调的文章 - 知乎
-https://zhuanlan.zhihu.com/p/37132428</p></li>
-<li><p><strong>数据挖掘中常见的「异常检测」算法有哪些？</strong> -
-微调的回答 - 知乎
-https://www.zhihu.com/question/280696035/answer/417091151</p></li>
-<li><p>不得不推荐这门课：<a href="http://link.zhihu.com/?target=http%3A//web.stanford.edu/class/cs259d/">CS259D:
-Data Mining for Cyber Security</a>
-虽然是网络安全方面的应用，但是方法都是通用的，看来也很有启发。https://leotsui.gitbooks.io/cs259d-notes-cn/content/</p></li>
-<li><p>中科院在读美女博士带你全面了解“异常检测”领域 - 王晋东不在家的文章
-- 知乎 https://zhuanlan.zhihu.com/p/260651151</p></li>
-<li><p>Python 时间序列异常检测
-ADTK：https://blog.csdn.net/BF02jgtRS00XKtCx/article/details/115343456</p></li>
-<li><p>awesome-TS-anomaly-detection：https://github.com/rob-med/awesome-TS-anomaly-detection</p></li>
+<li><p>PyOD:超过30种算法，从经典模型到深度学习模型一应俱全，和sklearn的用法一致</p></li>
+<li><p>Scikit-Learn:包含了4种常见的算法，简单易用</p></li>
+<li><p>TODS:与PyOD类似，包含多种时间序列上的异常检测算法</p></li>
 </ul>
-</blockquote>
-<h5><span id="异常检测工具">异常检测工具：</span></h5>
+<p><strong>异常检测算法</strong></p>
 <ul>
-<li><p><strong>PyOD:超过30种算法，从经典模型到深度学习模型一应俱全，和sklearn的用法一致</strong></p></li>
-<li><p><strong>Scikit-Learn:包含了4种常见的算法，简单易用</strong></p></li>
-<li><p><strong>TODS:与PyOD类似，包含多种时间序列上的异常检测算法</strong></p></li>
-</ul>
-<p><strong>异常检测算法</strong>：</p>
-<ul>
-<li><strong>线性模型</strong>：<strong>PCA</strong></li>
-<li><strong>基于相似度度量的算法</strong>：<strong>KNN</strong>、LOF、HBOS</li>
+<li>线性模型：PCA</li>
+<li>基于相似度度量的算法：KNN、LOF、HBOS</li>
 <li>基于概率的算法：COPOD</li>
-<li><strong>集成检测</strong>：<strong>孤立森林</strong>，<strong>XGBOD</strong></li>
-<li><strong>神经网络算法</strong>：<strong>自编码器</strong></li>
+<li>集成检测：孤立森林，XGBOD</li>
+<li>神经网络算法：自编码器</li>
 </ul>
-<h5><span id="评估方法">评估方法：</span></h5>
+<p><strong>评估方法</strong></p>
 <ul>
 <li>ROC-AUC 曲线</li>
 <li>Precision Topk：top K的准确率</li>
 <li>AVE Precision：平均准确率</li>
 </ul>
-<h2><span id="一-概述">一、概述</span></h2>
-<h4><span id="什么是异常检测">什么是异常检测？</span></h4>
+<h3><span id="一-概述">一、概述</span></h3>
+<h4><span id="11-什么是异常检测">1.1 什么是异常检测？</span></h4>
 <p>不同于常规模式下的问题和任务，<strong>异常检测针对的是少数、不可预测或不确定、罕见的事件</strong>，它具有独特的复杂性，使得一般的机器学习和深度学习技术无效。</p>
-<h4><span id="异常检测面临的挑战"><strong>异常检测面临的挑战</strong></span></h4>
+<h4><span id="12-异常检测面临的挑战">1.2 <strong>异常检测面临的挑战</strong></span></h4>
 <ul>
 <li><strong>未知性</strong>：异常与许多未知因素有关，例如，具有未知的突发行为、数据结构和分布的实例。它们直到真正发生时才为人所知，比如恐怖袭击、诈骗和网络入侵等应用；</li>
 <li><strong>异常类的异构性</strong>：
 异常是不规则的，一类异常可能表现出与另一类异常完全不同的异常特征。例如，在视频监控中，抢劫、交通事故和盗窃等异常事件在视觉上有很大差异；</li>
 <li><strong>类别不均衡</strong>：异常通常是罕见的数据实例，而正常实例通常占数据的绝大部分。<strong>因此，收集大量标了标签的异常实例是困难的，甚至是不可能的。这导致在大多数应用程序中无法获得大规模的标记数据。</strong></li>
 </ul>
-<h4><span id="异常的种类"><strong>异常的种类：</strong></span></h4>
+<h4><span id="13-异常的种类">1.3 <strong>异常的种类：</strong></span></h4>
 <ul>
 <li><strong>点异常</strong>（point
 anomalies）指的是少数个体实例是异常的，大多数个体实例是正常的，例如正常人与病人的健康指标；</li>
@@ -365,14 +338,13 @@ anomalies），又称上下文异常，指的是在特定情境下个体实例�
 <li><strong>群体异常</strong>（group
 anomalies）指的是在群体集合中的个体实例出现异常的情况，而该个体实例自身可能不是异常，例如社交网络中虚假账号形成的集合作为群体异常子集，但子集中的个体节点可能与真实账号一样正常。</li>
 </ul>
-<h4><span id="异常检测数据集"><strong>异常检测数据集：</strong></span></h4>
+<h4><span id="14-异常检测数据集">1.4 <strong>异常检测数据集：</strong></span></h4>
 <ul>
 <li>统计型数据static data（文本、网络流）</li>
 <li><strong>序列型数据sequential data（sensor data ）</strong></li>
 <li>空间型数据spatial data（图像、视频）</li>
 </ul>
-<h4><span id="异常检测的应用领域-1"><strong>异常检测的应用领域 [1]
-：</strong></span></h4>
+<h4><span id="15-异常检测的应用领域">1.5 <strong>异常检测的应用领域</strong></span></h4>
 <ul>
 <li><strong>入侵检测</strong>（Intrusion
 detection）：通过从计算机网络或计算机系统中的若干关键点收集信息并对其执行分析，从中发觉网络或系统中能不能有违反安全策略的行为和遭到袭击的迹象，并对此做出适当反应的流程。最普遍的两种入侵检测系统包括<strong>基于主机的入侵检测系统（HIDS）</strong>、<strong>网络入侵检测系统（NIDS）</strong>。</li>
@@ -393,14 +365,15 @@ TimeSeries）</li>
 <li><strong>视频监控</strong>（Video
 Surveillance）：检测视频中的异常场景。</li>
 </ul>
-<h4><span id="基于标签的可获得性划分异常检测"><strong>基于标签的可获得性划分异常检测：</strong></span></h4>
+<h4><span id="16基于标签的可获得性划分异常检测">1.6
+<strong>基于标签的可获得性划分异常检测：</strong></span></h4>
 <ul>
 <li><strong>有监督异常检测</strong>：在训练集中的正常实例和异常实例都有标签，这类方法的缺点在于数据标签难以获得或数据不均衡（正常样本数量远大于异常样本数量）。</li>
 <li><strong>半监督异常检测</strong>：<strong>在训练集中只有单一类别（正常实例）的实例，没有异常实例参与训练，目前很多异常检测研究都集中在半监督方法上</strong>，有很多声称是无监督异常检测方法的研究其实也是半监督的，对其解释的是该异常检测是无监督异常检测，学习特征的方式是无监督的，但是评价方式使用了半监督的方法，因此对于无监督与半监督的界定感觉没有那么规范。</li>
 <li><strong>无监督异常检测</strong>：在训练集中既有正常实例也可能存在异常实例，但假设数据的比例是正常实例远大于异常实例，模型训练过程中没有标签进行校正。</li>
 <li><strong>弱监督异常检测</strong>：该类我研究的少，不是特别了解，主要是针对异常实例不完全、粗粒度标签、部分实例标签错误等情况进行算法设计。</li>
 </ul>
-<h4><span id="基于传统方法的异常检测模型">基于传统方法的异常检测模型</span></h4>
+<h4><span id="17-基于传统方法的异常检测模型">1.7 基于传统方法的异常检测模型</span></h4>
 <ul>
 <li><strong>基于重构的方法</strong>：<strong><font color="red">
 假设异常点是不可被压缩的或不能从低维映射空间有效地被重构的。</font></strong>常见的方法有<strong>PCA</strong>、<strong>Robust
@@ -410,7 +383,7 @@ Mixture Models、 k-means、 multivariate Gaussian Models [6,7,8]。</li>
 <li><strong>一类分类方法</strong>：对正常数据建立区分性边界，异常点被划分到边界外。常见的方法有<strong>OC-SVM</strong>
 [9,10]。</li>
 </ul>
-<h2><span id="二-常见异常检测算法">二、常见异常检测算法</span></h2>
+<h3><span id="二-常见异常检测算法">二、常见异常检测算法</span></h3>
 <p><strong>一般情况下,
 可以把异常检测看成是数据不平衡下的分类问题</strong>。因此,
 如果数据条件允许, 优先使 用有监督的异常检测[6]。实验结果
@@ -428,7 +401,7 @@ Mixture Models、 k-means、 multivariate Gaussian Models [6,7,8]。</li>
 <p>本文结构如下: 1. 介绍常见的无监督异常算法及实现; 2.
 对比多种算法的检测能力；3. 对比多种算法的运算开销；4.
 总结并归纳如何处理异常检测问题。5. 代码重现步骤。</p>
-<h3><span id="21-无监督异常检测">2.1 无监督异常检测</span></h3>
+<h4><span id="21-无监督异常检测">2.1 无监督异常检测</span></h4>
 <p>如果归类的话, 无监督异常检测模型可以大致分为:</p>
 <ul>
 <li><strong>统计与概率模型</strong> (statistical and probabilistic and
@@ -515,89 +488,22 @@ Analysis [6], 或者综述文章[15]。</p>
 会对比多种算法的预测能力、运算开销及模型特点。如无特别说明，本文中的图片、代码均来自于
 开源Python异常检测工具库Pyod。文中实验所使用的17个数据集均来自于 (ODDS -
 Outlier Detection DataSets) 。</p>
-<h3><span id="一-isolation-forest">一、Isolation Forest</span></h3>
-<blockquote>
-<p>孤立森林(isolation Forest)-一个通过瞎几把乱分进行异常检测的算法 -
-小伍哥聊风控的文章 - 知乎 https://zhuanlan.zhihu.com/p/484495545</p>
-<p>##### <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/131406753">Isolation
-Forest算法梳理🌳</a>Isolation Forest算法梳理🌳</p>
-</blockquote>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026280.png" alt="Isolation Forest算法梳理🌳">
-<figcaption aria-hidden="true">Isolation Forest算法梳理🌳</figcaption>
-</figure>
-<p><strong>异常检测 (anomaly
-detection)</strong>，或者又被称为“<strong>离群点检测</strong>” (outlier
-detection)，是机器学习研究领域中跟现实紧密联系、有广泛应用需求的一类问题。但是，什么是异常，并没有标准答案，通常因具体应用场景而异。如果要给一个比较通用的定义，很多文献通常会引用
-Hawkins
-在文章开头那段话。很多后来者的说法，跟这个定义大同小异。这些定义虽然笼统，但其实暗含了认定“异常”的两个标准或者说假设：</p>
-<h3><span id="二-hbos">二、HBOS</span></h3>
-<p><strong>HBOS全名为：Histogram-based Outlier
-Score</strong>。它是一种单变量方法的组合，不能对特征之间的依赖关系进行建模，但是计算速度较快，对大数据集友好，其基本假设是数据集的每个维度相互独立，然后对<strong>每个维度进行区间(bin)划分，区间的密度越高，异常评分越低。理解了这句话，基本就理解了这个算法。</strong></p>
-<h4><span id="21-hbos算法流程"><strong>2.1 HBOS算法流程</strong></span></h4>
-<h5><span id="1-静态宽度直方图"><strong>1、静态宽度直方图</strong></span></h5>
-<p>标准的直方图构建方法，在值范围内使用k个等宽箱，样本落入每个箱的频率（相对数量）作为密度（箱子高度）的估计，时间复杂度：O(n)</p>
-<p><strong>注意：</strong>等宽分箱，每个箱中的数据宽度相同，不是指数据个数相同。例如序列[5,10,11,13,15,35,50,55,72,92,204,215]，数据集中最大值是215，最小值是5，分成3个箱，故每个箱的宽度应该为（215-5）/3=70，所以箱的宽度是70，这就要求箱中数据之差不能超过70，并且要把不超过70的数据全放在一起，最后的分箱结果如下：</p>
-<p><strong>箱一：5,10，11,13,15,35,50,55,72；箱二：92；箱三：204,215</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026218.png" alt="图片" style="zoom:48%;"></p>
-<h5><span id="2-动态宽度直方图"><strong>2、动态宽度直方图</strong></span></h5>
-<p>首先对所有值进行排序，然后固定数量的N/k 个连续值装进一个箱里，其
-中N是总实例数，k是箱个数，<strong>直方图中的箱面积表示实例数</strong>，因为箱的宽度是由箱中第一个值和最后一个值决定的，所有箱的面积都一样，因此每一个箱的高度都是可计算的。这意味着跨度大的箱的高度低，即密度小，只有一种情况例外，超过k个数相等，此时允许在同一个箱里超过N/k值，时间复杂度：O(n×log(n))</p>
-<p>还是用序列[<strong>5,10,11,13,15</strong>,<strong>35,50,55,72</strong>,92,204,215]举例，也是假如分3箱，那么每箱都是4个，宽度为边缘之差，第一个差为15-5=10，第二差为72-35=37，第三个箱宽为215-92=123，为了保持面积相等，所以导致后面的很矮，前面的比较高，如下图所示（非严格按照规则）：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026012.png" alt="图片" style="zoom:50%;"></p>
-<h5><span id="3-算法推导过程"><strong>3、算法推导过程</strong></span></h5>
-<p><strong>对每个维度都计算了一个独立的直方图，其中每个箱子的高度表示密度的估计，然后为了使得最大高度为1（确保了每个特征与异常值得分的权重相等），对直方图进行归一化处理。</strong>最后，每一个实例的HBOS值由以下公式计算：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026886.png" alt="图片" style="zoom: 67%;"></p>
-<p><strong>推导过程：</strong></p>
-<p>假设样本p第 i 个特征的概率密度为pi ( p )
-，则p的概率密度可以计算为，d为总的特征的个数：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026098.png" alt="图片" style="zoom: 67%;"></p>
-<p>两边取对数：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026442.png" alt="图片" style="zoom: 67%;"></p>
-<p>概率密度越大，异常评分越小，为了方便评分，两边乘以“-1”：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026675.png" alt="图片" style="zoom: 67%;"></p>
-<p>最后可得：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026797.png" alt="图片" style="zoom: 67%;"></p>
-<p>PyOD是一个可扩展的Python工具包，用于检测多变量数据中的异常值。它可以在一个详细记录API下访问大约20个离群值检测算法。</p>
-<h3><span id="三-xgbod">三、 XGBOD</span></h3>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/349519844">【异常检测】<em>XGBOD</em>：用无监督表示学习改进有监督异常检测</a></p>
-</blockquote>
-<h4><span id="四-copod用统计机器学习检测异常">四、COPOD：用「统计」+「机器学习」检测异常</span></h4>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338189299">COPOD：用「统计」+「机器学习」检测异常</a></p>
-</blockquote>
-<h3><span id="五-more-about-anomalydetection">五、More about Anomaly
-Detection</span></h3>
-<p>那这个异常检测啊,其实也是另外一门学问,那我们课堂上就没有时间讲了,异常检测不是只能用
-Aauto-Encoder 这个技术,Aauto-Encoder
-这个技术,只是众多可能方法里面的其中一个,我们拿它来当做 Aauto-Encoder
-的作业,因为我相信,你未来有很多的机会用得上异常检测这个技术,那实际上有关异常检测更完整的介绍,我们把过去上课的录影放在这边,给大家参考,</p>
-<p>Part 1: https://youtu.be/gDp2LXGnVLQ</p>
+<h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li><h5><span id="简介">简介</span></h5></li>
+<li><p>「异常检测」开源工具库推荐 - 微调的文章 - 知乎
+https://zhuanlan.zhihu.com/p/37132428</p></li>
+<li><p><strong>数据挖掘中常见的「异常检测」算法有哪些？</strong> -
+微调的回答 - 知乎
+https://www.zhihu.com/question/280696035/answer/417091151</p></li>
+<li><p>不得不推荐这门课：<a href="http://link.zhihu.com/?target=http%3A//web.stanford.edu/class/cs259d/">CS259D:
+Data Mining for Cyber Security</a>
+虽然是网络安全方面的应用，但是方法都是通用的，看来也很有启发。https://leotsui.gitbooks.io/cs259d-notes-cn/content/</p></li>
+<li><p>中科院在读美女博士带你全面了解“异常检测”领域 - 王晋东不在家的文章
+- 知乎 https://zhuanlan.zhihu.com/p/260651151</p></li>
+<li><p>Python 时间序列异常检测
+ADTK：https://blog.csdn.net/BF02jgtRS00XKtCx/article/details/115343456</p></li>
+<li><p>awesome-TS-anomaly-detection：https://github.com/rob-med/awesome-TS-anomaly-detection</p></li>
 </ul>
-<p>Part 2: https://youtu.be/cYrNjLxkoXs</p>
-<ul>
-<li><strong>信心分数</strong></li>
-</ul>
-<p>Part 3: https://youtu.be/ueDlm2FkCnw</p>
-<ul>
-<li><h5><span id="异常检测系统的评估">异常检测系统的评估？</span></h5>
-<ul>
-<li>no ACC</li>
-<li>cost loss设计</li>
-<li>RUC</li>
-</ul></li>
-</ul>
-<p>Part 4: https://youtu.be/XwkHOUPbc0Q</p>
-<p>Part 5: https://youtu.be/Fh1xFBktRLQ</p>
-<ul>
-<li>无监督</li>
-</ul>
-<p>Part 6: https://youtu.be/LmFWzmn2rFY</p>
-<p>Part 7: https://youtu.be/6W8FqUGYyDo</p>
-<p>那以上就是有关 Aauto-Encoder 的部分</p>
 
     </div>
 
@@ -628,8 +534,8 @@ Aauto-Encoder 这个技术,Aauto-Encoder
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/8Q5WCT/" rel="prev" title="机器学习-损失函数">
-                  <i class="fa fa-chevron-left"></i> 机器学习-损失函数
+                <a href="/posts/3FW9EBT/" rel="prev" title="异常检测（3）HBOS">
+                  <i class="fa fa-chevron-left"></i> 异常检测（3）HBOS
                 </a>
             </div>
             <div class="post-nav-item">

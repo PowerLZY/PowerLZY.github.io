@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">239</span>
+          <span class="site-state-item-count">251</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-count">38</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,583 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/26PZZ5C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/26PZZ5C/" class="post-title-link" itemprop="url">Pytorch（8）模型构建-池化-线性-激活</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-02 18:48:03" itemprop="dateCreated datePublished" datetime="2022-05-02T18:48:03+08:00">2022-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-04 15:09:15" itemprop="dateModified" datetime="2022-05-04T15:09:15+08:00">2022-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="pytorch-学习笔记池化层-线性层和激活函数层">[PyTorch 学习笔记]
+池化层、线性层和激活函数层</span></h2>
+<h3><span id="一-池化层"><strong>一、池化层</strong></span></h3>
+<p><strong>池化的作用则体现在降采样：保留显著特征、降低特征维度，增大
+kernel 的感受野</strong>。 另外一点值得注意：pooling
+也可以提供一些<strong>旋转不变性</strong>。
+池化层可对提取到的特征信息进行降维，一方面使特征图变小，简化网络计算复杂度并在一定程度上避免过拟合的出现；一方面进行<strong>特征压缩</strong>，提取<strong>主要特征</strong>。</p>
+<h4><span id="11-nnmaxpool2d-最大池化">1.1 nn.MaxPool2d() 最大池化</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nn.MaxPool2d(kernel_size, stride=<span class="literal">None</span>, padding=<span class="number">0</span>, dilation=<span class="number">1</span>, return_indices=<span class="literal">False</span>, ceil_mode=<span class="literal">False</span>)</span><br><span class="line">maxpool_layer = nn.MaxPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>)) </span><br><span class="line"><span class="comment"># input:(i, o, size) weights:(o, i , h, w)</span></span><br></pre></td></tr></table></figure>
+<p>这个函数的功能是进行 2 维的最大池化，主要参数如下：</p>
+<ul>
+<li><strong>kernel_size</strong>：池化核尺寸</li>
+<li><strong>stride</strong>：步长，通常与 kernel_size 一致</li>
+<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把
+padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
+<li>dilation：池化间隔大小，默认为
+1。常用于图像分割任务中，主要是为了提升感受野</li>
+<li>ceil_mode：默认为 False，尺寸向下取整。为 True 时，尺寸向上取整</li>
+<li>return_indices：为 True
+时，返回最大池化所使用的像素的索引，这些记录的索引通常在反最大池化时使用，把小的特征图反池化到大的特征图时，每一个像素放在哪个位置。</li>
+</ul>
+<h5><span id="下图-a表示反池化b-表示上采样c-表示反卷积">下图 (a)
+表示反池化，(b) 表示上采样，(c) 表示反卷积。</span></h5>
+<p><img src="https://pic2.zhimg.com/80/v2-cfb9340c4d4b0406d61271ffce30ff6d_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h3><span id="12-nnavgpool2d-平均池化">1.2 nn.AvgPool2d() 平均池化</span></h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.AvgPool2d(kernel_size, stride=<span class="literal">None</span>, padding=<span class="number">0</span>, ceil_mode=<span class="literal">False</span>, count_include_pad=<span class="literal">True</span>, divisor_override=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>这个函数的功能是进行 2 维的平均池化，主要参数如下：</p>
+<ul>
+<li><strong>kernel_size</strong>：池化核尺寸</li>
+<li><strong>stride</strong>：步长，通常与 kernel_size 一致</li>
+<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把
+padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
+<li>dilation：池化间隔大小，默认为
+1。常用于图像分割任务中，主要是为了提升感受野</li>
+<li>ceil_mode：默认为 False，尺寸向下取整。为 True 时，尺寸向上取整</li>
+<li>count_include_pad：在计算平均值时，是否把填充值考虑在内计算</li>
+<li>divisor_override：除法因子。在计算平均值时，分子是像素值的总和，分母默认是像素值的个数。如果设置了
+divisor_override，把分母改为 divisor_override。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">img_tensor = torch.ones((<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>))</span><br><span class="line">avgpool_layer = nn.AvgPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">img_pool = avgpool_layer(img_tensor)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;raw_img:\n&#123;&#125;\npooling_img:\n&#123;&#125;&quot;</span>.<span class="built_in">format</span>(img_tensor, img_pool))</span><br></pre></td></tr></table></figure>
+<h4><span id="13-nnmaxunpool2d最大值反池化">1.3 nn.MaxUnpool2d()
+最大值反池化</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.MaxUnpool2d(kernel_size, stride=None, padding=0)</span><br></pre></td></tr></table></figure>
+<p>功能是对二维信号（图像）进行最大值反池化，主要参数如下：</p>
+<ul>
+<li>kernel_size：池化核尺寸</li>
+<li>stride：步长，通常与 kernel_size 一致</li>
+<li>padding：填充宽度</li>
+</ul>
+<h3><span id="二-线性层">二、 <strong>线性层</strong></span></h3>
+<p>线性层又称为全连接层，其每个神经元与上一个层所有神经元相连，实现对前一层的线性组合或线性变换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">inputs = torch.tensor([[<span class="number">1.</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line">linear_layer = nn.Linear(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">linear_layer.weight.data = torch.tensor([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">[<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">[<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>],</span><br><span class="line">[<span class="number">4.</span>, <span class="number">4.</span>, <span class="number">4.</span>]])</span><br><span class="line"></span><br><span class="line">linear_layer.bias.data.fill_(<span class="number">0.5</span>)</span><br><span class="line">output = linear_layer(inputs)</span><br><span class="line"><span class="built_in">print</span>(inputs, inputs.shape)</span><br><span class="line"><span class="built_in">print</span>(linear_layer.weight.data, linear_layer.weight.data.shape)</span><br><span class="line"><span class="built_in">print</span>(output, output.shape)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tensor([[1., 2., 3.]]) torch.Size([1, 3])</span><br><span class="line">tensor([[1., 1., 1.],</span><br><span class="line">        [2., 2., 2.],</span><br><span class="line">        [3., 3., 3.],</span><br><span class="line">        [4., 4., 4.]]) torch.Size([4, 3])</span><br><span class="line">tensor([[ 6.5000, 12.5000, 18.5000, 24.5000]], grad_fn=&lt;AddmmBackward&gt;) torch.Size([1, 4])</span><br></pre></td></tr></table></figure>
+<h3><span id="三-激活函数层">三、<strong>激活函数层</strong></span></h3>
+<p>假设第一个隐藏层为：<img src="https://www.zhihu.com/equation?tex=H_%7B1%7D%3DX+%5Ctimes+W_%7B1%7D" alt="[公式]">，第二个隐藏层为：<img src="https://www.zhihu.com/equation?tex=H_%7B2%7D%3DH_%7B1%7D+%5Ctimes+W_%7B2%7D" alt="[公式]">，输出层为：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Ctext+%7B+Out+%7D+%5Cboldsymbol%7Bp%7D+%5Cboldsymbol%7Bu%7D+%5Cboldsymbol%7Bt%7D+%26%3D%5Cboldsymbol%7BH%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D+%5C%5C+%26%3D%5Cboldsymbol%7BH%7D_%7B1%7D+%2A+%5Cboldsymbol%7BW%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D+%5C%5C+%26%3D%5Cboldsymbol%7BX%7D+%2A+%28%5Cboldsymbol%7BW%7D_%7B1%7D+%2A%5Cboldsymbol%7BW%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D%29+%5C%5C+%26%3D%5Cboldsymbol%7BX%7D+%2A+%7BW%7D+%5Cend%7Baligned%7D++%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>如果没有非线性变换，由于矩阵乘法的结合性，多个线性层的组合等价于一个线性层。激活函数对特征进行非线性变换，赋予了多层神经网络具有深度的意义。下面介绍一些激活函数层。</strong></p>
+<h4><span id="31-nnsigmoid">3.1 <strong>nn.Sigmoid</strong></span></h4>
+<ul>
+<li><p><strong>计算公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"></p></li>
+<li><p><strong>梯度公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3Dy+%2A%281-y%29" alt="[公式]"></p></li>
+<li><p><strong>特性</strong>：</p></li>
+<li><ul>
+<li>输出值在(0,1)，符合<strong>概率</strong></li>
+<li>导数范围是 [0, 0.25]，容易导致<strong>梯度消失</strong></li>
+<li><strong>输出为非 0 均值，破坏数据分布</strong></li>
+</ul></li>
+</ul>
+<p><img src="https://pic2.zhimg.com/80/v2-92f08b1ea82087c553dfec9c18d1b3a9_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<h4><span id="32-nntanh">3.2 <strong>nn.tanh</strong></span></h4>
+<ul>
+<li><p><strong>计算公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%3D%5Cfrac%7B%5Csin+x%7D%7B%5Ccos+x%7D%3D%5Cfrac%7Be%5E%7Bx%7D-e%5E%7B-x%7D%7D%7Be%5E%7B-%7D%2Be%5E%7B-x%7D%7D%3D%5Cfrac%7B2%7D%7B1%2Be%5E%7B-2+x%7D%7D%2B1" alt="[公式]"></p></li>
+<li><p><strong>梯度公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3D1-y%5E%7B2%7D" alt="[公式]"></p></li>
+<li><p><strong>特性</strong>：</p></li>
+<li><ul>
+<li>输出值在(-1, 1)，数据符合 0 均值</li>
+<li>导数范围是 (0,1)，容易导致梯度消失</li>
+</ul></li>
+<li><p><img src="https://pic3.zhimg.com/80/v2-1187e5593fcd1c9b3f4deaeeb45d1a0e_1440w.jpg" alt="img" style="zoom: 33%;"></p></li>
+</ul>
+<h4><span id="33nnrelu修正线性单元">3.3
+<strong>nn.ReLU(修正线性单元)</strong></span></h4>
+<ul>
+<li><p>计算公式：<img src="https://www.zhihu.com/equation?tex=y%3Dmax%280%2C+x%29" alt="[公式]"></p></li>
+<li><p>梯度公式：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D1%2C+%26+x%3E0+%5C%5C+u+n+d+%5Ctext+%7B+ef+ined%2C+%7D+%26+x%3D0+%5C%5C+0%2C+%26+x%3C0%5Cend%7Barray%7D%5Cright." alt="[公式]"></p></li>
+<li><p>特性：</p></li>
+<li><ul>
+<li>输出值均为正数，负半轴的导数为
+0，容易导致<strong>死神经元</strong></li>
+<li>导数是 1，缓解梯度消失，但容易引发梯度爆炸</li>
+</ul></li>
+</ul>
+<p><img src="https://pic3.zhimg.com/80/v2-aa6efbe0e0fd4900cb60d9df516986ca_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p><strong>针对 RuLU 会导致==死神经元==的缺点，出现了下面 3
+种改进的激活函数。</strong></p>
+<h4><span id="nnleakyrelu"><strong>nn.LeakyReLU</strong></span></h4>
+<ul>
+<li>有一个参数<code>negative_slope</code>：设置负半轴斜率</li>
+</ul>
+<h4><span id="nnprelu"><strong>nn.PReLU</strong></span></h4>
+<ul>
+<li>有一个参数<code>init</code>：设置初始斜率，这个斜率是可学习的</li>
+</ul>
+<h4><span id="nnrrelu"><strong>nn.RReLU</strong></span></h4>
+<p>R 是 random 的意思，负半轴每次斜率都是随机取 [lower, upper]
+之间的一个数</p>
+<ul>
+<li>lower：均匀分布下限</li>
+<li>upper：均匀分布上限</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3FXX4X4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3FXX4X4/" class="post-title-link" itemprop="url">Pytorch（5）【Nan】图像处理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-02 18:47:39" itemprop="dateCreated datePublished" datetime="2022-05-02T18:47:39+08:00">2022-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-04 19:28:40" itemprop="dateModified" datetime="2022-05-04T19:28:40+08:00">2022-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>0</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/38401RR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/38401RR/" class="post-title-link" itemprop="url">Pytorch（4）DataLoader</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-02 18:46:15 / 修改时间：21:17:13" itemprop="dateCreated datePublished" datetime="2022-05-02T18:46:15+08:00">2022-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="pytorch-学习笔记dataloader-与-dataset">[PyTorch 学习笔记]
+DataLoader 与 DataSet</span></h2>
+<h4><span id="人民币-二分类"><strong>人民币 二分类</strong></span></h4>
+<p>实现 1 元人民币和 100 元人民币的图片二分类。前面讲过 PyTorch
+的五大模块：数据、模型、损失函数、优化器和迭代训练。</p>
+<p>数据模块又可以细分为 4 个部分：</p>
+<ul>
+<li>数据收集：样本和标签。</li>
+<li>数据划分：训练集、验证集和测试集</li>
+<li>数据读取：对应于 PyTorch 的 DataLoader。其中 DataLoader 包括 Sampler
+和 DataSet。Sampler 的功能是生成索引， DataSet
+是根据生成的索引读取样本以及标签。</li>
+<li>数据预处理：对应于 PyTorch 的 transforms</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-11280c55c7d6f98b4ddb6fffe9c3645c_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h3><span id="一-dataloader-与-dataset">一、DataLoader 与 DataSet</span></h3>
+<h4><span id="11torchutilsdatadataloader"><strong>1.1
+torch.utils.data.DataLoader()</strong></span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.utils.data.DataLoader(dataset, batch_size=<span class="number">1</span>, shuffle=<span class="literal">False</span>, sampler=<span class="literal">None</span>, batch_sampler=<span class="literal">None</span>, num_workers=<span class="number">0</span>, collate_fn=<span class="literal">None</span>, pin_memory=<span class="literal">False</span>, drop_last=<span class="literal">False</span>, timeout=<span class="number">0</span>, worker_init_fn=<span class="literal">None</span>, multiprocessing_context=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>功能：构建可迭代的数据装载器</p>
+<ul>
+<li><strong>dataset</strong>: Dataset
+类，决定数据从哪里读取以及如何读取</li>
+<li><strong>batchsize</strong>: 批大小</li>
+<li><strong>num_works</strong>:num_works: 是否多进程读取数据</li>
+<li><strong>sheuffle</strong>: 每个 epoch 是否乱序</li>
+<li>drop_last: 当样本数不能被 batchsize
+整除时，是否舍弃最后一批数据</li>
+</ul>
+<h4><span id="12-epoch-iterationbatchsize"><strong>1.2 Epoch, Iteration,
+Batchsize</strong></span></h4>
+<ul>
+<li><strong>Epoch</strong>: 所有训练样本都已经输入到模型中，称为一个
+Epoch</li>
+<li><strong>Iteration</strong>: 一批样本输入到模型中，称为一个
+Iteration</li>
+<li><strong>Batchsize</strong>: 批大小，决定一个 iteration
+有多少样本，也决定了一个 Epoch 有多少个 Iteration</li>
+</ul>
+<h4><span id="13torchutilsdatadataset">1.3
+<strong>torch.utils.data.Dataset</strong></span></h4>
+<p><strong>功能</strong>：Dataset 是抽象类，所有自定义的 Dataset
+都需要继承该类，<strong>并且重写<code>__getitem()__</code>方法和<code>__len__()</code>方法</strong>
+。<code>__getitem()__</code>方法的作用是接收一个索引，返回索引对应的样本和标签，这是我们自己需要实现的逻辑。<code>__len__()</code>方法是返回所有样本的数量。</p>
+<p>数据读取包含 3 个方面：</p>
+<ul>
+<li><strong>读取哪些数据</strong>：每个 Iteration 读取一个
+<strong>Batchsize 大小</strong>的数据，每个 Iteration
+应该读取哪些数据。</li>
+<li><strong>从哪里读取数据</strong>：如何找到硬盘中的数据，应该在哪里设置<strong>文件路径参数</strong></li>
+<li><strong>如何读取数据</strong>：不同的文件需要使用不同的读取方法和库。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RMBDataset</span>(<span class="title class_ inherited__">Dataset</span>):  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, data_dir, transform=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        rmb面额分类任务的Dataset</span></span><br><span class="line"><span class="string">        :param data_dir: str, 数据集所在路径</span></span><br><span class="line"><span class="string">        :param transform: torch.transform，数据预处理</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># data_info存储所有图片路径和标签，在DataLoader中通过index读取样本</span></span><br><span class="line">        self.data_info = self.get_img_info(data_dir)</span><br><span class="line">        self.transform = transform</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_img_info</span>(<span class="params">data_dir</span>):</span><br><span class="line">        data_info = <span class="built_in">list</span>()</span><br><span class="line">        <span class="comment"># data_dir 是训练集、验证集或者测试集的路径</span></span><br><span class="line">        <span class="keyword">for</span> root, dirs, _ <span class="keyword">in</span> os.walk(data_dir):</span><br><span class="line">            <span class="comment"># 遍历类别</span></span><br><span class="line">            <span class="comment"># dirs [&#x27;1&#x27;, &#x27;100&#x27;]</span></span><br><span class="line">            <span class="keyword">for</span> sub_dir <span class="keyword">in</span> dirs:</span><br><span class="line">                <span class="comment"># 文件列表</span></span><br><span class="line">                img_names = os.listdir(os.path.join(root, sub_dir))</span><br><span class="line">                <span class="comment"># 取出 jpg 结尾的文件</span></span><br><span class="line">                img_names = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x.endswith(<span class="string">&#x27;.jpg&#x27;</span>), img_names))</span><br><span class="line">                <span class="comment"># 遍历图片</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(img_names)):</span><br><span class="line">                    img_name = img_names[i]</span><br><span class="line">                    <span class="comment"># 图片的绝对路径</span></span><br><span class="line">                    path_img = os.path.join(root, sub_dir, img_name)</span><br><span class="line">                    <span class="comment"># 标签，这里需要映射为 0、1 两个类别</span></span><br><span class="line">                    label = rmb_label[sub_dir]</span><br><span class="line">                    <span class="comment"># 保存在 data_info 变量中</span></span><br><span class="line">                    data_info.append((path_img, <span class="built_in">int</span>(label)))</span><br><span class="line">        <span class="keyword">return</span> data_info</span><br><span class="line">      </span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="comment"># 通过 index 读取样本</span></span><br><span class="line">        path_img, label = self.data_info[index]</span><br><span class="line">        <span class="comment"># 注意这里需要 convert(&#x27;RGB&#x27;)</span></span><br><span class="line">        img = Image.<span class="built_in">open</span>(path_img).convert(<span class="string">&#x27;RGB&#x27;</span>)     <span class="comment"># 0~255</span></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            img = self.transform(img)   <span class="comment"># 在这里做transform，转为tensor等等</span></span><br><span class="line">        <span class="comment"># 返回是样本和标签</span></span><br><span class="line">        <span class="keyword">return</span> img, label   </span><br><span class="line">      </span><br><span class="line">		<span class="comment"># 返回所有样本的数量</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.data_info)      </span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>图片的路径和对应的标签</strong>：实现读取数据的
+Dataset，编写一个<code>get_img_info()</code>方法，<strong>读取每一个图片的路径和对应的标签，组成一个元组，再把所有的元组作为
+list
+存放到<code>self.data_info</code>变量中</strong>，这里需要注意的是标签需要映射到
+0 开始的整数: <code>rmb_label = &#123;"1": 0, "100": 1&#125;</code>。</li>
+<li>然后在<code>Dataset</code>
+的初始化函数中调用<code>get_img_info()</code>方法。</li>
+<li><strong>索引</strong>：然后在<code>__getitem__()</code>方法中根据<code>index</code>
+读取<code>self.data_info</code>中路径对应的数据，并在这里做 transform
+操作，返回的是样本和标签。</li>
+<li><strong>长度</strong>：在<code>__len__()</code>方法中返回<code>self.data_info</code>的长度，即为所有样本的数量。</li>
+</ul>
+<p>在<code>train_lenet.py</code>中，分 5 步构建模型。</p>
+<ul>
+<li>首先定义训练集、验证集、测试集的路径，定义训练集和测试集的<code>transforms</code>。然后构建训练集和验证集的<code>RMBDataset</code>对象，把对应的路径和<code>transforms</code>传进去。再构建<code>DataLoder</code>，设置
+batch_size，其中训练集设置<code>shuffle=True</code>，表示每个 Epoch
+都打乱样本。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建MyDataset实例train_data = RMBDataset(data_dir=train_dir, transform=train_transform)valid_data = RMBDataset(data_dir=valid_dir, transform=valid_transform)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建DataLoder</span></span><br><span class="line"><span class="comment"># 其中训练集设置 shuffle=True，表示每个 Epoch 都打乱样本</span></span><br><span class="line">train_loader = DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=<span class="literal">True</span>)</span><br><span class="line">valid_loader = DataLoader(dataset=valid_data, batch_size=BATCH_SIZE)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第 2 步构建模型，这里采用经典的 Lenet 图片分类网络。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net = LeNet(classes=<span class="number">2</span>)</span><br><span class="line">net.initialize_weights()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第 3 步设置损失函数，这里使用<strong>交叉熵损失函数</strong>。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">criterion = nn.CrossEntropyLoss()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第 4 步设置优化器。这里采用 <strong>SGD 优化器</strong>。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">optimizer = optim.SGD(net.parameters(), lr=LR, momentum=<span class="number">0.9</span>) <span class="comment"># 选择优化器</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=<span class="number">10</span>, gamma=<span class="number">0.1</span>) </span><br><span class="line"><span class="comment"># 设置学习率下降策略</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>第 5 步<strong>迭代训练模型</strong>，在每一个 epoch
+里面，<strong>需要遍历 train_loader 取出数据，每次取得数据是一个
+batchsize 大小</strong>。这里又分为 4 步。</p>
+<ul>
+<li><p><strong>前向传播</strong></p></li>
+<li><p><strong>反向传播求导</strong></p></li>
+<li><p><strong>使用<code>optimizer</code>更新权重</strong></p></li>
+<li><p><strong>统计训练情况</strong>。每一个 epoch
+完成时都需要使用<code>scheduler</code>更新学习率，和计算验证集的准确率、</p>
+<p>loss。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(MAX_EPOCH):</span><br><span class="line"></span><br><span class="line">    loss_mean = <span class="number">0.</span></span><br><span class="line">    correct = <span class="number">0.</span></span><br><span class="line">    total = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    net.train()</span><br><span class="line">    <span class="comment"># 遍历 train_loader 取数据</span></span><br><span class="line">    <span class="keyword">for</span> i, data <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># forward</span></span><br><span class="line">        inputs, labels = data</span><br><span class="line">        outputs = net(inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># backward</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update weights</span></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 统计分类情况</span></span><br><span class="line">        _, predicted = torch.<span class="built_in">max</span>(outputs.data, <span class="number">1</span>)</span><br><span class="line">        total += labels.size(<span class="number">0</span>)</span><br><span class="line">        correct += (predicted == labels).squeeze().<span class="built_in">sum</span>().numpy()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打印训练信息</span></span><br><span class="line">        loss_mean += loss.item()</span><br><span class="line">        train_curve.append(loss.item())</span><br><span class="line">        <span class="keyword">if</span> (i+<span class="number">1</span>) % log_interval == <span class="number">0</span>:</span><br><span class="line">            loss_mean = loss_mean / log_interval</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Training:Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;&quot;</span>.<span class="built_in">format</span>(</span><br><span class="line">                epoch, MAX_EPOCH, i+<span class="number">1</span>, <span class="built_in">len</span>(train_loader), loss_mean, correct / total))</span><br><span class="line">            loss_mean = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    scheduler.step()  <span class="comment"># 更新学习率</span></span><br><span class="line">    <span class="comment"># 每个 epoch 计算验证集得准确率和loss</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+</ul>
+<p>我们可以看到每个
+iteration，我们是从<strong>train_loader</strong>中取出数据的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">if</span> self.num_workers == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> _SingleProcessDataLoaderIter(self)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> _MultiProcessingDataLoaderIter(self)</span><br></pre></td></tr></table></figure>
+<p>这里我们没有设置多进程，会执行<code>_SingleProcessDataLoaderIter</code>的方法。我们以<code>_SingleProcessDataLoaderIter</code>为例。在<code>_SingleProcessDataLoaderIter</code>里只有一个方法<code>_next_data()</code>，如下：</p>
+<h4><span id="14_singleprocessdataloaderiter单进程">==1.4
+<code>_SingleProcessDataLoaderIter</code>单进程==</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_next_data</span>(<span class="params">self</span>):</span><br><span class="line">		index = self._next_index()  <span class="comment"># may raise StopIteration</span></span><br><span class="line"> 		data = self._dataset_fetcher.fetch(index)  <span class="comment"># may raise StopIteration</span></span><br><span class="line"> 		<span class="keyword">if</span> self._pin_memory:</span><br><span class="line">  			data = _utils.pin_memory.pin_memory(data)</span><br><span class="line"> 		<span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
+<p>在该方法中，<strong>self._next_index()</strong>是<strong>获取一个
+batchsize 大小的 index 列表</strong>，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_next_index</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">next</span>(self._sampler_iter)  <span class="comment"># may raise StopIteration</span></span><br></pre></td></tr></table></figure>
+<p>其中调用的<strong>sample类</strong>的<code>__iter__()</code>方法<strong>返回
+batch_size 大小的随机 index 列表</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">		batch = []</span><br><span class="line"> 		<span class="keyword">for</span> idx <span class="keyword">in</span> self.sampler:</span><br><span class="line">  			batch.append(idx)</span><br><span class="line">  			<span class="keyword">if</span> <span class="built_in">len</span>(batch) == self.batch_size:</span><br><span class="line">   					<span class="keyword">yield</span> batch</span><br><span class="line">   					batch = []</span><br><span class="line"> 		<span class="keyword">if</span> <span class="built_in">len</span>(batch) &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="keyword">not</span> self.drop_last:</span><br><span class="line">  			<span class="keyword">yield</span> batch</span><br></pre></td></tr></table></figure>
+<p>然后再返回看
+<code>dataloader</code>的<code>_next_data()</code>方法，在第二行中调用了<strong>self._dataset_fetcher.fetch(index)</strong>获取数据。这里会调用<code>_MapDatasetFetcher</code>中的<code>fetch()</code>函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fetch</span>(<span class="params">self, possibly_batched_index</span>):</span><br><span class="line">		<span class="keyword">if</span> self.auto_collation:</span><br><span class="line">  			data = [self.dataset[idx] <span class="keyword">for</span> idx <span class="keyword">in</span> possibly_batched_index]</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">  			data = self.dataset[possibly_batched_index]</span><br><span class="line"> 		<span class="keyword">return</span> self.collate_fn(data)</span><br></pre></td></tr></table></figure>
+<p>这里调用了<strong>self.dataset[idx]</strong>，这个函数会<strong>调用<code>dataset.__getitem__()</code>方法获取具体的数据</strong>，所以<code>__getitem__()</code>方法是我们必须实现的。我们拿到的<code>data</code>是一个
+list，每个元素是一个 tuple，<strong>每个 tuple
+包括样本和标签</strong>。所以最后要使用<code>self.collate_fn(data)</code>把
+data 转换为两个 list，<strong>第一个 元素 是样本的 batch 形式，形状为
+[16, 3, 32, 32] (16 是 batch size，[3, 32, 32]
+是图片像素)；第二个元素是标签的 batch 形式，形状为 [16]。</strong></p>
+<p>所以在代码中，我们使用<code>inputs, labels = data</code>来接收数据。</p>
+<h4><span id="pytorch单进程数据读取流程图">==PyTorch
+单进程数据读取流程图==</span></h4>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-7604c8f5e0df531b9127d81736b1da91_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="15_multiprocessingdataloaderiterself多进程">==1.5
+_MultiProcessingDataLoaderIter(self)多进程==</span></h4>
+<blockquote>
+<p>[源码解析] PyTorch 分布式(2) ---
+数据加载之DataLoader:https://www.cnblogs.com/rossiXYZ/p/15150504.html</p>
+</blockquote>
+<p>总体逻辑如下：</p>
+<ul>
+<li>主进程把需要获取的数据 index 放入index_queue。</li>
+<li>子进程从 index_queue 之中读取
+index，进行数据读取，然后把读取数据的index放入worker_result_queue。</li>
+<li>主进程的 pin_memory_thread 会从 worker_result_queue
+读取数据index，依据这个index进行读取数据，进行处理，把结果放入
+data_queue。</li>
+</ul>
+<figure>
+<img src="https://img2020.cnblogs.com/blog/1850883/202108/1850883-20210811215147352-1780778189.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -249,15 +826,15 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">工程</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
         </span>
     </span>
 
@@ -409,15 +986,15 @@ TensorBoard 进行可视化分析。</li>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">工程</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
         </span>
     </span>
 
@@ -556,15 +1133,15 @@ while 循环语句，需要使用辅助函数 tf.while_loop 写成 TensorFlow
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">应用</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
         </span>
     </span>
 
@@ -672,15 +1249,15 @@ classification.</p>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">应用</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
         </span>
     </span>
 
@@ -919,7 +1496,7 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3W84T2F/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/32RS544/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -937,7 +1514,7 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3W84T2F/" class="post-title-link" itemprop="url">工程设计-模型部署</a>
+          <a href="/posts/32RS544/" class="post-title-link" itemprop="url">模型部署（1）【draft】概述</a>
         </h2>
 
         <div class="post-meta-container">
@@ -947,9 +1524,15 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-04-29 14:35:29 / 修改时间：15:58:20" itemprop="dateCreated datePublished" datetime="2022-04-29T14:35:29+08:00">2022-04-29</time>
+      <time title="创建时间：2022-04-29 14:35:29" itemprop="dateCreated datePublished" datetime="2022-04-29T14:35:29+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:59:24" itemprop="dateModified" datetime="2023-04-26T15:59:24+08:00">2023-04-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -972,14 +1555,14 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>108</span>
+      <span>3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -990,12 +1573,66 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="机器学习一模型训练及线上部署相关笔记">机器学习（一）：模型训练及线上部署相关笔记</span></h2>
+          <h3><span id="机器学习一模型训练及线上部署相关笔记">机器学习（一）：模型训练及线上部署相关笔记</span></h3>
 <p>https://www.shangmayuan.com/a/2331a95928b344d782ac08ac.html</p>
 <ul>
 <li>GBDT+LR模型训练及线上部署</li>
 <li>Java调用jpmml类</li>
 </ul>
+<h3><span id="一-离线模型offline">一、离线模型(Offline)</span></h3>
+<p>离线模型存在于很多业务场景中，其中最常见的业务场景就是用在推荐系统的召回阶段，由于在推荐系统中，<strong>召回并不要求是实时的</strong>，可以根据业务的需要，调整成每天一次，或者每几个小时跑一次即可，因此，这类的模型，一般我们只需要使用<strong>Linux下的crontab定时任务脚本</strong>，每隔一段时间来启动一次就可以，然后将log文件输出到指定的文件下即可。这种方式一般来讲仅限离线模型的部署，其本质上就是一段定时任务的代码。</p>
+<h3><span id="二-在线online近似在线nearline模型">二、在线(Online)/近似在线(NearLine)模型</span></h3>
+<p>在生产系统中，实时推理和预测是最常见的需求，也是对于很多深度学习模型来说所必须达到的点。下面简介一些深度学习模型在实时预测时常见的几种部署方法：</p>
+<h4><span id="21将模型预测直接打包成http接口">2.1
+将模型预测直接打包成http接口</span></h4>
+<p>将模型直接打包成一个http接口的形式是在企业中比较常见的模型上线的方式，<strong>所谓的将预测直接打包成http接口实际上一般是指将我们训练好的模型直接在线上进行预测</strong>。我们来试想一个场景，当一个模型训练好之后，我们如果想要验证这个模型的好坏，我们首先能想到的办法就是找一批数据来测试一下。实际上，将模型预测直接打包成http接口也是利用了这样的思路。</p>
+<p>在这里，我们可以<strong>将训练好的模型提前进行加载，并初始化若干个消息队列和worker，当有新的待预测数据进入的时候，我们直接将数据通过消息队列传入到模型中进行推理和预测，最终得到结果。</strong></p>
+<p>而<strong>对于外层接收输入，我们一般可以将接收的地方使用flask打包成一个http接口，等待传入即可。</strong></p>
+<p>使用这种方式直接打包成http接口的好处在于打包和部署相对比较方便，对于一些相对比较<strong>轻量级且对并发量要求不是很高的情况下相对还是比较好用的。使用值得注意的是，如果对于一个相对比较大的模型来讲，这种方式推理的时间相对就会比较长，从用户输入到结果返回可能需要200ms左右。</strong></p>
+<h4><span id="22-pmml">2.2 PMML</span></h4>
+<blockquote>
+<p>使用PMML部署机器学习模型 : https://zhuanlan.zhihu.com/p/79197337</p>
+</blockquote>
+<p>PMML (Predictive Model Markup Language)
+是一套通用的且与平台和环境无关的模型表示语言，<strong>机器学习在模型部署方面的一种标准部署方案，其形式是采用XML语言标记形式</strong>。我们可以将自己训练的机器学习模型打包成PMML模型文件的形式，然后使用目标环境的解析PMML模型的库来完成模型的加载并做预测。PMML是一套基于XML的标准，通过
+XML Schema 定义了使用的元素和属性，主要由以下核心部分组成：</p>
+<p><strong>数据字典（Data Dictionary）</strong>，描述输入数据。</p>
+<p><strong>数据转换（Transformation Dictionary和Local
+Transformations）</strong>，应用在输入数据字段上生成新的派生字段。</p>
+<p><strong>模型定义 （Model）</strong>，每种模型类型有自己的定义。</p>
+<p><strong>输出（Output）</strong>，指定模型输出结果。</p>
+<p>目前，大部分机器学习库都支持直接打包成PMML模型文件的相关函数，例如在Python中的LightGBM库，XGBoost库，Keras库等，都有对PMML的支持，直接使用相应的命令就可以生成，而在Java、R等语言中，也有相关的库可以进行PMML文件生成的命令。一般来讲，使用PMML文件进行预测的过程如下：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261553349.jpg" alt="img" style="zoom: 50%;"></p>
+<p><strong>由于其平台无关性，导致PMML可以实现跨平台部署，是企业中部署机器学习模型的常见解决方案。</strong></p>
+<h4><span id="23-tensorflow-serving">2.3 TensorFlow Serving</span></h4>
+<p>使用TensorFlow Serving进行服务部署，一般需要2台以上机器。</p>
+<ul>
+<li>其中一台作为TensorFlow
+Serving的服务器，这台服务器是专门来做模型部署和预测用，对于这台服务器，一般建议使用GPU服务器，这样会使整个推理预测的过程变得很快；</li>
+<li>另外一台服务器是业务服务器，也就是接收用户的输入以及其他业务处理的服务器。我们可以把模型部署到TensorFlow
+Serving的服务器上，而一般我们只需要先在服务器上使用docker创建一个TensorFlow
+Serving服务，然后将模型文件上传上去，当有请求进来的时候，业务服务会直接对模型所在的服务器发起服务调用，并得到模型预测的结果。</li>
+</ul>
+<h3><span id="三-实际用时的一些部署方法组合">三、实际用时的一些部署方法组合</span></h3>
+<h4><span id="31-rpmmlsparkairflow调度">3.1 R+pmml+spark+airflow调度</span></h4>
+<p>用R语言训练模型并转为pmml文件，然后使用spark将这个pmml文件封装为jar，使用airflow提交到yarn。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val is: InputStream = fs.open(path)</span><br><span class="line"></span><br><span class="line">val pmml: PMML = PMMLUtil.unmarshal(is)</span><br><span class="line"></span><br><span class="line">modelEvaluator = ModelEvaluatorFactory.newInstance.newModelEvaluator(pmml)</span><br></pre></td></tr></table></figure>
+<h4><span id="32-pythonsklearnairflow调度">3.2 python+sklearn+airflow调度</span></h4>
+<p>使用python训练好sklearn模型，并joblib.dumps()保存，然后在python文件中joblib.load()加载改文件，使用airflow离线调度。</p>
+<h4><span id="33-xgboostsparkxgb4j">3.3 xgboost+spark+xgb4j</span></h4>
+<ul>
+<li>使用分布式的<strong>spark版的xgboost</strong>，训练好的模型直接保存为model.booster.saveModel(hdfsOutStream)二进制文件.然后<strong>xgboost4j加载该文件XGBoost.loadModel(is)实现线上实时预测</strong>。</li>
+</ul>
+<h4><span id="34tensorflowtensorflow的java库">3.4
+tensorflow+tensorflow的java库</span></h4>
+<h3><span id="四-不同需求对应的不同平台部署方案">四、不同需求对应的不同平台部署方案</span></h3>
+<h5><span id="1-放到服务器上跑要求吞吐和时延重点是吞吐这种应用在互联网企业居多一般是互联网产品的后端ai计算例如人脸验证-语音服务-应用了深度学习的智能推荐等">1、放到服务器上跑，要求吞吐和时延（重点是吞吐）这种应用在互联网企业居多，一般是互联网产品的后端AI计算，例如人脸验证、语音服务、应用了深度学习的智能推荐等。</span></h5>
+<p>由于一般是大规模部署，这时不仅仅要考虑吞吐和时延，还要考虑功耗和成本。所以除了软件外，硬件也会下功夫，比如使用推理专用的NVIDIA
+P4、寒武纪MLU100等。这些推理卡比桌面级显卡功耗低，单位能耗下计算效率更高，且硬件结构更适合高吞吐量的情况软件上，一般都不会直接上深度学习框架。对于NVIDIA的产品，一般都会使用TensorRT来加速（不仅可以加速前传，还包含调度功能）。TensorRT用了CUDA、CUDNN，而且还有<strong>图优化、fp16、int8量化</strong>等。</p>
+<h3><span id="五-模型部署时一些常用的trick">五、模型部署时一些常用的trick</span></h3>
+<h4><span id="51-模型压缩">5.1 模型压缩</span></h4>
+<p>基于参数修剪和共享的方法针对模型参数的冗余性，试图去除冗余和不重要的项。基于低秩因子分解的技术使用矩阵/张量分解来估计深度学习模型的信息参数。基于传输/紧凑卷积滤波器的方法设计了特殊的结构卷积滤波器来降低存储和计算复杂度。知识蒸馏方法通过学习一个蒸馏模型，训练一个更紧凑的神经网络来重现一个更大的网络的输出。</p>
+<p>一般来说，参数修剪和共享，低秩分解和知识蒸馏方法可以用于全连接层和卷积层的CNN，但另一方面，使用转移/紧凑型卷积核的方法仅支持卷积层。低秩因子分解和基于转换/紧凑型卷积核的方法提供了一个端到端的流水线，可以很容易地在CPU/GPU环境中实现。相反参数修剪和共享使用不同的方法，如矢量量化，二进制编码和稀疏约束来执行任务，这导致常需要几个步骤才能达到目标。</p>
 
       
     </div>
@@ -1022,7 +1659,7 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2A2FA4H/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2SGD3Q6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -1040,7 +1677,7 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2A2FA4H/" class="post-title-link" itemprop="url">工程设计-Treelite加速</a>
+          <a href="/posts/2SGD3Q6/" class="post-title-link" itemprop="url">模型部署（5）Treelite加速</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1050,9 +1687,15 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-04-29 13:22:19 / 修改时间：14:17:18" itemprop="dateCreated datePublished" datetime="2022-04-29T13:22:19+08:00">2022-04-29</time>
+      <time title="创建时间：2022-04-29 13:22:19" itemprop="dateCreated datePublished" datetime="2022-04-29T13:22:19+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:52:59" itemprop="dateModified" datetime="2023-04-26T15:52:59+08:00">2023-04-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1093,18 +1736,10 @@ propagation）</strong>，<strong>来验证未知样本与分类样本的相似�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1><span id="treelite树模型部署加速工具支持xgboost-lightgbm和sklearn">Treelite：树模型部署加速工具（支持XGBoost、LightGBM和Sklearn）</span></h1>
-<blockquote>
-<p>项目链接：<a href="https://link.zhihu.com/?target=https%3A//treelite.readthedocs.io/">https://treelite.readthedocs.io/</a></p>
-<p>项目论文：<a href="https://link.zhihu.com/?target=https%3A//mlsys.org/Conferences/doc/2018/196.pdf">https://mlsys.org/Conferences/doc/2018/196.pdf</a></p>
-<p>支持模型：XGB、LGB、SKlearn树模型</p>
-</blockquote>
+          <h2><span id="treelite树模型部署加速工具支持xgboost-lightgbm和sklearn">Treelite：树模型部署加速工具（支持XGBoost、LightGBM和Sklearn）</span></h2>
 <h3><span id="一-treelite介绍"><strong>一、TreeLite介绍</strong></span></h3>
 <p>TreeLite能够树模型编译优化为单独库，可以很方便的用于模型部署。经过优化后可以将XGBoost模型的预测速度提高2-6倍。</p>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-f3b1978eb5c3a4fe463f93cbbad9dbf5_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261551831.jpg"></p>
 <p>如上图，黑色曲线为XGBoost在不同batch
 size下的吞吐量，红色曲线为XGBoost经过TreeLite编译后的吞吐量。</p>
 <p>Treelite支持众多的树模型，特别是随机森林和GBDT。同时Treelite可以很好的支持XGBoost,
@@ -1114,10 +1749,8 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
 <ul>
 <li><p><strong>逻辑分支</strong></p>
 <ul>
-<li><p>这个指令是<strong>gcc引入</strong>的，作用是<strong>允许程序员将最有可能执行的分支告诉编译器</strong>。这个指令的写法为：<code>__builtin_expect(EXP, N)</code>。意思是：EXP==N的概率很大。【<strong>减少重新取跳转地址</strong>】</p>
-<blockquote>
-<p>__builtin_expect 说明: https://www.jianshu.com/p/2684613a300f</p>
-</blockquote></li>
+<li><p>这个指令是<strong>gcc引入</strong>的，作用是<strong>允许程序员将最有可能执行的分支告诉编译器</strong>。这个指令的写法为：<code>__builtin_expect(EXP, N)</code>。意思是：EXP==N的概率很大。【<strong>减少重新取跳转地址</strong>】__builtin_expect
+说明: https://www.jianshu.com/p/2684613a300f</p></li>
 <li><p><strong>构建树模型+
 计算好每个分支下面样本的个数+提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p></li>
 </ul></li>
@@ -1130,12 +1763,17 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
 <p>对于树模型而言，节点的分类本质使用if语句完成，而CPU在执行if语句时会等待条件逻辑的计算。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( [conditional expression] ) &#123;</span><br><span class="line">  <span class="built_in">foo</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">bar</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>如果在构建树模型时候，提前计算好每个分支下面样本的个数，则可以提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p>
-<p><img src="https://pic4.zhimg.com/80/v2-4e8806e27e4186d058b87c772b27a087_1440w.jpg" alt="img" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211426056.jpg" alt="img" style="zoom: 67%;"></p>
 <p>借助于编译命令，可以完成逻辑计算加速。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* expected to be false */</span></span><br><span class="line"><span class="keyword">if</span>( __builtin_expect([condition],<span class="number">0</span>))&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4><span id="22-逻辑比较">2.2 逻辑比较</span></h4>
 <p>原始的分支比较可能会有浮点数比较逻辑，可以量化为数值比较逻辑。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].fvalue &lt; <span class="number">1.5</span>) &#123;  </span><br><span class="line"><span class="comment">/* floating-point comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].qvalue &lt; <span class="number">3</span>) &#123;     </span><br><span class="line"><span class="comment">/* integer comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><p>项目链接：<a href="https://link.zhihu.com/?target=https%3A//treelite.readthedocs.io/">https://treelite.readthedocs.io/</a></p></li>
+<li><p>项目论文：<a href="https://link.zhihu.com/?target=https%3A//mlsys.org/Conferences/doc/2018/196.pdf">https://mlsys.org/Conferences/doc/2018/196.pdf</a></p></li>
+</ul>
 
       
     </div>
@@ -1162,7 +1800,7 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/GN92QG/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/367YBF3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -1180,7 +1818,7 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/GN92QG/" class="post-title-link" itemprop="url">工程设计-部署优化</a>
+          <a href="/posts/367YBF3/" class="post-title-link" itemprop="url">模型部署（3）部署优化</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1190,9 +1828,15 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-04-29 12:59:13 / 修改时间：13:08:48" itemprop="dateCreated datePublished" datetime="2022-04-29T12:59:13+08:00">2022-04-29</time>
+      <time title="创建时间：2022-04-29 12:59:13" itemprop="dateCreated datePublished" datetime="2022-04-29T12:59:13+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:57:38" itemprop="dateModified" datetime="2023-04-26T15:57:38+08:00">2023-04-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1215,14 +1859,14 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -1233,10 +1877,13 @@ LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1><span id="模型部署优化的学习路线是什么"></span></h1>
+          <h3><span id="模型部署优化的学习路线是什么">模型部署优化的学习路线是什么？</span></h3>
+<ul>
+<li>https://segmentfault.com/a/1190000040491572</li>
+</ul>
 <p>模型部署优化这个方向其实比较宽泛。从模型完成训练，到最终将模型部署到实际硬件上，整个流程中会涉及到很多不同层面的工作，每一个环节对技术点的要求也不尽相同。</p>
 <p><strong>部署的流程大致可以分为以下几个环节：</strong></p>
-<p><img src="https://segmentfault.com/img/bVcT3R0" alt="模型部署流程" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211425187.png" alt="模型部署流程" style="zoom: 67%;"></p>
 <h3><span id="一-模型转换">一、模型转换</span></h3>
 <p>从训练框架得到模型后，根据需求转换到相应的模型格式。模型格式的选择通常是根据公司业务端
 SDK 的需求，通常为 caffe 模型或 onnx
@@ -1286,402 +1933,8 @@ SDK 相关。<strong>在该环节中主要涉及到的技能与 SDK
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/10D4W42/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/10D4W42/" class="post-title-link" itemprop="url">大数据处理Q&A</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-28 22:46:44" itemprop="dateCreated datePublished" datetime="2022-04-28T22:46:44+08:00">2022-04-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-07 13:34:49" itemprop="dateModified" datetime="2023-03-07T13:34:49+08:00">2023-03-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%B7%A5%E7%A8%8B/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大数据处理</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>393</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4><span id="面试常见的大数据相关问题">面试常见的大数据相关问题</span></h4>
-<ul>
-<li>https://anchorety.github.io/2019/08/14/%E9%9D%A2%E8%AF%95%E5%B8%B8%E8%A7%81%E7%9A%84%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/</li>
-</ul>
-<h4><span id="海量日志数据提取出某日访问百度次数最多的那个ip">海量日志数据，提取出某日访问百度次数最多的那个IP？</span></h4>
-<ul>
-<li>http://zoeyyoung.github.io/get-most-visit-ip.html</li>
-</ul>
-<p>具体做法如下：</p>
-<ol type="1">
-<li>按照IP地址的Hash(IP)%1024值,
-把海量IP日志分别存储到1024个小文件中.</li>
-<li>对于每一个小文件, 构建一个以IP为key, 出现次数为value的HashMap,
-同时记录当前出现次数最多的那个IP地址;</li>
-<li>得到1024个小文件中的出现次数最多的IP,
-再依据常规的排序算法得到总体上出现次数最多的IP.</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/35SVZYH/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/35SVZYH/" class="post-title-link" itemprop="url">模型部署Q&A</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-28 22:04:41" itemprop="dateCreated datePublished" datetime="2022-04-28T22:04:41+08:00">2022-04-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-29 14:30:31" itemprop="dateModified" datetime="2022-04-29T14:30:31+08:00">2022-04-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-离线模型offline">一、离线模型(Offline)</span></h3>
-<p>离线模型存在于很多业务场景中，其中最常见的业务场景就是用在推荐系统的召回阶段，由于在推荐系统中，<strong>召回并不要求是实时的</strong>，可以根据业务的需要，调整成每天一次，或者每几个小时跑一次即可，因此，这类的模型，一般我们只需要使用<strong>Linux下的crontab定时任务脚本</strong>，每隔一段时间来启动一次就可以，然后将log文件输出到指定的文件下即可。这种方式一般来讲仅限离线模型的部署，其本质上就是一段定时任务的代码。</p>
-<h3><span id="二-在线online近似在线nearline模型">二、在线(Online)/近似在线(NearLine)模型</span></h3>
-<p>在生产系统中，实时推理和预测是最常见的需求，也是对于很多深度学习模型来说所必须达到的点。下面简介一些深度学习模型在实时预测时常见的几种部署方法：</p>
-<h4><span id="21将模型预测直接打包成http接口">2.1
-将模型预测直接打包成http接口</span></h4>
-<p>将模型直接打包成一个http接口的形式是在企业中比较常见的模型上线的方式，<strong>所谓的将预测直接打包成http接口实际上一般是指将我们训练好的模型直接在线上进行预测</strong>。我们来试想一个场景，当一个模型训练好之后，我们如果想要验证这个模型的好坏，我们首先能想到的办法就是找一批数据来测试一下。实际上，将模型预测直接打包成http接口也是利用了这样的思路。</p>
-<p>在这里，我们可以<strong>将训练好的模型提前进行加载，并初始化若干个消息队列和worker，当有新的待预测数据进入的时候，我们直接将数据通过消息队列传入到模型中进行推理和预测，最终得到结果。</strong></p>
-<p>而<strong>对于外层接收输入，我们一般可以将接收的地方使用==flask打包成一个http接口==，等待传入即可。</strong></p>
-<p>使用这种方式直接打包成http接口的好处在于打包和部署相对比较方便，对于一些相对比较<strong>轻量级且对并发量要求不是很高的情况下相对还是比较好用的。使用值得注意的是，如果对于一个相对比较大的模型来讲，这种方式推理的时间相对就会比较长，从用户输入到结果返回可能需要200ms左右。</strong></p>
-<h4><span id="22-pmml">==2.2 PMML==</span></h4>
-<blockquote>
-<p>使用PMML部署机器学习模型 : https://zhuanlan.zhihu.com/p/79197337</p>
-</blockquote>
-<p>PMML (Predictive Model Markup Language)
-是一套通用的且与平台和环境无关的模型表示语言，<strong>机器学习在模型部署方面的一种标准部署方案，其形式是采用XML语言标记形式</strong>。我们可以将自己训练的机器学习模型打包成PMML模型文件的形式，然后使用目标环境的解析PMML模型的库来完成模型的加载并做预测。PMML是一套基于XML的标准，通过
-XML Schema 定义了使用的元素和属性，主要由以下核心部分组成：</p>
-<p><strong>数据字典（Data Dictionary）</strong>，描述输入数据。</p>
-<p><strong>数据转换（Transformation Dictionary和Local
-Transformations）</strong>，应用在输入数据字段上生成新的派生字段。</p>
-<p><strong>模型定义 （Model）</strong>，每种模型类型有自己的定义。</p>
-<p><strong>输出（Output）</strong>，指定模型输出结果。</p>
-<p>目前，大部分机器学习库都支持直接打包成PMML模型文件的相关函数，例如在Python中的LightGBM库，XGBoost库，Keras库等，都有对PMML的支持，直接使用相应的命令就可以生成，而在Java、R等语言中，也有相关的库可以进行PMML文件生成的命令。一般来讲，使用PMML文件进行预测的过程如下：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-7b62592015b357a9e77d2d29857f3367_1440w.jpg" alt="img" style="zoom: 50%;"></p>
-<p><strong>由于其平台无关性，导致PMML可以实现跨平台部署，是企业中部署机器学习模型的常见解决方案。</strong></p>
-<h4><span id="23-tensorflow-serving">2.3 TensorFlow Serving</span></h4>
-<p>使用TensorFlow Serving进行服务部署，一般需要2台以上机器。</p>
-<ul>
-<li>其中一台作为TensorFlow
-Serving的服务器，这台服务器是专门来做模型部署和预测用，对于这台服务器，一般建议使用GPU服务器，这样会使整个推理预测的过程变得很快；</li>
-<li>另外一台服务器是业务服务器，也就是接收用户的输入以及其他业务处理的服务器。我们可以把模型部署到TensorFlow
-Serving的服务器上，而一般我们只需要先在服务器上使用docker创建一个TensorFlow
-Serving服务，然后将模型文件上传上去，当有请求进来的时候，业务服务会直接对模型所在的服务器发起服务调用，并得到模型预测的结果。</li>
-</ul>
-<h3><span id="三-实际用时的一些部署方法组合">三、实际用时的一些部署方法组合</span></h3>
-<h4><span id="31-rpmmlsparkairflow调度">3.1 R+pmml+spark+airflow调度</span></h4>
-<p>用R语言训练模型并转为pmml文件，然后使用spark将这个pmml文件封装为jar，使用==airflow==提交到yarn。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val is: InputStream = fs.open(path)</span><br><span class="line"></span><br><span class="line">val pmml: PMML = PMMLUtil.unmarshal(is)</span><br><span class="line"></span><br><span class="line">modelEvaluator = ModelEvaluatorFactory.newInstance.newModelEvaluator(pmml)</span><br></pre></td></tr></table></figure>
-<h4><span id="32-pythonsklearnairflow调度">3.2 python+sklearn+airflow调度</span></h4>
-<p>使用python训练好sklearn模型，并joblib.dumps()保存，然后在python文件中joblib.load()加载改文件，使用==airflow离线调度==。</p>
-<h4><span id="33-xgboostsparkxgb4j">==3.3 xgboost+spark+xgb4j==</span></h4>
-<ul>
-<li>使用分布式的<strong>spark版的xgboost</strong>，训练好的模型直接保存为model.booster.saveModel(hdfsOutStream)二进制文件.然后<strong>xgboost4j加载该文件XGBoost.loadModel(is)实现线上实时预测</strong>。</li>
-</ul>
-<h4><span id="34tensorflowtensorflow的java库">3.4
-tensorflow+tensorflow的java库</span></h4>
-<h3><span id="四-不同需求对应的不同平台部署方案">四、不同需求对应的不同平台部署方案</span></h3>
-<h4><span id="1-放到服务器上跑要求吞吐和时延重点是吞吐这种应用在互联网企业居多一般是互联网产品的后端ai计算例如人脸验证-语音服务-应用了深度学习的智能推荐等">1、放到服务器上跑，要求吞吐和时延（重点是吞吐）这种应用在互联网企业居多，一般是互联网产品的后端AI计算，例如人脸验证、语音服务、应用了深度学习的智能推荐等。</span></h4>
-<p>由于一般是大规模部署，这时不仅仅要考虑吞吐和时延，还要考虑功耗和成本。所以除了软件外，硬件也会下功夫，比如使用推理专用的NVIDIA
-P4、寒武纪MLU100等。这些推理卡比桌面级显卡功耗低，单位能耗下计算效率更高，且硬件结构更适合高吞吐量的情况软件上，一般都不会直接上深度学习框架。对于NVIDIA的产品，一般都会使用TensorRT来加速（不仅可以加速前传，还包含调度功能）。TensorRT用了CUDA、CUDNN，而且还有<strong>图优化、==fp16、int8量化==</strong>等。</p>
-<h3><span id="五-模型部署时一些常用的trick">五、模型部署时一些常用的trick</span></h3>
-<h4><span id="1-模型压缩">1、模型压缩</span></h4>
-<p>基于参数修剪和共享的方法针对模型参数的冗余性，试图去除冗余和不重要的项。基于低秩因子分解的技术使用矩阵/张量分解来估计深度学习模型的信息参数。基于传输/紧凑卷积滤波器的方法设计了特殊的结构卷积滤波器来降低存储和计算复杂度。知识蒸馏方法通过学习一个蒸馏模型，训练一个更紧凑的神经网络来重现一个更大的网络的输出。</p>
-<p>一般来说，参数修剪和共享，低秩分解和知识蒸馏方法可以用于全连接层和卷积层的CNN，但另一方面，使用转移/紧凑型卷积核的方法仅支持卷积层。低秩因子分解和基于转换/紧凑型卷积核的方法提供了一个端到端的流水线，可以很容易地在CPU/GPU环境中实现。相反参数修剪和共享使用不同的方法，如矢量量化，二进制编码和稀疏约束来执行任务，这导致常需要几个步骤才能达到目标。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/27C0J2T/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/27C0J2T/" class="post-title-link" itemprop="url">工程设计-XGBoost4J</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-04-28 20:41:49 / 修改时间：20:43:17" itemprop="dateCreated datePublished" datetime="2022-04-28T20:41:49+08:00">2022-04-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>421</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="分布式-xgboost4j-spark基本原理">分布式 XGBoost4J - Spark
-基本原理</span></h2>
-<p><strong>XGBoost4J-Spark</strong>是一个项目，旨在通过使XGBoost适应Apache
-Spark的MLLIB框架，无缝集成XGBoost和Apache
-Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：</p>
-<ul>
-<li>特征工程：特征提取，变换，降维和选择等。</li>
-<li>管道：构造，评估和调整ML管道</li>
-<li>持久性：持久化并加载机器学习模型，甚至整个管道</li>
-</ul>
-<p>本文将介绍使用XGBoost4J-Spark构建机器学习管道的端到端过程。讨论</p>
-<ul>
-<li>使用Spark预处理数据以适合XGBoost / XGBoost4J-Spark的数据接口</li>
-<li>使用XGBoost4J-Spark训练XGBoost模型</li>
-<li>使用Spark服务XGBoost模型（预测）</li>
-<li>使用XGBoost4J-Spark构建机器学习管道</li>
-<li>在生产中运行XGBoost4J-Spark</li>
-</ul>
-<h3><span id="模型上线之模型即服务三自动上线框架"></span></h3>
-<h3><span id="机器学习中的并行计算"></span></h3>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/18/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/18/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
