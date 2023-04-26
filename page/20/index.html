@@ -2532,6 +2532,424 @@ max操作中暴力地选出一个最大值（产生一个one-hot向量）不同�
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1PQETBX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1PQETBX/" class="post-title-link" itemprop="url">理论基础（4）分类评价指标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 12:01:48" itemprop="dateModified" datetime="2023-04-26T12:01:48+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>18 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-二分类问题">一、二分类问题</span></h3>
+<blockquote>
+<p><strong>阈值调节问题？</strong></p>
+</blockquote>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232135565.png" alt="image-20220421165422230" style="zoom:50%;"></p>
+<ul>
+<li><strong>准确率 (Accuracy)</strong>：<strong>预测正确的概率</strong>
+【<strong>(TP+TN)/(TP+TN+FP+FN)</strong>】</li>
+<li><strong>精确率（查准率 Precision
+)：预测为正的样本中实际为正的样本的概率</strong>
+【<strong>TP/(TP+FP)</strong>】</li>
+<li>错误发现率（FDR）= 1 - 精确率 = 预测为正的样本中实际为负的样本的概率
+【<strong>FP/(TP+FP)</strong>】</li>
+<li><strong>召回率（查全率）-
+Recall</strong>：<strong>实际为正的样本中被预测为正样本的概率</strong>【<strong>TP/(TP+FN)</strong>】</li>
+<li><strong>真正率（TPR） = 灵敏度（召回率） =</strong>
+<strong>TP/(TP+FN)</strong></li>
+<li><strong>假正率（FPR） = 1- 特异度 =</strong>
+<strong>FP/(FP+TN)</strong></li>
+<li><strong>F1=是准确率和召回率的调和平均值
+(2×Precision×Recall)/（Precision+Recall）</strong></li>
+<li>G-mean <span class="math inline">\((\mathrm{GM})=\)</span>
+是准确率和召回率的几何平均值 <span class="math inline">\(G-\)</span>
+mean <span class="math inline">\(=\sqrt{\text { Recall } \cdot \text {
+Precision }}\)</span></li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232135401.png" alt="image-20220421165436795" style="zoom:50%;"></p>
+<h4><span id="11-f1">1.1 <strong>F1</strong></span></h4>
+<p>精确率（Precision）和召回率（Recall）之间的关系用图来表达，就是下面的PR曲线。可以发现他们俩的关系是「两难全」的关系。为了综合两者的表现，在两者之间找一个平衡点，就出现了一个
+F1分数。</p>
+<p><strong>F1=(2×Precision×Recall) /（Precision+Recall）</strong></p>
+<p>P意义类似于每通过准确预测得到TP个正例需要TP+FP个预测类别为正例的样本。</p>
+<p>R意义类似于每通过成功召回得到TP个正例需要TP+FN个真实类别为正例的样本。</p>
+<p>F1度量了给定一批样本，对这一批样本进行预测与召回，最终得到的正例的多少。<strong>其中一半的正例是通过预测得到的，一半的正例是通过召回得到的。</strong></p>
+<p>有一种把预测所需的预测类别为正例的样本和召回所需的真实类别为正例的样本看作原料，而我们的目标正例样本看作产品的感觉。<strong>所以也能解释为什么P跟R其中一者比较低的时候，F1会偏低。因为跟算术平均数不一样，两者不能互相替代，两部分各负责一半。那么加权调和平均Fbeta也可以很好的理解了。</strong></p>
+<p><span class="math display">\[
+\frac{1}{F_\beta}=\frac{1}{1+\beta^2}
+\cdot\left(\frac{1}{P}+\frac{\beta^2}{R}\right)
+\]</span></p>
+<p>各自负责的比例不一样了。因此beta越大，Fbeta越着重考虑召回能力。</p>
+<h4><span id="12-rocauc的概念">1.2 ROC/AUC的概念</span></h4>
+<h5><span id="1灵敏度特异度真正率假正率">（1）<strong>灵敏度，特异度，真正率，假正率</strong></span></h5>
+<p>在正式介绍ROC/AUC之前，我们还要再介绍两个指标，<strong>这两个指标的选择也正是ROC和AUC可以无视样本不平衡的原因。</strong>
+这两个指标分别是：<strong>灵敏度和（1-特异度），也叫做真正率（TPR）和假正率（FPR）</strong>。其实我们可以发现<strong>灵敏度和召回率是一模一样的，只是名字换了而已</strong>。由于我们比较关心正样本，所以需要查看有多少负样本被错误地预测为正样本，所以使用（1-特异度），而不是特异度。</p>
+<p><strong>真正率（TPR） = 灵敏度（召回率） =</strong>
+<strong>TP/(TP+FN)</strong></p>
+<p><strong>假正率（FPR） = 1- 特异度 =</strong>
+<strong>FP/(FP+TN)</strong></p>
+<p>下面是真正率和假正率的示意，我们发现<strong>TPR和FPR分别是基于实际表现1和0出发的，也就是说它们分别在实际的正样本和负样本中来观察相关概率问题。</strong></p>
+<blockquote>
+<p>正因为如此，所以无论样本是否平衡，都不会被影响。还是拿之前的例子，总样本中，90%是正样本，10%是负样本。我们知道用准确率是有水分的，但是用TPR和FPR不一样。这里，TPR只关注90%正样本中有多少是被真正覆盖的，而与那10%毫无关系，同理，FPR只关注10%负样本中有多少是被错误覆盖的，也与那90%毫无关系，</p>
+</blockquote>
+<p><strong>如果我们从实际表现的各个结果角度出发，就可以避免样本不平衡的问题了，这也是为什么选用TPR和FPR作为ROC/AUC的指标的原因。</strong></p>
+<h5><span id="2roc接受者操作特征曲线">（2）ROC（接受者操作特征曲线）</span></h5>
+<blockquote>
+<p>ROC（Receiver Operating
+Characteristic）曲线，又称接受者操作特征曲线。该曲线最早应用于雷达信号检测领域，用于区分信号与噪声。后来人们将其用于评价模型的预测能力，ROC曲线是基于<strong>混淆矩阵</strong>得出的。</p>
+</blockquote>
+<p>ROC曲线中的主要两个指标就是<strong>真正率</strong>和<strong>假正率，</strong>
+上面也解释了这么选择的好处所在。其中<strong>横坐标为假正率（FPR），纵坐标为真正率（TPR）</strong>，下面就是一个标准的ROC曲线图。</p>
+<h5><span id="3auc的缺陷">（3）AUC的缺陷？</span></h5>
+<p><strong>优点</strong>：目前普遍认为接收器工作特性曲线（ROC）曲线下的面积—AUC是评估分类模型准确性的标准方法。<strong>它避免了在阈值选择过程中假定的主观性</strong>，当连续的概率得到的分数被转换为二分类标签时，通过总结整体模型表现，其衡量模型区分正负样本的性能优于通过阈值来判断的其他方法（比如准确率、召回率等）。</p>
+<ul>
+<li><strong>忽略了预测的概率值和模型的拟合优度</strong></li>
+<li><strong>AUC反应了太过笼统的信息。无法反应召回率、精确率等在实际业务中经常关心的指标</strong></li>
+<li><font color="red">
+<strong>对FPR和TPR两种错误的代价同等看待</strong></font></li>
+<li>它没有给出模型误差的空间分布信息</li>
+<li>最重要的一点，AUC的misleading的问题</li>
+</ul>
+<p><strong>auc仅反应模型的排序能力，无法反应模型的拟合优度；auc很多时候无法直接反应细粒度的和业务目标更相关的metric信息，例如
+top
+k的准确率，召回率等等（例如同auc的模型在不同的区间的预测能力是存在差别的）；</strong></p>
+<h4><span id="13-k-s曲线">1.3、K-S曲线</span></h4>
+<p><strong>K-S曲线, 又称作洛伦兹曲线</strong>。实际上,
+K-S曲线的数据来源以及本质和ROC曲线是一致的, 只是ROC曲线是把真 正率 <span class="math inline">\((T P R)\)</span> 和假正率 <span class="math inline">\((F P R)\)</span> 当作横纵轴,
+<strong>而K-S曲线是把真正率 <span class="math inline">\((T P R)\)</span>
+和假正率 <span class="math inline">\((F P R\)</span> ) 都当作是
+纵轴，横轴则由选定的阈值来充当。从 K-S 曲线就能衍生出 <span class="math inline">\(K S\)</span> 值, <span class="math inline">\(K
+S=\max (T P R-F P R)\)</span> ，即是两条曲线
+之间的最大间隔距离。</strong></p>
+<p><strong>K-S曲线的画法:</strong></p>
+<ol type="1">
+<li><strong>排序</strong>: 对于二元分类器来说,
+模型训练完成之后每个样本都会得到一个类概率值, 把样本按这个类概率值从大
+到小进行排序；</li>
+<li><strong>找阈值</strong>: 取排序后前 <span class="math inline">\(10
+\% \times k(k=1,2,3, \ldots, 9)\)</span> 处的值（概率值）作为阈值,
+分别计算出不同的 <span class="math inline">\(T P R\)</span> 和 <span class="math inline">\(F P R\)</span> 值, 以 <span class="math inline">\(10 \% \times k(k=1,2,3, \ldots, 9)\)</span>
+为横坐标, 分别以 <span class="math inline">\(T P R\)</span> 和 <span class="math inline">\(F P R\)</span> 值为纵坐标, 就可以画出两个曲
+线，这就是K-S曲线，类似于下图。</li>
+<li><strong>KS值</strong>:从 K-S 曲线就能衍生出 <span class="math inline">\(K S\)</span> 值, <span class="math inline">\(K
+S=\max (T P R-F P R)\)</span> ，即是两条曲线之间的最大间隔距离。KS值越大
+表示模型 的区分能力越强。</li>
+</ol>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232137558.jpg" alt="img" style="zoom: 50%;"></p>
+<h4><span id="14-lift曲线">1.4 Lift曲线</span></h4>
+<p><strong>Lift曲线它衡量的是，与不利用模型相比，模型的预测能力“变好”了多少，lift(提升指数)越大，模型的运行效果越好。实质上它强调的是投入与产出比</strong>。</p>
+<p><strong>tip:</strong>理解<strong>Lift</strong>可以先看一下Quora上的一篇文章：<strong><a href="https://link.zhihu.com/?target=https%3A//www.quora.com/Whats-Lift-curve">What's
+Lift curve?</a></strong></p>
+<p><strong>Lift计算公式：</strong>先介绍几个相关的指标，以免混淆：</p>
+<ul>
+<li>准确率 (accuracy, ACC) :</li>
+</ul>
+<p><span class="math display">\[
+A C C=\frac{T P+T N}{F P+F N+T P+T N}
+\]</span></p>
+<ul>
+<li>正确率(Precision, PRE), 查准率:</li>
+</ul>
+<p><span class="math display">\[
+P R E=\frac{T P}{T P+F P}
+\]</span></p>
+<ul>
+<li>真阳性率(True Positive Rate,
+TPR)，灵敏度(Sensitivity)，召回率(Recall):</li>
+</ul>
+<p><span class="math display">\[
+T P R=\frac{T P}{T P+F N}
+\]</span></p>
+<ul>
+<li>假阳性率(False Positice Rate, FPR), 误诊率( = 1 - 特异度):</li>
+</ul>
+<p><span class="math display">\[
+F P R=\frac{F P}{F P+T N}
+\]</span></p>
+<p><strong>Lift计算公式：</strong> <span class="math display">\[
+L i f t=\frac{\frac{T P}{T P+F P}}{\frac{T P+F N}{T P+F P+T N+F
+N}}=\frac{P R E}{\text { 正例占比 }}
+\]</span> 根据以上公式可知, <font color="red">Lift指标可以这样理解:
+在不使用模型的情况下, 我们用先验概率估计正例的比例, 即上式子分母部分,
+以此作为正例的命中率;</font> 利用模型后,
+我们不需要从整个样本中来挑选正例, 只需要从我们预测为正例
+的那个样本的子集 <span class="math inline">\(T P+F P\)</span>
+中挑选正例, 这时正例的命中率为 <span class="math inline">\(P R
+E\)</span>, 后者除以前者即可得提升值Lift 。</p>
+<h5><span id="lift曲线">Lift曲线:</span></h5>
+<p>为了作出LIft曲线，首先引入 depth 的概念: <span class="math display">\[
+\operatorname{depth}=\frac{T P+F P}{T P+F P+T N+F N}
+\]</span> 从公式可以看出, depth
+代表的是预测为正例的样本占整个样本的比例。</p>
+<p>当阈值为 0 时, 所有的样本都被预测为正例, 因此 <span class="math inline">\(\operatorname{depth}=1\)</span>, 于是 <span class="math inline">\(L i f t=1\)</span>, 模型末起提升作用。随着阈值逐
+渐增大, 被预测为正例的样本数逐渐减少, depth 减小,
+而较少的预测正例样本中的真实正例比例逐渐增大。当阈 值增大至1时,
+没有样本被预测为正例, 此时 depth <span class="math inline">\(=0\)</span>, 而 Lift <span class="math inline">\(=0\)</span> 。由此可见, Lift 与 depth 存在相反方
+向变化的关系。在此基础上作出 Lift 图:</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232138374.jpg" alt="img" style="zoom: 50%;"></p>
+<p>一般要求, 在尽量大的 depth 下得到尽量大的 Lift, 所以 Lift
+曲线的右半部分应该尽量陡峭。</p>
+<h4><span id="15-p-r曲线">1.5 <strong>P-R曲线</strong></span></h4>
+<ul>
+<li><p><strong>精确率（查准率）- Precision
+：预测为正的样本中实际为正的样本的概率</strong>
+【<strong>TP/(TP+FP)</strong>】</p></li>
+<li><p><strong>召回率（查全率）-
+Recall</strong>：<strong>实际为正的样本中被预测为正样本的概率</strong>【<strong>TP/(TP+FN)</strong>】</p></li>
+</ul>
+<p>P-R曲线刻画<strong>查准率</strong>和<strong>查全率（召回率）</strong>之间的关系，查准率指的是在所有预测为正例的数据中，真正例所占的比例，查全率是指预测为真正例的数据占所有正例数据的比例。查准率和查全率是一对矛盾的度量，一般来说，查准率高时，查全率往往偏低，查全率高时，查准率往往偏低。</p>
+<p>在很多情况下，我们可以根据学习器的预测结果对样例进行排序，排在前面的是学习器认为最可能是正例的样本，排在后面的是学习器认为最不可能是正例的样本，按此顺序逐个把样本作为正例进行预测，则每次可计算当前的查全率和查准率，以查准率为y轴，以查全率为x轴，可以画出下面的P-R曲线。</p>
+<p><img src="apple/Documents/Tynote/%E5%B7%A5%E4%BD%9C/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/AI%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0*/pic/v2-dc6abbb24e2dfbfefe4777408d2a8e5c_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<p>如果一个学习器的P-R曲线被另一个学习器的P-R曲线完全包住，则可断言后者的性能优于前者，当然我们可以根据曲线下方的面积大小来进行比较，但更常用的是<strong>平衡点</strong>或者是F1值。</p>
+<ul>
+<li><strong>平衡点（BEP）</strong>是查准率=查全率时的取值，如果这个值较大，则说明学习器的性能较好。F1值越大，我们可以认为该学习器的性能较好。</li>
+<li><font color="red">
+<strong>F1度量</strong>：<strong>BEP过于简单，这个平衡点是建立在”查准率=查全率“的前提下，无法满足实际不同场景的应用。</strong></font></li>
+</ul>
+<p>我们先来引入加权调和平均: <span class="math inline">\(F_\beta\)</span> : <span class="math display">\[
+\frac{1}{F_\beta}=\frac{1}{1+\beta^2}\left(\frac{1}{P}+\frac{\beta^2}{R}\right)
+\text { 公式 }(1)
+\]</span> <strong>加权调和平均与算术平均 <span class="math inline">\(\frac{P+R}{2}\)</span> 和几何平均 <span class="math inline">\(\sqrt{P+R}\)</span> 相比,
+调和平均更重视较小值（这可以从倒数上看出 来）</strong>。当 <span class="math inline">\(\beta=1\)</span>,
+即F1是基于查准率和查全率的调和平均定义的, <span class="math inline">\(\mathrm{F} 1\)</span> 的公式如下: <span class="math display">\[
+\frac{1}{F_1}=\frac{1}{2}\left(\frac{1}{P}+\frac{1}{R}\right)
+\]</span> 我们把公式求倒数，即可得： <span class="math display">\[
+F 1=\frac{2 * P * R}{P+R}
+\]</span> 在一些应用中,
+对查准率和查全率的重视程度不同。例如在商品推荐中, 为了尽可能少打扰用户,
+更希望推荐的内 容确实是用户感兴趣的, 此时查准率更重要;
+而在罪犯信息检索或者病人检查系统中, 更希望尽可能少的漏判, 此
+时查全率更重要。F1度量的一般形式是 <span class="math inline">\(F_\beta\)</span>
+，能让我们自定义对查准率/查全率的不同偏好: <span class="math display">\[
+F_\beta=\frac{\left(1+\beta^2\right) * P * R}{\left(\beta^2 *
+P\right)+R}
+\]</span> <strong>其中, <span class="math inline">\(\beta&gt;0\)</span>
+度量了查全率对查准率的相对重要性 (不明白的同学可以回看公式1）， <span class="math inline">\(\beta=1\)</span> 时退化为标准F1, <span class="math inline">\(\beta&gt;1\)</span> 时查全率有更大影响; <span class="math inline">\(\beta&lt;1\)</span> 时,
+查准率有更大影响。</strong></p>
+<h4><span id="16-对数损失log-loss">1.6 <strong>对数损失(Log Loss)</strong></span></h4>
+<p><strong>AUC
+ROC考虑用于确定模型性能的预测概率</strong>。<font color="red">然而, AUC
+ROC存在问题, 它只考虑概率的顺序,
+因此没有考虑模型预测更可能为正样本的更高概率的能力(即考虑了大小,
+但没有考虑更高精度)。</font>在这种情况下, 我们可以使用对数损失,
+即每个实例的正例预测概率的对数的负平均值。</p>
+<p>对数损失 (Logistic Loss, logloss)
+是对预测概率的似然估计，其标准形式为： <span class="math display">\[
+\log \operatorname{loss}=\log P(Y \mid X)
+\]</span> 对数损失最小化本质是上利用样本中的已知分布,
+求解拟合这种分布的最佳模型参数, 使这种分布出现概率最大。</p>
+<p>对数损失对应的二分类的计算公式为： <span class="math display">\[
+\log \operatorname{loss}=-\frac{1}{N} \sum_{i=1}^N\left(y_i \log
+\hat{y}_i+\left(1-y_i\right) \log \left(1-\hat{y}_i\right)\right), \quad
+y \in[0,1]
+\]</span> 其中 <span class="math inline">\(\mathrm{N}\)</span> 为样本数,
+<span class="math inline">\(\hat{y}_i\)</span> 为预测为 1
+的概率。对数损失在多分类问题中也可以使用，其计算公式为: <span class="math display">\[
+\log \operatorname{loss}=-\frac{1}{N} \frac{1}{C} \sum_{i=1}^N
+\sum_{j=1}^C\left(y_{i j} \log \hat{y_{i j}}\right), \quad y \in[0,1]
+\]</span> 其中, <span class="math inline">\(\mathrm{N}\)</span>
+为样本数, C为类别数, logloss衡量的是预测概率分布和真实概率分布的差异性,
+取值越小越好。</p>
+<h4><span id="17-多分类">1.7 多分类</span></h4>
+<p>很多时候我们有多个<strong>二分类混洧矩阵</strong>，例如进行多次训练测试，每次得到一个混淆矩阵；或是在多个数据集上进
+行训练测试，希望估计算法的全局性能; 或者是执行分类任务,
+每两两类别的组合都对应一个混淆矩阵; 总之是在 <strong><span class="math inline">\(\mathrm{n}\)</span>
+个分类混淆矩阵上综合考察查准率和查全率</strong>。</p>
+<ul>
+<li><strong>宏观:</strong> 在各个混淆军阵上分别计算出查准率和查全率,
+记为 <span class="math inline">\((P 1, R 1),(P 2, R 2),
+\ldots(\mathrm{Pn}, \mathrm{Rn})\)</span>,
+在<strong>计算平均值</strong>, 这样 就得到“宏观查准率"(macro-P),
+“宏观查全率”(macro-R)、“宏观F1"(macro-F1):</li>
+</ul>
+<p><span class="math display">\[
+\begin{gathered}
+\text { macro }-P=\frac{1}{n} \sum_{i=1}^n P_i \\
+\text { macro }-R=\frac{1}{n} \sum_{i=1}^n R_i \\
+\text { macro }-F 1=\frac{2 * \text { macro }-P * \text { macro
+}-R}{\text { macro }-P+\text { macro }-R}
+\end{gathered}
+\]</span></p>
+<ul>
+<li><strong>微观：</strong>将个混淆矩阵对应的元素进行平均,
+得到TP、FP、TN、FN的平均值, 分别记为 <span class="math inline">\(\overline{T P} 、 \overline{F P} 、 \overline{F
+N}\)</span> 、 <span class="math inline">\(\overline{T N}\)</span>,
+再基于这些平均值计算出“微观查准率"(micro-P),
+“微观查全率”(micro-R)、“微观F1"(micro-F1):</li>
+</ul>
+<p><span class="math display">\[
+\begin{gathered}
+\text { micro }-P=\frac{\overline{T P}}{\overline{T P}+\overline{F P}}
+\\
+\text { micro }-R=\frac{\overline{T P}}{\overline{T P}+\overline{F N}}
+\\
+\text { micro }-F 1=\frac{2 * \text { micro }-P * \text { micro
+}-R}{\text { micro }-P+\text { micro }-R}
+\end{gathered}
+\]</span></p>
+<h3><span id="二-评分总结sklearn">二、评分总结（sklearn）</span></h3>
+<blockquote>
+<p>sklearn.metrics -
+回归/分类模型的评估方法:https://zhuanlan.zhihu.com/p/408078074</p>
+</blockquote>
+<h4><span id="21-分类模型">2.1 分类模型</span></h4>
+<h5><span id="accuracy_score"><strong>accuracy_score</strong></span></h5>
+<p><strong>分类准确率分数是指所有分类正确的百分比</strong>。分类准确率这一衡量分类器的标准比较容易理解，但是它不能告诉你响应值的潜在分布，并且它也不能告诉你分类器犯错的类型。所以在使用的时候，一般需要搭配matplotlib等数据可视化工具来观察预测的分类情况，与实际的结果做更加直观的比较。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score  </span><br><span class="line">y_pred = [<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>]  </span><br><span class="line">y_true = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]  </span><br><span class="line">accuracy_score(y_true, y_pred)  <span class="comment"># 默认normalization = True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0.5</span></span><br><span class="line">accuracy_score(y_true, y_pred, normalize=<span class="literal">False</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h5><span id="recall_score"><strong>recall_score</strong></span></h5>
+<p>召回率 =<strong>提取出的正确信息条数
+/样本中的信息条数</strong>。通俗地说，就是所有准确的条目有多少被检索出来了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">recall_score(y_true, y_pred, labels=<span class="literal">None</span>, pos_label=<span class="number">1</span>,average=<span class="string">&#x27;binary&#x27;</span>, sample_weight=<span class="literal">None</span>)</span><br><span class="line">参数average : string, [<span class="literal">None</span>, ‘micro’, ‘macro’(default), ‘samples’, ‘weighted’]</span><br></pre></td></tr></table></figure>
+<p>将一个二分类matrics拓展到多分类或多标签问题时，我们可以将数据看成多个二分类问题的集合，每个类都是一个二分类。接着，我们可以通过跨多个分类计算每个二分类metrics得分的均值，这在一些情况下很有用。你可以使用<strong>average参数</strong>来指定。</p>
+<ul>
+<li>macro：计算二分类metrics的均值，为每个类给出相同权重的分值。</li>
+<li>weighted:对于不均衡数量的类来说，计算二分类metrics的平均，通过在每个类的score上进行加权实现。</li>
+<li>micro：给出了每个样本类以及它对整个metrics的贡献的pair（sample-weight），而非对整个类的metrics求和，它会每个类的metrics上的权重及因子进行求和，来计算整个份额。</li>
+<li>samples：应用在multilabel问题上。它不会计算每个类，相反，它会在评估数据中，通过计算真实类和预测类的差异的metrics，来求平均（sample_weight-weighted）</li>
+<li>average：average=None将返回一个数组，它包含了每个类的得分.</li>
+</ul>
+<h5><span id="roc_curve"><strong>roc_curve</strong></span></h5>
+<p>ROC曲线指受试者工作特征曲线/接收器操作特性(receiver operating
+characteristic，ROC)曲线,是<strong>反映灵敏性和特效性连续变量的综合指标</strong>,是用构图法揭示敏感性和特异性的相互关系，它通过将连续变量设定出多个不同的临界值，从而计算出一系列敏感性和特异性。ROC曲线是根据一系列不同的二分类方式（分界值或决定阈），<strong>以真正例率（也就是灵敏度）（True
+Positive Rate,TPR）为纵坐标，假正例率（1-特效性）（False Positive
+Rate,FPR）为横坐标</strong>绘制的曲线。</p>
+<p>通过ROC我们可以观察到模型正确识别的正例的比例与模型错误地把负例数据识别成正例的比例之间的权衡。TPR的增加以FPR的增加为代价。ROC曲线下的面积是模型准确率的度量，<strong>AUC</strong>（Area
+under roc curve）。</p>
+<p><strong>TPR</strong> = TP /（TP + FN）
+（正样本<strong>预测数</strong> / 正样本<strong>实际数</strong>）</p>
+<p><strong>FPR</strong> = FP /（FP + TN）
+（负样本<strong>预测数</strong> /负样本<strong>实际数</strong>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics  </span><br><span class="line">y = np.array([<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>])  </span><br><span class="line">scores = np.array([<span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.35</span>, <span class="number">0.8</span>])  </span><br><span class="line">fpr, tpr, thresholds = metrics.roc_curve(y, scores, pos_label=<span class="number">2</span>)  </span><br><span class="line">fpr  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array([<span class="number">0.</span> ,  <span class="number">0.5</span>,  <span class="number">0.5</span>, <span class="number">1.</span> ])  </span><br><span class="line">tpr  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array([<span class="number">0.5</span>,  <span class="number">0.5</span>,  <span class="number">1.</span> , <span class="number">1.</span> ])  </span><br><span class="line">thresholds  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>array([<span class="number">0.8</span> ,  <span class="number">0.4</span> ,  <span class="number">0.35</span>, <span class="number">0.1</span> ])  </span><br><span class="line"></span><br><span class="line"><span class="comment"># check auc score</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> auc   </span><br><span class="line">metrics.auc(fpr, tpr)   </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0.75</span>   </span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以直接根据预测值+真实值来计算出auc值，略过roc的计算过程</span></span><br><span class="line">‘’‘</span><br><span class="line">sklearn.metrics.roc_auc_score(y_true, y_score, average=<span class="string">&#x27;macro&#x27;</span>, sample_weight=<span class="literal">None</span>)</span><br><span class="line">average : string, [<span class="literal">None</span>, ‘micro’, ‘macro’(default), ‘samples’, ‘weighted’]</span><br><span class="line">’‘’</span><br><span class="line"><span class="comment"># 真实值（必须是二值）、预测值（可以是0/1,也可以是proba值）</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score  </span><br><span class="line">y_true = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>])  </span><br><span class="line">y_scores = np.array([<span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.35</span>, <span class="number">0.8</span>])  </span><br><span class="line">roc_auc_score(y_true, y_scores)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">0.75</span>  </span><br></pre></td></tr></table></figure>
+<h5><span id="confusion-metric"><strong>confusion metric</strong></span></h5>
+<p>混淆矩阵（confusion
+matrix），又称为可能性表格或是错误矩阵。它是一种特定的矩阵用来呈现算法性能的可视化效果。其每一列代表预测值，每一行代表的是实际的类别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">confusion_matric(y_true, y_pred, labels=<span class="literal">None</span>, pos_label=<span class="number">1</span>, average=<span class="string">&#x27;binary&#x27;</span>, sample_weight=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<h5><span id="precision_score"><strong>precision_score</strong></span></h5>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">precision_score(y_true, y_pred, labels=None, pos_label=1, average=&#x27;binary&#x27;)</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232157475.jpg" alt="preview">
+<figcaption aria-hidden="true">preview</figcaption>
+</figure>
+<h3><span id="三-评价指标qampa">三、评价指标Q&amp;A</span></h3>
+<h5><span id="精度指标存在的问题"><strong>精度指标存在的问题</strong>？</span></h5>
+<ul>
+<li>有倾向性的问题。比如，判断空中的飞行物是导弹还是其他飞行物，很显然为了减少损失，我们更倾向于相信是导弹而采用相应的防护措施。此时判断为导弹实际上是其他飞行物与判断为其他飞行物实际上是导弹这两种情况的重要性是不一样的；</li>
+<li>样本类别数量严重不均衡的情况。比如银行客户样本中好客户990个，坏客户10个。如果一个模型直接把所有客户都判断为好客户，得到精度为99%，但这显然是没有意义的。</li>
+</ul>
+<h5><span id="为什么-roc和-auc-都能应用于非均衡的分类问题"><strong>为什么 ROC
+和 AUC 都能应用于非均衡的分类问题？</strong></span></h5>
+<p><strong>ROC曲线只与横坐标 (FPR) 和 纵坐标 (TPR) 有关系</strong>
+。我们可以发现TPR只是正样本中预测正确的概率，而FPR只是负样本中预测错误的概率，和正负样本的比例没有关系。因此
+ROC
+的值与实际的正负样本比例无关，因此既可以用于均衡问题，也可以用于非均衡问题。而
+AUC 的几何意义为ROC曲线下的面积，因此也和实际的正负样本比例无关。</p>
+<h4><span id="参考文献">参考文献</span></h4>
+<ul>
+<li>一文看懂机器学习指标：准确率、精准率、召回率、F1、ROC曲线、AUC曲线:https://zhuanlan.zhihu.com/p/93107394</li>
+<li><strong>机器学习-最全面的评价指标体系:
+https://zhuanlan.zhihu.com/p/359997979</strong></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/HaoMood/homepage/blob/master/files/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B7%A5%E7%A8%8B%E5%B8%88%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-03-%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0.pdf">机器学习工程师面试宝典-03-模型评估</a></li>
+<li><strong><a target="_blank" rel="noopener" href="http://www.china-nb.cn/gongsidongtai/17-85.html">分类模型评估指标——准确率、精准率、召回率、F1、ROC曲线、AUC曲线</a></strong></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2WWJ575/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2696,254 +3114,6 @@ relevant })=\frac{1}{m} \sum_{k=1}^N P(k) \cdot r e l(k)
 M A P @ N=\frac{1}{|U|} \sum_{u=1}^{|U|}(A P @ N) u=\frac{1}{|U|} \sum
 u=1^{|U|}\left(\frac{1}{m} \sum_{k=1}^N P_u(k) \cdot r e l_u(k)\right)
 \]</span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2Z6ZKRX/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2Z6ZKRX/" class="post-title-link" itemprop="url">理论基础（4）聚类评价指标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 12:06:37" itemprop="dateModified" datetime="2023-04-26T12:06:37+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-聚类算法评价指标">一、聚类算法评价指标</span></h3>
-<blockquote>
-<p>https://zhuanlan.zhihu.com/p/343667804</p>
-<p>十分钟掌握聚类算法的评估指标：https://juejin.cn/post/6997913127572471821</p>
-</blockquote>
-<h4><span id="前言-外部评估-内部指标">前言 【外部评估】+ 【内部指标】</span></h4>
-<p>如同之前介绍的其它算法模型一样，对于聚类来讲我们同样会通过一些评价指标来衡量聚类算法的优与劣。在聚类任务中，常见的评价指标有：<strong>纯度（Purity）</strong>、<strong>兰德系数（Rand
-Index,
-RI）</strong>、<strong>F值（F-score）</strong>和<strong>调整兰德系数（Adjusted
-Rand
-Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文中出现得最多的评价方法。下面，我们就来对这些算法一一进行介绍。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232157697.jpg" alt="img" style="zoom: 67%;"></p>
-<p>好的聚类算法，一般要求类簇具有：</p>
-<ul>
-<li><strong>簇内 (intra-cluster) 相似度高</strong></li>
-<li><strong>簇间 (inter-cluster) 相似度底</strong></li>
-</ul>
-<p>一般来说，评估聚类质量有两个标准，内部评估评价指标和外部评估指标。内部评估指标主要基于数据集的集合结构信息从紧致性、分离性、连通性和重叠度等方面对聚类划分进行评价。即基于数据聚类自身进行评估的。</p>
-<h4><span id="11聚类纯度-聚类的准确率"><strong>1.1聚类纯度</strong> -
-聚类的准确率</span></h4>
-<p><strong>在聚类结果的评估标准中,
-一种最简单最直观的方法就是计算它的聚类纯度
-(purity)</strong>，别看纯度听起来很陌生,
-但实际上和<strong>分类问题中的准确率有着异曲同工之妙</strong>。<strong>因为聚类纯度的总体思想也用聚类正确的样本数除以总的样本
-数,
-因此它也经常被称为聚类的准确率</strong>。只是对于聚类后的结果我们并不知道每个簇所对应的真实类别,
-因此需要 取每种情况下的最大值。具体的，纯度的计算公式定义如下： <span class="math display">\[
-P=(\Omega, \mathbb{C})=\frac{1}{N} \sum_k \max _j\left|\omega_k \cap
-c_j\right|
-\]</span> 其中 <span class="math inline">\(N\)</span> 表示总的样本数;
-<span class="math inline">\(\Omega=\left\{\omega_1, \omega_2, \ldots,
-\omega_K\right\}\)</span> 表示一个个聚类后的簇, 而 <span class="math inline">\(\mathbb{C}=\left\{c_{1,2}, \ldots
-c_J\right\}\)</span> 表示正确的类别; <span class="math inline">\(\omega_k\)</span> 表示聚类后第 <span class="math inline">\(k\)</span> 个簇中的所有样本, <span class="math inline">\(c_j\)</span> 表示第 <span class="math inline">\(j\)</span> 个类别中真实的样本。在这里 <span class="math inline">\(P\)</span> 的取值范围为 <span class="math inline">\([0,1]\)</span> ，越大表示 聚类效果越好。</p>
-<h4><span id="12-兰德系数与f值同簇混淆矩阵"><strong>1.2 兰德系数与F值</strong>
-[同簇混淆矩阵]</span></h4>
-<p>在介绍完了纯度这一评价指标后，我们再来看看兰德系数（Rand
-Index）和F值。虽然兰德系数听起来是一个陌生 的名词,
-但它的计算过程却也与准确率的计算过程类似。同时,
-虽然这里也有一个叫做值的指标, 并且它的计算 过程也和分类指标中的F值类似,
-但是两者却有着本质的差别。说了这么多, 那这两个指标到底该怎么算呢? 同分
-类问题中的沘淆矩阵类似，这里我们也要先定义四种情况进行计数，然后再进行指标的计算。</p>
-<p><strong>为了说明兰德系数背后的思想，我们还是以图1中的聚类结果为例进行说明（为了方便观察，我们再放一张图在这
-里):</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232158691.jpg" alt="img" style="zoom: 67%;"></p>
-<ul>
-<li><span class="math inline">\(T P\)</span> :
-表示两个同类样本点在同一个簇（布袋）中的情况数量;</li>
-<li><span class="math inline">\(F P\)</span> :
-表示两个非同类样本点在同一个簇中的情况数量;</li>
-<li><span class="math inline">\(T N\)</span> :
-表示两个非同类样本点分别在两个簇中的情况数量;</li>
-<li><span class="math inline">\(F N\)</span> :
-表示两个同类样本点分别在两个簇中的情况数量;</li>
-</ul>
-<p>由此，我们便能得到如下所示的对<strong>混淆矩阵（Pair Confusion
-Matrix）</strong>：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232158915.png" alt="img" style="zoom:75%;"></p>
-<p>有了上面各种情况的统计值，我们就可以定义出兰德系数和F值的计算公式：
-<span class="math display">\[
-Precision =\frac{T P}{T P+F P}
-\]</span></p>
-<p><span class="math display">\[
-Recall =\frac{T P}{T P+F N}
-\]</span></p>
-<p><span class="math display">\[
-R I  =\frac{T P+T N}{T P+F P+F N+T N}
-\]</span></p>
-<p><span class="math display">\[
-F_\beta  =\left(1+\beta^2\right) \frac{\text { Precision } \cdot \text {
-Recall }}{\beta^2 \cdot \text { Precision }+ \text { Recall }}
-\]</span></p>
-<p>从上面的计算公式来看, (3)(4)
-从形式上看都非常像分类问题中的准确率与F值, 但是有着本质的却别。同时, 在
-这里 <span class="math inline">\(R I\)</span> 和 <span class="math inline">\(F_\beta\)</span> 的取值范围均为 <span class="math inline">\([0,1]\)</span> ，越大表示聚类效果越好。</p>
-<h4><span id="13调整兰德系数adjusted-rand-index归一化">1.3
-调整兰德系数（Adjusted Rand index）【归一化】</span></h4>
-<p>对于随机结果，RI并不能保证分数接近零。<strong>为了实现“在聚类结果随机产生的情况下，指标应该接近零”</strong>，调整兰德系数（Adjusted
-rand index）被提出，它具有更高的区分度。</p>
-<p>其公式为： <span class="math display">\[
-\mathrm{ARI}=\frac{\mathrm{RI}-E[\mathrm{RI}]}{\max
-(\mathrm{RI})-E[\mathrm{RI}]}
-\]</span> <span class="math inline">\(A R\)</span> 取值范围为 <span class="math inline">\([-1,1]\)</span>,
-值越大意味着聚类结果与真实情况越吻合。从广义的角度来讲,
-ARI衡量的是两个数据分布 的吻合程度。</p>
-<p>优点:</p>
-<ul>
-<li>对任意数量的聚类中心和样本数, 随机聚类的ARI都非常接近于 0 。</li>
-<li>取值在 <span class="math inline">\([-1,1]\)</span> 之间,
-负数代表结果不好, 越接近于1越好。</li>
-<li>对簇的结构不需作出任何假设：可以用于比较聚类算法。</li>
-</ul>
-<p>缺点:</p>
-<ul>
-<li>ARI 需要 ground truth classes 的相关知识, ARI需要真实标签,
-而在实践中几乎不可用, 或者需要人工 标注者
-手动分配（如在监督学习环境中）。</li>
-</ul>
-<h4><span id="14-标准化互信息nmi-normalized-mutualinformation">1.4
-<strong><font color="red"> 标准化互信息（NMI, Normalized Mutual
-Information）</font></strong></span></h4>
-<p>互信息是用来衡量两个数据分布的吻合程度。它也是一有用的信息度量，它是指两个事件集合之间的相关性。互信息越大，词条和类别的相关程度也越大。</p>
-<h4><span id="15-轮廓系数silhouette-coefficient">1.5 <strong><font color="red">
-轮廓系数（Silhouette Coefficient）</font></strong></span></h4>
-<p><strong>轮廓系数适用于实际类别信息末知的情况。</strong>对于单个样本,
-设 <span class="math inline">\(a\)</span>
-是与它同类别中其他样本的平均距离, <span class="math inline">\(b\)</span>
-是与它距离最近不同类别中样本的平均距离, 其轮廓 系数为: <span class="math display">\[
-s=\frac{b-a}{\max (a, b)}
-\]</span> 对于一个样本集合,
-它的轮廓系数是所有样本轮廓系数的平均值。轮廓系数的取值范围是 <span class="math inline">\([-1,1]\)</span>, 同类别样本距离 越相近,
-不同类别样本距离越远, 值越大。当值为负数时, 说明聚类效果很差。</p>
-<h4><span id="16calinski-harabaz指数calinski-harabaz-index">1.6
-Calinski-Harabaz指数（Calinski-Harabaz Index）</span></h4>
-<p>在真实的分群label不知道的情况下，Calinski-Harabasz可以作为评估模型的一个指标。</p>
-<p>Calinski-Harabasz指数通过<strong>计算类中各点与类中心的距离平方和来度量类内的紧密度</strong>，通过<strong>计算各类中心点与数据集中心点距离平方和来度量数据集的分离度</strong>，CH指标<strong>由分离度与紧密度的比值得到</strong>。从而，CH越大代表着类自身越紧密，类与类之间越分散，即更优的聚类结果。</p>
-<p><strong>优点</strong></p>
-<ul>
-<li>当簇的密集且分离较好时，分数更高。</li>
-<li>得分计算很快，与轮廓系数的对比，最大的优势：快！相差几百倍！毫秒级。</li>
-</ul>
-<p><strong>缺点</strong></p>
-<ul>
-<li>凸的簇的CH指数通常高于其他类型的簇。例如，通过 DBSCAN
-获得基于密度的簇；所以，不适合基于密度的聚类算法（DBSCAN）。</li>
-</ul>
-<h4><span id="17-戴维森堡丁指数dbidavies-bouldin-index">1.7 戴维森堡丁指数（DBI,
-Davies-Bouldin Index）</span></h4>
-<p><strong>DB指数是计算任意两类别的类内距离平均距离之和除以两聚类中心距离求最大值</strong>。DB越小，意味着类内距
-离越小同时类间距离越大。<strong>零是可能的最低值,
-接近零的值表示更好的分区</strong>。 <span class="math display">\[
-\begin{gathered}
-R_{i j}=\frac{s_{i}+s_{j}}{d_{i j}} \\
-D B=\frac{1}{k} \sum_{i=1}^{k} \max _{i \neq j} R_{i j}
-\end{gathered}
-\]</span> 其中, <span class="math inline">\(s_{i}\)</span>
-表示簇的每个点与该簇的质心之间的平均距离, 也称为簇直径。 <span class="math inline">\(d_{i j}\)</span> 表示聚类和的质心之间的距 离。
-算法生成的聚类结果越是朝着簇内距离最小（类内相似性最大）和笶间距离最大（类间相似性最小）变化，
-那么Davies-Bouldin指数就会越小。 <strong>缺点</strong>:</p>
-<ul>
-<li>因使用欧式距离, 所以对于环状分布聚类评测很差。</li>
-</ul>
 
       
     </div>
