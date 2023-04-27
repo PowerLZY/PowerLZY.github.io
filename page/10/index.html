@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-count">254</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,371 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/TYS9XF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/TYS9XF/" class="post-title-link" itemprop="url">特征工程（8）【draft】时间序列处理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-06 20:36:41" itemprop="dateCreated datePublished" datetime="2022-06-06T20:36:41+08:00">2022-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 19:14:16" itemprop="dateModified" datetime="2023-04-22T19:14:16+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>261</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="时间序列数据的预处理">时间序列数据的预处理</span></h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/466086665"><em>时间序列</em>数据的预<em>处理</em></a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vyDZfDdaH2Y7k75NNsMNJA">如何在实际场景中使用异常检测？阿里云Prometheus智能检测算子来了</a></li>
+</ul>
+<blockquote>
+<p>在本文中，我们将主要讨论以下几点：</p>
+<ul>
+<li>时间序列数据的定义及其重要性。</li>
+<li>时间序列数据的预处理步骤。</li>
+<li>构建时间序列数据，查找缺失值，对特征进行去噪，并查找数据集中存在的异常值。</li>
+</ul>
+</blockquote>
+<h3><span id="时间序列的定义">时间序列的定义</span></h3>
+<p><strong>时间序列是在特定时间间隔内记录的一系列均匀分布的观测值</strong>。时间序列的一个例子是黄金价格。在这种情况下，我们的观察是在固定时间间隔后一段时间内收集的黄金价格。时间单位可以是分钟、小时、天、年等。但是任何两个连续样本之间的时间差是相同的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2MJ41K7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2MJ41K7/" class="post-title-link" itemprop="url">python-环境变量</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-06-06 15:22:38 / 修改时间：15:22:48" itemprop="dateCreated datePublished" datetime="2022-06-06T15:22:38+08:00">2022-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%B5%81%E7%A8%8B%E7%9A%84Python/" itemprop="url" rel="index"><span itemprop="name">流程的Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>0</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3JZF773/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3JZF773/" class="post-title-link" itemprop="url">恶意软件检测（7）【draft】CADE: Detecting and Explaining Concept Drift Samples for Security Applications</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-05 20:05:05" itemprop="dateCreated datePublished" datetime="2022-06-05T20:05:05+08:00">2022-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-19 15:50:46" itemprop="dateModified" datetime="2023-04-19T15:50:46+08:00">2023-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="cadedetecting-and-explaining-concept-drift-samples-for-securityapplications">CADE:
+Detecting and Explaining Concept Drift Samples for Security
+Applications</span></h2>
+<p>原文作者：Limin Yang, <em>University of Illinois at
+Urbana-Champaign</em></p>
+<p>原文链接：https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin</p>
+<p>发表会议：USENIXSec 2021</p>
+<p><strong>代码地址</strong>：https://github.com/whyisyoung/CADE</p>
+<h3><span id="摘要">摘要</span></h3>
+<p>概念漂移对部署机器学习模型来解决实际的安全问题提出了严峻的挑战。<strong>由于攻击者（和/或良性对手）的动态行为变化，随着时间的推移，测试数据分布往往会从原始的训练数据转移，从而导致部署的模型出现重大故障</strong>。</p>
+<p>为了对抗概念漂移，我们提出了一种新的系统CADE，旨在（1）<strong>检测偏离现有类别的漂移样本</strong>；（2）<strong>解释检测到漂移的原因</strong>。与传统方法不同（需要大量新标签来统计确定概念漂移），我们的目标是在单个漂移样本到达时识别它们。认识到高维离群空间带来的挑战，我们建议将数据样本映射到低维空间，并自动学习距离函数来度量样本之间的相异性。通过对比学习，我们可以充分利用训练数据集中现有的标签来学习如何对样本进行比较和对比。<strong>为了解释检测到的漂移的意义，我们开发了一种基于距离的解释方法</strong>。我们表明，在这个问题背景下，解释“距离”比传统方法更有效，传统方法侧重于解释“决策边界”。我们通过两个案例来评估CADE：Android恶意软件分类和网络入侵检测。我们进一步与一家安全公司合作，在其恶意软件数据库上测试CADE。我们的结果表明，CADE可以有效地检测漂移样本，并提供语义上有意义的解释。</p>
+<h3><span id="一-说明">一、说明</span></h3>
+<p>由于概念漂移，部署基于机器学习的安全应用程序可能非常具有挑战性。无论是恶意软件分类、入侵检测还是在线滥用检测[6、12、17、42、48]，基于学习的模型都是在“封闭世界”假设下工作的，期望测试数据分布与训练数据大致匹配。然而，部署模型的环境通常会随着时间的推移而动态变化。这种变化可能既包括良性玩家的有机行为变化，也包括攻击者的恶意突变和适应。因此，测试数据分布从原始训练数据转移，这可能会导致模型出现严重故障[23]。</p>
+<blockquote>
+<p>[23] A survey on concept drift adaptation. ACM computing surveys
+(CSUR), 2014.</p>
+</blockquote>
+<p>为了解决概念漂移问题，大多数基于学习的模型需要<strong>定期重新培训</strong>[36、39、52]。然而，再培训通常需要标记大量新样本（昂贵）。更重要的是，还很难确定何时应该对模型进行再培训。延迟的再培训会使过时的模型容易受到新的攻击。</p>
+<p><font color="red"><strong>我们设想，对抗概念漂移需要建立一个监控系统来检查传入数据流和训练数据（和/或当前分类器）之间的关系</strong></font>。图1说明了高级思想。当原始分类器在生产空间中工作时，另一个系统应定期检查分类器对传入数据样本做出决策的能力。<strong>A检测模块(1)
+可以过滤正在远离训练空间的漂移样本</strong>。更重要的是，为了<strong>解释漂移的原因（例如，攻击者突变、有机行为变化、以前未知的系统错误）</strong>，我们需要一种解释方法(2)
+将检测决策与语义上有意义的特征联系起来。这两项功能对于为开放世界环境准备基于学习的安全应用程序至关重要。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550835.png" alt="image-20220605202728095" style="zoom: 67%;"></p>
+<p>之前的工作已经探索了通过直接检查原始分类器（0）的预测置信度来检测漂移样本的方法
+<strong>[32]</strong>。置信度较低可能表明传入样本是漂移样本。然而，该置信度得分是基于所有类别已知（封闭世界）的假设计算的概率（总和为1.0）。不属于任何现有类别的漂移样本可能会被分配到错误的类别，并具有很高的置信度（已通过现有工作验证[25、32、37]）。最近的一项工作提出了计算传入样本和每个现有类之间的不一致性度量的想法，以确定适合度[38]。<strong>该不合格度量基于距离函数计算，以量化样本之间的不相似性</strong>。<strong>然而，我们发现这种距离函数很容易失效，尤其是当数据稀疏且维数较高时。</strong></p>
+<blockquote>
+<p><strong>[32] A baseline for detecting misclassified and
+out-of-distribution examples in neural networks.</strong></p>
+</blockquote>
+<p><strong>我们的方法</strong>。在本文中，我们提出了一种检测漂移样本的新方法，并结合一种解释检测决策的新方法。我们共同构建了一个称为CADE的系统，它是“用于漂移检测和解释的对比自动编码器
+(“<strong>Contrastive Autoencoder for Drifting detection and
+Explanation</strong>)”的缩写关键的挑战是<strong>推导一个有效的距离函数来衡量样本的相异性</strong>。我们没有随意选取距离函数，而是利用对比学习的思想[29]，根据现有的标签，从现有的训练数据中学习距离函数。给定原始分类器的训练数据（多个类别），我们将训练样本映射到低维潜在空间。映射函数通过对比样本来学习，以扩大不同类样本之间的距离，同时减少同一类样本之间的距离。<strong>我们证明了在潜在空间中得到的距离函数可以有效地检测和排序漂移样本。</strong></p>
+<p>评价我们使用两个数据集评估我们的方法，包括<strong>Android恶意软件数据集[7]和2018年发布的入侵检测数据集[57]</strong>。我们的评估表明，我们的漂移检测方法具有很高的准确性，F1平均得分为0.96或更高，优于各种基线和现有方法。我们的分析还表明，使用对比学习可以减少检测决策的模糊性。对于解释模型，我们进行了定量和定性评估。案例研究还表明，所选特征与漂移样本的语义行为相匹配。</p>
+<p>此外，我们还与一家安全公司的合作伙伴合作，在其内部恶意软件数据库上测试CADE。作为初步测试，我们从395个家庭中获得了2019年8月至2020年2月出现的20613个Windows
+PE恶意软件样本。这使我们能够在不同的环境中测试更多恶意软件系列的系统性能。结果很有希望。<font color="red"><strong>例如，CADE在10个家庭中进行训练并在160个以前未见过的家庭中进行测试时，F1成绩达到0.95分。这使得人们有兴趣在生产系统中进一步测试和部署CADE。</strong>
+</font></p>
+<h4><span id="贡献">贡献：</span></h4>
+<p>本文有三个主要贡献。</p>
+<ul>
+<li>我们提出CADE来补充现有的基于监督学习的安全应用程序，以对抗概念漂移。提出了<strong>一种基于对比表征学习的漂移样本检测方法</strong>。</li>
+<li>我们说明了监督解释方法在解释异常样本方面的局限性，并<strong>介绍了一种基于距离的解释方法</strong>。</li>
+<li>我们通过两个应用对所提出的方法进行了广泛的评估。我们与一家安保公司的初步测试表明，CADE是有效的。我们在此处发布了CADE代码1，以支持未来的研究。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -589,6 +954,10 @@
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">恶意软件检测</span></a>
         </span>
     </span>
 
@@ -1423,601 +1792,6 @@ Modification</strong>：权限修改，如Cacls.exe修改文件权限</li>
 <li><strong>Task
 Stopping</strong>：使用LotL二进制文件秘密停止另一个进程或服务，如Taskkill.exe</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/NFRYYZ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/NFRYYZ/" class="post-title-link" itemprop="url">恶意软件检测（2）Dynamic Malware Analysis with Feature Engineering and Feature Learning</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-26 16:04:26" itemprop="dateCreated datePublished" datetime="2022-05-26T16:04:26+08:00">2022-05-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-19 15:52:32" itemprop="dateModified" datetime="2023-04-19T15:52:32+08:00">2023-04-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>12k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>22 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="dynamicmalware-analysis-with-feature-engineering-and-feature-learning">Dynamic
-Malware Analysis with Feature Engineering and Feature Learning</span></h2>
-<ul>
-<li>项目：https://github.com/joddiy/DynamicMalwareAnalysis</li>
-<li>文章：https://arxiv.org/abs/1907.07352</li>
-</ul>
-<h3><span id="摘要">摘要</span></h3>
-<p>动态恶意软件分析在隔离的环境中执行程序，并监控其运行时行为（如系统<strong>API调用</strong>），以检测恶意软件。该技术已被证明对各种代码混淆技术和新发布的（“零日”）恶意软件有效。然而，现有的工作通常<strong>只考虑API名称而忽略参数</strong>，<strong>或者需要复杂的特征工程操作和专家知识来处理参数</strong>。在本文中，我们<strong>提出了一种新的、低成本的特征提取方法，以及一种有效的深度神经网络体系结构，用于准确、快速地检测恶意软件</strong>。具体而言，<strong>特征表示方法利用特征哈希技巧对与API名称关联的API调用参数进行编码</strong>。深度神经网络体系结构应用多个选通CNN（卷积神经网络）来转换每个API调用的提取特征。通过双向LSTM（长-短期内存网络）进一步处理输出，以<strong>了解API调用之间的顺序相关性</strong>。实验表明，我们的解决方案在大型真实数据集上的性能明显优于基线。从烧蚀研究中获得了有关特征工程和建筑设计的宝贵见解。</p>
-<h3><span id="一-说明">一、说明</span></h3>
-<p>网络安全给全世界带来了巨大的经济成本。美国政府的一份报告（CEA
-2018）估计，2016年美国经济中恶意网络活动的成本在570亿美元至1090亿美元之间。恶意软件（或恶意软件）是快速发展的主要网络安全威胁之一。据报道，每年发现超过1.2亿个新的恶意软件样本（AV-TEST
-2017）。因此，开发恶意软件检测技术是迫切而必要的。</p>
-<p>数十年来，研究人员一直致力于恶意软件检测。主流解决方案包括静态分析和动态分析。静态分析方法扫描软件的二进制字节流以创建签名，如可打印字符串、n-gram、指令等（Kruegel等人，2005）。然而，基于签名的静态分析可能容易受到代码混淆的影响（Rhode、Burnap和Jones，2018；Gibert等人，2018），或者不足以检测新的（“zeroday”）恶意软件（Vinod等人，2009）。相反，动态分析算法在隔离的环境（例如沙盒）中执行每个软件，以收集其运行时行为信息。通过使用行为信息，动态分析的检测率更高，比静态分析更稳健（Damodaran
-et al.2017）。在本文中，我们主要关注动态分析。</p>
-<p>在行为信息中，<strong>系统API调用序列</strong>是最常用的数据源，因为它捕获了软件执行的所有操作（包括<strong>网络访问、文件操作等</strong>）。序列中的每个API调用都包含两个重要部分，即<strong>API名称和参数</strong>。每个API可能有零个或多个参数，每个参数都表示为<strong>名称-值对</strong>。为了处理行为信息，提出了许多特征工程方法。例如，如果我们将API名称视为一个字符串，则可以提取最多N个（例如1000个）频繁的N-gram特征（N=1，2.....)
-从序列中。然而，从异构类型的参数（包括字符串、整数、地址等）中提取特征并非易事。最近，研究人员将深度学习模型应用于动态分析。卷积神经网络（CNN）和递归神经网络（RNN）等深度学习模型可以直接从序列数据中学习特征，而无需进行特征工程。尽管如此，计算机视觉和自然语言处理等传统深度学习应用程序的数据是同质的，例如图像（或文本）。<strong>使用深度学习模型处理异构API参数仍然具有挑战性</strong>。因此，大多数现有方法都忽略了这些参数。有几种利用API参数的方法（Tian
-et al.2010；Fang et al.2017；Agrawal et
-al.2018）。然而，这些方法要么将所有参数视为字符串（Tian et
-al.2010；Agrawal et al.2018），要么只考虑参数的统计信息（Ahmed et
-al.2009；Tian et al.2010；Islam et
-al.2013）。因此，<strong>它们无法充分利用来自不同类型参数的异构信息</strong>。</p>
-<p>在本文中，我们提出了一种<strong>新的特征工程方法</strong>和一种<strong>新的恶意软件检测深度学习体系结构</strong>。特别是，对于不同类型的参数，我们的特征工程方法<strong>利用哈希方法分别提取异构特征</strong>。<strong>从API名称、类别和参数中提取的特征将进一步串联并输入到深度学习模型中</strong>。我们使用多个选通CNN模型（Dauphin
-et
-al.2017）从每个API调用的高维哈希特征中学习抽象的低维特征。来自选通CNN模型的输出由双向LSTM处理，以提取所有API调用的顺序相关性。</p>
-<p>我们的解决方案比所有基线都有很大的优势。通过广泛的烧蚀研究，我们发现特征工程和模型架构设计对于实现高泛化性能至关重要。本文的主要贡献包括：</p>
-<ul>
-<li>我们为系统API参数提出了一种新的特征表示。从我们的数据集中提取的特征将发布供公众访问。</li>
-<li>我们设计了一种深度神经网络结构来处理提取的特征，它将多个门控CNN和一个双向LSTM相结合。它以巨大的利润超过了所有现有的解决方案。</li>
-<li>我们在一个大型真实数据集1上进行了广泛的实验。通过消融研究，发现了有关特征和模型架构的宝贵见解。</li>
-</ul>
-<h3><span id="二-相关工作">二、相关工作</span></h3>
-<p>在本节中，我们将从特征工程和深度学习的角度回顾动态恶意软件分析。</p>
-<h4><span id="21-api调用的功能工程">2.1 API调用的功能工程</span></h4>
-<p>（Trinius等人，2009）介绍了一种称为<strong>恶意软件指令集（MIST）</strong>的特征表示。MIST使用多个级别的功能来表示系统调用。第一级表示API调用的类别和名称。以下级别是为每个API调用手动指定的，以表示它们的参数。然而，对于不同的API，同一级别的特性可能表示不同类型的信息。这种不一致性给使用机器学习模型学习模式带来了挑战。</p>
-<p>（Qiao等人，2013）扩展了MIST，提出了一种称为<strong>基于字节的行为指令集（BBIS）</strong>的表示。他们声称，只有MIST的第一级（API调用的类别和名称）是有效的。此外，他们还提出了一种算法<strong>CARL来处理连续重复的API调用</strong>。</p>
-<p>统计特征是训练机器学习模型的常用方法。提取API调用名称及其参数中的字符串，以计算频率和分布，作为中的特征（Tian
-et al.2010；Islam et al.2010；2013）。（Ahmed et
-al.2009）还使用统计特征来捕获空间和时间信息。从参数中提取空间信息，如均值、方差和熵。时间信息来自ngram
-API调用，包括两个n-gram API调用之间的相关性和转换可能性。</p>
-<p>（Salehi、Ghiasi和Sami
-2012）提出了一种将API调用与其参数关联起来的特性表示。它将每个参数与其API调用的名称连接起来，形成一个新的序列，然而，这种方法会导致一个非常长的特征向量，并且可能会丢失API调用序列的模式。</p>
-<p>（Hansen等人，2016）提出了另外两种特征表示法。这些表示包括前200个API调用及其“参数”。但是，此“参数”仅指示此API调用是否与后一个API调用连接，而忽略原始参数。</p>
-<h4><span id="22-deep-learning-basedapproaches">2.2 Deep Learning Based
-Approaches</span></h4>
-<p>（David and Netanyahu
-2015）将<strong>沙盒报告视为一个完整的文本字符串</strong>，然后用任何特殊字符拆分所有字符串。他们计算每个字符串的频率，并使用20000位向量来表示最频繁的20000个字符串。他们的模型是一个<strong>深度信念网络（DBN）</strong>，由八层组成（从20000个大小的向量到30个大小的向量）。利用交叉熵损失对模型进行训练。在一个包含600个测试样本的小数据集上，它们的准确率达到98.6%。</p>
-<p>（Pascanu et
-al.2015）提出了两个阶段的方法，即特征学习阶段和分类阶段。在第一阶段，他们<strong>使用RNN根据之前的API调用序列预测下一个可能的API调用</strong>。在分类阶段，他们冻结RNN，并将输出输入最大池层，以转换特征进行分类。在75000个样本的数据集上，它们的召回率达到71.71%，假阳性率为0.1%。</p>
-<p><strong>（Kolosnjaji et
-al.2016）提出了一种将CNN与LSTM相结合的方法。他们的方法堆叠两个CNN层，每个CNN层使用一个3大小的内核来模拟3-gram方法。在CNN之后，附加一个具有100大小隐藏向量的LSTM来处理时间序列。以前的论文通常忽略了论点。</strong></p>
-<p><strong>（Huang和Stokes
-2016）使用了一种包含三个部分的特征表示，即参数中存在可运行代码、API调用名称与其中一个参数的组合（手动选择）以及3-gram的API调用序列</strong>。通过随机投影（random
-projection），此特征表示从50000减少到4000。（Agrawal et
-al.2018）提出了一种特征表示方法，<strong>该方法使用来自API调用名称的一个one-hot和参数字符串的前N个频繁N-gram</strong>。该模型使用了几个堆叠的LSTM，其性能优于（Kolosnjaji等人，2016）。他们还声称，多个LSTM不能提高性能。</p>
-<h3><span id="三-系统框架">三、系统框架</span></h3>
-<p>为了收集运行时API调用，我们实现了图1所示的系统。该系统由体育档案采集、行为信息采集、特征提取和模型训练三部分组成。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191547460.png" alt="image-20220526165948643">
-<figcaption aria-hidden="true">image-20220526165948643</figcaption>
-</figure>
-<h4><span id="31-pe文件收集">3.1 PE文件收集</span></h4>
-<p>我们系统的工作流程从可移植可执行文件（PE）集合开始。在本文中，我们重点检测Windows系统中可移植可执行文件（PE）格式的恶意软件，这是最流行的恶意软件文件格式（AV-TEST
-2017）。此收集部分已由新加坡SecureAge
-Technology本地反病毒公司实施。此外，该公司还维护了一个包含12个防病毒引擎的平台，用于对PE文件进行分类。对分类结果进行聚合，以获得每个PE文件的标签，用于模型培训。一旦模型经过培训，它将作为第13个防病毒引擎添加到平台中。收集之后，将维护一个执行队列，以提交PE文件以供执行。它监视存储使用情况并决定是否执行更多PE文件。</p>
-<h4><span id="32-行为信息收集">3.2 行为信息收集</span></h4>
-<blockquote>
-<p>https://cuckoosandbox.org/</p>
-<p>json在线解析：http://www.jsons.cn/jsoncheck/</p>
-</blockquote>
-<p><strong>布谷鸟</strong>是一款开源软件，用于运行PE文件和收集执行日志。它在虚拟机内执行PE文件，并使用API挂钩监视API调用跟踪（即行为信息）。此外，布谷鸟模拟了一些用户行为，例如单击按钮、键入一些文本等。<strong>在我们的系统中，我们在每台服务器上维护了数十台虚拟机。所有虚拟机都安装了64位Windows
-7系统和一些日常使用的软件</strong>。我们利用虚拟机的快照功能在执行后回滚它。<strong>所有生成的日志都存储在本地的布谷鸟服务器上</strong>。</p>
-<h4><span id="33-特征提取和模型训练">3.3 特征提取和模型训练</span></h4>
-<p>沙盒生成的执行日志包含<strong>PE文件的详细运行时信息</strong>，PE文件的大小从几KB到数百GB不等。我们设计了一个可以<strong>并行运行的特征工程解决方案</strong>，<strong>以有效地从原始执行日志中提取特征</strong>。提取特征后，我们在带有GPU的模型服务器上训练我们的深度学习模型，以进行恶意软件分类。</p>
-<h3><span id="4-方法">4、方法</span></h3>
-<blockquote>
-<p>#### cuckoo json:</p>
-<ul>
-<li><p><strong>behavior</strong></p>
-<ul>
-<li><p>summary</p>
-<ul>
-<li>file_recreated</li>
-<li>file_failed</li>
-<li>dll_loaded</li>
-<li>guid</li>
-<li>file_opened</li>
-<li>file_created</li>
-<li>file_written</li>
-</ul></li>
-<li><p><strong>generic</strong></p>
-<ul>
-<li>process_path: 进程启动路径</li>
-<li><strong>process_name</strong>: 进程执行程序名</li>
-<li>pid: 进程id</li>
-<li>first_seen: 进程启动时间戳</li>
-<li>ppid: 父进程id</li>
-</ul></li>
-<li><p><strong>apistats</strong>：<strong>API名称的调用次数信息</strong></p></li>
-<li><p><strong>processes</strong></p>
-<ul>
-<li><p>command_line</p></li>
-<li><p><strong>calls</strong></p>
-<blockquote>
-<p>{ "<strong>api</strong>": "NtCreateFile",
-"<strong>category</strong>": "file", "return_value": 0, "stacktrace": [
-], "flags": { "desired_access":
-"FILE_READ_ATTRIBUTES|READ_CONTROL|SYNCHRONIZE", "share_access":
-"FILE_SHARE_READ", "file_attributes": "", "create_disposition":
-"FILE_OPEN", "create_options":
-"FILE_NON_DIRECTORY_FILE|FILE_SYNCHRONOUS_IO_NONALERT", "status_info":
-"FILE_OPENED" }, "<strong>arguments</strong>": { "desired_access":
-"0x00120080", "share_access": 1, "<strong>filepath_r</strong>":
-"\??\C:\Users\xn\AppData\Local\Temp\0e823db8b1beaca62207e2a82a9cd691c7af44cd14b876cb9f823f29750dd008",
-"<strong>filepath</strong>":
-"C:\Users\xn\AppData\Local\Temp\0e823db8b1beaca62207e2a82a9cd691c7af44cd14b876cb9f823f29750dd008",
-"file_attributes": 0, "create_disposition": 1, "file_handle":
-"0x000004ac", "status_info": 1, "create_options": 96 }, "tid": 3564,
-"status": 1, "time": 1622640835.384851 },</p>
-</blockquote></li>
-<li><p><strong>modules</strong>: <strong>样本运行时调用的系统文件信息,
-包括被调用文件名/路径/基地址及其大小</strong></p></li>
-<li><p>time: 运行时间</p></li>
-</ul></li>
-<li><p><strong>processtree</strong></p>
-<ul>
-<li>children: 子进程列表</li>
-</ul></li>
-</ul></li>
-</ul>
-</blockquote>
-<h4><span id="41-特征工程">4.1 特征工程</span></h4>
-<blockquote>
-<ul>
-<li><p><strong>FeatureHasher</strong>:
-https://scikit-learn.org/dev/modules/generated/sklearn.feature_extraction.FeatureHasher.html#sklearn.feature_extraction.FeatureHasher</p></li>
-<li><p><strong>Feature Hashing for Large Scale Multitask
-Learning</strong> （2013）</p></li>
-</ul>
-</blockquote>
-<p>以前的大多数工作（Qiao et al.2013；Pascanu et al.2015；Kolosnjaji et
-al.2016）都<strong>忽略了API调用的参数</strong>，只考虑了API名称和类别。因此，一些重要（鉴别）信息丢失（Agrawal
-et
-al.2018）。例如，如果忽略文件路径参数，则两个写操作（API调用）的功能将完全相同。但是，当目标文件由程序本身创建时，写入操作可能是良性的，但如果目标文件是系统文件，则写入操作可能是恶意的。一些考虑到论点的著作（Trinius
-et al.2009；Agrawal et al.2018；Huang and Stokes
-2016）未能利用不同类型论点的异质信息。我们建议采用（Weinberger et
-al.2009）中的哈希方法，<strong>分别对API的名称、类别和参数进行编码</strong>。</p>
-<p>如下表所示，我们的特征表示由不同类型的信息组成。<strong>API名称有8维，API类别有4维。API参数部分有90个维，16个用于整数参数，74个用于字符串参数。对于字符串参数，将处理几种特定类型的字符串（文件路径、DLL等）。此外，从所可打印字符串中提取了10个统计特征</strong>。将所有这些特征串联起来，形成<strong>102维特征向量</strong>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191547725.png" alt="image-20220526170451620" style="zoom:50%;"></p>
-<ul>
-<li><h4><span id="api名称和类别">API名称和类别</span></h4></li>
-</ul>
-<blockquote>
-<p>单词拆分？fastext？<strong>删除循环调用？</strong></p>
-</blockquote>
-<p><strong>布谷鸟沙盒总共跟踪312个API调用，它们属于17个类别</strong>。每个API名称由多个单词组成，每个单词的第一个字母大写，例如“<strong>GetFileSize</strong>”。我们<strong>将API名称拆分为单词</strong>，然后应用下面的<strong>特性哈希技巧处理这些单词</strong>。对于API类别，由于该类别通常是单个单词，例如“<strong>network</strong>”，我们将该单词拆分为字符并应用特征哈希技巧。此外，我们<strong>计算API名称、类别和参数的MD5值，以删除任何连续重复的API调用</strong>。</p>
-<p>我们使用方程1中的<strong>特征哈希</strong>（Weinberger et
-al.2009）<strong>将字符串序列编码为固定长度的向量</strong>。随机变量x表示元素序列，其中每个元素要么是字符串，要么是字符。M表示维度数量，即8表示API名称，4表示API类别。第i个bin的值通过以下公式计算：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191548610.png" alt="image-20220526172933876" style="zoom:50%;"></p>
-<p>其中，h是将元素（例如xj）映射到自然数m的哈希函数∈
-{1，…，M}作为bin索引；ξ是另一个将元素映射到{+-1}
-。也就是说，对于x的每个元素xj，其bin索引h（xj）为i，我们将ξ（xj）添加到bin中。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">APIName</span>(<span class="title class_ inherited__">FeatureType</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27; api_name hash info &#x27;&#x27;&#x27;</span></span><br><span class="line">    name = <span class="string">&#x27;api_name&#x27;</span></span><br><span class="line">    dim = <span class="number">8</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(FeatureType, self).__init__()</span><br><span class="line">        self._name = re.<span class="built_in">compile</span>(<span class="string">&#x27;^[a-z]+|[A-Z][^A-Z]*&#x27;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">raw_features</span>(<span class="params">self, input_dict</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        input_dict: string</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        tmp = self._name.findall(input_dict)</span><br><span class="line">        hasher = FeatureHasher(self.dim, input_type=<span class="string">&quot;string&quot;</span>).transform([tmp]).toarray()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> hasher</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_raw_features</span>(<span class="params">self, raw_obj</span>):</span><br><span class="line">        <span class="keyword">return</span> raw_obj</span><br><span class="line">      </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">APICategory</span>(<span class="title class_ inherited__">FeatureType</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27; api_category hash info &#x27;&#x27;&#x27;</span></span><br><span class="line">    name = <span class="string">&#x27;api_category&#x27;</span></span><br><span class="line">    dim = <span class="number">4</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(FeatureType, self).__init__()</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">raw_features</span>(<span class="params">self, input_dict</span>):</span><br><span class="line">        hasher = FeatureHasher(self.dim, input_type=<span class="string">&quot;string&quot;</span>).transform([input_dict]).toarray()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> hasher</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_raw_features</span>(<span class="params">self, raw_obj</span>):</span><br><span class="line">        <span class="keyword">return</span> raw_obj</span><br></pre></td></tr></table></figure>
-<ul>
-<li><h4><span id="api参数">API参数</span></h4></li>
-</ul>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191548031.png" alt="image-20230319160222991">
-<figcaption aria-hidden="true">image-20230319160222991</figcaption>
-</figure>
-<p>至于API参数，只有两种类型的值，即<strong>整数</strong>和<strong>字符串</strong>。整数的单个值没有意义。需要参数名称才能获取值的含义。<strong>相同的整数值可能表示具有不同参数名称的完全不同语义</strong>。例如，<strong>名为“port”的数字22与名为“size”的数字不同</strong>。我们采用前面的特征哈希方法<strong>对整数的参数名称及其值进行编码</strong>，如等式2所示。我们使用参数名称来定位哈希容器。特别是，我们使用名称哈希值为i的所有参数通过求和更新第i个bin。对于每个这样的参数，我们计算对bin的贡献，如等式2所示，其中ξ(<span class="math inline">\(x_{name_j}\)</span>)是参数名称上的哈希函数，<span class="math inline">\(x_{value_j}\)</span>是整数参数的值。由于整数可能在某个范围内稀疏分布，因此我们使用对数对值进行规格化，以压缩该范围。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191548958.png" alt="image-20220526174316254" style="zoom:50%;"></p>
-<p>其中，h和ξ是与等式1中相同的哈希函数。<strong>对于API参数字符串，它们的值比整数更复杂。某些以“0x”开头的字符串包含某些对象的地址。还有一些可能包含文件路径、IP地址、URL或纯文本</strong>。此外，一些API参数甚至可能包含整个文件的内容。字符串的多样性使得处理它们具有挑战性。根据之前的工作（Tian
-et al.2010；Islam et al.2010；2013；Ahmed et
-al.2009），最重要的字符串是关于<strong>文件路径、DLL、注册表项、URL和IP地址的值</strong>。因此，我们使用<strong>方程1中的特征哈希方法【string】</strong>来提取这些字符串的特征。</p>
-<p>为了捕获<strong>字符串中包含的层次信息</strong>，我们将整个字符串解析为几个子字符串，并分别对它们进行处理。例如，我们使用“C:\”来标识文件路径。所有这些子串都通过方程1进行处理</p>
-<blockquote>
-<p><strong>Path</strong>：<strong>对于像“C:\a\b\C”这样的路径，将生成四个子字符串，即“C:”、“C:\a”、“C:\a\b”和“C:\a\b\C”。</strong></p>
-<p>dll：以“.dll”结尾的字符串</p>
-<p>注册表：项通常以“HKEY”开头</p>
-<p>IP：由点分隔的四个数字（范围从0到255）组成的字符串</p>
-<p>URL：我们仅从URL的主机名生成子字符串。例如，对于“https://security.ai.cs.org/，将生成以下子字符串“org”、“cs.org”、“ai.cs.org”和“security.ai.cs.org”。</p>
-</blockquote>
-<p><strong>DLL、注册表项和IP也采用相同的处理方法</strong>。<strong>dll是以“.dll”结尾的字符串。注册表项通常以“HKEY”开头。IP是由点分隔的四个数字（范围从0到255）组成的字符串</strong>。URL略有不同，我们仅从URL的主机名生成子字符串。例如，对于“https://security.ai.cs.org/，将生成以下子字符串“org”、“cs.org”、“ai.cs.org”和“security.ai.cs.org”。这样，域和组织信息将对该功能贡献更多。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PRUIInfo</span>(<span class="title class_ inherited__">FeatureType</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27; Path, Registry, Urls, IPs hash info &#x27;&#x27;&#x27;</span></span><br><span class="line">    name = <span class="string">&#x27;prui&#x27;</span></span><br><span class="line">    dim = <span class="number">16</span> + <span class="number">8</span> + <span class="number">12</span> + <span class="number">16</span> + <span class="number">12</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(FeatureType, self).__init__()</span><br><span class="line">        self._paths = re.<span class="built_in">compile</span>(<span class="string">&#x27;^c:\\\\&#x27;</span>, re.IGNORECASE)</span><br><span class="line">        self._dlls = re.<span class="built_in">compile</span>(<span class="string">&#x27;.+\.dll$&#x27;</span>, re.IGNORECASE)</span><br><span class="line">        self._urls = re.<span class="built_in">compile</span>(<span class="string">&#x27;^https?://(.+?)[/|\s|:]&#x27;</span>, re.IGNORECASE)</span><br><span class="line">        self._registry = re.<span class="built_in">compile</span>(<span class="string">&#x27;^HKEY_&#x27;</span>)</span><br><span class="line">        self._ips = re.<span class="built_in">compile</span>(<span class="string">&#x27;^\d&#123;1,3&#125;\.\d&#123;1,3&#125;\.\d&#123;1,3&#125;\.\d&#123;1,3&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">raw_features</span>(<span class="params">self, input_dict</span>):</span><br><span class="line">        paths = np.zeros((<span class="number">16</span>,), dtype=np.float32)</span><br><span class="line">        dlls = np.zeros((<span class="number">8</span>,), dtype=np.float32)</span><br><span class="line">        registry = np.zeros((<span class="number">12</span>,), dtype=np.float32)</span><br><span class="line">        urls = np.zeros((<span class="number">16</span>,), dtype=np.float32)</span><br><span class="line">        ips = np.zeros((<span class="number">12</span>,), dtype=np.float32)</span><br><span class="line">        <span class="keyword">for</span> str_name, str_value <span class="keyword">in</span> input_dict.items():</span><br><span class="line">            <span class="keyword">if</span> self._dlls.<span class="keyword">match</span>(str_value):</span><br><span class="line">                tmp = re.split(<span class="string">&#x27;//|\\\\|\.&#x27;</span>, str_value)[:-<span class="number">1</span>]</span><br><span class="line">                tmp = [<span class="string">&#x27;\\&#x27;</span>.join(tmp[:i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(tmp) + <span class="number">1</span>)]</span><br><span class="line">                dlls += FeatureHasher(<span class="number">8</span>, input_type=<span class="string">&quot;string&quot;</span>).transform([tmp]).toarray()[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">if</span> self._paths.<span class="keyword">match</span>(str_value):</span><br><span class="line">                tmp = re.split(<span class="string">&#x27;//|\\\\|\.&#x27;</span>, str_value)[:-<span class="number">1</span>]</span><br><span class="line">                tmp = [<span class="string">&#x27;\\&#x27;</span>.join(tmp[:i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(tmp) + <span class="number">1</span>)]</span><br><span class="line">                paths += FeatureHasher(<span class="number">16</span>, input_type=<span class="string">&quot;string&quot;</span>).transform([tmp]).toarray()[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">elif</span> self._registry.<span class="keyword">match</span>(str_value):</span><br><span class="line">                tmp = str_value.split(<span class="string">&#x27;\\&#x27;</span>)[:<span class="number">6</span>]</span><br><span class="line">                tmp = [<span class="string">&#x27;\\&#x27;</span>.join(tmp[:i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(tmp) + <span class="number">1</span>)]</span><br><span class="line">                registry += FeatureHasher(<span class="number">12</span>, input_type=<span class="string">&quot;string&quot;</span>).transform([tmp]).toarray()[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">elif</span> self._urls.<span class="keyword">match</span>(str_value):</span><br><span class="line">                tmp = self._urls.split(str_value + <span class="string">&quot;/&quot;</span>)[<span class="number">1</span>]</span><br><span class="line">                tmp = tmp.split(<span class="string">&#x27;.&#x27;</span>)[::-<span class="number">1</span>]</span><br><span class="line">                tmp = [<span class="string">&#x27;.&#x27;</span>.join(tmp[:i][::-<span class="number">1</span>]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(tmp) + <span class="number">1</span>)]</span><br><span class="line">                urls += FeatureHasher(<span class="number">16</span>, input_type=<span class="string">&quot;string&quot;</span>).transform([tmp]).toarray()[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">elif</span> self._ips.<span class="keyword">match</span>(str_value):</span><br><span class="line">                tmp = str_value.split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">                tmp = [<span class="string">&#x27;.&#x27;</span>.join(tmp[:i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(tmp) + <span class="number">1</span>)]</span><br><span class="line">                ips += FeatureHasher(<span class="number">12</span>, input_type=<span class="string">&quot;string&quot;</span>).transform([tmp]).toarray()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> np.hstack([paths, dlls, registry, urls, ips]).astype(np.float32)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_raw_features</span>(<span class="params">self, raw_obj</span>):</span><br><span class="line">        <span class="keyword">return</span> raw_obj</span><br></pre></td></tr></table></figure>
-<h4><span id="统计信息">统计信息</span></h4>
-<p>对于许多其他类型的字符串，根据之前的工作（Ahmed et al.2009；Tian et
-al.2010；Islam et
-al.2010），我们<strong>从所有可打印字符串中提取统计信息</strong>。可打印字符串由0x20到0x7f的字符组成。<strong>因此，包括所有路径、注册表项、URL、IP和其他一些可打印字符串</strong>。</p>
-<ul>
-<li>以“MZ”开头的一类字符串通常是包含整个PE文件的缓冲区，通常出现在恶意PE文件中，如<strong>线程注入</strong>（Liu
-et al.2011）。因此，我们额外计算“MZ”字符串的出现次数。</li>
-<li><strong>10维向量用于记录字符串的数量、平均长度、字符数、所有可打印字符串的字符熵，以及路径、DLL、URL、注册表项、IP和“MZ”字符串的数量。</strong>我们没有处理其他参数，如虚拟地址、结构等，与上述类型的参数相比，这些参数相对不太重要。</li>
-</ul>
-<p>虽然所提出的特征工程方法很容易使用额外的bins应用于它们，但我们期待着进行更有针对性的研究来探索这些论点。</p>
-<h4><span id="42-模型结构">4.2 模型结构</span></h4>
-<p>我们提出了一种深度神经网络架构，它利用了所提出的特征工程步骤中的特征。图2概述了我们提出的深度学习模型。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191548514.png" alt="image-20220526184024769" style="zoom:50%;"></p>
-<ul>
-<li><h4><span id="输入模块">输入模块</span></h4></li>
-</ul>
-<p>在特征工程之后，我们得到大小为（N，d）的输入向量，<strong>其中N是API调用序列的长度</strong>，<strong>d（102位）是每个提取的API特征的维数</strong>。我们首先通过<strong>批量规范化层（BN）</strong>对输入进行规范化（Ioffe和Szegedy
-2015）。该批次标准化层通过减去批次平均值并除以批次标准偏差来标准化输入值。<strong>它保证了特征向量的某些维数不会太大而影响训练；实验验证了该方法的正则化效果。</strong></p>
-<ul>
-<li><h4><span id="门控cnns模块">门控CNNs模块</span></h4></li>
-</ul>
-<p>输入模块后应用了多个<strong>门控-CNN</strong>（Dauphin et
-al.2017）。<strong>门控-CNN允许选择重要和相关的信息，使其在语言任务上与循环模型相比，但消耗更少的资源和时间</strong>。对于每个选通的CNN，输入分别馈入两个卷积层。设XA表示第一卷积层的输出，XB表示第二卷积层的输出；它们由<img src="image-20220526184352710.png" alt="image-20220526184352710" style="zoom:50%;">组成，它涉及到元素乘法运算。这里，σ是sigmoid函数。<strong>σ（XB）被视为控制从XA传递到模型中下一层的信息的门</strong>。<strong>按照（Shen
-et
-al.2014)中的想法，一维卷积滤波器被用作n-gram检测器。如图2所示，我们使用两个选通CNN，其过滤器大小分别为2和3。所有卷积层的滤波器个数为128，步长为1。</strong></p>
-<ul>
-<li><h4><span id="bi-lstm模块">BI-LSTM模块</span></h4></li>
-</ul>
-<p><strong>来自门CNN的所有输出连接在一起</strong>。对这些输出应用批处理规范化层，以减少过拟合。我们使用<strong>双向LSTM来学习序列模式</strong>。<strong>每个LSTM的单元数为100</strong>。LSTM是一种递归神经网络架构，其中设计了几个门来控制信息传输状态，以便能够捕获长期上下文信息（Pichotta和Mooney
-2016）。双向LSTM是两个LSTM叠加在一起，但方向输入不同。与单向LSTM相比，双向LSTM能够同时整合过去和未来状态的信息。双向LSTM在恶意软件检测方面已被证明是有效的（Agrawal
-et al.2018）。</p>
-<ul>
-<li><h4><span id="分类模块">分类模块</span></h4></li>
-</ul>
-<p><strong>在Bi
-LSTM模块中学习序列模式后，应用全局最大池层从隐藏向量中提取抽象特征</strong>。全局最大池层不是使用Bi
-LSTM的最终激活，而是依赖于整个序列中观察到的每个信号，这有助于保留整个序列中学习到的相关信息。在全局最大池层之后，<strong>我们使用单元数为64的密集层将中间向量的维数减少到64</strong>。将<strong>ReLU激活应用于该致密层</strong>。然后，我们使用速率为0.5的<strong>衰减层（dropout）</strong>来减少过度拟合。最后，<strong>单位数为1的致密层将维数减少到1</strong>。在致密层之后附加一个<strong>Sigmoid激活以输出概率</strong>。我们的模型使用与每个输入向量相关的标签进行监督。为了测量用于训练模型的损失。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191548788.png" alt="image-20220526185129696" style="zoom:50%;"></p>
-<p>此外，我们采用的优化方法是Adam，学习率为0.001。</p>
-<h2><span id="dynamic-malware-analysis-代码结构"><strong><font color="red">
-Dynamic Malware Analysis - 代码结构</font></strong></span></h2>
-<blockquote>
-<p><strong>model.py</strong></p>
-<ul>
-<li>ClassifyGenerator: Generates data for Keras</li>
-<li>Model: 模型结构定义、模型训练</li>
-<li>Cuckoo2DMDS：</li>
-<li>DMDS</li>
-</ul>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/BZK9HE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/BZK9HE/" class="post-title-link" itemprop="url">算法长征（12）图</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-23 18:18:07" itemprop="dateCreated datePublished" datetime="2022-05-23T18:18:07+08:00">2022-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-03 15:08:05" itemprop="dateModified" datetime="2022-07-03T15:08:05+08:00">2022-07-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="图论算法从入门到放下">图论算法从入门到放下</span></h2>
-<blockquote>
-<p>https://leetcode.cn/circle/discuss/FyPTTM/</p>
-</blockquote>
-<h4><span id="主要内容一览">主要内容一览</span></h4>
-<p><img src="https://pic.leetcode-cn.com/1655461415-YbBmuc-graph_mind.png" alt="graph_mind.png" style="zoom: 33%;"></p>
-<h2><span id="岛屿问题">岛屿问题</span></h2>
-<h4><span id="剑指-offer-ii-105岛屿的最大面积"></span></h4>
-<p>给定一个由 0 和 1 组成的非空二维数组 grid
-，用来表示海洋岛屿地图。一个 岛屿 是由一些相邻的 1 (代表土地)
-构成的组合，这里的「相邻」要求两个 1
-必须在水平或者竖直方向上相邻。你可以假设 grid 的四个边缘都被
-0（代表水）包围着。</p>
-<p>找到给定的二维数组中最大的岛屿面积。如果没有岛屿，则返回面积为 0
-。</p>
-<p>示例 1:</p>
-<p><img src="https://pic.leetcode-cn.com/1626667010-nSGPXz-image.png" alt="img" style="zoom:33%;"></p>
-<p>输入: grid =
-[[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
-输出: 6 解释: 对于上面这个给定矩阵应返回 6。注意答案不应该是 11
-，因为岛屿只能包含水平或垂直的四个方向的 1 。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxAreaOfIsland</span>(<span class="params">self, grid: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 深度优先搜索 空间复杂度o(m*n)</span></span><br><span class="line">        m, n = <span class="built_in">len</span>(grid), <span class="built_in">len</span>(grid[<span class="number">0</span>])</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">x, y</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">            s = <span class="number">1</span></span><br><span class="line">            grid[x][y] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i, j <span class="keyword">in</span> [(x - <span class="number">1</span>, y), (x, y - <span class="number">1</span>), (x + <span class="number">1</span>, y), (x, y + <span class="number">1</span>)]:</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="number">0</span> <span class="keyword">or</span> j &lt; <span class="number">0</span> <span class="keyword">or</span> i == m <span class="keyword">or</span> j == n <span class="keyword">or</span> grid[i][j]!=<span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                s += dfs(i, j)</span><br><span class="line">            <span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                <span class="keyword">if</span> grid[i][j] == <span class="number">1</span>:</span><br><span class="line">                    res = <span class="built_in">max</span>(res, dfs(i, j))</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-<h4><span id="743网络延迟时间"></span></h4>
-<p>有 n 个网络节点，标记为 1 到 n。给你一个列表 times，表示信号经过 有向
-边的传递时间。 times[i] = (ui, vi, wi)，其中 ui 是源节点，vi
-是目标节点， wi 是一个信号从源节点传递到目标节点的时间。</p>
-<p>现在，从某个节点 K
-发出一个信号。需要多久才能使所有节点都收到信号？如果不能使所有节点收到信号，返回
--1 。</p>
-<ul>
-<li>图最短路径【<strong>优先队列</strong>】</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">networkDelayTime</span>(<span class="params">self, times: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]], n: <span class="built_in">int</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        g = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> x, y, time <span class="keyword">in</span> times:</span><br><span class="line">            g[x - <span class="number">1</span>].append((y - <span class="number">1</span>, time))</span><br><span class="line"></span><br><span class="line">        dist = [<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)] * n</span><br><span class="line">        dist[k - <span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        q = [(<span class="number">0</span>, k - <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">while</span> q:</span><br><span class="line">            time, x = heapq.heappop(q)</span><br><span class="line">            <span class="keyword">if</span> dist[x] &lt; time:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">for</span> y, time <span class="keyword">in</span> g[x]:</span><br><span class="line">                <span class="keyword">if</span> (d := dist[x] + time) &lt; dist[y]:</span><br><span class="line">                    dist[y] = d</span><br><span class="line">                    heapq.heappush(q, (d, y))</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(dist)</span><br><span class="line">        <span class="keyword">return</span> ans <span class="keyword">if</span> ans &lt; <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">else</span> -<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-106二分图"></span></h4>
-<p>存在一个 无向图 ，图中有 n 个节点。其中每个节点都有一个介于 0 到 n -
-1 之间的唯一编号。给定一个二维数组 graph ，表示图，其中 graph[u]
-是一个节点数组，由节点 u 的邻接节点组成。形式上，对于 graph[u] 中的每个
-v ，都存在一条位于节点 u 和节点 v 之间的无向边。</p>
-<p><strong>二分图
-定义</strong>：如果能将一个图的节点集合分割成两个独立的子集 A 和 B
-，并使图中的每一条边的两个节点一个来自 A 集合，一个来自 B
-集合，就将这个图称为 二分图 。</p>
-<p><strong>示例 1：</strong></p>
-<figure>
-<img src="https://assets.leetcode.com/uploads/2020/10/21/bi2.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>输入：graph = [[1,2,3],[0,2],[0,1,3],[0,2]] 输出：false
-解释：不能将节点分割成两个独立的子集，以使每条边都连通一个子集中的一个节点与另一个子集中的一个节点。</p>
-<ul>
-<li>DFS【染色问题】、并查集</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isBipartite</span>(<span class="params">self, graph: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 广度优先遍历 [推荐]</span></span><br><span class="line">        n = <span class="built_in">len</span>(graph)</span><br><span class="line">        uncolor, red, green = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">        color = [<span class="number">0</span>] * n</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> color[i] == uncolor:</span><br><span class="line">                color[i] = red</span><br><span class="line">                q = deque([i])</span><br><span class="line">                <span class="keyword">while</span> q:</span><br><span class="line">                    node = q.popleft()</span><br><span class="line">                    nei = green <span class="keyword">if</span> color[node] == red <span class="keyword">else</span> red</span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> graph[node]:</span><br><span class="line">                        <span class="keyword">if</span> color[j] == uncolor:</span><br><span class="line">                            color[j] = nei</span><br><span class="line">                            q.append(j)</span><br><span class="line">                        <span class="keyword">elif</span> color[j] != nei:</span><br><span class="line">                            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isBipartite</span>(<span class="params">self, graph: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 深度优先遍历 【不推荐】</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">i: <span class="built_in">int</span>, c: <span class="built_in">int</span></span>):</span><br><span class="line">            <span class="keyword">nonlocal</span> res</span><br><span class="line">            nei = green <span class="keyword">if</span> c == red <span class="keyword">else</span> red</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> graph[i]:</span><br><span class="line">                <span class="keyword">if</span> color[j] == uncolor:</span><br><span class="line">                    color[j] = nei</span><br><span class="line">                    dfs(j, nei)</span><br><span class="line">                <span class="keyword">elif</span> color[j] != nei:</span><br><span class="line">                    res = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(graph)</span><br><span class="line">        uncolor, red, green = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">        color = [<span class="number">0</span>] * n</span><br><span class="line">        res = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> color[i] == uncolor <span class="keyword">and</span> res:</span><br><span class="line">                dfs(i, red)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># def isBipartite(self, graph: List[List[int]]) -&gt; bool:</span></span><br><span class="line">    <span class="comment">#     # 并查集 【了解】</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1TJZXJZ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1TJZXJZ/" class="post-title-link" itemprop="url">算法长征（8）BFS&DFS</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-05-23 18:16:49 / 修改时间：18:25:32" itemprop="dateCreated datePublished" datetime="2022-05-23T18:16:49+08:00">2022-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
 
       
     </div>

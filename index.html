@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-count">254</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,1007 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/806NJ2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/806NJ2/" class="post-title-link" itemprop="url">关联规则（3）FP-growth</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-27 16:22:48 / 修改时间：17:16:25" itemprop="dateCreated datePublished" datetime="2023-04-27T16:22:48+08:00">2023-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%B3%E8%81%94%E8%A7%84%E5%88%99/" itemprop="url" rel="index"><span itemprop="name">关联规则</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-fp-growth">一、FP-growth</span></h3>
+<h4><span id="前言apriori算法的缺陷">前言——Apriori算法的缺陷</span></h4>
+<p>虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：</p>
+<ul>
+<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如
+<span class="math inline">\(D, L_k\)</span> ）
+进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
+<li><strong>可能会产生庞大的候选集</strong>：由于第 <span class="math inline">\(k\)</span> 迭代的连接过程仍然需要进行 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| \\
+2\end{array}\right)\)</span> 次比较操作,
+所以Apriori算法中途产生的候选集的数量依然巨大。</li>
+</ul>
+<p><font color="red">所以为什么一定要产生候选集？是否可以不通过产生候选集的方式来完成频繁模式挖掘呢？频繁模式增长(frequent
+pattern growth，
+简称FP-growth)就是一种该方向的尝试。</font>【原始事务数据转换为树状数据结构，减少扫描事务的成本】</p>
+<h4><span id="11-算法流程">1.1 算法流程</span></h4>
+<p><strong>FP-growth主要采用一种分治的策略来解决该问题，我们可以用几个步骤来描述一下这种分治策略的大概步骤。</strong></p>
+<ol type="1">
+<li>压缩数据集来表征每一个项，这个步骤一般是通过建立<strong>频繁模式树</strong>(frequent
+pattern
+tree，简称FP-tree)来实现的（其实就是字典树，很明显这是一种无损压缩方式）</li>
+<li><strong>统计每一个项在原数据集中出现的次数，并根据预先设定的support
+count去除低频项</strong>，然后根据出现次数对剩余项进行升序排序；从第一位项开始扫描频繁模式树的叶子节点，通过回溯得到每一个项对应的条件模式基(Condition
+Pattern Base，实则为叶子节点对应的路径集合)</li>
+<li>根据条件模式基构建出条件频繁项集树(Conditional
+FP-tree，步骤和第一步完全一样，也就是根据条件模式基构建出一颗字典树)</li>
+<li>根据条件FP-tree和support count得到最终的频繁项集</li>
+</ol>
+<p>事务集如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>TID</th>
+<th>itemset list</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T100</td>
+<td>I1, I2, I5</td>
+</tr>
+<tr class="even">
+<td>T200</td>
+<td>I2, I4</td>
+</tr>
+<tr class="odd">
+<td>T300</td>
+<td>I2, I3</td>
+</tr>
+<tr class="even">
+<td>T400</td>
+<td>I1, I2, I4</td>
+</tr>
+<tr class="odd">
+<td>T500</td>
+<td>I1, I3</td>
+</tr>
+<tr class="even">
+<td>T600</td>
+<td>I2, I3</td>
+</tr>
+<tr class="odd">
+<td>T700</td>
+<td>I1, I3</td>
+</tr>
+<tr class="even">
+<td>T800</td>
+<td>I1, I2, I3, I5</td>
+</tr>
+<tr class="odd">
+<td>T900</td>
+<td>I1, I2, I3</td>
+</tr>
+</tbody>
+</table>
+<h5><span id="1建立模式频繁树">（1）建立模式频繁树</span></h5>
+<p>我们首先需要建立一颗模式频繁树，做法很简单，也就是直接建立一颗字典树。在建立之前，我们需要先对每一个项进行统计，并去除出现次数小于support
+count的项，然后排序。对于上表，这么做后的结果如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>item</th>
+<th>count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>I2</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>I1</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>I3</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>I4</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>I5</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>此处我们选择的support count为2，所以所有的项都被保留了下来。</p>
+<p>然后我们需要对保留下来的项压缩成一个字典树，为了保证这颗字典树尽可能小，我们需要对事务集中的每一个项集进行排序，结果如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>TID</th>
+<th>itemset list</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T100</td>
+<td>I2, I1, I5</td>
+</tr>
+<tr class="even">
+<td>T200</td>
+<td>I2, I4</td>
+</tr>
+<tr class="odd">
+<td>T300</td>
+<td>I2, I3</td>
+</tr>
+<tr class="even">
+<td>T400</td>
+<td>I2, I1, I4</td>
+</tr>
+<tr class="odd">
+<td>T500</td>
+<td>I1, I3</td>
+</tr>
+<tr class="even">
+<td>T600</td>
+<td>I2, I3</td>
+</tr>
+<tr class="odd">
+<td>T700</td>
+<td>I1, I3</td>
+</tr>
+<tr class="even">
+<td>T800</td>
+<td>I2, I1, I3, I5</td>
+</tr>
+<tr class="odd">
+<td>T900</td>
+<td>I2, I1, I3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>字典树的根节点设为null，然后我们可以开始从第一条数据开始建立字典树</strong>，需要说明的是，这颗字典树的每个节点还需要维护一个count，这个count的含义是当前该节点被“经过”了多少次。下面的图中，<strong>每个结点被我标注为Ik
+: n的样子，代表当前节点名为Ik，count为n。</strong></p>
+<p>我们先加入T100：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641823.png" style="zoom: 50%;"></p>
+<p>然后加入T200：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641579.png" alt="img" style="zoom:50%;"></p>
+<p>在频繁模式树建立完后，我们需要按照第一步中获取的表的顺序来遍历每一个项，由于我们之前获取的表中频数最小的项是I5，所以我们接下来先获取I5的条件模式基。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271644036.png" alt="image-20230427164444928" style="zoom:50%;"></p>
+<table>
+<thead>
+<tr class="header">
+<th>item</th>
+<th>conditional pattern base</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>I5</td>
+<td>{I2, I1 : 1}, {I2, I1, I3 : 1}</td>
+</tr>
+<tr class="even">
+<td>I4</td>
+<td>{I2, I1 : 1}, {I2 : 1}</td>
+</tr>
+<tr class="odd">
+<td>I3</td>
+<td>{I2, I1 : 2}, {I2 : 2}, {I1 : 2}</td>
+</tr>
+<tr class="even">
+<td>I1</td>
+<td>{I2 : 4}</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>由于I2不存在叶子节点上，所以I2不存在条件模式基</p>
+</blockquote>
+<p>而fp-growth算法中的分治思想就体现在下面。可以看到，每个项对应的条件模式基本质就是一个项集，所以它们可以看成一个新的事务集。因此，原问题的总事务集就转换成了每个item对应的子事务集，而我们最终的频繁项集分别从每一个item对应的子事务集中产生，问题就被各个item分而治之了。</p>
+<h5><span id="3从条件模式基中获取频繁项集">（3）从条件模式基中获取频繁项集</span></h5>
+<p>我们之前使用了字典树来压缩表征原事务集，那么对于我们的子事务集，我们也完全可以采用相同的步骤。不过需要注意，<strong>建立子事务集的频繁模式树之前，需要进行统计和基于support
+count的项的裁剪。比如对于I5的子事务集（也就是条件模式基），我们需要先统计，得到{I2
+: 2, I1 : 2, I3 : 1}。由于我们的support
+count为2，所以我们需要去除count只为1的I3</strong>，然后排序得到I2,
+I1，剩下的事务集重构为{I2, I1 : 1}, {I2, I1 :
+1}，很明显这两个前缀可以合并为{I2, I1 :
+2}，然后我们画出这个裁剪后的子事务集的频繁模式树：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271648837.png" alt="img" style="zoom: 67%;"></p>
+<p>然后找出这棵频繁模式树的所有路径，可以看到上面的这棵频繁模式树只有一条路径，然后我们找出这条路径上节点所有可能的组合，也就是{I2,
+I1}, {I2}, {I1}，这也就是{I2,
+I1}的幂集。然后对于每一个组合类型，我们再加上I5，于是就得到了这条路径上得到的频繁项集：{I2,
+I1, I5}, {I2, I5}, {I1,
+I5}。所有路径上的频繁项集合并起来就是I5对应的频繁项集。</p>
+<p>我们再举一个例子，就举I3吧。首先统计项得到 {I2 : 4, I1 :
+4}都大于2，不需要裁剪，排序后得到的子事务集不变，还是{I2, I1 : 2}, {I2 :
+2}, {I1 : 2}，构建该子数据集的频繁模式树：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271649435.png" alt="img" style="zoom: 67%;"></p>
+<p>然后找出FP-tree的所有路径：{I2, I1}和{I1}。对于路径{I2,
+I1}在，找出所有的组合{I2, I1}, {I2}和{I1}，加上I3得到{I2, I1, I3}, {I2,
+I3}, {I1, I3}；对于路径{I1}，找出所有的组合{I1}，加上I3得到{I1,
+I3}。</p>
+<p>遍历完所有路径后，将得到的频繁项集集合取并集，得到{I2, I1, I3}, {I2,
+I3}, {I1, I3}。所以I3对应的频繁项集就是{I2, I1, I3}, {I2, I3}, {I1,
+I3}。</p>
+<h5><span id="4整合每个项的频繁项集就是答案啦">（4）整合每个项的频繁项集，就是答案啦</span></h5>
+<p>其余的两个项也是同样的操作过程，最终的每个项对应的频繁项集如下表所示：</p>
+<table>
+<thead>
+<tr class="header">
+<th>item</th>
+<th>frequent itemsets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>I5</td>
+<td>{I2, I1, I5}, {I2, I5}, {I1, I5}</td>
+</tr>
+<tr class="even">
+<td>I4</td>
+<td>{I2, I4}</td>
+</tr>
+<tr class="odd">
+<td>I3</td>
+<td>{I2, I3}, {I1, I3}, {I2, I1}</td>
+</tr>
+<tr class="even">
+<td>I1</td>
+<td>{I2, I1}</td>
+</tr>
+</tbody>
+</table>
+<p>至此FP-growth算法执行结束。可以看到，由于采用了分治的方法，所以FP-growth得到的结果是根据项进行分层的，也就是说结果对于特定的某一个项有很强的指向作用。比如我们只想要研究哪些值和I5最频繁出现，我们可以只看I5产生的频繁项集。</p>
+<h4><span id="12-pyspark-demo实现">1.2 Pyspark demo实现</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.fpm <span class="keyword">import</span> FPGrowth</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">&quot;reduceByKey&quot;</span>).getOrCreate()</span><br><span class="line"><span class="comment"># 创建DataFrame</span></span><br><span class="line">data = spark.createDataFrame([</span><br><span class="line">    (<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>]),</span><br><span class="line">    (<span class="number">2</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]),</span><br><span class="line">    (<span class="number">3</span>, [<span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">], [<span class="string">&quot;id&quot;</span>, <span class="string">&quot;items&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化FPGrowth模型</span></span><br><span class="line">fp = FPGrowth(itemsCol=<span class="string">&quot;items&quot;</span>, minSupport=<span class="number">0.5</span>, minConfidence=<span class="number">0.6</span>)</span><br><span class="line"><span class="comment"># 训练FPGrowth模型</span></span><br><span class="line">model = fp.fit(data)</span><br><span class="line"><span class="comment"># 展示频繁项集</span></span><br><span class="line">model.freqItemsets.show()</span><br></pre></td></tr></table></figure>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li>数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：https://zhuanlan.zhihu.com/p/411594391</li>
+<li><code>pyspark.ml.fpm.``FPGrowth</code>:https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.fpm.FPGrowth.html</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1E0CW4H/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1E0CW4H/" class="post-title-link" itemprop="url">关联规则（1）概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：15:21:45" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%B3%E8%81%94%E8%A7%84%E5%88%99/" itemprop="url" rel="index"><span itemprop="name">关联规则</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-关联规则概述">一、关联规则概述</span></h3>
+<p><font color="red">关联规则-策略挖掘中必不可少的算法。</font></p>
+<p>1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。</p>
+<h4><span id="11-关联评价">1.1 关联评价</span></h4>
+<p>关联规则有三个核心概念需要理解：<strong>支持度、置信度、提升度</strong>，下面用最经典的啤酒-尿不湿案例给大家举例说明这三个概念，假如以下是几名客户购买订单的商品列表：</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p><strong><font color="red">（1）支持度</font></strong></p>
+<p><strong>支持度
+(Support)：</strong>指某个<strong>商品组合出现的次数</strong>与<strong>总订单数</strong>之间的比例。</p>
+<p>在这个例子中，我们可以看到“牛奶”出现了 4 次，那么这 5
+笔订单中“牛奶”的支持度就是 4/5=0.8。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>同样“牛奶 + 面包”出现了 3 次，那么这 5 笔订单中“牛奶 +
+面包”的支持度就是 3/5=0.6</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443641.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>这样理解起来是不是非常简单了呢，大家可以动动手计算下
+<strong>'尿不湿+啤酒'</strong>的支持度是多少？</p>
+<h5><span id="2置信度">（2）置信度</span></h5>
+<p><strong>置信度 (Confidence)：</strong>指的就是当你购买了商品
+A，会有多大的概率购买商品
+B，在包含A的子集中，B的支持度，也就是包含B的订单的比例。</p>
+<p>置信度（牛奶→啤酒）=
+3/4=0.75，代表购买了牛奶的订单中，还有多少订单购买了啤酒，如下面的表格所示。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443708.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>置信度（啤酒→牛奶）=
+3/4=0.75，代表如果你购买了啤酒，有多大的概率会购买牛奶？</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443782.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>置信度（啤酒→尿不湿）=
+4/4=1.0，代表如果你购买了啤酒，有多大的概率会买尿不湿，下面的表格看出来是100%。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443851.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>由上面的例子可以看出，置信度其实就是个条件概念，就是说在 A
+发生的情况下，B
+发生的概率是多大。如果仅仅知道这两个概念，很多情况下还是不够用，需要用到提升度的概念。比如A出现的情况下B出现的概率为80%，那到底AB是不是有关系呢，不一定，人家B本来在大盘中的比例95%。你的A出现，反而减少了B出现的概率。</p>
+<p><strong>（3）提升度</strong></p>
+<p><strong>提升度
+(Lift)：</strong>我们在做商品推荐或者风控策略的时候，重点考虑的是提升度，因为提升度代表的是A
+的出现，对B的出现概率提升的程度。</p>
+<p><strong>提升度 (A→B) = 置信度 (A→B) / 支持度 (B)</strong></p>
+<p>所以提升度有三种可能：</p>
+<ul>
+<li><p>提升度 (A→B)&gt;1：代表有提升；</p></li>
+<li><p>提升度 (A→B)=1：代表有没有提升，也没有下降；</p></li>
+<li><p>提升度 (A→B)&lt;1：代表有下降。</p></li>
+</ul>
+<p>提升度 (啤酒→尿不湿) =置信度 (啤酒→尿不湿) /支持度 (尿不湿) = 1.0/0.8
+= 1.25，可见啤酒对尿不湿是有提升的，提升度为1.25，大于1。</p>
+<p><strong>可以简单理解为：在全集的情况下，尿不湿的概率为80%，而在包含啤酒这个子集中，尿不湿的概率为100%，因此，子集的限定，提高了尿不湿的概率，啤酒的出现，提高了尿不湿的概率。</strong></p>
+<p><strong>（4）频繁项集</strong></p>
+<p><strong>频繁项集(frequent itemset)
+：</strong>就是支持度大于等于最小支持度 (Min Support)
+阈值的项集，所以小于最小值支持度的项目就是非频繁项集，而大于等于最小支持度的的项集就是频繁项集，项集可以是单个商品，也可以是组合。</p>
+<p><strong>频繁集挖掘面临的最大难题就是项集的组合爆炸</strong>，如下图：</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449952.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>随着商品数量增多，这个网络的规模将变得特别庞大，我们不可能根据传统方法进行统计和计算，为了解决这个问题，Apriori算法提出了两个核心思想：</p>
+<ul>
+<li><p><strong><font color="red">某个项集是频繁的，那么它的所有子集也是频繁的</font></strong>
+{Milk, Bread, Coke} 是频繁的 → {Milk, Coke} 是频繁的</p></li>
+<li><p><strong><font color="red">如果一个项集是非频繁项集，那么它的所有超集也是非频繁项集</font></strong>
+{Battery} 是非频繁的 → {Milk, Battery} 也非平凡</p></li>
+</ul>
+<p>如下图，如果我们已知<strong>B</strong>不频繁，那么可以说图中所有绿色的项集都不频繁，搜索时就要这些项避开，减少计算开销。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449043.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>同理，如果下图所示，{A,B}这个项集是非频繁的，那虚线框后面的都不用计算了。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271451871.png" alt="图片" style="zoom: 33%;"></p>
+<p><strong>需要注意的是：</strong></p>
+<p>1）如果支持度和置信度阈值过高，虽然可以在一定程度上减少数据挖掘的时间，但是一些隐含在数据中的非频繁特征项容易被忽略掉，难以发现足够有用的规则；</p>
+<p>2）如果支持度和置信度阈值过低，可能会导致大量冗余和无效的规则产生，导致较大计算量负荷。</p>
+<h4><span id="12-应用场景">1.2 应用场景</span></h4>
+<p><strong>（1）电商行业</strong></p>
+<p>著名的“啤酒尿布”案例，通过分析历史用户的支付订单记录，挖掘出比如中年男人会同时购买啤酒和尿布两种商品，后续可以在商品陈列、打折促销组合、交叉营销发送优惠券等场景中应用。穿⾐搭配推荐穿⾐搭配是服饰鞋包</p>
+<p>导购中⾮常重要的课题，基于搭配专家和达⼈⽣成的搭配组合数据，百万级别的商品的⽂本和图像数据，以及⽤户的⾏为数据。期待能从以上⾏为、⽂本和图像数据中挖掘穿⾐搭配模型，为⽤户提供个性化、优质的、专业的穿⾐搭配⽅案，预测给定商品的搭配商品集合。</p>
+<p><strong>（2）社会民生</strong></p>
+<ul>
+<li>互联⽹情绪指标和⽣猪价格的关联关系挖掘和预测</li>
+<li>⽓象关联分析</li>
+<li>交通事故成因分析</li>
+</ul>
+<p><strong>（3）金融行业</strong></p>
+<ul>
+<li>银⾏客户交叉销售分析</li>
+<li>银⾏营销⽅案推荐</li>
+</ul>
+<p><strong>（4）文娱体育</strong></p>
+<ul>
+<li>影视演员组合</li>
+<li>球员最优组合</li>
+</ul>
+<p><strong>（5）网络安全</strong></p>
+<ul>
+<li><strong>自动化规则生成</strong></li>
+</ul>
+<h4><span id="13-常见算法">1.3 常见算法</span></h4>
+<p><strong>（1）算法</strong></p>
+<ul>
+<li><strong>关联规则算法</strong>：<font color="red">典型如Apriori，PySpark中为FP-Growth；</font></li>
+</ul>
+<p>关联规则算法是挖掘频繁项集的算法，1993年由Rakesh Agrawal
+和Ramakrishnan Skrikant提出，并应用于IBM的业务场景。</p>
+<ul>
+<li><strong>序列模式算法</strong>：典型算法如Apriori-All，PySpark中为PrefixSpan；</li>
+</ul>
+<p>与关联规则算法类似，不同点在于序列模式会考虑频繁项集中的时序先后关系</p>
+<p><strong>（2）优化</strong></p>
+<p>大部分的算法都是<strong>先频繁模式再关联规则流</strong>，<font color="red">算法的优化目的都是减少数据扫描的时间成本</font>。</p>
+<ul>
+<li><strong>树基算法</strong>：FP-Growth, PrePost,
+CFP-Growth算法等，<strong>核心要义是把原始事务数据转换为树状数据结构，减少扫描事务的成本。</strong></li>
+<li><strong>二进制向量算法</strong>：BitTableFI,
+IndexBitTableFI等，<strong>核心要义是把原始数据转换为二进制向量，用逻辑运算与矩阵运算来代替数据扫描，加快速度。</strong></li>
+<li><strong>可靠采样流派</strong>：中心极限定理等，<strong>核心要义是通过采样来减少数据规模来加速</strong>。<font color="red">支持度就是频率，频率与其对应概率的差根据中心极限定理服从期望为0的正态分布。以此为理论基础，可以在频繁模式支持度误差可控的情况下，推导出合理的样本规模。</font></li>
+<li><strong>渐进采样流派</strong>：Progressive
+sampling，不推公式（当然有些算法用到了齐夫定理，但是鉴于Zipf定理是经验定理，不算很严谨），慢慢增加样本，然后选取几个代表性的项集，以其两个样本规模间的支持度变化量来决定采样是否足够。当变化足够小时，说明样本够了。</li>
+</ul>
+<h3><span id="二-参考文献">二、参考文献</span></h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/52145607/answer/198035075">目前流行的<em>关联规则</em>算法有哪些？</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzA4OTAwMjY2Nw==&amp;mid=2650188496&amp;idx=1&amp;sn=b6b9f65ee6ba40457b23fc0e35c8f4e7&amp;chksm=88238d14bf540402e7049e41aca6bfea2f2870827a134d770eb716eed9582dbbde65d50d9b7f&amp;scene=21#wechat_redirect">关联规则-策略挖掘中必不可少的算法</a></li>
+<li>关联规则挖掘在实际中的应用有哪些? - 李小翰的回答 - 知乎
+https://www.zhihu.com/question/62342815/answer/2616887115</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3BJBSQZ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3BJBSQZ/" class="post-title-link" itemprop="url">关联规则（2）Apriori</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：16:20:33" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%B3%E8%81%94%E8%A7%84%E5%88%99/" itemprop="url" rel="index"><span itemprop="name">关联规则</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-apriori算法">一、﻿Apriori算法</span></h3>
+<p>﻿Apriori算法是常用的用于挖掘出数据关联规则的算法，它用来找出数据值中频繁出现的数据集合，找出这些集合的模式有助于我们做一些决策。</p>
+<ul>
+<li><p><strong>支持度</strong>：关联规则A-&gt;B的支持度support=P(AB)，指的是事件A和事件B同时发生的概率；</p></li>
+<li><p><strong>置信度</strong>：指的是发生事件A的基础上发生事件B的概率；</p></li>
+<li><p><strong>频繁k项集</strong>：频繁项集表示的就是在数据集中频繁出现的项集（可以是一个，也可以是多个）。如果事件A中包含k个元素，那么称这个事件A为k项集，并且事件A满足最小支持度阈值的事件称为频繁k项集；</p></li>
+</ul>
+<h4><span id="11-背景">1.1 背景</span></h4>
+<p>对于Apriori算法，我们使用支持度来作为我们判断频繁项集的标准。Apriori算法的目标是找到最大的K项频繁集。</p>
+<p>记 <span class="math inline">\(\mathcal{I}=\left\{I_1, I_2, \ldots,
+I_m\right\}\)</span> 为一个项集, 其中的 <span class="math inline">\(I_k(k=0,1, \ldots, m)\)</span>
+代表所有可能出现的子项。</p>
+<p><strong>举例：</strong></p>
+<p>比如你作为一家大型连锁超市的数据分析师，你发现前台给你发的大量顾客的购物清单数据中，鸡蛋+面包+牛奶这样的组合是清单中的常客，且符合一些不可言喻的约束条件，那么鸡蛋、面包和牛奶这三样商品经常一起出现这样一个规律就算是购物清单数据中的频繁模式。其中，鸡蛋，面包，牛奶这样一个集合我们就称为一个<strong>频繁项集</strong>（frequent
+itemset）。</p>
+<table>
+<thead>
+<tr class="header">
+<th>TID</th>
+<th>transaction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T1</td>
+<td>鸡蛋，牙膏，牛排，牛奶，面包</td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td>鸡蛋，亚麻籽，橄榄油，牛奶，面包</td>
+</tr>
+<tr class="odd">
+<td>T3</td>
+<td>鸡蛋，泡芙，奶油，牛奶，面包</td>
+</tr>
+<tr class="even">
+<td>T4</td>
+<td>鸡蛋，低筋面粉，糖粉，黄油，牛奶</td>
+</tr>
+</tbody>
+</table>
+<p>TID是每一个顾客的账单的编号，上述表格中我们有4个顾客的交易记录。</p>
+<ol type="1">
+<li>给定事务集 <span class="math inline">\(D\)</span>,
+找出一组关联规则(association rule) <span class="math inline">\(A
+\subseteq \mathcal{I} \wedge B \subseteq \mathcal{I} \wedge A
+\Rightarrow B\)</span> 。它的意思 是 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> 相关联, 由 <span class="math inline">\(A\)</span> 可以推出 <span class="math inline">\(B\)</span> 。比如 <span class="math inline">\(A=\{\)</span> 鸡蛋, 牛奶 <span class="math inline">\(\}, B=\{\)</span> 面包 <span class="math inline">\(\}\)</span>, 那么 <span class="math inline">\(A
+\Rightarrow B\)</span>
+可以认为是买了鸡蛋和牛奶的顾客有大概率也会去买面包。这个过程我们称为<strong>关联规则挖掘(association
+rule mining)</strong></li>
+<li>给定事务集 <span class="math inline">\(D\)</span>,
+找出蕴含其中的频繁项集。比如通过example1中的表格,
+我们挖掘出了用户喜欢鸡蛋+面包+牛奶这样的模式。这个过程我们称为<strong>频繁模式挖掘(frequent
+pattern mining)</strong></li>
+</ol>
+<h4><span id="12-关联规则挖掘">1.2 关联规则挖掘</span></h4>
+<p>为了后续的度量, 需要引入两个相当相当简单的概念,
+<strong>support</strong>和<strong>confidence</strong>。记 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> 是 <span class="math inline">\(\mathcal{I}\)</span> 中的两个子集, 那么则 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> 在 <span class="math inline">\(D\)</span> 中同时发生的概率称为support: <span class="math display">\[
+\operatorname{support}(A \Rightarrow B)=P(A \cup B)
+\]</span> <span class="math inline">\(A\)</span> 发生的前提下， <span class="math inline">\(B\)</span> 在 <span class="math inline">\(D\)</span> 发生的概率称为confidence: <span class="math display">\[
+\text { confidence }(A \Rightarrow B)=\frac{P(A \cup
+B)}{P(A)}=\frac{\operatorname{support}(A \cup
+B)}{\operatorname{support}(A)}
+\]</span> <strong>事实上, 书上对support的定义有点模糊,
+我的理解是support就是一个很简单的频度度量, 所以 <span class="math inline">\(\operatorname{support}(A)\)</span> 就代表 <span class="math inline">\(A\)</span> 在 <span class="math inline">\(D\)</span> 出现的频率。</strong></p>
+<p>还有一点，定义在 <span class="math inline">\(D\)</span>
+上的<strong>频度</strong>的计算公式如下： <span class="math display">\[
+P(A)=\frac{1}{|D|} \sum_{i=1}^{|D|} \mathbb{I}\left(A \subseteq
+T_i\right)
+\]</span> 其中 <span class="math inline">\(\mathbb{I}(c)\)</span>
+为指示函数, <span class="math inline">\(c\)</span> 为真，则返回 <span class="math inline">\(1 ; c\)</span> 为假，则返回0。</p>
+<p><strong>很明显, 对于计算出的值, 我们需要设置人为的阈值才能判定 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span>
+是否为一个关联规则</strong>。假定我们设置了两个阈值 <span class="math inline">\(s\)</span> 和 <span class="math inline">\(c\)</span> 。那么如果 <span class="math inline">\(\operatorname{support}(A \Rightarrow B) \geq s
+\wedge \operatorname{confidence}(A \Rightarrow B) \geq c\)</span> ,
+我们就说 <span class="math inline">\(A \Rightarrow B\)</span>
+是一条关联规则。它的实际意义可是买了{鸡蛋,牛奶} 很有可能还会去买
+{面包}。</p>
+<p>这就是关联规则挖掘的最简单的做法, 由此,
+我们可以用两步来总结关联规则挖掘的步骤:</p>
+<ol type="1">
+<li><font color="red">找出所有可能的频繁项集。频繁项集的定义为support在事务集中出现频率大于设定阈值min_sup的项集。</font></li>
+<li><font color="red">在找出的频繁项集中生成强关联规则。符合强相关联规则的频繁项集对需要满足其support和
+confidence都分别大于预先设定好的阈值。</font></li>
+</ol>
+<p>Ha , 所以我们需要先找出事务集中所有可能的频繁项集。我们发现,
+在support度量意义下的频繁项集的定义很简单,
+只需要出现频率大于设定阈值的项集就算是频繁项集。<strong>但是我们找频繁项集的搜索空间是什么,
+是总项集<span class="math inline">\(\mathcal{I}\)</span> 的幂集耶,
+这玩意儿的大小为<span class="math inline">\(2^{|\mathcal{I}|-1}=2^{m-1}\)</span>
+。</strong></p>
+<p>那么我们的dummy算法时间复杂度直接升天, 光是最外层的搜索就已经是指数
+级的复杂度了, 显然这不是一个有效的算法。</p>
+<p>而当我们找到有限个频繁项集后,
+只需要通过计算所有的频繁项集中两两是否满足confidence和
+support分别大于预先设定的值就行了,
+这一步的时间复杂度不会很大。所以重点还是在于如何设计出找到频繁项集的有效算法。</p>
+<p>所以于此,
+我们需要引入一些有意思的频繁项集的搜索算法。其中最简单的就是1994年提出的
+Apriori算法了。</p>
+<h4><span id="13-apriori算法">1.3 Apriori算法</span></h4>
+<p><strong>由于频繁项集的搜索空间是指数级别的，所以我们需要想办法来缩减搜索空间大小</strong>。<font color="red">Apriori提供了一种以连接剪枝为一个迭代循环的算法来有效减小了搜索空间。</font>之所以取名为Apriori，因为算法使用了项集本身的一些<strong>先验信息</strong>（prio
+[ˈpraɪə(r)] ），加上作者之一是Agrawal，故取名为Apriori。</p>
+<p>Apriori到底在干什么，一般而言，我们在搜索空间找东西可以分成两种——<strong>自上而下搜索</strong>和<strong>自下而上搜索</strong>。自下而上搜索应该是大部分人熟悉的搜索方法，一般我们会从一个随机点出发，然后根据任务和空间本身的特点找到符合要求的值或者集合，比如你丢了一块橡皮，通过橡皮滚落的大致轨迹去寻找橡皮的下落，这是属于自下而上的搜索方式。而自上而下的搜索方式则是类似于排除法，它会根据任务和搜索空间本身的特点去排除搜索空间中肯定不是目标的子空间，不断排除，直到停止，那么剩余的空间就是搜索答案，有点类似于收网捕鱼。</p>
+<p><strong>Apriori的搜索方式就属于自上而下的搜索方式。</strong>虽然
+<span class="math inline">\(\mathcal{I}\)</span> 的幂集的大小大得离谱,
+但是也是有章可循的, 我们可以按照项集元素的数量将总的搜索空间给它切成
+<span class="math inline">\(m\)</span> 份（只有一个元素的项集,
+只有两个元素的项集，......, 有m个元素的项集），它们的大小分别为 <span class="math inline">\(\left(\begin{array}{c}m \\
+1\end{array}\right),\left(\begin{array}{c}m \\ 2\end{array}\right),
+\ldots,\left(\begin{array}{c}m \\ m\end{array}\right)\)</span>
+。然后从只有一个元素的项集出发, 不断削减搜索空间, 得到1-频繁项集,
+并根据一定的准则根据1-频繁项集推出若干个有两个元素的项集集合,
+从而进行迭代。</p>
+<blockquote>
+<p>含有k个元素的项集被称为k-项集(k-itemset)，同理，如果该项集恰好又是频繁项集，那么该项集又可称为k-频繁项集</p>
+</blockquote>
+<h5><span id="1-算法流程">(1) 算法流程</span></h5>
+<p>Apriori的做法是从大小为1的项集集合, 该集合被我们称为候选集 <span class="math inline">\(C_1\)</span> 。我们从候选集 <span class="math inline">\(C_1\)</span> 出发, 然后通过䇘选得到1-频繁项集
+<span class="math inline">\(L_1\)</span>, 连接, 减枝的方法得到大小为 2
+候选集 <span class="math inline">\(C_2\)</span>, 其中的䇘选和减枝
+两步都能有效缩减搜索空间。</p>
+<ul>
+<li><p>直接从事务集 <span class="math inline">\(D\)</span>
+中提取所有的transaction, 然后找出里面所有不相同的元素就行,记 <span class="math inline">\(\mathcal{I}=\left\{I_1, I_2, \ldots,
+I_m\right\}\)</span> 。</p></li>
+<li><p>然后, 我们需要初始化第一个候选集, 也就是 <span class="math inline">\(C_1 。 C_1\)</span> 就是 <span class="math inline">\(\mathcal{I}\)</span> 本身, 对 <span class="math inline">\(C_1\)</span> 中的每个元素, 计算其在 <span class="math inline">\(D\)</span> 中的频率,
+如果频率小于min_sup，那就删除，最终留下的元素构成集合 <span class="math inline">\(L_1\)</span> ，这就是我们的1-频繁项集。</p></li>
+<li><p>接下来我们就需要迭代向前了，让我们的搜索空间从1-项集集合跳到2-项集集合,
+这跳跃的过程通过连接完成。</p></li>
+</ul>
+<p>为了方便后续描述, 假设我们已经得到了k-频繁项集的集合 <span class="math inline">\(L_k\)</span> 了。首先我们需要保证 <span class="math inline">\(L_k\)</span>
+中每个频繁项集内部都已经按照字典序排序了,
+然后所有的频繁项集之间两两比较, 如果这两个项集前 <span class="math inline">\(k-1\)</span> 项全部相同 ( <span class="math inline">\(L_k\)</span> 也是集合，所以 <span class="math inline">\(L_k\)</span> 中的所有频繁项集都是两两不同的, 前
+<span class="math inline">\(k-1\)</span>
+项全部相同意味着它们的最后一个元素一定不一样），那么将这两个项集取并集然后加入集
+合 <span class="math inline">\(C_{k+1}\)</span> 中。这样一来,
+我们就获得了 <span class="math inline">\(\mathrm{k}+1\)</span>-项集的待选集合了,
+但是这个集合由于经过了 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| \\
+2\end{array}\right)\)</span> 次组合挑选, 所以大小可能会很大, 因此,
+在连接完成后, 我们有必要进行裁剪来缩小下一轮迭代的搜索空间。</p>
+<p>这个地方就需要用到Apriori算法中提出的一个假设了—一个频繁项集的任意子集都是步繁项集，由于我们下一轮迭代的目标就是得到
+<span class="math inline">\(k+1\)</span>-频繁项集，所以我们可以在这里直接把不是频繁项集的项集去除。根据这个假设,
+那么那些存在子集为非频繁项集的项集就是非频繁项集，那 么我将其从 <span class="math inline">\(C_{k+1}\)</span>
+中去除。当我们全部去除后，那么裁剪步骤完成，我们得到了下一轮迭代需要用
+到的搜索需要用到的候选集 <span class="math inline">\(C_{k+1}\)</span>
+。进入下一个循环。</p>
+<p><strong>最终说明一下终止条件：</strong></p>
+<ul>
+<li>如果当前轮次得到的频繁项集为空, break</li>
+<li>如果当前轮次得到的频繁项集只有一个元素, 存入结果, break</li>
+<li>如果候选集筛选后为空, break</li>
+<li>如果连接后的候选集裁剪后, 为空, break</li>
+</ul>
+<p><strong>循环结束或者终止后 (假设迭代了 <span class="math inline">\(n\)</span> 次），将集合 <span class="math inline">\(\left\{L_1, L_2, L_3, \ldots, L_n\right\}\)</span>
+返回。</strong></p>
+<h5><span id="2-样例">(2) 样例</span></h5>
+<p>当前的事务集如下：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271616186.png" style="zoom: 67%;"></p>
+<p>那么请算出各个level的频繁项集。其中，筛选步骤的min_sup为 29
+，也就是只要出现2次以下就筛去。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271615548.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="14-缺点">1.4 缺点</span></h4>
+<p>虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：</p>
+<ul>
+<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如
+<span class="math inline">\(D, L_k\)</span> ）
+进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
+<li><strong>可能会产生庞大的候选集</strong>：由于第 <span class="math inline">\(k\)</span> 迭代的连接过程仍然需要进行 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| \\
+2\end{array}\right)\)</span> 次比较操作,
+所以Apriori算法中途产生的候选集的数量依然巨大。</li>
+</ul>
+<p><font color="red">针对Apriori算法的性能瓶颈问题，2000年Jiawei
+Han等人提出了基于FP树生成频繁项集的FP-growth算法。</font></p>
+<h3><span id="二-参考文献">二、参考文献</span></h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19912364/answer/963934469"><em>Apriori算法</em>是什么？适用于什么情境？</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/410019734"><font color="blue">数据挖掘随笔（一）频繁模式挖掘与关联规则挖掘以及Apriori算法（python实现）</font></a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/KHK54H/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/KHK54H/" class="post-title-link" itemprop="url">流量反作弊-工业落地（16）Salt Security-API安全最佳实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-26 20:13:37 / 修改时间：21:50:26" itemprop="dateCreated datePublished" datetime="2023-04-26T20:13:37+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="salt-security-api安全最佳实践">Salt Security
+API安全最佳实践</h3>
+<p><strong>在多数情况下，专门部署的API安全工具可以更容易、更自动化解决API安全问题。此类平台在整个API生命周期中支持一系列功能，并为组织的API业务逻辑提供必要的上下文以阻止攻击和数据暴露。</strong></p>
+<p>这份API安全最佳实践将帮助企业弥补API安全策略中的差距，以下是关于如何确定问题范围和活动优先顺序的一些建议：</p>
+<ul>
+<li>测试API安全性同时，还需要API运行时捕获未经过标准构建更改的API和测试工具不能发现的API。</li>
+<li>确保覆盖所有环境和软件供应链，而不仅仅是由API网关或API管理平台管理的API。</li>
+<li>如果您不采取API防护措施，可以将重点放在API运行时防护上，将其作为“止血”措施、减缓攻击者的速度并为应用程序和API团队争取时间的一种方式。</li>
+</ul>
+<p><font color="red">以下内容翻译来至：SaltSecurity
+Checklist-API_Security_Best_Practices</font></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/KHK54H/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -241,7 +1242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 16:43:31" itemprop="dateModified" datetime="2023-04-26T16:43:31+08:00">2023-04-26</time>
+      <time title="修改时间：2023-04-27 14:17:37" itemprop="dateModified" datetime="2023-04-27T14:17:37+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -264,7 +1265,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>592</span>
+      <span>714</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -339,6 +1340,14 @@
 <li>【概率图模型】</li>
 <li>推荐算法</li>
 <li>异常检测</li>
+<li>【社区发现】
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556291759">万物皆网络，万字长文详解<em>社区发现</em>算法Louvain</a></li>
+</ul></li>
+<li>反欺诈算法
+<ul>
+<li>SynchroTrap、Oddball、LockInfer、CatchSync等<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=反欺诈算法&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2937955407%7D">反欺诈算法</a>，深入研究应用，春花秋月又一年。。。</li>
+</ul></li>
 </ul></li>
 <li>特征工程</li>
 <li>模型部署</li>
@@ -359,7 +1368,6 @@
 </ul></li>
 <li>GNN</li>
 <li>NLP</li>
-<li>【Pytorch框架】</li>
 <li>模型训练</li>
 <li>优化算法</li>
 </ul></li>
@@ -370,9 +1378,13 @@
 <ul>
 <li>网络安全
 <ul>
+<li>【身份认证】</li>
 <li><strong><font color="red">恶意软件检测</font></strong>【tags：对论文，开源项目，比赛WP等总结性整理】</li>
 <li><strong><font color="red">恶意加密流量检测</font></strong></li>
-<li>高级威胁发现</li>
+<li>【恶意域名识别】</li>
+<li>【智能安全运维】</li>
+<li>【威胁情报】</li>
+<li>高级威胁检测</li>
 </ul></li>
 <li>业务安全
 <ul>
@@ -380,6 +1392,7 @@
 <li>风控算法基础</li>
 <li>【接口安全-waap】</li>
 </ul></li>
+<li>【AI安全】</li>
 </ul></li>
 <li><strong>工业落地：企业公开发表的论文或白皮书</strong>
 <ul>
@@ -412,8 +1425,8 @@ BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
 </ul>
 <h4><span id="四-随笔">四、随笔</span></h4>
 <ul>
-<li><p>面试准备</p></li>
-<li><p>面试汇总</p></li>
+<li>面试准备</li>
+<li>面试汇总</li>
 </ul>
 
       
@@ -477,7 +1490,7 @@ BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 18:16:56" itemprop="dateModified" datetime="2023-04-22T18:16:56+08:00">2023-04-22</time>
+      <time title="修改时间：2023-04-27 14:18:23" itemprop="dateModified" datetime="2023-04-27T14:18:23+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -552,7 +1565,7 @@ BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1BJ949D/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/Y0X8F4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -570,7 +1583,7 @@ BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1BJ949D/" class="post-title-link" itemprop="url">工业落地（13）微信UFA-Unveiling Fake Accounts at the Time of Registration: An Unsupervised Approach</a>
+          <a href="/posts/Y0X8F4/" class="post-title-link" itemprop="url">账号安全-工业落地（13）微信UFA-Unveiling Fake Accounts at the Time of Registration: An Unsupervised Approach</a>
         </h2>
 
         <div class="post-meta-container">
@@ -648,7 +1661,7 @@ the Time of Registration: An Unsupervised Approach</strong></p>
 其实在风控业务中，业务的抽象和提取方法，可能远大于算法本身，特别是图学习领域，一个垃圾的图，算法学的越准，错的越离谱。</font></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/posts/1BJ949D/#more" rel="contents">
+              <a class="btn" href="/posts/Y0X8F4/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -934,7 +1947,7 @@ Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1WG0TJH/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2VWMB44/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -952,7 +1965,7 @@ Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1WG0TJH/" class="post-title-link" itemprop="url">工业落地（12）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击</a>
+          <a href="/posts/2VWMB44/" class="post-title-link" itemprop="url">流量反作弊-工业落地（12）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1040,609 +2053,6 @@ IP 地址进行攻击和绕过传统的安全机制，例如速率限制策略�
 来识别并生成与分布式攻击相关的阻止签名。这种方法使我们能够在去年阻止 59
 位客户超过 2.85 亿次恶意登录尝试。</p>
 <p>最后，我们将解释这种方法如何推广到除机器人检测之外的其他安全用例，以及如何在不同的规则引擎中使用它。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1EB7867/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1EB7867/" class="post-title-link" itemprop="url">恶意软件检测（12）Neurlux: Dynamic Malware Analysis Without Feature Engineering</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-04-06 15:04:57" itemprop="dateCreated datePublished" datetime="2023-04-06T15:04:57+08:00">2023-04-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 12:20:06" itemprop="dateModified" datetime="2023-04-18T12:20:06+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="neurluxdynamic-malware-analysis-without-feature-engineering">Neurlux:
-Dynamic Malware Analysis Without Feature Engineering</span></h2>
-<blockquote>
-<ul>
-<li>论文：https://dl.acm.org/doi/10.1145/3359789.3359835#:~:text=Neurlux%20does%20not%20rely%20on%20any%20feature%20engineering%2C,report%20is%20from%20a%20malicious%20binary%20or%20not.</li>
-<li>项目：https://github.com/ucsb-seclab/Neurlux</li>
-</ul>
-</blockquote>
-<h3><span id="摘要">摘要</span></h3>
-<p>恶意软件检测在计算机安全中起着至关重要的作用。现代机器学习方法一直以提取恶意特征的领域知识为中心。然而，可以使用许多潜在的功能，手动识别最佳功能既耗时又困难，特别是考虑到恶意软件的多样性。在<strong>本文中，我们提出了Neurlux，一种用于恶意软件检测的神经网络。Neurlux不依赖任何特征工程，而是从详细描述行为信息的动态分析报告中自动学习。我们的模型借鉴了文档分类领域的思想，使用报告中的单词序列来预测报告是否来自恶意二进制文件。我</strong>们调查了我们模型的学习特征，并显示了它倾向于给予报告的哪些组成部分最高的重要性。然后，我们在两种不同的数据集和报告格式上评估了我们的方法，表明Neurlux改进了现有技术，可以有效地从动态分析报告中学习。此外，我们还表明，我们的方法可移植到其他恶意软件分析环境，并可推广到不同的数据集。</p>
-<h3><span id="说明">说明</span></h3>
-<p>随着恶意软件变得越来越复杂，恶意软件分析也需要不断发展。传统上，大多数反恶意软件使用基于签名的检测，将可执行文件与已知恶意软件签名列表进行交叉引用。然而，这种方法有局限性，因为对恶意软件的任何更改都可能更改签名，因此同一恶意软件的新版本通常可以通过加密、混淆、打包或重新编译原始样本来逃避基于签名的检测。VirusTotal报告称，每天分析超过68万个新样本[40]，其中可能有相当多的样本只是之前看到的样本的重新打包版本，正如Brosch等人[3]观察到的那样。超过50%的新恶意软件只是现有恶意软件的重新打包版本。</p>
-<p>近年来，由于需要将技术推广到以前看不见的恶意软件样本，因此产生了利用机器学习技术的检测方法[25，26，38]。恶意软件分析可以大致分为两类：代码（静态）分析和行为（动态）分析。静态分析和动态分析都有其优点和缺点。尽管动态分析提供了可执行行为的清晰画面，但它在实践中面临着一些问题。例如，对不可信代码的动态分析需要一个复制目标主机的虚拟机，这需要大量的计算资源。此外，恶意软件可能不会表现出其恶意行为，或者虚拟化环境可能不会反映恶意软件所针对的环境[5，15，27，30]。为了避免这些限制，一些相关工作仅依赖于从静态分析中提取的特征来实现对大量恶意软件样本的快速检测。然而，可以采用各种加密和混淆技术来阻碍静态分析[19，24]。这对静态恶意软件检测器来说是一个更严重的问题，因为包装在今天的良性样本中也被广泛使用。样本[28]。尽管动态分析被证明容易受到规避技术的影响，但运行时行为很难混淆。动态分析二进制文件可以解包并记录其与操作系统的交互，这是恶意软件分析的一个有吸引力的选择。</p>
-<p>无论使用静态分析还是动态分析，大多数基于机器学习的恶意软件检测器都严重依赖于相关的领域知识[12，13，34]。这些方法通常依赖于恶意软件专家手动调查的功能，这需要大量的功能工程。例如，Kolbitsch等人[13]捕获了PE可执行程序在为此目的设计的特定功能中的行为图。恶意软件不断被创建、更新和更改，这可能会使最初精心设计的功能不适用于较新的恶意软件或不同的恶意软件家族。在这种情况下，必须不断完善成本高昂的特征工程工作。因此，找到一种降低人工特征工程成本的方法来从原始数据中提取有用的信息是至关重要的。</p>
-<p>最近有一些关于基于深度学习的恶意软件分类的工作，这不需要特征工程。然而，现有的深度学习方法并没有利用来自现有动态分析系统的信息，而是倾向于选择一种类型的动态特征[14]或使用静态特征[6]。这些解决方案遗漏了关于每个样本所采取的行动的完整信息。</p>
-<p>在本文中，我们提出了Neurlux，这是一个使用神经网络分析动态分析报告的系统。Cuckoo[21]等服务通过在沙盒中跟踪可执行文件来提供对可执行文件的详细动态分析。此分析包含诸如网络活动、注册表更改、文件操作等信息。我们使用这些报告作为分析的基础。也就是说，给定一个动态分析报告，我们希望能够预测该报告是针对恶意软件样本还是良性可执行文件。</p>
-<p>我们的直觉是，我们可以将这些报告视为文件。凭借这种直觉，我们提出了Neurlux，这是一种神经网络，它在不需要任何特征工程的情况下学习并操作（清洁的）动态分析报告。Neurlux借用了文档分类领域的概念，将报告视为一系列单词，这些单词构成了一系列句子，从而创建了一个有用的模型。Neurlux打算用学习这些行为伪像或启发式的神经网络来取代昂贵的手工启发式。</p>
-<p>为了检查我们的方法是否偏向于特定的报告格式（即沙盒），我们在评估中包括了两个不同的沙盒，即杜鹃沙盒[21]、杜鹃沙盒和一个商业反恶意软件供应商的沙盒（我们将其称为VendorSandbox）。此外，我们使用了两个不同的数据集，一个由商业反恶意软件供应商VendorDataset提供，另一个是标记的基准数据集EMBER[2]EmberDataset。</p>
-<p>为了证明Neurlux比特征工程方法做得更好，我们实现了三种这样的技术，并与稍后讨论的技术进行了比较。此外，我们实现并比较了由Karbab等人[11]提出的MalDy模型作为基线。MalDy将行为（动态）报告形式化为一个单词袋（BoW），其中特征是报告中的单词。总之，我们做出了以下贡献：</p>
-<ul>
-<li>我们提出了Neurlux，这是一种利用文档分类概念来检测恶意软件的方法，该方法基于沙箱生成的行为（动态）报告，而无需进行功能工程。唯一的预处理步骤是清理报告以提取单词，在此基础上，我们的模型学习相关的单词序列，这有助于其预测。Neurlux在我们的K倍验证中显示出高准确度，达到96.8%的测试准确度。</li>
-<li>我们在动态分析报告中创建并测试了几种恶意软件分类方法，包括新方法，如集成功能的堆叠集合和功能计数模型。我们与这些方法进行了比较，表明Neurlux优于特征工程方法。</li>
-<li>我们通过在新的数据集和新的报告格式（即由新的沙盒生成）中测试Neurlux来评估其泛化能力，并表明它的泛化能力比我们评估的方法更好。</li>
-<li>可执行文件的源代码和数据集将在github上发布。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/CDA58R/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/CDA58R/" class="post-title-link" itemprop="url">模型部署（2）【TODO】在线部署</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-04-05 23:00:17" itemprop="dateCreated datePublished" datetime="2023-04-05T23:00:17+08:00">2023-04-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 15:57:18" itemprop="dateModified" datetime="2023-04-26T15:57:18+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="模型在线部署-tensorflowserving">模型在线部署-TensorFlow
-Serving</span></h3>
-<p>TensorFlow Serving 是 TensorFlow
-提供的一个高性能、灵活、可扩展的模型服务框架，用于部署和扩展 TensorFlow
-模型服务。它支持多种模型格式和多种协议，能够快速部署和扩展模型服务，适用于各种规模和复杂度的深度学习模型。TensorFlow
-Serving 的主要特点包括：</p>
-<ol type="1">
-<li>支持多种模型格式：TensorFlow Serving 支持多种常见的模型格式，包括
-TensorFlow SavedModel 格式、TensorFlow Hub 格式、Session Bundle
-格式等，能够适应不同类型和规模的深度学习模型。</li>
-<li>支持多种协议：TensorFlow Serving 支持多种常见的网络协议，包括
-gRPC、RESTful API、Apache Kafka、Apache Pulsar
-等，能够方便地与其他系统集成，实现模型服务的高效和灵活。</li>
-<li>高性能和高可用性：TensorFlow Serving
-提供了多种性能优化和扩展机制，包括模型预热、预加载、多线程和多进程等，能够快速响应请求并保证高可用性。</li>
-<li>易于部署和管理：TensorFlow Serving 提供了多种部署和管理工具，包括
-Docker 容器、Kubernetes、Triton Inference Server
-等，能够快速部署和管理模型服务，并支持自动化部署和扩展。</li>
-</ol>
-<p>通过使用 TensorFlow Serving，用户可以方便地将训练好的 TensorFlow
-模型部署到云端或本地服务器上，提供高效、灵活、可扩展的模型服务。TensorFlow
-Serving
-已广泛应用于各种领域，包括计算机视觉、自然语言处理、语音识别等，是深度学习模型部署和推断的重要基础框架之一。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型名称和路径</span></span><br><span class="line">MODEL_NAME = <span class="string">&quot;mnist&quot;</span></span><br><span class="line">MODEL_BASE_PATH = <span class="string">&quot;./models/mnist&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动 TensorFlow Serving</span></span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line">subprocess.Popen([<span class="string">&quot;tensorflow_model_server&quot;</span>, </span><br><span class="line">                  <span class="string">&quot;--port=8500&quot;</span>, </span><br><span class="line">                  <span class="string">&quot;--rest_api_port=8501&quot;</span>, </span><br><span class="line">                  <span class="string">f&quot;--model_name=<span class="subst">&#123;MODEL_NAME&#125;</span>&quot;</span>, </span><br><span class="line">                  <span class="string">f&quot;--model_base_path=<span class="subst">&#123;MODEL_BASE_PATH&#125;</span>&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送推断请求</span></span><br><span class="line">data = np.random.rand(<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>).tolist()</span><br><span class="line">json_data = &#123;<span class="string">&quot;instances&quot;</span>: data&#125;</span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&quot;content-type&quot;</span>: <span class="string">&quot;application/json&quot;</span>&#125;</span><br><span class="line">url = <span class="string">f&quot;http://localhost:8501/v1/models/<span class="subst">&#123;MODEL_NAME&#125;</span>:predict&quot;</span></span><br><span class="line"></span><br><span class="line">response = requests.post(url, json=json_data, headers=headers)</span><br><span class="line"><span class="built_in">print</span>(response.json())</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2CNVQ7Q/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2CNVQ7Q/" class="post-title-link" itemprop="url">AI安全（1）Adversarial Attacks and Defenses in Deep Learning: From a Perspective of Cybersecurity</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-04-02 20:32:41" itemprop="dateCreated datePublished" datetime="2023-04-02T20:32:41+08:00">2023-04-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-19 15:46:43" itemprop="dateModified" datetime="2023-04-19T15:46:43+08:00">2023-04-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="adversarialattacks-and-defenses-in-deep-learning-from-a-perspective-ofcybersecurity">Adversarial
-Attacks and Defenses in Deep Learning: From a Perspective of
-Cybersecurity</span></h2>
-<ul>
-<li>https://dl.acm.org/doi/10.1145/3547330</li>
-</ul>
-<h3><span id="摘要">摘要</span></h3>
-<p>深度神经网络的卓越性能推动了深度学习在广泛领域的应用。然而，对抗性样本带来的潜在风险阻碍了深度学习的大规模部署。在这些场景中，人眼无法察觉的对抗性扰动会显著降低模型的最终性能。已经发表了许多关于对抗性攻击及其在深度学习领域的对策的论文。大多数论文都集中在逃避攻击上，即在测试时发现对抗性示例，而不是在训练数据中插入中毒数据的中毒攻击。此外，由于没有标准的评估方法，很难评估对抗性攻击的真实威胁或深度学习模型的稳健性。因此，在本文中，我们回顾了迄今为止的文献。此外，我们试图为系统地理解对抗性攻击提供第一个分析框架。该框架是从网络安全的角度构建的，为对抗性攻击和防御提供生命周期。</p>
-<h3><span id="说明">说明</span></h3>
-<p>机器学习技术已被应用于广泛的场景，并取得了广泛的成功，尤其是在深度学习方面，它正迅速成为各种任务中的关键工具。然而，在许多情况下，机器学习或深度学习模型的失败可能会导致严重的安全问题。例如，在自动驾驶汽车中，无法识别交通标志可能会导致严重事故[1]。因此，在大规模部署之前，训练一个准确稳定的模型至关重要。不幸的是，近年来，许多研究揭示了模型安全中一个令人失望的现象，即深度学习模型可能容易受到对抗性示例的影响，即被对手恶意干扰的样本。以这种方式被篡改的模型很有可能会产生错误的预测，尽管它们可能在良性样本中显示出很高的准确性[2-5]。对抗性攻击可以被广泛定义为一类攻击，其目的是通过将对抗性示例插入训练阶段（称为中毒攻击[6-8]）或推理阶段（称称为逃避攻击[2，3]）来欺骗机器学习模型。无论哪种攻击都会显著降低深度学习模型的鲁棒性，并引发模型安全问题。此外，最近在现实世界中发现了深受这种模型安全问题困扰的深度学习解决方案的漏洞，这引发了人们对深度学习技术的信任程度的担忧</p>
-<p>由于在深度学习技术的实际应用中，隐私和安全的潜在威胁多种多样，越来越多的组织，如ISO、IEEE和NIST，正在参与人工智能标准化的过程。对一些国家来说，这项工作被认为类似于一些国家的新基础设施建设[9]。ISO提出了一个关于人工智能系统生命周期的项目，该项目将技术的生命周期分为八个阶段，包括初始化、设计和开发、检查和验证、部署、运行监控、持续验证、重新评估和放弃[10]。本周期中没有进一步解决的是对抗性攻击如何阻碍深度学习模型的商业部署。因此，评估模型安全威胁是人工智能项目生命周期中的一个关键组成部分。此外，考虑到可能的对抗性攻击和防御的分散性、独立性和多样性，如何分析模型的安全威胁也应该标准化。迫切需要的是一个风险图，以帮助准确确定项目生命周期每个阶段的多种类型的风险。更严重的是，攻击的防御仍处于早期阶段，因此对更复杂的分析技术提出了更高的要求。</p>
-<p>近年来，一些与对抗性机器学习相关的调查已经发表。Chakraborty等人[11]描述了安全相关环境中对抗性示例的灾难性后果，并回顾了一些强有力的对策。然而，他们的结论表明，它们都不能成为应对所有挑战的灵丹妙药。Hu等人[12]首先介绍了基于人工智能的系统的生命周期，用于分析每个阶段的安全威胁和研究进展。对抗性攻击分为训练和推理阶段。Serban等人[13]和Machado等人[14]分别回顾了在对象识别和图像分类中关于对抗性机器学习的现有工作，并总结了存在对抗性示例的原因。Serban等人[13]还描述了对抗性示例在不同模型之间的可转移性。与参考文献[14]提供设计防御的相关指导类似，Zhang等人[15]还从防御者的角度对相关工作进行了全面调查，并总结了深度神经网络对抗性示例起源的假设。还有一些关于对抗性机器学习在特定领域的应用的调查，如推荐系统[16]、网络安全领域[17]和医疗系统[18]。</p>
-<blockquote>
-<p>[17]</p>
-</blockquote>
-<p>先前已经观察到，在网络安全背景下，高级持续威胁（APT）通常是高度有组织的，成功的可能性极高[19]。以Stuxnet为例，这是最著名的APT攻击之一。它于2009年发射，摧毁了伊朗的核武器计划[19]。APT的工作流程系统地考虑了安全问题，这使得APT相关技术既能获得出色的成功率，即绕过这些防御，又能以高度有效的方式评估系统的安全性。受APT工作流程的启发，我们将此系统分析工具应用于网络安全问题，作为分析对抗性攻击威胁的潜在方法。APT主要由多种类型的现有底层网络空间攻击（如SQL注入和恶意软件）组成。不同类型的底层攻击的组合策略及其五阶段工作流程意味着，与单一攻击相比，APT的成功率极高。然而，有趣的是，根据现有的对抗性攻击策略，可以将其巧妙地划分为这五个阶段。基于这一观察，我们发现在评估对抗性攻击的威胁时，类似于APT的工作流程是有效的。因此，这构成了我们分析和对策框架的基础。尽管一些综述论文总结了模型安全方面的工作，但攻击方法或防御通常仍分为依赖类和分段类。这意味着不同方法之间的关系尚未明确确定。在这篇文章中，我们从APT的角度系统地对现有的对抗性攻击和防御进行了全面系统的回顾。我们的贡献如下：</p>
-<ul>
-<li>我们提供了一个新颖的网络安全视角来研究深度学习的安全问题。我们首次提出将APT概念纳入深度学习中对抗性攻击和防御的分析中。其结果是为模型安全性提供了一个标准的类似APT的分析框架。与之前部分关注机制[13，20]、威胁模型[21]或情景[22]的调查不同，我们的工作可以为理解和研究这个问题提供全局和系统层面的视角。具体而言，先前的研究倾向于在小组中讨论具有类似策略的方法。分别研究了不同策略的对抗性攻击，忽略了不同攻击群之间的关系。相反，我们的工作将对抗性攻击视为一个全球系统，每一组具有相似策略的攻击都只是这个全球系统的一部分。与网络安全类似，考虑不同群体之间的关系有助于进一步提高攻击的有效性；</li>
-<li>基于类似APT的分析框架，我们对现有的对抗性攻击方法进行了系统的审查。根据APT的逻辑，对抗性攻击可以明确地分为五个阶段。在每个阶段，都确定了共同的基本组成部分和短期目标，这有助于以深入的顺序提高攻击性能；</li>
-<li>我们还回顾了在类似APT的分析框架内对对抗性攻击的防御。同样，防御分为五个阶段，提供自上而下的顺序来消除对抗性例子的威胁。可以识别不同阶段的防御方法之间的关系，从而激发一种可能的策略，将多种防御结合起来，为深度学习模型提供更高的鲁棒性</li>
-<li>我们分别从数据和模型的角度总结了对抗性示例存在的假设，并全面介绍了对抗性机器学习中常用的数据集</li>
-</ul>
-<p>我们希望这项工作能激励其他研究人员在系统层面上看待模型的安全风险（甚至隐私威胁），并在全球范围内评估这些风险。如果可以建立一个标准，那么各种财产，例如健壮性，就可以在更短的时间内更准确地访问。因此，用户对深度学习模型的信心将会增强。</p>
-<h3><span id="二-相关研究">二、相关研究</span></h3>
-<p>深度学习是指建立在深度神经网络（DNN）上的一组机器学习算法，已广泛应用于预测和分类等任务[21]。DNN是一种数学模型，包括具有大量计算神经元和非线性激活函数的多层。典型的深度学习系统的工作流程包括两个阶段：训练阶段和推理阶段。两个阶段的详细流程如下所示，如图1所示：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546299.png" alt="image-20230402204215480">
-<figcaption aria-hidden="true">image-20230402204215480</figcaption>
-</figure>
-<p>图1：深度学习系统的一般工作流程。在训练阶段，基于训练数据迭代更新参数θ。得到最佳参数θ后 ,
-在推理阶段，输入将被输入到经过训练的模型中，这将为决策提供相应的输出</p>
-<ul>
-<li><p>在训练阶段，DNN的参数通过迭代前馈和反向传播不断更新。反向传播中的梯度下降方向是通过优化损失函数来引导的，该函数量化了预测标签和地面实况标签之间的误差。具体地，给定输入空间X和标签空间Y，最优参数θ 
-期望DNN
-f的损失函数L最小化训练数据集（X，Y）上的损失函数。因此，在训练过程中要找到最佳θ 
-可以定义为：</p>
-<p><span class="math display">\[
-\theta^{\star}=\underset{\theta}{\arg \min } \sum_{x_i \in \mathcal{X},
-y_i \in \mathcal{Y}} \mathcal{L}\left(f_\theta\left(x_i\right),
-y_i\right)
-\]</span></p>
-<p>其中fθ是要训练的DNN模型；xi∈X是从训练数据集中采样的数据实例，yi和fθ（xi）分别表示相应的地面真实标签和预测标签。</p></li>
-<li><p>在推理阶段，训练的模型f  具有固定最优参数的θ 
-被应用来提供关于未被包括在训练数据集中的看不见的输入的决策。给定看不见的输入xj，可以通过单个前馈过程来计算相应的模型决策yj（即xj的预测标签）：yj=f 
-θ（xj）。值得注意的是，一次成功的对抗性攻击通常会在推理阶段导致被操纵的预测yõ，这可能与xj的正确标签相去甚远。</p></li>
-</ul>
-<h4><span id="22-针对dnn的威胁模型">2.2 针对DNN的威胁模型</span></h4>
-<p>为了对这些攻击进行分类，我们通过引入模型攻击的关键组件来指定针对DNN的威胁模型。威胁被分解为三个维度：对手的目标、对手的特异性和对手的知识。这三个维度可以帮助我们识别潜在的风险，并了解对抗性攻击环境中的攻击行为。在图2中，我们概述了对抗性攻击中的威胁模型。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546534.png" alt="image-20230403202614103">
-<figcaption aria-hidden="true">image-20230403202614103</figcaption>
-</figure>
-<h5><span id="221-攻击目标">2.2.1 攻击目标</span></h5>
-<ul>
-<li>中毒攻击。在中毒攻击中，攻击者可以访问和修改训练数据集，以影响最终训练的模型[23-26]。攻击者在训练数据中注入假样本以生成有缺陷的模型的方式可以被视为“中毒”。中毒攻击通常会导致准确性下降[25]或对给定测试样本的错误分类[26]。•躲避攻击。</li>
-<li>在规避攻击中，对手的目标是攻击训练有素且固定的DNN，而没有任何权限修改目标模型的参数[13，18，23]。通过这种方式，攻击者不再需要训练数据集的可访问性。相反，攻击者生成目标模型无法识别的欺骗性测试样本，以逃避最终检测[27，28]。</li>
-</ul>
-<h5><span id="222-对抗性特异性">2.2.2 对抗性特异性</span></h5>
-<p>对抗性特异性的差异取决于攻击者是否能够在推理阶段为给定的对抗性样本预先定义特定的欺诈预测。</p>
-<ul>
-<li>非目标攻击。在无目标攻击中，对手的唯一目的是欺骗目标模型生成错误预测，而不关心选择哪个标签作为最终输出[29-32]。</li>
-<li>有针对性的攻击。在有针对性的攻击中，对于给定的样本，攻击者不仅希望目标模型做出错误的预测，而且还旨在诱导模型提供特定的错误预测[33-36]。一般来说，有针对性的攻击不会像无针对性的那样成功。</li>
-</ul>
-<h5><span id="223-敌人的知识">2.2.3 敌人的知识</span></h5>
-<ul>
-<li>白盒攻击。在白盒设置中，对手能够访问目标模型的细节，包括结构信息、梯度和所有可能的参数[30，34，37]。因此，对手可以通过利用手头的所有信息来精心制作对抗性样本。</li>
-<li>黑匣子攻击。在黑盒设置中，攻击者在不了解目标模型的情况下实施攻击。攻击者可以通过与目标模型交互来获取一些信息[36，38，39]。这是通过将输入查询样本输入到模型中并分析相应的输出来完成的。</li>
-</ul>
-<h4><span id="23-对抗性攻击">2.3 对抗性攻击</span></h4>
-<h5><span id="231-逃逸攻击">2.3.1 逃逸攻击</span></h5>
-<p>Szegedy等人[2]首先在对抗性攻击中引入了对抗性示例的概念，它可以在推理阶段以高成功率误导目标模型。他们提出了一种通过等式（1）搜索具有目标标签的最小失真对抗性示例的方法：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546941.png" alt="image-20230402210029648" style="zoom:50%;"></p>
-<p>通过这个方程，他们可以找到最接近的x  通过最小化与良性样本x的距离 x  −
-x 22，并且将被f（x）的条件错误地分类为目标标签t ) =
-时间。这个问题可以导致方程（2）中的目标，该目标可以通过L-BFGS算法来解决：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191546006.png" alt="image-20230402210112765" style="zoom:50%;"></p>
-<h5><span id="232-投毒攻击">2.3.2 投毒攻击</span></h5>
-<p>与推理攻击中发生的规避攻击不同，中毒攻击旨在通过污染训练数据来降低模型的准确性。攻击者需要一些权限来操纵训练数据，例如数据注入和数据修改[11]。因此，发起中毒攻击的目标可以分为两类：可用性违规和完整性违规。前者旨在降低受害者模型的置信度或准确性，破坏整个系统，而后者试图在不影响其他正常样本的情况下，通过引入后门，在某些特定样本上误导受害者模型[11]。具体而言，针对仅涉及训练样本的神经网络的中毒实例可以通过以下两种策略来制作：双层优化和特征碰撞[23]。</p>
-<ul>
-<li>双层优化：修改数据的经典数据中毒可以形式化为双层优化问题[23]。然而，对于非凸神经网络，双层优化问题是棘手的。Mu~noz-Gonz´alez等人[24]提出了“反向梯度下降”来近似内部问题的解，然后对外部损失进行梯度下降，尽管这在计算上仍然很昂贵。为了加快中毒样品的生产，Yang等人[25]引入GAN来产生毒素。MetaPoison等人[26]也被提出作为一阶方法，使用集成策略近似解决生产毒药的双层优化。</li>
-<li>特征冲突：基于双层优化的方法通常对迁移学习和端到端训练都有效，而特征冲突策略可以用于在有针对性的错误分类设置中设计针对迁移学习的有效攻击。例如，Shafahi等人[40]开发了一种方法，在特征空间中生成与目标样本相似的中毒样本，同时在输入空间中接近原始良性样本。这两类方法只需要操作训练的权限，而不需要标签，并且训练数据的语义将保持不变。这些带有干净标签的中毒样本将更难被检测到。</li>
-</ul>
-<p>此外，除了仅操纵训练数据的中毒攻击外，另一种类型的中毒攻击是后门攻击，它需要在推理阶段向输入插入触发器的额外能力[23]。</p>
-<p>后门攻击：后门攻击中的对手通常可以修改训练样本的标签[41]。这些带有后门触发器的错误标记数据将被注入到训练数据集中。因此，基于该数据集的训练模型将被迫为新样本（使用触发器）分配所需的目标标签。大多数后门攻击都需要在制作毒药的过程中给训练样本贴上错误的标签，而这些毒药更有可能被防御者识别出来。因此，还提出了一些干净标签后门攻击[42]，并使用参考文献[40]中提出的特征碰撞策略来制作后门样本。</p>
-<h4><span id="24-advanced-persistentthreats">2.4 Advanced Persistent
-Threats</span></h4>
-<p>高级持久性威胁（APT）是一系列新定义的攻击过程，其中攻击是长时间连续的，例如数年。分析APT的工作流程构成了我们对抗性攻击和防御分析框架的基础。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2W3FXA7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2W3FXA7/" class="post-title-link" itemprop="url">流量反作弊（5）小红书社区反作弊探索与实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-04-01 17:21:46 / 修改时间：20:26:48" itemprop="dateCreated datePublished" datetime="2023-04-01T17:21:46+08:00">2023-04-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="小红书社区反作弊探索与实践">小红书社区反作弊探索与实践</span></h2>
-<ul>
-<li>https://zhuanlan.zhihu.com/p/599625620</li>
-</ul>
-<h3><span id="一-社区反作弊的意义">一、<strong>社区反作弊的意义</strong></span></h3>
-<p>面对已知风险和产业链，下面来讨论下整个作弊防控的策略。所谓策略须先明确作弊防控的目标，以及达到目标的关键路径。</p>
-<p><strong>首先明确对于反作弊的预期</strong>。反作弊的本质是与作弊者成本的对抗，任何反作弊系统都无法做到
-100%
-的准确和召回。前面提到，无论何种形式作弊，它都是以牟利为目的的，而利益的来源是作弊成本和收益之间的价值差异。反作弊的工作就是提高作弊成本，尽量压缩作弊利益空间，降低作弊者的动机。因此，合理的目标设定是降低作弊行为在正常行为中的占比，控制风险的浓度。</p>
-<p><strong>关键路径是化被动识别为主动防御，如果长期作为被动方，可能没办法有全盘宏观的概念。</strong>要做到主动防御，一是构建风险的<strong>感知能力</strong>，尽早发现风险并且快速反应迭代；二是控制黑产的<strong>核心资源（账号，设备）</strong>，树立高门槛设置准入壁垒，并将有问题的账号进行存量清理。收缩作弊者能使用的账号量和设备量，相应的新账号成本也会变高，这就控制了核心资源。</p>
-<figure>
-<img src="image-20230401173214898.png" alt="image-20230401173214898">
-<figcaption aria-hidden="true">image-20230401173214898</figcaption>
-</figure>
-<p>下面对作弊防控思路做进一步的拆解，也是一个比较通用的方法论，个人认为可以应用到各类风险控制场景里。<strong>首先业务风控最大的难点是对抗，无论作弊变成何种形式，唯一不变的就是对抗，它是一直存在的。</strong>围绕对抗抽象出几个模块：<strong>风险感知、能力建设、风险识别、风险处置、效果评估</strong>。在遇到新的对抗时，这几个环节间会进行不断的循环迭代。下面以小红书社区反作弊为例，具体介绍这几个模块的设置。</p>
-<ul>
-<li>风险感知层负责更快发现风险，化被动救火为主动防御。具体分为情报运营，黑产卧底和红蓝军对抗，帮助风险识别更早的发现问题，可以说情报是整个风险防控体系的眼睛，解决“看得见”的问题。</li>
-<li><strong>能力建设是面向对抗的快速响应能力</strong>。这部分涉及的模块，一是端+云联防，在合法合规前提下通过端获取设备信息，并进一步加工为可用特征，供云防策略和算法使用。二是可以快速接入且可灵活配置的风控系统，以实现策略规则的快速迭代。三是为更快的实现从零到一的落地风控场景，搭建可跨场景协同使⽤的风险画像平台，在新风险场景里快速迁移和使用数据基建能力。</li>
-<li><strong>风险识别模块，面向对抗需提高识别的准召</strong>。从几个角度拓展能力，首先扩充数据，结合<strong>设备特征、账号特征、行为特征，以及其他场景下识别的风险画像，做联合使用分析</strong>。其次，从挖掘的角度，利用官方平台和作弊者之间的信息不对称性，寻找作弊用户相较于正常用户的异常点：
-<ul>
-<li>尝试由点到线，从分析单个行为变成分析一串行为即行为序列挖掘；</li>
-<li><strong>从单点到面， 通过账号、IP
-或设备等节点之间的拓扑关系进行团伙挖掘，可以带来很大的增益</strong>。</li>
-</ul></li>
-<li><strong>风险处置方面需要选择更有效的方式提高绕过成本</strong>。主要分为两个层面，一是<strong>处置对象</strong>，二是<strong>处置手段</strong>。在每个场景下该怎么处置，并没有一个标准答案，建议结合具体业务和业务中的风险来判断，了解风险背后的动机，在考虑应该采取怎样的处置手段才能提高绕过成本。</li>
-<li>效果评估可以评估风险水位，一般来说常用的指标有<strong>作弊漏过量、漏过率、作弊服务价格、账号价格</strong>等。</li>
-</ul>
-<p>小红书的风控体系，分为业务数据接入层，数据加工层，分析决策层，数据采集能力沉淀及运营和评估模块。</p>
-<ul>
-<li><strong>业务数据层</strong>，覆盖用户全场景的行为风控。从设备激活-&gt;账号注册-&gt;内容浏览
--&gt;交互-&gt;内容发布，从多场景层面实现联防联控。对于明确的作弊用户，直接拒绝访问从而加强准入的防御壁垒;
-对于疑似异常用户或高难度作弊注册，建议做延迟处理或在后续关键环节上做拦截处置，可以达到增加绕过成本的目的：具体来说，如果在注册时直接拦截，作弊者可快速验证拦截原因；延迟拦截后作弊者定位识别方法的难度变大，找到绕过方法的成本也更高。</li>
-<li><strong>数据接入层</strong>，风控引擎支持实时请求接入，也支持准实时流式接入和离线数据接入。</li>
-<li><strong>数据加工层</strong>重点针对身份特征，网络环境，设备信息、行为数据、时序特征，累计因子等去做加工和挖掘，并输入至决策分析层。</li>
-<li><strong>决策分析层</strong>由策略引擎、模型引擎和数据引擎组成。其中策略引擎完成实时的规则产出和返回，支持灵活的策略配置和策略上下线。模型引擎，对于简单模型，可以做到线上
-Serving；对于复杂模型或需要分析的模型，需通过近线或离线实现。</li>
-<li><strong>数据采集的能力沉淀层</strong>，包含设备指纹采集、名单系统、风险画像、关系图计算和风险事件模块。一方面，作为分析决策层的数据源做输入。另一方面，实现识别能力的迁移、使用等等。决策分析层也会向能力沉淀层做输出，
-将新识别风险点落到能力沉淀里复用至其他风险场景。</li>
-</ul>
-<p><strong>我们有一些不同的治理方案：</strong></p>
-<p><strong>一、对于影响的治理方案是清理这部分作弊的行为所得</strong>。但是，仅清理虚假流量，唯一的损失就是买量付出的钱。但对于买量者，还可以尝试其他作弊服务。因为作弊买量价位不会非常高，不断尝试的可能性就很强。关键点在于尝试作弊是没有边际成本的，比如某人偷东西后只是要求把偷窃所得还回去，而不会把他抓起来，只要不被发现就赚了。</p>
-<p><strong>二、对于实现链路，针对刷量作弊的账号做治理</strong>。比如识别到一个用于刷量的机器账号，平台将该账号封禁。从账号的成本上考虑，提供刷量服务者手上的账号量会变的越来越少，做账号成本就会变高，刷量的服务价格就会上涨，刷量者尝试新手法时成本也会变高。</p>
-<p><strong>三、从作弊动机角度考虑，按作弊程度作流量分发降权或商业权益限制。</strong>对买作弊流量的笔记做流量分发限制，作弊后可以获得的流量比不作弊更少。其次是限制买作弊流量博主的商业权益，因为很多买量者想通过商业化实现流量变现，对商业权益限制使齐无法做商业合作，对作弊者来说是很大的损失。该模块治理效果，可以大大降低买量者的作弊意愿。</p>
-<p>从实践来说，从治理【风险影响】转变为治理【实现链路】与【作弊动机】，作弊意愿降低，作弊量级下降显著。</p>
-<h4><span id="数据刷量反作弊实践风险识别"><strong>数据刷量反作弊实践——风险识别</strong></span></h4>
-<figure>
-<img src="image-20230401202502284.png" alt="image-20230401202502284">
-<figcaption aria-hidden="true">image-20230401202502284</figcaption>
-</figure>
 
       
     </div>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、关联规则概述 关联规则-策略挖掘中必不可少的算法。 1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。 1.1 关联评价 关联规则有三个核心概念需要理解：支持度、置信度、提升度，下面用最经典的啤酒-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关联规则（1）概述">
+<meta property="og:url" content="https://powerlzy.github.io/posts/1E0CW4H/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="一、关联规则概述 关联规则-策略挖掘中必不可少的算法。 1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。 1.1 关联评价 关联规则有三个核心概念需要理解：支持度、置信度、提升度，下面用最经典的啤酒-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443641.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443708.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443782.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443851.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449952.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449043.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271451871.png">
+<meta property="article:published_time" content="2023-04-27T06:34:48.282Z">
+<meta property="article:modified_time" content="2023-04-27T07:21:45.737Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="关联规则">
+<meta property="article:tag" content="频繁项集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/1E0CW4H/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/1E0CW4H/","path":"posts/1E0CW4H/","title":"关联规则（1）概述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>关联规则（1）概述 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、关联规则概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 关联评价</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-text">（2）置信度</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 常见算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">254</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1E0CW4H/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="关联规则（1）概述 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关联规则（1）概述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：15:21:45" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%B3%E8%81%94%E8%A7%84%E5%88%99/" itemprop="url" rel="index"><span itemprop="name">关联规则</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="一-关联规则概述">一、关联规则概述</span></h3>
+<p><font color="red">关联规则-策略挖掘中必不可少的算法。</font></p>
+<p>1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。</p>
+<h4><span id="11-关联评价">1.1 关联评价</span></h4>
+<p>关联规则有三个核心概念需要理解：<strong>支持度、置信度、提升度</strong>，下面用最经典的啤酒-尿不湿案例给大家举例说明这三个概念，假如以下是几名客户购买订单的商品列表：</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p><strong><font color="red">（1）支持度</font></strong></p>
+<p><strong>支持度
+(Support)：</strong>指某个<strong>商品组合出现的次数</strong>与<strong>总订单数</strong>之间的比例。</p>
+<p>在这个例子中，我们可以看到“牛奶”出现了 4 次，那么这 5
+笔订单中“牛奶”的支持度就是 4/5=0.8。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>同样“牛奶 + 面包”出现了 3 次，那么这 5 笔订单中“牛奶 +
+面包”的支持度就是 3/5=0.6</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443641.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>这样理解起来是不是非常简单了呢，大家可以动动手计算下
+<strong>'尿不湿+啤酒'</strong>的支持度是多少？</p>
+<h5><span id="2置信度">（2）置信度</span></h5>
+<p><strong>置信度 (Confidence)：</strong>指的就是当你购买了商品
+A，会有多大的概率购买商品
+B，在包含A的子集中，B的支持度，也就是包含B的订单的比例。</p>
+<p>置信度（牛奶→啤酒）=
+3/4=0.75，代表购买了牛奶的订单中，还有多少订单购买了啤酒，如下面的表格所示。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443708.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>置信度（啤酒→牛奶）=
+3/4=0.75，代表如果你购买了啤酒，有多大的概率会购买牛奶？</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443782.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>置信度（啤酒→尿不湿）=
+4/4=1.0，代表如果你购买了啤酒，有多大的概率会买尿不湿，下面的表格看出来是100%。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443851.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>由上面的例子可以看出，置信度其实就是个条件概念，就是说在 A
+发生的情况下，B
+发生的概率是多大。如果仅仅知道这两个概念，很多情况下还是不够用，需要用到提升度的概念。比如A出现的情况下B出现的概率为80%，那到底AB是不是有关系呢，不一定，人家B本来在大盘中的比例95%。你的A出现，反而减少了B出现的概率。</p>
+<p><strong>（3）提升度</strong></p>
+<p><strong>提升度
+(Lift)：</strong>我们在做商品推荐或者风控策略的时候，重点考虑的是提升度，因为提升度代表的是A
+的出现，对B的出现概率提升的程度。</p>
+<p><strong>提升度 (A→B) = 置信度 (A→B) / 支持度 (B)</strong></p>
+<p>所以提升度有三种可能：</p>
+<ul>
+<li><p>提升度 (A→B)&gt;1：代表有提升；</p></li>
+<li><p>提升度 (A→B)=1：代表有没有提升，也没有下降；</p></li>
+<li><p>提升度 (A→B)&lt;1：代表有下降。</p></li>
+</ul>
+<p>提升度 (啤酒→尿不湿) =置信度 (啤酒→尿不湿) /支持度 (尿不湿) = 1.0/0.8
+= 1.25，可见啤酒对尿不湿是有提升的，提升度为1.25，大于1。</p>
+<p><strong>可以简单理解为：在全集的情况下，尿不湿的概率为80%，而在包含啤酒这个子集中，尿不湿的概率为100%，因此，子集的限定，提高了尿不湿的概率，啤酒的出现，提高了尿不湿的概率。</strong></p>
+<p><strong>（4）频繁项集</strong></p>
+<p><strong>频繁项集(frequent itemset)
+：</strong>就是支持度大于等于最小支持度 (Min Support)
+阈值的项集，所以小于最小值支持度的项目就是非频繁项集，而大于等于最小支持度的的项集就是频繁项集，项集可以是单个商品，也可以是组合。</p>
+<p><strong>频繁集挖掘面临的最大难题就是项集的组合爆炸</strong>，如下图：</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449952.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>随着商品数量增多，这个网络的规模将变得特别庞大，我们不可能根据传统方法进行统计和计算，为了解决这个问题，Apriori算法提出了两个核心思想：</p>
+<ul>
+<li><p><strong><font color="red">某个项集是频繁的，那么它的所有子集也是频繁的</font></strong>
+{Milk, Bread, Coke} 是频繁的 → {Milk, Coke} 是频繁的</p></li>
+<li><p><strong><font color="red">如果一个项集是非频繁项集，那么它的所有超集也是非频繁项集</font></strong>
+{Battery} 是非频繁的 → {Milk, Battery} 也非平凡</p></li>
+</ul>
+<p>如下图，如果我们已知<strong>B</strong>不频繁，那么可以说图中所有绿色的项集都不频繁，搜索时就要这些项避开，减少计算开销。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449043.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>同理，如果下图所示，{A,B}这个项集是非频繁的，那虚线框后面的都不用计算了。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271451871.png" alt="图片" style="zoom: 33%;"></p>
+<p><strong>需要注意的是：</strong></p>
+<p>1）如果支持度和置信度阈值过高，虽然可以在一定程度上减少数据挖掘的时间，但是一些隐含在数据中的非频繁特征项容易被忽略掉，难以发现足够有用的规则；</p>
+<p>2）如果支持度和置信度阈值过低，可能会导致大量冗余和无效的规则产生，导致较大计算量负荷。</p>
+<h4><span id="12-应用场景">1.2 应用场景</span></h4>
+<p><strong>（1）电商行业</strong></p>
+<p>著名的“啤酒尿布”案例，通过分析历史用户的支付订单记录，挖掘出比如中年男人会同时购买啤酒和尿布两种商品，后续可以在商品陈列、打折促销组合、交叉营销发送优惠券等场景中应用。穿⾐搭配推荐穿⾐搭配是服饰鞋包</p>
+<p>导购中⾮常重要的课题，基于搭配专家和达⼈⽣成的搭配组合数据，百万级别的商品的⽂本和图像数据，以及⽤户的⾏为数据。期待能从以上⾏为、⽂本和图像数据中挖掘穿⾐搭配模型，为⽤户提供个性化、优质的、专业的穿⾐搭配⽅案，预测给定商品的搭配商品集合。</p>
+<p><strong>（2）社会民生</strong></p>
+<ul>
+<li>互联⽹情绪指标和⽣猪价格的关联关系挖掘和预测</li>
+<li>⽓象关联分析</li>
+<li>交通事故成因分析</li>
+</ul>
+<p><strong>（3）金融行业</strong></p>
+<ul>
+<li>银⾏客户交叉销售分析</li>
+<li>银⾏营销⽅案推荐</li>
+</ul>
+<p><strong>（4）文娱体育</strong></p>
+<ul>
+<li>影视演员组合</li>
+<li>球员最优组合</li>
+</ul>
+<p><strong>（5）网络安全</strong></p>
+<ul>
+<li><strong>自动化规则生成</strong></li>
+</ul>
+<h4><span id="13-常见算法">1.3 常见算法</span></h4>
+<p><strong>（1）算法</strong></p>
+<ul>
+<li><strong>关联规则算法</strong>：<font color="red">典型如Apriori，PySpark中为FP-Growth；</font></li>
+</ul>
+<p>关联规则算法是挖掘频繁项集的算法，1993年由Rakesh Agrawal
+和Ramakrishnan Skrikant提出，并应用于IBM的业务场景。</p>
+<ul>
+<li><strong>序列模式算法</strong>：典型算法如Apriori-All，PySpark中为PrefixSpan；</li>
+</ul>
+<p>与关联规则算法类似，不同点在于序列模式会考虑频繁项集中的时序先后关系</p>
+<p><strong>（2）优化</strong></p>
+<p>大部分的算法都是<strong>先频繁模式再关联规则流</strong>，<font color="red">算法的优化目的都是减少数据扫描的时间成本</font>。</p>
+<ul>
+<li><strong>树基算法</strong>：FP-Growth, PrePost,
+CFP-Growth算法等，<strong>核心要义是把原始事务数据转换为树状数据结构，减少扫描事务的成本。</strong></li>
+<li><strong>二进制向量算法</strong>：BitTableFI,
+IndexBitTableFI等，<strong>核心要义是把原始数据转换为二进制向量，用逻辑运算与矩阵运算来代替数据扫描，加快速度。</strong></li>
+<li><strong>可靠采样流派</strong>：中心极限定理等，<strong>核心要义是通过采样来减少数据规模来加速</strong>。<font color="red">支持度就是频率，频率与其对应概率的差根据中心极限定理服从期望为0的正态分布。以此为理论基础，可以在频繁模式支持度误差可控的情况下，推导出合理的样本规模。</font></li>
+<li><strong>渐进采样流派</strong>：Progressive
+sampling，不推公式（当然有些算法用到了齐夫定理，但是鉴于Zipf定理是经验定理，不算很严谨），慢慢增加样本，然后选取几个代表性的项集，以其两个样本规模间的支持度变化量来决定采样是否足够。当变化足够小时，说明样本够了。</li>
+</ul>
+<h3><span id="二-参考文献">二、参考文献</span></h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/52145607/answer/198035075">目前流行的<em>关联规则</em>算法有哪些？</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzA4OTAwMjY2Nw==&amp;mid=2650188496&amp;idx=1&amp;sn=b6b9f65ee6ba40457b23fc0e35c8f4e7&amp;chksm=88238d14bf540402e7049e41aca6bfea2f2870827a134d770eb716eed9582dbbde65d50d9b7f&amp;scene=21#wechat_redirect">关联规则-策略挖掘中必不可少的算法</a></li>
+<li>关联规则挖掘在实际中的应用有哪些? - 李小翰的回答 - 知乎
+https://www.zhihu.com/question/62342815/answer/2616887115</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/1E0CW4H/" title="关联规则（1）概述">https://powerlzy.github.io/posts/1E0CW4H/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E5%85%B3%E8%81%94%E8%A7%84%E5%88%99/" rel="tag"># 关联规则</a>
+              <a href="/tags/%E9%A2%91%E7%B9%81%E9%A1%B9%E9%9B%86/" rel="tag"># 频繁项集</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3BJBSQZ/" rel="prev" title="关联规则（2）Apriori">
+                  <i class="fa fa-chevron-left"></i> 关联规则（2）Apriori
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/806NJ2/" rel="next" title="关联规则（3）FP-growth">
+                  关联规则（3）FP-growth <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

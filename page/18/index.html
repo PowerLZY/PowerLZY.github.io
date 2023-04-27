@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-count">254</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,451 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/32RS544/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/32RS544/" class="post-title-link" itemprop="url">模型部署（1）【draft】概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 14:35:29" itemprop="dateCreated datePublished" datetime="2022-04-29T14:35:29+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:59:24" itemprop="dateModified" datetime="2023-04-26T15:59:24+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="机器学习一模型训练及线上部署相关笔记">机器学习（一）：模型训练及线上部署相关笔记</span></h3>
+<p>https://www.shangmayuan.com/a/2331a95928b344d782ac08ac.html</p>
+<ul>
+<li>GBDT+LR模型训练及线上部署</li>
+<li>Java调用jpmml类</li>
+</ul>
+<h3><span id="一-离线模型offline">一、离线模型(Offline)</span></h3>
+<p>离线模型存在于很多业务场景中，其中最常见的业务场景就是用在推荐系统的召回阶段，由于在推荐系统中，<strong>召回并不要求是实时的</strong>，可以根据业务的需要，调整成每天一次，或者每几个小时跑一次即可，因此，这类的模型，一般我们只需要使用<strong>Linux下的crontab定时任务脚本</strong>，每隔一段时间来启动一次就可以，然后将log文件输出到指定的文件下即可。这种方式一般来讲仅限离线模型的部署，其本质上就是一段定时任务的代码。</p>
+<h3><span id="二-在线online近似在线nearline模型">二、在线(Online)/近似在线(NearLine)模型</span></h3>
+<p>在生产系统中，实时推理和预测是最常见的需求，也是对于很多深度学习模型来说所必须达到的点。下面简介一些深度学习模型在实时预测时常见的几种部署方法：</p>
+<h4><span id="21将模型预测直接打包成http接口">2.1
+将模型预测直接打包成http接口</span></h4>
+<p>将模型直接打包成一个http接口的形式是在企业中比较常见的模型上线的方式，<strong>所谓的将预测直接打包成http接口实际上一般是指将我们训练好的模型直接在线上进行预测</strong>。我们来试想一个场景，当一个模型训练好之后，我们如果想要验证这个模型的好坏，我们首先能想到的办法就是找一批数据来测试一下。实际上，将模型预测直接打包成http接口也是利用了这样的思路。</p>
+<p>在这里，我们可以<strong>将训练好的模型提前进行加载，并初始化若干个消息队列和worker，当有新的待预测数据进入的时候，我们直接将数据通过消息队列传入到模型中进行推理和预测，最终得到结果。</strong></p>
+<p>而<strong>对于外层接收输入，我们一般可以将接收的地方使用flask打包成一个http接口，等待传入即可。</strong></p>
+<p>使用这种方式直接打包成http接口的好处在于打包和部署相对比较方便，对于一些相对比较<strong>轻量级且对并发量要求不是很高的情况下相对还是比较好用的。使用值得注意的是，如果对于一个相对比较大的模型来讲，这种方式推理的时间相对就会比较长，从用户输入到结果返回可能需要200ms左右。</strong></p>
+<h4><span id="22-pmml">2.2 PMML</span></h4>
+<blockquote>
+<p>使用PMML部署机器学习模型 : https://zhuanlan.zhihu.com/p/79197337</p>
+</blockquote>
+<p>PMML (Predictive Model Markup Language)
+是一套通用的且与平台和环境无关的模型表示语言，<strong>机器学习在模型部署方面的一种标准部署方案，其形式是采用XML语言标记形式</strong>。我们可以将自己训练的机器学习模型打包成PMML模型文件的形式，然后使用目标环境的解析PMML模型的库来完成模型的加载并做预测。PMML是一套基于XML的标准，通过
+XML Schema 定义了使用的元素和属性，主要由以下核心部分组成：</p>
+<p><strong>数据字典（Data Dictionary）</strong>，描述输入数据。</p>
+<p><strong>数据转换（Transformation Dictionary和Local
+Transformations）</strong>，应用在输入数据字段上生成新的派生字段。</p>
+<p><strong>模型定义 （Model）</strong>，每种模型类型有自己的定义。</p>
+<p><strong>输出（Output）</strong>，指定模型输出结果。</p>
+<p>目前，大部分机器学习库都支持直接打包成PMML模型文件的相关函数，例如在Python中的LightGBM库，XGBoost库，Keras库等，都有对PMML的支持，直接使用相应的命令就可以生成，而在Java、R等语言中，也有相关的库可以进行PMML文件生成的命令。一般来讲，使用PMML文件进行预测的过程如下：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261553349.jpg" alt="img" style="zoom: 50%;"></p>
+<p><strong>由于其平台无关性，导致PMML可以实现跨平台部署，是企业中部署机器学习模型的常见解决方案。</strong></p>
+<h4><span id="23-tensorflow-serving">2.3 TensorFlow Serving</span></h4>
+<p>使用TensorFlow Serving进行服务部署，一般需要2台以上机器。</p>
+<ul>
+<li>其中一台作为TensorFlow
+Serving的服务器，这台服务器是专门来做模型部署和预测用，对于这台服务器，一般建议使用GPU服务器，这样会使整个推理预测的过程变得很快；</li>
+<li>另外一台服务器是业务服务器，也就是接收用户的输入以及其他业务处理的服务器。我们可以把模型部署到TensorFlow
+Serving的服务器上，而一般我们只需要先在服务器上使用docker创建一个TensorFlow
+Serving服务，然后将模型文件上传上去，当有请求进来的时候，业务服务会直接对模型所在的服务器发起服务调用，并得到模型预测的结果。</li>
+</ul>
+<h3><span id="三-实际用时的一些部署方法组合">三、实际用时的一些部署方法组合</span></h3>
+<h4><span id="31-rpmmlsparkairflow调度">3.1 R+pmml+spark+airflow调度</span></h4>
+<p>用R语言训练模型并转为pmml文件，然后使用spark将这个pmml文件封装为jar，使用airflow提交到yarn。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val is: InputStream = fs.open(path)</span><br><span class="line"></span><br><span class="line">val pmml: PMML = PMMLUtil.unmarshal(is)</span><br><span class="line"></span><br><span class="line">modelEvaluator = ModelEvaluatorFactory.newInstance.newModelEvaluator(pmml)</span><br></pre></td></tr></table></figure>
+<h4><span id="32-pythonsklearnairflow调度">3.2 python+sklearn+airflow调度</span></h4>
+<p>使用python训练好sklearn模型，并joblib.dumps()保存，然后在python文件中joblib.load()加载改文件，使用airflow离线调度。</p>
+<h4><span id="33-xgboostsparkxgb4j">3.3 xgboost+spark+xgb4j</span></h4>
+<ul>
+<li>使用分布式的<strong>spark版的xgboost</strong>，训练好的模型直接保存为model.booster.saveModel(hdfsOutStream)二进制文件.然后<strong>xgboost4j加载该文件XGBoost.loadModel(is)实现线上实时预测</strong>。</li>
+</ul>
+<h4><span id="34tensorflowtensorflow的java库">3.4
+tensorflow+tensorflow的java库</span></h4>
+<h3><span id="四-不同需求对应的不同平台部署方案">四、不同需求对应的不同平台部署方案</span></h3>
+<h5><span id="1-放到服务器上跑要求吞吐和时延重点是吞吐这种应用在互联网企业居多一般是互联网产品的后端ai计算例如人脸验证-语音服务-应用了深度学习的智能推荐等">1、放到服务器上跑，要求吞吐和时延（重点是吞吐）这种应用在互联网企业居多，一般是互联网产品的后端AI计算，例如人脸验证、语音服务、应用了深度学习的智能推荐等。</span></h5>
+<p>由于一般是大规模部署，这时不仅仅要考虑吞吐和时延，还要考虑功耗和成本。所以除了软件外，硬件也会下功夫，比如使用推理专用的NVIDIA
+P4、寒武纪MLU100等。这些推理卡比桌面级显卡功耗低，单位能耗下计算效率更高，且硬件结构更适合高吞吐量的情况软件上，一般都不会直接上深度学习框架。对于NVIDIA的产品，一般都会使用TensorRT来加速（不仅可以加速前传，还包含调度功能）。TensorRT用了CUDA、CUDNN，而且还有<strong>图优化、fp16、int8量化</strong>等。</p>
+<h3><span id="五-模型部署时一些常用的trick">五、模型部署时一些常用的trick</span></h3>
+<h4><span id="51-模型压缩">5.1 模型压缩</span></h4>
+<p>基于参数修剪和共享的方法针对模型参数的冗余性，试图去除冗余和不重要的项。基于低秩因子分解的技术使用矩阵/张量分解来估计深度学习模型的信息参数。基于传输/紧凑卷积滤波器的方法设计了特殊的结构卷积滤波器来降低存储和计算复杂度。知识蒸馏方法通过学习一个蒸馏模型，训练一个更紧凑的神经网络来重现一个更大的网络的输出。</p>
+<p>一般来说，参数修剪和共享，低秩分解和知识蒸馏方法可以用于全连接层和卷积层的CNN，但另一方面，使用转移/紧凑型卷积核的方法仅支持卷积层。低秩因子分解和基于转换/紧凑型卷积核的方法提供了一个端到端的流水线，可以很容易地在CPU/GPU环境中实现。相反参数修剪和共享使用不同的方法，如矢量量化，二进制编码和稀疏约束来执行任务，这导致常需要几个步骤才能达到目标。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2SGD3Q6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2SGD3Q6/" class="post-title-link" itemprop="url">模型部署（5）Treelite加速</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 13:22:19" itemprop="dateCreated datePublished" datetime="2022-04-29T13:22:19+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:52:59" itemprop="dateModified" datetime="2023-04-26T15:52:59+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="treelite树模型部署加速工具支持xgboost-lightgbm和sklearn">Treelite：树模型部署加速工具（支持XGBoost、LightGBM和Sklearn）</span></h2>
+<h3><span id="一-treelite介绍"><strong>一、TreeLite介绍</strong></span></h3>
+<p>TreeLite能够树模型编译优化为单独库，可以很方便的用于模型部署。经过优化后可以将XGBoost模型的预测速度提高2-6倍。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261551831.jpg"></p>
+<p>如上图，黑色曲线为XGBoost在不同batch
+size下的吞吐量，红色曲线为XGBoost经过TreeLite编译后的吞吐量。</p>
+<p>Treelite支持众多的树模型，特别是随机森林和GBDT。同时Treelite可以很好的支持XGBoost,
+LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译。</p>
+<h3><span id="二-treelite原理"><strong>二、TreeLite原理</strong></span></h3>
+<p><strong>TreeLite主要在两方面完成了改进。</strong></p>
+<ul>
+<li><p><strong>逻辑分支</strong></p>
+<ul>
+<li><p>这个指令是<strong>gcc引入</strong>的，作用是<strong>允许程序员将最有可能执行的分支告诉编译器</strong>。这个指令的写法为：<code>__builtin_expect(EXP, N)</code>。意思是：EXP==N的概率很大。【<strong>减少重新取跳转地址</strong>】__builtin_expect
+说明: https://www.jianshu.com/p/2684613a300f</p></li>
+<li><p><strong>构建树模型+
+计算好每个分支下面样本的个数+提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p></li>
+</ul></li>
+<li><p><strong>逻辑比较</strong></p>
+<ul>
+<li><strong>浮点数比较，转化为整数型比较</strong>。</li>
+</ul></li>
+</ul>
+<h4><span id="21-逻辑分支"><strong>2.1 逻辑分支</strong></span></h4>
+<p>对于树模型而言，节点的分类本质使用if语句完成，而CPU在执行if语句时会等待条件逻辑的计算。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( [conditional expression] ) &#123;</span><br><span class="line">  <span class="built_in">foo</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">bar</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果在构建树模型时候，提前计算好每个分支下面样本的个数，则可以提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211426056.jpg" alt="img" style="zoom: 67%;"></p>
+<p>借助于编译命令，可以完成逻辑计算加速。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* expected to be false */</span></span><br><span class="line"><span class="keyword">if</span>( __builtin_expect([condition],<span class="number">0</span>))&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="22-逻辑比较">2.2 逻辑比较</span></h4>
+<p>原始的分支比较可能会有浮点数比较逻辑，可以量化为数值比较逻辑。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].fvalue &lt; <span class="number">1.5</span>) &#123;  </span><br><span class="line"><span class="comment">/* floating-point comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].qvalue &lt; <span class="number">3</span>) &#123;     </span><br><span class="line"><span class="comment">/* integer comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><p>项目链接：<a href="https://link.zhihu.com/?target=https%3A//treelite.readthedocs.io/">https://treelite.readthedocs.io/</a></p></li>
+<li><p>项目论文：<a href="https://link.zhihu.com/?target=https%3A//mlsys.org/Conferences/doc/2018/196.pdf">https://mlsys.org/Conferences/doc/2018/196.pdf</a></p></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/367YBF3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/367YBF3/" class="post-title-link" itemprop="url">模型部署（3）部署优化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 12:59:13" itemprop="dateCreated datePublished" datetime="2022-04-29T12:59:13+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:57:38" itemprop="dateModified" datetime="2023-04-26T15:57:38+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="模型部署优化的学习路线是什么">模型部署优化的学习路线是什么？</span></h3>
+<ul>
+<li>https://segmentfault.com/a/1190000040491572</li>
+</ul>
+<p>模型部署优化这个方向其实比较宽泛。从模型完成训练，到最终将模型部署到实际硬件上，整个流程中会涉及到很多不同层面的工作，每一个环节对技术点的要求也不尽相同。</p>
+<p><strong>部署的流程大致可以分为以下几个环节：</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211425187.png" alt="模型部署流程" style="zoom: 67%;"></p>
+<h3><span id="一-模型转换">一、模型转换</span></h3>
+<p>从训练框架得到模型后，根据需求转换到相应的模型格式。模型格式的选择通常是根据公司业务端
+SDK 的需求，通常为 caffe 模型或 onnx
+模型，以方便模型在不同的框架之间适配。该环节的工作需要对相应的训练框架以及
+caffe/onnx 等模型格式有所了解。常用的 Pytorch 和 TensorFlow
+等框架都有十分成熟的社区和对应的博客或教程；caffe 和 onnx
+模型格式也有很多可参考和学习的公开文档。</p>
+<p>即使没找到有可参考的文章时，好在二者都是开源的，依然可以通过对源码和样例代码的阅读来寻找答案。</p>
+<h3><span id="二-模型优化">二、模型优化</span></h3>
+<p>此处的模型优化是指与后端无关的通用优化，比如<strong>常量折叠</strong>、<strong>算数优化</strong>、<strong>依赖优化</strong>、<strong>函数优化</strong>、<strong>算子融合</strong>以及<strong>模型信息简化</strong>等等。</p>
+<p>部分训练框架会在训练模型导出时就包含部分上述优化过程，同时如果模型格式进行了转换操作，不同
+IR
+表示之间的差异可能会引入一些冗余或可优化的计算，因此在模型转换后通常也会进行一部分的模型优化操作。</p>
+<p><strong>该环节的工作需要对计算图的执行流程、各个 op
+的计算定义、程序运行性能模型有一定了解，才能知道如果进行模型优化，如何保证优化后的模型具有更好的性能。</strong></p>
+<p>了解得越深入，越可以挖掘到更多的模型潜在性能。</p>
+<h3><span id="三-模型压缩">三、模型压缩</span></h3>
+<p>广义上来讲，模型压缩也属于模型优化的一部分。模型压缩本身也包括很多种方法，比如剪枝、蒸馏、量化等等。模型压缩的根本目的是希望获得一个较小的模型，减少存储需求的同时降低计算量，从而达到加速的目的。</p>
+<p><strong>该环节的工作需要对压缩算法本身、模型涉及到的算法任务及模型结构设计、硬件平台计算流程三个方面都有一定的了解。</strong></p>
+<p>当因模型压缩操作导致模型精度下降时，对模型算法的了解，和该模型在硬件上的计算细节有足够的了解，才能分析出精度下降的原因，并给出针对性的解决方案。</p>
+<p><strong>对于模型压缩更重要的往往是工程经验，</strong>
+因为在不同的硬件后端上部署相同的模型时，由于硬件计算的差异性，对精度的影响往往也不尽相同，这方面只有通过积累工程经验来不断提升。</p>
+<p>OpenPPL也在逐步开源自己的模型压缩工具链，并对上述提到的模型算法、压缩算法和硬件平台适配等方面的知识进行介绍。</p>
+<h3><span id="四-模型部署">四、模型部署</span></h3>
+<p>模型部署是整个过程中最复杂的环节。从工程上讲，主要的核心任务是<strong>模型打包</strong>、<strong>模型加密</strong>，并进行SDK封装。</p>
+<p><strong>在一个实际的产品中，往往会用到多个模型。模型打包是指将模型涉及到的前后处理，以及多个模型整合到一起，并加入一些其他描述性文件。</strong>模型打包的格式和模型加密的方法与具体的
+SDK 相关。<strong>在该环节中主要涉及到的技能与 SDK
+开发更为紧密。</strong></p>
+<p>从功能上讲，对部署最后的性能影响最大的肯定是SDK中包含的后端库，即实际运行模型的推理库。开发一个高性能推理库所需要的技能点就要更为广泛，并且专业。</p>
+<p>并行计算的编程思想在不同的平台上是通用的，但不同的硬件架构的有着各自的特点，推理库的开发思路也不尽相同，这也就要求对开发后端的架构体系有着一定的了解。</p>
+<p>具体到不同架构的编程学习，建议参考当前各大厂开源的推理库来进一步学习。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1207,799 +1652,6 @@ MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依�
 </blockquote>
 <p>数据湖是一种在系统或存储库中以自然格式存储数据的方法，它有助于以各种模式和结构形式配置数据，通常是对象块或文件。<strong>数据湖的主要思想是对企业中的所有数据进行统一存储，从原始数据（源系统数据的精确副本）转换为用于报告、可视化、分析和机器学习等各种任务的目标数据。数据湖中的数据包括==结构化数据==（关系数据库数据），==半结构化数据==（CSV、XML、JSON等），==非结构化数据==（电子邮件，文档，PDF）和==二进制数据==（图像、音频、视频），从而形成一个容纳所有形式数据的==集中式数据存储==。</strong></p>
 <p>从实现方式来看，目前Hadoop是最常用的部署数据湖的技术，但并不意味着数据湖就是指Hadoop集群。为了应对不同业务需求的特点，MPP数据库+Hadoop集群+传统数据仓库这种“混搭”架构的数据湖也越来越多出现在企业信息化建设规划中。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1J88NKC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1J88NKC/" class="post-title-link" itemprop="url">工业落地-CrowdStrike《无文件攻击白皮书》解析</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-26 18:24:52" itemprop="dateCreated datePublished" datetime="2022-04-26T18:24:52+08:00">2022-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 15:08:09" itemprop="dateModified" datetime="2023-04-18T15:08:09+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>12 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="theforrester-wavetm-endpoint-detection-and-response-providers-q22022"><strong>The
-Forrester Wave™: Endpoint Detection And Response Providers, Q2
-2022</strong></span></h2>
-<p>在我们对端点检测和响应提供商的 20 个标准评估中，我们确定了 15
-个最重要的——Bitdefender、BlackBerry Cylance、Check Point Software
-Technologies、CrowdStrike、Cybereason、Elastic、FireEye、Fortinet、McAfee、Microsoft、Palo
-Alto Networks、SentinelOne 、Sophos、趋势科技和 VMware Carbon Black —
-并对它们进行了研究、分析和评分。该报告显示了每个供应商如何衡量并帮助安全专业人员根据他们的需求选择合适的供应商。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505869.png" alt="image-20220426183404208" style="zoom: 33%;"></p>
-<h1><span id="crowdstrike无文件攻击白皮书解析">CrowdStrike《无文件攻击白皮书》解析</span></h1>
-<blockquote>
-<p>原文链接：https://www.secrss.com/articles/26671</p>
-</blockquote>
-<p>CrowdStrike是端点保护平台（EPP）的最强者，是云交付的下一代端点保护的领导者。由于CrowdStrike邮件推送了“<strong>无文件攻击白皮书</strong>”《谁需要恶意软件？<strong>对手如何使用无文件攻击来规避你的安全措施</strong>》（Who
-Needs Malware? How Adversaries Use Fileless Attacks To Evade Your
-Security），笔者顺手对其进行了<strong>全文翻译</strong>。</p>
-<p><strong>无文件攻击（Fileless
-attack）</strong>是<strong>不向磁盘写入可执行文件</strong>的攻击方法，难以被常规方法检测出来。根据CrowdStrike统计，“10个成功突破的攻击向量中有8个使用了无文件攻击技术。”即
-<strong>80%的成功入侵都使用了无文件攻击</strong> <strong>。</strong>
-根据二八原理，这显然是安全人员应该高度关注的技术类型。</p>
-<p><strong>无文件攻击白皮书</strong>解释了<strong>无文件攻击的工作原理、传统解决方案失效的原因，以及CrowdStrike解决该难题的方法</strong>。CrowdStrike的解决方案是<strong>应用程序清单、漏洞利用阻断、攻击指标（IOA）、托管狩猎、无签名人工智能等技术的集成化方法</strong>。</p>
-<p>除了全文翻译外，笔者主要在文末做了两块内容增补：一是关于CrowdStrike<strong>Threat
-Graph（威胁图</strong>）的技术思想<strong>，因为威胁图 是 CrowdStrike
-Falcon（猎鹰）端点保护平台的“ </strong>大脑” ；二是
-关于CrowdStrike提出的<strong>攻击指标</strong>（IOA）<strong>与传统的失陷指标（IOC）</strong>的对比。<strong>笔者认为，这两类技术领域具有战略价值</strong>。如果说全文翻译只花费一小时的话，这些增补内容反而消耗了笔者两个小时。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505079.png" alt="img" style="zoom:33%;"></p>
-<p>随着安全措施在检测和阻止恶意软件和网络攻击方面越来越出色，对手和网络犯罪分子被迫不断开发新技术来逃避检测。其中一种高级技术涉及<strong><font color="red">
-“无文件”（fileless）攻击，即不向磁盘写入可执行文件。</font></strong>这类攻击特别有效地躲避了传统防病毒（AV）解决方案，因为传统防病毒（AV）方法寻找被保存到磁盘上的文件并扫描这些文件以确定它们是否恶意。</p>
-<p>虽然无文件攻击并不新鲜，但它们正变得越来越普遍。在2016年的调查中，CrowdStrike
-Services事件响应团队发现，<strong>10个成功入侵的攻击向量中有8个使用了无文件攻击技术</strong>。为了帮助您了解无文件攻击所带来的风险，本白皮书解释了无文件攻击的工作原理、当前解决方案对其无能为力的原因，以及CrowdStrike解决这一难题的行之有效的方法。</p>
-<h3><span id="什么是无文件攻击">什么是无文件攻击？</span></h3>
-<p>当攻击者通过消除将PE（可移植可执行文件）复制到磁盘驱动器的传统步骤来逃避检测时，就会发生无文件或无恶意软件的攻击。<strong>有多种技术可以采取这种方式危害系统</strong>。</p>
-<ul>
-<li><p><strong>漏洞利用和漏洞利用工具包</strong>，通常通过利用操作系统（OS）或已安装应用程序中存在的漏洞，直接在内存中执行攻击。</p></li>
-<li><p><strong>使用盗用的凭证</strong>，是发起无文件攻击的另一种普遍方法。Verizon在其2017年的DBIR（数据泄露调查报告）中发现，81%的数据泄露涉及弱口令、默认口令或被盗口令，比上一年增加了18%。这使得攻击者能够像普通用户一样访问系统。</p></li>
-<li><p>一旦实现初步突破，对手就可以<strong>依赖操作系统本身提供的工具</strong>，如Windows管理工具和Windows
-<strong>PowerShell</strong>，以执行进一步的操作，而不必将文件保存到磁盘。例如，它们可以通过在注册表、内核中隐藏代码，或者通过创建允许它们随意访问系统的用户帐户来<strong>建立持久化</strong>，而无需向磁盘写入任何内容。</p></li>
-</ul>
-<p>在安全行业，对上述这些技术的使用，通常被称为“<strong>living off the
-land</strong>”（离地生存？生存手段？）。</p>
-<h4><span id="真实案例一个无文件入侵的解剖">真实案例：一个无文件入侵的解剖</span></h4>
-<p>通过展示CrowdStrike
-Services事件响应团队发现的一个真实的案例，我们可以检查端到端的无恶意软件入侵是什么样子。</p>
-<p>在本例中，首个目标是<strong>使用Microsoft
-ISS并运行SQL服务器数据库的web服务器</strong>。对于最初的入侵，攻击者使用了一个web
-shell，一个可以被上传到web服务器并在其上执行的简短脚本。脚本可以用web服务器支持的任何语言编写，比如Perl、Python、ASP或PHP。Web
-Shell在此类攻击中很流行，因为它们可以通过<strong>利用系统上存在的漏洞直接加载到内存中</strong>，而无需将任何内容写入磁盘。在这一特定的攻击中，对手使用SQL注入，将其web
-shell嵌入到服务器。</p>
-<blockquote>
-<p>WEB
-Shell允许使用web浏览器来远程访问系统。它们可以用ASP或PHP或任何其他web脚本语言编写，代码可以非常小。如下所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506159.png" alt="img" style="zoom:50%;"></p>
-<p>由于web服务器<strong>没有正确检查转义字符</strong>，攻击者能够简单地将web
-shell回传到服务器上。所用的web shell，名为“<strong>China
-Chopper</strong>”（中国菜刀/直升机），包含了JavaScript命令，值得注意的是它只使用了72个字符。在内存中执行web
-shell，使攻击者能够使用Chopper用户界面，对web服务器执行任意命令。通过对web服务器的完全远程访问，攻击者通过执行编码的PowerShell命令，来窃取凭据。</p>
-</blockquote>
-<p>第一步是从远程服务器下载脚本，将脚本直接加载到内存中，然后执行它。这个脚本反过来窃取了缓存在web服务器内存中的所有纯文本密码。在几秒钟内，攻击者获得了系统上所有帐户的多个用户名和密码。</p>
-<p><strong>PowerShell是一个合法的Windows工具</strong>，它允许攻击者在受损系统上执行任何操作，而不必在磁盘上写入恶意软件。为了进一步做混淆，攻击者可以对其PowerShell脚本进行编码，如下所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506444.png" alt="img" style="zoom:50%;"></p>
-<p>下一步是让攻击者在服务器上实现<strong>持久化</strong>。为了在不需要任何恶意软件的情况下执行此操作，攻击者使用了一种称为“<strong>粘滞键</strong>”（Sticky
-Keys）的技术。通过修改Windows注册表中的一行，攻击者可以使用PowerShell或WMI命令，轻松完成此操作，从而将Windows屏幕键盘进程，设置为<strong>调试模式</strong>。</p>
-<p><strong>粘滞键（Sticky
-Keys）</strong>是使攻击者<strong>无需登录凭据</strong>即可<strong>访问命令shell</strong>的注册表项。如下所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506654.png" alt="img" style="zoom:50%;"></p>
-<p>当设置为调试模式时，屏幕键盘允许具有远程访问权限的任何人，以系统权限打开命令行，而无需登录。一旦设置了该注册表项，攻击者可以通过打开到web服务器的远程桌面连接，随时返回。此外，访问系统而<strong>不在Windows事件历史记录中生成登录事件</strong>，会使攻击者的行为几乎无法追踪。</p>
-<blockquote>
-<p>现在小结一下，本案例中，<strong>在不同的攻击阶段所使用的文件技术</strong>包括：</p>
-<ul>
-<li><p><strong>初始入侵</strong>：针对Web服务器的<strong>SQL注入</strong>攻击；</p></li>
-<li><p><strong>命令与控制（C2）</strong>：“中国菜刀/直升机”的<strong>Web
-Shell</strong>；</p></li>
-<li><p><strong>提升权限</strong>：使用<strong>PowerShell脚本</strong>转储<strong>凭据</strong>；</p></li>
-<li><p><strong>建立持久化</strong>：修改<strong>注册表</strong>粘滞键技术。</p></li>
-</ul>
-</blockquote>
-<h3><span id="作案工具真实世界的无文件恶意软件">作案工具：真实世界的无文件恶意软件</span></h3>
-<p>无文件恶意软件经常使用的工具和技术包括：</p>
-<ul>
-<li><strong>漏洞利用工具包</strong></li>
-<li><strong>利用合法工具，如WMI和PowerShell</strong></li>
-<li><strong>使用被盗凭证</strong></li>
-<li><strong>注册表驻留恶意软件</strong></li>
-<li><strong>内存型（Memory-only）恶意软件</strong></li>
-</ul>
-<p><strong>1）漏洞利用工具包（Exploit kits）</strong></p>
-<p>漏洞利用是一种允许攻击者利用操作系统或应用程序漏洞来访问系统的技术。<strong>漏洞利用是一种高效的无文件技术</strong>，因为它们可以直接注入内存中，而无需将任何内容写入磁盘。</p>
-<p>通过允许攻击者自动化和大规模执行初始突破，漏洞利用工具包使得攻击者的生活更轻松、工作更高效。<strong>所需要做的只是，诱使受害者进入漏洞利用工具包服务器</strong>，办法通常是网络钓鱼或社会工程。</p>
-<p>这些工具包通常提供对许多漏洞的攻击，以及一个管理控制台，一旦成功利用漏洞，攻击者就可以控制失陷的系统。有些漏洞利用工具包甚至提供了扫描受害者系统中的漏洞的功能，因此可以快速构建并启动成功的漏洞攻击。</p>
-<p><strong>2）注册表驻留恶意软件</strong></p>
-<p>注册表驻留恶意软件是安装在Windows注册表中的恶意软件，以便在逃避检测的同时，保持持久性。第一种是<strong>Poweliks</strong>，此后就出现了许多变体。一些变体，如Kovter，使用了类似的注册表隐藏技术，来保持不被发现。Poweliks<strong>调用C2（命令和控制）服务器</strong>，攻击者可以从该服务器向受损系统发送进一步的指令。所有这些操作，都可以在没有任何文件写入磁盘的情况下进行。</p>
-<p><strong>3）内存型（Memory-only）恶意软件</strong></p>
-<p>有些恶意软件只存在于内存中，以逃避检测。新版本的<strong>Duqu蠕虫</strong>就是这种情况，它只驻留在内存中，不会被发现。Duqu
-2.0有两个版本：第一个是后门，它允许攻击者在组织中站稳脚跟。如果攻击者认为目标值得攻击，他可以使用Duqu
-2.0的高级版本，该版本提供了诸如侦察、横向移动、数据渗出等附加功能。Duqu2.0以成功攻破电信行业的公司以及至少一家知名的安全软件提供商而闻名。</p>
-<p><strong>4）无文件型勒索软件</strong></p>
-<p>甚至勒索软件攻击者，现在也在使用无文件技术，来实现他们的目标。在这类勒索软件中，<strong>恶意代码要么嵌入文档中以使用本机脚本语言（如宏），要么使用漏洞直接写入内存</strong>。然后，勒索软件<strong>使用合法的管理工具如PowerShell，来加密人质文件</strong>，而所有这些都不需要写入磁盘。</p>
-<h3><span id="为何传统技术无法抵御无文件攻击">为何传统技术无法抵御无文件攻击</span></h3>
-<p>由于传统安全解决方案极难检测到无文件攻击，因此无文件攻击正在增加。让我们来看看，为什么当今市场上的一些端点保护技术，对这些无恶意软件入侵如此脆弱。</p>
-<p><strong>1）传统防病毒（AV）</strong>旨在寻找已知恶意软件的特征码。由于无文件攻击没有恶意软件，所以AV没有可检测的特征码。</p>
-<p><strong>2）基于机器学习（ML）</strong>的反恶意软件方法，在应对无文件攻击时，面临着与传统AV相同的挑战。<strong>ML动态分析</strong>未知文件，并将其区分为好的或坏的。但是我们已经注意到，在无文件攻击中，<strong>没有要分析的文件</strong>，因此ML无法提供帮助。</p>
-<p><strong>3）白名单方法</strong>包括列出一台机器上所有良好的进程，以防止未知进程执行。无文件攻击的问题在于，它们利用易受攻击的合法白名单应用程序，并利用内置的操作系统可执行文件。阻止用户和操作系统共同依赖的应用程序，并不是一个好的选项。</p>
-<p><strong>4）使用失陷指标（IOC）工具</strong>来防止无文件攻击也不是很有效。本质上，<strong>IOC类似于传统的AV签名，因为它们是攻击者留下的已知恶意制品</strong>。然而，由于它们利用合法的进程，并且在内存中操作，所以无文件攻击不会留下制品，因此IOC工具几乎找不到任何东西。</p>
-<p><strong>5）另一种方法涉及沙箱</strong>，它可以采取多种形式，包括基于网络的爆破和微虚拟化。由于无文件攻击不使用PE文件，因此沙盒没有什么可爆破的。即便真有东西被发送到沙箱，因为无文件攻击通常会劫持合法进程，大多数沙箱也都会忽略它。</p>
-<h3><span id="crowdstrike的解决方案">CrowdStrike的解决方案</span></h3>
-<p>正如我们所看到的，如果您依赖基于签名的方法、沙盒、白名单甚至机器学习保护方法，那么想检测无文件技术是非常有挑战性的。</p>
-<p>为了抵御秘密的、无文件的攻击，<strong>CrowdStrike独特地将多种方法结合到一个强大的集成式方法中，提供了无与伦比的端点保护</strong>。CrowdStrikeFalcon平台通过单个的轻量级代理提供了云原生的下一代端点保护，并提供一系列互补的预防和检测方法：</p>
-<ul>
-<li><p><strong>应用程序清单（Application
-inventory）</strong>：可以发现在您的环境中运行的任何应用程序，帮助您找到漏洞，以便您可以修补或更新它们，使之不会成为漏洞利用工具包的目标。</p></li>
-<li><p><strong>漏洞利用阻断（Exploit
-blocking）</strong>：通过未修补漏洞的漏洞利用方法，来阻断无文件攻击的执行。</p></li>
-<li><p><strong><font color="red"> 攻击指标（IOA，Indicators of
-Attack）：</font></strong>在攻击的早期阶段，识别并阻止恶意活动，以免其完全执行并造成损害。此能力还可以防止那些新的勒索软件类别，那些勒索软件不使用文件加密受害者系统。**</p></li>
-<li><p><strong>托管狩猎（Managed
-hunting）</strong>：全天候地主动搜索由于无文件技术而产生的恶意活动。</p></li>
-</ul>
-<h4><span id="ioa攻击指标的力量">IOA（攻击指标）的力量</span></h4>
-<blockquote>
-<p><strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列,
-IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</strong></p>
-</blockquote>
-<p>IOA之所以引人注目，是因为它们提供了<strong>针对无文件攻击的独特的主动预防能力</strong>。<strong>IOA寻找攻击可能正在进行的迹象，而不是关心攻击的步骤是如何执行的</strong>。<strong>迹象可以包括代码执行、试图隐身、横向移动等等</strong>。<strong>如何启动或执行这些步骤对IOAs来说并不重要</strong>。</p>
-<p><strong><font color="red">
-IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</font></strong></p>
-<p>此外，在无文件攻击的情况下，恶意代码可以利用诸如PowerShell之类的合法脚本语言，而无需写入磁盘。正如我们所看到的，这对于基于签名的方法、白名单、沙箱甚至机器学习来说都是一个挑战。相比之下，<strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列。</strong>这可以暴露最隐秘的无文件方法，因此它们可以被迅速处理。</p>
-<p>最后，由于IOA会查看意图、上下文、活动序列，因此<strong>即使恶意活动是使用合法帐户实施的，也可以检测和阻止这些活动</strong>，攻击者使用窃取的凭据时通常会出现这种情况。</p>
-<p>所有这些使得<strong>IOA成为防止无文件恶意软件攻击的突破口</strong>。IOA不再基于磁盘上可执行文件的存在与否，来开展无文件攻击这场徒劳的战斗，而是在<strong>造成任何损害之前监视、检测、阻止此类攻击的影响</strong>。</p>
-<h4><span id="托管狩猎">托管狩猎</span></h4>
-<p>托管狩猎（Managed
-Hunt）是针对文件攻击的另一种独特而有效的防御措施。<strong>Falcon
-OverWatch</strong>（猎鹰看守）是Falcon平台的<strong>威胁搜索组件</strong>，它提供了一个<strong>额外的保护层</strong>，来抵御无文件攻击。</p>
-<p><strong>利用Falcon平台的强大功能，OverWatch（看守）团队全天候主动狩猎威胁，监控客户的环境，并狩猎那些标准安全技术无法检测到但可能表明正在发生攻击的狡猾活动。</strong>Falcon
-OverWatch确保即使是最复杂和最隐蔽的攻击，也能在发生时被发现。它通过狩猎和识别难以检测的、复杂的、尖端的攻击，生成有意义的警报和精确的指导性补救建议，从而提高您对抗无文件技术的效率。</p>
-<h4><span id="结论">结论</span></h4>
-<p>由于漏洞利用工具包的存在，导致了攻击组合的高效性和易创建性，很可能会提高无文件黑客技术的普及率。不幸的是，鉴于传统杀毒软件无法阻止无文件攻击，犯罪黑客越来越可能将注意力集中在这些隐形技术上。因此，安全专家需要在他们的安全策略中，考虑无文件恶意软件和无文件攻击的存在。</p>
-<p>正如本文所解释的那样，传统的安全措施在面对无文件攻击时可能不够有效，需要新的保护方法。CrowdStrike
-Falcon（猎鹰平台）提供了一种全面的解决方案，不仅可以防御无文件攻击，而且还可以很好地防御已知和未知的恶意软件威胁。</p>
-<h3><span id="威胁图和攻击指标">威胁图和攻击指标</span></h3>
-<p>CrowdStrike将自身定位为<strong>云交付</strong>的<strong>下一代端点保护</strong>的领导者。CrowdStrike是第一家也是唯一一家统一了<strong>下一代防病毒、端点检测和响应（EDR）、IT卫生、漏洞评估、全天候托管狩猎服务</strong>的公司——全部通过<strong>一个轻量级代理</strong>提供，彻底革新了端点保护。CrowdStrike的<strong>端点保护平台</strong>（EPP）如下图所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507229.png" alt="img" style="zoom:50%;"></p>
-<h4><span id="威胁图threat-graph">威胁图（Threat Graph）</span></h4>
-<p>CrowdStrike
-Falcon（猎鹰）平台由两种紧密集成的<strong>专有技术</strong>组成：一个是易于部署的智能<strong>轻量级代理</strong>；另一个是基于云的动态<strong>图数据库</strong>，即上面提到的<strong>威胁图</strong>（Threat
-Graph）。</p>
-<p><strong>下表进一步梳理了威胁图的主要特性</strong>：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507209.png" alt="img" style="zoom:50%;"></p>
-<p>https://www.crowdstrike.com/cybersecurity-101/indicators-of-compromise/ioa-vs-ioc/</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/15K7AZ0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/15K7AZ0/" class="post-title-link" itemprop="url">深度学习（1）优化算法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-23 15:07:13" itemprop="dateCreated datePublished" datetime="2022-04-23T15:07:13+08:00">2022-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-06-26 16:27:55" itemprop="dateModified" datetime="2022-06-26T16:27:55+08:00">2022-06-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="从-sgd-到-adam-深度学习优化算法概览">从 SGD 到 Adam ——
-深度学习优化算法概览</span></h2>
-<blockquote>
-<p>从 SGD 到 Adam ——
-深度学习优化算法概览(一)：https://zhuanlan.zhihu.com/p/32626442</p>
-<p>#### 总结：</p>
-<ul>
-<li>SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。</li>
-<li>Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。</li>
-<li>Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。</li>
-<li>Adam利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率,在经过偏置的校正后,每一次迭代后的学习率都有个确定的范围,使得参数较为平稳。</li>
-</ul>
-</blockquote>
-<h4><span id="引言"><strong>引言</strong></span></h4>
-<p><strong>最优化问题</strong>是计算数学中最为重要的研究方向之一。而在深度学习领域，优化算法的选择也是一个模型的重中之重。即使在数据集和模型架构完全相同的情况下，采用不同的优化算法，也很可能导致截然不同的训练效果。</p>
-<p>梯度下降是目前神经网络中使用最为广泛的优化算法之一。为了弥补朴素梯度下降的种种缺陷，研究者们发明了一系列变种算法，从最初的
-SGD (随机梯度下降) 逐步演进到
-NAdam。<strong>然而，许多学术界最为前沿的文章中，都并没有一味使用
-Adam/NAdam 等公认“好用”的自适应算法，很多甚至还选择了最为初级的 SGD 或者
-SGD with Momentum 等</strong>。</p>
-<h3><span id="一-常见的优化算法">一、常见的优化算法</span></h3>
-<h4><span id="11-gradient-descent框架"><strong>1.1 Gradient Descent</strong>
-框架</span></h4>
-<p>梯度下降是指，在给定待优化的模型参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta+%5Cin+%5Cmathbb%7BR%7D%5Ed" alt="[公式]"> 和目标函数 <img src="https://www.zhihu.com/equation?tex=J%28%5Ctheta%29" alt="[公式]">
-后，算法通过沿梯度 <img src="https://www.zhihu.com/equation?tex=%5Cnabla_%5Ctheta+J%28%5Ctheta%29" alt="[公式]"> 的相反方向更新 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
-来最小化 <img src="https://www.zhihu.com/equation?tex=J%28%5Ctheta%29" alt="[公式]"> 。学习率 <img src="https://www.zhihu.com/equation?tex=%5Ceta" alt="[公式]">
-决定了每一时刻的更新步长。对于每一个时刻 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]">
-，我们可以用下述步骤描述梯度下降的流程：</p>
-<ol type="1">
-<li>计算目标函数关于参数的梯度</li>
-</ol>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=g_t+%3D+%5Cnabla_%5Ctheta+J%28%5Ctheta%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ol start="2" type="1">
-<li><strong>根据历史梯度计算一阶和二阶动量</strong></li>
-</ol>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=m_t+%3D+%5Cphi%28g_1%2C+g_2%2C+%5Ccdots%2C+g_t%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=v_t+%3D+%5Cpsi%28g_1%2C+g_2%2C+%5Ccdots%2C+g_t%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ol start="3" type="1">
-<li>更新模型参数</li>
-</ol>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bt%2B1%7D+%3D+%5Ctheta_t+-+%5Cfrac%7B1%7D%7B%5Csqrt%7Bv_t+%2B+%5Cepsilon%7D%7D+m_t" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cepsilon" alt="[公式]"> 为平滑项，防止分母为零，通常取 1e-8。</p>
-<h4><span id="12-vanilla-sgd">==1.2 Vanilla SGD==</span></h4>
-<p><strong>朴素 SGD (Stochastic Gradient Descent)
-最为简单，没有动量的概念</strong>，即</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=m_t+%3D+%5Ceta+g_t" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=v_t+%3D+I%5E2" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cepsilon+%3D+0" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>这时，更新步骤就是最简单的</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bi%2B1%7D%3D+%5Ctheta_t+-+%5Ceta+g_t" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>SGD
-的缺点在于收敛速度慢，可能在鞍点处震荡。并且，如何合理的选择学习率是 SGD
-的一大难点。</p>
-<h4><span id="13-momentum">==1.3 Momentum==</span></h4>
-<p>SGD 在遇到沟壑时容易陷入震荡。为此，可以为其引入动量
-Momentum[3]，加速 SGD 在正确方向的下降并抑制震荡。</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=m_t+%3D+%5Cgamma+m_%7Bt-1%7D+%2B+%5Ceta+g_t" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><strong>SGD-M 在原步长之上，增加了与上一时刻步长相关的 <img src="https://www.zhihu.com/equation?tex=%5Cgamma+m_%7Bt-1%7D" alt="[公式]"> ，<img src="https://www.zhihu.com/equation?tex=%5Cgamma" alt="[公式]"> 通常取 0.9
-左右。==这意味着参数更新方向不仅由当前的梯度决定，也与此前累积的下降方向有关。这使得参数中那些梯度方向变化不大的维度可以加速更新，并减少梯度方向变化较大的维度上的更新幅度==。由此产生了加速收敛和减小震荡的效果。</strong>从图中可以看出，引入动量有效的加速了梯度下降收敛过程。</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-2476080e4cdfd489ae64ae3ceeafe48b_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-b9388fd6e465d82687680f9d16edcd2b_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="14-adagrad-二阶动量改变学习率">==1.4 Adagrad== 【二阶动量
-改变学习率】</span></h4>
-<p>SGD、SGD-M 和 NAG 均是以相同的学习率去更新 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
-的各个分量。而深度学习模型中往往涉及大量的参数，不同参数的更新频率往往有所区别。对于更新不频繁的参数（典型例子：更新
-word embedding
-中的低频词），我们希望单次步长更大，多学习一些知识；对于更新频繁的参数，我们则希望步长较小，使得学习到的参数更稳定，不至于被单个样本影响太多。</p>
-<p>Adagrad[4] 算法即可达到此效果。其引入了二阶动量：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=v_t+%3D+%5Ctext%7Bdiag%7D%28%5Csum_%7Bi%3D1%7D%5Et+g_%7Bi%2C1%7D%5E2%2C+%5Csum_%7Bi%3D1%7D%5Et+g_%7Bi%2C2%7D%5E2%2C+%5Ccdots%2C+%5Csum_%7Bi%3D1%7D%5Et+g_%7Bi%2Cd%7D%5E2%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=v_t+%5Cin+%5Cmathbb%7BR%7D%5E%7Bd%5Ctimes+d%7D" alt="[公式]"> 是对角矩阵，其元素 <img src="https://www.zhihu.com/equation?tex=v_%7Bt%2C+ii%7D" alt="[公式]">
-为参数第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]">
-维从初始时刻到时刻 <img src="https://www.zhihu.com/equation?tex=t" alt="[公式]"> 的梯度平方和。</p>
-<p>此时，可以这样理解：学习率等效为 <img src="https://www.zhihu.com/equation?tex=%5Ceta+%2F+%5Csqrt%7Bv_t+%2B+%5Cepsilon%7D" alt="[公式]">
-。对于此前频繁更新过的参数，其二阶动量的对应分量较大，学习率就较小。这一方法在稀疏数据的场景下表现很好。</p>
-<h4><span id="15-rmsprop定制之前梯度的重要性">==1.5 RMSprop==
-【定制之前梯度的重要性】</span></h4>
-<p>在 Adagrad 中， <img src="https://www.zhihu.com/equation?tex=v_t" alt="[公式]"> 是单调递增的，使得学习率逐渐递减至
-0，可能导致训练过程提前结束。为了改进这一缺点，<strong>可以考虑在计算二阶动量时不累积全部历史梯度，而只关注最近某一时间窗口内的下降梯度</strong>。根据此思想有了
-RMSprop[5]。记 <img src="https://www.zhihu.com/equation?tex=g_t+%5Codot+g_t" alt="[公式]">
-为 <img src="https://www.zhihu.com/equation?tex=g_t%5E2" alt="[公式]">
-，有</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=v_t+%3D+%5Cgamma+v_%7Bt-1%7D+%2B+%281-%5Cgamma%29+%5Ccdot+%5Ctext%7Bdiag%7D%28g_t%5E2%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其二阶动量采用指数移动平均公式计算，这样即可避免二阶动量持续累积的问题。和
-SGD-M 中的参数类似，<img src="https://www.zhihu.com/equation?tex=%5Cgamma" alt="[公式]"> 通常取
-0.9 左右</p>
-<h4><span id="16-adamrms-prop-momentum"><strong><font color="red"> 1.6 Adam
-【RMS prop + momentum】</font></strong></span></h4>
-<p><strong>Adam</strong>[6] 可以认为是 <strong>RMSprop</strong> 和
-<strong>Momentum</strong> 的结合。和 RMSprop
-对二阶动量使用指数移动平均类似，Adam
-中对一阶动量也是用指数移动平均计算。</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=m_t+%3D+%5Ceta%5B+%5Cbeta_1+m_%7Bt-1%7D+%2B+%281+-+%5Cbeta_1%29g_t+%5D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=v_t+%3D+%5Cbeta_2+v_%7Bt-1%7D+%2B+%281-%5Cbeta_2%29+%5Ccdot+%5Ctext%7Bdiag%7D%28g_t%5E2%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中，初值</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=m_0+%3D+0" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=v_0+%3D+0" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>注意到，在迭代初始阶段，<img src="https://www.zhihu.com/equation?tex=m_t" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=v_t" alt="[公式]">
-有一个向初值的偏移（过多的偏向了
-0）。因此，可以对一阶和二阶动量做偏置校正 (bias correction)，</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Chat%7Bm%7D_t+%3D+%5Cfrac%7Bm_t%7D%7B1-%5Cbeta_1%5Et%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Chat%7Bv%7D_t+%3D+%5Cfrac%7Bv_t%7D%7B1-%5Cbeta_2%5Et%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>再进行更新，</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bt%2B1%7D+%3D+%5Ctheta_t+-+%5Cfrac%7B1%7D%7B%5Csqrt%7B%5Chat%7Bv%7D_t%7D+%2B+%5Cepsilon+%7D+%5Chat%7Bm%7D_t" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>可以保证迭代较为平稳。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2GJ0XH9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2GJ0XH9/" class="post-title-link" itemprop="url">深度学习-激活函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-23 14:35:33" itemprop="dateCreated datePublished" datetime="2022-04-23T14:35:33+08:00">2022-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-06-27 19:47:50" itemprop="dateModified" datetime="2022-06-27T19:47:50+08:00">2022-06-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-激活函数的作用以及不同激活函数的优缺点"><strong>一、激活函数的作用以及不同激活函数的优缺点？</strong></span></h2>
-<blockquote>
-<p>深度学习领域最常用的10个激活函数，一文详解数学原理及优缺点 -
-机器之心的文章 - 知乎 https://zhuanlan.zhihu.com/p/352668984</p>
-<p><strong>详解激活函数（Sigmoid/Tanh/ReLU/Leaky ReLu等）</strong> -
-李见黎的文章 - 知乎 https://zhuanlan.zhihu.com/p/427541517</p>
-</blockquote>
-<h3><span id="一-激活函数">一、激活函数</span></h3>
-<p><strong><font color="red">
-激活函数简述激活函数是向神经网络中引入非线性因素，通过激活函数神经网络就可以拟合各种曲线。激活函数主要分为饱和激活函数（Saturated
-Neurons）和非饱和函数（One-sided
-Saturations）。</font></strong>Sigmoid和Tanh是饱和激活函数，而ReLU以及其变种为非饱和激活函数。非饱和激活函数主要有如下优势：</p>
-<ul>
-<li><strong>非饱和激活函数可以解决梯度消失问题</strong>。</li>
-<li><strong>非饱和激活函数可以加速收敛</strong>。</li>
-</ul>
-<figure>
-<img src="https://pic2.zhimg.com/v2-9bede9b4cd7bba5cce65d6d83404681d_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="11-梯度消失vanishinggradients">1.1 梯度消失(Vanishing
-Gradients)</span></h4>
-<p>Sigmoid的函数图像和Sigmoid的梯度函数图像分别为(a)、(e)，从图像可以看出，函数两个边缘的梯度约为0，梯度的取值范围为(0,0.25)。求解方程为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=y%3D1%2F%281%2Be%5E%7B-x%7D%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=y%5E%7B%27%7D%3Dy%281-y%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ul>
-<li><strong>Sigmoid极容易导致梯度消失问题</strong>。饱和神经元会使得梯度消失问题雪上加霜，假设神经元输入Sigmoid的值特别大或特别小，对应的梯度约等于0，即使从上一步传导来的梯度较大，该神经元权重(w)和偏置(bias)的梯度也会趋近于0，导致参数无法得到有效更新。</li>
-<li><strong>计算费时</strong>。
-在神经网络训练中，常常要计算Sigmid的值进行幂计算会导致耗时增加。</li>
-<li><strong>==Sigmoid函数不是关于原点中心对称的（zero-centered)==</strong>，Tanh激活函数解决了原点中心对称问题。</li>
-</ul>
-<h4><span id="12-relu与死亡神经元">1.2 ReLU与死亡神经元</span></h4>
-<p><strong>ReLU解决梯度消失问题</strong></p>
-<p><strong>ReLU激活函数的提出就是为了解决梯度消失问题。</strong>ReLU的梯度只可以取两个值：0或1，当输入小于0时，梯度为0；当输入大于0时，梯度为1。好处就是：ReLU的梯度的连乘不会收敛到0，连乘的结果也只可以取两个值：0或1
-。如果值为1，梯度保持值不变进行前向传播；如果值为0
-,梯度从该位置停止前向传播。</p>
-<ul>
-<li><strong>Sigmoid函数是双侧饱和的，即朝着正负两个方向函数值都会饱和</strong>；</li>
-<li><strong>ReLU函数是单侧饱和的，即只有朝着负方向，函数值才会饱和</strong>。严格意义上来说，将ReLU函数值为0的部分称作饱和是不正确的(饱和应该是取值趋近于0)，但效果和饱和是一样的。</li>
-</ul>
-<p>假设神经元为检测某种特定特征的开关，高层神经元负责检测高级的/抽象的特征(有着更丰富的语义信息)，例如眼睛或者轮胎；低层神经元负责检测低级的/具象的特征(曲线或者边缘)。当开关处于开启状态，说明在输入范围内检测到了对应的特征，且正值越大代表特征越明显。加入某个神经元负责检测边缘，则正值越大代表边缘区分越明显(sharp)。假设一个负责检测边缘的神经元，激活值为1相对于激活值为0.5来说，检测到的边缘区分地更明显；但激活值-1相对于-0.5来说就没有意义了，因为低于0的激活值都代表没有检测到边缘。<strong>所以用一个常量值0来表示检测不到特征是更为合理的，像ReLU这样单侧饱和的神经元就满足要求。</strong></p>
-<p><strong>单侧饱和还能使得神经元对于噪声干扰更具鲁棒性</strong>。假设一个双侧都不饱和的神经元，正侧的不饱和导致神经元正值的取值各不相同，这是所希望的，因为正值的大小代表了检测特征信号的强弱。但负值的大小引入了背景噪声或者其他特征信息，这会给后续的神经元带来无用的干扰且可能导致神经元之间的相关性，相关性是容易造成模型病态的。例如检测直线的神经元和检测曲线的神经元可能有负相关性。在负值区域单侧饱和的神经元则不会有上述问题，噪声的程度大小被饱和区域都截断为0,避免了无用信息的干扰。</p>
-<p>使用ReLU激活函数在计算上也是高效的。相对于Sigmoid函数梯度的计算，ReLU函数梯度取值只有0或1。且ReLU将负值截断为0
-，为网络引入了稀疏性，进一步提升了计算高效性。</p>
-<h4><span id="13-神经元死亡">1.3 神经元死亡</span></h4>
-<p>ReLU尽管稀疏性可以提升计算高效性，但同样也可能阻碍训练过程。通常，激活函数的输入值有一偏置项(bias)，假设bias变得太小，以至于输入激活函数的值总是负的，那么反向传播过程经过该处的梯度恒为0,对应的权重和偏置参数此次无法得到更新。如果对于所有的样本输入，<strong>该激活函数的输入都是负的，那么该神经元再也无法学习，称为神经元”死亡“问题。</strong></p>
-<p><strong>Leaky ReLU可以解决神经元”死亡“问题</strong></p>
-<p>Leaky ReLU的提出就是为了解决神经元”死亡“问题，Leaky
-ReLU与ReLU很相似，仅在输入小于0的部分有差别，ReLU输入小于0的部分值都为0，而LeakyReLU输入小于0的部分，值为负，且有微小的梯度。函数图像为(d)。</p>
-<p><strong>使用Leaky ReLU的好处就是：在反向传播过程中，对于Leaky
-ReLU激活函数输入小于零的部分，也可以计算得到梯度(而不是像ReLU一样值为0)，这样就避免了梯度方向锯齿问题。</strong></p>
-<p>α的分布满足均值为0,标准差为1的正态分布，该方法叫做随机Leaky
-ReLU(Randomized Leaky ReLU)。原论文指出随机Leaky ReLU相比Leaky
-ReLU能得更好的结果，且给出了参数α的经验值1/5.5(好于0.01)。至于为什么随机Leaky
-ReLU能取得更好的结果，解释之一就是随机Leaky
-ReLU小于0部分的随机梯度，为优化方法引入了随机性，这些随机噪声可以帮助参数取值跳出局部最优和鞍点。将α作为了需要学习的参数，该激活函数为PReLU(Parametrized
-ReLU)。</p>
-<h4><span id="14-eluexponential-linearunit">1.4 ELU(Exponential Linear
-Unit)</span></h4>
-<p>理想的激活函数应满足两个条件：</p>
-<p>1.<strong>输出的分布是零均值的，可以加快训练速度。</strong></p>
-<p><strong>2.激活函数是单侧饱和的，可以更好的收敛。</strong></p>
-<p>LeakyReLU和PReLU满足第1个条件，不满足第2个条件；而ReLU满足第2个条件，不满足第1个条件。两个条件都满足的激活函数为ELU(Exponential
-Linear Unit)，函数图像如图（e）。其表达式如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+f%28x%29%3D+%5Cleft%5C%7B++++++++++++++%5Cbegin%7Barray%7D%7Blr%7D++++++++++++++x%2C%26+x%3E0.+%5C%5C++++++++++++++%5Calpha%28e%5E%7Bx%7D-1%29%2C+%26+x%5Cleq+0.%5C%5C++++++++++++++%5Cend%7Barray%7D+%5Cright.+%5Cend%7Bequation%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="14-梯度爆炸">1.4 梯度爆炸</span></h4>
-<p>梯度误差是在神经网络训练期间计算的方向和梯度，神经网络以正确的方向和数值更新网络权重。在深度网络或递归神经网络中，梯度误差可能在更新过程中累积，造成非常大的梯度。这反过来会导致网络权重的大量更新，进而导致网络不稳定。<strong>在极端情况下，权重值可能变得太大，以至于溢出并导致NaN值现成梯度爆炸现象</strong>。</p>
-<p><strong>梯度爆炸是通过指数增长发生的，通过在网络层（其值大于1.0）中重复乘以梯度。</strong></p>
-<p><strong>梯度爆炸现象</strong>：模型无法“加入”训练数据，比如损失函数很差；模型不稳定，每次更新的损失变化很大；模型损失在训练过程中变为NaN</p>
-<h4><span id="如何解决梯度爆炸"><strong>如何解决梯度爆炸？</strong></span></h4>
-<p>1.重现设计神经网络<strong>，减少网络层数、减小batch
-szie、截断</strong>。</p>
-<p>2.使用<strong>LSTM</strong></p>
-<p>3.使用梯度裁剪、clipnorm=1.0 clipvalue=0.5</p>
-<p>4.使用权重正则L1 &amp; L2</p>
-<h3><span id="二-常用激活函数">二、常用激活函数</span></h3>
-<p><strong>常用的激活函数：==sigmoid==，==Tanh==，==ReLU==，==Leaky
-ReLU==，PReLU，ELU，Maxout</strong></p>
-<h4><span id="21-sigmoid函数">2.1 <strong>sigmoid函数</strong></span></h4>
-<p>sigmoid函数又称
-Logistic函数，用于隐层神经元输出，取值范围为(0,1)，可以用来做二分类。</p>
-<p>表达式： <img src="https://www.zhihu.com/equation?tex=%5Csigma%28x%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"></p>
-<p>导数为： <span class="math display">\[
-\sigma^{\prime}(x)=\sigma(x)[1-\sigma(x)]
-\]</span>
-<img src="https://pic2.zhimg.com/v2-6d06c0db16a0cc66e27bfb97d08b14bd_b.jpg" alt="img" style="zoom: 50%;"></p>
-<p><strong>优点</strong>：</p>
-<ul>
-<li>Sigmoid函数的输出在(0,1)之间，输出范围有限，优化稳定，可以用作输出层。</li>
-<li>线性回归在实数域上敏感度一致，而<strong>逻辑回归在 0
-附近敏感</strong>，在远离 0
-点位置不敏感，这个的好处就是模型更加关注分类边界，可以增加模型的鲁棒性。</li>
-<li>连续函数，便于求导。</li>
-</ul>
-<p><strong>缺点</strong>：</p>
-<ul>
-<li>sigmoid函数在变量取绝对值非常大的正值或负值时会出现<strong>饱和</strong>现象，意味着函数会变得很平，并且对输入的微小改变会变得不敏感。【<strong>梯度消失</strong>】</li>
-<li><strong>sigmoid函数的输出不是0均值的</strong>，会导致后层的神经元的输入是非0均值的信号，这会对梯度产生影响。具体可参考下面，简单说就是可能导致<strong>收敛效率低</strong>的问题；</li>
-<li><strong>计算复杂度高</strong>，因为sigmoid函数是指数形式。</li>
-</ul>
-<h4><span id="22-tanh函数">2.2 <strong>Tanh函数</strong></span></h4>
-<p>Tanh函数也称为双曲正切函数，取值范围为[-1,1]。==Tanh函数是 0
-均值的，因此实际应用中 Tanh 会比 sigmoid
-更好。但是仍然存在<strong>梯度饱和</strong>与<strong>exp计算复杂度高</strong>的问题。==</p>
-<p>Tanh函数定义如下: <span class="math display">\[
-f(x)=\operatorname{Tanh} x=\frac{\sinh x}{\cosh
-x}=\frac{e^{x}-e^{-x}}{e^{x}+e^{-x}}
-\]</span> 它的导数为: <span class="math display">\[
-f^{\prime}(x)=1-[f(x)]^{2}
-\]</span>
-<img src="https://pic4.zhimg.com/v2-b3d1085558d8a5a00cf837cf93a8cacb_b.jpg" alt="img" style="zoom:50%;"></p>
-<h4><span id="23-relu函数">2.3 ReLU函数</span></h4>
-<p><strong>整流线性单元 (Rectified linear unit, ReLU)
-是现代神经网络中最常用的激活函数, 大多数
-前馈神经网络默认使用的激活函数。</strong> ReLU函数定义如下: <span class="math inline">\(\quad f(x)=\max (0, x)\)</span>
-<img src="https://pic3.zhimg.com/v2-59192e63d9c658e045f6c6e533ac9546_b.jpg" alt="img" style="zoom:50%;">
-<strong>优点:</strong></p>
-<ol type="1">
-<li><strong>使用ReLU的SGD算法的收敛速度比 sigmoid 和 tanh
-快。</strong></li>
-<li><strong>在 <span class="math inline">\(x&gt;0\)</span> 区域上,
-不会出现梯度饱和、梯度消失的问题。</strong></li>
-<li><strong>计算复杂度低, 不需要进行指数运算,
-只要一个阈值就可以得到激活值。</strong></li>
-</ol>
-<p><strong>缺点:</strong></p>
-<ol type="1">
-<li><strong>ReLU的输出不是O均值的。</strong></li>
-<li><strong>==Dead ReLU
-Problem(神经元坏死现象)==</strong>：ReLU在负数区域被kill的现象叫做dead
-relu。 ReLU在训练的时很“脆弱”。在 <span class="math inline">\(x&lt;0\)</span> 时, 梯度为 0
-。这个神经元及之后的神经元梯度永远为 0
-；<strong>产生</strong>这种现象的两个<strong>原因</strong>：参数初始化问题；learning
-rate太高导致在训练过程中参数更新太大。</li>
-</ol>
-<h2><span id="二-激活函数">二、激活函数</span></h2>
-<h4><span id="21在神经网络中激活函数sigmoid和tanh除了阈值取值外有什么不同吗">2.1
-在神经网络中，激活函数sigmoid和tanh除了阈值取值外有什么不同吗？</span></h4>
-<h4><span id="22了解那些激活函数以及应用"><strong>2.2
-了解那些激活函数以及应用？</strong></span></h4>
-<p>回答主要分两类（饱和/非饱和），以及应用场景等。有时候可能特定到具体经典模型，比如<strong>LSTM用到Tanh,Transfromer中用到的ReLU,Bert中的GeLU,YOLO的Leaky
-ReLU等。</strong></p>
-<h4><span id="23梯度消失与梯度爆炸现象与原因以及解决办法"><strong>2.3
-梯度消失与梯度爆炸现象与原因以及解决办法？</strong></span></h4>
-<h4><span id="24relu激活函数为什么会出现死神经元解决办法">2.4
-ReLU激活函数为什么会出现死神经元，解决办法？</span></h4>
-<p><strong>输入为负值时，ReLU的梯度为0造成神经元死亡。还有Learning
-rate太高导致在训练过程中参数更新太大 。</strong></p>
-<p>解决办法主要有：1.优化参数。 2.避<strong>免将learning
-rate设置太大</strong>，或者<strong>使用Adam等自动调节learning
-rate的方法</strong>。3.更换激活函数。</p>
 
       
     </div>

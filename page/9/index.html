@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-count">254</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,961 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3KV4V6N/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3KV4V6N/" class="post-title-link" itemprop="url">深度学习-NLP（4）BERT*-P2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-10 22:13:40" itemprop="dateCreated datePublished" datetime="2022-06-10T22:13:40+08:00">2022-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-30 00:04:36" itemprop="dateModified" datetime="2022-08-30T00:04:36+08:00">2022-08-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1><span id="fun-facts-about-bert">Fun Facts about BERT</span></h1>
+<h4><span id="why-does-bert-work">Why does BERT work?</span></h4>
+<p>"为什么BERT有用？"最常见的解释是，当输入一串文本时，每个文本都有一个对应的向量。对于这个向量，我们称之为<strong>embedding</strong>。</p>
+<p><img src="image-20220613180116363.png" alt="image-20220613180116363" style="zoom:50%;"></p>
+<p>它的特别之处在于，这些向量代表了<strong>输入词</strong>的<strong>含义</strong>。例如，模型输入
+"台湾大学"（国立台湾大学），输出4个向量。这4个向量分别代表
+"台"、"湾"、"大 "和
+"学"。更具体地说，如果你把这些词所对应的向量画出来，或者计算它们之间的<strong>距离</strong>。</p>
+<p><img src="image-20220613180203638.png" alt="image-20220613180203638" style="zoom:50%;"></p>
+<p>你会发现，<strong>意思比较相似的词</strong>，它们的<strong>向量比较接近</strong>。例如，水果和草都是植物，它们的向量比较接近。但这是一个假的例子，我以后会给你看一个真正的例子。"鸟
+"和 "鱼 "是动物，所以它们可能更接近。</p>
+<p>你可能会问，中文有歧义，其实不仅是中文，很多语言都有歧义，<strong>BERT可以考虑上下文</strong>，所以，同一个词，比如说
+"苹果"，它的上下文和另一个 "苹果 "不同，它们的向量也不会相同。</p>
+<p>水果 "苹果 "和手机 "苹果 "都是
+"苹果"，但根据上下文，它们的<strong>含义是不同</strong>的。所以，它的<strong>向量和相应的embedding会有很大不同</strong>。水果
+"苹果 "可能更接近于 "草"，手机 "苹果 "可能更接近于 "电"。</p>
+<p><strong>现在我们看一个真实的例子</strong>。假设我们现在考虑 "苹果
+"这个词，我们会收集很多有 "苹果 "这个词的句子，比如
+"喝苹果汁"、"苹果Macbook "等等。然后，我们把这些句子放入BERT中。</p>
+<p><img src="image-20220613180822924.png" alt="image-20220613180822924" style="zoom:50%;"></p>
+<p>接下来，我们将计算 "苹果 "一词的相应embedding。输入
+"喝苹果汁"，得到一个 "苹果
+"的向量。为什么不一样呢？在Encoder中存在Self-Attention，所以根据 "苹果
+"一词的不同语境，得到的向量会有所不同。接下来，我们计算这些结果之间的==cosine
+similarity==，即计算它们的相似度。结果是这样的，这里有10个句子：</p>
+<p><img src="image-20220613180921490.png" alt="image-20220613180921490" style="zoom:50%;"></p>
+<ul>
+<li><p>前5个句子中的 "苹果
+"代表<strong>可食用</strong>的苹果。例如，第一句是
+"我今天买了苹果吃"，第二句是 "进口富士苹果平均每公斤多少钱"，第三句是
+"苹果茶很难喝"，第四句是 "智利苹果的季节来了"，第五句是
+"关于进口苹果的事情"，这五个句子都有 "苹果 "一词，</p></li>
+<li><p>后面五个句子也有 "苹果
+"一词，但提到的是<strong>苹果公司</strong>的苹果。例如，"苹果即将在下个月发布新款iPhone"，"苹果获得新专利"，"我今天买了一部苹果手机"，"苹果股价下跌"，"苹果押注指纹识别技术"，共有十个
+"苹果"</p></li>
+</ul>
+<p>计算每一对之间的相似度，得到一个10×10的矩阵。<strong>相似度越高，这个颜色就越浅</strong>。所以，自己和自己之间的相似度一定是最大的，自己和别人之间的相似度一定是更小的。但前五个
+"苹果 "和后五个 "苹果 "之间的相似度相对较低。<font color="red">
+<strong>BERT知道，前五个 "苹果
+"是指可食用的苹果，所以它们比较接近。最后五个 "苹果
+"指的是苹果公司，所以它们比较接近。所以BERT知道，上下两堆 "苹果
+"的含义不同</strong>。</font></p>
+<p>BERT的这些向量是输出向量，每个向量代表该词的含义。BERT在填空的过程中已经学会了每个汉字的意思。",也许它真的理解了中文，对它来说，汉字不再是毫无关联的，既然它理解了中文，它就可以在接下来的任务中做得更好。</p>
+<p>那么接下来你可能会问，"为什么BERT有如此神奇的能力？",为什么......,为什么它能输出代表输入词含义的向量？
+这里，约翰-鲁伯特-弗斯，一位60年代的语言学家，提出了一个假说。他说，要知道一个词的意思，我们需要看它的
+"<strong>Company</strong>"，也就是经常和它<strong>一起出现的词汇</strong>，也就是它的<strong>上下文</strong>。</p>
+<p><img src="image-20220613181131296.png" alt="image-20220613181131296" style="zoom:50%;"></p>
+<p>一个词的意思，取决于它的上下文</p>
+<ul>
+<li><p>所以以苹果（apple）中的果字为例。如果它经常与 "吃"、"树
+"等一起出现，那么它可能指的是可食用的苹果。</p></li>
+<li><p>如果它经常与电子、专利、股票价格等一起出现，那么它可能指的是苹果公司。</p></li>
+</ul>
+<p>当我们训练BERT时，我们给它w1、w2、w3和w4，我们覆盖w2，并告诉它预测w2，而它就是从上下文中提取信息来预测w2。所以这个向量是其上下文信息的精华，可以用来预测w2是什么。</p>
+<p><font color="red"> <strong>这样的想法在BERT之前已经存在了。在word
+embedding中，有一种技术叫做CBOW</strong>。</font></p>
+<p><img src="image-20220613181612756.png" alt="image-20220613181612756" style="zoom:50%;"></p>
+<p>CBOW所做的，与BERT完全一样。做一个空白，并要求它预测空白处的内容。这个CBOW，这个word
+embedding技术，可以给每个词汇一个向量，代表这个词汇的意义。</p>
+<p>CBOW是一个非常简单的模型，它使用两个变换，是一个<strong>非常简单的模型</strong>，有人会问，"为什么它只使用两个变换？"，"它可以更复杂吗？"，CBOW的作者，Thomas
+Mikolov，曾经来到台湾。当时我在上课的时候，经常有人问我，为什么CBOW只用线性，为什么不用深度学习，我问过Thomas
+Mikolov这个问题，他说可以用深度学习，但是之所以选择线性模型，一个简单的模型，最大的担心，其实是<strong>算力问题</strong>。当时的计算能力和现在不在一个数量级上，可能是2016年的时候，几年前的技术也不在一个数量级上，当时要训练一个非常大的模型还是比较困难的，所以他选择了一个比较简单的模型。</p>
+<p><font color="red">
+<strong>今天，当你使用BERT的时候，就相当于一个深度版本的CBOW</strong></font>。你可以做更复杂的事情，而且<strong>BERT还可以根据不同的语境，从同一个词汇产生不同的embedding</strong>。因为它是一个考虑到语境的高级版本的词embedding，BERT也被称为Contextualized
+embedding，这些由<strong>BERT提取的向量或embedding被称为Contextualized
+embedding</strong>，希望大家能接受这个答案。</p>
+<h4><span id="但是这个答案它真的是真的吗">但是，这个答案，它真的是真的吗？</span></h4>
+<p>这是你在文献中听到最多的答案。当你和别人讨论BERT时，这是大多数人都会告诉你的理由。它真的是真的吗？这里有一个难以理解的，由我们实验室的一个学生做的实验。实验是这样的：<strong>我们应用为文本训练的BERT对蛋白质、DNA链和音乐进行分类</strong>。</p>
+<p><img src="image-20220613182040464.png" alt="image-20220613182040464" style="zoom:50%;"></p>
+<p>让我们以DNA链的分类为例。DNA是一系列的脱氧核团核酸，有四种，分别用A、T、C和G表示，所以一条DNA链是这样的。你可能会问，"EI
+IE和N代表什么？"不要在意细节，我也不知道，总之，这是一个分类问题。只要用训练数据和标记数据来训练它，就可以了。神奇的部分来了，DNA可以用ATCG来表示，现在，我们要用BERT来对DNA进行分类：</p>
+<p><img src="image-20220613182514103.png" alt="image-20220613182514103" style="zoom:50%;"></p>
+<p>例如，"A "是 "we"，"T "是 "you"，"C "是 "he"，"G "是
+"she"。对应的词并不重要，你可以随机生成。"A "可以对应任何词汇，"T"、"C
+"和 "G "也可以，这并不重要，对结果影响很小。只是这串文字无法理解。</p>
+<p>例如，"AGAC "变成了 "we she we
+he"，不知道它在说什么。然后，把它扔进一个一般的BERT，用CLS标记，一个输出向量，一个Linear
+transform，对它进行分类。只是分类到了DNA类,我不知道他们是什么意思。和以前一样，Linear
+transform使用随机初始化，而BERT是通过预训练模型初始化的。但用于初始化的模型，是学习填空的模型。它已经学会了英语填空。你可能会认为,这个实验完全是无稽之谈。如果我们把一个DNA序列预处理成一个无意义的序列,那么BERT的目的是什么?
+大家都知道,BERT可以分析一个有效句子的语义,你怎么能给它一个无法理解的句子呢?
+做这个实验的意义是什么?</p>
+<p>蛋白质有三种分类，那么蛋白质是由氨基酸组成的，有十种氨基酸，只要给每个氨基酸一个随机的词汇，那么DNA是一组ATCG，音乐也是一组音符，给它每个音符一个词汇，然后，把它作为一个文章分类问题来做。</p>
+<p><img src="image-20220613182551067.png" alt="image-20220613182551067" style="zoom:50%;"></p>
+<p>你会发现，如果你不使用BERT，你得到的结果是蓝色部分，如果你使用BERT，你得到的结果是红色部分，这实际上更好，你们大多数人现在一定很困惑。这个实验只能用神奇来形容，没有人知道它为什么有效，而且目前还没有很好的解释，我之所以要谈这个实验，是想告诉你们，要了解BERT的力量，还有很多工作要做。</p>
+<p>我并不是要否认BERT能够分析句子的含义这一事实。从embedding中，我们清楚地观察到，BERT知道每个词的含义，它能找出含义相似的词和不相似的词。但正如我想指出的那样，即使你给它一个无意义的句子，它仍然可以很好地对句子进行分类。</p>
+<p>所以，<strong>也许它的力量并不完全来自于对实际文章的理解</strong>。也许还有其他原因。例如，也许，BERT只是一套更好的初始参数。也许这与语义不一定有关。也许这套初始参数，只是在训练大型模型时更好。</p>
+<p>是这样吗？这个问题<strong>需要进一步研究</strong>来回答。我之所以要讲这个实验，是想让大家知道，我们目前使用的模型往往是非常新的，需要进一步的研究，以便我们了解它的能力。如果你想了解更多关于BERT的知识，你可以参考这些链接。你的作业不需要它，,这学期剩下的时间也不需要。我只想告诉你，BERT还有很多其他的变种。</p>
+<h2><span id="multi-lingual-bert">Multi-lingual BERT</span></h2>
+<p>接下来，我要讲的是，一种叫做<strong>Multi-lingual
+BERT的BERT（多语言）</strong>。Multi-lingual BERT有什么神奇之处？</p>
+<p><img src="image-20220613182656588.png" alt="image-20220613182656588" style="zoom:50%;"></p>
+<p>它是由很多语言来训练的，比如中文、英文、德文、法文等等，用填空题来训练BERT，这就是Multi-lingual
+BERT的训练方式。</p>
+<h3><span id="zero-shot-readingcomprehension">Zero-shot Reading
+Comprehension</span></h3>
+<p>google训练了一个Multi-lingual
+BERT，它能够做这104种语言的填空题。神奇的地方来了，如果你用<strong>英文</strong>问答<strong>数据</strong>训练它，它就会自动学习如何做<strong>中文问答</strong>：</p>
+<p><img src="image-20220613182729448.png" alt="image-20220613182729448" style="zoom:50%;"></p>
+<p>我不知道你是否完全理解我的意思，所以这里有一个真实的实验例子。</p>
+<p><img src="image-20220613182748495.png" alt="image-20220613182748495" style="zoom:50%;"></p>
+<p>这是一些训练数据。他们用SQuAD进行fine-tune。这是一个英文Q&amp;A数据集。中文数据集是由台达电发布的，叫DRCD。这个数据集也是我们在作业中要用到的数据集。</p>
+<p>在BERT提出之前，效果并不好。在BERT之前，最强的模型是QANet。它的正确率只有......，嗯，我是说F1得分，而不是准确率，但你可以暂时把它看成是准确率或正确率。</p>
+<p>如果我们允许用中文填空题进行预训练，然后用中文Q&amp;A数据进行微调，那么它在中文Q&amp;A测试集上的正确率达到89%。因此，其表现是相当令人印象深刻的。</p>
+<p>神奇的是，如果我们把一个Multi-lingual的BERT，用英文Q&amp;A数据进行微调，它仍然可以回答中文Q&amp;A问题，并且有78%的正确率，这几乎与QANet的准确性相同。它从未接受过中文和英文之间的翻译训练，也从未阅读过中文Q&amp;A的数据收集。,它在没有任何准备的情况下参加了这个中文Q&amp;A测试，尽管它从未见过中文测试，但不知为何，它能回答这些问题。</p>
+<h3><span id="cross-lingual-alignment">Cross-lingual Alignment?</span></h3>
+<p>你们中的一些人可能会说："它在预训练中读过104种语言，104种语言中的一种是中文，是吗？
+如果是，这并不奇怪。"但是在预训练中，学习的目标是填空。它只能用中文填空。有了这些知识，再加上做英文问答的能力，不知不觉中，它就自动学会了做中文问答。</p>
+<p><img src="image-20220613183052341.png" alt="image-20220613183052341" style="zoom:50%;"></p>
+<p>听起来很神奇，那么BERT是怎么做到的呢？一个简单的解释是：也许对于多语言的BERT来说，<strong>不同的语言并没有那么大的差异</strong>。无论你用中文还是英文显示，对于具有相同含义的单词，它们的embedding都很接近。</p>
+<p>汉语中的 "跳 "与英语中的 "jump "接近，汉语中的 "鱼 "与英语中的 "fish
+"接近，汉语中的 "游 "与英语中的 "swim
+"接近，也许在学习过程中它已经自动学会了。它是可以被验证的。我们实际上做了一些验证。<font color="red">验证的标准被称为<strong>Mean
+Reciprocal
+Rank</strong>，缩写为MRR。我们在这里不做详细说明。你只需要知道，<strong>MRR的值越高，不同embedding之间的Alignment就越好</strong>。
+</font></p>
+<p>更好的Alignment意味着，具有相同含义但来自不同语言的词将被转化为更接近的向量。如果MRR高，那么具有相同含义但来自不同语言的词的向量就更接近。</p>
+<p><img src="image-20220613183548674.png" alt="image-20220613183548674" style="zoom:50%;"></p>
+<p><strong>这条深蓝色的线是谷歌发布的104种语言的Multi-lingual
+BERT的MRR，它的值非常高，这说明不同语言之间没有太大的差别。Multi-lingual
+BERT只看意思，不同语言对它没有太大的差别。</strong></p>
+<p>橙色这条是我们试图自己训练Multi-lingual
+BERT。我们使用的<strong>数据较少</strong>，每种语言只使用了20万个句子。数据较少。我们自我训练的模型结果并不好。我们不知道为什么我们的Multi-lingual
+BERT不能将不同的语言统一起来。似乎它不能学习那些在不同语言中具有相同含义的符号，它们应该具有相同的含义。这个问题困扰了我们很长时间。</p>
+<p>为什么我们要做这个实验？为什么我们要自己训练Multi-lingual
+BERT？因为我们想了解，是什么让Multi-lingual
+BERT。我们想设置不同的参数，不同的向量，看看哪个向量会影响Multi-lingual
+BERT。</p>
+<p>但是我们发现，对于我们的Multi-lingual
+BERT来说，无论你如何调整参数，它就是不能达到Multi-lingual的效果，它就是不能达到Alignment的效果。我们把数据量<strong>增加了五倍</strong>，看看能不能达到Alignment的效果。在做这个实验之前，大家都有点抵触，大家都觉得有点害怕，因为训练时间要比原来的长五倍。<strong>训练了两天后，什么也没发生，损失甚至不能减少，就在我们要放弃的时候，损失突然下降了</strong>。</p>
+<p><img src="image-20220613183941470.png" alt="image-20220613183941470" style="zoom:50%;"></p>
+<p>用了8个V100来训练，我们的实验室也没有8个V100，是在NCHC（国家高性能计算中心）的机器上运行的，训练了两天后，损失没有下降，似乎失败了。当我们要放弃的时候，损失下降了。</p>
+<p>这是某个学生在Facebook上发的帖子，我在这里引用它来告诉你，我当时心里的感叹。整个实验，必须运行一个多星期，才能把它学好，每一种语言1000K的数据。</p>
+<p><img src="image-20220613184000971.png" alt="image-20220613184000971" style="zoom:50%;"></p>
+<p>所以看起来，<strong>数据量是一个非常关键的因素</strong>，关系到能否成功地将不同的语言排列在一起。所以有时候，神奇的是，很多问题或很多现象，只有在有足够的数据量时才会显现出来。它可以在A语言的QA上进行训练，然后直接转移到B语言上，从来没有人说过这一点。这是过去几年才出现的，一个可能的原因是，过去没有足够的数据，现在有足够的数据，现在有大量的计算资源，所以这个现象现在有可能被观察到。</p>
+<p>最后一个神奇的实验，我觉得这件事很奇怪：</p>
+<h4><span id="why">Why？</span></h4>
+<p><img src="image-20220613184030869.png" alt="image-20220613184030869" style="zoom:50%;"></p>
+<p>你说BERT可以把不同语言中含义相同的符号放在一起，使它们的向量接近。但是，当训练多语言的BERT时，如果给它英语，它可以用英语填空，如果给它中文，它可以用中文填空，它不会混在一起。那么，如果不同语言之间没有区别，怎么可能只用英语标记来填英语句子呢？为什么它不会用中文符号填空呢？它就是不填，这说明它知道语言的信息也是不同的，那些不同语言的符号毕竟还是不同的，它并没有完全抹去语言信息，所以我想出了一个研究课题，我们来找找，语言信息在哪里。</p>
+<p><font color="red">
+后来我们发现，语言信息并没有隐藏得很深。一个学生发现，我们把所有<strong>英语单词</strong>的embedding，放到多语言的BERT中，<strong>取embedding的平均值</strong>，我们对<strong>中文单词</strong>也做<strong>同样的事情</strong>。在这里，我们给Multi-lingual
+BERT一个英语句子，并得到它的embedding。我们在embedding中<strong>加上</strong>这个<strong>蓝色的向量</strong>，这就是<strong>英语和汉语之间的差距</strong>。</font></p>
+<p><img src="image-20220613184257490.png" alt="image-20220613184257490" style="zoom:50%;"></p>
+<p>这些向量，从Multi-lingual
+BERT的角度来看，变成了汉语。有了这个神奇的东西，你可以做一个奇妙的无监督翻译。例如，你给BERT看这个中文句子。</p>
+<p><img src="image-20220613184444235.png" alt="image-20220613184444235" style="zoom:50%;"></p>
+<p>这个中文句子是，"能帮助我的小女孩在小镇的另一边，，没人能够帮助我"，现在我们把这个句子扔到Multi-lingual
+BERT中。然后我们取出Multi-lingual
+BERT中的一个层，它不需要是最后一层，可以是任何一层。我们拿出某一层，给它一个embedding，加上这个蓝色的向量。对它来说，这个句子马上就从中文变成了英文。</p>
+<p>在向BERT输入英文后，通过在中间加一个<strong>蓝色的向量来转换隐藏</strong>层，转眼间，中文就出来了。"没有人可以帮助我"，变成了
+"是（是）没有人（没有人）可以帮助我（我）"，"我 "变成了 "我"，"没有人
+"变成了
+"没有人"，所以它在某种程度上可以做无监督的标记级翻译，尽管它并不完美，神奇的是，Multi-lingual的BERT仍然保留了语义信息。</p>
+<h2><span id="bert-qampa">BERT Q&amp;A</span></h2>
+<h3><span id="11-bert如何解决长文本问题-"><strong>1.1 Bert
+如何解决长文本问题？</strong> -</span></h3>
+<p>何枝的回答 - 知乎
+https://www.zhihu.com/question/327450789/answer/2455518614</p>
+<p>当我们遇到一个文本分类问题，大多数人首先会想到用BERT系列的模型做尝试。对于短文本而言（小于等于510个token）是work的，但如果遇到输入文本大于510个token时，此时就无法直接调用开源的pretrained-model来做fine-tuning了，本篇文章将通过Pooling的方法来尝试解决长文本下的分类问题。</p>
+<p>要想将一个大于510个token的文本输入，一般有以下几种方法：</p>
+<ul>
+<li><strong>Clipping（<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=截断法&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2455518614%7D">截断法</a>）</strong>：对长输入进行截断，挑选其中「重要」的token输入模型。一种最常见的办法是挑选文章的前
+Top N 个 token，和文末的 Top K 个 token，保证 N + K &lt;=
+510，这种方法基于的前提假设是「文章的首尾信息最能代表篇章的全局概要」；此外，还有一种
+two stage 的方法：先将文章过一遍 summarize 的模型，再将 summarize
+模型的输出喂给分类模型。但无论哪种截断方式，都必将会丢失一部分的文本信息，可能会导致分类错误。</li>
+<li><strong>Pooling（池化法）</strong>：截断法最大的问题在于需要丢掉一部分文本信息，如果我们能够保留文本中的所有信息，想办法让模型能够接收文本中的全部信息，这样就能避免文本丢失带来的影响。</li>
+<li><strong>RNN（<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=循环法&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2455518614%7D">循环法</a>）</strong>：BERT之所以会有最大长度的限制，是因为其在进行MLM预训练的时候就规定了最大的输入长度，而对于类RNN的网络来讲则不会有句子长度的限制（有多少个token就过多少次NN就行了）。但RNN相较于
+Transformer 来讲最大问题就在于效果不好，如何将 RNN 的思想用在
+Transformer 中就是一个比较有意思的话题了。推荐可以看看<a href="%5BERNIE/README_zh.md%20at%20repro%20·%20PaddlePaddle/ERNIE%5D(https://link.zhihu.com/?target=https%3A//github.com/PaddlePaddle/ERNIE/blob/repro/ernie-doc/README_zh.md)">ERNIE-DOC</a>，官网上是这么描述的，感兴趣的同学可以研究研究</li>
+</ul>
+<blockquote>
+<p>#### Pooling思想</p>
+<p>#### 1.1 句子分片</p>
+<p>由于 BERT 最多只能接受 510 个token
+的输入，因此我们需要将长文本切割成若干段。</p>
+<p>假设我们有 2 句 1000 个 token 的句子，那么我就需要先将这 2 个句子切成
+4 段（第 1 个句子的 2 段 + 第 2 个句子的 2 段），并放到一个 batch
+的输入中喂给模型。</p>
+<p><img src="https://pic2.zhimg.com/50/v2-f6b167e4ef46242086e5946ed6256462_720w.jpg?source=1940ef5c" alt="img" style="zoom: 50%;"></p>
+<p>文本分段，BERT输入数据维度（4, 510）</p>
+<p>#### 1.2 Pooling</p>
+<p><strong>当切完片后的数据喂给 BERT 后，我们取 BERT 模型的 [CLS]
+的输出，此时输出维度应该为：(4, 768) 。</strong></p>
+<p><strong>随即，我们需要将这 4 个 output
+按照所属句子分组，由下图所示，前 2
+个向量属于一个句子，因此我们将它们归为一组，此时的维度变化：(4, 768)
+-&gt; (2, 2, 768)。</strong></p>
+<p>接着，我们对同一组的向量进行 Pooling 操作，使其下采样为 1
+维的向量，即（1, 768）。</p>
+<p>Pooling 的方式有两种：Max-Pooling 和
+Avg-Pooling，我们会在后面的实验中比较两种不同 Pooling 的效果。</p>
+<p>这里推荐大家使用Max-Pooling比较好，因为 Avg-Pooling
+很有可能把特征值给拉平，选择保留显著特征（Max-Pooling）效果会更好一些。</p>
+<p><img src="https://pica.zhimg.com/80/v2-2b4ffc235b1135bedc1bc5caa700502b_1440w.jpg?source=1940ef5c" alt="img" style="zoom: 33%;"></p>
+</blockquote>
+<h4><span id></span></h4>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1ZBPFBF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1ZBPFBF/" class="post-title-link" itemprop="url">深度学习-NLP（4）BERT*-P1</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-10 22:13:40" itemprop="dateCreated datePublished" datetime="2022-06-10T22:13:40+08:00">2022-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-06-28 14:56:50" itemprop="dateModified" datetime="2022-06-28T14:56:50+08:00">2022-06-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="self-supervisedlearningbert-p1">Self - supervised
+Learning（BERT-P1）</span></h2>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613162648282.png" alt="image-20220613162648282" style="zoom:50%;"></p>
+<p>每个人都应该熟悉监督学习，当我们做监督学习时，我们只有一个模型，这个模型的输入是x，输出是y。假设你今天想做情感分析，你就是让机器阅读一篇文章，而机器需要对这篇文章进行分类，是正面的还是负面的，你必须先找到大量的文章，你需要对所有的文章进行label。我们需要<strong>有标签和文章数据来训练监督模型</strong>。</p>
+<p>"Self-supervised
+"是用另一种方式来监督，没有标签。假设我们只有一堆没有label的文章，但我们试图找到一种方法把它<strong>分成两部分</strong>。我们让其中一部分作为模型的输入数据，另一部分作为标签。</p>
+<h3><span id="masking-input">Masking Input</span></h3>
+<p>Self-supervised
+Learning是什么意思呢，我们直接拿BERT模型来说。<font color="red">
+<strong>BERT是一个transformer的Encoder</strong>，我们已经讲过<strong>transformer</strong>了，我们也花了很多时间来介绍<strong>Encoder</strong>和<strong>Decoder</strong>，transformer中的Encoder它实际上是BERT的架构，它和transformer的Encoder完全一样，里面有很多<strong>Self-Attention</strong>和<strong>Residual
+connection</strong>，还有Normalization等等，那么，这就是<strong>BERT</strong>。</font></p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613164111945.png" alt="image-20220613164111945" style="zoom:50%;"></p>
+<p>如果你已经忘记了Encoder里有哪些部件，你需要记住的关键点是，<font color="red"><strong>BERT可以输入一行向量，然后输出另一行向量，输出的长度与输入的长度相同</strong>
+</font>。
+BERT一般用于自然语言处理，用于文本场景，所以一般来说，它的输入是一串文本，也是一串数据。</p>
+<p>当我们真正谈论Self-Attention的时候，我们也说<strong>不仅文本是一种序列，而且语音也可以看作是一种序列，甚至图像也可以看作是一堆向量</strong>。BERT同样的想法是，不仅用于NLP，或者用于文本，它也可以用于语音和视频。</p>
+<p>接下来我们需要做的是，随机<strong>盖住</strong>一些输入的文字，<strong>被mask的部分是随机决定的</strong>，例如，我们输入100个token，什么是token？<strong>在中文文本中，我们通常把一个汉字看作是一个token</strong>，当我们输入一个句子时，其中的一些词会被随机mask。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613164315477.png" alt="image-20220613164315477" style="zoom:50%;"></p>
+<h4><span id="mask的具体实现有两种方法">mask的具体实现有<strong>两种方法</strong>：</span></h4>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613164327649.png" alt="image-20220613164327649" style="zoom:50%;"></p>
+<ul>
+<li>第一种方法是，用一个<strong>特殊的符号替换句子中的一个词</strong>，我们用
+"MASK
+"标记来表示这个特殊符号，你可以把它看作一个新字，这个字完全是一个新词，它不在你的字典里，这意味着mask了原文。</li>
+<li>另外一种方法，<strong>随机</strong>把某一个字<strong>换成另一个字</strong>。中文的
+"湾"字被放在这里，然后你可以选择另一个中文字来替换它，它可以变成 "一
+"字，变成 "天 "字，变成 "大 "字，或者变成 "小
+"字，我们只是用随机选择的某个字来替换它</li>
+</ul>
+<p>所以有两种方法来做mask，一种是添加一个特殊的标记
+"MASK"，另一种是用一个字来替换某个字。</p>
+<p>两种方法都可以使用。<strong>使用哪种方法也是随机决定的</strong>。因此，当BERT进行训练时，向BERT输入一个句子，<strong>先随机决定哪一部分的汉字将被mask</strong>。mask后，一样是输入一个序列，我们把BERT的相应输出看作是另一个序列，接下来，我们在输入序列中寻找mask部分的相应输出，然后，这个向量将通过一个==Linear
+transform==。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613164413322.png" alt="image-20220613164413322" style="zoom:50%;"></p>
+<p>所谓的Linear
+transform是指，输入向量将与一个<strong>矩阵相乘</strong>，然后做softmax，输出一个分布。这与我们在Seq2Seq模型中提到的使用transformer进行翻译时的输出分布相同。输出是一个很长的向量，包含我们想要处理的每个汉字，每一个字都对应到一个分数。</p>
+<p>在训练过程中。我们知道被mask的字符是什么，而BERT不知道，我们可以用一个one-hot
+vector来表示这个字符，并使输出和one-hot vector之间的交叉熵损失最小。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613164503646.png" alt="image-20220613164503646" style="zoom:50%;"></p>
+<p>或者说得简单一点，我们实际上是在解决一个<strong>分类问题</strong>。现在，BERT要做的是，<strong>预测什么被盖住</strong>。被掩盖的字符，属于
+"湾"类。在训练中，我们<strong>在BERT之后添加一个线性模型</strong>，并将它们<strong>一起训练</strong>。所以，BERT里面是一个transformer的Encoder，它有一堆参数。这两个需要共同训练，并试图<strong>预测被覆盖的字符是什么</strong>，这叫做mask。</p>
+<h3><span id="next-sentence-prediction">Next Sentence Prediction</span></h3>
+<p>事实上，当我们训练BERT时，除了mask之外，我们还会使用另一种方法，这种额外的方法叫做==Next
+Sentence Prediction== 。</p>
+<p>它的意思是，我们从数据库中拿出两个句子，这是我们通过在互联网上抓取和搜索文件得到的大量句子集合，我们在这<strong>两个句子之间</strong>添加一个<strong>特殊标记</strong>。这样，BERT就可以知道，这两个句子是不同的句子，因为这两个句子之间有一个分隔符。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613165146926.png" alt="image-20220613165146926" style="zoom:50%;"></p>
+<p><font color="red">
+<strong>我们还将在句子的开头添加一个特殊标记，这里我们用CLS来表示这个特殊标记。</strong></font></p>
+<p>现在，我们有一个很长的序列，包括<strong>两个句子</strong>，由SEP标记和前面的CLS标记分开。如果我们把它传给BERT，它应该输出一个序列，因为输入也是一个序列，这毕竟是Encoder的目的。我们将<strong>只看CLS的输出</strong>，我们将把它乘以一个Linear
+transform。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613165244059.png" alt="image-20220613165244059" style="zoom:50%;"></p>
+<p>现在它必须做一个<strong>二分类问题</strong>，有两个可能的输出：是或不是。这个方法被称为Next
+Sentence Prediction ，所以我们需要预测，第二句是否是第一句的后续句。</p>
+<p>然而，后来的研究发现，对于BERT要做的任务来说，<strong>Next Sentence
+Prediction 并没有真正的帮助</strong>。例如，有一篇论文叫 "Robustly
+Optimized BERT
+Approach"，简称RoBERTa。在这篇论文中，它明确指出，实施Next Sentence
+Prediction ，几乎没有任何帮助。然后，这个概念不知不觉地成为主流。</p>
+<p>在这之后，另一篇论文说下一句话预测没有用，所以在它之后的许多论文也开始说它没有用。例如，SCAN-BERT和XLNet都说Next
+Sentence Prediction 方法是无用的。它可能是无用的原因之一是，<strong>Next
+Sentence Prediction 太简单了</strong>，是一项容易的任务。</p>
+<p>这个任务的典型方法是，首先随机选择一个句子，然后从数据库中或随机选择要与前一个句子相连的句子。通常，当我们随机选择一个句子时，它看起来与前一个句子有很大不同。对于BERT来说，预测两个句子是否相连并不是太难。因此，在训练BERT完成Next
+Sentence Prediction
+的任务时，<strong>没有学到什么太有用的东西</strong>。</p>
+<p>还有一种类似于Next Sentence Prediction
+的方法，它在纸面上看起来更有用，它被称为==<strong>Sentence order
+prediction</strong>==，简称<strong>SOP</strong>。</p>
+<p>这个方法的主要思想是，我们最初挑选的两个句子可能是相连的。可能有两种可能性：要么句子1在句子2后面相连，要么句子2在句子1后面相连。有两种可能性，我们问BERT是哪一种。</p>
+<p>也许因为这个任务更难，它似乎更有效。它被用在一个叫ALBERT的模型中，这是BERT的高级版本。由于ALBERT这个名字与爱因斯坦相似，我在幻灯片中放了一张爱因斯坦的图片。</p>
+<h4><span id="bert学了什么">BERT学了什么？</span></h4>
+<p>当我们训练时，我们要求BERT学习两个任务。</p>
+<ul>
+<li><p>一个是掩盖一些字符，具体来说是汉字，然后要求它填补缺失的字符。</p></li>
+<li><p>另一个任务表明它能够预测两个句子是否有顺序关系。</p></li>
+</ul>
+<p><strong><font color="red">
+所以总的来说，BERT它学会了如何填空。BERT的神奇之处在于，在你训练了一个填空的模型之后，它还可以用于其他任务。这些任务不一定与填空有关</font></strong>，也可能是完全不同的任务，但BERT仍然可以用于这些任务，这些任务是BERT实际使用的任务，它们被称为==<strong>Downstream
+Tasks</strong>==(下游任务)，以后我们将谈论一些Downstream Tasks
+的例子。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613165843213.png" alt="image-20220613165843213" style="zoom:50%;"></p>
+<p>所谓的 "Downstream Tasks
+"是指，你真正关心的任务。但是，当我们想让BERT学习做这些任务时，我们仍然<strong>需要一些标记的信息</strong>。</p>
+<p>总之，BERT只是学习填空，但是，以后可以用来做各种你感兴趣的Downstream
+Tasks
+。它就像胚胎中的干细胞,它有各种无限的潜力，虽然它还没有使用它的力量,它只能填空,但以后它有能力解决各种任务。我们只需要给它一点数据来激发它，然后它就能做到。</p>
+<h4><span id="bert怎么测试性能">BERT怎么测试性能？</span></h4>
+<p><font color="red"><strong>BERT分化成各种任务的功能细胞，被称为==Fine-tune==(微调)</strong>
+</font>。所以，我们经常听到有人说，他对BERT进行了微调，也就是说他手上有一个BERT，他对这个BERT进行了微调，使它能够完成某种任务，与微调相反，在微调之前产生这个BERT的过程称为==预训练==。<strong>所以，生成BERT的过程就是Self-supervised学习。但是，你也可以称之为预训练</strong>。</p>
+<p>好的，在我们谈论如何微调BERT之前，我们应该先看看它的能力。今天，为了测试Self-supervised学习的能力，通常，你会在<strong>多个任务上测试</strong>它。因为我们刚才说，BERT就像一个胚胎干细胞，它要分化成各种任务的功能细胞，我们通常不会只在一个任务上测试它的能力，你会让这个BERT分化成各种任务的功能细胞，看看它在每个任务上的准确性，然后我们取其平均值，得到一个总分。这种不同任务的集合，，我们可以称之为任务集。任务集中最著名的基准被称为==GLUE==，它是<strong>General
+Language Understanding Evaluation</strong>的缩写。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613170138102.png" alt="image-20220613170138102" style="zoom: 50%;"></p>
+<p>在GLUE中，总共有9个任务。一般来说，你想知道像BERT这样的模型是否被训练得很好。所以，你实际上会得到9个模型，用于9个单独的任务。你看看这<strong>9个任务的平均准确率</strong>，然后，你得到一个值。这个值代表这个Self-supervised模型的性能。让我们看看BERT在GLUE上的性能。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613170213354.png" alt="image-20220613170213354" style="zoom:50%;"></p>
+<p>有了BERT，GLUE得分，也就是9个任务的平均得分，确实逐年增加。在这张图中，,横轴表示不同的模型，这里列出了，你可以发现，除了ELMO和GPT，其他的还有很多BERT，各种BERT。</p>
+<p><strong>黑色的线</strong>，表示<strong>人类的工作</strong>，也就是人类在这个任务上的准确度，那么，我们把这个当作1，这里每一个点代表一个任务，那么，你为什么要和人类的准确度进行比较呢？</p>
+<p>人类的准确度是1，如果他们比人类好，这些点的值就会大于1，如果他们比人类差，这些点的值就会小于1，这是因为这些任务，其评价指标可能不是准确度。每个任务使用的评价指标是不同的，它可能不是准确度。如果我们只是比较它们的值，可能是没有意义的。所以，这里我们看的是人类之间的差异。所以，你会发现，在原来的9个任务中，只有1个任务，机器可以比人类做得更好。随着越来越多的技术被提出，越来越多的,还有3个任务可以比人类做得更好。对于那些远不如人类的任务，,它们也在逐渐追赶。</p>
+<p><strong>蓝色曲线</strong>表示机器<strong>GLUE得分的平均值</strong>。还发现最近的一些强势模型，例如XLNET，甚至超过了人类。当然，这只是这些数据集的结果，并不意味着机器真的在总体上超过了人类。它<strong>在这些数据集上超过了人类</strong>。这意味着这些数据集并不能代表实际的表现，而且难度也不够大。所以，在GLUE之后，有人做了Super
+GLUE。他们找到了更难的自然语言处理任务，让机器来解决。好了！展示这幅图的意义主要是告诉大家，有了BERT这样的技术，机器在自然语言处理方面的能力确实又向前迈进了一步。</p>
+<h2><span id="how-to-use-bert">How to use BERT</span></h2>
+<h3><span id="case-1-sentiment-analysis">Case 1： Sentiment analysis</span></h3>
+<p>第一个案例是这样的，我们假设我们的Downstream Tasks
+是输入一个序列，然后输出一个class，这是一个分类问题。比如说
+<strong>Sentiment analysis
+情感分析</strong>，就是给机器一个句子，让它判断这个句子是正面的还是负面的。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613170630474.png" alt="image-20220613170630474" style="zoom: 50%;"></p>
+<h4><span id="对于bert来说它是如何解决情感分析的问题的">对于BERT来说，它是如何解决情感分析的问题的？</span></h4>
+<p>你只要给它一个句子，也就是你想用它来判断情绪的句子，然后把<strong>CLS标记放在这个句子的前面</strong>，我刚才提到了CLS标记。<font color="red">
+我们把CLS标记放在前面，扔到BERT中,这<strong>4个输入实际上对应着4个输出</strong>。然后，我们<strong>只看CLS的部分。</strong>CLS在这里输出一个向量，我们对它进行<strong>Linear
+transform</strong>，也就是将它乘以一个Linear
+transform的矩阵，这里省略了Softmax。</font></p>
+<p>然而，在实践中，你必须为你的Downstream Tasks
+提供<strong>标记数据</strong>，换句话说，<strong>BERT没有办法从头开始解决情感分析问题，你仍然需要向BERT提供一些标记数据，你需要向它提供大量的句子，以及它们的正负标签，来训练这个BERT模型。</strong></p>
+<p>在训练的时候，<strong>Linear
+transform</strong>和<strong>BERT模型</strong>都是利用Gradient
+descent来更新参数的。</p>
+<ul>
+<li><font color="red"> Linear
+transform的参数是<strong>随机初始化</strong>的</font></li>
+<li><font color="red">
+而BERT的参数是由<strong>学会填空的BERT初始化</strong>的。</font></li>
+</ul>
+<p>每次我们训练模型的时候，我们都要初始化参数，我们利用梯度下降来更新这些参数，然后尝试minimize
+loss，例如，我们正在做情感分类，但是，我们现在有BERT。我们不必随机初始化所有的参数。,我们唯一随机初始化的部分是Linear这里。BERT的骨干是一个巨大的transformer的Encoder。这个网络的参数不是随机初始化的。把学过填空的BERT参数，放到这个地方的BERT中作为参数初始化。</p>
+<h4><span id="我们为什么要这样做呢为什么要用学过填空的bert再放到这里呢">我们为什么要这样做呢？为什么要用学过填空的BERT，再放到这里呢？</span></h4>
+<p><font color="red">
+<strong>最直观和最简单的原因是，它比随机初始化新参数的网络表现更好。当你把学会填空的BERT放在这里时，它将获得比随机初始化BERT更好的性能。</strong></font></p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613171706649.png" alt="image-20220613171706649" style="zoom:50%;"></p>
+<p>在这里有篇文章中有一个例子。横轴是训练周期，纵轴是训练损失，到目前为止，大家对这种图一定很熟悉，随着训练的进行，损失当然会越来越低，这个图最有趣的地方是，有各种任务。我们不会解释这些任务的细节，我只想说明有各种任务。</p>
+<ul>
+<li>"fine-tune"是指模型被用于预训练，这是网络的BERT部分。该部分的参数是由学习到的BERT的参数来初始化的，以填补空白。</li>
+<li>scratch表示整个模型，包括BERT和Encoder部分都是随机初始化的。</li>
+</ul>
+<p>首先，在训练网络时，scratch与用学习填空的BERT初始化的网络相比，<strong>损失下降得比较慢</strong>，最后，用随机初始化参数的网络的损失仍然高于用学习填空的BERT初始化的参数。</p>
+<ul>
+<li>当你进行Self-supervised学习时，你使用了大量的<strong>无标记数据</strong>。</li>
+<li>另外，Downstream Tasks 需要少量的<strong>标记数据</strong>。</li>
+</ul>
+<p>所谓的 "半监督
+"是指，你有大量的无标签数据和少量的有标签数据，这种情况被称为
+"半监督"，所以使用BERT的整个过程是连续应用Pre-Train和Fine-Tune，它可以被视为一种半监督方法。</p>
+<h3><span id="case-2-pos-tagging">Case 2 ：POS tagging</span></h3>
+<p>第二个案例是，输入一个序列，然后输出另一个序列，而输入和输出的长度是一样的。我们在讲Self-Attention的时候，也举了类似的例子。
+例如，==POS tagging==。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613172015343.png" alt="image-20220613172015343" style="zoom:50%;"></p>
+<p>POS
+tagging的意思是词性标记。你给机器一个句子，它必须告诉你这个句子中每个词的词性，即使这个词是相同的，也可能有不同的词性。</p>
+<p>你只需向BERT输入一个句子。之后，对于这个句子中的每一个标记，它是一个中文单词，有一个代表这个单词的相应向量。然后，这些向量会依次通过Linear
+transform和Softmax层。最后，网络会预测给定单词所属的类别，例如，它的词性。</p>
+<p>当然，类别取决于你的任务，如果你的任务不同，相应的类别也会不同。接下来你要做的事情和案例1完全一样。换句话说，你需要有一些标记的数据。这仍然是一个典型的分类问题。唯一不同的是，BERT部分，即网络的Encoder部分，其参数不是随机初始化的。在<strong>预训练过程中，它已经找到了不错的参数</strong>。</p>
+<p>当然，我们在这里展示的例子属于自然语言处理。但是，你可以把这些例子改成<strong>其他任务</strong>，例如，你可以把它们改成语音任务，或者改成计算机视觉任务。我在Self-supervised
+Learning一节中提到，语音、文本和图像都可以表示为一排向量。虽然下面的例子是文字，但这项技术<strong>不仅限于处理文字</strong>，它还可以用于其他任务，如计算机视觉。</p>
+<h3><span id="case-3natural-languageinference">Case 3：Natural Language
+Inference</span></h3>
+<p>在案例3中，模型输入两个句子，输出一个类别。好了，第三个案例以两个句子为输入，输出一个类别，什么样的任务采取这样的输入和输出？
+最常见的是Natural Language Inference ，它的缩写是NLI</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613172722820.png" alt="image-20220613172722820" style="zoom:50%;"></p>
+<p>机器要做的是判断，是否有可能<strong>从前提中推断出假设</strong>。这个前提与这个假设相矛盾吗？或者说它们不是相矛盾的句子？</p>
+<p>在这个例子中，我们的前提是，一个人骑着马，然后他跳过一架破飞机，这听起来很奇怪。但这个句子实际上是这样的。这是一个基准语料库中的例子。</p>
+<p>这里的<strong>假设</strong>是，这个人在一个餐馆。所以<strong>推论</strong>说这是一个<strong>矛盾</strong>。</p>
+<p>所以机器要做的是，把两个句子作为输入，并输出这两个句子之间的关系。这种任务很常见。它可以用在哪里呢？例如，舆情分析。给定一篇文章，下面有一个评论，这个消息是同意这篇文章，还是反对这篇文章？该模型想要预测的是每条评论的位置。事实上，有很多应用程序接收两个句子，并输出一个类别。</p>
+<p>BERT是如何解决这个问题的？你只要给它两个句子，我们在这两个句子之间放一个<strong>特殊的标记</strong>，并在最开始放CLS标记。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613172928476.png" alt="image-20220613172928476" style="zoom:50%;"></p>
+<p>这个序列是BERT的输入。但我们只把CLS标记作为Linear
+transform的输入。它决定这两个输入句子的类别。对于NLI，你必须问，这两个句子是否是矛盾的。它是用一些<strong>预先训练好的权重来初始化的</strong>。</p>
+<h3><span id="case4extraction-based-question-answering-qa">Case
+4：Extraction-based Question Answering (QA)</span></h3>
+<p>如果你不理解前面的案例，就忘掉它们。这第四个案例，就是我们在作业7中要做的。作业7是一个问题回答系统。也就是说，在机器读完一篇文章后，你问它一个问题，它将给你一个答案。</p>
+<p>但是，这里的问题和答案稍有限制。这是Extraction-based的QA。也就是说，我们假设<strong>答案必须出现在文章</strong>中。答案必须是文章中的一个片段。</p>
+<p>在这个任务中，一个输入序列包含<strong>一篇文章</strong>和<strong>一个问题</strong>，文章和问题都是一个<strong>序列</strong>。对于中文来说，每个d代表一个汉字，每个q代表一个汉字。你把d和q放入QA模型中，我们希望它输出<strong>两个正整数s和e</strong>。根据这两个正整数，我们可以直接从文章中<strong>截取一段</strong>，它就是答案。这个片段就是正确的答案。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613173207333.png" alt="image-20220613173207333" style="zoom:50%;"></p>
+<p>这听起来很疯狂，但是，这是现在使用的一个相当标准的方法。六年前，当我第一次听说这个机制可以解决QA任务时，我简直不敢相信。但是，无论如何，这是今天一个非常普遍的方法。</p>
+<p>好吧，如果你仍然不明白我在说什么，更具体地说，这里有一个问题和一篇文章，正确答案是
+"gravity"。机器如何输出正确答案？</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613173414502.png" alt="image-20220613173414502" style="zoom:50%;"></p>
+<p>你的保证模型应该输出，s等于17，e等于17，来表示gravity。因为它是整篇文章中的第17个词，所以s等于17，e等于17，意味着输出第17个词作为答案。或者举另一个例子，答案是，"within
+a
+cloud"，这是文章中的第77至79个词。你的模型要做的是，输出77和79这两个正整数，那么文章中从第77个词到第79个词的分割应该是最终的答案。这就是作业7要你做的。当然，我们不是从头开始训练QA模型，为了训练这个QA模型，我们<strong>使用BERT预训练的模型</strong>。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613173621416.png" alt="image-20220613173621416" style="zoom:50%;"></p>
+<p>这个解决方案是这样的。对于BERT来说，你必须向它展示一个问题，一篇文章，以及在问题和文章之间的一个特殊标记，然后我们在开头放一个CLS标记。在这个任务中，你唯一需要<strong>从头训练</strong>的只有<strong>两个向量</strong>。"从头训练
+"是指<strong>随机初始化</strong>。这里我们用橙色向量和蓝色向量来表示，这两个向量的长度与BERT的输出相同。假设BERT的输出是768维的向量，这两个向量也是768维的向量。那么，如何使用这两个向量？</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613173644376.png" alt="image-20220613173644376" style="zoom:50%;"></p>
+<p>首先,计算这个<strong>橙色向量</strong>和那些与文件相对应的<strong>输出向量的内积</strong>,由于有3个代表文章的标记,它将输出三个向量,计算这三个向量与橙色向量的内积,你将得到三个值,然后将它们通过softmax函数,你将得到另外三个值。</p>
+<p>这个内积<strong>和attention很相似</strong>，你可以把橙色部分看成是query，黄色部分看成是key，这是一个attention，那么我们应该尝试找到分数最大的位置，就是这里，橙色向量和d2的内积，如果这是最大值，s应该等于2，你输出的起始位置应该是2蓝色部分做的是完全一样的事情。</p>
+<figure>
+<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220613173749525.png" alt="image-20220613173749525">
+<figcaption aria-hidden="true">image-20220613173749525</figcaption>
+</figure>
+<p>蓝色部分代表答案的终点，我们计算这个蓝色向量与文章对应的黄色向量的内积，然后，我们在这里也使用softmax，最后，找到最大值，如果第三个值是最大的，e应该是3，正确答案是d2和d3。</p>
+<p>因为答案必须在文章中，如果<strong>答案不在文章中，你就不能使用这个技巧</strong>。这就是一个QA模型需要做的。注意，这两个向量是随机初始化的,而BERT是通过它预先训练的权重初始化的。</p>
+<h2><span id="qampa">Q&amp;A</span></h2>
+<p><strong>Q：</strong>==<font color="red"><strong>BERT的输入长度有限制吗？</strong>
+</font>==</p>
+<p><strong>A：</strong>理论上，没有。在现实中，是的，在理论上，因为BERT模型，是一个transformer的Encoder，所以它可以输入很长的序列，只要你必须能够做Self-Attention，但Self-Attention的计算复杂性是非常高的。所以你会发现，在实践中，<strong>BERT实际上不能输入太长的序列，你最多可以输入512长度的序列，如果你输入一个512长度的序列，Self-Attention在中间就要产生512乘以512大小的Attention
+Metric</strong>，那么你可能会被计算所淹没。所以实际上它的长度不是无限的。在助教的程序中，已经为大家处理了这个问题。我们限制了BERT的输入长度，而且用一篇文章来训练需要很长的时间。然后每次，我们只取其中的一段进行训练。我们不会将整篇文章输入BERT。因为你想要的距离太长了，你的训练会有问题。</p>
+<p><strong>Q：</strong> "它与填空题有什么关系？</p>
+<p><strong>A：</strong>",哇，这个问题很好。,你会认为这个填空题只是一个填空题。但我要在这里做一个Q&amp;A。,这两件事之间有什么关系呢？这里先卖个关子，待会会试着回答你。</p>
+<h2><span id="training-bert-is-challenging">Training BERT is challenging!</span></h2>
+<p>BERT是这样一个著名的模型，它可以做任何事情，那么你可能会认为BERT，在预训练中，它只是填空题，但是，<strong>你自己真的不能把它训练起来</strong>。</p>
+<p>首先，谷歌最早的BERT,它使用的<strong>数据规模已经很大</strong>了,它的数据中包含了30亿个词汇,30亿个词汇有多少？,是《哈利波特全集》的3000倍。,《哈利波特全集》大约是100万个词汇。,那么谷歌在训练BERT时，最早的BERT，它使用的数据量是《哈利波特全集》的3000倍。</p>
+<p>所以你处理起来会比较痛苦,<strong>更痛苦的是训练过程</strong>,为什么我知道训练过程是痛苦的呢,因为我们实验室有一个学生,他其实是助教之一,他自己试着训练一个BERT,他觉得他不能重现谷歌的结果,好,那么在这个图中,纵轴代表GLUE分数,我们刚才讲到GLUE,对吧?有9个任务，平均有9个任务，,平均分数就叫GLUE分数,好的，那么蓝线就是，谷歌原来的BERT的GLUE分数。</p>
+<p>那么我们的目标其实不是实现BERT，我们的目标是实现ALBERT。ALBERT是一个高级版本，是橙色的线，蓝线是我们自己训练的ALBERT，但是我们实际训练的不是最大版本，BERT有一个base版本和一个large版本。对于大版本，我们很难自己训练它，所以我们尝试用最小的版本来训练，看它是否与谷歌的结果相同。</p>
+<p>你可能会说这30亿个数据，30亿个词似乎有很多数据。实际上，因为它是无标签数据，所以你只是从互联网上整理了一堆文本，有相同的信息量。所以你要<strong>爬上这个级别的信息并不难，难的是训练过程</strong></p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613174300000.png" alt="image-20220613174300000" style="zoom:50%;"></p>
+<p>好的，这个横轴是训练过程，参数更新多少次，大约一百万次的更新，需要多长时间，用TPU运行8天，所以你的TPU要运行8天，如果你在Colab上做，这个至少要运行200天，你甚至可能到明年才能得到结果。</p>
+<p>所以，你真的很难自己训练这种BERT模型。幸运的是，作业只是对它进行微调。你可以在Colab上进行微调，在Colab上微调BERT只需要半小时到一小时。但是，如果你想从头开始训练它，也就是说，训练它做填空题，这将需要大量的时间，而且，你不能在Colab上自己完成它。</p>
+<h2><span id="bert-embryology-胚胎學">BERT Embryology (胚胎學)</span></h2>
+<p>谷歌已经训练了BERT，而且这些Pre-Train模型是公开的，我们自己训练一个，结果和谷歌的BERT差不多，这有什么意义呢？其实是想建立==BERT胚胎学==。"BERT胚胎学是什么意思？"</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613174341275.png" alt="image-20220613174341275" style="zoom:50%;">我们知道在BERT的训练过程中需要非常大的计算资源，所以我们想知道有没有可能，<strong>节省这些计算资源</strong>？有没有可能让它训练得更快？,要知道如何让它训练得更快，也许我们可以从观察它的训练过程开始。</p>
+<p>过去没有人观察过BERT的训练过程。因为在谷歌的论文中，他们只是告诉你，我有这个BERT。然后它在各种任务中做得很好。</p>
+<p>BERT在学习填空的过程中，学到了什么？"它在这个过程中何时学会填动词？什么时候学会填名词？
+什么时候学会填代词？ 没有人研究过这个问题。</p>
+<p>所以我们自己训练BERT后，可以观察到BERT什么时候学会填什么词汇，它是如何提高填空能力的？
+好了，细节不是这门课的重点，所以我不在这里讲了。我把论文的链接https://arxiv.org/abs/2010.02480放在这里，供大家参考。不过可以提前爆冷一下就是：事实和你直观想象的不一样。</p>
+<h2><span id="pre-training-a-seq2seq-model">Pre-training a seq2seq model</span></h2>
+<p>我们补充一点，上述的任务都不包括，Seq2Seq模型，如果我们要解决，Seq2Seq模型呢？BERT只是一个预训练Encoder，有没有办法预训练Seq2Seq模型的Decoder？</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613174910438.png" alt="image-20220613174910438" style="zoom:50%;"></p>
+<p>有，你就说我有一个Seq2Seq模型，有一个transformer，还有一个Encoder和Decoder。输入是一串句子，输出是一串句子，中间用Cross
+Attention连接起来，然后你故意在Encoder的输入上做一些<strong>干扰来破坏它</strong>，我以后会具体告诉你我说的
+"破坏 "是什么意思</p>
+<p>Encoder看到的是被破坏的结果，那么Decoder应该输出句子被破坏前的结果，训练这个模型实际上是预训练一个Seq2Seq模型。</p>
+<h4><span id="有一篇论文叫mass">有一篇论文叫<strong>MASS</strong>：</span></h4>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613174937690.png" alt="image-20220613174937690" style="zoom:50%;"></p>
+<p>在MASS中，它说破坏的方法是，就像BERT做的那样，只要遮住一些地方就可以了，然后有各种方法来破坏它，比如，删除一些词，打乱词的顺序，旋转词的顺序。或者插入一个MASK，再去掉一些词。总之，有各种方法。在破坏了输入的句子之后，它可以通过Seq2Seq模型来恢复它。</p>
+<p>你可能会问,有那么多的<strong>mask方法</strong>,哪种方法更好呢?也许你想自己做一些实验来试试,让我告诉你,你不需要做,谷歌为你做的,有一篇论文叫T5。</p>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220613175206776.png" alt="image-20220613175206776" style="zoom:50%;"></p>
+<p><strong>T5的全称是Transfer Text-To-Text
+Transformer，有五个T，所以叫T5。在这个T5里面，它只是做了各种尝试，它做了你能想象的所有组合。</strong>这篇论文有67页，你可以回去读一下，看看结论。</p>
+<p>T5是在一个语料库上训练的，叫 "Colossal Clean Crawled
+Corpus"，对于这个数据集，Colossal就是巨无霸，就是非常巨大的意思，它叫C4，你用C4来训练T5，大家都是命名高手。这个命名非常强大，这个C4有多大？</p>
+<p>C4是一个公共数据集，你可以下载它，它是公共的，但是它的原始文件大小是7TB，你可以下载它，但是你不知道把它保存在哪里，加载之后，你可以通过脚本做预处理，由谷歌提供。这个脚本有一个文件，我看到它在网站上发布了，语料库网站上的文件说，用一个GPU做预处理需要355天，你可以下载它，但你在预处理时有问题。所以，你可以发现，在深度学习中，数据量和模型都很惊人。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2NQRYHA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2NQRYHA/" class="post-title-link" itemprop="url">深度学习（9）Transformer*-p1</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-10 21:00:41" itemprop="dateCreated datePublished" datetime="2022-06-10T21:00:41+08:00">2022-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-18 19:22:24" itemprop="dateModified" datetime="2023-03-18T19:22:24+08:00">2023-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="一-李宏毅-transformer_encoder"><strong><font color="red">
+一、李宏毅 - Transformer_Encoder </font></strong></span></h2>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614150150803.png" alt="image-20220614150150803" style="zoom:50%;"></p>
+<p>变形金刚的英文就是Transformer,那Transformer也跟我们之后会,提到的BERT有非常强烈的关系,所以这边有一个BERT探出头来,代表说Transformer跟BERT,是很有关系的。</p>
+<h3><span id="11-sequence-to-sequenceseq2seq">1.1 Sequence-to-sequence
+(Seq2seq)</span></h3>
+<p>Transformer就是一个,==Sequence-to-sequence==的model,他的缩写,我们会写做==Seq2seq==,那Sequence-to-sequence的model,又是什么呢？</p>
+<p>举例来说,Seq2seq一个很好的应用就是 <strong>语音辨识</strong>：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614150604358.png" alt="image-20220614150604358" style="zoom:50%;"></p>
+<p>在做语音辨识的时候,输入是声音讯号<strong>,声音讯号其实就是一串的vector</strong>,输出是语音辨识的结果,也就是输出的这段声音讯号,所对应的文字。我们这边用圈圈来代表文字,每一个圈圈就代表,比如说中文里面的一个方块子,今天<strong>输入跟输出的长度,当然是有一些关系,但是却没有绝对的关系</strong>，输入的声音讯号,他的长度是大T,我们并没有办法知道说,根据大T输出的这个长度N一定是多少。<strong>输出的长度由机器自己决定</strong>,由机器自己去听这段声音讯号的内容,自己决定他应该要输出几个文字,他输出的语音辨识结果,输出的句子里面应该包含几个字,由机器自己来决定,这个是语音辨识。</p>
+<h3><span id="12-question-answering-qa">1.2 Question Answering (QA)</span></h3>
+<p>那事实上Seq2Seq model,在NLP的领域,在natural language
+processing的领域的使用,是比你想像的更为广泛,其实很多<strong>natural
+language processing的任务,都可以想成是==question
+answering,QA==的任务。</strong>Question
+Answering,就是给机器读一段文字,然后你问机器一个问题,希望他可以给你一个正确的答案。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151056373.png" alt="image-20220614151056373" style="zoom:50%;"></p>
+<ul>
+<li>假设你今天想做的是翻译,那机器读的文章就是一个英文句子,<strong>问题</strong>就是这个句子的德文翻译是什么,然后输出的<strong>答案</strong>就是德文</li>
+<li>或者是你想要叫机器自动作摘要,摘要就是给机器读一篇长的文章,叫他把长的文章的重点节录出来,那你就是给机器一段文字,<strong>问题</strong>是这段文字的摘要是什么,然后期待他<strong>答案</strong>可以输出一个摘要</li>
+<li>或者是你想要叫机器做Sentiment analysis,Sentiment
+analysis就是机器要自动判断一个句子,是正面的还是负面的；假设你有做了一个产品,然后上线以后,你想要知道网友的评价,但是你又不可能一直找人家ptt上面,把每一篇文章都读过,所以就做一个Sentiment
+analysis
+model,看到有一篇文章里面,有提到你的产品,然后就把这篇文章丢到,你的model里面,去判断这篇文章,是正面还是负面。你就给机器要判断正面还负面的文章,<strong>问题</strong>就是这个句子,是正面还是负面的,然后希望机器可以告诉你<strong>答案</strong></li>
+</ul>
+<p>必须要强调一下,对多数NLP的任务,或对多数的语音相关的任务而言,往往为这些任务<strong>客制化模型,你会得到更好的结果</strong>。但是各个任务客制化的模型,就不是我们这一门课的重点了,如果你对人类语言处理,包括语音
+包括自然语言处理,这些相关的任务有兴趣的话呢,可以参考一下以下课程网页的<a href="Source%20webpage:%20https://speech.ee.ntu.edu.tw/~hylee/dlhlp/2020-spring.html">连结</a>,就是去年上的深度学习,与人类语言处理,这门课的内容里面就会教你,各式各样的任务最好的模型,应该是什么。</p>
+<blockquote>
+<p>举例来说在做语音辨识,我们刚才讲的是一个Seq2Seq
+model,输入一段声音讯号,直接输出文字,今天啊 Google的
+pixel4,Google官方告诉你说,Google pixel4也是用,N to N的Neural
+network,pixel4里面就是,有一个Neural
+network,输入声音讯号,输出就直接是文字。</p>
+<p>但他其实用的不是Seq2Seq model,他用的是一个叫做,RNN transducer的
+model,像这些模型他就是为了,语音的某些特性所设计,这样其实可以表现得更好,至于每一个任务,有什么样客制化的模型,这个就是另外一门课的主题,就不是我们今天想要探讨的重点。</p>
+</blockquote>
+<h3><span id="13-seq2seq-for-syntacticparsing">1.3 Seq2seq for Syntactic
+Parsing</span></h3>
+<p>在语音还有自然语言处理上的应用,其实有很多应用,你<strong>不觉得他是一个Seq2Seq
+model的问题,但你都可以硬用Seq2Seq model的问题硬解他</strong>。</p>
+<p>举例来说<strong>文法剖析</strong>,给机器一段文字,比如Deep learning is
+very powerful</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151449212.png" alt="image-20220614151449212" style="zoom:50%;"></p>
+<p>机器要做的事情是产生,一个<strong>文法的剖析树</strong>
+告诉我们,deep加learning合起来,是一个名词片语,very加powerful合起来,是一个形容词片语,形容词片语加is以后会变成,一个动词片语,动词片语加名词片语合起来,是一个句子。</p>
+<p>那今天文法剖析要做的事情,就是产生这样子的一个Syntactic
+tree,所以在文法剖析的任务里面,假设你想要deep
+learning解的话,输入是一段文字,他是一个Sequence,但输出看起来不像是一个Sequence,输出是一个树状的结构,但<strong>事实上一个树状的结构,可以硬是把他看作是一个Sequence</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151522382.png" alt="image-20220614151522382" style="zoom:50%;"></p>
+<p>这个树状结构可以对应到一个,这样子的Sequence,从这个Sequence里面,你也可以看出</p>
+<ul>
+<li>这个树状的结构有一个S，有一个左括号,有一个右括号</li>
+<li>S里面有一个noun phrase,有一个左括号跟右括号</li>
+<li>NP里面有一个左括号跟右括号,NP里面有is</li>
+<li>然后有这个形容词片语,他有一个左括号右括号</li>
+</ul>
+<p>这一个<strong>Sequence就代表了这一个tree
+的structure</strong>,你先把tree
+的structure,转成一个Sequence以后,你就可以用Seq2Seq
+model硬解他。train一个Seq2Seq
+model,读这个句子,然后直接输入这一串文字,再把这串文字转成一个树状的结构,你就可以硬是用Seq2Seq
+model,来做文法剖析这件事,这个概念听起来非常的狂,但这是真的可以做得到的。</p>
+<h3><span id="14multi-label-classification"><strong><font color="red"> 1.4
+multi-label classification</font></strong></span></h3>
+<p>还有一些任务可以用seq2seq's model,举例来说
+==multi-label的classification==。==multi-class==的classification,跟==multi-label==的classification,听起来名字很像,但他们其实是不一样的事情,multi-class的classification意思是说,我们有不只一个class机器要做的事情,是从数个class里面,选择某一个class出来。</p>
+<p>但是multi-label的classification,意思是说<strong>同一个东西,它可以属于多个class</strong>,举例来说
+你在做文章分类的时候。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614151845511.png" alt="image-20220614151845511" style="zoom:50%;"></p>
+<p>可能这篇文章 属于class 1跟3,这篇文章属于class 3 9
+17等等,你可能会说,这种multi-label
+classification的问题,能不能<strong>直接把它当作一个multi-class
+classification的问题来解</strong></p>
+<p>举例来说,我把这些文章丢到一个classifier里面：</p>
+<ul>
+<li><strong>本来classifier只会输出一个答案,输出分数最高的那个答案</strong></li>
+<li><strong>我现在就输出分数最高的前三名,看看能不能解,multi-label的classification的问题</strong></li>
+</ul>
+<p>但<strong>这种方法可能是行不通的</strong>,因为每一篇文章对应的class的数目,根本不一样
+有些东西 有些文章,对应的class的数目,是两个 有的是一个 有的是三个。所以
+如果你说 我直接取一个threshold,我直接取分数最高的前三名,class file
+output分数最高的前三名,来当作我的输出 显然,不一定能够得到好的结果
+那怎么办呢？</p>
+<p>这边可以用seq2seq硬做,<strong>输入一篇文章</strong>
+<strong>输出就是class</strong> 就结束了,机器自己决定
+它要输出几个class。我们说seq2seq
+model,就是由机器自己决定输出几个东西,输出的output
+sequence的长度是多少,既然你没有办法决定class的数目,那就让机器帮你决定,每篇文章
+要属于多少个class。</p>
+<h3><span id="15-encoder-decoder">1.5 Encoder-Decoder</span></h3>
+<p><strong><font color="red">
+我们现在就是要来学,怎么做seq2seq这件事,一般的seq2seq's
+model,它里面会分成两块一块是Encoder,另外一块是Decoder。</font></strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614152636868.png" alt="image-20220614152636868" style="zoom:50%;"></p>
+<p>你input一个sequence有Encoder,负责处理这个sequence,再把处理好的结果丢给Decoder,由Decoder决定,它要输出什么样的sequence,等一下
+我们都还会再细讲,Encoder跟 Decoder内部的架构。seq2seq
+model的起源,其实非常的早 在14年的9月,就有一篇seq2seq's
+model,用在翻译的文章 被放到Arxiv上。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614152900181.png" alt="image-20220614152900181" style="zoom:50%;"></p>
+<p><strong>可以想像当时的seq2seq's
+model,看起来还是比较年轻的,今天讲到seq2seq's
+model的时候,大家第一个会浮现在脑中的,可能都是我们今天的主角,也就是transformer</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614152931023.png" alt="image-20220614152931023" style="zoom: 50%;"></p>
+<p>它有一个Encoder架构,有一个Decoder架构,它里面有很多花花绿绿的block,等一下就会讲一下,这里面每一个花花绿绿的block,分别在做的事情是什么。</p>
+<h3><span id="151-encoder">1.5.1 Encoder</span></h3>
+<p><strong><font color="red"> seq2seq model
+==Encoder==要做的事情,就是给一排向量，输出另外一排向量</font></strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614153244524.png" alt="image-20220614153244524" style="zoom:50%;"></p>
+<p>给一排向量、输出一排向量这件事情,很多模型都可以做到,可能第一个想到的是,我们刚刚讲完的self-attention,其实不只self-attention,RNN
+CNN 其实也都能够做到,input一排向量, output另外一个同样长度的向量。</p>
+<p>在transformer里面,transformer的Encoder,用的就是self-attention,
+这边看起来有点复杂,我们用另外一张图,来仔细地解释一下,这个Encoder的架构,等一下再来跟原始的transformer的,论文里面的图进行比对。</p>
+<p>现在的Encoder里面,会<strong>分成很多很多的block</strong>：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614153801973.png" alt="image-20220614153801973" style="zoom:50%;"></p>
+<p>每一个block都是输入一排向量,输出一排向量,你输入一排向量
+第一个block,第一个block输出另外一排向量,再输给另外一个block,到最后一个block,会输出最终的vector
+sequence,<strong>每一个block 其实,并不是neural
+network的一层</strong>。</p>
+<p><strong>每一个block里面做的事情,是好几个layer在做的事情</strong>,在transformer的Encoder里面,每一个block做的事情,大概是这样子的：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614153842957.png" alt="image-20220614153842957" style="zoom:50%;"></p>
+<ul>
+<li><strong><font color="red">先做一个self-attention,input一排vector以后,做self-attention,考虑整个sequence的资讯，Output另外一排vector。</font></strong></li>
+<li><strong><font color="red"> 接下来这一排vector,会再丢到fully
+connected的feed forward
+network里面,再output另外一排vector,这一排vector就是block的输出。</font></strong></li>
+</ul>
+<h4><span id="multi-self-attention-residual-connection">Multi-self-attention +
+residual connection</span></h4>
+<p>事实上在原来的<strong>transformer里面,它做的事情是更复杂的</strong>。在之前self-attention的时候,我们说
+输入一排vector,就输出一排vector,这边的每一个vector,它是<strong>考虑了所有的input以后</strong>,所得到的结果：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614154211285.png" alt="image-20220614154211285" style="zoom:50%;"></p>
+<p>在transformer里面,它加入了一个设计,我们<strong>不只是输出这个vector</strong>,我们还要<strong>把这个vector加上它的input</strong>,它要把input拉过来
+直接加给输出,得到新的output。也就是说,这边假设这个vector叫做<span class="math inline">\(a\)</span>,这个vector叫做<span class="math inline">\(b\)</span> 你要把<span class="math inline">\(a+b\)</span>当作是新的输出。</p>
+<p><strong><font color="red"> 这样子的network架构,叫做==residual
+connection==,那其实这种residual connection</font></strong>,在deep
+learning的领域用的是非常的广泛,之后如果我们有时间的话,再来详细介绍,为什么要用residual
+connection。</p>
+<p>那你现在就先知道说,有一种network设计的架构,叫做<strong>residual
+connection,它会把input直接跟output加起来,得到新的vector。</strong></p>
+<h4><span id="norm">Norm</span></h4>
+<p>得到<strong>residual</strong>的结果以后,再把它做一件事情叫做<strong>normalization</strong>,这边用的不是batch
+normalization,这边用的叫做==<strong>layer normalization</strong>==。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614155147989.png" alt="image-20220614155147989" style="zoom:50%;"></p>
+<p>layer normalization做的事情,比bacth
+normalization更简单一点。输入一个向量，输出另外一个向量,不需要考虑batch,它会<strong>把输入的这个向量,计算它的mean跟standard
+deviation</strong>。</p>
+<p>但是要注意一下,<strong>==batch
+normalization==是对不同example,不同feature的同一个dimension,去计算mean跟standard
+deviation</strong>。但<strong>==layer
+normalization==,它是对同一个feature,同一个example里面,不同的dimension,去计算mean跟standard
+deviation</strong></p>
+<p>计算出mean,跟standard deviation以后,就可以做一个normalize,我们把input
+这个vector里面每一个,dimension减掉mean,再除以standard
+deviation以后得到x',就是layer normalization的输出。 <span class="math display">\[
+x&#39;_i=\frac{x_i-m}{\sigma}
+\]</span> <strong>得到layer normalization的输出以后,它的这个输出，才是FC
+network的输入。</strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614155555973.png" alt="image-20220614155555973" style="zoom:50%;"></p>
+<p>而<strong>FC network这边,也有residual的架构</strong>,所以 我们会把FC
+network的input,跟它的output加起来做一下residual,得到新的输出。这个FC
+network做完residual以后,还不是结束
+你要把residual的结果,<strong>再做一次layer
+normalization</strong>,得到的输出,才是residual
+network里面,一个block的输出。</p>
+<p><img src="https://github.com/unclestrong/DeepLearning_LHY21_Notes/blob/master/Notes_pic/image-20210429212721750.png?raw=true" alt="image-20210429212721750" style="zoom:50%;"></p>
+<ul>
+<li>首先有self-attention,其实在input的地方,还有加上<strong>positional
+encoding</strong>,我们之前已经有讲过,如果你只光用self-attention,你没有未知的资讯,所以你需要加上positional的information,然后在这个图上,有特别画出positional的information。</li>
+<li><strong>Multi-Head
+Attention</strong>,这个就是self-attention的block,这边有特别强调说,它是Multi-Head的self-attention。</li>
+<li><strong>Add&amp;norm</strong>,就是residual加layer
+normalization,我们刚才有说self-attention,有加上residual的connection,加下来还要过<strong>layer
+normalization</strong>,这边这个图上的Add&amp;norm,就是residual加layer
+norm的意思。</li>
+<li>接下来,要过<strong>feed forward network</strong>，fc的feed forward
+network以后再做一次<strong>Add&amp;norm</strong>,再做一次residual加layer
+norm,才是一个block的输出。</li>
+</ul>
+<p>然后这个block会重复n次,这个复杂的block,其实在之后会讲到的,一个非常重要的模型BERT里面,会再用到
+BERT,它其实就是transformer的encoder。</p>
+<h2><span id="to-learn-more">To Learn more</span></h2>
+<p>讲到这边 你心里一定充满了问号,就是为什么
+transformer的encoder,要这样设计 不这样设计行不行?</p>
+<p>行
+不一定要这样设计,这个encoder的network架构,现在设计的方式,本文是按照原始的论文讲给你听的,但<strong>原始论文的设计
+不代表它是最好的,最optimal的设计</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220614155914421.png" alt="image-20220614155914421" style="zoom:50%;"></p>
+<ul>
+<li>有一篇文章叫,<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2002.04745">on layer
+normalization in the transformer
+architecture</a>，它问的问题就是<strong>为什么,layer
+normalization是放在那个地方呢,</strong>为什么我们是先做,residual再做layer
+normalization,能不能够把layer
+normalization,放到每一个block的input,也就是说 你做residual以后,再做layer
+normalization,再加进去
+你可以看到说左边这个图,是原始的transformer,右边这个图是稍微把block,更换一下顺序以后的transformer,更换一下顺序以后
+结果是会比较好的,这就代表说,原始的transformer
+的架构,并不是一个最optimal的设计,你永远可以思考看看,有没有更好的设计方式</li>
+<li><strong><font color="red"> 再来还有一个问题就是,为什么是layer norm
+为什么是别的,不是别的,为什么不做batch
+normalization</font></strong>,也许这篇paper可以回答你的问题,这篇paper是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2003.07845">Power Norm：,Rethinking Batch
+Normalization In Transformers</a>,它首先告诉你说 为什么,batch
+normalization不如,layer normalization,在Transformers里面为什么,batch
+normalization不如,layer
+normalization,接下来在说,它提出来一个<strong>power
+normalization</strong>,一听就是很power的意思,都可以比layer
+normalization,还要performance差不多或甚至好一点。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3609,371 +4564,6 @@ value是正的,代表说在所有的维度里面有一半的路,这一半的路
 minima并没有那么常见,多数的时候,你觉得你train到一个地方,你gradient真的很小,然后所以你的参数不再update了,往往是因为你卡在了一个saddle
 point。</font></strong></p>
 <p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616164405732.png" alt="image-20220616164405732" style="zoom: 33%;"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/TYS9XF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/TYS9XF/" class="post-title-link" itemprop="url">特征工程（8）【draft】时间序列处理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-06 20:36:41" itemprop="dateCreated datePublished" datetime="2022-06-06T20:36:41+08:00">2022-06-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 19:14:16" itemprop="dateModified" datetime="2023-04-22T19:14:16+08:00">2023-04-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>261</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="时间序列数据的预处理">时间序列数据的预处理</span></h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/466086665"><em>时间序列</em>数据的预<em>处理</em></a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vyDZfDdaH2Y7k75NNsMNJA">如何在实际场景中使用异常检测？阿里云Prometheus智能检测算子来了</a></li>
-</ul>
-<blockquote>
-<p>在本文中，我们将主要讨论以下几点：</p>
-<ul>
-<li>时间序列数据的定义及其重要性。</li>
-<li>时间序列数据的预处理步骤。</li>
-<li>构建时间序列数据，查找缺失值，对特征进行去噪，并查找数据集中存在的异常值。</li>
-</ul>
-</blockquote>
-<h3><span id="时间序列的定义">时间序列的定义</span></h3>
-<p><strong>时间序列是在特定时间间隔内记录的一系列均匀分布的观测值</strong>。时间序列的一个例子是黄金价格。在这种情况下，我们的观察是在固定时间间隔后一段时间内收集的黄金价格。时间单位可以是分钟、小时、天、年等。但是任何两个连续样本之间的时间差是相同的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2MJ41K7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2MJ41K7/" class="post-title-link" itemprop="url">python-环境变量</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-06 15:22:38 / 修改时间：15:22:48" itemprop="dateCreated datePublished" datetime="2022-06-06T15:22:38+08:00">2022-06-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%B5%81%E7%A8%8B%E7%9A%84Python/" itemprop="url" rel="index"><span itemprop="name">流程的Python</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3JZF773/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3JZF773/" class="post-title-link" itemprop="url">恶意软件检测（7）【draft】CADE: Detecting and Explaining Concept Drift Samples for Security Applications</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-05 20:05:05" itemprop="dateCreated datePublished" datetime="2022-06-05T20:05:05+08:00">2022-06-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-19 15:50:46" itemprop="dateModified" datetime="2023-04-19T15:50:46+08:00">2023-04-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="cadedetecting-and-explaining-concept-drift-samples-for-securityapplications">CADE:
-Detecting and Explaining Concept Drift Samples for Security
-Applications</span></h2>
-<p>原文作者：Limin Yang, <em>University of Illinois at
-Urbana-Champaign</em></p>
-<p>原文链接：https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin</p>
-<p>发表会议：USENIXSec 2021</p>
-<p><strong>代码地址</strong>：https://github.com/whyisyoung/CADE</p>
-<h3><span id="摘要">摘要</span></h3>
-<p>概念漂移对部署机器学习模型来解决实际的安全问题提出了严峻的挑战。<strong>由于攻击者（和/或良性对手）的动态行为变化，随着时间的推移，测试数据分布往往会从原始的训练数据转移，从而导致部署的模型出现重大故障</strong>。</p>
-<p>为了对抗概念漂移，我们提出了一种新的系统CADE，旨在（1）<strong>检测偏离现有类别的漂移样本</strong>；（2）<strong>解释检测到漂移的原因</strong>。与传统方法不同（需要大量新标签来统计确定概念漂移），我们的目标是在单个漂移样本到达时识别它们。认识到高维离群空间带来的挑战，我们建议将数据样本映射到低维空间，并自动学习距离函数来度量样本之间的相异性。通过对比学习，我们可以充分利用训练数据集中现有的标签来学习如何对样本进行比较和对比。<strong>为了解释检测到的漂移的意义，我们开发了一种基于距离的解释方法</strong>。我们表明，在这个问题背景下，解释“距离”比传统方法更有效，传统方法侧重于解释“决策边界”。我们通过两个案例来评估CADE：Android恶意软件分类和网络入侵检测。我们进一步与一家安全公司合作，在其恶意软件数据库上测试CADE。我们的结果表明，CADE可以有效地检测漂移样本，并提供语义上有意义的解释。</p>
-<h3><span id="一-说明">一、说明</span></h3>
-<p>由于概念漂移，部署基于机器学习的安全应用程序可能非常具有挑战性。无论是恶意软件分类、入侵检测还是在线滥用检测[6、12、17、42、48]，基于学习的模型都是在“封闭世界”假设下工作的，期望测试数据分布与训练数据大致匹配。然而，部署模型的环境通常会随着时间的推移而动态变化。这种变化可能既包括良性玩家的有机行为变化，也包括攻击者的恶意突变和适应。因此，测试数据分布从原始训练数据转移，这可能会导致模型出现严重故障[23]。</p>
-<blockquote>
-<p>[23] A survey on concept drift adaptation. ACM computing surveys
-(CSUR), 2014.</p>
-</blockquote>
-<p>为了解决概念漂移问题，大多数基于学习的模型需要<strong>定期重新培训</strong>[36、39、52]。然而，再培训通常需要标记大量新样本（昂贵）。更重要的是，还很难确定何时应该对模型进行再培训。延迟的再培训会使过时的模型容易受到新的攻击。</p>
-<p><font color="red"><strong>我们设想，对抗概念漂移需要建立一个监控系统来检查传入数据流和训练数据（和/或当前分类器）之间的关系</strong></font>。图1说明了高级思想。当原始分类器在生产空间中工作时，另一个系统应定期检查分类器对传入数据样本做出决策的能力。<strong>A检测模块(1)
-可以过滤正在远离训练空间的漂移样本</strong>。更重要的是，为了<strong>解释漂移的原因（例如，攻击者突变、有机行为变化、以前未知的系统错误）</strong>，我们需要一种解释方法(2)
-将检测决策与语义上有意义的特征联系起来。这两项功能对于为开放世界环境准备基于学习的安全应用程序至关重要。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550835.png" alt="image-20220605202728095" style="zoom: 67%;"></p>
-<p>之前的工作已经探索了通过直接检查原始分类器（0）的预测置信度来检测漂移样本的方法
-<strong>[32]</strong>。置信度较低可能表明传入样本是漂移样本。然而，该置信度得分是基于所有类别已知（封闭世界）的假设计算的概率（总和为1.0）。不属于任何现有类别的漂移样本可能会被分配到错误的类别，并具有很高的置信度（已通过现有工作验证[25、32、37]）。最近的一项工作提出了计算传入样本和每个现有类之间的不一致性度量的想法，以确定适合度[38]。<strong>该不合格度量基于距离函数计算，以量化样本之间的不相似性</strong>。<strong>然而，我们发现这种距离函数很容易失效，尤其是当数据稀疏且维数较高时。</strong></p>
-<blockquote>
-<p><strong>[32] A baseline for detecting misclassified and
-out-of-distribution examples in neural networks.</strong></p>
-</blockquote>
-<p><strong>我们的方法</strong>。在本文中，我们提出了一种检测漂移样本的新方法，并结合一种解释检测决策的新方法。我们共同构建了一个称为CADE的系统，它是“用于漂移检测和解释的对比自动编码器
-(“<strong>Contrastive Autoencoder for Drifting detection and
-Explanation</strong>)”的缩写关键的挑战是<strong>推导一个有效的距离函数来衡量样本的相异性</strong>。我们没有随意选取距离函数，而是利用对比学习的思想[29]，根据现有的标签，从现有的训练数据中学习距离函数。给定原始分类器的训练数据（多个类别），我们将训练样本映射到低维潜在空间。映射函数通过对比样本来学习，以扩大不同类样本之间的距离，同时减少同一类样本之间的距离。<strong>我们证明了在潜在空间中得到的距离函数可以有效地检测和排序漂移样本。</strong></p>
-<p>评价我们使用两个数据集评估我们的方法，包括<strong>Android恶意软件数据集[7]和2018年发布的入侵检测数据集[57]</strong>。我们的评估表明，我们的漂移检测方法具有很高的准确性，F1平均得分为0.96或更高，优于各种基线和现有方法。我们的分析还表明，使用对比学习可以减少检测决策的模糊性。对于解释模型，我们进行了定量和定性评估。案例研究还表明，所选特征与漂移样本的语义行为相匹配。</p>
-<p>此外，我们还与一家安全公司的合作伙伴合作，在其内部恶意软件数据库上测试CADE。作为初步测试，我们从395个家庭中获得了2019年8月至2020年2月出现的20613个Windows
-PE恶意软件样本。这使我们能够在不同的环境中测试更多恶意软件系列的系统性能。结果很有希望。<font color="red"><strong>例如，CADE在10个家庭中进行训练并在160个以前未见过的家庭中进行测试时，F1成绩达到0.95分。这使得人们有兴趣在生产系统中进一步测试和部署CADE。</strong>
-</font></p>
-<h4><span id="贡献">贡献：</span></h4>
-<p>本文有三个主要贡献。</p>
-<ul>
-<li>我们提出CADE来补充现有的基于监督学习的安全应用程序，以对抗概念漂移。提出了<strong>一种基于对比表征学习的漂移样本检测方法</strong>。</li>
-<li>我们说明了监督解释方法在解释异常样本方面的局限性，并<strong>介绍了一种基于距离的解释方法</strong>。</li>
-<li>我们通过两个应用对所提出的方法进行了广泛的评估。我们与一家安保公司的初步测试表明，CADE是有效的。我们在此处发布了CADE代码1，以支持未来的研究。</li>
-</ul>
 
       
     </div>

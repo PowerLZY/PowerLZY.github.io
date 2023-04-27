@@ -153,18 +153,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-count">254</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,314 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2TRK228/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2TRK228/" class="post-title-link" itemprop="url">特征工程（5）特征融合</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-17 13:38:58" itemprop="dateCreated datePublished" datetime="2022-05-17T13:38:58+08:00">2022-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 14:11:32" itemprop="dateModified" datetime="2023-04-26T14:11:32+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="特征工程数据清洗预处理-特征生成-特征拼接">特征工程｜数据清洗（预处理）、特征生成、特征拼接</span></h3>
+<p>这或许是全网最全机器学习模型融合方法总结！：https://zhuanlan.zhihu.com/p/511246278</p>
+<p>特征工程的完整流程是：特征设计 -&gt; 特征获取 -&gt; 特征处理 -&gt;
+特征存储 -&gt;
+特征监控。前边介绍了那么多，相当于是对特征设计、特征获取、特征存储进行了说明，而特征工程中最重要的环节则是特征处理。特征处理中还包括：数据清洗、特征生成、特征拼接、特征处理、特征转换、特征选择。本篇主要介绍<strong>数据清洗、特征生成、特征拼接</strong>。</p>
+<h3><span id="一-数据清洗">一、数据清洗</span></h3>
+<p>从特征工程角度讲，数据清洗是特征工程的前置阶段（但是也会贯穿整个数据应用过程），其本义是对数据进行重新的<strong>审查和校验</strong>，目的在于<strong>删除重复信息</strong>、纠正存在的错误数据，并保证数据的一致性。数据清洗是整个数据分析过程中不可缺少的一个环节，其结果质量直接关系到模型效果和最终结论。</p>
+<p>一个特征处理的完整流程可以表示为：</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261411937.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>因此基础数据的准确性、完备性、一致性决定了后续特征数据的有效性。在我们日常使用的公开数据集中，很多都是已经被处理后的了，比如学术界中使用很广泛的MovieLens数据集，但是在真实的业务场景中，我们拿到的数据其实直接是没有办法使用的，可能包含了<strong>大量的缺失值</strong>，可能包含<strong>大量的噪音</strong>，也可能因为人工录入错误导致有异常点存在，对我们挖据出有效信息造成了一定的困扰，所以我们需要通过一些方法，尽量提高数据的质量。</p>
+<p><strong>初期数据清洗更多的是针对单条样本数据的清洗和检测</strong>，包括：</p>
+<ul>
+<li>数据表示一致性处理</li>
+<li>逻辑错误值处理</li>
+<li>缺失值处理</li>
+<li>非必要性数据剔除</li>
+</ul>
+<p>在实际的业务场景中，数据是由系统收集或用户填写而来，有很大可能性在格式和内容上存在一些问题，同样类型的数据在不同的团队上报过程中产出的内容或格式会不一致，同样不同数据源采集而来的数据内容和格式也会不一致。</p>
+<blockquote>
+<p>数据格式的一致性。比如<strong>时间信息</strong>（以2020年6月18日，11点11分12秒为例），有的用毫秒时间戳表示（1592449872000），有的用秒时间戳表示（1592449872），有的用带横线的时间表示（2020-06-18
+11:11:12），有的则用不带横线的时间表示（20200618 11:11:12）。</p>
+<p>数据类型的一致性。比如不同的数据表中，同样表示用户ID的字段，有的可能是string类型，有的是int类型。如果用string类型表示，如果用户id缺失的话，正常可以留空，但是不同团队，不同人对于缺失的id处理方式也会不一致，比如有的用None，有的用Null，有的则用0表示，可谓是千奇百怪。小编在日常工作中也会经常遇到这种情况，被折磨的体无完肤。</p>
+</blockquote>
+<h3><span id="二-特征生成">二、特征生成</span></h3>
+<p>对基础数据进行清理之后需要做的就是生成我们需要的特征，在特征设计部分提到特征主要分为四大维度，根据小编的经验特征又可以根据其值的属性划分为：</p>
+<ul>
+<li><strong>类别特征</strong>：即特征的属性值是一个有限的集合，比如用户性别、事物的类别、事物的ID编码类特征等</li>
+<li><strong>连续特征</strong>：即用户行为、类别、组合特征之类的统计值，比如用户观看的视频部数、某类别下事物的个数等</li>
+<li><strong>时间序列特征</strong>：即和时间相关的特征，比如用户来访时间、用户停留时长、当前时间等。</li>
+<li>组合特征：即多种类别的组合特征，比如用户在某个类别下的行为统计特征、当天内事物被访问次数特征等</li>
+<li><strong>文本特征</strong>：即和文本相关的特征，比如评论数据、商品描述、新闻内容等。</li>
+<li><strong>Embedding特征</strong>：即一些基础特征的高层次表示，比如用户ID编码的Embedding表示、事物ID编码的Embedding表示、<strong>用户访问事物序列的Embedding编码</strong>等。</li>
+</ul>
+<h3><span id="三-特征融合">三、特征融合</span></h3>
+<blockquote>
+<p>多模态特征融合三部曲: https://zhuanlan.zhihu.com/p/390668652</p>
+<p>推荐系统（六）—— 特征融合 :
+https://zhuanlan.zhihu.com/p/459012483</p>
+</blockquote>
+<h4><span id="31-特征处理">3.1 特征处理</span></h4>
+<p>假设你有三种类型数据，或者说可以是三个不同维度的向量.</p>
+<p><span class="math display">\[
+x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
+\mathbb{R}^{n_3}
+\]</span></p>
+<p>第一种融合手段就是在训练前进行的</p>
+<ol type="1">
+<li><strong>三个向量直接concat，可能维度会比较高，再进行个PCA</strong></li>
+<li><strong>自编码器结构</strong>：三个向量通过MLP映射成一个维度后相加，用还原回去；融合特征再用来做后续的模型设计和训练就好了。</li>
+</ol>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261411138.png" alt="image-20220519212856682" style="zoom: 33%;"></p>
+<h4><span id="32-模型结构">3.2 模型结构</span></h4>
+<p>一种直接的思想就是分而治之，多分支网络；还有一种比较出名的在中间层进行融合的方法，多模态双线性矩阵分解池化方法（MFB），本质上就是对不同模态数据进行双线性融合，借助矩阵分解的思想，再对原始特征进行高维映射，然后element-wise相乘后再做pooling操作。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261411043.png" alt="image-20220519220722481" style="zoom: 33%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261411033.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="33-后处理">3.3 后处理</span></h4>
+<p>后处理其实也是分而治之的思想，多模态数据分别训练不同的模型，再将不同模型的预测输出进行融合，比如平均、加权，或者fix住原来的多个网络，后面再加一层进行微调。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261411915.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="34特征融合是什么和特征交叉有什么区别呢">3.4
+特征融合是什么？和特征交叉有什么区别呢？</span></h4>
+<p>在上一篇文章（<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457853657">yu-lzn：推荐系统（五）——
+特征交叉</a>）中，我们讨论了特征交叉，特征交叉也称为特征组合，旨在提高模型对非线性的建模能力，从而提高模型的性能。<strong>特征融合</strong>和特征交叉有相同的目的，都是为了提高模型的性能。特征融合是想更好地利用不同特性的特征。</p>
+<blockquote>
+<p>随着信息时代的发展，<strong>在推荐系统中，多模态信息的融合也变得越来越重要</strong>。以淘宝购物为例，用户在决策是否购买物品时，会考虑<strong>物品的属性</strong>、<strong>物品图片的展示</strong>、其他<strong>用户的评论信息</strong>、甚至是观看<strong>物品的介绍视频</strong>等等。换句话说，这些<strong>多模态信息（文本、图片、视频）会影响用户的行为</strong>。所以如何利用这些多模态信息来建模，是提高推荐系统准确度的一个途径。那么如何去融合这些不同来源的信息便是一个关键的问题。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2MJPMT3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2MJPMT3/" class="post-title-link" itemprop="url">威胁发现-安全知识图谱 | 绿盟</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-16 16:33:21 / 修改时间：21:08:26" itemprop="dateCreated datePublished" datetime="2022-05-16T16:33:21+08:00">2022-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="安全知识图谱-绿盟">安全知识图谱 | 绿盟</span></h2>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1446900744649240576">安全知识图谱 -
+知乎</a>
+：本文为安全知识图谱技术白皮书《践行安全知识图谱，携手迈进认知智能》精华解读系列</li>
+</ul>
+</blockquote>
+<p>本文为<strong>安全知识图谱技术白皮书</strong>《<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=践行安全知识图谱，携手迈进认知智能&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22442423245%22%7D">践行安全知识图谱，携手迈进认知智能</a>》精华解读系列<strong>第四篇</strong>，介绍了如何利用知识图谱相关技术实现攻击路径调查，主要依据图表示学习与图谱推理实现攻击路径评估与路径修复。</p>
+<h3><span id="三-知识图谱视角下的威胁评估">三、知识图谱视角下的威胁评估</span></h3>
+<p>本文为安全知识图谱技术白皮书《践行安全知识图谱，携手迈进认知智能》精华解读系列第三篇——利用知识图谱助力攻击画像与威胁评估。主要利用知识图谱<strong>表示学习技术</strong>，<strong>对攻击源或攻击行为进行威胁评估</strong>。</p>
+<h4><span id="31-攻击画像的痛点">3.1 攻击画像的痛点</span></h4>
+<p><strong>攻击画像及风险评估是针对复杂的企业环境，利用采集到的日志或设备告警构建相关的威胁图谱，以图的形式来刻画攻击和攻击源，然后利用图的相关方法对攻击源和企业运行环境进行风险与威胁评估</strong>。</p>
+<p>企业为了应对网络威胁，通常会部署多个检测设备（如<strong>网络入侵检测系统IDS/IPS、全流量检测和网络应用防护系统WAF</strong>等）。由于检测设备规则的敏感性，企业安全运营每天需要面临大量威胁告警关联分析，海量告警远远超出了运营人员的事件排查能力。当前的<strong>==攻击检测设备缺少对这种事件关联的分析能力，从而导致高误报问题==</strong>，检测设备产生的告警日志通常是低级的、孤立的，安全运营人员需要丰富的安全知识和经验才能针对告警做出相关地研判，这进一步增加了企业安全运营的挑战。</p>
+<p>因此，在安全大数据涌现与高级威胁对抗的大背景下，将安全知识图谱应用到企业智能安全运营中，对提升安全运营的自动化水平，减少对人力投入与专家经验的依赖，降低威胁分析与响应的周期等方面具有至关重要的作用。</p>
+<h4><span id="32-知识图谱表示学习">3.2 知识图谱表示学习</span></h4>
+<p>在安全知识图谱的应用中，知识图谱表示学习具有关键作用。<strong>知识图谱表示学习通过让机器尽可能全面地学习知识，从而表现出类似于人类的行为，同时采用知识图谱表示方法来表示知识</strong>。知识图谱表示方法是研究计算机表示知识的可行性、有效性的一般方法，是把人类知识表示成机器能处理的数据结构和系统控制结构的策略。</p>
+<p>安全知识图谱借鉴通用知识图谱的高效知识图谱表示方法，充分利用安全知识图谱中的知识，提升安全知识获取、融合和推理的性能。近年来，基于知识图谱表示学习方法主要分为两种：<strong>基于结构的知识图谱表示学习方法</strong>和<strong>基于语义的表示学习方法</strong>。</p>
+<ul>
+<li>基于结构的知识图谱表示学习方法大多采用三元组（head，relation，tail可简写为h，r，t）表示方法，具有一定的稀疏性，且无法进行语义层面的计算，主要方法有TransE[1]模型以及变体模型TransH[2]，TransD[3]，TransA[4]和KG2E[5]等。</li>
+<li>基于语义的表示学习方法往往存在参数多，处理大型知识图谱效率较差的问题，相对降低复杂度后仅能在部分场景中应用。基于语义的表示学习主要研究工作有RESCAL[6]以及其变体[7-9]。</li>
+</ul>
+<p>随着知识图谱表示学习技术的不断发展，如何有效地获取全面的知识特征，更好地融合空间时间维度的知识图谱表示，同时避免知识的表示学习导致语义缺失的问题，成为此类研究的关键。</p>
+<h4><span id="33-知识图谱助力企业威胁评估">3.3 知识图谱助力企业威胁评估</span></h4>
+<figure>
+<img src="https://pica.zhimg.com/v2-62721519f735f7fc5105a2eb8011b119_720w.jpg?source=d16d100b" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>在企业环境中，<strong>安全设备每日产生海量告警，这给安全分析带来了巨大挑战</strong>。为此，针对企业环境存在的问题，需要通过构建安全属性图模型来从不同维度对攻击源的威胁度进行评估。</p>
+<p>威胁建模选用属性图对整个企业运行环境进行建模。这里以<strong>IP地址、端口、网段、告警、文件、日志等实体为图模型的节点</strong>，<strong>边则表示实体之间的关系</strong>，关系通常分为显式关系与隐式关系。显式关系是通过对日志解析直接可以得到的关系，而隐式关系是通过数据挖掘方法得到的节点之间暗含的关联关系。</p>
+<p>企业环境中，安全运营人员通常是<strong>基于告警信息识别攻击者与攻击行为</strong>。针对单一告警，很难做出预判，这就需要一种有效的关联告警上下文的评估方法来辅助安全分析和运维。为了挖掘告警之间的因果依赖关系，需要构建告警因果关联图，并<strong>利用图表示学习方法DeepWalk学习告警的向量表示</strong>，详细过程如图
+2所示。</p>
+<p>针对属性知识图谱模型，可以参考深度图神经网络的一些方法，如图自编码器等来实现威胁评估。图自编码器就是在编码过程中使用了图表示学习技术，这里采用TransE模型来学习图谱中节点与边的向量表示。TransE模型属于翻译模型：直观上，将每个三元组实例（head，relation，tail
+简写为
+h，r，t）中的关系relation看作从实体head到实体tail的transform，通过不断调整head、relation和tail的向量，使（h
++ r） 尽可能与 tail 相等，即 h + r = t，如图3所示。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -449,6 +757,153 @@ nodes的问题，原来的GCN训练时，需要看到所有nodes的图数据。<
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/13PH6XA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/13PH6XA/" class="post-title-link" itemprop="url">深度学习-GNN（2）DeepWalk</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-16 13:25:05" itemprop="dateCreated datePublished" datetime="2022-05-16T13:25:05+08:00">2022-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-11 15:17:47" itemprop="dateModified" datetime="2023-03-11T15:17:47+08:00">2023-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/GNN/" itemprop="url" rel="index"><span itemprop="name">GNN</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="graphembeddingdeepwalk算法原理实现和应用"></span></h2>
+<ul>
+<li><strong>DeepWalk【图神经网络论文精读】</strong>：https://www.bilibili.com/video/BV1o94y197vf/?spm_id_from=pageDriver&amp;vd_source=29387dc08d18f642078183a6816e93e8</li>
+<li>https://www.zhihu.com/column/c_1322582255018184704</li>
+<li>图神经网络—基于随机游走的早期研究（一）：DeepWalk &amp;
+Node2Vec：https://zhuanlan.zhihu.com/p/343041065</li>
+</ul>
+<h3><span id="一-deepwalk">一、DeepWalk</span></h3>
+<p><img src="image-20230311111100589.png" alt="image-20230311111100589" style="zoom:33%;"></p>
+<p>DeepWalk[1]是一篇14年的文章，它极大的受到word2vec[4]的启发。</p>
+<p>在图机器学习的早期研究中，人们主要希望模型能够捕捉到节点之间的连接关系。那在word2vec中人们希望模型学习的是什么呢？没错，就是token与token之间的"连接性"。word2vec的skip-gram
+(with negative sampling)
+模型本质上在回答：给定两个token，它们是否有在同一个context
+window中出现过？<strong>从图的角度来说，word2vec的任务目标可以翻译为：给定两个节点，判断它们是否有任意k阶<em>内</em>的连接关系，其中k即为context
+window的大小。</strong></p>
+<p>因此，一个自然的想法就是，能不能利用word2vec训练模型，来捕捉图数据结构中节点之间的连接关系呢？出于此intuition，研究者们提出了DeepWalk。</p>
+<h4><span id="11-overview-of-the-model">1.1 Overview of the Model</span></h4>
+<p><strong>DeepWalk非常简单粗暴，它基本上就是以下两个模块的结合，甚至各个模块都没有太大的改动：</strong></p>
+<ul>
+<li>基于随机游走在图上进行<strong>游走采样</strong>，将节点邻接结构映射成序列结构。</li>
+<li>利用采样得到的序列，训练Skip-gram模型，使习得的表达能够捕捉节点间的连接性。</li>
+</ul>
+<p><strong>第一部分：</strong>原论文提出在进行随机游走时，每次从给定起点出发，不停的利用uniform
+sampling来采样邻居进行游走，直到该采样序列长度达到给定最大长度。因为每步游走仅需做一次uniform
+sampling，所以DeepWalk可以在不需要额外存储计算的情况下，在O(1)的时间内采样一步随机游走。</p>
+<p>假设给定模型l的walk
+length，并且以每个节点为起点进行k次游走，那么总计会生成k|V|个长度为l的序列。最终完成整张图的随机游走的时间复杂度为O(lk|V|)。</p>
+<p><strong>第二部分：</strong>原论文提出基于Hierarchical Softmax (HS)
+来训练一个Skip-gram模型。但从今天的眼光来看，HS已经逐步退出历史的舞台。人们现在往往直接在GPU上计算softmax，并不再特别需要HS加速softmax计算。并且，若softmax计算量难以接受，人们也往往利用Noise
+Contractive Estimation (NCE) or <strong>Negative Sampling</strong>
+(NS)，来规避softmax的使用。<strong>因此，今天人们更常利用skip-gram with
+negative sampling训练DeepWalk/Node2Vec模型。</strong></p>
+<figure>
+<img src="image-20230311113705926.png" alt="image-20230311113705926">
+<figcaption aria-hidden="true">image-20230311113705926</figcaption>
+</figure>
+<figure>
+<img src="image-20230311114014622.png" alt="image-20230311114014622">
+<figcaption aria-hidden="true">image-20230311114014622</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3931MT5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -502,6 +957,10 @@ nodes的问题，原来的GCN训练时，需要看到所有nodes的图数据。<
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">恶意软件检测</span></a>
         </span>
     </span>
 
@@ -2326,564 +2785,6 @@ size为 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">
 次，故复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%29" alt="[公式]"></li>
 <li>为了保证第二个维度在第二个维度都相同，故需要 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]">
 个卷积核，所以卷积操作总的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%5E2%29" alt="[公式]"></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/32X3GH2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/32X3GH2/" class="post-title-link" itemprop="url">深度学习（7）Seq2Seq</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 23:08:19" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:19+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 21:31:52" itemprop="dateModified" datetime="2023-04-18T21:31:52+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-seq2seq">一、Seq2Seq</span></h2>
-<blockquote>
-<p>CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 -
-知乎 https://zhuanlan.zhihu.com/p/147310766</p>
-<p>目录：</p>
-<ul>
-<li><p>机器翻译</p></li>
-<li><ul>
-<li>传统机器翻译，SMT</li>
-<li>神经机器翻译，NMT</li>
-</ul></li>
-<li><p>Seq2seq</p></li>
-<li><ul>
-<li>Seq2seq结构详解</li>
-<li>为什么训练和预测时的Decoder不一样？</li>
-<li>Seq2seq的损失函数</li>
-<li>Decoding和Beam Search</li>
-</ul></li>
-<li><p>总结</p></li>
-<li><ul>
-<li>NMT的优缺点</li>
-<li>机器翻译的评价指标</li>
-</ul></li>
-</ul>
-</blockquote>
-<h3><span id="11-seq2seq结构详解">1.1 <strong>seq2seq结构详解</strong></span></h3>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130235.png" alt="CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq">
-<figcaption aria-hidden="true">CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq</figcaption>
-</figure>
-<p>这张图，展示了在<strong>「训练时」</strong>，seq2seq内部的详细结构。</p>
-<p>在Encoder端，我们将source文本的词序列先经过embedding层转化成向量，然后输入到一个RNN结构（可以是普通RNN，LSTM，GRU等等）中。另外，这里的RNN也可以是多层、双向的。经过了RNN的一系列计算，最终隐层的输入，就作为源文本整体的一个表示向量，称为<strong>「context
-vector」</strong>。</p>
-<p>Decoder端的操作就稍微复杂一些了。首先，Decoder的输入是什么呢？Decoder的输入，训练和测试时是不一样的！
-<strong>「在训练时，我们使用真实的目标文本，即“标准答案”作为输入」</strong>（注意第一步使用一个特殊的<code>&lt;start&gt;</code>字符，表示句子的开头）。每一步根据当前正确的输出词、上一步的隐状态来预测下一步的输出词。</p>
-<p>下图则展示了在<strong>「预测时」</strong>，seq2seq的内部结构：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130580.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>预测时，Encoder端没什么变化，在Decoder端，由于此时没有所谓的“真实输出”或“标准答案”了，所以只能<strong>「自产自销：每一步的预测结果，都送给下一步作为输入」</strong>，直至输出<code>&lt;end&gt;</code>就结束。如果你对我之前写的笔记很熟悉的话，会发现，<strong>「这时的Decoder就是一个语言模型」</strong>。由于这个语言模型是根据context
-vector来进行文本的生成的，因此这种类型的语言模型，被称为“条件语言模型”：Conditional
-LM。正因为如此，在训练过程中，我们可以使用一些预训练好的语言模型来对Decoder的参数进行初始化，从而加快迭代过程。</p>
-<h3><span id="12为什么训练和预测时的decoder不一样"><strong>1.2
-为什么训练和预测时的Decoder不一样？</strong></span></h3>
-<p>很多人可能跟我一样，对此感到疑惑：为什么在训练的时候，不能直接使用这种语言模型的模式，使用上一步的预测来作为下一步的输入呢？</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130314.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>我们称这两种模式，根据标准答案来decode的方式为<strong>「teacher
-forcing」</strong>，而根据上一步的输出作为下一步输入的decode方式为<strong>「free
-running」</strong>。</p>
-<p>其实，free
-running的模式真的不能在训练时使用吗？——当然是可以的！从理论上没有任何的问题，又不是不能跑。但是，在实践中人们发现，这样训练太南了。因为没有任何的引导，一开始会完全是瞎预测，正所谓“一步错，步步错”，而且越错越离谱，这样会导致训练时的累积损失太大（<strong>「误差爆炸」</strong>问题，exposure
-bias），训练起来就很费劲。这个时候，如果我们能够在每一步的预测时，让老师来指导一下，即提示一下上一个词的正确答案，decoder就可以快速步入正轨，训练过程也可以更快收敛。因此大家把这种方法称为teacher
-forcing。所以，这种操作的目的就是为了使得训练过程更容易。</p>
-<p><strong>所以，更好的办法，更常用的办法，是老师只给适量的引导，学生也积极学习</strong>。即我们设置一个概率p，每一步，以概率p靠自己上一步的输入来预测，以概率1-p根据老师的提示来预测，这种方法称为<strong>「计划采样」</strong>（scheduled
-sampling）：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130613.jpg" alt="img" style="zoom: 67%;"></p>
-<p>另外有一个小细节：在seq2seq的训练过程中，decoder即使遇到了<code>&lt;end&gt;</code>标识也不会结束，因为训练的时候并不是一个生成的过程
-，我们需要等到“标准答案”都输入完才结束。</p>
-<h3><span id="13-seq2seq的损失函数">1.3 <strong>Seq2Seq的损失函数</strong></span></h3>
-<p>在上面的图中，我们看到<strong>decoder的每一步产生隐状态后，会通过一个projection层映射到对应的词</strong>。那怎么去计算每一步的损失呢？实际上，<strong>这个projection层，通常是一个softmax神经网络层，假设词汇量是V，则会输出一个V维度的向量，每一维代表是某个词的概率</strong>。映射的过程就是把最大概率的那个词找出来作为预测出的词。</p>
-<p>在计算损失的时候，我们使用交叉熵作为损失函数，所以我们要找出这个V维向量中，正确预测对应的词的那一维的概率大小<img src="https://www.zhihu.com/equation?tex=%5Chat%7Bp%7D" alt="[公式]">，则这一步的损失就是它的负导数<img src="https://www.zhihu.com/equation?tex=-log%28%5Chat%7Bp%7D%29" alt="[公式]">，将每一步的损失求和，即得到总体的损失函数：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7D+J%26%3D-log%28p%28%5Chat%7By_1%7D%29%29-log%28p%28%5Chat%7By_2%7D%29%29-...-log%28p%28%5Chat%7By_n%7D%29%29-log%28p%28%5BEOS%5D%29%29+%5Cnonumber+%5C%5C+%26%3D+-%5Cfrac%7B1%7D%7BT%7D%5Csum%5E%7BT%7D_%7Bi%7Dlog%28p%28%5Chat%7By_i%7D%29%29+%5Cnonumber+%5Cend%7Balign%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中T代表Decoder有多少步，[EOS]代表‘end of sentence’这个特殊标记.</p>
-<h3><span id="14-decoding和beamsearch">1.4 <strong>Decoding和Beam
-search</strong></span></h3>
-<p>前面画的几个图展示的预测过程，其实就是最简单的decoding方式——<strong>「Greedy
-Decoding」</strong>，即每一步，都预测出概率最大的那个词，然后输入给下一步。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130276.jpg" alt="img" style="zoom:67%;"></p>
-<p>这种Greedy的方式，简单快速，但是既然叫“贪心”，肯定会有问题，那就是<strong>「每一步最优，不一定全局最优」</strong>，这种方式很可能“捡了芝麻，丢了西瓜”。</p>
-<p>改进的方法，就是使用<strong>「Beam
-Search」</strong>方法：每一步，多选几个作为候选，最后综合考虑，选出最优的组合。</p>
-<p>下面我们来具体看看Beam Search的操作步骤：</p>
-<ul>
-<li>首先，我们需要设定一个候选集的大小beam size=k；</li>
-<li>每一步的开始，我们从每个当前输入对应的所有可能输出，计算每一条路的“序列得分”；</li>
-<li>保留“序列得分”最大的k个作为下一步的输入；</li>
-<li>不断重复上述过程，直至结束，选择“序列得分”最大的那个序列作为最终结果。</li>
-</ul>
-<p>这里的重点就在于这个“序列得分”的计算。</p>
-<p>我们使用如下的score函数来定义<strong>「序列得分」</strong>：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=score%28y_1%2C...%2Cy_t%29%3D%5Csum%5E%7Bt%7D_%7Bi%3D1%7DlogP%28y_i%7Cy_1%2Cy_2%2C...%2Cy_%7Bi-1%7D%2Cx%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>这个score代表了当前到第t步的输出序列的一个综合得分，越高越好。其中<img src="https://www.zhihu.com/equation?tex=logP%28y_i%7Cy_1%2Cy_2%2C...%2Cy_%7Bi-1%7D%2Cx%29" alt="[公式]">类似于前面我们写的第t步的交叉熵损失的负数。所以这个score越到，就意味着到当前这一步为止，输出序列的累积损失越小。</p>
-<p>再多描述不如一张图直观，我用下图描绘一个极简的案例（只有3个词的语料，k=2）：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182131550.jpg" alt="img" style="zoom: 67%;"></p>
-<p>最后还有一个问题：由于会有多个分支，所以很有可能我们会遇到多个<code>&lt;end&gt;</code>标识，由于分支较多，如果等每一个分支都遇到<code>&lt;end&gt;</code>才停的话，可能耗时太久，因此一般我们会设定一些规则，比如已经走了T步，或者已经积累了N条已完成的句子，就终止beam
-search过程。</p>
-<p>在search结束之后，我们需要对已完成的N个序列做一个抉择，挑选出最好的那个，那不就是通过前面定义的score函数来比较吗？确实可以，但是如果直接使用score来挑选的话，会导致那些很短的句子更容易被选出。<strong>因为score函数的每一项都是负的，序列越长，score往往就越小。因此我们可以使用长度来对score函数进行细微的调整：对每个序列的得分，除以序列的长度。根据调整后的结果来选择best
-one。</strong></p>
-<p>Beam Search的使用，往往可以得到比Greedy
-Search更好的结果，道理很容易理解，高手下棋想三步，深思熟虑才能走得远。</p>
-<h3><span id="15-nmt的优缺点">1.5 <strong>NMT的优缺点</strong></span></h3>
-<p>NMT相比于SMT，最大的优点当然就如前面所说的——简洁。我们<strong>不需要什么人工的特征工程，不需要各种复杂的前后组件，就是一个端到端的神经网络，整个结构一起进行优化</strong>。</p>
-<p>另外，由于使用了深度学习的方法，我们可以引入很多语义特征，比如利用文本的相似度，利用文本内隐含的多层次特征，这些都是统计学方法没有的。</p>
-<p>但是，没有什么东西是绝对好或绝对差的，NMT也有其不足。它的不足也是跟深度学习的黑箱本质息息相关。<strong>NMT的解释性差，难以调试，难以控制，我们谁也不敢保证遇到一个新的文本它会翻译出什么奇怪的玩意儿，所以NMT在重要场合使用是有明显风险的。</strong></p>
-<h3><span id="16-nmt的评价">1.6 <strong>NMT的评价</strong></span></h3>
-<p>机器翻译的效果如何评价呢？——<strong>「BLEU」</strong>指标。<strong>BLEU，全称是Bilingual
-Evaluation
-Understudy，它的主要思想是基于N-gram等特征来比较人工翻译和机器翻译结果的相似程度。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3EQCSMJ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3EQCSMJ/" class="post-title-link" itemprop="url">深度学习（3）Normalization*</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 22:12:43" itemprop="dateCreated datePublished" datetime="2022-05-14T22:12:43+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 21:10:47" itemprop="dateModified" datetime="2023-04-18T21:10:47+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>15k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>27 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="batchnormalization的原理作用和实现">BatchNormalization的原理、作用和实现</h1>
-<blockquote>
-<p>Transformer中的归一化(一)：什么是归一化&amp;为什么要归一化 - Gordon
-Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/476102712</p>
-<p>Transformer中的归一化(二)：机器学习中的特征归一化方法 - Gordon
-Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/477116352</p>
-<p>Transformer中的归一化(三)：特征归一化在深度神经网络的作用 - Gordon
-Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/481179310</p>
-<p><strong>Transformer中的归一化(四)：BatchNormalization的原理、作用和实现</strong>:https://zhuanlan.zhihu.com/p/481277619?utm_source=wechatMessage_undefined_bottom</p>
-<p><strong>Transformer中的归一化(五)：Layer Norm的原理和实现 &amp;
-为什么Transformer要用LayerNorm</strong> - Gordon Lee的文章 - 知乎
-https://zhuanlan.zhihu.com/p/492803886</p>
-</blockquote>
-<h4 id="归一化的作用">归一化的作用：</h4>
-<ul>
-<li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>==回归系数无法直接解读==</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
-<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>==“距离”的计算==</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
-<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>==梯度下降==</strong>，在使用梯度下降的方法求解最优化问题时，
-归一化/标准化后可以加快梯度下降的求解速度，即<strong>==提升模型的收敛速度==</strong>。</li>
-</ul>
-<h4 id="batch-normalization-作用">Batch Normalization 作用：</h4>
-<ul>
-<li><strong>更好的尺度不变性：</strong>也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
-<ul>
-<li><strong><font color="red">尺度不变性能够提高梯度下降算法的效率，从而加快收敛</font></strong>;</li>
-<li><strong><font color="red">归一化到均值为0，方差为1的分布也能够使得经过sigmoid，tanh等激活函数以后，尽可能落在梯度非饱和区，缓解梯度消失的问题。</font></strong>【<strong>bn和ln都可以比较好的抑制梯度消失和梯度爆炸的情况</strong>】;</li>
-</ul></li>
-<li><strong>更平滑的优化地形：</strong>更平滑的优化地形意味着<strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
-<li><strong><font color="red">
-对参数初始化和学习率大小不太敏感：</font></strong>BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
-<li><strong>隐性的正则化效果：（Batch）</strong>训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/3EQCSMJ/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/ZQ2GRE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/ZQ2GRE/" class="post-title-link" itemprop="url">异常检测（2）Isolation Forest</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 21:23:06" itemprop="dateCreated datePublished" datetime="2022-05-14T21:23:06+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 15:23:45" itemprop="dateModified" datetime="2023-04-26T15:23:45+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">异常检测</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-isolation-forest">一、Isolation Forest</span></h3>
-<h4><span id="11-概述">1.1 概述</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261520459.png" alt="Isolation Forest算法梳理🌳" style="zoom: 67%;"></p>
-<p><strong>异常检测 (anomaly
-detection)</strong>，或者又被称为“<strong>离群点检测</strong>” (outlier
-detection)，是机器学习研究领域中跟现实紧密联系、有广泛应用需求的一类问题。但是，什么是异常，并没有标准答案，通常因具体应用场景而异。如果要给一个比较通用的定义，很多文献通常会引用
-Hawkins
-在文章开头那段话。很多后来者的说法，跟这个定义大同小异。这些定义虽然笼统，但其实暗含了认定“异常”的两个标准或者说假设：</p>
-<p><strong>孤立森林 (Isolation Forest) 是一个基于 Ensemble
-的快速异常检测方法，具有线性时间复杂度和高精准度</strong>。其
-可以用于网络安全中的攻击检测，金融交易欺计检测，疾病侦测，和噪声数据过滤等。</p>
-<p>孤立森林算法的理论基础有两点：</p>
-<ul>
-<li>异常数据占总样本量的比列很小</li>
-<li>异常点的特征值与正常点的差异很大</li>
-</ul>
-<h4><span id="12-itree的构建">1.2 iTREE的构建</span></h4>
-<p><span class="math inline">\(i T r e e\)</span> 是一棵随机二叉树,
-每一个节点要么有两个孩子, 要么就是叶子节点。假设给定一堆数据集 <span class="math inline">\(\mathbb{D} ，\)</span> 这里 <span class="math inline">\(\mathbb{D}\)</span> 的所有属性都是连续型的变量,
-iTree 的构建过程如下:</p>
-<ol type="1">
-<li><p><strong>随机选择一个属性 Attr</strong> ；</p></li>
-<li><p><strong>随机选择该属性的一个值 Value</strong>， <span class="math inline">\(\min \{A t t r\}&lt;\)</span> Value <span class="math inline">\(&lt;\max \{\)</span> Attr <span class="math inline">\(\}\)</span> ；</p></li>
-<li><p><strong>根据 Attr 对每条记录进行分类，把 Attr 小于 Value
-的记录放在左子树，把大于等于 Value 的记录放在右子树；</strong></p></li>
-<li><p><strong>递归构造左右子树，直到满足下列条件：（1）传入的数据集只有一条记录或者多条同样的记录；
-(2) 树的 深度达到了限定深度</strong>。</p></li>
-</ol>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261517402.jpg" alt="img" style="zoom: 33%;"></p>
-<p>iTree 构建完成之后, 只需要追踪测试数据落在 iTree
-哪个叶子节点上即可评估该数据是否为异常数据, 由图中 <span class="math inline">\(i T r e e\)</span>
-的构造过程可以发现异常数据通常会很快被分配到叶子节点上,
-因此可以使用叶子结点到根结点的路径长 度（即边的条数） <span class="math inline">\(h(x)\)</span> 来判断一条记录 <span class="math inline">\(x\)</span> 是否是异常点。</p>
-<h4><span id="13-iforest-构建">1.3 iForest 构建</span></h4>
-<p>由于 <span class="math inline">\(i T r e e\)</span>
-是随机选择属性和随机选择属性值来构建的，因此可以预见对于单棵 <span class="math inline">\(i T r e e\)</span> 的预测效果肯定不会很理
-想，因此通过引入多棵 iTree
-共同来预测那么从效果上看肯定会更具有说服力。iForest 和 Random Forest 的
-方法有些类似, 都是通过随机采样, 利用部分采样数据来构造每一棵树,
-以保证不同树之间的差异性。在构建 <span class="math inline">\(i\)</span>
-Forest 的过程中有, 采样的样本大小 <span class="math inline">\(\psi\)</span> 和 iTree 的数量 <span class="math inline">\(t\)</span> 这两个超参数需要确定, 样本采样大小超过
-256 效 果就提升不大了。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028401.jpg" alt="img" style="zoom:67%;"></p>
-<p>通过采样数据不仅可以降低计算时间的上面的浪费，而且还能够解决一些其它的小问题：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182028205.jpg" alt="preview" style="zoom:67%;"></p>
-<p>左图是原始数据, 右图是经过采样了的数据, 蓝色代表正常样本,
-红色代表异常样本。可以看出, 在采样之前, 正 常样本和异常样本出现了重叠,
-因此很难分开, 但通过采样之后, 异常样本和正常样本可以明显的分开。 <span class="math inline">\(t\)</span> 控制 了 iTree 的数量即 Ensemble size,
-孤立森林算法提出者通过实验发现, 当 <span class="math inline">\(t=100\)</span> 之前时, 算法就会收玫, 故 通常设置
-<span class="math inline">\(t\)</span> 为默认值 100 , 训练一个 iForest
-最差情况下的时间复杂度为 <span class="math inline">\(\mathcal{O}\left(t
-\psi^2\right)\)</span> 空间复杂度为 <span class="math inline">\(\mathcal{O}(t \psi)\)</span> 。</p>
-<h4><span id="14-评估">1.4 评估</span></h4>
-<p>为了更好的归一化和比较, <strong>孤立森林通过引入异常值函数</strong>
-<span class="math inline">\(s(x, n)\)</span> 来衡量记录 <span class="math inline">\(x\)</span> 是否为异常点。</p>
-<p>给定一个包含 <span class="math inline">\(n\)</span> 个样本的数据集,
-<strong>树的平均路径长度为</strong>： <span class="math inline">\(c(\mathrm{n})\)</span> 。 <span class="math display">\[
-c(n)=2 H(n-1)-\frac{2(n-1)}{n}
-\]</span> 其中, <span class="math inline">\(H(*)\)</span> 为调和数,
-<span class="math inline">\(H(*)=\ln (*)+\xi, \xi\)</span> 为欧拉常数,
-约为 <span class="math inline">\(0.5772156649 。 c(n)\)</span>
-为给定样本数 <span class="math inline">\(n\)</span> 时,
-路径长度的平均值, 用来标准化记录 <span class="math inline">\(x\)</span>
-的路径长度 <span class="math inline">\(h(x)\)</span> 。</p>
-<p><font color="red">故记录 <span class="math inline">\(x\)</span>
-的异常得分可以定义为： <span class="math inline">\(\mathbf{s}(\mathbf{x}, \mathbf{n})\)</span>. 其中,
-<span class="math inline">\(E(h(x))\)</span> 为记录 <span class="math inline">\(x\)</span> 在多个 <span class="math inline">\(i T
-r e e\)</span> 中的路径长度的期望值。</font>可视化 <span class="math inline">\(s(x, n)\)</span> 与 <span class="math inline">\(E(h(x))\)</span> 的关系: <span class="math display">\[
-s(x, n)=2^{-\frac{E(h(x))}{c(n)}}
-\]</span></p>
-<p><img src="https://pic4.zhimg.com/80/v2-b7f0fe8132465c0b1919b7c283d1e887_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p><strong>可以得出以下结论:</strong></p>
-<ul>
-<li>当 <span class="math inline">\(E(h(x)) \rightarrow c(n)\)</span> 时,
-<span class="math inline">\(s \rightarrow 0.5\)</span> ， 即记录 <span class="math inline">\(x\)</span> 的平均长度与树的平均路径长度相近时,
-则不能区分是否为异 常;</li>
-<li>当 <span class="math inline">\(E(h(x)) \rightarrow 0 ， s
-\rightarrow 1\)</span> ，即记录 <span class="math inline">\(x\)</span>
-的异常分数接近 1 时，被判定为异常数据；</li>
-<li>当 <span class="math inline">\(E(h(x)) \rightarrow n-1\)</span> 时,
-<span class="math inline">\(s \rightarrow 0\)</span> ，
-被判定为正常数据。</li>
-</ul>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li>孤立森林(isolation Forest)-一个通过瞎几把乱分进行异常检测的算法 -
-小伍哥聊风控的文章 - 知乎 https://zhuanlan.zhihu.com/p/484495545</li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/131406753">Isolation
-Forest算法梳理🌳</a>Isolation Forest算法梳理🌳</li>
 </ul>
 
       
