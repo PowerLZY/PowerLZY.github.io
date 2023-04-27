@@ -235,7 +235,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-27 16:22:48 / 修改时间：17:16:25" itemprop="dateCreated datePublished" datetime="2023-04-27T16:22:48+08:00">2023-04-27</time>
+      <time title="创建时间：2023-04-27 16:22:48 / 修改时间：17:20:18" itemprop="dateCreated datePublished" datetime="2023-04-27T16:22:48+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -280,8 +280,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-fp-growth">一、FP-growth</span></h3>
-<h4><span id="前言apriori算法的缺陷">前言——Apriori算法的缺陷</span></h4>
+          <h3 id="一fp-growth">一、FP-growth</h3>
+<h4 id="前言apriori算法的缺陷">前言——Apriori算法的缺陷</h4>
 <p>虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：</p>
 <ul>
 <li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如
@@ -294,247 +294,14 @@
 <p><font color="red">所以为什么一定要产生候选集？是否可以不通过产生候选集的方式来完成频繁模式挖掘呢？频繁模式增长(frequent
 pattern growth，
 简称FP-growth)就是一种该方向的尝试。</font>【原始事务数据转换为树状数据结构，减少扫描事务的成本】</p>
-<h4><span id="11-算法流程">1.1 算法流程</span></h4>
-<p><strong>FP-growth主要采用一种分治的策略来解决该问题，我们可以用几个步骤来描述一下这种分治策略的大概步骤。</strong></p>
-<ol type="1">
-<li>压缩数据集来表征每一个项，这个步骤一般是通过建立<strong>频繁模式树</strong>(frequent
-pattern
-tree，简称FP-tree)来实现的（其实就是字典树，很明显这是一种无损压缩方式）</li>
-<li><strong>统计每一个项在原数据集中出现的次数，并根据预先设定的support
-count去除低频项</strong>，然后根据出现次数对剩余项进行升序排序；从第一位项开始扫描频繁模式树的叶子节点，通过回溯得到每一个项对应的条件模式基(Condition
-Pattern Base，实则为叶子节点对应的路径集合)</li>
-<li>根据条件模式基构建出条件频繁项集树(Conditional
-FP-tree，步骤和第一步完全一样，也就是根据条件模式基构建出一颗字典树)</li>
-<li>根据条件FP-tree和support count得到最终的频繁项集</li>
-</ol>
-<p>事务集如下：</p>
-<table>
-<thead>
-<tr class="header">
-<th>TID</th>
-<th>itemset list</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>T100</td>
-<td>I1, I2, I5</td>
-</tr>
-<tr class="even">
-<td>T200</td>
-<td>I2, I4</td>
-</tr>
-<tr class="odd">
-<td>T300</td>
-<td>I2, I3</td>
-</tr>
-<tr class="even">
-<td>T400</td>
-<td>I1, I2, I4</td>
-</tr>
-<tr class="odd">
-<td>T500</td>
-<td>I1, I3</td>
-</tr>
-<tr class="even">
-<td>T600</td>
-<td>I2, I3</td>
-</tr>
-<tr class="odd">
-<td>T700</td>
-<td>I1, I3</td>
-</tr>
-<tr class="even">
-<td>T800</td>
-<td>I1, I2, I3, I5</td>
-</tr>
-<tr class="odd">
-<td>T900</td>
-<td>I1, I2, I3</td>
-</tr>
-</tbody>
-</table>
-<h5><span id="1建立模式频繁树">（1）建立模式频繁树</span></h5>
-<p>我们首先需要建立一颗模式频繁树，做法很简单，也就是直接建立一颗字典树。在建立之前，我们需要先对每一个项进行统计，并去除出现次数小于support
-count的项，然后排序。对于上表，这么做后的结果如下：</p>
-<table>
-<thead>
-<tr class="header">
-<th>item</th>
-<th>count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>I2</td>
-<td>7</td>
-</tr>
-<tr class="even">
-<td>I1</td>
-<td>6</td>
-</tr>
-<tr class="odd">
-<td>I3</td>
-<td>6</td>
-</tr>
-<tr class="even">
-<td>I4</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>I5</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<p>此处我们选择的support count为2，所以所有的项都被保留了下来。</p>
-<p>然后我们需要对保留下来的项压缩成一个字典树，为了保证这颗字典树尽可能小，我们需要对事务集中的每一个项集进行排序，结果如下：</p>
-<table>
-<thead>
-<tr class="header">
-<th>TID</th>
-<th>itemset list</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>T100</td>
-<td>I2, I1, I5</td>
-</tr>
-<tr class="even">
-<td>T200</td>
-<td>I2, I4</td>
-</tr>
-<tr class="odd">
-<td>T300</td>
-<td>I2, I3</td>
-</tr>
-<tr class="even">
-<td>T400</td>
-<td>I2, I1, I4</td>
-</tr>
-<tr class="odd">
-<td>T500</td>
-<td>I1, I3</td>
-</tr>
-<tr class="even">
-<td>T600</td>
-<td>I2, I3</td>
-</tr>
-<tr class="odd">
-<td>T700</td>
-<td>I1, I3</td>
-</tr>
-<tr class="even">
-<td>T800</td>
-<td>I2, I1, I3, I5</td>
-</tr>
-<tr class="odd">
-<td>T900</td>
-<td>I2, I1, I3</td>
-</tr>
-</tbody>
-</table>
-<p><strong>字典树的根节点设为null，然后我们可以开始从第一条数据开始建立字典树</strong>，需要说明的是，这颗字典树的每个节点还需要维护一个count，这个count的含义是当前该节点被“经过”了多少次。下面的图中，<strong>每个结点被我标注为Ik
-: n的样子，代表当前节点名为Ik，count为n。</strong></p>
-<p>我们先加入T100：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641823.png" style="zoom: 50%;"></p>
-<p>然后加入T200：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641579.png" alt="img" style="zoom:50%;"></p>
-<p>在频繁模式树建立完后，我们需要按照第一步中获取的表的顺序来遍历每一个项，由于我们之前获取的表中频数最小的项是I5，所以我们接下来先获取I5的条件模式基。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271644036.png" alt="image-20230427164444928" style="zoom:50%;"></p>
-<table>
-<thead>
-<tr class="header">
-<th>item</th>
-<th>conditional pattern base</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>I5</td>
-<td>{I2, I1 : 1}, {I2, I1, I3 : 1}</td>
-</tr>
-<tr class="even">
-<td>I4</td>
-<td>{I2, I1 : 1}, {I2 : 1}</td>
-</tr>
-<tr class="odd">
-<td>I3</td>
-<td>{I2, I1 : 2}, {I2 : 2}, {I1 : 2}</td>
-</tr>
-<tr class="even">
-<td>I1</td>
-<td>{I2 : 4}</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>由于I2不存在叶子节点上，所以I2不存在条件模式基</p>
-</blockquote>
-<p>而fp-growth算法中的分治思想就体现在下面。可以看到，每个项对应的条件模式基本质就是一个项集，所以它们可以看成一个新的事务集。因此，原问题的总事务集就转换成了每个item对应的子事务集，而我们最终的频繁项集分别从每一个item对应的子事务集中产生，问题就被各个item分而治之了。</p>
-<h5><span id="3从条件模式基中获取频繁项集">（3）从条件模式基中获取频繁项集</span></h5>
-<p>我们之前使用了字典树来压缩表征原事务集，那么对于我们的子事务集，我们也完全可以采用相同的步骤。不过需要注意，<strong>建立子事务集的频繁模式树之前，需要进行统计和基于support
-count的项的裁剪。比如对于I5的子事务集（也就是条件模式基），我们需要先统计，得到{I2
-: 2, I1 : 2, I3 : 1}。由于我们的support
-count为2，所以我们需要去除count只为1的I3</strong>，然后排序得到I2,
-I1，剩下的事务集重构为{I2, I1 : 1}, {I2, I1 :
-1}，很明显这两个前缀可以合并为{I2, I1 :
-2}，然后我们画出这个裁剪后的子事务集的频繁模式树：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271648837.png" alt="img" style="zoom: 67%;"></p>
-<p>然后找出这棵频繁模式树的所有路径，可以看到上面的这棵频繁模式树只有一条路径，然后我们找出这条路径上节点所有可能的组合，也就是{I2,
-I1}, {I2}, {I1}，这也就是{I2,
-I1}的幂集。然后对于每一个组合类型，我们再加上I5，于是就得到了这条路径上得到的频繁项集：{I2,
-I1, I5}, {I2, I5}, {I1,
-I5}。所有路径上的频繁项集合并起来就是I5对应的频繁项集。</p>
-<p>我们再举一个例子，就举I3吧。首先统计项得到 {I2 : 4, I1 :
-4}都大于2，不需要裁剪，排序后得到的子事务集不变，还是{I2, I1 : 2}, {I2 :
-2}, {I1 : 2}，构建该子数据集的频繁模式树：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271649435.png" alt="img" style="zoom: 67%;"></p>
-<p>然后找出FP-tree的所有路径：{I2, I1}和{I1}。对于路径{I2,
-I1}在，找出所有的组合{I2, I1}, {I2}和{I1}，加上I3得到{I2, I1, I3}, {I2,
-I3}, {I1, I3}；对于路径{I1}，找出所有的组合{I1}，加上I3得到{I1,
-I3}。</p>
-<p>遍历完所有路径后，将得到的频繁项集集合取并集，得到{I2, I1, I3}, {I2,
-I3}, {I1, I3}。所以I3对应的频繁项集就是{I2, I1, I3}, {I2, I3}, {I1,
-I3}。</p>
-<h5><span id="4整合每个项的频繁项集就是答案啦">（4）整合每个项的频繁项集，就是答案啦</span></h5>
-<p>其余的两个项也是同样的操作过程，最终的每个项对应的频繁项集如下表所示：</p>
-<table>
-<thead>
-<tr class="header">
-<th>item</th>
-<th>frequent itemsets</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>I5</td>
-<td>{I2, I1, I5}, {I2, I5}, {I1, I5}</td>
-</tr>
-<tr class="even">
-<td>I4</td>
-<td>{I2, I4}</td>
-</tr>
-<tr class="odd">
-<td>I3</td>
-<td>{I2, I3}, {I1, I3}, {I2, I1}</td>
-</tr>
-<tr class="even">
-<td>I1</td>
-<td>{I2, I1}</td>
-</tr>
-</tbody>
-</table>
-<p>至此FP-growth算法执行结束。可以看到，由于采用了分治的方法，所以FP-growth得到的结果是根据项进行分层的，也就是说结果对于特定的某一个项有很强的指向作用。比如我们只想要研究哪些值和I5最频繁出现，我们可以只看I5产生的频繁项集。</p>
-<h4><span id="12-pyspark-demo实现">1.2 Pyspark demo实现</span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.fpm <span class="keyword">import</span> FPGrowth</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">&quot;reduceByKey&quot;</span>).getOrCreate()</span><br><span class="line"><span class="comment"># 创建DataFrame</span></span><br><span class="line">data = spark.createDataFrame([</span><br><span class="line">    (<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>]),</span><br><span class="line">    (<span class="number">2</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]),</span><br><span class="line">    (<span class="number">3</span>, [<span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">], [<span class="string">&quot;id&quot;</span>, <span class="string">&quot;items&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化FPGrowth模型</span></span><br><span class="line">fp = FPGrowth(itemsCol=<span class="string">&quot;items&quot;</span>, minSupport=<span class="number">0.5</span>, minConfidence=<span class="number">0.6</span>)</span><br><span class="line"><span class="comment"># 训练FPGrowth模型</span></span><br><span class="line">model = fp.fit(data)</span><br><span class="line"><span class="comment"># 展示频繁项集</span></span><br><span class="line">model.freqItemsets.show()</span><br></pre></td></tr></table></figure>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li>数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：https://zhuanlan.zhihu.com/p/411594391</li>
-<li><code>pyspark.ml.fpm.``FPGrowth</code>:https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.fpm.FPGrowth.html</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/806NJ2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -590,7 +357,7 @@ I3}。</p>
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：15:21:45" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
+      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：17:20:29" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -635,151 +402,17 @@ I3}。</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-关联规则概述">一、关联规则概述</span></h3>
+          <h3 id="一关联规则概述">一、关联规则概述</h3>
 <p><font color="red">关联规则-策略挖掘中必不可少的算法。</font></p>
 <p>1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。</p>
-<h4><span id="11-关联评价">1.1 关联评价</span></h4>
-<p>关联规则有三个核心概念需要理解：<strong>支持度、置信度、提升度</strong>，下面用最经典的啤酒-尿不湿案例给大家举例说明这三个概念，假如以下是几名客户购买订单的商品列表：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p><strong><font color="red">（1）支持度</font></strong></p>
-<p><strong>支持度
-(Support)：</strong>指某个<strong>商品组合出现的次数</strong>与<strong>总订单数</strong>之间的比例。</p>
-<p>在这个例子中，我们可以看到“牛奶”出现了 4 次，那么这 5
-笔订单中“牛奶”的支持度就是 4/5=0.8。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>同样“牛奶 + 面包”出现了 3 次，那么这 5 笔订单中“牛奶 +
-面包”的支持度就是 3/5=0.6</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443641.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>这样理解起来是不是非常简单了呢，大家可以动动手计算下
-<strong>'尿不湿+啤酒'</strong>的支持度是多少？</p>
-<h5><span id="2置信度">（2）置信度</span></h5>
-<p><strong>置信度 (Confidence)：</strong>指的就是当你购买了商品
-A，会有多大的概率购买商品
-B，在包含A的子集中，B的支持度，也就是包含B的订单的比例。</p>
-<p>置信度（牛奶→啤酒）=
-3/4=0.75，代表购买了牛奶的订单中，还有多少订单购买了啤酒，如下面的表格所示。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443708.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>置信度（啤酒→牛奶）=
-3/4=0.75，代表如果你购买了啤酒，有多大的概率会购买牛奶？</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443782.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>置信度（啤酒→尿不湿）=
-4/4=1.0，代表如果你购买了啤酒，有多大的概率会买尿不湿，下面的表格看出来是100%。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443851.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>由上面的例子可以看出，置信度其实就是个条件概念，就是说在 A
-发生的情况下，B
-发生的概率是多大。如果仅仅知道这两个概念，很多情况下还是不够用，需要用到提升度的概念。比如A出现的情况下B出现的概率为80%，那到底AB是不是有关系呢，不一定，人家B本来在大盘中的比例95%。你的A出现，反而减少了B出现的概率。</p>
-<p><strong>（3）提升度</strong></p>
-<p><strong>提升度
-(Lift)：</strong>我们在做商品推荐或者风控策略的时候，重点考虑的是提升度，因为提升度代表的是A
-的出现，对B的出现概率提升的程度。</p>
-<p><strong>提升度 (A→B) = 置信度 (A→B) / 支持度 (B)</strong></p>
-<p>所以提升度有三种可能：</p>
-<ul>
-<li><p>提升度 (A→B)&gt;1：代表有提升；</p></li>
-<li><p>提升度 (A→B)=1：代表有没有提升，也没有下降；</p></li>
-<li><p>提升度 (A→B)&lt;1：代表有下降。</p></li>
-</ul>
-<p>提升度 (啤酒→尿不湿) =置信度 (啤酒→尿不湿) /支持度 (尿不湿) = 1.0/0.8
-= 1.25，可见啤酒对尿不湿是有提升的，提升度为1.25，大于1。</p>
-<p><strong>可以简单理解为：在全集的情况下，尿不湿的概率为80%，而在包含啤酒这个子集中，尿不湿的概率为100%，因此，子集的限定，提高了尿不湿的概率，啤酒的出现，提高了尿不湿的概率。</strong></p>
-<p><strong>（4）频繁项集</strong></p>
-<p><strong>频繁项集(frequent itemset)
-：</strong>就是支持度大于等于最小支持度 (Min Support)
-阈值的项集，所以小于最小值支持度的项目就是非频繁项集，而大于等于最小支持度的的项集就是频繁项集，项集可以是单个商品，也可以是组合。</p>
-<p><strong>频繁集挖掘面临的最大难题就是项集的组合爆炸</strong>，如下图：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449952.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>随着商品数量增多，这个网络的规模将变得特别庞大，我们不可能根据传统方法进行统计和计算，为了解决这个问题，Apriori算法提出了两个核心思想：</p>
-<ul>
-<li><p><strong><font color="red">某个项集是频繁的，那么它的所有子集也是频繁的</font></strong>
-{Milk, Bread, Coke} 是频繁的 → {Milk, Coke} 是频繁的</p></li>
-<li><p><strong><font color="red">如果一个项集是非频繁项集，那么它的所有超集也是非频繁项集</font></strong>
-{Battery} 是非频繁的 → {Milk, Battery} 也非平凡</p></li>
-</ul>
-<p>如下图，如果我们已知<strong>B</strong>不频繁，那么可以说图中所有绿色的项集都不频繁，搜索时就要这些项避开，减少计算开销。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449043.png" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p>同理，如果下图所示，{A,B}这个项集是非频繁的，那虚线框后面的都不用计算了。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271451871.png" alt="图片" style="zoom: 33%;"></p>
-<p><strong>需要注意的是：</strong></p>
-<p>1）如果支持度和置信度阈值过高，虽然可以在一定程度上减少数据挖掘的时间，但是一些隐含在数据中的非频繁特征项容易被忽略掉，难以发现足够有用的规则；</p>
-<p>2）如果支持度和置信度阈值过低，可能会导致大量冗余和无效的规则产生，导致较大计算量负荷。</p>
-<h4><span id="12-应用场景">1.2 应用场景</span></h4>
-<p><strong>（1）电商行业</strong></p>
-<p>著名的“啤酒尿布”案例，通过分析历史用户的支付订单记录，挖掘出比如中年男人会同时购买啤酒和尿布两种商品，后续可以在商品陈列、打折促销组合、交叉营销发送优惠券等场景中应用。穿⾐搭配推荐穿⾐搭配是服饰鞋包</p>
-<p>导购中⾮常重要的课题，基于搭配专家和达⼈⽣成的搭配组合数据，百万级别的商品的⽂本和图像数据，以及⽤户的⾏为数据。期待能从以上⾏为、⽂本和图像数据中挖掘穿⾐搭配模型，为⽤户提供个性化、优质的、专业的穿⾐搭配⽅案，预测给定商品的搭配商品集合。</p>
-<p><strong>（2）社会民生</strong></p>
-<ul>
-<li>互联⽹情绪指标和⽣猪价格的关联关系挖掘和预测</li>
-<li>⽓象关联分析</li>
-<li>交通事故成因分析</li>
-</ul>
-<p><strong>（3）金融行业</strong></p>
-<ul>
-<li>银⾏客户交叉销售分析</li>
-<li>银⾏营销⽅案推荐</li>
-</ul>
-<p><strong>（4）文娱体育</strong></p>
-<ul>
-<li>影视演员组合</li>
-<li>球员最优组合</li>
-</ul>
-<p><strong>（5）网络安全</strong></p>
-<ul>
-<li><strong>自动化规则生成</strong></li>
-</ul>
-<h4><span id="13-常见算法">1.3 常见算法</span></h4>
-<p><strong>（1）算法</strong></p>
-<ul>
-<li><strong>关联规则算法</strong>：<font color="red">典型如Apriori，PySpark中为FP-Growth；</font></li>
-</ul>
-<p>关联规则算法是挖掘频繁项集的算法，1993年由Rakesh Agrawal
-和Ramakrishnan Skrikant提出，并应用于IBM的业务场景。</p>
-<ul>
-<li><strong>序列模式算法</strong>：典型算法如Apriori-All，PySpark中为PrefixSpan；</li>
-</ul>
-<p>与关联规则算法类似，不同点在于序列模式会考虑频繁项集中的时序先后关系</p>
-<p><strong>（2）优化</strong></p>
-<p>大部分的算法都是<strong>先频繁模式再关联规则流</strong>，<font color="red">算法的优化目的都是减少数据扫描的时间成本</font>。</p>
-<ul>
-<li><strong>树基算法</strong>：FP-Growth, PrePost,
-CFP-Growth算法等，<strong>核心要义是把原始事务数据转换为树状数据结构，减少扫描事务的成本。</strong></li>
-<li><strong>二进制向量算法</strong>：BitTableFI,
-IndexBitTableFI等，<strong>核心要义是把原始数据转换为二进制向量，用逻辑运算与矩阵运算来代替数据扫描，加快速度。</strong></li>
-<li><strong>可靠采样流派</strong>：中心极限定理等，<strong>核心要义是通过采样来减少数据规模来加速</strong>。<font color="red">支持度就是频率，频率与其对应概率的差根据中心极限定理服从期望为0的正态分布。以此为理论基础，可以在频繁模式支持度误差可控的情况下，推导出合理的样本规模。</font></li>
-<li><strong>渐进采样流派</strong>：Progressive
-sampling，不推公式（当然有些算法用到了齐夫定理，但是鉴于Zipf定理是经验定理，不算很严谨），慢慢增加样本，然后选取几个代表性的项集，以其两个样本规模间的支持度变化量来决定采样是否足够。当变化足够小时，说明样本够了。</li>
-</ul>
-<h3><span id="二-参考文献">二、参考文献</span></h3>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/52145607/answer/198035075">目前流行的<em>关联规则</em>算法有哪些？</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzA4OTAwMjY2Nw==&amp;mid=2650188496&amp;idx=1&amp;sn=b6b9f65ee6ba40457b23fc0e35c8f4e7&amp;chksm=88238d14bf540402e7049e41aca6bfea2f2870827a134d770eb716eed9582dbbde65d50d9b7f&amp;scene=21#wechat_redirect">关联规则-策略挖掘中必不可少的算法</a></li>
-<li>关联规则挖掘在实际中的应用有哪些? - 李小翰的回答 - 知乎
-https://www.zhihu.com/question/62342815/answer/2616887115</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1E0CW4H/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -835,7 +468,7 @@ https://www.zhihu.com/question/62342815/answer/2616887115</li>
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：16:20:33" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
+      <time title="创建时间：2023-04-27 14:34:48 / 修改时间：17:20:23" itemprop="dateCreated datePublished" datetime="2023-04-27T14:34:48+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -880,188 +513,21 @@ https://www.zhihu.com/question/62342815/answer/2616887115</li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-apriori算法">一、﻿Apriori算法</span></h3>
+          <h3 id="一apriori算法">一、﻿Apriori算法</h3>
 <p>﻿Apriori算法是常用的用于挖掘出数据关联规则的算法，它用来找出数据值中频繁出现的数据集合，找出这些集合的模式有助于我们做一些决策。</p>
 <ul>
 <li><p><strong>支持度</strong>：关联规则A-&gt;B的支持度support=P(AB)，指的是事件A和事件B同时发生的概率；</p></li>
 <li><p><strong>置信度</strong>：指的是发生事件A的基础上发生事件B的概率；</p></li>
 <li><p><strong>频繁k项集</strong>：频繁项集表示的就是在数据集中频繁出现的项集（可以是一个，也可以是多个）。如果事件A中包含k个元素，那么称这个事件A为k项集，并且事件A满足最小支持度阈值的事件称为频繁k项集；</p></li>
 </ul>
-<h4><span id="11-背景">1.1 背景</span></h4>
-<p>对于Apriori算法，我们使用支持度来作为我们判断频繁项集的标准。Apriori算法的目标是找到最大的K项频繁集。</p>
-<p>记 <span class="math inline">\(\mathcal{I}=\left\{I_1, I_2, \ldots,
-I_m\right\}\)</span> 为一个项集, 其中的 <span class="math inline">\(I_k(k=0,1, \ldots, m)\)</span>
-代表所有可能出现的子项。</p>
-<p><strong>举例：</strong></p>
-<p>比如你作为一家大型连锁超市的数据分析师，你发现前台给你发的大量顾客的购物清单数据中，鸡蛋+面包+牛奶这样的组合是清单中的常客，且符合一些不可言喻的约束条件，那么鸡蛋、面包和牛奶这三样商品经常一起出现这样一个规律就算是购物清单数据中的频繁模式。其中，鸡蛋，面包，牛奶这样一个集合我们就称为一个<strong>频繁项集</strong>（frequent
-itemset）。</p>
-<table>
-<thead>
-<tr class="header">
-<th>TID</th>
-<th>transaction</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>T1</td>
-<td>鸡蛋，牙膏，牛排，牛奶，面包</td>
-</tr>
-<tr class="even">
-<td>T2</td>
-<td>鸡蛋，亚麻籽，橄榄油，牛奶，面包</td>
-</tr>
-<tr class="odd">
-<td>T3</td>
-<td>鸡蛋，泡芙，奶油，牛奶，面包</td>
-</tr>
-<tr class="even">
-<td>T4</td>
-<td>鸡蛋，低筋面粉，糖粉，黄油，牛奶</td>
-</tr>
-</tbody>
-</table>
-<p>TID是每一个顾客的账单的编号，上述表格中我们有4个顾客的交易记录。</p>
-<ol type="1">
-<li>给定事务集 <span class="math inline">\(D\)</span>,
-找出一组关联规则(association rule) <span class="math inline">\(A
-\subseteq \mathcal{I} \wedge B \subseteq \mathcal{I} \wedge A
-\Rightarrow B\)</span> 。它的意思 是 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> 相关联, 由 <span class="math inline">\(A\)</span> 可以推出 <span class="math inline">\(B\)</span> 。比如 <span class="math inline">\(A=\{\)</span> 鸡蛋, 牛奶 <span class="math inline">\(\}, B=\{\)</span> 面包 <span class="math inline">\(\}\)</span>, 那么 <span class="math inline">\(A
-\Rightarrow B\)</span>
-可以认为是买了鸡蛋和牛奶的顾客有大概率也会去买面包。这个过程我们称为<strong>关联规则挖掘(association
-rule mining)</strong></li>
-<li>给定事务集 <span class="math inline">\(D\)</span>,
-找出蕴含其中的频繁项集。比如通过example1中的表格,
-我们挖掘出了用户喜欢鸡蛋+面包+牛奶这样的模式。这个过程我们称为<strong>频繁模式挖掘(frequent
-pattern mining)</strong></li>
-</ol>
-<h4><span id="12-关联规则挖掘">1.2 关联规则挖掘</span></h4>
-<p>为了后续的度量, 需要引入两个相当相当简单的概念,
-<strong>support</strong>和<strong>confidence</strong>。记 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> 是 <span class="math inline">\(\mathcal{I}\)</span> 中的两个子集, 那么则 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> 在 <span class="math inline">\(D\)</span> 中同时发生的概率称为support: <span class="math display">\[
-\operatorname{support}(A \Rightarrow B)=P(A \cup B)
-\]</span> <span class="math inline">\(A\)</span> 发生的前提下， <span class="math inline">\(B\)</span> 在 <span class="math inline">\(D\)</span> 发生的概率称为confidence: <span class="math display">\[
-\text { confidence }(A \Rightarrow B)=\frac{P(A \cup
-B)}{P(A)}=\frac{\operatorname{support}(A \cup
-B)}{\operatorname{support}(A)}
-\]</span> <strong>事实上, 书上对support的定义有点模糊,
-我的理解是support就是一个很简单的频度度量, 所以 <span class="math inline">\(\operatorname{support}(A)\)</span> 就代表 <span class="math inline">\(A\)</span> 在 <span class="math inline">\(D\)</span> 出现的频率。</strong></p>
-<p>还有一点，定义在 <span class="math inline">\(D\)</span>
-上的<strong>频度</strong>的计算公式如下： <span class="math display">\[
-P(A)=\frac{1}{|D|} \sum_{i=1}^{|D|} \mathbb{I}\left(A \subseteq
-T_i\right)
-\]</span> 其中 <span class="math inline">\(\mathbb{I}(c)\)</span>
-为指示函数, <span class="math inline">\(c\)</span> 为真，则返回 <span class="math inline">\(1 ; c\)</span> 为假，则返回0。</p>
-<p><strong>很明显, 对于计算出的值, 我们需要设置人为的阈值才能判定 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span>
-是否为一个关联规则</strong>。假定我们设置了两个阈值 <span class="math inline">\(s\)</span> 和 <span class="math inline">\(c\)</span> 。那么如果 <span class="math inline">\(\operatorname{support}(A \Rightarrow B) \geq s
-\wedge \operatorname{confidence}(A \Rightarrow B) \geq c\)</span> ,
-我们就说 <span class="math inline">\(A \Rightarrow B\)</span>
-是一条关联规则。它的实际意义可是买了{鸡蛋,牛奶} 很有可能还会去买
-{面包}。</p>
-<p>这就是关联规则挖掘的最简单的做法, 由此,
-我们可以用两步来总结关联规则挖掘的步骤:</p>
-<ol type="1">
-<li><font color="red">找出所有可能的频繁项集。频繁项集的定义为support在事务集中出现频率大于设定阈值min_sup的项集。</font></li>
-<li><font color="red">在找出的频繁项集中生成强关联规则。符合强相关联规则的频繁项集对需要满足其support和
-confidence都分别大于预先设定好的阈值。</font></li>
-</ol>
-<p>Ha , 所以我们需要先找出事务集中所有可能的频繁项集。我们发现,
-在support度量意义下的频繁项集的定义很简单,
-只需要出现频率大于设定阈值的项集就算是频繁项集。<strong>但是我们找频繁项集的搜索空间是什么,
-是总项集<span class="math inline">\(\mathcal{I}\)</span> 的幂集耶,
-这玩意儿的大小为<span class="math inline">\(2^{|\mathcal{I}|-1}=2^{m-1}\)</span>
-。</strong></p>
-<p>那么我们的dummy算法时间复杂度直接升天, 光是最外层的搜索就已经是指数
-级的复杂度了, 显然这不是一个有效的算法。</p>
-<p>而当我们找到有限个频繁项集后,
-只需要通过计算所有的频繁项集中两两是否满足confidence和
-support分别大于预先设定的值就行了,
-这一步的时间复杂度不会很大。所以重点还是在于如何设计出找到频繁项集的有效算法。</p>
-<p>所以于此,
-我们需要引入一些有意思的频繁项集的搜索算法。其中最简单的就是1994年提出的
-Apriori算法了。</p>
-<h4><span id="13-apriori算法">1.3 Apriori算法</span></h4>
-<p><strong>由于频繁项集的搜索空间是指数级别的，所以我们需要想办法来缩减搜索空间大小</strong>。<font color="red">Apriori提供了一种以连接剪枝为一个迭代循环的算法来有效减小了搜索空间。</font>之所以取名为Apriori，因为算法使用了项集本身的一些<strong>先验信息</strong>（prio
-[ˈpraɪə(r)] ），加上作者之一是Agrawal，故取名为Apriori。</p>
-<p>Apriori到底在干什么，一般而言，我们在搜索空间找东西可以分成两种——<strong>自上而下搜索</strong>和<strong>自下而上搜索</strong>。自下而上搜索应该是大部分人熟悉的搜索方法，一般我们会从一个随机点出发，然后根据任务和空间本身的特点找到符合要求的值或者集合，比如你丢了一块橡皮，通过橡皮滚落的大致轨迹去寻找橡皮的下落，这是属于自下而上的搜索方式。而自上而下的搜索方式则是类似于排除法，它会根据任务和搜索空间本身的特点去排除搜索空间中肯定不是目标的子空间，不断排除，直到停止，那么剩余的空间就是搜索答案，有点类似于收网捕鱼。</p>
-<p><strong>Apriori的搜索方式就属于自上而下的搜索方式。</strong>虽然
-<span class="math inline">\(\mathcal{I}\)</span> 的幂集的大小大得离谱,
-但是也是有章可循的, 我们可以按照项集元素的数量将总的搜索空间给它切成
-<span class="math inline">\(m\)</span> 份（只有一个元素的项集,
-只有两个元素的项集，......, 有m个元素的项集），它们的大小分别为 <span class="math inline">\(\left(\begin{array}{c}m \\
-1\end{array}\right),\left(\begin{array}{c}m \\ 2\end{array}\right),
-\ldots,\left(\begin{array}{c}m \\ m\end{array}\right)\)</span>
-。然后从只有一个元素的项集出发, 不断削减搜索空间, 得到1-频繁项集,
-并根据一定的准则根据1-频繁项集推出若干个有两个元素的项集集合,
-从而进行迭代。</p>
-<blockquote>
-<p>含有k个元素的项集被称为k-项集(k-itemset)，同理，如果该项集恰好又是频繁项集，那么该项集又可称为k-频繁项集</p>
-</blockquote>
-<h5><span id="1-算法流程">(1) 算法流程</span></h5>
-<p>Apriori的做法是从大小为1的项集集合, 该集合被我们称为候选集 <span class="math inline">\(C_1\)</span> 。我们从候选集 <span class="math inline">\(C_1\)</span> 出发, 然后通过䇘选得到1-频繁项集
-<span class="math inline">\(L_1\)</span>, 连接, 减枝的方法得到大小为 2
-候选集 <span class="math inline">\(C_2\)</span>, 其中的䇘选和减枝
-两步都能有效缩减搜索空间。</p>
-<ul>
-<li><p>直接从事务集 <span class="math inline">\(D\)</span>
-中提取所有的transaction, 然后找出里面所有不相同的元素就行,记 <span class="math inline">\(\mathcal{I}=\left\{I_1, I_2, \ldots,
-I_m\right\}\)</span> 。</p></li>
-<li><p>然后, 我们需要初始化第一个候选集, 也就是 <span class="math inline">\(C_1 。 C_1\)</span> 就是 <span class="math inline">\(\mathcal{I}\)</span> 本身, 对 <span class="math inline">\(C_1\)</span> 中的每个元素, 计算其在 <span class="math inline">\(D\)</span> 中的频率,
-如果频率小于min_sup，那就删除，最终留下的元素构成集合 <span class="math inline">\(L_1\)</span> ，这就是我们的1-频繁项集。</p></li>
-<li><p>接下来我们就需要迭代向前了，让我们的搜索空间从1-项集集合跳到2-项集集合,
-这跳跃的过程通过连接完成。</p></li>
-</ul>
-<p>为了方便后续描述, 假设我们已经得到了k-频繁项集的集合 <span class="math inline">\(L_k\)</span> 了。首先我们需要保证 <span class="math inline">\(L_k\)</span>
-中每个频繁项集内部都已经按照字典序排序了,
-然后所有的频繁项集之间两两比较, 如果这两个项集前 <span class="math inline">\(k-1\)</span> 项全部相同 ( <span class="math inline">\(L_k\)</span> 也是集合，所以 <span class="math inline">\(L_k\)</span> 中的所有频繁项集都是两两不同的, 前
-<span class="math inline">\(k-1\)</span>
-项全部相同意味着它们的最后一个元素一定不一样），那么将这两个项集取并集然后加入集
-合 <span class="math inline">\(C_{k+1}\)</span> 中。这样一来,
-我们就获得了 <span class="math inline">\(\mathrm{k}+1\)</span>-项集的待选集合了,
-但是这个集合由于经过了 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| \\
-2\end{array}\right)\)</span> 次组合挑选, 所以大小可能会很大, 因此,
-在连接完成后, 我们有必要进行裁剪来缩小下一轮迭代的搜索空间。</p>
-<p>这个地方就需要用到Apriori算法中提出的一个假设了—一个频繁项集的任意子集都是步繁项集，由于我们下一轮迭代的目标就是得到
-<span class="math inline">\(k+1\)</span>-频繁项集，所以我们可以在这里直接把不是频繁项集的项集去除。根据这个假设,
-那么那些存在子集为非频繁项集的项集就是非频繁项集，那 么我将其从 <span class="math inline">\(C_{k+1}\)</span>
-中去除。当我们全部去除后，那么裁剪步骤完成，我们得到了下一轮迭代需要用
-到的搜索需要用到的候选集 <span class="math inline">\(C_{k+1}\)</span>
-。进入下一个循环。</p>
-<p><strong>最终说明一下终止条件：</strong></p>
-<ul>
-<li>如果当前轮次得到的频繁项集为空, break</li>
-<li>如果当前轮次得到的频繁项集只有一个元素, 存入结果, break</li>
-<li>如果候选集筛选后为空, break</li>
-<li>如果连接后的候选集裁剪后, 为空, break</li>
-</ul>
-<p><strong>循环结束或者终止后 (假设迭代了 <span class="math inline">\(n\)</span> 次），将集合 <span class="math inline">\(\left\{L_1, L_2, L_3, \ldots, L_n\right\}\)</span>
-返回。</strong></p>
-<h5><span id="2-样例">(2) 样例</span></h5>
-<p>当前的事务集如下：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271616186.png" style="zoom: 67%;"></p>
-<p>那么请算出各个level的频繁项集。其中，筛选步骤的min_sup为 29
-，也就是只要出现2次以下就筛去。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271615548.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="14-缺点">1.4 缺点</span></h4>
-<p>虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：</p>
-<ul>
-<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如
-<span class="math inline">\(D, L_k\)</span> ）
-进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
-<li><strong>可能会产生庞大的候选集</strong>：由于第 <span class="math inline">\(k\)</span> 迭代的连接过程仍然需要进行 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| \\
-2\end{array}\right)\)</span> 次比较操作,
-所以Apriori算法中途产生的候选集的数量依然巨大。</li>
-</ul>
-<p><font color="red">针对Apriori算法的性能瓶颈问题，2000年Jiawei
-Han等人提出了基于FP树生成频繁项集的FP-growth算法。</font></p>
-<h3><span id="二-参考文献">二、参考文献</span></h3>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19912364/answer/963934469"><em>Apriori算法</em>是什么？适用于什么情境？</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/410019734"><font color="blue">数据挖掘随笔（一）频繁模式挖掘与关联规则挖掘以及Apriori算法（python实现）</font></a></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/3BJBSQZ/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1242,7 +708,7 @@ Checklist-API_Security_Best_Practices</font></p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-27 14:17:37" itemprop="dateModified" datetime="2023-04-27T14:17:37+08:00">2023-04-27</time>
+      <time title="修改时间：2023-04-27 17:30:53" itemprop="dateModified" datetime="2023-04-27T17:30:53+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1265,7 +731,7 @@ Checklist-API_Security_Best_Practices</font></p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>714</span>
+      <span>770</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1297,7 +763,7 @@ Checklist-API_Security_Best_Practices</font></p>
 <li><strong><font color="red"> 大数据处理</font></strong>
 <ul>
 <li>高维向量相似度匹配</li>
-<li>Spark</li>
+<li>Spark 基础</li>
 </ul></li>
 <li>计算机基础
 <ul>
@@ -1327,7 +793,7 @@ Checklist-API_Security_Best_Practices</font></p>
 </ul>
 <h4><span id="二-算法">二、算法</span></h4>
 <ul>
-<li><strong><font color="red">机器学习</font></strong>
+<li><strong>机器学习</strong>
 <ul>
 <li>理论基础</li>
 <li>线性模型</li>
@@ -1340,13 +806,13 @@ Checklist-API_Security_Best_Practices</font></p>
 <li>【概率图模型】</li>
 <li>推荐算法</li>
 <li>异常检测</li>
-<li>【社区发现】
+<li><strong><font color="red">【社区发现】</font></strong>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556291759">万物皆网络，万字长文详解<em>社区发现</em>算法Louvain</a></li>
 </ul></li>
-<li>反欺诈算法
+<li><strong><font color="red">反欺诈算法</font></strong>
 <ul>
-<li>SynchroTrap、Oddball、LockInfer、CatchSync等<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=反欺诈算法&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2937955407%7D">反欺诈算法</a>，深入研究应用，春花秋月又一年。。。</li>
+<li>SynchroTrap、Oddball、LockInfer、CatchSync等<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=反欺诈算法&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2937955407%7D">反欺诈算法</a>，深入研究应用，春花秋月又一年。</li>
 </ul></li>
 </ul></li>
 <li>特征工程</li>
@@ -1396,7 +862,10 @@ Checklist-API_Security_Best_Practices</font></p>
 </ul></li>
 <li><strong>工业落地：企业公开发表的论文或白皮书</strong>
 <ul>
-<li>网络安全</li>
+<li>网络安全
+<ul>
+<li><strong><font color="red">恶意软件检测</font></strong></li>
+</ul></li>
 <li>业务安全
 <ul>
 <li><strong><font color="red">
@@ -1405,7 +874,7 @@ Checklist-API_Security_Best_Practices</font></p>
 </ul></li>
 <li><strong>算法比赛：算法比赛的top方案</strong>
 <ul>
-<li>网络安全
+<li><font color="red">网络安全</font>
 <ul>
 <li>【360
 BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
@@ -1418,15 +887,27 @@ BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
 <ul>
 <li>网络安全
 <ul>
-<li>【恶意软件逃逸攻击】</li>
+<li><strong><font color="red">恶意软件检测</font></strong></li>
+<li><strong><font color="red">恶意加密流量检测</font></strong></li>
+<li>【AI安全】</li>
 </ul></li>
-<li>业务安全</li>
+<li>业务安全
+<ul>
+<li></li>
+</ul></li>
 </ul></li>
 </ul>
 <h4><span id="四-随笔">四、随笔</span></h4>
 <ul>
 <li>面试准备</li>
 <li>面试汇总</li>
+<li>面试必看-ML整理</li>
+<li>面试必看-DL整理</li>
+<li>安全算法工程师的自我修养
+<ul>
+<li>风控心得</li>
+<li>内容安全心得</li>
+</ul></li>
 </ul>
 
       
@@ -1728,7 +1209,7 @@ the Time of Registration: An Unsupervised Approach</strong></p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 13:15:36" itemprop="dateModified" datetime="2023-04-22T13:15:36+08:00">2023-04-22</time>
+      <time title="修改时间：2023-04-27 17:30:53" itemprop="dateModified" datetime="2023-04-27T17:30:53+08:00">2023-04-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1751,7 +1232,7 @@ the Time of Registration: An Unsupervised Approach</strong></p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>899</span>
+      <span>906</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
