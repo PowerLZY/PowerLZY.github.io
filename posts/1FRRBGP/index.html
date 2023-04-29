@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="[Published 10 October 2022] Web API流量和攻击的数量和严重程度都在增长。新方法通过特定的API安全功能补充了传统的web应用程序安全措施。安全和风险管理领导者应确定何时寻求这种额外的保护。 主要发现  安全领导者正在寻找额外的安全功能来保护他们的API。他们正在扩展现有的API网关（GW）、web应用程序和API保护（WAAP）解决方案，尤其是在具有高安全要求的行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流量反作弊（5）Gartner-Innovation Insight for API Protection">
+<meta property="og:url" content="https://powerlzy.github.io/posts/1FRRBGP/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="[Published 10 October 2022] Web API流量和攻击的数量和严重程度都在增长。新方法通过特定的API安全功能补充了传统的web应用程序安全措施。安全和风险管理领导者应确定何时寻求这种额外的保护。 主要发现  安全领导者正在寻找额外的安全功能来保护他们的API。他们正在扩展现有的API网关（GW）、web应用程序和API保护（WAAP）解决方案，尤其是在具有高安全要求的行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304291603086.png">
+<meta property="article:published_time" content="2023-04-29T08:02:53.269Z">
+<meta property="article:modified_time" content="2023-04-29T08:21:37.093Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="工业落地">
+<meta property="article:tag" content="业务安全">
+<meta property="article:tag" content="API安全">
+<meta property="article:tag" content="Gartner">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304291603086.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/1FRRBGP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/1FRRBGP/","path":"posts/1FRRBGP/","title":"流量反作弊（5）Gartner-Innovation Insight for API Protection"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流量反作弊（5）Gartner-Innovation Insight for API Protection | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、优点和用途</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 Discovery-发现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 Posture
+Management-状态评估</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 Runtime
+Protection-实时保护</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、风险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">六、建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1FRRBGP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流量反作弊（5）Gartner-Innovation Insight for API Protection | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流量反作弊（5）Gartner-Innovation Insight for API Protection
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-29 16:02:53 / 修改时间：16:21:37" itemprop="dateCreated datePublished" datetime="2023-04-29T16:02:53+08:00">2023-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>[Published 10 October 2022]</strong></p>
+<p>Web
+API流量和攻击的数量和严重程度都在增长。新方法通过特定的API安全功能补充了传统的web应用程序安全措施。安全和风险管理领导者应确定何时寻求这种额外的保护。</p>
+<h5><span id="主要发现">主要发现</span></h5>
+<ul>
+<li>安全领导者正在寻找额外的安全功能来保护他们的API。他们正在扩展现有的API网关（GW）、web应用程序和API保护（WAAP）解决方案，尤其是在具有高安全要求的行业垂直领域。</li>
+<li>Gartner客户在询问过程中最关心的问题包括个<strong>人数据盗窃、账户接管和自动内容抓取</strong>。</li>
+<li>API保护创新保护web
+API免受攻击、滥用、访问违规和拒绝服务（DoS）攻击。</li>
+<li>API保护产品提供三种主要类型的功能-<strong>发现、姿态管理和运行时保护</strong>。</li>
+</ul>
+<h5><span id="推荐">推荐</span></h5>
+<p>为了保护其API，安全和风险管理领导者应：</p>
+<ul>
+<li><strong>从发现和分类您的API开始</strong>。执行威胁建模，以确定减轻风险所需的特定安全机制。</li>
+<li>评估当前WAAP或API网关提供的API保护。如果您的风险缓解需要额外的API保护，请调查能够提供额外保护层的API安全专家。</li>
+<li>通过使用内部安全操作中心（SOC）或托管服务，解决行为异常检测可能产生的安全分析工作负载。</li>
+<li>执行应用程序安全测试（AST）或渗透测试练习，以发现可能隐藏的业务逻辑问题。</li>
+</ul>
+<span id="more"></span>
+<h5><span id="战略规划假设">战略规划假设</span></h5>
+<p>到2025年，将管理不到50%的企业API，因为API的爆炸性增长超过了API管理工具的能力。</p>
+<p>到2025年，至少70%的组织将只为其生产的公共API部署专门的运行时保护，而其他API则不受监控，缺乏API保护。</p>
+<p>到2026年，40%的组织将选择基于高级API保护和web应用程序安全功能的web应用程序和API保护提供商，而今年这一比例不到15%。</p>
+<h3><span id="一-说明">一、说明</span></h3>
+<p>随着API流量的增长，API安全性越来越受到关注。Web
+API互连应用程序，并成为企业数字化转型的核心。在生成和公开web
+API时，组织被调用来定义它们与其他实体（如合作伙伴和客户）的通信方式。缺乏使这些通信标准化的最佳做法。组织构建的API通常是导致高可见性漏洞的原因。</p>
+<p>许多组织保护API流量的方式与保护其遗留应用程序的方式相同。由于通信量的不同结构（例如，JSON有效负载），或者由于API事务的特性（例如，由于频率高），通用应用程序安全控制可能表现不佳。特别是在安全要求很高的垂直行业，安全领导者正在寻找额外的安全功能来保护他们的API。在这项研究中，我们探索了新兴的API安全创新，这些创新将帮助组织发现其API，识别和解决漏洞，并在运行时保护API。</p>
+<h3><span id="二-描述">二、描述</span></h3>
+<blockquote>
+<p><strong>定义：API保护创新保护web
+API免受攻击、滥用、访问违规和拒绝服务（DoS）攻击</strong>。虽然所有类型的API都可以受到保护，但通常组织最初关注的是自主开发的、面向公众的API，并为关键应用程序提供连接。这些解决方案通过结合API参数和有效负载的内容检查、流量管理，以及至少用于异常检测的流量分析，提供API安全性。</p>
+</blockquote>
+<p>API安全创新主要由新兴的API安全供应商提出。然而，API安全功能可以作为API网关、WAAP和AST供应商扩展产品组合的一部分获得。</p>
+<p><strong>根据具体的体系结构，API安全解决方案可以作为服务或本地产品提供，也可以采用混合方法提供</strong>。特别地，该解决方案可能需要收集数据并将数据发送回其云以进行行为异常检测，或者可能需要完全在本地识别异常模式。大多数解决方案都不是联机解决方案。相反，它们通过与企业内的应用程序和基础架构组件集成来获取流量数据和其他信息。</p>
+<ul>
+<li><p><font color="red">许多API安全产品的一个重要部分是发现API的能力。</font></p></li>
+<li><p><font color="red">完整的API安全程序应包括开发和测试阶段的控制。大多数API保护工具都会评估API的配置错误。</font></p></li>
+</ul>
+<h3><span id="三-优点和用途">三、优点和用途</span></h3>
+<p>Gartner客户在询问过程中表达的一些首要担忧包括<strong>个人数据盗窃</strong>（例如，利用Broken
+Object Level
+Authorization[BOLA]漏洞）、<strong>账户接管</strong>和<strong>自动内容抓取</strong>（例如，价格抓取）。<strong>Gartner客户报告的一种常见情况是由后端团队提供API。其目的是只有某些前端应用程序会使用API，但攻击者绕过允许的前端应用程序，成功地直接访问了后端API。</strong></p>
+<p>虽然安全领导者可以使用<strong>WAAP、API
+GW和AST工具</strong>中的现有功能来对抗API攻击，但这种方法带来了许多挑战：</p>
+<ul>
+<li>安全主管通常不拥有由基础设施和操作团队（如API
+GW）管理的工具，AST扫描仪正越来越多地将所有权转移给应用程序开发团队。</li>
+<li>API
+GW和WAAP安全功能可能会受到限制，具体取决于供应商。虽然一些领先的提供商已经包括了更先进的API发现和控制，但许多提供商仍局限于提供节流、安全传输和类似类型的安全策略实施。</li>
+<li>高安全性和受监管的垂直行业的安全领导者在询问能够立即提供所需功能的高级解决方案时表达了他们的愿望。</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304291603086.png"></p>
+<h4><span id="31-discovery-发现">3.1 Discovery-发现</span></h4>
+<p>API保护产品自动创建组织已生产和使用的API的库存。有多种发现方法，但还没有一个既定的最佳实践：</p>
+<ul>
+<li>许多解决方案混合使用<strong>流量镜像分析和查询现有基础设施</strong>（如API
+GW、web应用程序防火墙[WAF]和容器平台）来发现和清点正在使用的API。对于面向公共或合作伙伴的API，初始部署步骤通常包括指示根域名。</li>
+<li>一些解决方案检查代码库和<strong>系统开发生命周期（SDLC）</strong>的其他实例。</li>
+<li>许多AST提供商使用AST技术发现API，如<strong>交互式应用程序安全测试（IAST）</strong>、网络爬行，甚至移动应用程序代码的静态分析。</li>
+<li>大多数工具还能够接收描述文件，如Swagger和GraphQL文件，然后在运行时将流量的真实性与吸收的模式进行比较（请参见注释1）。</li>
+</ul>
+<h4><span id="32-posturemanagement-状态评估">3.2 Posture
+Management-状态评估</span></h4>
+<ul>
+<li><font color="red">一旦API保护产品清点了API，它就会对其进行错误配置评估</font>。例如，API可以在URL中显示敏感数据，或者在不进行身份验证的情况下返回敏感数据作为响应。OWASP
+API安全十大问题列表中有许多最常见的问题。</li>
+<li>解决方案越来越多地试图评估每种<strong>错误配置</strong>的风险。这种能力是不成熟的，但在不断发展。我们已经看到了一些解决方案，这些解决方案试图了解API的关键性、API背后的业务逻辑、错误配置的严重性，以及可以指示或多或少风险的各种其他元素。</li>
+<li>工具也开始就如何纠正错误配置提供建议。</li>
+</ul>
+<h4><span id="33-runtimeprotection-实时保护">3.3 Runtime
+Protection-实时保护</span></h4>
+<p><strong>API安全解决方案的第三个组件侧重于识别恶意行为的指示模式</strong>。一个典型的例子是BOLA攻击，其中传入的请求要求一个帐号的数据与API客户端进行身份验证的帐号不匹配。异常检测引擎通常使用类似攻击的数据集进行训练，并且能够识别攻击。【？】</p>
+<p>此外，该解决方案将从API中摄取与非恶意行为相关的数据。大多数解决方案能够在相对较短的数据摄取时间后进行操作。根据解决方案以及设置解决方案的安全领导者希望的入侵程度，产品可以发出补救通知单或直接对基础设施采取行动来阻止攻击者。</p>
+<h3><span id="四-风险">四、风险</span></h3>
+<p><font color="red">任何使用行为异常检测的创新都将不可避免地出现误报。异常行为并不总是意味着某些东西是恶意的，当前的机器学习只能在确定业务逻辑以对发现进行分类方面走得更远。</font>如果一个组织已经有了一个实质性的SOC，这可能不会带来问题。对于其他组织来说，重要的是要有一个托管服务——无论是来自供应商本身，还是来自第三方托管安全服务提供商（MSSP）。</p>
+<p>API安全范围广泛。用例可能会变得复杂，并不是每一个威胁都能以相同的方式得到解决。API保护最常见的用例是保护外部暴露的API。然而，安全领导者需要单独研究大量用例，以确定解决方案。例如：</p>
+<ul>
+<li>东西向API的内部连接可能受益于微细分；</li>
+<li>可能需要应用屏蔽的移动应用场景；</li>
+<li>开放银行和其他API集成用例可能在API网关和iPaaS（平台即服务集成）中找到基础，重点是访问控制。</li>
+</ul>
+<p>安全人员应该进行威胁建模练习，以识别这些用例。</p>
+<p>从发现来看，许多API解决方案只发现当前使用的API。某些API可能未与现有API
+GW集成，仅在调用时才会在流量中看到，这可能为时已晚，无法识别错误配置。如果不检查代码，API可能会出现漏洞。安全领导人可以集成这些类型的发现，可能使用代码检查和普查练习。</p>
+<p>API安全创新可识别可能导致漏洞利用的错误配置。然而，在撰写本文时，我们只看到了一些产品，其中包括传统意义上的API安全测试，包括<strong>静态应用程序安全测试（SAST）、动态应用程序安全性测试（DAST）和模糊化</strong>
+<strong>安全主管应始终将API安全功能与开发生命周期中嵌入的真正AST集成在一起。</strong>此外，自动化工具将能够识别某些标准化的业务逻辑问题，但在大多数情况下，只有手动渗透测试或众测试才能发现可能被欺诈攻击者利用的业务逻辑。</p>
+<p>在2021 Gartner Enabling Cloud-Native
+DevSecOps调查中，75%的受访者表示他们使用WAAP来保护生产中运行的云应用程序。40%的人表示，他们在将成熟工具与创新工具相结合方面面临挑战。引入新工具可能会扰乱日常运营和团队平衡。虽然API安全工具的组织所有权倾向于以安全为中心，但许多成熟的组织开始将安全权限委托给安全团队以外的职能部门。</p>
+<p><strong>安全主管通常管理WAF和WAAP</strong>，但API网关通常由API center
+of excellence（COE）或API平台团队管理。</p>
+<h3><span id="五-选择">五、选择</span></h3>
+<p>WAAP是一种与API保护工具有很大重叠的安全工具。云原生应用程序保护平台（CNAPP）也代表了一个可能有一些重叠的新兴领域，尽管这些平台的范围仍在确定中。</p>
+<p>安全正在经历一段整合期。我们预计API安全领域将产生数量有限的最佳供应商，这些供应商将保持独立并扩展其产品组合。然后，我们预计许多其他应用程序将成为更广泛的应用程序安全产品的一部分，无论是WAAP还是CNAPP供应商。</p>
+<h3><span id="六-建议"><font color="red">六、建议</font></span></h3>
+<p>安全和风险管理领导者应：</p>
+<ul>
+<li><strong>从发现和分类您的API开始。执行威胁建模，以确定您需要哪些特定的安全机制来降低风险。</strong></li>
+<li><strong>使用云web应用程序的关键功能和API保护以及API全生命周期管理的关键功能，评估当前WAAP或API网关提供的API保护。如果您的风险缓解需要额外的API保护，请调查能够提供额外保护层的API安全专家。</strong></li>
+<li><strong>通过使用内部SOC或托管服务，解决行为异常检测可能产生的安全分析工作负载。</strong></li>
+<li><strong>对新的或新修改的API进行渗透测试，以发现在执行自动扫描时可能隐藏的业务逻辑问题。然后对API进行持续的应用程序安全测试。</strong></li>
+</ul>
+<p><font color="red">代表厂商：</font></p>
+<p>42Crunch; <strong>Akamai</strong>; Cequence Security;
+<strong>Imperva</strong> (CloudVector); <strong>Neosec</strong>; Noname;
+<strong>Salt</strong>; Traceable; Wib.</p>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.gartner.com/doc/reprints?id=1-2BUGX57W&amp;ct=221129&amp;st=sb&amp;aliId=eyJpIjoiakE5cjJLeWNYc0pPVFR1bCIsInQiOiJpVVJhXC80QXFcL29obGxQeitUVmZWcEE9PSJ9">Gartner
+Innovation Insight for API Protection</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/1FRRBGP/" title="流量反作弊（5）Gartner-Innovation Insight for API Protection">https://powerlzy.github.io/posts/1FRRBGP/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" rel="tag"># 工业落地</a>
+              <a href="/tags/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" rel="tag"># 业务安全</a>
+              <a href="/tags/API%E5%AE%89%E5%85%A8/" rel="tag"># API安全</a>
+              <a href="/tags/Gartner/" rel="tag"># Gartner</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/806NJ2/" rel="prev" title="关联规则（3）FP-growth">
+                  <i class="fa fa-chevron-left"></i> 关联规则（3）FP-growth
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>
