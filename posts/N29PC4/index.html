@@ -21,39 +21,43 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、Batch and Momentum  python+numpy实现线性回归中梯度下降算法（对比sklearn官方demo） - sciengieer的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;390002941  1.1 Review： Optimization with Batch 上次我们有讲说,我们实际上在算微分的时候,并不是真的对所有 Data 算出来">
+    <meta name="description" content="一、李宏毅课程笔记：Batch and Momentum 1.1 Review： Optimization with Batch 上次我们有讲说,我们实际上在算微分的时候,并不是真的对所有 Data 算出来的 L 作微分,你是把所有的 Data 分成一个一个的 Batch,有的人是叫Mini Batch ,那我这边叫做 Batch,其实指的是一样的东西,助教投影片里面,是写 Mini Batch。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="模型训练（4）Batch and Momentum">
 <meta property="og:url" content="https://powerlzy.github.io/posts/N29PC4/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、Batch and Momentum  python+numpy实现线性回归中梯度下降算法（对比sklearn官方demo） - sciengieer的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;390002941  1.1 Review： Optimization with Batch 上次我们有讲说,我们实际上在算微分的时候,并不是真的对所有 Data 算出来">
+<meta property="og:description" content="一、李宏毅课程笔记：Batch and Momentum 1.1 Review： Optimization with Batch 上次我们有讲说,我们实际上在算微分的时候,并不是真的对所有 Data 算出来的 L 作微分,你是把所有的 Data 分成一个一个的 Batch,有的人是叫Mini Batch ,那我这边叫做 Batch,其实指的是一样的东西,助教投影片里面,是写 Mini Batch。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616164437127.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616164656382.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616165328450.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616165208136.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616165344706.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616165607814.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616165544738.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626154658708.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626154838373.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626154919498.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171325318.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626155139635.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171440148.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171504634.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171740139.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171749421.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171805517.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616171811630.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616172323699.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616172349096.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616172359508.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438961.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438778.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438236.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438827.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438416.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438492.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438160.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438387.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438308.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438056.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439577.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439138.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439981.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439050.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439582.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439226.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439931.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439028.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439946.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439011.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439099.png">
 <meta property="article:published_time" content="2022-06-09T03:34:59.000Z">
-<meta property="article:modified_time" content="2022-07-13T15:18:55.155Z">
+<meta property="article:modified_time" content="2023-05-01T10:26:35.031Z">
 <meta property="article:author" content="lzy">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="理论基础">
+<meta property="article:tag" content="Batch">
+<meta property="article:tag" content="Momentum">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616164437127.png">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438961.png">
 
 
 <link rel="canonical" href="https://powerlzy.github.io/posts/N29PC4/">
@@ -163,13 +167,14 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、Batch and Momentum</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 Review： Optimization with
-Batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Small Batch v.s. Large
-Batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3
-Larger batch size does not require longer time to compute gradient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 Smaller
-batch requires longer time for one epoch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1,5 “Noisy” update is
-better for training</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">“Noisy” update is
-better for generalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、Momentum</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 Small Gradient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Vanilla Gradient Descent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Gradient Descent + Momentum</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">Concluding Remarks</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、李宏毅课程笔记：Batch
+and Momentum</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Review： Optimization with
+Batch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Small Batch v.s. Large
+Batch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3
+Larger batch size does not require longer time to compute gradient</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 Smaller
+batch requires longer time for one epoch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1,5 “Noisy” update is
+better for training</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6 “Noisy” update is
+better for generalization</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、Momentum</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 Small Gradient</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 Vanilla Gradient Descent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 Gradient Descent + Momentum</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Concluding Remarks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -195,7 +200,7 @@ better for generalization</span></a></li></ol></li><li class="nav-item nav-level
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -273,7 +278,7 @@ better for generalization</span></a></li></ol></li><li class="nav-item nav-level
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-13 23:18:55" itemprop="dateModified" datetime="2022-07-13T23:18:55+08:00">2022-07-13</time>
+      <time title="修改时间：2023-05-01 18:26:35" itemprop="dateModified" datetime="2023-05-01T18:26:35+08:00">2023-05-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -325,21 +330,15 @@ better for generalization</span></a></li></ol></li><li class="nav-item nav-level
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="一-batch-and-momentum">一、Batch and Momentum</span></h2>
-<blockquote>
-<p>python+numpy实现线性回归中梯度下降算法（对比sklearn官方demo） -
-sciengieer的文章 - 知乎 https://zhuanlan.zhihu.com/p/390002941</p>
-</blockquote>
-<h3><span id="11-review-optimization-withbatch">1.1 Review： Optimization with
-Batch</span></h3>
+        <h3><span id="一-李宏毅课程笔记batchand-momentum">一、李宏毅课程笔记：Batch
+and Momentum</span></h3>
+<h4><span id="11-review-optimization-withbatch">1.1 Review： Optimization with
+Batch</span></h4>
 <p>上次我们有讲说,我们<strong>实际上在算微分的时候,并不是真的对所有 Data
 算出来的 L 作微分</strong>,你是把所有的 Data 分成一个一个的
 Batch,有的人是叫Mini Batch ,那我这边叫做
 Batch,其实指的是一样的东西,助教投影片里面,是写 Mini Batch。</p>
-<figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220616164437127.png" alt="image-20220616164437127">
-<figcaption aria-hidden="true">image-20220616164437127</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438961.png" style="zoom:67%;"></p>
 <p>每一个 Batch 的大小呢,就是大 B 一笔的资料,我们每次<strong>在 Update
 参数的时候,我们是拿大 B 一笔资料出来,算个 Loss,算个 Gradient,Update
 参数</strong>,拿另外B一笔资料,再算个 Loss,再算个 Gradient,再 Update
@@ -354,11 +353,11 @@ Shuffle</p>
 都不一样</font></strong>,就是第一个 Epoch,我们分这样子的 Batch,第二个
 Epoch,会重新再分一次 Batch,所以哪些资料在同一个 Batch 里面,每一个 Epoch
 都不一样的这件事情,叫做 <strong>Shuffle</strong>。</p>
-<h3><span id="12-small-batch-vs-largebatch">1.2 Small Batch v.s. Large
-Batch</span></h3>
+<h4><span id="12-small-batch-vs-largebatch">1.2 Small Batch v.s. Large
+Batch</span></h4>
 <p>​ 我们先解释为什么要用 Batch,再说 Batch 对 Training
 带来了什么样的帮助。</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616164656382.png" alt="image-20220616164656382" style="zoom:50%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438778.png" alt="image-20220616164656382" style="zoom:50%;"></p>
 <p>我们来比较左右两边这两个 Case,那假设现在我们有20笔训练资料</p>
 <ul>
 <li>左边的 Case 就是没有用 Batch,Batch
@@ -382,7 +381,7 @@ Loss,我们就可以 Update 我们的参数,所以每次我们 Update
 一次参数,所以用一笔资料算出来的 Loss,显然是比较 Noisy 的,所以我们今天
 Update 的方向,你会发现它是曲曲折折的</p>
 <p>所以如果我们比较左边跟右边，哪一个比较好呢,他们有什么差别呢？</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616165328450.png" alt="image-20220616165328450" style="zoom:50%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438236.png" alt="image-20220616165328450" style="zoom:50%;"></p>
 <p>你会发现左边没有用 Batch
 的方式,它蓄力的时间比较长,还有它技能冷却的时间比较长,你要把所有的资料都看过一遍,才能够
 Update 一次参数</p>
@@ -391,18 +390,18 @@ Update 一次参数</p>
 <p>所以今天假设有20笔资料,看完所有资料看过一遍,你已经更新了20次的参数,但是左边这样子的方法有一个优点,就是它这一步走的是稳的,那右边这个方法它的缺点,就是它每一步走的是不稳的</p>
 <p>看起来左边的方法跟右边的方法,他们各自都有擅长跟不擅长的东西,左边是蓄力时间长,但是威力比较大,右边技能冷却时间短,但是它是比较不準的,看起来各自有各自的优缺点,但是你会觉得说,左边的方法技能冷却时间长,右边的方法技能冷却时间短,那只是你没有考虑并行运算的问题。</p>
 <p><strong>实际上考虑并行运算的话,左边这个并不一定时间比较长</strong></p>
-<h3><span id="13larger-batch-size-does-not-require-longer-time-to-compute-gradient">1.3
-Larger batch size does not require longer time to compute gradient</span></h3>
+<h4><span id="13larger-batch-size-does-not-require-longer-time-to-compute-gradient">1.3
+Larger batch size does not require longer time to compute gradient</span></h4>
 <p>这边是真正的实验结果了,事实上,比较大的 Batch Size,你要算
 Loss,再进而算 Gradient,所需要的时间,不一定比小的 Batch Size
-要花的时间长</p>
-<p>那以下是做在一个叫做 ==MNIST== 上面,MNIST (Mixed National Institute
-of Standards and Technology
+要花的时间长。</p>
+<p>那以下是做在一个叫做 MNIST 上面,MNIST (Mixed National Institute of
+Standards and Technology
 database)是美国国家标准与技术研究院收集整理的大型手写数字数据库,机器要做的事情,就是给它一张图片,然后判断这张图片,是0到9的哪一个数字,它要做数字的分类,那
 MNIST 呢
 是机器学习的helloworld,就是假设你今天,从来没有做过机器学习的任务,一般大家第一个会尝试的机器学习的任务,往往就是做
 MNIST 做手写数字辨识,</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616165208136.png" alt="image-20220616165208136" style="zoom:50%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438827.png" alt="image-20220616165208136" style="zoom:50%;"></p>
 <p>这边我们就是做了一个实验,我们想要知道说,给机器一个 Batch,它要计算出
 Gradient,进而 Update 参数,到底需要花多少的时间</p>
 <p>这边列出了 Batch Size 等於1 等於10,等於100 等於1000
@@ -426,11 +425,11 @@ V100,所以它挺厉害的,给它60000笔资料,一个 Batch
 <p>而那这个 Batch Size
 的大小跟时间的关係,其实每年都会做这个实验,我特别把旧的投影片放在这边了,如果你有兴趣的话m,,可以看到这个时代的演进这样,17年的时候用的是那个980啊,2015年的时候用的是那个760啊,然后980要跑什么60000个
 Batch,那要跑好几分鐘才跑得完啊,现在只要10秒鐘就可以跑得完了,你可以看到这个时代的演进,</p>
-<h3><span id="14-smallerbatch-requires-longer-time-for-one-epoch">1.4 Smaller
-batch requires longer time for one epoch</span></h3>
+<h4><span id="14-smallerbatch-requires-longer-time-for-one-epoch">1.4 Smaller
+batch requires longer time for one epoch</span></h4>
 <p>所以 GPU 虽然有平行运算的能力,但它平行运算能力终究是有个极限,所以你
 Batch Size 真的很大的时候,时间还是会增加的</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616165344706.png" alt="image-20220616165344706" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438416.png" alt="image-20220616165344706" style="zoom: 67%;"></p>
 <p>但是因为有平行运算的能力,因此实际上,当你的 <strong>Batch Size
 小的时候,你要跑完一个 Epoch,花的时间是比大的 Batch Size
 还要多</strong>的,怎么说呢</p>
@@ -455,7 +454,7 @@ Batch,把所有的资料看过一次这件事情,大的 Batch Size
 比较慢,但实际上,在有考虑平行运算的时候,一个 Epoch 大的 Batch
 花的时间反而是比较少的</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220616165607814.png" alt="image-20220616165607814">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438492.png" alt="image-20220616165607814">
 <figcaption aria-hidden="true">image-20220616165607814</figcaption>
 </figure>
 <p>我们如果要比较这个 Batch Size
@@ -475,7 +474,7 @@ Training</strong>,这个也是跟直觉正好相反的</p>
 <p>如果你今天拿不同的 Batch
 来训练你的模型,你可能会得到这样子的结果,左边是坐在 MNIST 上,右边是坐在
 CIFAR-10 上,不管是 MNIST 还是 CIFAR-10,都是影像辨识的问题</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616165544738.png" alt="image-20220616165544738"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438160.png" alt="image-20220616165544738"></p>
 <ul>
 <li>横轴代表的是 Batch Size,从左到右越来越大</li>
 <li>纵轴代表的是正确率,越上面正确率越高,当然正确率越高越好</li>
@@ -491,12 +490,12 @@ Function 就是一模一样的</p>
 的问题,<strong>这个是 Optimization 的问题,代表当你用大的 Batch Size
 的时候,你的 Optimization 可能会有问题</strong>,小的 Batch
 Size,Optimization 的结果反而是比较好的,好 为什么会这样子呢</p>
-<h3><span id="15-noisy-update-isbetter-for-training">1,5 “Noisy” update is
-better for training</span></h3>
+<h4><span id="15-noisy-update-isbetter-for-training">1,5 “Noisy” update is
+better for training</span></h4>
 <p>为什么小的 Batch Size,在 Training Set 上会得到比较好的结果,为什么
 Noisy 的 Update,Noisy 的 Gradient 会在 Training
 的时候,给我们比较好的结果呢？一个可能的解释是这样子的</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626154658708.png" alt="image-20220626154658708" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438387.png" alt="image-20220626154658708" style="zoom:67%;"></p>
 <p>假设你是 Full Batch,那你今天在 Update 你的参数的时候,你就是沿著一个
 Loss Function 来 Update 参数,今天 Update 参数的时候走到一个 Local
 Minima,走到一个 Saddle Point,显然就停下来了,Gradient
@@ -512,8 +511,8 @@ Gradient,假设你用 L1 算 Gradient 的时候,发现 Gradient 是零,卡住了
 <p><strong>你还是有办法 Training 你的 Model,还是有办法让你的 Loss
 变小,所以今天这种 Noisy 的 Update 的方式,结果反而对
 Training,其实是有帮助的。</strong></p>
-<h3><span id="noisy-update-isbetter-for-generalization">“Noisy” update is
-better for generalization</span></h3>
+<h4><span id="16-noisy-update-isbetter-for-generalization">1.6 “Noisy” update is
+better for generalization</span></h4>
 <p>那这边还有另外一个更神奇的事情，其实<strong>小的 Batch 也对 Testing
 有帮助</strong>。</p>
 <p>假设我们今天在 Training 的时候,都不管是大的 Batch 还小的 Batch,都
@@ -526,7 +525,7 @@ Rate,然后想办法把大的 Batch,跟小的 Batch Training
 Training For Deep Learning,Generalization Gap And Sharp
 Minimahttps://arxiv.org/abs/1609.04836,这篇 Paper 的实验结果：</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220626154838373.png" alt="image-20220626154838373">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438308.png" alt="image-20220626154838373">
 <figcaption aria-hidden="true">image-20220626154838373</figcaption>
 </figure>
 <p>那这篇 Paper 里面,作者 Train 了六个 Network 里面有 CNN 的,有 Fully
@@ -544,7 +543,7 @@ Accuracy 跟小的 Batch,其实是差不多的</p>
 的时候都很好,<strong>Testing 的时候大的 Batch 差,代表 Over
 Fitting</strong>,这个才是 Over Fitting 对不对,好
 那为什么会有这样子的现象呢？在这篇文章里面也给出了一个解释,</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626154919498.png" alt="image-20220626154919498" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438056.png" alt="image-20220626154919498" style="zoom:67%;"></p>
 <p>假设这个是我们的 Training Loss,那在这个 Training Loss
 上面呢,可能有很多个 Local Minima,有不只一个 Local Minima,那这些 Local
 Minima 它们的 Loss 都很低,它们 Loss 可能都趋近於 0,但是这个
@@ -579,7 +578,7 @@ Batch Size,反正它就是顺著规定
 Update,然后它就很有可能,走到一个比较小的峡谷里面</p>
 <p>但这只是一个解释,那也不是每个人都相信这个解释,那这个其实还是一个<strong>尚待研究的问题</strong>那这边就是比较了一下,大的
 Batch 跟小的 Batch</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616171325318.png" alt="image-20220616171325318" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439577.png" alt="image-20220616171325318" style="zoom: 67%;"></p>
 <p>左边这个是第一个 Column 是小的 Batch,第二个 Column 是大的 Batch</p>
 <p>在有平行运算的情况下,小的 Batch 跟大的
 Batch,其实运算的时间并没有太大的差距,除非你的大的 Batch
@@ -595,7 +594,7 @@ Hyperparameter。</font></strong></p>
 <p>那我们能不能够鱼与熊掌兼得呢,我们能不能够截取大的 Batch 的优点,跟小的
 Batch 的优点,我们用大的 Batch Size
 来做训练,用平行运算的能力来增加训练的效率,但是训练出来的结果同时又得到好的结果呢,又得到好的训练结果呢。</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626155139635.png" alt="image-20220626155139635" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439138.png" alt="image-20220626155139635" style="zoom:67%;"></p>
 <p>这是有可能的,有很多文章都在探讨这个问题,那今天我们就不细讲,我们把这些
 Reference 列在这边给大家参考,那你发现这些
 Paper,往往它想要做的事情都是什么,哇 76分鐘 Train BERT,15分鐘 Train
@@ -605,12 +604,12 @@ ResNet,一分鐘 Train Imagenet
 这样,Batch Size 开很大,Batch Size 开大
 真的就可以算很快,你可以在很短的时间内看到大量的资料,那他们需要有一些特别的方法来解决,Batch
 Size 可能会带来的劣势。</p>
-<h2><span id="二-momentum">二、Momentum</span></h2>
+<h3><span id="二-momentum">二、Momentum</span></h3>
 <p><strong><font color="red"> Momentum,这也是另外一个,有可能可以对抗
 Saddle Point,或 Local Minima 的技术</font></strong>,Momentum
 的运作是这个样子的，</p>
-<h3><span id="21-small-gradient">2.1 Small Gradient</span></h3>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616171440148.png" alt="image-20220616171440148" style="zoom:80%;"></p>
+<h4><span id="21-small-gradient">2.1 Small Gradient</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439981.png" alt="image-20220616171440148" style="zoom:80%;"></p>
 <p>它的概念,你可以想像成在物理的世界里面,假设 Error Surface
 就是真正的斜坡,而我们的参数是一个球,你把球从斜坡上滚下来,如果今天是
 Gradient Descent,它走到 Local Minima 就停住了,走到 Saddle Point
@@ -623,13 +622,13 @@ Minima,如果今天它的动量够大的话,它还是会继续往右走,甚至�
 Point,或 Local Minima卡住,不一定会被 Saddle Point,或 Local Minima
 卡住,我们有没有办法运用这样子的概念,到 Gradient Descent
 里面呢,那这个就是我们等一下要讲的,Momentum 这个技术</p>
-<h3><span id="22-vanilla-gradient-descent">2.2 Vanilla Gradient Descent</span></h3>
+<h4><span id="22-vanilla-gradient-descent">2.2 Vanilla Gradient Descent</span></h4>
 <p>那我们先很快的复习一下,原来的 Gradient Descent 长得是什么样子,这个是
 Vanilla 的 Gradient Descent,Vanilla
 的意思就是一般的的意思,它直译是香草的,但就其实是一般的,一般的 Gradient
 Descent 长什么样子呢？</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220616171504634.png" alt="image-20220616171504634">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439050.png" alt="image-20220616171504634">
 <figcaption aria-hidden="true">image-20220616171504634</figcaption>
 </figure>
 <p>​</p>
@@ -639,12 +638,12 @@ Gradient 以后呢,我们往 Gradient 的反方向去 Update 参数 <span class=
 \]</span> 我们到了新的参数以后,再计算一次 Gradient,再往 Gradient
 的反方向,再 Update 一次参数,到了新的位置以后再计算一次 Gradient,再往
 Gradient 的反方向去 Update 参数,这个 Process 就一直这样子下去</p>
-<h3><span id="12-gradient-descent-momentum">1.2 Gradient Descent + Momentum</span></h3>
+<h4><span id="23-gradient-descent-momentum">2.3 Gradient Descent + Momentum</span></h4>
 <p>加上 Momentum 以后,每一次我们在移动我们的参数的时候,我们不是只往
 Gradient Descent,我们不是只往 Gradient 的反方向来移动参数,我们是
 <strong>Gradient
 的反方向,加上前一步移动的方向,两者加起来的结果,去调整去到我们的参数,</strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616171740139.png" alt="image-20220616171740139" style="zoom:50%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439582.png" alt="image-20220616171740139" style="zoom:50%;"></p>
 <p>那具体说起来是这个样子,一样找一个初始的参数,然后我们假设前一步的参数的
 Update 量呢,就设为 0 <span class="math display">\[
 m^0 = 0
@@ -663,7 +662,7 @@ m^1 = {\lambda}m^0-{\eta}g^0\\\
 m^2 = {\lambda}m^1-{\eta}g^1
 \]</span> 那我们就看下面这个图</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220616171749421.png" alt="image-20220616171749421">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439226.png" alt="image-20220616171749421">
 <figcaption aria-hidden="true">image-20220616171749421</figcaption>
 </figure>
 <p>g1 告诉我们,<strong>Gradient
@@ -678,17 +677,14 @@ m^2 = {\lambda}m^1-{\eta}g^1
 m2,走到 θ2 这个地方</li>
 </ul>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220616171805517.png" alt="image-20220616171805517">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439931.png" alt="image-20220616171805517">
 <figcaption aria-hidden="true">image-20220616171805517</figcaption>
 </figure>
 <p>接下来就反覆进行同样的过程,在这个位置我们计算出
 Gradient,但我们不是只根据 Gradient
 反方向走,我们看前一步怎么走,前一步走这个方向,走这个蓝色虚线的方向,我们把蓝色的虚线加红色的虚线,前一步指示的方向跟
 Gradient 指示的方向,当做我们下一步要移动的方向</p>
-<figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220616171811630.png" alt="image-20220616171811630">
-<figcaption aria-hidden="true">image-20220616171811630</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439028.png"></p>
 <p>每一步的移动,我们都用 m 来表示,那这个 m
 其实可以写成之前所有算出来的,Gradient 的 Weighted
 Sum.从右边的这个式子,其实就可以轻易的看出来 <span class="math display">\[
@@ -708,12 +704,12 @@ Momentum,<strong>当加上 Momentum 的时候,我们 Update
 的方向,不是只考虑现在的 Gradient,而是考虑过去所有 Gradient
 的总合.</strong></p>
 <p>​ 有一个更简单的例子,希望帮助你了解 Momentum</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616172323699.png" alt="image-20220616172323699" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439946.png" alt="image-20220616172323699" style="zoom:67%;"></p>
 <p>那我们从这个地方开始 Update 参数,根据 Gradient
 的方向告诉我们,应该往右 Update 参数,那现在没有前一次 Update
 的方向,所以我们就完全按照 Gradient 给我们的指示,往右移动参数,好
 那我们的参数,就往右移动了一点到这个地方</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616172349096.png" alt="image-20220616172349096" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439011.png" alt="image-20220616172349096" style="zoom:67%;"></p>
 <p>Gradient
 变得很小,告诉我们往右移动,但是只有往右移动一点点,但前一步是往右移动的,我们把前一步的方向用虚线来表示,放在这个地方,我们把之前
 Gradient
@@ -721,14 +717,14 @@ Gradient
 走到一个 Local Minima,照理说走到 Local Minima,一般 Gradient Descent
 就无法向前走了,因为已经没有这个 Gradient 的方向,那走到 Saddle Point
 也一样,没有 Gradient 的方向已经无法向前走了</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616172359508.png" alt="image-20220616172359508" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439099.png" alt="image-20220616172359508" style="zoom:67%;"></p>
 <p>但没有关係,如果有 Momentum 的话,你还是有办法继续走下去,因为 Momentum
 不是只看 Gradient,Gradient 就算是
 0,你还有前一步的方向,前一步的方向告诉我们向右走,我们就继续向右走,甚至你走到这种地方,Gradient
 告诉你应该要往左走了,但是假设你前一步的影响力,比 Gradient
 要大的话,你还是有可能继续往右走,甚至翻过一个小丘,搞不好就可以走到更好
 Local Minima,这个就是 Momentum 有可能带来的好处。</p>
-<h2><span id="concluding-remarks">Concluding Remarks</span></h2>
+<h3><span id="concluding-remarks">Concluding Remarks</span></h3>
 <ul>
 <li><strong>Critical points have zero gradients.</strong></li>
 <li>Critical points can be either <strong>saddle points or local
@@ -740,6 +736,11 @@ minima</strong>.
 eigenvectors of the Hessian matrix</li>
 </ul></li>
 <li>Smaller batch size and momentum help escape critical points.</li>
+</ul>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li>python+numpy实现线性回归中梯度下降算法（对比sklearn官方demo） -
+sciengieer的文章 - 知乎 https://zhuanlan.zhihu.com/p/390002941</li>
 </ul>
 
     </div>
@@ -766,18 +767,24 @@ eigenvectors of the Hessian matrix</li>
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+              <a href="/tags/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" rel="tag"># 理论基础</a>
+              <a href="/tags/Batch/" rel="tag"># Batch</a>
+              <a href="/tags/Momentum/" rel="tag"># Momentum</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/1HFEDWZ/" rel="prev" title="模型训练（5）Batch Normalization">
-                  <i class="fa fa-chevron-left"></i> 模型训练（5）Batch Normalization
+                <a href="/posts/1T7T14B/" rel="prev" title="模型训练（6）Local Minimum And Saddle Point">
+                  <i class="fa fa-chevron-left"></i> 模型训练（6）Local Minimum And Saddle Point
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/2N47FT1/" rel="next" title="【Nan】General Guidance">
-                  【Nan】General Guidance <i class="fa fa-chevron-right"></i>
+                <a href="/posts/2D5Z22P/" rel="next" title="模型训练（3）Adaptive Learning Rate">
+                  模型训练（3）Adaptive Learning Rate <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

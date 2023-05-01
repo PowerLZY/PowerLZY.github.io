@@ -21,40 +21,43 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="When gradient is small 一、Critical Point 1.1 Training Fails because 现在我们要讲的是Optimization的部分,所以我们要讲的东西基本上跟Overfitting没有什么太大的关联,我们只讨论Optimization的时候,怎么把gradient descent做得更好,那为什么Optimization会失败呢？  你常常在做Op">
+    <meta name="description" content="李宏毅课程笔记：When gradient is small 一、Critical Point 1.1 Training Fails because 现在我们要讲的是Optimization的部分,所以我们要讲的东西基本上跟Overfitting没有什么太大的关联,我们只讨论Optimization的时候,怎么把gradient descent做得更好,那为什么Optimization会失败呢？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="模型训练（6）Local Minimum And Saddle Point">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1T7T14B/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="When gradient is small 一、Critical Point 1.1 Training Fails because 现在我们要讲的是Optimization的部分,所以我们要讲的东西基本上跟Overfitting没有什么太大的关联,我们只讨论Optimization的时候,怎么把gradient descent做得更好,那为什么Optimization会失败呢？  你常常在做Op">
+<meta property="og:description" content="李宏毅课程笔记：When gradient is small 一、Critical Point 1.1 Training Fails because 现在我们要讲的是Optimization的部分,所以我们要讲的东西基本上跟Overfitting没有什么太大的关联,我们只讨论Optimization的时候,怎么把gradient descent做得更好,那为什么Optimization会失败呢？">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616161429257.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626143535169.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616161554342.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626143850955.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626143927098.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626143956011.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626144155017.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626144347777.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626144425820.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145009069.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145041635.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145125121.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145206428.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145319827.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145640713.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145734569.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145742180.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145756118.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626145931496.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626150135469.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220626150207285.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616164405732.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444482.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444929.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444794.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444883.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444585.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444461.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444340.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444553.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445282.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445797.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445240.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445178.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445367.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445833.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445962.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445930.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445674.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445829.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445872.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446813.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446029.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446758.png">
 <meta property="article:published_time" content="2022-06-09T03:34:59.000Z">
-<meta property="article:modified_time" content="2022-07-13T15:19:27.945Z">
+<meta property="article:modified_time" content="2023-05-01T10:29:53.095Z">
 <meta property="article:author" content="lzy">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="理论基础">
+<meta property="article:tag" content="Critical Point">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220616161429257.png">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444482.png">
 
 
 <link rel="canonical" href="https://powerlzy.github.io/posts/1T7T14B/">
@@ -164,11 +167,10 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">When gradient is small</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Critical Point</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Training Fails because</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Warning of Math</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> Tayler
-Series Approximation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Hession</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">判断 \(θ&#39;\)它是一个&#x3D;&#x3D;local
-minima&#x3D;&#x3D;,还是一个&#x3D;&#x3D;saddle point&#x3D;&#x3D;。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 Don&#39;t afraid of saddle
-point</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 Saddle Point v.s. Local
-Minima</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">李宏毅课程笔记：When
+gradient is small</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Critical Point</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Training Fails because</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Warning of Math</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 Don&#39;t afraid of saddle
+point</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 Saddle Point v.s. Local
+Minima</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -194,7 +196,7 @@ Minima</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -272,7 +274,7 @@ Minima</span></a></li></ol></li></ol></li></ol></div>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-13 23:19:27" itemprop="dateModified" datetime="2022-07-13T23:19:27+08:00">2022-07-13</time>
+      <time title="修改时间：2023-05-01 18:29:53" itemprop="dateModified" datetime="2023-05-01T18:29:53+08:00">2023-05-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -324,42 +326,43 @@ Minima</span></a></li></ol></li></ol></li></ol></div>
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1><span id="when-gradient-is-small">When gradient is small</span></h1>
+        <h3><span id="李宏毅课程笔记whengradient-is-small">李宏毅课程笔记：When
+gradient is small</span></h3>
 <h3><span id="一-critical-point">一、Critical Point</span></h3>
 <h4><span id="11-training-fails-because">1.1 Training Fails because</span></h4>
 <p>现在我们要讲的是Optimization的部分,所以我们要讲的东西基本上跟Overfitting没有什么太大的关联,我们只讨论Optimization的时候,怎么把gradient
 descent做得更好,那为什么Optimization会失败呢？</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616161429257.png" alt="image-20220616161429257" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444482.png" alt="image-20220616161429257" style="zoom:67%;"></p>
 <p>你常常在做Optimization的时候,你会发现,<strong>随著你的参数不断的update,你的training的loss不会再下降</strong>,但是你对这个loss仍然不满意,就像我刚才说的,你可以把deep的network,跟linear的model,或比较shallow
 network
 比较,发现说它没有做得更好,所以你觉得deepnetwork,没有发挥它完整的力量,所以Optimization显然是有问题的。</p>
 <p><strong>但有时候你会甚至发现,一开始你的model就train不起来,一开始你不管怎么update你的参数,你的loss通通都掉不下去,那这个时候到底发生了什么事情呢？</strong></p>
 <p>过去常见的一个猜想,是因为我们现在走到了一个地方,<strong>这个地方参数对loss的微分为零</strong>,当你的参数对loss微分为零的时候,gradient
 descent就没有办法再update参数了,这个时候training就停下来了,loss当然就不会再下降了。</p>
-<p>讲到gradient为零的时候,大家通常脑海中最先浮现的,可能就是==<strong>local
-minima</strong>==,所以常有人说做deep learning,用gradient
+<p>讲到gradient为零的时候,大家通常脑海中最先浮现的,可能就是<strong>local
+minima</strong>,所以常有人说做deep learning,用gradient
 descent会卡在local minima,然后所以gradient descent不work,所以deep
 learning不work。</p>
 <p><strong>但是如果有一天你要写,跟deep
 learning相关paper的时候,你千万不要讲卡在local
 minima这种事情,别人会觉得你非常没有水准,为什么？</strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626143535169.png" alt="image-20220626143535169"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444929.png" alt="image-20220626143535169"></p>
 <p>因为<strong>不是只有local
 minima的gradient是零</strong>,还有其他可能会让gradient是零,比如说
-==<strong>saddle point</strong>==,所谓的saddle
+<strong>saddle point</strong>,所谓的saddle
 point,其实就是gradient是零,但是不是local minima,也不是local
 maxima的地方,像在右边这个例子里面
 红色的这个点,它在左右这个方向是比较高的,前后这个方向是比较低的,它就像是一个马鞍的形状,所以叫做saddle
 point,那中文就翻成<strong>鞍点</strong>。</p>
 <p>像saddle point这种地方,它也是gradient为零,但它不是local
-minima,那像这种gradient为零的点,统称为==critical
-point==,所以<strong>你可以说你的loss,没有办法再下降,也许是因为卡在了critical
+minima,那像这种gradient为零的点,统称为critical
+point,所以<strong>你可以说你的loss,没有办法再下降,也许是因为卡在了critical
 point,但你不能说是卡在local minima,因为saddle
 point也是微分为零的点</strong></p>
 <p>但是今天如果你发现你的gradient,真的很靠近零,卡在了某个critical
 point,我们有没有办法知道,到底是local minima,还是saddle
 point？其实是有办法的</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616161554342.png" alt="image-20220616161554342" style="zoom:50%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444794.png" alt="image-20220616161554342" style="zoom:50%;"></p>
 <p><strong>为什么我们想要知道到底是卡在local minima,还是卡在saddle
 point呢</strong></p>
 <ul>
@@ -382,40 +385,40 @@ minima,还是saddle point呢？</p>
 function的形状呢,network本身很复杂,用复杂network算出来的loss
 function,显然也很复杂,我们怎么知道loss
 function,长什么样子,虽然我们没有办法完整知道,整个loss function的样子</p>
-<h4><span id="taylerseries-approximation"><strong><font color="red"> Tayler
-Series Approximation</font></strong></span></h4>
+<h5><span id="taylerseries-approximation"><strong><font color="red"> Tayler
+Series Approximation</font></strong></span></h5>
 <p>但是如果给定某一组参数,比如说蓝色的这个<span class="math inline">\(θ&#39;\)</span>,在<span class="math inline">\(θ&#39;\)</span>附近的loss
 function,是有办法被写出来的,它写出来就像是这个样子：</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626143850955.png" alt="image-20220626143850955" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444883.png" alt="image-20220626143850955" style="zoom:67%;"></p>
 <p>所以这个<span class="math inline">\(L(θ)\)</span>完整的样子写不出来,但是它在<span class="math inline">\(θ&#39;\)</span>附近,你可以用这个式子来表示它,这个式子是,Tayler
 Series
 Appoximation泰勒级数展开,这个假设你在微积分的时候,已经学过了,所以我就不会细讲这一串是怎么来的,但我们就只讲一下它的概念,这一串里面包含什么东西呢?</p>
 <ul>
 <li><p>第一项是<span class="math inline">\(L(θ&#39;)\)</span>,就告诉我们说,当<span class="math inline">\(θ\)</span>跟<span class="math inline">\(θ&#39;\)</span>很近的时候,<span class="math inline">\(L(θ)\)</span>应该跟<span class="math inline">\(L(θ&#39;)\)</span>还蛮靠近的</p></li>
 <li><p>第二项是<span class="math inline">\((θ-θ&#39;)^Tg\)</span></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626143927098.png" alt="image-20220626143927098" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444585.png" alt="image-20220626143927098" style="zoom:67%;"></p>
 <p><strong><span class="math inline">\(g\)</span>是一个向量,这个g就是我们的gradient</strong>,我们用绿色的这个g来代表gradient,这个<strong>gradient会来弥补,<span class="math inline">\(θ&#39;\)</span>跟<span class="math inline">\(θ\)</span>之间的差距</strong>,我们虽然刚才说<span class="math inline">\(θ&#39;\)</span>跟<span class="math inline">\(θ\)</span>,它们应该很接近,但是中间还是有一些差距的,那这个差距,第一项我们用这个gradient,来表示他们之间的差距,有时候gradient会写成<span class="math inline">\(∇L(θ&#39;)\)</span>,这个地方的<span class="math inline">\(g\)</span>是一个向量,<strong>它的第i个component,就是θ的第i个component对L的微分</strong>,光是看g还是没有办法,完整的描述L(θ),你还要看第三项</p></li>
 <li><p>第三项跟Hessian有关,这边有一个$H $</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626143956011.png" alt="image-20220626143956011" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444461.png" alt="image-20220626143956011" style="zoom:67%;"></p>
 <p>这个<span class="math inline">\(H\)</span>叫做Hessian,它是一个矩阵,这个第三项是,再<span class="math inline">\((θ-θ&#39;)^TH(θ-θ&#39;)\)</span>,所以第三项会再补足,再加上gradient以后,与真正的L(θ)之间的差距.<strong>H里面放的是L的二次微分</strong>,<strong>它第i个row,第j个column的值,就是把θ的第i个component,对L作微分,再把θ的第j个component,对L作微分,再把θ的第i个component,对L作微分,做两次微分以后的结果</strong>
 就是这个<span class="math inline">\(H_i{_j}\)</span></p></li>
 </ul>
 <p>如果这边你觉得有点听不太懂的话,也没有关系,反正你就记得这个<span class="math inline">\(L(θ)\)</span>,这个loss function,这个error
 surface在<span class="math inline">\(θ&#39;\)</span>附近,可以写成这个样子,这个式子跟两个东西有关系,<strong>跟gradient有关系,跟hessian有关系,gradient就是一次微分,hessian就是里面有二次微分的项目</strong></p>
-<h4><span id="hession">Hession</span></h4>
+<h5><span id="hession">Hession</span></h5>
 <p><strong>那如果我们今天走到了一个critical
 point,意味著gradient为零,也就是绿色的这一项完全都不见了</strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626144155017.png" alt="image-20220626144155017" style="zoom:50%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444340.png" alt="image-20220626144155017" style="zoom:50%;"></p>
 <p><span class="math inline">\(g\)</span><strong>是一个zero
 vector,绿色的这一项完全都不见了</strong>,只剩下红色的这一项,所以当在critical
 point的时候,这个loss function,它可以被近似为<span class="math inline">\(L(θ&#39;)\)</span>,加上红色的这一项。我们可以<strong>根据红色的这一项来判断</strong>,在<span class="math inline">\(θ&#39;\)</span>附近的error
 surface,到底长什么样子。知道error surface长什么样子,我就可以判断。</p>
-<h4><span id="判断-θ39它是一个localminima还是一个saddle-point"><strong><font color="red">判断 <span class="math inline">\(θ&#39;\)</span>它是一个==local
-minima==,还是一个==saddle point==</font>。</strong></span></h4>
+<h5><span id="判断-θ39它是一个local-minima还是一个saddlepoint"><strong><font color="red">判断 <span class="math inline">\(θ&#39;\)</span>它是一个local minima,还是一个saddle
+point</font>。</strong></span></h5>
 <p>我们可以靠这一项来了解,这个error
 surface的地貌,大概长什么样子,知道它地貌长什么样子,我们就可以知道说,现在是在什么样的状态,这个是Hessian。</p>
 <p>那我们就来看一下怎么根据Hessian,怎么根据红色的这一项,来判断θ'附近的地貌。</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626144347777.png" alt="image-20220626144347777" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444553.png" alt="image-20220626144347777" style="zoom:67%;"></p>
 <p>我们现在为了等一下符号方便起见,我们<strong>把<span class="math inline">\((θ-θ&#39;)\)</span>用<span class="math inline">\(v\)</span>这个向量来表示</strong></p>
 <ul>
 <li>如果今天对任何可能的<span class="math inline">\(v\)</span><strong>,<span class="math inline">\(v^THv\)</span>都大于零</strong>,也就是说
@@ -432,7 +435,7 @@ maxima</strong></li>
 point</strong></li>
 </ul>
 <p>但是你这边是说我们要代所有的<span class="math inline">\(v\)</span>,去看<span class="math inline">\(v^THv\)</span>是大于零,还是小于零.我们怎么有可能把所有的v,都拿来试试看呢,所以有一个更简便的方法,去确认说这一个条件或这一个条件,会不会发生.</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626144425820.png" alt="image-20220626144425820" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445282.png" alt="image-20220626144425820" style="zoom:67%;"></p>
 <p><strong><font color="red">
 这个就直接告诉你结论,线性代数理论上是有教过这件事情的,如果今天对所有的v而言,<span class="math inline">\(v^THv\)</span>都大于零,那这种矩阵叫做positive
 definite 正定矩阵,positive definite的矩阵,它所有的eigen
@@ -456,7 +459,7 @@ value,都是正的,那就代表我们现在在local
 minima,如果它有正有负,就代表在saddle point。</strong></p>
 <p>那如果刚才讲的,你觉得你没有听得很懂的话,我们这边举一个例子：</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220626145009069.png" alt="image-20220626145009069">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445797.png" alt="image-20220626145009069">
 <figcaption aria-hidden="true">image-20220626145009069</figcaption>
 </figure>
 <p>我们现在有一个史上最废的network,输入一个x,它只有一个neuron，乘上<span class="math inline">\(w₁\)</span>,而且这个neuron,还没有activation
@@ -473,7 +476,7 @@ w₂,连bias都没有,假设没有bias,只有w₁跟w₂两个参数,这个netwo
 w₁跟w₂,那我们可以穷举所有w₁跟w₂的数值,算出所有w₁
 w₂数值所代来的loss,然后就画出error surface 长这个样</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220626145041635.png" alt="image-20220626145041635">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445240.png" alt="image-20220626145041635">
 <figcaption aria-hidden="true">image-20220626145041635</figcaption>
 </figure>
 <p>四个角落loss是高的,好 那这个图上你可以看出来说,有一些critical
@@ -493,7 +496,7 @@ function以后,得到的loss的值以后,画出error
 surface,可以得到这样的结论。</p>
 <p>现在假设如果不暴力所有可能的loss,如果要直接算说一个点,是local
 minima,还是saddle point的话 怎么算呢</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626145125121.png" alt="image-20220626145125121" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445178.png" alt="image-20220626145125121" style="zoom: 67%;"></p>
 <p>我们可以把loss的function写出来,这个loss的function 这个L是 <span class="math display">\[
 L=(\hat{y}-w_1 w_2 x)^2
 \]</span> 正确答案 ŷ减掉model的输出,也就是w₁ w₂x,这边取square
@@ -522,7 +525,7 @@ w₂对L的微分,算出来就都是零
 就都是零,这个时候我们就知道说,原点就是一个critical
 point,但<strong>它是local maxima,它是local maxima,local
 minima,还是saddle point呢,那你就要看hessian才能够知道了</strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626145206428.png" alt="image-20220626145206428" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445367.png" alt="image-20220626145206428" style="zoom:67%;"></p>
 <p>当然 我们刚才已经暴力所有可能的w₁
 w₂了,所以你已经知道说,它显然是一个saddle
 point,但是现在假设还没有暴力所有可能的loss,所以我们要看看能不能够用H,用Hessian看出它是什么样的critical
@@ -541,9 +544,9 @@ value,2跟-2 <strong>eigen value有正有负,代表saddle point</strong></p>
 <p>所以我们现在就是用一个例子,跟你操作一下
 告诉你说,你怎么从hessian看出一个点,它一个critical point 它是saddle
 point,还是local minima</p>
-<h3><span id="13-dont-afraid-of-saddlepoint">1.3 Don't afraid of saddle
-point</span></h3>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626145319827.png" alt="image-20220626145319827" style="zoom:67%;"></p>
+<h4><span id="13-dont-afraid-of-saddlepoint">1.3 Don't afraid of saddle
+point</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445833.png" alt="image-20220626145319827" style="zoom:67%;"></p>
 <p>如果今天你卡的地方是saddle
 point,也许你就不用那么害怕了,因为如果你今天你发现,你停下来的时候,是因为saddle
 point 停下来了,那其实就有机会可以放心了。</p>
@@ -552,22 +555,22 @@ point,它还指出了我们参数,可以update的方向,就之前我们参数upd
 看g,但是我们走到某个地方以后,发现g变成0了 不能再看g了,g不见了
 gradient没有了<strong>,但如果是一个saddle
 point的话,还可以再看H,怎么再看H呢,H怎么告诉我们,怎么update参数呢</strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626145640713.png" alt="image-20220626145640713" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445962.png" alt="image-20220626145640713" style="zoom:67%;"></p>
 <p>我们这边假设<span class="math inline">\(\mu\)</span>是H的eigenvector特征向量,然后<span class="math inline">\(λ\)</span>是u的eigen
 value特征值。如果我们把这边的<span class="math inline">\(v\)</span>换成<span class="math inline">\(\mu\)</span>的话,我们把<span class="math inline">\(\mu\)</span>乘在H的左边,跟H的右边,也就是<span class="math inline">\(\mu^TH\mu\)</span>, <span class="math inline">\(H\mu\)</span>会得到<span class="math inline">\(λ\mu\)</span>，因为<span class="math inline">\(\mu\)</span>是一个eigen vector。H乘上eigen
 vector特征向量会得到特征向量λ eigen value乘上eigen vector即<span class="math inline">\(λ\mu\)</span></p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220626145734569.png" alt="image-20220626145734569">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445930.png" alt="image-20220626145734569">
 <figcaption aria-hidden="true">image-20220626145734569</figcaption>
 </figure>
 <p>所以我们在这边得到uᵀ乘上λu,然后再整理一下,把uᵀ跟u乘起来,得到‖u‖²,所以得到λ‖u‖²</p>
 <figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220626145742180.png" alt="image-20220626145742180">
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445674.png" alt="image-20220626145742180">
 <figcaption aria-hidden="true">image-20220626145742180</figcaption>
 </figure>
 <p>假设我们这边v,代的是一个eigen vector,我们这边θ减θ',放的是一个eigen
 vector的话,会发现说我们这个红色的项里面,其实就是λ‖u‖²</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626145756118.png" alt="image-20220626145756118" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445829.png" alt="image-20220626145756118" style="zoom:67%;"></p>
 <p>那今天如果λ<strong>小于零</strong>,eigen
 value小于零的话,那λ‖u‖²就会小于零,因为‖u‖²一定是正的,所以eigen
 value是负的,那这一整项就会是<strong>负的</strong>,也就是u的transpose乘上H乘上u,它是负的,也就是<strong>红色这个框里是负的</strong>。所以这意思是说假设<span class="math inline">\(θ-θ&#39;=\mu\)</span>,那这一项<span class="math inline">\((θ-θ&#39;)^TH(θ-θ&#39;)\)</span>就是负的,也就是<span class="math inline">\(L(θ)&lt;L(θ&#39;)\)</span>。也就是说假设<span class="math inline">\(θ-θ&#39;=\mu\)</span>,也就是,<strong>你在θ'的位置加上u,沿著u的方向做update得到θ,你就可以让loss变小</strong>。</p>
@@ -579,7 +582,7 @@ point,你也不一定要惊慌,你只要找出负的eigen value,再找出它对�
 vector,用这个eigen
 vector去加θ',就可以找到一个新的点,这个点的loss比原来还要低。</font></strong></p>
 <h5><span id="举具体的例子">举具体的例子：</span></h5>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626145931496.png" alt="image-20220626145931496" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445872.png" alt="image-20220626145931496" style="zoom: 67%;"></p>
 <p>刚才我们已经发现,原点是一个critical
 point,它的Hessian长这个样,那我现在发现说,这个Hessian有一个负的eigen
 value,这个eigen value等于-2,那它对应的eigen
@@ -605,8 +608,8 @@ point的方法,他们的运算量都比要算这个H,还要小很多</strong>,�
 point跟 eigen vector,跟Hessian的eigen
 vector拿出来讲,是想要告诉你说,如果是卡在saddle
 point,也许没有那么可怕,最糟的状况下你还有这一招,可以告诉你要往哪一个方向走.</p>
-<h3><span id="14-saddle-point-vs-localminima">1.4 Saddle Point v.s. Local
-Minima</span></h3>
+<h4><span id="14-saddle-point-vs-localminima">1.4 Saddle Point v.s. Local
+Minima</span></h4>
 <p>讲到这边你就会有一个问题了,这个问题是,那到底<strong>saddle
 point跟local minima,谁比较常见呢</strong>,我们说,saddle
 point其实并没有很可怕,那如果我们今天,常遇到的是saddle
@@ -614,9 +617,9 @@ point,比较少遇到local minima,那就太好了,那到底saddle point跟local
 minima,哪一个比较常见呢?</p>
 <p>总之这个<strong>从三维的空间来看,是没有路可以走的东西,在高维的空间中是有路可以走的,error
 surface会不会也一样呢？</strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626150135469.png" alt="image-20220626150135469" style="zoom:67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446813.png" alt="image-20220626150135469" style="zoom:67%;"></p>
 <p>而经验上,如果你自己做一些实验的话,也支持这个假说</p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220626150207285.png" alt="image-20220626150207285" style="zoom: 67%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446029.png" alt="image-20220626150207285" style="zoom: 67%;"></p>
 <p>这边是训练某一个network的结果,每一个点代表,训练那个network训练完之后,把它的Hessian拿出来进行计算,所以这边的每一个点,都代表一个network,就我们训练某一个network,然后把它训练训练,训练到gradient很小,卡在critical
 point,把那组参数出来分析,看看它比较像是saddle point,还是比较像是local
 minima</p>
@@ -643,7 +646,7 @@ value是正的,代表说在所有的维度里面有一半的路,这一半的路
 <p><strong><font color="red"> 所以从经验上看起来,其实local
 minima并没有那么常见,多数的时候,你觉得你train到一个地方,你gradient真的很小,然后所以你的参数不再update了,往往是因为你卡在了一个saddle
 point。</font></strong></p>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220616164405732.png" alt="image-20220616164405732" style="zoom: 33%;"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446758.png" alt="image-20220616164405732" style="zoom: 33%;"></p>
 
     </div>
 
@@ -669,18 +672,23 @@ point。</font></strong></p>
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+              <a href="/tags/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" rel="tag"># 理论基础</a>
+              <a href="/tags/Critical-Point/" rel="tag"># Critical Point</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/TYS9XF/" rel="prev" title="特征工程（8）【draft】时间序列处理">
-                  <i class="fa fa-chevron-left"></i> 特征工程（8）【draft】时间序列处理
+                <a href="/posts/1HFEDWZ/" rel="prev" title="模型训练（5）Batch Normalization">
+                  <i class="fa fa-chevron-left"></i> 模型训练（5）Batch Normalization
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/1HFEDWZ/" rel="next" title="模型训练（5）Batch Normalization">
-                  模型训练（5）Batch Normalization <i class="fa fa-chevron-right"></i>
+                <a href="/posts/N29PC4/" rel="next" title="模型训练（4）Batch and Momentum">
+                  模型训练（4）Batch and Momentum <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

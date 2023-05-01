@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -289,6 +289,126 @@
           <h2><span id="pytorch-学习笔记-使用-gpu训练模型">[PyTorch 学习笔记] 使用 GPU
 训练模型</span></h2>
 <p>https://zhuanlan.zhihu.com/p/254738836</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3GGS5GD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3GGS5GD/" class="post-title-link" itemprop="url">Pytorch（16）模型GPU训练</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-02 19:04:03" itemprop="dateCreated datePublished" datetime="2022-05-02T19:04:03+08:00">2022-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-05 17:15:33" itemprop="dateModified" datetime="2022-05-05T17:15:33+08:00">2022-05-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>640</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="pytorch-学习笔记-模型应用">[PyTorch 学习笔记] 模型应用</span></h2>
+<ul>
+<li>Neural Network Malware Binary
+Classification：https://github.com/jaketae/deep-malware-detection</li>
+</ul>
+<p>下面的代码是使用 Generator 来生成人脸图像，Generator 已经训练好保存在
+pkl 文件中，只需要加载参数即可。<strong>由于模型是在多 GPU
+的机器上训练的，因此加载参数后需要使用<code>remove_module()</code>函数来修改<code>state_dict</code>中的<code>key</code>。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 多 GPU 的机器上训练模型参数修改</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">remove_module</span>(<span class="params">state_dict_g</span>):</span><br><span class="line">    <span class="comment"># remove module.</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict</span><br><span class="line"></span><br><span class="line">    new_state_dict = OrderedDict()</span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> state_dict_g.items():</span><br><span class="line">        namekey = k[<span class="number">7</span>:] <span class="keyword">if</span> k.startswith(<span class="string">&#x27;module.&#x27;</span>) <span class="keyword">else</span> k</span><br><span class="line">        new_state_dict[namekey] = v</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> new_state_dict</span><br></pre></td></tr></table></figure>
+<p><strong>在 GAN 的训练模式中</strong>，Generator
+接收随机数得到输出值，目标是让输出值的分布与训练数据的分布接近，但是这里<strong>==不是使用人为定义的损失函数来计算输出值与训练数据分布之间的差异，而是使用
+Discriminator
+来计算这个差异==</strong>。需要注意的是这个差异不是单个数字上的差异，而是分布上的差异。</p>
 
       
     </div>
@@ -1779,122 +1899,6 @@ Graph)。</strong></p>
 每次运行的时候图都是一样的，是不能够改变的，所以不能直接使用 Python 的
 while 循环语句，需要使用辅助函数 tf.while_loop 写成 TensorFlow
 内部的形式。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3B7BMZZ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3B7BMZZ/" class="post-title-link" itemprop="url">【Nan】Contrastive Autoencoder for Drifting detection and Explanation</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-02 10:11:23" itemprop="dateCreated datePublished" datetime="2022-05-02T10:11:23+08:00">2022-05-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-28 17:30:02" itemprop="dateModified" datetime="2022-05-28T17:30:02+08:00">2022-05-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>287</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1><span id="cadecontrastive-autoencoder-for-drifting-detection-and-explanation">CADE:
-Contrastive Autoencoder for Drifting detection and Explanation</span></h1>
-<p>The repository contains the code for detecting and explaining a
-specific type of concept drift (i.e., previously unseen families) in
-security applications like malware attribution and network intrusion
-classification.</p>
-<ul>
-<li>代码：https://github.com/whyisyoung/CADE</li>
-</ul>
 
       
     </div>
