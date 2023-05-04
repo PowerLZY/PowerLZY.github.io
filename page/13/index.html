@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-count">257</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,311 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3J7GHQ3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3J7GHQ3/" class="post-title-link" itemprop="url">安全场景（3）高级威胁发现</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-20 15:59:10 / 修改时间：16:29:13" itemprop="dateCreated datePublished" datetime="2022-05-20T15:59:10+08:00">2022-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="安全场景-高级威胁发现">安全场景 - 高级威胁发现</span></h2>
+<blockquote>
+<p>CSKB: A Cyber Security Knowledge Base Based on Knowledge Graph</p>
+</blockquote>
+<h3><span id="一-背景">一、背景</span></h3>
+<p>APT
+一般具有三个特性，即<strong>高级性</strong>、<strong>持续性</strong>和<strong>危害性</strong>。在
+APT
+的攻击模型方面，包括了<strong>杀伤链模型、钻石模型、TTP模型和ATT&amp;CK模型</strong>等。</p>
+<h4><span id="11-威胁模型">1.1 威胁模型</span></h4>
+<h5><span id="a-杀伤链模型">（a) 杀伤链模型</span></h5>
+<p>杀伤链模型，最初起源于军事中的 C5KISR 系统中的
+K（kill），后由洛克希德-马丁公司（全球最大的国防工程承包商，根据
+Cybersecurity 500
+名单，洛克希德-马丁公司在全球上市网络安全企业中位列前十）提出网络安全杀伤链七步模型，用来识别和防护网络入侵行为。<strong>网络安全杀伤链七步模型包括侦测、武器化、投递、漏洞利用、安装、控制和目标行动等</strong>。</p>
+<figure>
+<img src="https://pics2.baidu.com/feed/8694a4c27d1ed21b053dc6cebe6f05cc51da3f2a.jpeg?token=a84d479a7fc2e90987f1994b589690c8" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="b-钻石模型">（b) 钻石模型</span></h5>
+<p>钻石模型是由 Sergio Caltagirone、Andrew Pendergast、Christopher Betz
+在 2013 年论文 The Diamond Model of Intrusion Analysis
+中提出的一个针对网络入侵攻击的分析框架模型。该模型由四个核心特征组成，分别为：<strong>对手（adversary）、能力（capability）、基础设施（infrastructure）和受害者（victim）</strong>。四个核心特征间用连线表示相互间的基本关系，并按
+照菱形排列，从而形成类似“钻石”形状的结构，因此得名为“钻石模型”。同时，模型还定义了社会-政治关系（对手和受害者之间的）和技术能力（用于确保能力和基础设施可操
+作性的）两个重要的扩展元特征。该模型也认为，无论何种入侵活动，其基本的元素都是一个一个的事件，而每个事件都可以由上述四个基本核心特征组成。</p>
+<h5><span id="c-ttp模型">（c) TTP模型</span></h5>
+<p>TTP，该术语来自于三个英文词汇的首字母组合，即<strong>战术
+Tactics、技术 Techniques 和过程
+Procedures</strong>，是描述高级威胁组织网络攻击的重要指标，出自于《美国国防部军事及相关术语词典》，最早用于军事领域和反恐活动，后延伸到信息安全领域，并被用来描述相应
+的过程。TTP
+在网络情报中是核心信息，它与指标、事件、活动、攻击者、攻击目标有着密切的关联关系。</p>
+<h5><span id="d-attampck模型">（d) ATT&amp;CK模型</span></h5>
+<p>ATT&amp;CK 也就是 Adversarial Tactics, Techniques, and Common
+Knowledge。顾名思义，这并不是一项技术，而是“对抗战术、技术和常识”框架，是更加底层“知识库”的基础框架，是由攻击者在攻击企业时会利用的
+<strong>12 种战术和 244
+种企业技术组成的精选知识库</strong>。它的着眼点不是单个的 IOC，而是
+<strong>IOC
+处于攻击过程中的上下文</strong>，也就是从点扩展到了面扩展到了链。当
+ATT&amp;CK
+把那些翻阅字典一样，轻易地找到相对应的常见战术动作，甚至做到杀伤链还原，更好地应对攻击。</p>
+<p>APT
+最经典的防护模型之一则是<strong>滑动标尺模型</strong>，它来源于美国系统网络安全协会（SANS），主要应对日益复杂的网络环境和不断变化的攻击手段。</p>
+<p>滑动标尺模型分为五大类别，这五大类别之间具有连续关系，并有效展示了防御逐步提升的理念。这五大类别不是固定不变的，且重要程度不是均等的,
+每个类别的某些措施与相邻类别密切相关,实现网络安全目标，组织应构建安全根基和文化，并不断完善，滑动标尺模型还能潜在促进组织的安全成熟进程。</p>
+<figure>
+<img src="https://pics0.baidu.com/feed/2e2eb9389b504fc2872cc4baffdc3f1990ef6d23.png?token=442ffe0f38a993cce0cb142181377fad" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3RNPESE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3RNPESE/" class="post-title-link" itemprop="url">特征工程（0）特征工程 vs 表示学习</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-19 19:32:14" itemprop="dateCreated datePublished" datetime="2022-05-19T19:32:14+08:00">2022-05-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 14:15:01" itemprop="dateModified" datetime="2023-04-26T14:15:01+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">特征工程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="特征工程与表示学习"></span></h2>
+<h3><span id="1-表示学习"><strong>1. 表示学习</strong></span></h3>
+<p>当我们学习一个复杂概念时，总想有一条捷径可以化繁为简。机器学习模型也不例外，如果有经过提炼的对于原始数据的更好表达，往往可以使得后续任务事倍功半。<strong>这也是表示学习的基本思路，即找到对于原始数据更好的表达，以方便后续任务（比如分类）</strong>。</p>
+<p>举个简单的例子, 假设我们有 <span class="math inline">\(\{x,
+y\}\)</span>, 想要寻找 <span class="math inline">\(x\)</span> 与 <span class="math inline">\(y\)</span> 之间的关系。 <span class="math display">\[
+x=\left[\begin{array}{cccc}
+1 &amp; 2 &amp; 1 &amp; 0 \\
+2 &amp; 3 &amp; 2 &amp; 1 \\
+1 &amp; 6 &amp; 1 &amp; 4 \\
+0 &amp; 0 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 17
+\end{array}\right], \quad y=\left[\begin{array}{c}
+6 \\
+10 \\
+14 \\
+18 \\
+22
+\end{array}\right]
+\]</span> 如果单用肉眼看的话, <span class="math inline">\(x\)</span>
+这个矩阵其实还是比较复杂的, 无法直接发现与 <span class="math inline">\(y\)</span> 间的关系。但如果我们非常幸运, 发现
+<span class="math inline">\(x\)</span> 每行相加后的结果 <span class="math inline">\([4,8,12,16,20]^T\)</span>, 就可以直接看出 <span class="math inline">\(x\)</span> 与 <span class="math inline">\(y\)</span> 之间的关系是 <span class="math inline">\(y=x+2\)</span> 。这个例子是为了说明:
+<strong>同样的数据的不同表达, 会直接决定后续任务的难易程度,
+因此找到好的数据表示往往是机器学习的核心任务</strong>。值得注意的是,
+在现实情况中我们所提炼的到表示往往是很复杂的,
+往往对于高维矩阵提取到特征也是高维矩阵。这个例 子仅供抛砖引玉之用,
+表示学习不等于维度压缩或者特征选择。</p>
+<h3><span id="2特征工程与表示学习人工-vs-自动"><strong>2.
+特征工程与表示学习：人工 vs. 自动</strong></span></h3>
+<p><strong>正因为数据表示的重要性，机器学习一般有两种思路来提升原始数据的表达</strong>：</p>
+<ol type="1">
+<li>特征<strong>学习</strong>(feature
+<strong>learning</strong>)，又叫<strong>表示学习</strong>(representation
+learning)或者表征学习，一般指的是<strong>自动</strong>学习有用的数据特征。<strong>深度学习的最终目标，就是完全自动化的广义数据处理。</strong></li>
+<li>特征<strong>工程</strong>(feature
+<strong>engineering</strong>)，主要指对于数据的<strong>人为</strong>处理提取，有时候也代指“洗数据”。</li>
+</ol>
+<p>不难看出，两者的主要区别在于前者是“<strong>学习的过程</strong>”，而后者被认为是一门“<strong>人为的工程</strong>”。用更加白话的方式来说，<strong>特征学习是</strong>从数据中自动抽取特征或者表示的方法，这个学习过程是<strong>模型自主的</strong>。而<strong>特征工程</strong>的过程是<strong>人为的</strong>对数据进行处理，<strong>得到我们认为的、适合后续模型使用的样式</strong>。根据这个思路，机器学习模型对于数据的处理可以被大致归类到两个方向：</p>
+<ul>
+<li>表示学习：<strong>模型自动</strong>对输入数据进行学习，得到更有利于使用的特征(*可能同时做出了预测)。代表的算法大致包括：
+<ul>
+<li>深度学习，包括大部分常见的模型如CNN/RNN/DBN等。</li>
+<li>某些无监督学习算法，如<strong>主成分分析(PCA) </strong>及
+<strong>自编码器（autoencoder）</strong>通过对数据转化而使得输入数据更有意义。</li>
+<li>某些树模型可以自动的学习到数据中的特征并同时作出预测。</li>
+</ul></li>
+<li>特征工程：模型依赖<strong>人为处理</strong>的数据特征，而模型的主要任务是预测，比如简单的线性回归期待良好的输入数据(如离散化后的数据)</li>
+</ul>
+<h3><span id="3-模型选择"><strong>3. 模型选择</strong></span></h3>
+<p>回归到问题的本质，就要谈谈什么时候用「手工提取」什么时候用「表示学习」。一种简单的看法是，<strong>要想自动学习到数据的良好表达，就需要大量的数据。这个现象也解释了为什么「特征工程」往往在中小数据集上表现良好，而「表示学习」在大量复杂数据上更有用武之地。</strong></p>
+<p>而一切的根本，其实在于<strong>假设</strong>。比如我们会假设数据分布，会假设映射函数的性质，也会假设预测值与输入值间的关系。<strong>这一切假设其实并非凭空猜想，而是基于我们对于问题的理解，从某种角度来看，这是一种先验，是贝叶斯模型</strong>。在中小数据集上的机器学习往往使用的就是强假设模型（人类知识先验）+一个简单线性分类器。当数据愈发复杂，数据量逐渐加大后，我们对于数据的理解越来越肤浅，做出的假设也越来越倾向于随机，那么此时人工特征工程往往是有害的，而需要使用摆脱了人类先验的模型，比如深度学习或者集成模型。</p>
+<p><strong>换句话说，模型选择的过程其实也是在衡量我们对于问题及数据的理解是否深刻，是在人类先验与数据量之间的一场博弈。</strong>从这个角度来看，深度学习首先革的是传统机器学习模型的命：最先被淘汰的不是工人，而是特定场景下的传统机器学习模型。</p>
+<p>但话说回来，在很多领域数据依然是稀缺的，我们依然需要人工的手段来提炼数据。而这样的尝试其实并不罕见，我也写过一篇<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32896968">「Stacking」与「神经网络」</a>介绍如何模拟神经网络在中小数据集上无监督的抽取特征，并最终提升数据的表示。另一个相关的问题是，到底多少数据才算多？可以参考这篇文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34523880">「机器学习」到底需要多少数据？</a>。</p>
+<p>然而，<strong>相同的数据对于不同的任务也要求不同的数据表达，最优的数据表示并非是绝对的</strong>。类比来看，人类是由细胞组成的，器官也是由细胞组成的。在器官层面来看，细胞是很好的表达。而从人类角度来看，器官是比较好的表达，因为我们可以通过身高体重来区分人，而无法直观地通过细胞来区分人。然而再往前看一步，每个人的细胞携带不同的遗传信息，因此也可以被认为是一种很强的数据表达。讲这个故事的目的是说明，<strong>什么是好的数据表达，其实是非常模棱两可的问题，在不同语境下可能大不相同</strong>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1814,978 +2119,6 @@ q\)</span></p>
 V\right) q=(U h)^{T}(V q)\)</span>, 即分别对查询向量 <span class="math inline">\(q\)</span> 和原始输入向量 <span class="math inline">\(h\)</span> 进行线性变换之后,
 再计算点积。<strong>相比点积模型, 双线性模型在计算相似度时
 引入了非对称性</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/VR9NEX/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/VR9NEX/" class="post-title-link" itemprop="url">深度学习（8）Self Attention*-p1</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 23:08:42" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:42+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-25 23:34:26" itemprop="dateModified" datetime="2022-08-25T23:34:26+08:00">2022-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>12 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="一-李宏毅-selfattention自注意力机制-p1"><font color="red"> 一、李宏毅-Self
-Attention自注意力机制 - p1</font></span></h2>
-<blockquote>
-<p>相关性查询（q, k）-softmax - 乘上v</p>
-<p>视频链接：https://www.bilibili.com/video/BV1JK4y1D7Wb?p=26&amp;vd_source=29387dc08d18f642078183a6816e93e8</p>
-</blockquote>
-<blockquote>
-<p>跟自己计算关联性重要吗？</p>
-<p>为什么用softmax？relu也行</p>
-</blockquote>
-<p>到目前为止,我们的Network的<strong>Input</strong>都是<strong>一个向量</strong>,不管是在预测这个,YouTube观看人数的问题上啊,还是影像处理上啊,我们的输入都可以看作是一个向量,然后我们的输出,可能是一个<strong>数值</strong>,这个是<strong>Regression</strong>,可能是一个<strong>类别</strong>,这是<strong>Classification</strong></p>
-<h3><span id="11-what-is-the-output">1.1 What is the output?</span></h3>
-<p>我们刚才已经看说输入是一堆向量,它可以是文字,可以是语音,可以是Graph,那这个时候,我们有可能有什么样的<strong>输出呢,</strong>有三种可能性。</p>
-<h4><span id="111每一个向量都有一个对应的label">1.1.1
-每一个向量都有一个对应的Label</span></h4>
-<p>当你的模型,看到输入是四个向量的时候,它就要输出四个Label,而每一个Label,它可能是一个数值,那就是Regression的问题,如果每个Label是一个Class,那就是一个Classification的问题。</p>
-<p><img src="image-20220612171420908.png" alt="image-20220612171420908" style="zoom: 33%;"></p>
-<p>举例来说 在文字处理上,假设你今天要做的是==<strong>POS
-Tagging</strong>==,POS Tagging就是词性标註,你要让机器自动决定每一个词汇
-它是什么样的词性,它是名词 还是动词 还是形容词等等。</p>
-<p>这个任务啊,其实并没有很容易,举例来说,你现在看到一个句子,I saw a
-saw。这并不是打错,并不是“我看一个看”,而是“我看到一个锯子”,这个第二个saw当名词用的时候,它是锯子，那所以机器要知道,第一个saw是个动词,第二个saw虽然它也是个saw,但它是名词,但是每一个输入的词汇,都要有一个对应的输出的词性。</p>
-<h4><span id="112一整个sequence只需要输出一个label">1.1.2
-一整个Sequence,只需要输出一个Label</span></h4>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220612171433616.png" alt="image-20220612171433616" style="zoom:50%;"></p>
-<p>举例来说,如果是文字的话,我们就说<strong>Sentiment
-Analysis</strong>。Sentiment
-Analysis就是给机器看一段话,它要<strong>决定说这段话是正面的还是负面的</strong>。</p>
-<p>那你可以想像说这种应用很有用,假设你的公司开发了一个产品,这个产品上线了,你想要知道网友的评价怎么样,但是你又不可能一则一则网友的留言都去分析,那也许你就可以用这种,Sentiment
-Analysis的技术,让机器自动去判读说,当一则贴文里面有提到某个产品的时候,它是正面的
-还是负面的,那你就可以知道你的产品,在网友心中的评价怎么样,这个是Sentiment
-Analysis给一整个句子,只需要一个Label,那Positive或Negative,那这个就是第二类的输出。</p>
-<p>那如果是语音的例子的话呢,在作业四里面我们会做语者辨认,机器要听一段声音,然后决定他是谁讲的。或者是如果是Graph的话呢,今天你可能想要给一个分子,然后要预测说这个分子,比如说它有没有毒性,或者是它的亲水性如何,那这就是给一个Graph
-输出一个Label。</p>
-<h4><span id="113机器要自己决定应该要输出多少个label">1.1.3
-机器要自己决定,应该要输出多少个Label</span></h4>
-<p>我们不知道应该输出多少个Label,机器要自己决定,应该要输出多少个Label,可能你输入是N个向量,输出可能是N'个Label,为什么是N',机器自己决定。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220612171446043.png" alt="image-20220612171446043" style="zoom:50%;"></p>
-<p>这种任务又叫做==sequence to
-sequence==的任务,那我们在作业五会有sequence to
-sequence的作业,所以这个之后我们还会再讲</p>
-<ul>
-<li>翻译就是sequence to
-sequence的任务,因为输入输出是不同的语言,它们的词汇的数目本来就不会一样多</li>
-<li>或者是语音辨识也是,真正的语音辨识也是一个sequence to
-sequence的任务,输入一句话,然后输出一段文字,这也是一个sequence to
-sequence的任务</li>
-</ul>
-<p>第二种类型有作业四,感兴趣可以去看看作业四的程式，那因为上课时间有限,所以上课,我们今天就先只讲第一个类型,也就是输入跟输出数目一样多的状况。</p>
-<h3><span id="12-sequence-labeling">1.2 Sequence Labeling</span></h3>
-<p>那这种输入跟输出数目一样多的状况又叫做<strong>Sequence
-Labeling</strong>,你要给Sequence里面的每一个向量,都给它一个Label,那要怎么解Sequence
-Labeling的问题呢？那直觉的想法就是我们就拿个<strong>Fully-Connected的Network</strong>。</p>
-<p>然后虽然这个输入是一个Sequence,但我们就各个击破,不要管它是不是一个Sequence,把每一个向量,分别输入到Fully-Connected的Network里面，然后Fully-Connected的Network就会给我们输出,那现在看看,你要做的是Regression还是Classification,产生正确的对应的输出,就结束了,</p>
-<p><font color="red">
-那这么做显然有<strong>非常大的瑕疵</strong>,假设今天是,词性标记的问题,你给机器一个句子,I
-saw a saw,对Fully-Connected
-Network来说,<strong>后面这一个saw跟前面这个saw完全一模一样</strong>,它们是同一个词汇啊。</font></p>
-<h4><span id="方案一window">方案一：Window</span></h4>
-<p>既然Fully-Connected的Network<strong>输入同一个词汇,它没有理由输出不同的东西</strong>。但实际上,你期待第一个saw要输出动词,第二个saw要输出名词,但对Network来说它不可能做到,因为这两个saw
-明明是一模一样的,你叫它一个要输出动词,一个要输出名词,它会非常地困惑,完全不知道要怎么处理。所以怎么办,有没有可能<strong>让Fully-Connected的Network,考虑更多的,比如说上下文的Context的资讯</strong>呢。这是有可能的,你就<strong>把前后几个向量都串起来,一起丢到Fully-Connected的Network就结束了</strong>。</p>
-<p>所以我们可以给Fully-Connected的Network,一整个Window的资讯,让它可以考虑一些上下文的,跟我现在要考虑的这个向量,相邻的其他向量的资讯。把Window开大一点啊,大到可以把整个Sequence盖住就结束了。</p>
-<p>如果你今天说我真的要开一个Window,把整个Sequence盖住,那你可能要<strong>统计一下你的训练资料</strong>,然后看看你的训练资料里面,最长的Sequence有多长,然后开一个Window比最长的Sequence还要长,你才有可能把整个Sequence盖住但是你开一个这么大的Window,意味著说你的Fully-Connected的Network,它需要非常多的参数,那可能不只<strong>运算量很大,可能还容易Overfitting</strong>。</p>
-<h4><span id="方案二self-attention">方案二：self-attention</span></h4>
-<p>Self-Attention的运作方式就是,<strong>Self-Attention会吃一整个Sequence的资讯</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211233215.png" alt="image-20220613211233215" style="zoom:50%;"></p>
-<p>然后你Input几个Vector,它就输出几个Vector,比如说你这边Input一个深蓝色的Vector,这边就给你一个另外一个Vector。这边给个浅蓝色,它就给你另外一个Vector,这边输入4个Vector,它就Output
-4个Vector。那这4个Vector有什么特别的地方呢,<strong>这4个Vector,他们都是考虑一整个Sequence以后才得到的</strong>,那等一下我会讲说Self-Attention,怎么考虑一整个Sequence的资讯。</p>
-<p><strong><font color="red">
-如此一来你这个Fully-Connected的Network,它就不是只考虑一个非常小的范围,或一个小的Window,而是考虑整个Sequence的资讯,再来决定现在应该要输出什么样的结果，这个就是Self-Attention</font></strong>。<strong>Self-Attention不是只能用一次,你可以叠加很多次</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211415203.png" alt="image-20220613211415203" style="zoom:50%;"></p>
-<p>可以Self-Attention的输出,通过Fully-Connected
-Network以后,再做一次Self-Attention,Fully-Connected的Network,再过一次Self-Attention,再重新考虑一次整个Input
-Sequence的资讯,再丢到另外一个Fully-Connected的Network,最后再得到最终的结果。</p>
-<p>所以<strong>可以把Fully-Connected的Network,跟Self-Attention交替使用</strong></p>
-<ul>
-<li>Self-Attention处理整个Sequence的资讯</li>
-<li>Fully-Connected的Network,专注于处理某一个位置的资讯</li>
-<li>再用Self-Attention,再把整个Sequence资讯再处理一次</li>
-<li>然后交替使用Self-Attention跟Fully-Connected</li>
-</ul>
-<p>有关Self-Attention,最知名的相关的文章,就是《Attention is all you
-need》.那在这篇Paper里面呢,Google提出了==Transformer==这样的Network架构,那Transformer就是变形金刚,所以提到这个Network的时候呢,我们就会有变形金刚这个形象。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211500443.png" alt="image-20220613211500443" style="zoom:50%;"></p>
-<p>Transformer我们今天还不会讲到,但我们之后会讲到,Transformer里面一个最重要的Module就是Self-Attention,它就是变形金刚的火种源。那这篇Paper最厉害的地方,就是它有一个<strong>霸气的名字Attention
-is all you need.</strong></p>
-<p>那其实像Self-Attention这样的架构,最早我并不会说它是出现在《Attention
-is all you
-need》这样的Paper,因为其实很多更早的Paper,就有提出过类似的架构,只是不见得叫做Self-Attention,比如说叫做Self-Matching,或者是叫别的名字,不过呢是Attention
-is all you need.这篇Paper,把Self-Attention这个Module,把它发扬光大。</p>
-<h3><span id="13-self-attention过程">1.3 Self-Attention过程</span></h3>
-<p><strong><font color="red">
-Self-Attention的Input,它就是一串的Vector,那这个Vector可能是你整个Network的Input,它也可能是某个Hidden
-Layer的Output,所以我们这边不是用<span class="math inline">\(x\)</span>来表示它，用<span class="math inline">\(a\)</span>来表示它。</font></strong></p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211620957.png" alt="image-20220613211620957" style="zoom:50%;"></p>
-<p>我们用<span class="math inline">\(a\)</span>来表示它，代表它有可能是前面已经做过一些处理,它是某个Hidden
-Layer的Output,那Input一排a这个向量以后,Self-Attention要Output另外一排b这个向量。那这<strong>每一个b都是考虑了所有的a以后才生成出来的</strong>,所以这边刻意画了非常非常多的箭头,告诉你$b^1
-<span class="math inline">\(考虑了\)</span>a<sup>1<span class="math inline">\(到\)</span>a</sup>4<span class="math inline">\(产生的,\)</span>b<sup>2<span class="math inline">\(考虑\)</span>a</sup>1<span class="math inline">\(到\)</span>a<sup>4<span class="math inline">\(产生的,\)</span>b</sup>3
-b^4$也是一样,考虑整个input的sequence,才产生出来的。</p>
-<p>那接下来呢就是要跟大家说明,<strong>怎么产生<span class="math inline">\(b^1\)</span>这个向量</strong>,那你知道怎么产生<span class="math inline">\(b^1\)</span>这个向量以后,你就知道怎么产生剩下<span class="math inline">\(b^1 b^2 b^3 b^4\)</span>剩下的向量。</p>
-<p><font color="red">
-这里有一个<strong>特别的机制</strong>,<strong>这个机制是根据<span class="math inline">\(a^1\)</span>这个向量,找出整个很长的sequence里面,到底哪些部分是重要的,哪些部分跟判断<span class="math inline">\(a^1\)</span>是哪一个label是有关系的,哪些部分是我们要决定<span class="math inline">\(a^1\)</span>的class,决定<span class="math inline">\(a^1\)</span>的regression数值的时候,所需要用到的资讯</strong>。</font></p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212112611.png" alt="image-20220613212112611" style="zoom:50%;"></p>
-<p><strong>每一个向量跟<span class="math inline">\(a^1\)</span>的关联的程度,用一个数值叫α来表示</strong>，这个self-attention的module,<strong>怎么自动决定两个向量之间的关联性</strong>呢,你给它两个向量<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^4\)</span>,它怎么决定<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^4\)</span>有多相关,然后给它一个数值α呢,那这边呢你就需要一个<strong>计算attention的模组</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212206065.png" alt="image-20220613212206065" style="zoom:50%;"></p>
-<p>这个计算attention的模组,就是拿<strong>两个向量作为输入</strong>,然后它就直接输出α那个数值,计算这个α的数值有各种不同的做法：</p>
-<ul>
-<li><p>==dot
-product==：<strong>输入的这两个向量分别乘上两个不同的矩阵</strong>,左边这个向量乘上<span class="math inline">\(W^q\)</span>这个矩阵得到矩阵<span class="math inline">\(q\)</span>,右边这个向量乘上<span class="math inline">\(W^k\)</span>这个矩阵得到矩阵<span class="math inline">\(k\)</span></p>
-<p>再把<span class="math inline">\(q\)</span>跟<span class="math inline">\(k\)</span>做dot product,就是把他们做element-wise
-的相乘,再全部加起来以后就得到一个
-scalar,这个scalar就是α,这是一种计算α的方式</p></li>
-<li><p>==Additive==：把同样这两个向量通过<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span>,得到<span class="math inline">\(q\)</span>跟<span class="math inline">\(k\)</span>,那我们不是把它做Dot-Product,是把它这个串起来,然后丢到这个过一个Activation
-Function，然后再通过一个Transform,然后得到α。</p></li>
-</ul>
-<p>总之有非常多不同的方法,可以计算Attention,可以计算这个α的数值,可以计算这个关联的程度，但是在接下来的讨论里面,我们都<strong>只用左边这个方法</strong>,这也是今日最常用的方法,也<strong>是用在Transformer里面的方法</strong>。那你就要把这边的<span class="math inline">\(a^1\)</span>去跟这边的<span class="math inline">\(a^2 a^3
-a^4\)</span>,分别都去计算他们之间的关联性,也就是计算他们之间的α。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212357947.png" alt="image-20220613212357947" style="zoom:50%;"></p>
-<p>你把<span class="math inline">\(a^1\)</span>乘上$W^q <span class="math inline">\(得到\)</span>q^1$,那这个q有一个名字,我们叫做==Query==,它就像是你搜寻引擎的时候,去搜寻相关文章的问题,就像搜寻相关文章的关键字,所以这边叫做Query。</p>
-<p>然后接下来呢,<span class="math inline">\(a^2 a^3
-a^4\)</span>你都要去把它乘上<span class="math inline">\(W^k\)</span>,得到<span class="math inline">\(k\)</span>这个Vector,<span class="math inline">\(k\)</span>这个Vector叫做==Key==,那你把这个<font color="red">
-<strong>Query q1,跟这个Key k2,算 Inner-Product就得到 α‘
-（注意力矩阵）</strong>。</font>我们这边用<span class="math inline">\(α_{1,2}\)</span>来代表说,Query是1提供的,Key是2提供的时候,这个1跟2他们之间的关联性,这个α这个关联性叫做==Attention的Score==,叫做Attention的分数。</p>
-<p>接下来也要跟<span class="math inline">\(a^3
-a^4\)</span>来计算，把<span class="math inline">\(a_3\)</span>乘上<span class="math inline">\(W^k\)</span>,得到另外一个Key也就是<span class="math inline">\(k^3\)</span>,<span class="math inline">\(a^4\)</span>乘上<span class="math inline">\(W^k\)</span>得到<span class="math inline">\(k^4\)</span>,然后你再把<span class="math inline">\(k^3\)</span>这个Key,跟<span class="math inline">\(q^1\)</span>这个Query做Inner-Product,得到1跟3之间的关联性,得到1跟3的Attention,你把<span class="math inline">\(k^4\)</span>跟<span class="math inline">\(q^1\)</span>做Dot-Product,得到<span class="math inline">\(α_{1,4}\)</span>,得到1跟4之间的关联性。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212536289.png" alt="image-20220613212536289" style="zoom:50%;"></p>
-<p><font color="red"> 其实一般在实作时候,<strong><span class="math inline">\(q^1\)</span>也会跟自己算关联性</strong>,自己跟自己计算关联性这件事情有多重要。</font>计算出,a1跟每一个向量的关联性以后,接下来这边会<strong>接入一个Soft-Max</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613221201944.png" alt="image-20220613221201944" style="zoom:50%;"></p>
-<p><strong><font color="red">这个Soft-Max跟分类的时候的那个Soft-Max是一模一样的
-</font></strong>,所以Soft-Max的输出就是一排α,所以本来有一排α,通过Soft-Max就得到<span class="math inline">\(α&#39;\)</span>。</p>
-<p>这边你<strong>不一定要用Soft-Max,用别的替代也没问题</strong>,比如说有人尝试过说做个ReLU,这边通通做个ReLU,那结果发现还比Soft-Max好一点,所以这边你不一定要用Soft-Max,这边你要用什么Activation
-Function都行,你高兴就好,你可以试试看,那Soft-Max是最常见的,那你可以自己试试看,看能不能试出比Soft-Max更好的结果。</p>
-<p>接下来得到这个<span class="math inline">\(α&#39;\)</span>以后,我们就要根据这个<span class="math inline">\(α&#39;\)</span>去抽取出这个Sequence里面重要的资讯,根据这个α我们已经知道说,哪些向量跟<span class="math inline">\(a^1\)</span>是最有关系的,<strong>怎么抽取重要的资讯呢？</strong></p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613221501080.png" alt="image-20220613221501080" style="zoom:50%;"></p>
-<ul>
-<li><p>首先把<span class="math inline">\(a^1\)</span>到<span class="math inline">\(a^4\)</span>这边每一个向量,乘上$W^v <span class="math inline">\(得到新的向量,这边分别就是用\)</span>v^1 v^2 v^3
-v^4$来表示</p></li>
-<li><p>接下来把这边的<span class="math inline">\(v^1\)</span>到<span class="math inline">\(v^4\)</span>,每一个向量都去乘上Attention的分数,都去乘上<span class="math inline">\(α&#39;\)</span></p></li>
-<li><p>然后再把它加起来,得到<span class="math inline">\(b^1\)</span></p></li>
-</ul>
-<p><span class="math display">\[
-b^1=\sum_i\alpha&#39;_{1,i}v^i
-\]</span></p>
-<p>如果某一个向量它得到的分数越高,比如说如果<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^2\)</span>的关联性很强,这个<span class="math inline">\(α&#39;\)</span>得到的值很大,那我们今天在做Weighted
-Sum以后,得到的<span class="math inline">\(b^1\)</span>的值,就可能会比较接近<span class="math inline">\(v^2\)</span>，所以<strong>谁的那个Attention的分数最大,谁的那个<span class="math inline">\(v\)</span>就会Dominant你抽出来的结果</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2Q8V137/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2Q8V137/" class="post-title-link" itemprop="url">深度学习（8）Self Attention*-p2</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 23:08:42" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:42+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-25 23:31:11" itemprop="dateModified" datetime="2022-08-25T23:31:11+08:00">2022-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>16k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>29 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="二-李宏毅-selfattention自注意力机制-p2"><font color="red"> 二、李宏毅-Self
-Attention自注意力机制 - p2</font></span></h2>
-<p><img src="image-20220613221835154.png" alt="image-20220613221835154" style="zoom:50%;"></p>
-<p>从这一排 vector 得到 <span class="math inline">\(b^1\)</span>,跟从这一排 vector 得到 <span class="math inline">\(b^2\)</span>,它的操作是一模一样的.要强调一点是,这边的
-<span class="math inline">\(b^1\)</span> 到 <span class="math inline">\(b^4\)</span>,它们并<strong>不需要依序产生</strong>,它们是一次同时被计算出来的。</p>
-<p>怎么计算这个 <span class="math inline">\(b^2\)</span>？我们现在的主角,就变成 <span class="math inline">\(a^2\)</span></p>
-<p><img src="image-20220613221854934.png" alt="image-20220613221854934" style="zoom:50%;"></p>
-<ul>
-<li><p>把 <span class="math inline">\(a^2\)</span> 乘上一个 matrix,变成
-<span class="math inline">\(q^2\)</span></p></li>
-<li><p>然后接下来根据 <span class="math inline">\(q^2\)</span>,去对<span class="math inline">\(a^1\)</span>到 <span class="math inline">\(a^4\)</span> 这四个位置,都去计算 attention 的
-score</p>
-<ul>
-<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^1\)</span> 做个这个 dot product</li>
-<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^2\)</span> 也做个 dot product</li>
-<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^3\)</span> 也做 dot product</li>
-<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^4\)</span> 也做 dot product,得到四个分数</li>
-</ul></li>
-<li><p>得到这四个分数以后,可能还会做一个 <strong>normalization
-</strong>和 <strong>softmax</strong>,然后得到最后的 attention 的
-score,<span class="math inline">\(α&#39;_{2,1} \space α&#39;_{2,2}
-\space α&#39;_{2,3} \space α&#39;_{2,4}\)</span>那我们这边用 <span class="math inline">\(α&#39;\)</span>表示经过 normalization
-以后的attention score</p></li>
-<li><p>接下来拿这四个数值,分别乘上 <span class="math inline">\(v^1
-\space v^2 \space v^3 \space v^4\)</span></p>
-<p><img src="image-20220613221952411.png" alt="image-20220613221952411" style="zoom:50%;"></p>
-<ul>
-<li>把 <span class="math inline">\(α&#39;_{2,1}\)</span>乘上 <span class="math inline">\(v^1\)</span></li>
-<li>把 <span class="math inline">\(α&#39;_{2,2}\)</span> 乘上 <span class="math inline">\(v^2\)</span></li>
-<li>把 <span class="math inline">\(α&#39;_{2,3}\)</span> 乘上 <span class="math inline">\(v^3\)</span></li>
-<li>把 <span class="math inline">\(α&#39;_{2,4}\)</span> 乘上 <span class="math inline">\(v^4\)</span>,然后全部加起来就是 $ b^2$</li>
-</ul>
-<p><span class="math display">\[
-  b^2=\sum_iα&#39;_{2,i}v^i
-  \]</span></p></li>
-</ul>
-<p>同理就可以,由 <span class="math inline">\(a^3\)</span> 乘一个
-transform 得到 <span class="math inline">\(q^3\)</span>,然后就计算 <span class="math inline">\(b^3\)</span>,从 <span class="math inline">\(a^4\)</span> 乘一个 transform 得到 <span class="math inline">\(q^4\)</span>,就计算 <span class="math inline">\(b^4\)</span>,以上说的是 Self-attention
-它运作的过程。</p>
-<h3><span id="22-矩阵的角度">2.2 矩阵的角度</span></h3>
-<p>接下来我们从矩阵乘法的角度,再重新讲一次我们刚才讲的,Self-attention
-是怎么运作的，我们现在已经知道每一个 a 都产生 q k v。</p>
-<p><img src="image-20220613222115187.png" alt="image-20220613222115187" style="zoom:50%;"></p>
-<h5><span id="如果要用矩阵运算表示这个操作的话是什么样子呢">如果要用矩阵运算表示这个操作的话,是什么样子呢</span></h5>
-<p>我们每一个 a,都乘上一个矩阵,我们这边用 <span class="math inline">\(W^q\)</span> 来表示它,得到 <span class="math inline">\(q^i\)</span>,每一个 a 都要乘上 <span class="math inline">\(W^q\)</span>,得到<span class="math inline">\(q^i\)</span>,<strong>这些不同的 a
-你可以把它合起来,当作一个矩阵来看待</strong>。</p>
-<p><img src="image-20220613222137478.png" alt="image-20220613222137478" style="zoom:50%;"></p>
-<p>一样$a<sup>2a</sup>3a^4 $也都乘上 <span class="math inline">\(W^q\)</span> 得到$q^2 q^3 $跟 <span class="math inline">\(q^4\)</span>,那你可以<strong>把 a1 到 a4
-拼起来</strong>,看作是一个矩阵,这个矩阵我们用 I 来表示，这个矩阵的四个
-column 就是 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span>。</p>
-<p><span class="math inline">\(I\)</span> 乘上 <span class="math inline">\(W^q\)</span> 就得到另外一个矩阵,我们用 <span class="math inline">\(Q\)</span> 来表示它,这个 <span class="math inline">\(Q\)</span> 就是把 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span> 这四个 vector 拼起来,就是 <span class="math inline">\(Q\)</span> 的四个 column。</p>
-<p>所以我们从 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span>,得到 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span>这个操作,其实就是<strong>把 I
-这个矩阵,乘上另外一个矩阵 <span class="math inline">\(W^q\)</span>，得到矩阵<span class="math inline">\(Q\)</span></strong>。<span class="math inline">\(I\)</span> 这个矩阵它里面的 column就是我们
-Self-attention 的 input是 <span class="math inline">\(a^1\)</span> 到
-<span class="math inline">\(a^4\)</span>；<strong><span class="math inline">\(W^q\)</span>其实是 network
-的参数,它是等一下会被learn出来的</strong> ；<span class="math inline">\(Q\)</span> 的四个 column,就是 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span>。接下来产生 k 跟 v 的操作跟 q
-是一模一样的。</p>
-<p><img src="image-20220613222206939.png" alt="image-20220613222206939" style="zoom:50%;"></p>
-<p>所以每一个 a 得到 q k v ,其实就是把输入的这个,vector sequence
-乘上三个不同的矩阵,你就得到了 q,得到了 k,跟得到了 v。下一步是,每一个 q
-都会去跟每一个 k,去计算这个 inner product,去<strong>得到这个 attention
-的分数</strong>。那得到 attention
-分数这一件事情,如果从矩阵操作的角度来看,它在做什么样的事情呢？</p>
-<p><img src="image-20220613222251046.png" alt="image-20220613222251046" style="zoom:50%;"></p>
-<p>你就是把 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^1\)</span> 做 inner product,得到 <span class="math inline">\(α_{1,1}\)</span>,所以 <span class="math inline">\(α_{1,1}\)</span>就是 <span class="math inline">\(q^1\)</span> 跟<span class="math inline">\(k^1\)</span> 的 inner
-product,那这边我就把这个,<span class="math inline">\(k^1\)</span>它背后的这个向量,把它画成比较宽一点代表说它是
-transpose。同理 <span class="math inline">\(α_{1,2}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^2\)</span>,做 inner product, <span class="math inline">\(α_{1,3}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^3\)</span> 做 inner product,这个 <span class="math inline">\(α_{1,4}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^4\)</span> 做 inner
-product。那这个四个步骤的操作,你其实可以把它拼起来,看作是<strong>矩阵跟向量相乘</strong>。</p>
-<p><img src="image-20220613222335546.png" alt="image-20220613222335546" style="zoom:50%;"></p>
-<p>这四个动作,你可以看作是我们<strong>把 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 拼起来,当作是一个矩阵的四个
-row</strong>。那我们刚才讲过说,我们不只是 <span class="math inline">\(q^1\)</span>,要对<span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 计算 attention,<span class="math inline">\(q^2,q^3,q^4\)</span>也要对 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 计算
-attention,操作其实都是一模一样的。</p>
-<p><img src="image-20220613222430034.png" alt="image-20220613222430034" style="zoom:50%;"></p>
-<p>所以这些 <strong>attention
-的分数可以看作是两个矩阵的相乘</strong>,一个矩阵它的 row,就是 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span>,另外一个矩阵它的 column 。我们会在
-attention 的分数,<strong>做一下 normalization</strong>,比如说你会做
-softmax,你会对这边的每一个 column,每一个 column 做 softmax,让每一个
-column 里面的值相加是 1。</p>
-<p>之前有讲过说 其实这边做
-<strong>softmax不是唯一的选项</strong>,你完全可以选择其他的操作,比如说
-ReLU 之类的,那其实得到的结果也不会比较差,通过了 softmax
-以后,它得到的值有点不一样了,所以我们用 <span class="math inline">\(A&#39;\)</span>,来表示通过 softmax
-以后的结果。</p>
-<p>我们已经计算出 $A' <span class="math inline">\(，那我们把这个\)</span>v^1$ 到 <span class="math inline">\(v^4\)</span>乘上这边的 α 以后,就可以得到 b。</p>
-<p><img src="image-20220613223101872.png" alt="image-20220613223101872" style="zoom:50%;"></p>
-<p>你就把<span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span> 拼起来,你<strong>把 <span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span>当成是V 这个矩阵的四个
-column</strong>,把它拼起来,然后接下来你把 v 乘上,<span class="math inline">\(A&#39;\)</span> 的第一个 column
-以后,你得到的结果就是 <span class="math inline">\(b^1\)</span></p>
-<p>如果你熟悉线性代数的话,你知道说把这个 <span class="math inline">\(A&#39;\)</span> 乘上 V,就是把 <span class="math inline">\(A&#39;\)</span>的第一个 column,乘上 V
-这一个矩阵,你会得到你 output 矩阵的第一个 column。而把 A 的第一个
-column乘上 V 这个矩阵做的事情,其实就是把 V 这个矩阵里面的每一个
-column,<strong>根据第 <span class="math inline">\(A&#39;\)</span>
-这个矩阵里面的每一个 column 里面每一个 element,做 weighted
-sum</strong>,那就得到 <span class="math inline">\(b^1\)</span></p>
-<p>那就是这边的操作,把 <span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span> 乘上 weight,全部加起来得到 <span class="math inline">\(b^1\)</span>,如果你是用矩阵操作的角度来看它,就是把$
-A'$ 的第一个 column 乘上 V,就得到 <span class="math inline">\(b^1\)</span>,然后接下来就是以此类推。</p>
-<p><img src="image-20220613223143878.png" alt="image-20220613223143878" style="zoom:50%;"></p>
-<p>就是以此类推,把 <span class="math inline">\(A&#39;\)</span> 的第二个
-column 乘上 V,就得到 <span class="math inline">\(b^2\)</span>,<span class="math inline">\(A&#39;\)</span> 的第三个 column 乘上 V 就得到
-<span class="math inline">\(b^3\)</span>,<span class="math inline">\(A&#39;\)</span> 的最后一个 column 乘上 V,就得到
-<span class="math inline">\(b^4\)</span>。所以我们等于就是把 <span class="math inline">\(A&#39;\)</span> 这个矩阵,乘上 V 这个矩阵,得到 O
-这个矩阵,O 这个矩阵里面的每一个 column,就是 Self-attention 的输出,也就是
-<span class="math inline">\(b^1\)</span> 到 <span class="math inline">\(b^4\)</span>,</p>
-<p><strong><font color="red"> 所以其实整个
-Self-attention,我们在讲操作的时候,我们在最开始的时候
-跟你讲的时候我们讲说,我们先产生了 q k v,然后再根据这个 q
-去找出相关的位置,然后再对 v 做 weighted
-sum,其实这一串操作,就是一连串矩阵的乘法而已</font></strong>。</p>
-<h3><span id="23-self-attention-流程">2.3 Self-attention 流程</span></h3>
-<h5><span id="我们再复习一下我们刚才看到的矩阵乘法">我们再复习一下我们刚才看到的矩阵乘法：</span></h5>
-<p><img src="image-20220613223238727.png" alt="image-20220613223238727" style="zoom:50%;"></p>
-<ul>
-<li><p>I 是 Self-attention 的 input,Self-attention 的 input
-是一排的vector,这排 vector 拼起来当作矩阵的 column,就是 I；</p></li>
-<li><p>这个 input 分别乘上三个矩阵,<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span> 跟$ W^v$,得到 Q K V ；</p></li>
-<li><p>这三个矩阵,接下来 Q 乘上 K 的 transpose,得到 A 这个矩阵,A
-的矩阵你可能会做一些处理,得到 <span class="math inline">\(A&#39;\)</span>,那有时候我们会把这个 <span class="math inline">\(A&#39;\)</span>,叫做 <strong>Attention
-Matrix</strong>，<strong>生成Q矩阵就是为了得到Attention的score</strong>；</p></li>
-<li><p>然后接下来你把 <span class="math inline">\(A&#39;\)</span> 再乘上
-V,就得到 O,O 就是 Self-attention 这个 layer
-的输出,<strong>生成V是为了计算最后的b，也就是矩阵O；</strong></p></li>
-</ul>
-<p>所以 Self-attention 输入是 I,输出是 O,那你会发现说虽然是叫
-attention,但是<strong>其实 Self-attention layer
-里面,唯一需要学的参数,就只有 <span class="math inline">\(W^q\)</span>
-<span class="math inline">\(W^k\)</span> 跟$ W^v$ 而已,只有<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span> 跟$
-W^v$是未知的</strong>,是需要透过我们的训练资料把它找出来的。但是其他的操作都没有未知的参数,都是我们人为设定好的,都不需要透过
-training data 找出来,那这整个就是 Self-attention 的操作,从 I 到 O
-就是做了 Self-attention。</p>
-<h3><span id="24-multi-head-self-attention">2.4 Multi-head Self-attention</span></h3>
-<p><strong>Self-attention 有一个进阶的版本,叫做 ==Multi-head
-Self-attention==, Multi-head
-Self-attention,其实今天的使用是非常地广泛的</strong>。在作业 4
-里面,助教原来的 code 4 有,Multi-head Self-attention,它的 head
-的数目是设成 2,那刚才助教有给你提示说,把 head 的数目改少一点 改成
-1,其实就可以过medium baseline。</p>
-<p>但并不代表所有的任务,都适合用比较少的
-head,有一些任务,比如说翻译,比如说语音辨识,其实用比较多的
-head,你反而可以得到比较好的结果。至于<strong>需要用多少的
-head,这个又是另外一个 hyperparameter</strong>,也是你需要调的。</p>
-<h5><span id="那为什么我们会需要比较多的head-呢你可以想成说相关这件事情">那为什么我们会需要比较多的
-head 呢,你可以想成说相关这件事情？</span></h5>
-<p>我们在做这个 Self-attention 的时候,我们就是用 q 去找相关的
-k,但是<strong>==相关==这件事情有很多种不同的形式</strong>,有很多种不同的定义,所以也许我们不能只有一个
-q,我们应该要有多个 q,<strong>不同的 q
-负责不同种类的相关性</strong>。</p>
-<h5><span id="所以假设你要做multi-head-self-attention-的话你会怎么操作呢">所以假设你要做
-Multi-head Self-attention 的话,你会怎么操作呢?</span></h5>
-<p><img src="image-20220613223634261.png" alt="image-20220613223634261" style="zoom:50%;"></p>
-<ul>
-<li>先把 a 乘上一个矩阵得到 q</li>
-<li>再把 q 乘上另外两个矩阵,分别得到 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(q^2\)</span>,那这边还有 这边是用两个上标,i
-代表的是位置,然后这个 1 跟 2 代表是,这个位置的第几个 q,所以这边有 <span class="math inline">\(q^{i,1}\)</span> 跟 <span class="math inline">\(q^{i,2}\)</span>,代表说我们有两个 head</li>
-</ul>
-<p>我们认为这个问题,里面有两种不同的相关性,是我们需要产生两种不同的
-head,来找两种不同的相关性。既然 q 有两个,那 k 也就要有两个,那 v
-也就要有两个,从 q 得到 <span class="math inline">\(q^1 q^2\)</span>,从 k
-得到 <span class="math inline">\(k^1 k^2\)</span>,从 v 得到 <span class="math inline">\(v^1 v^2\)</span>,那其实就是把 q 把 k 把
-v,分别乘上两个矩阵,得到这个不同的
-head,就这样子而已,对另外一个位置,也做一样的事情只是现在<span class="math inline">\(q^1\)</span>,它在算这个 attention
-的分数的时候,它就不要管那个 <span class="math inline">\(k^2\)</span>
-了。</p>
-<p><img src="image-20220613223730387.png" alt="image-20220613223730387" style="zoom:50%;"></p>
-<ul>
-<li><p>所以 <span class="math inline">\(q_{i,1}\)</span> 就跟 <span class="math inline">\(k^{i,1}\)</span> 算 attention</p></li>
-<li><p><span class="math inline">\(q_{i,1}\)</span> 就跟 <span class="math inline">\(k^{j,1}\)</span> 算 attention,也就是算这个 dot
-product,然后得到这个 attention 的分数</p></li>
-<li><p>然后今天在做 weighted sum 的时候,也不要管 <span class="math inline">\(v^2\)</span> 了,看 <span class="math inline">\(V^{i,1}\)</span> 跟 <span class="math inline">\(v^{j,1}\)</span> 就好,所以你把 attention 的分数乘
-<span class="math inline">\(v^{i,1}\)</span>,把 attention 的分数乘 <span class="math inline">\(v^{j,1}\)</span></p></li>
-<li><p>然后接下来就得到 <span class="math inline">\(b^{i,1}\)</span></p></li>
-</ul>
-<p>这边只用了其中一个 head,那你会用另外一个
-head,也做一模一样的事情。</p>
-<p><img src="image-20220613223749217.png" alt="image-20220613223749217" style="zoom:50%;"></p>
-<p>所以 <span class="math inline">\(q^2\)</span> 只对 <span class="math inline">\(k^2\)</span> 做 attention,它们在做 weighted sum
-的时候,只对 <span class="math inline">\(v^2\)</span> 做 weighted
-sum,然后接下来你就得到 <span class="math inline">\(b^{i,2}\)</span></p>
-<p>如果你有多个 head,有 8 个 head 有 16 个
-head,那也是一样的操作,那这边是用两个 head 来当作例子,来给你看看有两个
-head 的时候,是怎么操作的,现在得到 <span class="math inline">\(b^{i,1}\)</span> 跟 <span class="math inline">\(b^{i,2}\)</span>。<strong>然后接下来你可能会把
-<span class="math inline">\(b^{i,1}\)</span> 跟 <span class="math inline">\(b^{i,2}\)</span>,把它接起来,然后再通过一个
-transform。</strong></p>
-<p><img src="image-20220613223832789.png" alt="image-20220613223832789" style="zoom:50%;"></p>
-<p>也就是再乘上一个矩阵,然后得到 bi,然后再送到下一层去,那这个就是
-Multi-head attention,一个这个 Self-attention 的变形。</p>
-<h3><span id="25-positional-encoding">2.5 Positional Encoding</span></h3>
-<blockquote>
-
-</blockquote>
-<h4><span id="no-positioninformation-in-self-attention">No position
-information in self-attention</span></h4>
-<p>那讲到目前为止,你会发现说 Self-attention 的这个
-layer,它少了一个也许很重要的资讯,这个资讯是<strong>位置的资讯</strong>。对一个
-Self-attention layer 而言,每一个 input,它是出现在 sequence
-的最前面,还是最后面,它是完全没有这个资讯的。</p>
-<p><font color="red"> 对 Self-attention 而言,<strong>位置 1 跟位置 2
-跟位置 3 跟位置
-4,完全没有任何差别,这四个位置的操作其实是一模一样</strong>,对它来说 q1
-到跟 q4 的距离,并没有特别远,1 跟 4 的距离并没有特别远,2 跟 3
-的距离也没有特别近。</font></p>
-<p>对它来说就是天涯若比邻,所有的位置之间的距离都是一样的,没有任何一个位置距离比较远,也没有任何位置距离比较近,也没有谁在整个
-sequence 的最前面,也没有谁在整个 sequence
-的最后面。但是这样子设计可能会有一些问题,因为有时候位置的资讯也许很重要,举例来说,我们在做这个
-POS
-tagging,就是词性标记的时候,也许你知道说<strong>动词比较不容易出现在句首</strong>,所以如果我们知道说,某一个词汇它是放在句首的,那它是动词的可能性可能就比较低,这样子的位置的资讯往往也是有用的。</p>
-<h4><span id="each-positon-hasa-unique-positional-vector-ei">Each positon has
-a unique positional vector <span class="math inline">\(e^i\)</span></span></h4>
-<p>可是在我们到目前为止,讲的 Self-attention
-的操作里面,根本就没有位置的资讯,所以怎么办呢,所以你做 Self-attention
-的时候,如果你觉得位置的资讯是一个重要的事情,那你可以把位置的资讯把它塞进去,怎么把位置的资讯塞进去呢,这边就要用到一个叫做,==positional
-encoding== 的技术。</p>
-<p><img src="image-20220613224025472.png" alt="image-20220613224025472" style="zoom:50%;"></p>
-<p><font color="red"> <strong>你为每一个位置设定一个 vector,叫做
-positional vector</strong>,这边<strong>用 <span class="math inline">\(e^i\)</span> 来表示,上标 i
-代表是位置,每一个不同的位置</strong></font>,就有不同的 vector,就是 <span class="math inline">\(e^1\)</span> 是一个 vector,<span class="math inline">\(e^2\)</span> 是一个vector,<span class="math inline">\(e^{128}\)</span>
-是一个vector,不同的位置都有一个它专属的 e,然后把这个 e 加到 <span class="math inline">\(a^i\)</span> 上面,就结束了。就是告诉你的
-Self-attention,位置的资讯,如果它看到说 <span class="math inline">\(a^i\)</span> 好像有被加上 $
-e^i$,它就知道说现在出现的位置,应该是在 i 这个位置。</p>
-<p><strong>最早的这个 transformer,就 Attention Is All You Need 那篇
-paper 里面,它用的 $ e^i$长的是这个样子</strong>。</p>
-<p><img src="image-20220613224248928.png" alt="image-20220613224248928" style="zoom:50%;"></p>
-<h4><span id="hand-crafted-or-learned-fromdata">Hand-crafted or Learned from
-data</span></h4>
-<p><strong>这样子的 positional vector,它是 handcrafted
-的,也就是它是人设的</strong>,那人设的这个 vector
-有很多问题,就假设我现在在定这个 vector 的时候,只定到 128,那我现在
-sequence 的长度,如果是 129 怎么办呢？不过在最早的那个,Attention Is All
-You Need paper里面,没有这个问题,<strong>它 vector
-是透过某一个规则所产生的</strong>,透过一个很神奇的sin和cos 的 function
-所产生的。</p>
-<p>其实你不一定要这么产生, <strong>positional
-encoding仍然是一个尚待研究的问题</strong>,你可以创造自己新的方法,或甚至
-positional encoding,是可以根据资料学出来的。那有关 positional
-encoding,你可以再参考一下文献,这个是一个尚待研究的问题,比如说我这边引用了一篇,这个是去年放在
-arxiv 上的论文,所以可以想见这其实都是很新的论文。</p>
-<p><img src="image-20220613224538933.png" alt="image-20220613224538933" style="zoom:50%;"></p>
-<p>里面就是比较了跟提出了,新的 positional encoding</p>
-<ul>
-<li>比如说这个是最早的 positional encoding,它是用一个神奇的 sin function
-所产生的</li>
-<li>那如果你的 positional encoding,你把 positional encoding
-里面的数值,当作 network 参数的一部分,直接 learn
-出来,看起来是这个样子的,这个图是那个横著看的,它是横著看的,它是每一个
-row,代表一个 position,好 所以这个是这个最原始的,用 sin function
-产生的,这个是 learn 出来的</li>
-<li>它里面又有神奇的做法,比如说这个,这个是用 RNN 生出来的,positional
-encording 是用 RNN 出来的,这篇 paper 提出来的叫做 FLOATER,是用个神奇的
-network 生出来的,</li>
-</ul>
-<p>总之你有各式各样不同的方法,来产生 positional
-encoding,那目前我们还不知道哪一种方法最好,这是一个尚待研究中的问题,所以你不用纠结说,为什么
-Sinusoidal 最好,<strong>你永远可以提出新的做法</strong>。</p>
-<h3><span id="26-applications">2.6 Applications …</span></h3>
-<p><strong>Self-attention 当然是用得很广,我们已经提过很多次 transformer
-这个东西</strong>。</p>
-<p><img src="image-20220613224644049.png" alt="image-20220613224644049" style="zoom:50%;"></p>
-<p>那我们大家也都知道说,在 NLP 的领域有一个东西叫做 BERT,BERT 里面也用到
-Self-attention,所以 Self-attention 在 NLP
-上面的应用,是大家都耳熟能详的。但 <strong>Self-attention,不是只能用在
-NLP 相关的应用上,它还可以用在很多其他的问题上</strong>。</p>
-<h3><span id="self-attention-for-speech">Self-attention for Speech</span></h3>
-<p>比如说在做语音的时候,你也可以用
-Self-attention,不过在做语音的时候,你可能会对
-Self-attention,做一些小小的改动。因为一般语音的,如果你要把一段声音讯号,表示成一排向量的话,这排<strong>向量可能会非常地长</strong>。</p>
-<p><img src="image-20220613224723147.png" alt="image-20220613224723147" style="zoom:50%;"></p>
-<p>而每一个向量,其实只代表了 10 millisecond 的长度而已,所以如果今天是 1
-秒鐘的声音讯号,它就有 100 个向量了,5 秒鐘的声音讯号,就 500
-个向量了,你随便讲一句话,都是上千个向量了。所以一段声音讯号,你要描述它的时候,那个像这个
-vector 的 sequence 它的长度是非常可观的,那可观的
-sequence,可观的长度,会造成什么问题呢？</p>
-<p>你想想看,我们今天在<strong>计算这个 attention matrix
-的时候,它的计算complexity 是长度的平方。</strong></p>
-<p><img src="image-20220613224807917.png" alt="image-20220613224807917" style="zoom:50%;"></p>
-<p><strong>计算这个 attention matrix A′你需要做 L 乘以 L 次的 inner
-product,那如果这个 L 的值很大的话,它的计算量就很可观,你也需要很大的这个
-memory,才能够把这个矩阵存下来。</strong></p>
-<p>所以今天如果在做语音辨识的时候,一句话所产生的这个 attention
-matrix,可能会太大,大到你根本就不容易处理,不容易训练,所以怎么办呢？<strong>在做语音的时候,有一招叫做
-==Truncated Self-attention==</strong>。</p>
-<p><img src="image-20220613224906348.png" alt="image-20220613224906348" style="zoom:50%;"></p>
-<p><font color="red"><strong>Truncated Self-attention</strong>
-做的事情就是,我们今天在做 Self-attention
-的时候,<strong>不要看一整句话,就我们就只看一个小的范围就好</strong>，那至于<strong>这个范围应该要多大,那个是人设定的。</strong></font></p>
-<p>那为什么我们知道说,今天在做语音辨识的时候,也许只需要看一个小的范围就好,那就是<strong>取决于你对这个问题的理解</strong>,也许我们要辨识这个位置有什么样的<strong>phoneme</strong>,这个位置有什么样的内容,我们并不需要看整句话,只要看这句话,跟它前后一定范围之内的资讯,其实就可以判断。</p>
-<p>所以如果在做 Self-attention
-的时候,也许没有必要看过一整个句子,也许没有必要让 Self-attention
-考虑一整个句子,也许只需要考虑一个小范围就好,这样就可以加快运算的速度，这个是
-Truncated Self-attention。</p>
-<h3><span id="self-attention-for-image">Self-attention for Image</span></h3>
-<p>那其实 Self-attention
-,还可以被用在影像上,Self-attention那到目前为止,我们在讲 Self-attention
-的时候,我们都说 <strong>Self-attention 适用的范围是：输入是一个 vector
-set
-的时候</strong>，一张图片啊,我们把它看作是一个很长的向量,那<strong>其实一张图片,我们也可以换一个观点,把它看作是一个
-vector 的 set。</strong></p>
-<p><img src="image-20220613225206980.png" alt="image-20220613225206980" style="zoom:50%;"></p>
-<p><strong>这个是一个解析度 5 乘以 10
-的图片,那这一张图片呢,可以看作是一个 tensor,这个 tensor 的大小是 5 乘以
-10 乘以 3,3 代表 RGB 这 3 个 channel。你可以把每一个位置的
-pixel,看作是一个三维的向量,所以每一个
-pixel,其实就是一个三维的向量,那整张图片,其实就是 5 乘以 10
-个向量的set</strong>。</p>
-<p>所以我们其实可以换一个角度,影像这个东西,其实也是一个 vector
-set,它既然也是一个 vector set 的话,你完全可以用 Self-attention
-来处理一张图片,那有没有人用 Self-attention
-来处理一张图片呢,是有的。那这边就举了两个例子,来给大家参考,那现在把
-Self-attention 用在影像处理上,也不算是一个非常石破天惊的事情。</p>
-<p><img src="image-20220613225244115.png" alt="image-20220613225244115" style="zoom:50%;"></p>
-<h3><span id="self-attention-vs-cnn">==Self-attention v.s. CNN==</span></h3>
-<p>我们可以来比较一下,<strong>Self-attention 跟 CNN
-之间,有什么样的差异或者是关联性</strong>。如果我们今天,是用
-Self-attention 来处理一张图片,代表说,假设这个是你要考虑的 pixel,那它产生
-query,其他 pixel 产生 key。</p>
-<p><img src="image-20220613225357976.png" alt="image-20220613225357976" style="zoom:50%;"></p>
-<p>你今天在<strong>做 inner product 的时候,你考虑的不是一个小的receptive
-field的信息,而是整张影像的资讯</strong>，但是今天在做 CNN
-的时候,,会画出一个 receptive field,每一个 filter,每一个 neural,只考虑
-receptive field 范围里面的资讯。</p>
-<p><img src="image-20220613225442244.png" alt="image-20220613225442244" style="zoom:50%;"></p>
-<ul>
-<li>所以如果我们比较 CNN 跟 Self-attention
-的话,<strong><font color="red">CNN 可以看作是一种简化版的 Self-attention
-</font></strong>，因为在做CNN的时候,我们只考虑 receptive field
-里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯,所以
-CNN,是简化版的
-Self-attention。或者是你可以反过来说,<strong><font color="red">
-Self-attention 是一个复杂化的 CNN</font></strong></li>
-<li>在 CNN 里面,我们要划定 receptive field,每一个 neural,只考虑
-receptive field 里面的资讯,而 <strong><font color="red"> receptive field
-的范围跟大小,是人决定的。而对 Self-attention 而言,我们用
-attention,去找出相关的 pixel,就好像是 receptive field
-是自动被学出的,network 自己决定说,receptive field
-的形状长什么样子,network 自己决定说,以这个 pixel 为中心,哪些 pixel
-是我们真正需要考虑的,那些 pixel 是相关的</font></strong>。<strong>所以
-receptive field
-的范围,不再是人工划定,而是让机器自己学出来</strong>。</li>
-</ul>
-<p>其实你可以读一篇 paper,叫做 On the Relationship,between
-Self-attention and Convolutional Layers。</p>
-<p><img src="image-20220613230146104.png" alt="image-20220613230146104" style="zoom:50%;"></p>
-<p>在这篇 paper 里面,会用数学的方式严谨的告诉你说,其实这个
-<strong>CNN就是 Self-attention 的特例,Self-attention
-只要设定合适的参数,它可以做到跟 CNN 一模一样的事情</strong>。所以 self
-attention,是更 flexible 的 CNN,而 CNN 是有受限制的
-Self-attention,Self-attention 只要透过某些设计,某些限制,它就会变成
-CNN。</p>
-<p><img src="image-20220613230212397.png" alt="image-20220613230212397" style="zoom:50%;"></p>
-<p>那这也不是很旧的 paper,你发现它放到网路上的时间呢,是 19 年的 11
-月,所以你知道这些,我们今天上课里面讲的东西,其实都是很新的资讯。<strong><font color="red">
-既然Self-attention 比较 flexible,之前有讲说比较 flexible 的
-model,比较需要更多的 data,如果你 data 不够,就有可能
-overfitting。</font></strong></p>
-<p>如果你今天用不同的 data 量,来训练 CNN 跟
-Self-attention,你确实可以看到我刚才讲的现象。</p>
-<p><img src="image-20220613230309663.png" alt="image-20220613230309663" style="zoom:50%;"></p>
-<p>那这个实验结果,来自于 An image is worth 16 乘以 16 的 words,这个是
-Google 的 paper,它就是把这个 Self-attention,apply
-在影像上面。那其实<strong>把一张影像呢,拆成 16 乘以 16 个
-patch,它把每一个 patch想像成是一个 word</strong>,因为一般我们这个
-Self-attention,比较常用在 NLP 上面,所以他就说,想像每一个 patch
-其实就是一个 word,所以他就取了一个很 fancy 的 title,叫做<strong>一张图值
-16 乘以 16 个文字</strong>。</p>
-<p>横轴是训练的影像的量,那你发现说,对 Google 来说
-用的,所谓的资料量比较少,也是你没有办法用的资料量啦这边有 10 个 million
-就是,1000 万张图,是资料量比较小的 setting,然后资料量比较大的 setting
-呢,有 3 亿张图片,在这个实验里面呢,比较了 Self-attention
-是浅蓝色的这一条线,跟 CNN 是深灰色的这条线。</p>
-<p>就会发现说,<strong>随著资料量越来越多,那 Self-attention
-的结果就越来越好,最终在资料量最多的时候,Self-attention 可以超过
-CNN,但在资料量少的时候,CNN 它是可以比
-Self-attention,得到更好的结果的。</strong></p>
-<p>那为什么会这样,你就可以从 CNN 跟
-Self-attention,它们的弹性来加以解释：</p>
-<ul>
-<li><strong><font color="red"> Self-attention
-它弹性比较大,所以需要比较多的训练资料,训练资料少的时候,就会
-overfitting。</font></strong></li>
-<li>CNN
-它弹性比较小,在训练资料少的时候,结果比较好,但训练资料多的时候,它没有办法从更大量的训练资料得到好处。</li>
-</ul>
-<p>所以这个就是 Self-attention 跟 CNN 的比较，那 Self-attention 跟
-CNN,谁比较好呢,<strong>我应该选哪一个呢,事实上你也可以都用</strong>,在我们作业四里面,如果你要做
-strong baseline 的话,就特别给你一个提示,就是用 conformer,里面就是有用到
-Self-attention,也有用到 CNN。</p>
-<h3><span id="self-attention-vs-rnn"><strong><font color="red">
-Self-attention v.s. RNN</font></strong></span></h3>
-<p>我们来比较一下,Self-attention 跟 RNN,RNN就是 recurrent neural
-network,这门课里面现在就不会讲recurrent neural network,因为 recurrent
-neural network 的角色,很大一部分都可以用 Self-attention 来取代了,但是
-RNN 是什么呢,假设你想知道的话,那这边很快地三言两语把它带过去,RNN 跟
-Self-attention 一样,都是要处理 input 是一个 sequence 的状况。</p>
-<p><img src="image-20220613230659968.png" alt="image-20220613230659968" style="zoom:50%;"></p>
-<p>在 RNN 里面呢</p>
-<ul>
-<li>左边是你的 input sequence,你有一个 <strong>memory</strong> 的
-vector</li>
-<li>然后你有一个 RNN 的 block,这个 RNN 的 block 呢,它吃 memory 的
-vector,吃第一个 input 的 vector</li>
-<li>然后 output 一个东西,然后根据这个 output 的东西,我们通常叫做这个
-hidden,这个 hidden 的 layer 的 output</li>
-<li>然后通过这个 fully connected network,然后再去做你想要的
-prediction</li>
-</ul>
-<p>接下来当sequence 里面,第二个 vector 作为 input
-的时候,也会把前一个时间点吐出来的东西,当做下一个时间点的输入,再丢进 RNN
-里面,然后再产生新的 vector,再拿去给 fully connected network。然后第三个
-vector 进来的时候,你把第三个 vector 跟前一个时间点的输出,一起丢进
-RNN,再产生新的输出,然后在第四个时间点。第四个 vector 输入的时候,把第四个
-vector 跟前一个时间点,产生出来的输出,再一起做处理,得到新的输出,再通过
-fully connected network 的 layer,这个就是 RNN。</p>
-<p>Recurrent Neural Network跟 Self-attention 做的事情其实也非常像,它们的
-<strong>input 都是一个 vector sequence</strong>，Self-attention output
-是另外一个 vector sequence,这里面的每一个 vector,都<strong>考虑了整个
-input sequence 以后</strong>,再给 fully connected network 去做处理。</p>
-<p>那 RNN 呢,它也会 output 另外一群 vector,这<strong>另外一排
-vector</strong> 也会给,fully connected network 做进一步的处理,那
-Self-attention 跟 RNN 有什么不同呢。</p>
-<p><img src="image-20220613230944896.png" alt="image-20220613230944896" style="zoom:50%;"></p>
-<p><strong>当然一个非常显而易见的不同,你可能会说,这边的每一个
-vector,它都考虑了整个 input 的 sequence,而 RNN 每一个
-vector,只考虑了左边已经输入的 vector,它没有考虑右边的
-vector,那这是一个很好的观察。</strong></p>
-<p>但是 <strong>RNN 其实也可以是双向的</strong>,所以如果你 RNN 用双向的
-RNN 的话,其实这边的每一个 hidden 的 output,每一个 memory 的
-output,其实也可以看作是考虑了整个 input 的 sequence。但是假设我们把 RNN
-的 output,跟 Self-attention 的 output 拿来做对比的话,就算你用
-bidirectional 的 RNN,还是有一些差别的。</p>
-<ul>
-<li><p><strong><font color="red">对RNN 来说,假设最右边这个黄色的
-vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory
-里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong></p></li>
-<li><p><strong><font color="red"> 对 Self-attention
-来说没有这个问题,它只要这边输出一个 query,这边输出一个 key,只要它们
-match 得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence
-上非常远的 vector,轻易地抽取资讯,所以这是 RNN 跟
-Self-attention,一个不一样的地方。</font></strong></p></li>
-<li><p>RNN 今天在处理的时候, input 一排 sequence,output 一排 sequence
-的时候,<strong><font color="red"> RNN
-是没有办法平行化的。</font></strong>RNN 它今天 input 一排是
-vector,output 另外一排 vector
-的时候,它没有办法一次处理,没有办法平行处理所有的 output。但
-Self-attention 有一个优势,是它可以平行处理所有的输出,你今天 input 一排
-vector,再 output 这四个 vector 的时候,<strong>这四个 vector
-是平行产生的,并不需要等谁先运算完才把其他运算出来</strong>,output 的这个
-vector,里面的 output 这个 vector sequence 里面,每一个 vector
-都是同时产生出来的。<strong><font color="red">
-所以在运算速度上,Self-attention 会比 RNN
-更有效率。</font></strong></p></li>
-</ul>
-<p><img src="image-20220613231148500.png" alt="image-20220613231148500" style="zoom:50%;"></p>
-<p>那你今天发现说,<strong>很多的应用都往往把 RNN 的架构,逐渐改成
-Self-attention 的架构了</strong>,如果你想要更进一步了解,RNN 跟
-Self-attention 的关係的话,你可以看下面这篇文章,Transformers are
-RNNs,里面会告诉你说,Self-attention 你加上了什么东西以后,其实它就变成了
-RNN,发现说这也不是很旧的 paper,这个是去年的六月放到 arXiv 上。</p>
-<h3><span id="self-attention-for-graph">Self-attention for Graph</span></h3>
-<p>Graph 也可以看作是一堆 vector,那如果是一堆 vector,就可以用
-Self-attention 来处理,所以 Self-attention 也可以用在 Graph
-上面,但是<strong>当我们把 Self-attention,用在Graph
-上面的时候,有什么样特别的地方呢？</strong></p>
-<p><strong><font color="red"> Graph 往往是人为根据某些 domain knowledge
-建出来的,那 domain knowledge
-告诉我们说,这两个向量彼此之间没有关联,我们就没有必要再用机器去学习这件事情。</font></strong></p>
-<p><img src="image-20220613231411144.png" alt="image-20220613231411144" style="zoom:50%;"></p>
-<p>在 Graph 上面,每一个 node 可以表示成一个向量,但<strong>不只有 node
-的资讯,还有 edge 的资讯</strong>,我们知道哪些 node
-之间是有相连的,也就是哪些 node 是有关联的。</p>
-<p>我们知道哪些向量间是有关联,那之前我们在做 Self-attention
-的时候,所谓的关联性是 network 自己找出来的,但是现在既然有了 Graph
-的资讯,<strong>有了 edge
-的资讯,那关联性也许就不需要透过机器自动找出来,这个图上面的 edge
-已经暗示了我们,node 跟 node 之间的关联性</strong>。</p>
-<p>所以今天当你把 Self-attention,用在 Graph
-上面的时候,你有一个选择是你在做这个,Attention Matrix
-计算的时候,你可以<strong>只计算有 edge 相连的 node
-就好</strong>。那如果两个 node
-之间没有相连,那其实很有可能就暗示我们,这两个 node
-之间没有关係,<strong>既然没有关係,我们就不需要再去计算它的 attention
-score,直接把它设为 0 就好了</strong>。</p>
-<h3><span id="27-more">2.7 More</span></h3>
-<p>其实Self-attention 有非常非常多的变形,你可以看一篇 paper
-叫做,<strong>Long Range Arena</strong>,里面比较了各种不同的
-Self-attention 的变形。</p>
-<p><img src="image-20220613231703000.png" alt="image-20220613231703000" style="zoom:50%;"></p>
-<p>Self-attention
-它最大的问题就是,<strong>它的运算量非常地大</strong>,所以怎么样减少
-Self-attention 的运算量,是一个未来的重点,可以看到这边有,各种各式各样
-Self-attention 的变形。</p>
-<p><strong>Self-attention 最早是,用在 Transformer 上面,所以很多人讲
-Transformer 的时候,其实它指的就是这个 Self-attention,有人说广义的
-Transformer,指的就是
-Self-attention</strong>。那所以后来各式各样的,Self-attention
-的变形都这样做,都叫做是什么 former,比如说 Linformer Performer Reformer
-等等,所以 Self-attention 的变形,现在都叫做 xxformer。</p>
-<p>那可以看到，往右代表它运算的速度,所以有很多各式各样新的
-xxformer,它们的速度会比原来的 Transformer 快,但是快的速度带来的就是
-performance 变差。这个纵轴代表是 performance,所以它们往往比原来的
-Transformer,performance 差一点,但是速度会比较快。那到底什么样的
-Self-attention,才能够真的又快又好,这仍然是一个尚待研究的问题,如果你对
-Self-attention,想要进一步研究的话,你还可以看一下,<strong>Efficient
-Transformers: A Survey 这篇 paper,里面会跟你介绍,各式各样 Self-attention
-的变形。</strong></p>
-<h2><span id="三-注意力机制-qampa">三、注意力机制 Q&amp;A</span></h2>
-<h3><span id="31self-attention-cnn-rnn对比">3.1
-Self-Attention、CNN、RNN对比？</span></h3>
-<h4><span id="self-attention-vs-cnn">Self-Attention vs CNN</span></h4>
-<ul>
-<li><strong><font color="red">CNN 可以看作是一种简化版的 Self-attention
-</font></strong>，因为在做CNN的时候,我们只考虑 receptive field
-里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯。</li>
-<li>在 CNN 里面 <strong><font color="red"> receptive field
-的范围跟大小,是人决定的。而对 Self-attention
-,不再是人工划定,而是让机器自己学出来</font></strong>。</li>
-<li><strong>Self-attention 比较 flexible,之前有讲说比较 flexible 的
-model,比较需要更多的 data,如果你 data 不够,就有可能
-overfitting</strong>。</li>
-</ul>
-<h4><span id="self-attention-vs-rnn">Self-Attention vs RNN</span></h4>
-<ul>
-<li><strong><font color="red">RNN 右边的
-vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory
-里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong>
-Self-attention 只要a1输出一个 query,a4输出一个 key,只要它们 match
-得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence 上非常远的
-vector,轻易地抽取资讯,所以这是 RNN 跟
-Self-attention一个不一样的地方。</li>
-<li><strong><font color="red"> RNN
-是没有办法平行化的。所以在运算速度上,Self-attention 会比 RNN
-更有效率。</font></strong></li>
-</ul>
-<h3><span id="32self-attention-cnn-rnn时间复杂度对比">3.2
-Self-Attention、CNN、RNN时间复杂度对比？</span></h3>
-<blockquote>
-<p>##### 计算效率: 一个形状为 <img src="https://www.zhihu.com/equation?tex=N%5Ctimes+M" alt="[公式]">
-的矩阵，与另一个形状为 <img src="https://www.zhihu.com/equation?tex=M%5Ctimes+P" alt="[公式]">
-的矩阵相乘，其运算复杂度来源于乘法操作的次数，时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28NMP%29" alt="[公式]"></p>
-</blockquote>
-<h4><span id="self-attention">Self-Attention</span></h4>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=A%28Q%2CK%2CV%29%3D%5Cmathrm%7BSoftmax%7D%28QK%5ET%29V+%5C%5C+" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ul>
-<li><figure>
-<img src="https://www.zhihu.com/equation?tex=Q%2CK%2CV%3An%5Ctimes+d" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure></li>
-<li>相似度计算 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+n" alt="[公式]"> 运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]">
-矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
-<li>softmax计算：对每行做softmax，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%29" alt="[公式]"> ，则n行的复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2%29" alt="[公式]"></li>
-<li>加权和： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
-运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
-</ul>
-<p>故最后self-attention的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></p>
-<p>对于受限的self-attention，每个元素仅能和周围 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]">
-个元素进行交互，即和 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 维向量做内积运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28rd%29" alt="[公式]"> ，则 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个元素的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%28rnd%29%7D" alt="[公式]"></p>
-<h4><span id="multi-head-attention">Multi-Head Attention</span></h4>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BMultiHead%7D%28Q%2CK%2CV%29%3D%5Cmathrm%7BConcat%28head_1%2C...%2Chead_h%29%7DW%5EO+%5C%5C+%5Cmathrm%7Bwhere%5Cquad+head_i%7D%3DA%28QW_i%5EQ%2CKW_i%5EK%2CVW_i%5EV%29%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>对于multi-head attention，假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 个head，这里
-<img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
-是一个常数，对于每个head，首先需要把三个矩阵分别映射到 <img src="https://www.zhihu.com/equation?tex=d_q%2Cd_k%2Cd_v" alt="[公式]">
-维度。这里考虑一种简化情况： <img src="https://www.zhihu.com/equation?tex=d_q%3Dd_k%3Dd_v%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。(对于dot-attention计算方式， <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d_v" alt="[公式]">
-可以不同)。</p>
-<ul>
-<li>输入线性映射的复杂度： <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 运算，忽略常系数，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"> 。</li>
-<li>Attention操作复杂度：主要在相似度计算及加权和的开销上， <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bd%7D%7Bh%7D%5Ctimes+%7Bn%7D" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7B%7D" alt="[公式]"></li>
-<li>输出线性映射的复杂度：concat操作拼起来形成 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
-的矩阵，然后经过输出线性映射，保证输入输出相同，所以是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 计算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></li>
-</ul>
-<p>故最后的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%2Bnd%5E2%29" alt="[公式]"></p>
-<blockquote>
-<p>注意：多头的计算并不是通过循环完成的，而是通过 transposes and
-reshapes，用矩阵乘法来完成的。假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
-个head，则新的representation dimension： <img src="https://www.zhihu.com/equation?tex=m%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。因为，我们将 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
-的矩阵拆为 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+h%5Ctimes+m" alt="[公式]"> 的张量，再利用转置操作转为 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n+%5Ctimes+m" alt="[公式]"> 的张量。故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]">
-的计算为： <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+m+%5Ctimes+n" alt="[公式]"> 做计算，得到 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+n" alt="[公式]"> 的张量，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28h%5E2n%5E2m%29" alt="[公式]"> ，即 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2dh%29" alt="[公式]"> 。注意，此处 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
-实际是一个常数，故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> 复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"> 。</p>
-</blockquote>
-<h4><span id="recurrent">Recurrent</span></h4>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=h_t%3Df%28Ux_t%2BWh_%7Bt-1%7D%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ul>
-<li><img src="https://www.zhihu.com/equation?tex=Ux_t" alt="[公式]">
-： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=m%5Ctimes+1" alt="[公式]">
-运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28md%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=m" alt="[公式]"> 为input size</li>
-<li><img src="https://www.zhihu.com/equation?tex=Wh_%7Bt-1%7D" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+1" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"></li>
-</ul>
-<p>故一次操作的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 次序列操作后的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></p>
-<h4><span id="convolution">Convolution</span></h4>
-<blockquote>
-<p>注: 这里保证输入输出都是一样的，即均是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"></p>
-</blockquote>
-<ul>
-<li>为了保证输入和输出在第一个维度都相同，故需要对输入进行padding操作，因为这里kernel
-size为 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">
-，（实际kernel的形状为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]">
-）如果不padding的话，那么输出的第一个维度为 <img src="https://www.zhihu.com/equation?tex=n-k%2B1" alt="[公式]">
-，因为这里stride是为1的。为了保证输入输出相同，则需要对序列的前后分别padding长度为
-<img src="https://www.zhihu.com/equation?tex=%28k-1%29%2F2" alt="[公式]"> 。</li>
-<li>大小为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]"> 的卷积核一次运算的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28kd%29" alt="[公式]"> ，一共做了 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]">
-次，故复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%29" alt="[公式]"></li>
-<li>为了保证第二个维度在第二个维度都相同，故需要 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]">
-个卷积核，所以卷积操作总的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%5E2%29" alt="[公式]"></li>
-</ul>
 
       
     </div>

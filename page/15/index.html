@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-count">257</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,765 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/368N99B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/368N99B/" class="post-title-link" itemprop="url">安全场景（2）恶意加密流量检测*</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-13 12:49:05" itemprop="dateCreated datePublished" datetime="2022-05-13T12:49:05+08:00">2022-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 00:12:59" itemprop="dateModified" datetime="2022-09-19T00:12:59+08:00">2022-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="基于机器学习的恶意加密流量检测">基于机器学习的恶意加密流量检测</span></h2>
+<p>[1] Anderson B, McGrew D. Identifying encrypted malware traffic with
+contextual flow data[C]//Proceedings of the 2016 ACM workshop on
+artificial intelligence and security. 2016: 35-46.</p>
+<figure>
+<img src="image-20220516100235456.png" alt="image-20220516100235456">
+<figcaption aria-hidden="true">image-20220516100235456</figcaption>
+</figure>
+<h4><span id="在进行tls握手时会进行如下几个步骤">在进行TLS握手时，会进行如下几个步骤：</span></h4>
+<ol type="1">
+<li><strong>Client Hello</strong>，客户端提供支持的加密套件数组（cipher
+suites）；</li>
+<li><strong>Server
+Hello</strong>，由服务器端选择一个加密套件，传回服务器端公钥，并进行认证和签名授权（<strong>Certificate</strong>
++ Signature）；</li>
+<li>客户端传回客户端公钥（<strong>Client Key
+Exchange</strong>），客户端确立连接；</li>
+<li>服务器端确立连接，开始 HTTP 通信。</li>
+</ol>
+<p><img src="https://pic4.zhimg.com/80/v2-a10c338f4c3e283b3b29d0e5752f1beb_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h3><span id="一-特征提取">一、特征提取</span></h3>
+<h4><span id="11-可观察的数据元统计特征">1.1 可观察的数据元统计特征</span></h4>
+<ul>
+<li><strong>传统流数据</strong> (Flow Meta)
+<ul>
+<li>流入和流出的字节数和数据包数</li>
+<li>源端口和目的端口</li>
+</ul></li>
+<li><strong>字节分布</strong> (BD, Byte Distribution)
+<ul>
+<li>数据包有效负载中遇到的每个字节值的计数</li>
+<li>提供了大量<strong>数据编码</strong>和<strong>数据填充</strong>的信息</li>
+<li>字节分布概率 ≈ 字节分布计数 / 分组有效载荷的总字节数</li>
+<li>特征表示：1×256维字节分布概率序列</li>
+</ul></li>
+<li><strong>分组长度和分组到达间隔时间的序列 </strong>(SPLT, Sequence of
+Packets Length and Times)
+<ul>
+<li><strong>==使用马尔可夫链模型建模==</strong></li>
+</ul></li>
+</ul>
+<h4><span id="12-未加密的tls头部信息特征">1.2 未加密的TLS头部信息特征</span></h4>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220516101251514.png" alt="image-20220516101251514" style="zoom: 33%;"></p>
+<blockquote>
+<p><strong>TLS/SSL协议 过程</strong></p>
+<ul>
+<li>两层子协议：握手协议和记录协议</li>
+<li>握手协议特点
+<ul>
+<li>加密明文但不加密握手过程</li>
+<li>有多个版本但握手参数不变</li>
+</ul></li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>Client Hello</strong>
+<ul>
+<li>列出的密码套件列表(Cipher Suites)
+<ul>
+<li>密钥交换算法、加密算法</li>
+<li>报文认证消息码(MAC)算法</li>
+</ul></li>
+<li>支持的扩展列表(Extensions)
+<ul>
+<li>提供额外功能或设定</li>
+</ul></li>
+</ul></li>
+<li><strong>Server Hello</strong>：选定的密码套件和TLS扩展</li>
+<li><strong>Certificate</strong>：服务器签发的证书信息</li>
+<li><strong>Client Key Exchange</strong>：使用的密钥交换算法参数</li>
+</ul>
+<figure>
+<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220516101639662.png" alt="image-20220516101639662">
+<figcaption aria-hidden="true">image-20220516101639662</figcaption>
+</figure>
+<h4><span id="13-上下文数据">1.3 上下文数据</span></h4>
+<ul>
+<li><strong>DNS上下文流</strong>
+<ul>
+<li>基于目标IP地址与TLS相关的DNS响应
+<ul>
+<li>域名长度</li>
+<li>DNS响应返回的IP地址数</li>
+<li>DNS TTL值</li>
+<li>域名在Alexa榜的排名</li>
+</ul></li>
+<li>补充了加密流中可能缺失的信息</li>
+</ul></li>
+<li><strong>HTTP上下文流</strong>
+<ul>
+<li>在TLS流5min窗口内的<strong>相同源IP地址的所有HTTP流</strong></li>
+<li>恶意软件可能<strong>利用HTTP的头部字段</strong>来发起恶意活动
+<ul>
+<li>Content-Type、Server、Code</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3><span id="二-工业落地">二、工业落地</span></h3>
+<p>然而，AI技术如没有得到有效运用，也无法在实战中检测到加密的威胁行为。例如无监督学习可以定位未知威胁，但精准度待提升；有监督学习精确度高，却无法覆盖未知威胁。</p>
+<h4><span id="21如何在实战中精准识别加密流量攻击">2.1
+<strong>如何在实战中精准识别加密流量攻击？</strong></span></h4>
+<p><strong>深信服安全团队经过7000+用户实践发现，只有将无监督学习和有监督学习智能化结合，才能最大限度提升加密流量攻击的识别率。</strong></p>
+<figure>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/EJiaEo3Lq9kqe1fjo1Clib3ZyjiaxESYbUib3sYpbgKND3aB0b2gRURRDxECcT3mmFicMQdhdOaPDn2QVjyZ2rV8VrQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<h4><span id="22有监督学习精准识别已知加密流量">2.2
+<strong>有监督学习精准识别已知加密流量</strong></span></h4>
+<p>有监督机器学习通过将已知、带标签的行为数据输入系统，学习分析数据行为，并根据数据标签来检测、识别特定的高级威胁。深信服NDR（全流量高级威胁检测系统）应用AI模型，基于有监督机器学习抓取所有上下行流量，<strong>提取1000+维度特征</strong>，同时增加了模型训练算法LightGBM学习特征的权重，对已知高级威胁的检测更为精准。传统的检测方式基于一个模型检测多个场景，不同场景的特征不尽相同，因此误报率很高。<strong><font color="red">
+深信服NDR基于AI模型有监督学习进行场景化建模，一个模型对应一个场景，根据场景特征进行针对性检测</font></strong>，<strong>模型检测精准率能够达到98%</strong>。</p>
+<h4><span id="23无监督学习提前发现未知加密流量">2.3
+<strong>无监督学习提前发现未知加密流量</strong></span></h4>
+<p>无监督的机器学习覆盖了聚类、神经网络等方法，不依赖任何标签值，通过自主学习，挖掘数据内在特征，实现自动化全面检测，更合理地利用资源，提升效率。</p>
+<p>深信服NDR基于AI模型无监督学习方法，通过聚类学习、特征映射等智能分析技术建立设备加密流量动态行为基线，筛选出异常的、可疑的行为，同时结合行为聚合与关联分析，<strong>检测出未知威胁的早期迹象，最大程度地实现自动化检测</strong>，可以快速检测出如下异常，帮助网络安全团队主动预防威胁：</p>
+<ul>
+<li>异常的网络设备JA3</li>
+<li>异常的访问时间和访问频率</li>
+<li>异常的上下行数据包比率</li>
+<li>异常的证书签发机构</li>
+</ul>
+<p><strong>以常见的“服务器权限获取手法webshell加密通信”为例</strong>，攻击者通过渗透系统或网络安装webshell
+，在应用服务器上执行敏感命令、窃取数据、植入病毒，危害极大。‍webshell具有很强的隐蔽性，<strong>传统的、基于单向数据流的流量检测方案，无法实时更新数据，难以有效检测webshell</strong>。</p>
+<p>深信服NDR基于AI模型无监督学习的<strong><font color="red">
+孤立森林异常点</font></strong>检测算法，可以构建特征向量，精准检测“孤立离群”的webshell访问行为，<strong>具有更高检出率，更低误报率</strong>。除了webshell加密通信场景外，深信服NDR同样支持隧道检测、CS漏洞、加密挖矿、加密反弹shell等威胁检测，覆盖多种加密威胁场景。</p>
+<h2><span id="三-算法比赛总结">三、算法比赛总结</span></h2>
+<blockquote>
+<p><a href="../算法比赛/恶意加密流量（1）DataCon2020-恶意加密流量检测.md">恶意加密流量（1）DataCon2020-恶意加密流量检测.md</a></p>
+<p><a href="../算法比赛/恶意加密流量（2）Datacon2021恶意加密流量检测.md">恶意加密流量（2）Datacon2021恶意加密流量检测.md</a></p>
+<p><a href="../算法比赛/恶意加密流量（3）西湖论剑AI大数据安全分析赛.md">恶意加密流量（3）西湖论剑AI大数据安全分析赛.md</a></p>
+<p>#### 流量处理的工具</p>
+<p>#### <strong>zeek</strong>:https://github.com/zeek/zeek</p>
+<p><a target="_blank" rel="noopener" href="https://darkdefender.medium.com/https-medium-com-melanijan93-analysing-pcaps-with-bro-zeek-33340e710012">使用
+Bro/Zeek 分析 PCAP</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/235587.html">流量分析的瑞士军刀：Zeek</a></p>
+<p>Zeek Analysis Tools (ZAT):</p>
+<p>#### joy：</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/ahlashkari/CICFlowMeter">CICFlowMeter</a>：</p>
+</blockquote>
+<h3><span id="21-数据包级">2.1 数据包级</span></h3>
+<h4><span id="1长度分布">（1）长度分布</span></h4>
+<p>根据Cisco的研究【17】，<strong>恶意软件和普通软件在正向流和反向流中的数据包长度分布不同</strong>。<strong><font color="red">
+例如，当我们使用谷歌搜索时，客户端向服务器发送少量数据包，然后服务器返回大量数据包。然而，恶意软件的作用恰恰相反：恶意软件通常让客户端将数据传输到服务器，然后服务器定期返回调度命令。</font></strong>无论是否加密，数据包长度始终可见，因此它适合作为一种功能。我们将数据包长度和方向编码为一维独立特征。我们推测，感染恶意软件的客户端和服务器之间的一些控制消息的长度总是相似且频繁的，这具有很好的区分程度。<strong>我们考虑每个可能的数据包长度和方向元组。由于Internet上的最大传输单元（MTU）是1500字节，并且数据包的方向有两个发送或接收方向，因此我们的长度分布特征是3000维。</strong>为了提取这些特征，我们计算具有不同长度的所有数据包的数量，并进行规范化以确保概率分布。我们使用随机森林（RF）算法来处理这些特征。因为它能更好地处理高维特征，并且具有可解释性。</p>
+<h4><span id="2长度序列">（2）长度序列</span></h4>
+<p>第二部分，在不使用序列信息的情况下，我们只使用了数据包长度的统计特征，这可能会在时间上丢失一些信息，因此我们提取了数据包长度序列。<strong>我们在每个客户端的双向上取前1000个数据包长度</strong>，并将其放入TextCNN算法中以提取局部序列关系。因为该算法运行速度快，精度高。文本数据的卷积神经网络TextCNN【22】是一种用于句子分类任务的有用的深度学习算法。<strong>在这种情况下，我们将每个数据包的长度视为一个单词，长度序列相当于一个句子</strong>。</p>
+<h4><span id="3服务器ip">（3）服务器IP</span></h4>
+<p>在我们的数据集中，服务器IP地址是一个重要的标识符。<strong>我们假设，在同一地区，如果客户端感染了相同的恶意软件，则可能会导致其访问相同的服务器IP地址</strong>。因此，我们还考虑了对服务器IP地址的访问。<strong>值1或0表示是否访问了特定的服务器IP地址（一个热编码）</strong>。我们使用朴素贝叶斯（NB）算法来处理这些特征。由于朴素贝叶斯算法是一种非参数算法，其本质是寻找特征和标签之间的关系。因此，它可以被视为一个黑名单。</p>
+<h4><span id="4词频分类器">（4）词频分类器</span></h4>
+<p><strong>X509证书在Internet上广泛使用</strong>。它们用于验证实体之间的信任。证书颁发机构通常将X509证书链接在一起。如图2所示。[23]，<strong>X509证书提供URL、组织、签名等信息</strong>。我们从培训集中每个客户端的TLS流中提取X509证书链，并获取证书中<strong>主题</strong>和<strong>颁发者</strong>中包含的单词。我们将所有单词组合在一起，并将客户的流量视为由这些单词组成的句子。与B部分类似，我们计算每个单词的数量并将其用作特征。0我们使用朴素贝叶斯（NB）算法来处理这些特征。如果测试集样本证书中的所有单词从未出现在训练集中，我们将直接推断它是恶意的。因为训练集包含最流行的域名。</p>
+<p><img src="image-20220621131035005.png" alt="image-20220621131035005" style="zoom: 67%;"></p>
+<h4><span id="5tcp状态马尔可夫">==（5）TCP状态马尔可夫==</span></h4>
+<p>我们发现<strong>恶意流量和正常流量之间TCP连接状态的分布是不同的</strong>。表一说明了可能的TCP连接状态[24]。我们按照流出现的时间对其进行排序，然后使用马尔可夫随机场转移矩阵（MRFTM）对该特征进行编码。MRFTM在建模连接状态序列时很有用。MRFTM[i，j]中的每个条目统计第i个和第j个状态之间的转换次数。最后，我们对MRFTM的行进行规范化，以确保适当的马尔可夫链。然后我们将其重塑为一维向量，也就是说，我们使用MRFTM的条目作为特征。我们使用随机森林（RF）算法来处理这些特征。</p>
+<h3><span id="22-会话流级">2.2 会话流级</span></h3>
+<h4><span id="6会话流量统计">（6）会话流量统计</span></h4>
+<p>在加密流量中，上述5种分类器在主机级使用不同的特征提取方法和分类方法。此外，为了进一步提高准确率，防止恶意软件由于缺乏领域知识而欺骗分类器，我们还提取了TLS握手中的明文信息。在这个分类器中，我们首先考虑流级特征。我们仅选择TLS流，并分析每个流。一旦推断流是恶意的，就会推断相应的客户端被感染。我们对TCP和TLS协议进行了深入分析，<strong>提取了1000多个维度的流级特征</strong>，包括以下部分：</p>
+<ul>
+<li><strong>TCP连接状态特性</strong>：如F部分所述，我们对每个流的TCP连接状态进行一次热编码。</li>
+<li><strong>统计特征</strong>：我们还提取常规统计特征，表II显示了相关特征名称和描述。</li>
+</ul>
+<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220621141516374.png" alt="image-20220621141516374" style="zoom: 33%;"></p>
+<ul>
+<li><strong>长度马尔可夫特征</strong>：数据包长度序列的操作类似于F部分中的TCP连接状态序列。长度值被离散为大小相等的容器。长度数据马尔可夫链有10个箱子，每个箱子150字节。假设一个1500字节的MTU，任何观察到的大小大于1350字节的数据包都被放入同一个bin中。</li>
+<li><strong>TLS握手功能</strong>：我们发现客户端和服务器的TLS协议版本在恶意和良性TLS流之间有不同的分布，因此我们对客户端和服务器的TLS版本进行了一次热编码。此外，由于恶意软件可能使用旧的密码套件，我们在客户端和服务器上都对密码套件和扩展进行n-hot编码，即将所有密码套件和扩展扩展扩展为一维0向量，如果当前流使用某个密码套件或扩展，则相应的位置集值为1。</li>
+<li><strong>TLS证书特性</strong>：我们发现，在恶意流中，很大一部分叶证书是自签名的，或者自签名证书出现在证书链中。恶意软件喜欢利用的自签名证书的成本很低。因此，我们分析从服务器发送的证书：<strong>证书链是否包含自签名证书、叶证书是否过期、证书版本、证书有效期、公钥长度、是否发生警报</strong>。同时，考虑到之前的词频分类器，我们发现一些词无法区分恶意和良性，因此我们还将流词频添加到流特征中。</li>
+</ul>
+<h3><span id="23-主机级特征">2.3 主机级特征</span></h3>
+<h4><span id="7主机级荷载无关特征聚合流级统计信息">（7）<strong>主机级荷载无关特征聚合</strong>
+(流级统计信息)</span></h4>
+<p><strong>单独的看每条流可能漏掉了流之间的关联行为即主机级别的行为</strong>，比如恶意软件在发出正常的访问谷歌流量后可能就要开始进行恶意传输。再比如，有少量正常流也会出现自
+签名，如果我们单独看流，可能就会误判，但是如果我们基于主机提取特征发现同一
+IP
+下有多条流都是自签名，则我们就会有很大的信心认为这是恶意的。因此，我们将上一小节中流级别
+的特征进行聚合，并以流为基本单位提取主机级别特征。</p>
+<p><strong>主机级特征聚合部分主要考虑了如下的特征:</strong></p>
+<ul>
+<li><strong>总包个数</strong>，<strong>每条流的平均包个数</strong>，<strong>时间间隔、包长的均值</strong>，以及上一个小节中证书部分的相关特
+征，即<strong>自签名流数量，过期流数量，有效期过长（比如
+100年）的流数量及其均值。</strong></li>
+<li>TLS 半连接 和无连接</li>
+</ul>
+<h3><span id="24-上下文信息特征">2.4 上下文信息特征</span></h3>
+<h4><span id="8其他应用协议">（8）其他应用协议</span></h4>
+<p><strong><font color="red">HTTP头部信息</font></strong></p>
+<ul>
+<li><strong>Content-Type</strong>，正常流量 HTTP 头部信息汇总值多为
+<code>image/*</code>，而恶意流量为
+<code>text/*、text/html、charset=UTF-8</code> 或者
+<code>text/html;charset=UTF-8</code>。</li>
+<li><strong>User-Agent</strong></li>
+<li><strong>Accept-Language</strong></li>
+<li><strong>Server</strong></li>
+<li><strong>HTTP响应码</strong></li>
+</ul>
+<p><strong><font color="red"> DNS响应信息</font></strong></p>
+<ul>
+<li><strong>==域名的长度==</strong>：正常流量的域名长度分布为均值为6或7的高斯分布（正态分布）；而恶意流量的域名（FQDN全称域名）长度多为6（10）。</li>
+<li><strong>==数字字符及非字母数字(non-alphanumeric
+character)的字符占比==</strong>：正常流量的DNS响应中全称域名的数字字符的占比和非字母数字字符的占比要大。</li>
+<li><strong>DNS解析出的IP数量</strong>：大多数恶意流量和正常流量只返回一个IP地址；其它情况，大部分正常流量返回2-8个IP地址，恶意流量返回4或者11个IP地址。</li>
+<li><strong>TTL值</strong>：正常流量的TTL值一般为60、300、20、30；而恶意流量多为300，大约22%的DNS响应汇总TTL为100，而这在正常流量中很罕见。</li>
+<li><strong>域名是否收录在Alexa网站</strong>：恶意流量域名信息很少收录在Alexa
+top-1,000,000中，而正常流量域名多收录在其中。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/KK562V/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/KK562V/" class="post-title-link" itemprop="url">安全场景（2）离地攻击检测</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-13 12:49:05" itemprop="dateCreated datePublished" datetime="2022-05-13T12:49:05+08:00">2022-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-27 21:24:45" itemprop="dateModified" datetime="2022-05-27T21:24:45+08:00">2022-05-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="living-off-the-land恶意软件系统分析">Living-Off-The-Land
+恶意软件系统分析</span></h2>
+<blockquote>
+<p>[][AI安全论文] <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5MTM5ODU2Mg==&amp;mid=2247496069&amp;idx=1&amp;sn=f5aecaae5494b900b29f12078a2d632e&amp;chksm=cfcf4148f8b8c85ee56fbab09252bb4dc90f936cfb6decaa860b5e91457c9838cfb35179041a&amp;scene=178&amp;cur_album_id=1776483007625822210#rd">21.S&amp;P21
+Survivalism经典离地攻击（Living-Off-The-Land）恶意软件系统分析</a>:S&amp;P21的离地攻击（Living-Off-The-Land）系统分析，这是一篇非常经典的论文，并且系统性分析文章是另一种讲故事的方式。</p>
+</blockquote>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuMu3z61w35bGkJLmiaMzSMlbhFgicVxHG54dmR1ic5oqLlwSSzT28qicT2Q/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;"></p>
+<blockquote>
+<p>原文作者：Frederick Barr-Smith, Xabier Ugarte-Pedrero, et al.
+<strong>原文标题</strong>：Survivalism: Systematic Analysis of Windows
+Malware Living-Off-The-Land
+<strong>原文链接</strong>：https://ieeexplore.ieee.org/document/9519480
+<strong>发表会议</strong>：2021 IEEE Symposium on Security and Privacy
+(SP)</p>
+</blockquote>
+<p><strong>文章目录：</strong></p>
+<ul>
+<li><p><strong>摘要</strong></p></li>
+<li><p><strong>一.引言</strong></p>
+<p>1.什么是离地攻击</p>
+<p>2.APT中的离地攻击</p>
+<p>3.提出五个关键问题</p>
+<p>4.贡献（Contribution）</p></li>
+<li><p><strong>二.背景和相关工作</strong></p>
+<p>A.LotL Binaries</p>
+<p>B.Scope of our Study</p>
+<p>C.Related Work</p></li>
+<li><p><strong>三.MOTIVATION: 杀毒软件产品 vs
+离地攻击技术</strong></p></li>
+<li><p><strong>四.离地攻击流行性评估</strong></p>
+<p>A.Dataset Composition</p>
+<p>B.Analysis Pipeline</p>
+<p>C.LotL Technique Identification</p>
+<p>D.Parameter Analysis to Identify Execution Purpose</p></li>
+<li><p><strong>五.评估结果</strong></p>
+<p>A.商用恶意软件中LotL技术的流行性（Prevalence）</p>
+<p>B.Comparison of Benign and Malicious Samples</p>
+<p>C.Prevalence of LotL techniques in APT Malware</p></li>
+<li><p><strong>六.案例分析</strong></p></li>
+<li><p><strong>七.要点和讨论</strong></p></li>
+<li><p><strong>八.局限性和未来工作</strong></p></li>
+<li><p><strong>九.个人感受</strong></p></li>
+</ul>
+<h3><span id="摘要">摘要</span></h3>
+<p>随着恶意软件检测算法和方法变得越来越复杂（sophisticated），恶意软件作者也采用（adopt）同样复杂的逃避机制（evasion
+mechansims）来对抗（defeat）它们。<strong>民间证据表明离地攻击技术（Living-Off-The-Land，LotL）是许多恶意软件攻击中最主要的逃避技术之一。这些技术利用（leverage）系统中已经存在的二进制文件来执行（conduct）恶意操作。</strong>基于此，我们首次对Windows系统上使用这些技术的恶意软件进行大规模系统地调查。</p>
+<p>在本文中，我们分析了这些本地系统的二进制文件在多个恶意软件数据集上的使用情况，这些数据集共包含31,805,549个样本。我们发现平均流行率（prevalence）为9.41%。实验结果表明，LotL技术被大量的使用，特别是在高级持久性威胁（Advanced
+Persistent Threat
+，APT）恶意软件样本中，离地攻击占比为26.26%，是社区恶意软件的两倍多。</p>
+<p><strong>为了验证（illustrate）LotL技术的逃逸潜力，我们在本地沙箱环境（sandboxed
+environment）中对几个完全打补丁的Windows系统进行了离地攻击技术的测试，其结果表明在10个最流行的反病毒产品（anti-virus）中存在明显的gap。</strong></p>
+<h3><span id="一-引言">一、引言</span></h3>
+<h4><span id="11-什么是离地攻击">1.1 什么是离地攻击</span></h4>
+<p>恶意软件开发和检测是猫和老鼠的游戏，恶意软件作者不断开发新技术来绕过（bypass）检测系统。像AV杀毒软件（anti-virus）这样的安全产品通过静态和启发式分析（heuristic
+analysis）技术，以检测、分类和防止恶意软件有效执行。</p>
+<p>在过去，许多解决方案严重依赖于基于签名的检测，但不幸的是，由于使用了<strong>多态性（polymorphism）和加壳程序（packers）</strong>，这些方法变得不再那么有效。相反，许多产品开始开发启发式分析解决方案，包括检测恶意行为的算法。这些算法已成为AV引擎的重要组成部分。随着时间的推移，这些算法越来越复杂，因此需要更多创新性的逃避技术。</p>
+<p>恶意软件作者和红队经常研究和发现新方法来绕过安全解决方案。虽然它们的潜在目标本质上可能有所不同，但这两种类型的攻击者通常都利用（leverage）最先进（state-of-the-art）的逃避技术来实现目标。<strong>从防守者的角度来看，为了及时作出响应，了解这些攻击和研究它们的趋势是至关重要的（crucial）</strong>。其中，在红队和恶意软件作者中都流行的规避策略就是使用离地攻击（LotL）技术。</p>
+<p>==<strong>离地攻击（LotL）技术是指使用系统中已经存在或易于安装的二进制文件（如已签名的合法管理工具）来执行后渗透活动（post-exploitation
+activity）。</strong>==</p>
+<ul>
+<li>通过利用这些工具，攻击者可以<strong>实现注册表修改、持久化、网络或系统侦察，或执行其他恶意代码</strong>。它们甚至可以用来减少由恶意活动产生的事件日志，而不需要将其他文件下载到本地的系统中。</li>
+</ul>
+<h4><span id="12-apt中的离地攻击">1.2 APT中的离地攻击</span></h4>
+<p>离地攻击并不是隐蔽的技术，它们在互联网上公开记录着。许多开源的攻击安全工具利用了LotL技术，并且经常被攻击者所使用，从合法的红队到业余的网络攻击者，以及有组织的APT团队。</p>
+<ul>
+<li><code>PoshSpy[15]</code>：是一个俄罗斯APT29攻击模块，它是第一个被检测到的APT组织使用的LotL技术，特别是在PowerShell和Windows
+Management中。</li>
+<li>伊朗威胁组织[1]、APT33、APT34和其他组织也以使用本地Windows二进制文件和其它签名工具而闻名，特别是PowerShell[8]。</li>
+</ul>
+<p>尽管“离地攻击”在信息安全界是一个相对知名的术语，但有时很难找到一个精确的定义。此外，据我们所知，没有任何研究包含了对LotL技术在恶意软件样本中的流行程度的系统分析。关于LotL技术的文档大多以博客的形式出现，并记录着某些恶意软件家族的在野发现，或者攻击者在远程访问受损系统中所使用技术的描述。</p>
+<ul>
+<li>例如，<code>Emotet</code> 和
+<code>Trickbot</code>，两个最常见的远程访问木马（Remote Access
+Trojans，RAT），据称是使用链接的LotL二进制文件来实现持久化。</li>
+<li>作为一种对策，微软描述了对抗使用LotL技术商用RAT的基本步骤。高度逃逸的远程访问木马
+<code>Astaroth</code>，<code>TA505</code>
+组织的一些恶意软件库，<code>Dexphot cryptominer</code> 和
+<code>Nodersok</code> 同期使用的多个LotL二进制文件。</li>
+</ul>
+<h4><span id="13-提出5个关键性问题">1.3 提出5个关键性问题</span></h4>
+<p>在本文中，我们分析了LotL现象，即商用恶意软件中与离地攻击二进制文件利用相关的文件。我们首先描述了什么是LotL
+binary以及它如何被恶意软件利用来实施恶意行为的。</p>
+<p>本文的研究重点是以Windows为主导的操作系统下流行且恶意软件最常针对的目标。<strong>许多基于离地攻击的AV逃逸行为已被记录下来。因此（As
+a
+consequence），安全界很大程度上认为，LotL技术（如代理执行恶意软件）实际上对安全解决方案是有效的。</strong></p>
+<p>首先，我们提出了第一个假设以及第一个研究问题：</p>
+<blockquote>
+<p>#### <strong>问题1：Can LotL techniques effectively evade commercial
+AV?</strong></p>
+<p>#### ==LotL技术能有效地逃避目前大部分安全厂商的杀毒软件检测吗？==</p>
+</blockquote>
+<p>为了回答这个问题，我们评估了一组具有代表性的安全产品，并展示了其中的一些技术，虽然这是攻击者和防御者所熟知的，但仍然是绕过安全解决方案的有效方法，因此对安全行业来说这仍是一个开放的挑战。</p>
+<p><strong>事实上，LotL二进制文件经常被系统管理员和高级计算机用户使用来执行（perform）系统管理任务，这使得即使是对于训练有素的分析人员来说，区分（distinguish）合法行为和恶意行为也非常困难</strong>。我们负责任地向受影响的供应商披露了我们的发现并进行跟进，因此提高了他们的检测能力。</p>
+<p>尽管现有的文档提供了这些技术使用的可靠证据，但仍然不清楚这种现象在恶意软件样本中有多普遍。因此（In
+this way），我们就提出了第二个研究问题：</p>
+<blockquote>
+<p>#### <strong>问题2：How prevalent is the use of LotL binaries in
+malware?</strong></p>
+<p>#### ==在恶意软件中使用LotL二进制文件的情况有多普遍？==</p>
+</blockquote>
+<p>在此基础上，我们试图阐明当前威胁情景中的一些趋势，以确定（identify）：</p>
+<blockquote>
+<p>#### <strong>问题3：What purposes do malware binaries use LotL
+techniques for?</strong></p>
+<p>#### ==恶意软件的二进制文件使用LotL技术的目的是什么？==</p>
+<p>#### <strong>问题4：Which malware families and types use LotL
+binaries most prolifically and how does their usage differ?</strong></p>
+<p>####
+==哪些恶意软件家族和类型使用LotL二进制文件最多，它们的使用情况又有何不同？==</p>
+</blockquote>
+<p>此外，我们还调查（investigate）了为什么这些技术难以检测。部分杀毒软件公司参与了我们的披露，即将恶意攻击与系统管理员执行完全合法的管理任务区分开来是困难的。这就给我们带来了另一个问题：</p>
+<blockquote>
+<p><strong>问题5：What are the overlaps and differences in the behavior
+of legitimate and malicious binaries with respect to the usage of LotL
+binaries? How would this affect detection by heuristic AV
+engines?</strong></p>
+<p>####
+==在使用LotL二进制文件方面，合法和恶意二进制文件的行为有哪些重叠和差异呢？这将如何影响启发式AV引擎的检测呢？==</p>
+</blockquote>
+<p>虽然恶意样本和良性样本之间的LotL二进制使用频率（prevalence）有一些明显的差异，但我们也注意到一些类别存在某些相似性，如<strong>代理执行（proxied
+execution）</strong>。</p>
+<p>最后，<strong>我们将注意力集中在高逃逸和高级持续威胁的恶意软件上，我们发现它利用离地攻击技术是商用恶意软件的两倍</strong>。在表1中列出了一些使用LotL技术进行攻击的APT组织。</p>
+<h4><span id="14-贡献">1.4 贡献</span></h4>
+<p>据我们所知，本文提出了迄今为止对商用和APT恶意软件使用LotL技术最大规模的系统分析。本文的核心（core
+）贡献：</p>
+<ul>
+<li>我们通过测试一组最流行的AV引擎来对抗基于LotL技术部署的恶意载荷，以评估LotL技术的可行性，并展示了离地攻击检测的复杂性对行业仍是一个挑战。<strong>即使在披露9个月后，这些技术仍没有被发现</strong>。</li>
+<li>我们对代表现代商用恶意软件的几个数据集进行了大规模的评估，并确定了LotL技术的流行程度，以及在不同恶意软件家族和类型之间的差异。我们还评估了LotL技术由于假阳性风险可能对行业产生的影响。</li>
+<li>我们评估了一个APT恶意软件数据集，并将其公开以促进（facilitate）后续的研究，并确定它执行LotL技术的频率是商用恶意软件的两倍。此外，我们还确定了哪些APT组织最多地使用LotL技术。</li>
+</ul>
+<h3><span id="二-背景和相关工作">二、背景和相关工作</span></h3>
+<p>我们首先定义LotL二进制文件，并枚举恶意软件使用这些二进制文件的目的。</p>
+<h4><span id="21-lotl-binaries">2.1 LotL Binaries</span></h4>
+<p>近年来，“<code>Living-Off-The-Land binary（LOLbin）</code>”已经成为一个常用词，用来指在网络攻击中广泛使用的二进制文件。历史上，“Living-Off-The-Land”一直被用来表示可以为农业或狩猎提供喂养土地或离地的概念。<strong>转换为恶意软件和入侵领域，攻击者可能利用那些已经可以使用的文件（即系统上已经存在或易于安装的）来发起攻击并躲避检测。</strong></p>
+<p>在本文中，我们将LotL二进制定义为：</p>
+<ul>
+<li>==<strong>任何具有公认合法用途的二进制文件，在攻击期间利用它直接执行恶意行为，或间接协助一系列恶意行动，从而达到恶意结果。</strong>==</li>
+</ul>
+<blockquote>
+<p>In this paper, we define a LotL binary as any binary with a
+recognised legitimate use, that is leveraged during an attack to
+directly perform a malicious action; or to assist indirectly, in a
+sequence of actions that have a final malicious outcome.</p>
+</blockquote>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuuKVSBxwXyah6oA8o8y4YIcSszS9wu9wTcMpoVLldVNGWEmTcXX8Slw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<h4><span id="举例">举例：</span></h4>
+<ul>
+<li>在Windows系统上默认安装的二进制文件（binaries installed），如
+<code>Reg.exe</code> 、<code>Sc.exe</code> 和 <code>Wmic.exe</code>
+是最常被恶意软件执行的文件。</li>
+<li>大多数默认安装的二进制文件都是由微软认证码签名的。认证码签名证明二进制文件没有在编译中被篡改或修改，这些二进制文件甚至可能被列为白名单。<strong>利用可信的LotL二进制文件的恶意软件可能因此避开杀毒软件</strong>。在Windows系统上使用系统二进制文件可以作为恶意软件操作的一部分，更重要的是，许多LotL技术使用系统二进制文件来实现这些二进制文件的目的。</li>
+<li>此外，可以使用外部签名二进制文件（external signed binaries），如
+<code>PsExec.exe</code>
+或其他系统内部二进制文件。虽然它们使用频率不高，但本文的分析也囊括了这些文件。<strong>如APT组织在
+<code>SoftCell</code> 和 <code>Havex</code> 中都使用
+<code>PsExec.exe</code>
+来秘密执行远程命令，从而实现网络中的横向移动。</strong></li>
+<li>某些罕见情况，脆弱的（已签名）驱动程序被用来升级系统上的权限。这是
+<code>RobbinHood</code> 勒索软件和各种 <code>APT wiper</code>
+恶意软件样本所使用的一种技术，针对 <code>Saudi Arabian</code> 系统，包括
+<code>Dustman</code> 、<code>Shamoon</code> 和
+<code>Zerocleare</code>。</li>
+</ul>
+<h4><span id="可追溯性traceability"><strong>可追溯性（Traceability）：</strong></span></h4>
+<ul>
+<li>某些LotL二进制文件可能会比其他文件留下更多的系统日志，安全工具或取证分析人员可以利用这些日志来检测恶意操作。<strong>例如，可以将Powershell配置为具有全面的日志记录</strong>。</li>
+<li>微软甚至建议<strong>阻止在系统上执行一些本机的二进制文件</strong>，除非有充分的理由。</li>
+</ul>
+<h4><span id="22-scope-of-our-study">2.2 Scope of our Study</span></h4>
+<p>在本文中，我们关注的是Windows恶意软件执行系统二进制文件的目的。这些目的通常包括沿着
+<strong>kill
+chain</strong>的进展或逃避AV的检测。所有这些技术都被部署在系统的用户空间中。</p>
+<p><code>hollowing</code> 和 <code>injection（注入）</code>
+不在我们的研究范围内，尽管这是无文件恶意软件部署的常见技术。因为根据我们早期的定义，它们不是LotL技术。</p>
+<h4><span id="23-related-work">2.3 Related Work</span></h4>
+<blockquote>
+<p>离地攻击相关工作较少，并且都非常经典，因此下面罗列了详细的相关研究，仅供自己后续深入，也希望对您有所帮助。</p>
+</blockquote>
+<ul>
+<li>LotL恶意软件及其别名，“advanced volatile
+threat”或“无文件”恶意软件在当前的学术文献中很少被提及。这主要受限于介绍分析少或描述为一个新兴的高逃逸恶意软件变体。</li>
+<li>Li等[31]对恶意PowerShell脚本进行了分析，其中有一个小节专门描述了LotL攻击和无文件攻击作为近年来网络攻击的趋势。（<strong>作者第17篇博客详细介绍过PS经典</strong>）</li>
+<li>Wang等[72]最近发表的一篇关于数据来源分析的论文指出，Living-Off-The-Land
+是一种新兴的、突出的逃避型恶意软件子类（evasive malware
+subtype）。（<strong>经典的You Are What You
+Do后续即将分享</strong>）</li>
+<li>先前的工作[64]进行了介绍性分析，然而LotL恶意软件还没有受到详细的学术分析。（An
+emerging threat Fileless malware: a survey and research
+challenges）</li>
+<li>==<strong>赛门铁克</strong>[73,66]和<strong>思科Talos</strong>的[65]白皮书介绍了这个主题，并对多个数据集的流行性进行了分析。目前，没有论文对包含多个使用LotL技术的Windows恶意软件数据集进行大规模地系统分析。（<strong>经典</strong>）==
+<ul>
+<li>https://www.symantec.com/content/dam/symantec/docs/security-center/white-papers/istr-living-off-the-land-and-fileless-attack-techniques-en.pdf</li>
+<li>https://www.symantec.com/content/dam/symantec/docs/white-papers/living-off-the-land-turning-your-infrastructure-against-you-en.pdf</li>
+<li>https://blog.talosintelligence.com/2019/11/hunting-for-lolbins.html</li>
+</ul></li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuo3I9Tc2Y5ic4biaG6jqMn0XNQbwVBw1LBM5ibErWYib2DDXc2avCPt2iaXQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<p>在一些论文中提到了LotL技术，强调了高隐蔽（stealthiness）和APT恶意软件曾使用。</p>
+<ul>
+<li><p>在一篇关于恶意软件分析工具Yara的论文中，Cohen[9]将LotL描述 “ LotL
+as a trend that has been recently observed in the tactics used by elite
+threat actors”，我们的分析结果进一步证实了该说法。</p></li>
+<li><p>Hassan等[21]的研究表明，APT恶意软件使用LotL攻击策略来实现持续攻击并分析了两个活动，他们的工作还利用了MITRE
+ATT&amp;CK框架[45]，通过MITRE定义了一个描述和分类知名攻击的分类方法。<strong>许多LotL技术在MITRE
+ATT&amp;CK框架内被索引</strong>。Mitre公司及其常见CVE漏洞是安全领域的既定权威，他们囊括并描述许多LotL技术，这样表明离地攻击是一个值得深入分析的课题。</p></li>
+<li><ul>
+<li><strong>==W. U. Hassan, A. Bates, and D. Marino, “Tactical
+Provenance Analysis for Endpoint Detection and Response Systems,” IEEE
+Symposium on Security and Privacy, 2020.==</strong></li>
+</ul></li>
+</ul>
+<p>==<strong>强烈推荐一个包含LotL二进制和ATT&amp;CK功能映射的资源</strong>：==</p>
+<ul>
+<li>https://github.com/LOLBAS-Project/LOLBAS</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuicYc1hL2AJtlQRoibrRvWzTQjdOsicdTsl0q5kzawT3MibrOM71uREq5wQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<p>与我们研究相关的是对基于脚本的恶意软件分析和去混淆。使用LotL技术的恶意软件经常使用恶意脚本作为有效负载。（<strong>下列论文在作者第16篇PowerShell总结博客中详细介绍过</strong>）</p>
+<ul>
+<li>Ugarte等[67]通过识别可疑行为模式，测试了经
+<code>Powershell.exe</code> 二进制调用的恶意脚本。</li>
+<li><strong>Rubin等[61]将机器学习应用于检测PowerShell恶意软件（微软团队）</strong>。</li>
+<li>Curtsinger[11]等人提出了恶意Javascript攻击的检测机制——ZOZZLE。</li>
+</ul>
+<p><strong>虽然这些论文提出了有效的检测方法，但是他们都是为狭隘的恶意载荷（payload）所用，他们没有分析更广泛的恶意软件生态系统和这些有效载荷是如何被LotL二进制文件触发的。</strong></p>
+<h3><span id="三-动机">三、动机</span></h3>
+<p><strong>安全研究人员已经记录了许多使用LotL技术成功躲避安全产品的案例</strong>。在许多情况下，这些<strong>LotL二进制文件被用来代理恶意载荷的执行，使其在一个合法的进程上下文中执行，或者作为一个合法系统进程的子进程生成一个新进程</strong>。在某些情况下，这些有效载荷作为LotL二进制调用的副作用被执行，而在其他情况下，它只是其主要记录行为的结果。此外，许多杀毒产品未能正确检测到这些技术。</p>
+<figure>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuqG91IHaTia5YXypwibNOxcZymPMV5Ku4TjBhzZlOv1icJx9VnwDhZfVfw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p><strong>为了回答第一个问题，我们首先分析了当前AV产品是否将LotL技术作为恶意行为的指标。</strong></p>
+<p>为此，我们首先选择了10个具有代表性的AV产品（详见附录C），并利用常见<strong>基于LotL的代理执行技术来实施反弹Shell的模拟攻击</strong>。此外，本研究的目的不是测试任何特定AV产品的检测能力或将它们相互比较，而是确定是否存在普遍的检测差距。</p>
+<ul>
+<li>实验在联网的Windows
+10虚拟机执行，并将最新的本地AV产品连接到它们的云组件。</li>
+<li>利用一个反弹Shell来评估AV系统在部署LotL技术的恶意软件中有多脆弱。本文认为能够允许远程执行命令的reverse
+shell是成功执行代码的证明，这与许多远程访问木马（RAT）功能相同。</li>
+<li>通过从不同LotL二进制文件中运行这个反弹shell来进行实验，以测试AV产品是否检测到离地攻击技术是恶意的。</li>
+<li>我们在必要时混淆了反弹shell的有效载荷，并使用各种有效载荷类型来测试AV检测传递机制本身的能力，而不是通过静态签名传递的特定有效载荷（详见附录D）。</li>
+</ul>
+<h4><span id="实验结果如表2所示">实验结果如表2所示：</span></h4>
+<ul>
+<li><strong>可以发现大部分的AV引擎允许我们建立一个反弹Shell并执行命令，它们并没有检测出利用LotL技术的恶意软件，60个中只检测出4个。</strong></li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuoBzOPNqhU9ce1SlxeLjb0e6mb3RUz0rkP2wrKGjKibMMUltIvMvbUeA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<h4><span id="负责任的披露和回应">负责任的披露和回应：</span></h4>
+<p>此后，我们向相关的AV供应商发布了一份文件，包含我们检查的结果并协助补救。9个月后，我们在Windows
+10机器上重复了类似的测试，这允许我们测试AV供应商是否在他们的产品中包含了新的启发式规则来检测LotL二进制的使用。其结果如下：</p>
+<ul>
+<li><strong>可以发现在60个相同的有效载荷中检测到了25个</strong></li>
+<li>在检测到的反弹shell测试中，我们修改了载荷（利用混淆或运行不同的载荷），同时为LotL二进制文件保持了完全相同的命令行参数，通过利用这些混淆和修改的有效载荷，我们成功地在这25个被拦截的实例中的19个执行了一个反向shell。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuHRbN87ZFfsyVAYjqDAoDicE27vuhSBiaLf4zlGotKd2yrNfxA7Z3h2icw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<p>==<strong>实验结果表明，LotL技术仍然是杀毒软件供应商面临的一个重大挑战。合法用户通常以不可预知的方式使用这些工具，而安全公司很难在没有误报的情况下部署有效的检测策略。</strong>==</p>
+<p>接下来将展示这些技术如何在商用恶意软件中是普遍存在的，以及离地攻击是不应该被安全社区忽视的问题。</p>
+<h3><span id="四-离地攻击流行性评估">四、离地攻击流行性评估</span></h3>
+<p>在本节中，我们测量了恶意软件中LotL技术的流行程度，并试图回答所提出的研究问题。</p>
+<h4><span id="41-数据集描述">4.1 数据集描述</span></h4>
+<p>评估工作是在9个独立的子数据集上进行的。我们总共收集了31,805,549个样本，其中我们从VirusTotal（VT）中获得了16,048,202份行为报告。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXulUhTGQG5b3yfdmTq4NIo8YaKGvb39A0WOwvqUft2aUEB7MwGebkjGw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<p>==<strong>Public Datasets</strong>==</p>
+<p>公共恶意软件数据集，包括商用恶意软件、VirusShare语料库的二进制文件、窗口恶意PE文件、佐治亚理工学院发布的可执行文件、VX-Mumbal和MalShare共享的样本（两个重点的共有数据集）。</p>
+<ul>
+<li>https://impactcybertrust.org/dataset{ }view?idDataset=1143</li>
+<li>https://vx-underground.org/samples.html</li>
+<li>https://malshare.com</li>
+</ul>
+<p><strong>VirusTotal Balanced Dataset</strong></p>
+<p>从VT中收集了237,288个hash值，利用 <code>AVClass</code>
+预处理代码和打标签（家族分类），并平衡数据集中每个族。</p>
+<p><strong>APT Malware</strong></p>
+<p>我们根据一种类似于数据集论文dAPTaset[59]的方法收集了一个APT恶意软件的数据集。我们处理了HTML页面和pdf文件（<code>APTnotes</code>），并提取了这些文件中包含的所有恶意软件的hash值。</p>
+<ul>
+<li>https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-rezaeirad.pdf</li>
+<li>https://github.com/aptnotes/data</li>
+</ul>
+<p>==<strong>Yara Rule Match Malware</strong>==</p>
+<p>部署3个Yara规则来检测LotL二进制文件，并使用Livehunte来识别上传到VT的新的恶意软件hash，并使用LotL技术匹配恶意软件的行为特征。</p>
+<h4><span id="42-analysis-pipeline">4.2 Analysis Pipeline</span></h4>
+<p>当收集了由Windows
+PE二进制文件组成的不同数据集，我们就分析样本的行为。包括三个阶段：</p>
+<ul>
+<li>data collection</li>
+<li>data augmentation</li>
+<li>data analysis</li>
+</ul>
+<blockquote>
+<p>First Seen：首次发现病毒样本的时间戳 AVClass
+Family：某恶意软件样本所属家族 <strong>Behavioural
+Report：恶意行为报告，由特定恶意软件样本执行的进程和Shell命令的列表</strong></p>
+</blockquote>
+<h4><span id="43-lotl-techniqueidentification">4.3 LotL Technique
+Identification</span></h4>
+<p><strong>数据准备就绪，那么如何识别是否使用了LotL技术呢？</strong></p>
+<p>我们使用<strong>模式匹配</strong>来识别恶意软件执行过程中对LotL二进制文件调用的情况，从而处理所有收集到的行为报告（<code>behavioural reports</code>）。行为报告包括两个指标：</p>
+<ul>
+<li><p><strong>Shell Commands（Shell命令）</strong></p>
+<p><strong>恶意二进制文件在主机操作系统中执行的Shell命令</strong>，Shell命令日志可以通过引用系统二进制文件的绝对路径来显示它的执行情况。<strong>同时，Windows的命令提示符还包括许多别名，例如Reg.exe的reg</strong>。</p></li>
+<li><p><strong>Processes（进程）</strong></p>
+<p><strong>进程日志明确由恶意软件样本执行的系统二进制文件</strong>。执行的参数也包含在行为报告中的进程日志中。</p></li>
+</ul>
+<p>在我们的分析中，如果一个样本的行为报告包含至少一个LotL二进制文件的执行，那么它使用了LotL技术。<strong>我们记录了每一个LotL的执行及其参数细节，并将它们插入到数据库中。然后，我们分析了这些恶意软件样本的参数，以确定每个数据集中最==常见的参数类型和执行目的==。</strong></p>
+<p>具体而言，我们确定了这两种独立类型的二进制文件：</p>
+<ul>
+<li><strong>Default System Binaries</strong></li>
+<li><strong>Installed Signed Binaries</strong></li>
+</ul>
+<p>模式匹配优化：模式匹配方法在不断改进，直到所有识别的LotL命令被正确分类和映射到执行目的，并进行了数据清洗处理。</p>
+<ul>
+<li>不带参数的二进制执行移除</li>
+<li>沙箱产物删除（如Explorer.exe和sha256），Web访问不处理</li>
+<li>删除Verclsid.exe的实例</li>
+</ul>
+<h4><span id="44parameter-analysis-to-identify-execution-purpose">==4.4
+Parameter Analysis to Identify Execution Purpose==</span></h4>
+<p>==<strong>为了确定LotL技术的执行目的，我们观察了恶意软件样本提供的参数。</strong>==</p>
+<p>图1说明了四个进程执行的映射。该映射通过识别单独的执行目的来在所有数据集上实施，<strong>例如执行Net.exe时使用stop参数表示任务停止。在将单个命令映射到执行目的之后，我们将为该二进制文件选择所有匹配的执行</strong>。我们在所有系统二进制执行中重复该步骤，直到每次执行被分类为属于特定的执行目的或被错误分类。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuHicN1aicniaStH5EZY1y22UBUzsMYXomMtNgYwuQYr1AZ8vWfRTPJOFPg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
+<p>按照这种方法，我们按目的将参数分为9个独立的类别。</p>
+<p><strong>首先是三种与执行有关的类型：</strong></p>
+<ul>
+<li><strong>Proxied
+Execution</strong>：代理执行，如Mshta.exe执行.hta文件，Rundll32.exe执行.dll文件</li>
+<li><strong>Persistence</strong>：持久化：如果恶意代码配置或修改系统以在未来某个时间点执行命令或存储的作业，那么它就实现了持久性，比如Sc.exe带有创建参数的Bitsadmin.exe，或带有日期时间参数的Schtasks.exe/At.exe</li>
+<li><strong>Delayed Execution</strong>：延迟执行，比如
+Ping.exe执行-n</li>
+</ul>
+<p><strong>接着是三类与底层系统组件的修改有关。恶意软件通常从事这种行为，以便在机器上对目标进行==进一步的传播==或行动。</strong></p>
+<ul>
+<li><strong>Firewall Modification</strong>：防火墙修改，如Netsh.exe</li>
+<li><strong>Registry Modification</strong>：注册表修改，如Reg.exe</li>
+<li><strong>Permissions
+Modification</strong>：权限修改，如Cacls.exe修改文件权限</li>
+</ul>
+<p><strong>最后是与执行或系统修改无关的三类。</strong></p>
+<ul>
+<li><strong>File Opening</strong>：打开文件，如Explorer.exe</li>
+<li><strong>Reconnaissance</strong>：侦察，触发本地或远程配置的横向移动，如Net.exe</li>
+<li><strong>Task
+Stopping</strong>：使用LotL二进制文件秘密停止另一个进程或服务，如Taskkill.exe</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1854,466 +2613,6 @@ files”，大概就是说是个内部相似性聚类算法，允许你通过这
 <li>如用于机器学习的分类（KNN）、聚类（Kmeans）等</li>
 </ul>
 <h3><span id></span></h3>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1G5MF0A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1G5MF0A/" class="post-title-link" itemprop="url">风控算法（1）字节-色情导流用户识别</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-04 11:28:30" itemprop="dateCreated datePublished" datetime="2022-05-04T11:28:30+08:00">2022-05-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 20:38:59" itemprop="dateModified" datetime="2023-04-18T20:38:59+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1><span id="字节跳动安全ai挑战赛-大佬等等我">字节跳动安全AI挑战赛-大佬等等我</span></h1>
-<ul>
-<li><strong>比赛链接</strong>：https://security.bytedance.com/fe/ai-challenge#/challenge
-<ul>
-<li>基于文本和多模态数据的风险识别
-<ul>
-<li>电商黄牛地址识别</li>
-<li><strong>色情导流用户识别</strong></li>
-</ul></li>
-<li>小样本半监督风险识别
-<ul>
-<li>人机识别</li>
-<li>少样本作弊样本检测任务</li>
-</ul></li>
-</ul></li>
-</ul>
-<h2><span id="色情导流用户识别">色情导流用户识别</span></h2>
-<blockquote>
-<p>色情导流赛道 2ndSolution
-https://github.com/rooki3ray/2021BytedanceSecurityAICompetition_track1</p>
-</blockquote>
-<h3><span id="一-赛题描述">一、赛题描述</span></h3>
-<p>随着互联网的快速发展，网络黑产特别是色情导流也日益增多，给用户带来了极大的伤害。色情导流用户发布色情/低俗内容吸引用户，并且通过二维码、联系方式、短网址等完成导流。本赛题旨在通过提供用户相关数据，运用机器学习等方法对色情导流用户进行识别，提高模型检测的效果。</p>
-<ul>
-<li>输入：<strong>用户的特征，包括基础信息、投稿信息、行为信息</strong>。</li>
-<li>输出：用户的标签（1表示色情导流用户，0表示正常用户）</li>
-<li><strong>评价指标</strong>采用fβ（取β=0.3） <span class="math display">\[ f_{\beta} = (1 + \beta^2)\frac{p*r}{\beta^2*p+r}
-\]</span></li>
-</ul>
-<h4><span id="基础信息">基础信息</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182038415.png" alt="image-20220629211352351" style="zoom:50%;"></p>
-<h4><span id="投稿信息">投稿信息</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182038486.png" alt="image-20220629211559660" style="zoom:50%;"></p>
-<h4><span id="行为信息">行为信息</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182038131.png" alt="image-20220629211703172" style="zoom:50%;"></p>
-<h3><span id="二-数据构成">二、数据构成</span></h3>
-<ul>
-<li>用户基础信息
-<ul>
-<li>性别、粉丝数、个签、关注人数……</li>
-</ul></li>
-<li>用户投稿信息
-<ul>
-<li>视频标题、poi、省份、投稿时间</li>
-</ul></li>
-<li>用户行为信息
-<ul>
-<li>播放次数、点赞数、分享数……</li>
-</ul></li>
-</ul>
-<h3><span id="三-方案说明">三、方案说明</span></h3>
-<ul>
-<li><strong>特征工程</strong>
-<ul>
-<li><strong>log1p 数据平滑</strong></li>
-<li>类别特征（<strong>LabelEncoder</strong>）</li>
-<li>时间特征（<strong>min-max 归一化</strong>）</li>
-<li>文本特征（长度、WordVec）</li>
-<li>交叉特征</li>
-</ul></li>
-<li><strong>模型训练</strong>
-<ul>
-<li>10折lgb交叉验证，均值作为预测结果</li>
-<li>伪标签</li>
-</ul></li>
-<li>最终分数线上第二（0.9906）。</li>
-</ul>
-<h3><span id="四-代码结构">四、代码结构</span></h3>
-<blockquote>
-<p>from config import Config</p>
-<p>import argparse</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── 1_word2vec.py</span><br><span class="line">├── 2_merge_data.py</span><br><span class="line">├── 3_5_train_kfold.py</span><br><span class="line">├── 4_pseudo_label.py</span><br><span class="line">├── config.py</span><br><span class="line">├── data</span><br><span class="line">│   ├── pseudo.csv</span><br><span class="line">│   ├── raw</span><br><span class="line">│   │   ├── 测试数据</span><br><span class="line">│   │   └── 训练数据</span><br><span class="line">│   ├── sentence</span><br><span class="line">│   │   └── signature</span><br><span class="line">│   ├── test.csv</span><br><span class="line">│   ├── train.csv</span><br><span class="line">│   └── ...</span><br><span class="line">├── evaluate_kfold.py</span><br><span class="line">├── __pycache__</span><br><span class="line">├── readme.md</span><br><span class="line">├── requirements.txt</span><br><span class="line">├── run.sh</span><br><span class="line">├── saved</span><br><span class="line">│   ├── <span class="number">1112_1315_0.985_0</span><span class="number">.9934</span></span><br><span class="line">│   │   └── ...</span><br><span class="line">│   ├── <span class="number">1112_1320_0.985</span>_pseudo_0<span class="number">.9934</span></span><br><span class="line">│   │   └── ...</span><br><span class="line">│   ├── 1112_1321_pseudo_0<span class="number">.985_0</span><span class="number">.9942</span></span><br><span class="line">│   │   ├── <span class="number">1112_1321_0.985</span>_results_kfold_0<span class="number">.9942</span>.csv</span><br><span class="line">│   │   ├── log.log</span><br><span class="line">│   │   └── ...</span><br><span class="line">└── utils.py</span><br></pre></td></tr></table></figure>
-<h4><span id="41-runsh">4.1 run.sh</span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">python 1_word2vec.py</span><br><span class="line">python 2_merge_data.py</span><br><span class="line">python 3_5_train_kfold.py</span><br><span class="line">python 4_pseudo_label.py</span><br><span class="line">python 3_5_train_kfold.py --pseudo</span><br></pre></td></tr></table></figure>
-<h4><span id="42-1_word2vecpy">4.2 1_word2vec.py</span></h4>
-<h4><span id="43-5_train_kfoldpy">4.3 <strong>5_train_kfold.py</strong></span></h4>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1CE2BYX/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1CE2BYX/" class="post-title-link" itemprop="url">风控算法（2）字节-小样本半监督风险识别</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-04 11:28:30" itemprop="dateCreated datePublished" datetime="2022-05-04T11:28:30+08:00">2022-05-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 20:39:52" itemprop="dateModified" datetime="2023-04-18T20:39:52+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>15k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>28 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="字节跳动安全ai挑战赛-大佬等等我">字节跳动安全AI挑战赛-大佬等等我</span></h2>
-<ul>
-<li><strong>比赛链接</strong>：https://security.bytedance.com/fe/ai-challenge#/challenge
-<ul>
-<li>基于文本和多模态数据的风险识别
-<ul>
-<li>电商黄牛地址识别</li>
-<li><strong>色情导流用户识别</strong></li>
-</ul></li>
-<li>小样本半监督风险识别
-<ul>
-<li>人机识别</li>
-<li>少样本作弊样本检测任务</li>
-</ul></li>
-</ul></li>
-<li><strong>人工智能竞赛复盘：2021安全AI挑战赛</strong>
-:https://www.bilibili.com/video/BV1PL4y1n7SN?spm_id_from=333.337.search-card.all.click&amp;vd_source=29387dc08d18f642078183a6816e93e8</li>
-<li><strong>炼丹术士Zoro</strong>:https://www.zhihu.com/people/AIMuseum/posts</li>
-<li><strong>字节跳动安全AI挑战赛直播笔记</strong> - 知乎
-https://zhuanlan.zhihu.com/p/435018506</li>
-</ul>
-<h2><span id="小样本半监督风险识别">小样本半监督风险识别</span></h2>
-<h3><span id="一-赛题描述">一、赛题描述</span></h3>
-<p>在真实的社交网络中，存在的作弊用户会影响社交网络平台。在真实场景中，会受到多方面的约束，我们仅能获取到少部分的作弊样本和一部分正常用户样本，<strong>现需利用已有的少量带标签的样本，去挖掘大量未知样本中的剩余作弊样本</strong>。给定一段时间内的样本，其中包含少量作弊样本，部分正常样本以及标签未知的样本。参赛者应该利用这段时间内已有的数据，提出自己的解决方案，以预测标签未知的样本是否为作弊样本。数据处理方法和算法不限，但是参赛者需要综合考虑算法的效果和复杂度，从而构建合理的解决方案。</p>
-<h4><span id="11-赛题数据与评价指标">1.1 赛题数据与评价指标</span></h4>
-<p><strong>赛题数据</strong>：本次比赛给出的数据是T～T+N
-时刻内点赞、关注事件下按比例抽样数据以及其对应账号的基础特征数据。</p>
-<p><strong>评价指标</strong>：本赛题使用F1-score来评估模型的准召程度</p>
-<h3><span id="二-解决方案一">二、 解决方案一</span></h3>
-<p>首先明确本赛题实质上仍然是一个二分类的问题，我们也可以完全从此角度出来先构建出一个基础分类模型，然后再<strong>利用大量无标签的数据进行半监督学习来提升模型性能</strong>。</p>
-<blockquote>
-<p><strong>风险识别：第二名源代码</strong>
-https://github.com/Ljwccc/ByteDanceSecurityAI</p>
-<ul>
-<li>用户侧特征：
-<ul>
-<li>账户本身的基础特征</li>
-<li>账户本身的特征计数统计</li>
-<li>粉丝量、关注量、发帖量、被点赞量、最后登陆时间-注册时间
-乘除交叉</li>
-<li>从请求数据中提取出来的device_type, app_version,
-app_channel类别特征，直接作为静态画像使用</li>
-<li>类别特征下的数值统计特征 min/sum/max/std</li>
-</ul></li>
-<li>请求侧特征：
-<ul>
-<li>用户请求的时间序列特征, 时间差序列特征 min/sum/max/std</li>
-<li>w2v特征， 每个用户的请求ip序列建模</li>
-</ul></li>
-</ul>
-</blockquote>
-<h3><span id="21-特征工程">2.1 特征工程</span></h3>
-<p>从序列特征中提取用户的设备信息、channel信息和app_version信息</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先 group</span></span><br><span class="line">user_request_cat_group = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">user_request_device_type = user_request_cat_group[<span class="string">&#x27;request_device_type&#x27;</span>].agg(&#123;<span class="string">&#x27;device_type_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line">user_request_channel = user_request_cat_group[<span class="string">&#x27;request_app_channel&#x27;</span>].agg(&#123;<span class="string">&#x27;channel_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line">user_request_app_version = user_request_cat_group[<span class="string">&#x27;request_app_version&#x27;</span>].agg(&#123;<span class="string">&#x27;app_version_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line"></span><br><span class="line">user_request_device_type[<span class="string">&#x27;device_type&#x27;</span>] = user_request_device_type[<span class="string">&#x27;device_type_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">user_request_channel[<span class="string">&#x27;channel&#x27;</span>] = user_request_channel[<span class="string">&#x27;channel_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">user_request_app_version[<span class="string">&#x27;app_version&#x27;</span>] = user_request_app_version[<span class="string">&#x27;app_version_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:x[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">user_feat_from_action = pd.concat([user_request_device_type[[<span class="string">&#x27;request_user&#x27;</span>,<span class="string">&#x27;device_type&#x27;</span>]],user_request_channel[[<span class="string">&#x27;channel&#x27;</span>]], user_request_app_version[[<span class="string">&#x27;app_version&#x27;</span>]]],axis=<span class="number">1</span>).rename(columns=&#123;<span class="string">&#x27;request_user&#x27;</span>:<span class="string">&#x27;user&#x27;</span>&#125;)</span><br></pre></td></tr></table></figure>
-<h4><span id="211-用户基础特征">2.1.1 用户基础特征</span></h4>
-<p>类别特征</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类别特征</span></span><br><span class="line">cat_cols = [<span class="string">&#x27;user_name&#x27;</span>,<span class="string">&#x27;user_profile&#x27;</span>,<span class="string">&#x27;user_register_type&#x27;</span>,<span class="string">&#x27;user_register_app&#x27;</span>,<span class="string">&#x27;user_least_login_app&#x27;</span>,<span class="string">&#x27;user_freq_ip&#x27;</span>,<span class="string">&#x27;user_freq_ip_3&#x27;</span>,<span class="string">&#x27;device_type&#x27;</span>,<span class="string">&#x27;channel&#x27;</span>,<span class="string">&#x27;app_version&#x27;</span>,<span class="string">&#x27;user_freq_ip_2&#x27;</span>,<span class="string">&#x27;user_freq_ip_1&#x27;</span>,]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 手工类别特征</span></span><br><span class="line">user_info[<span class="string">&#x27;user_freq_ip_3&#x27;</span>] = user_info[<span class="string">&#x27;user_freq_ip&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(x).split(<span class="string">&#x27;.&#x27;</span>)[:<span class="number">3</span>])) <span class="comment"># 常用ip取前3位</span></span><br><span class="line">user_info[<span class="string">&#x27;user_freq_ip_2&#x27;</span>] = user_info[<span class="string">&#x27;user_freq_ip&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(x).split(<span class="string">&#x27;.&#x27;</span>)[:<span class="number">2</span>])) <span class="comment"># 常用ip取前2位</span></span><br><span class="line">user_info[<span class="string">&#x27;user_freq_ip_1&#x27;</span>] = user_info[<span class="string">&#x27;user_freq_ip&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(x).split(<span class="string">&#x27;.&#x27;</span>)[:<span class="number">1</span>])) <span class="comment"># 常用ip取前1位</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并从request中提取的基础特征</span></span><br><span class="line">user_info = user_info.merge(user_feat_from_action,on=<span class="string">&#x27;user&#x27;</span>,how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"><span class="keyword">del</span> user_feat_from_action</span><br><span class="line"></span><br><span class="line"><span class="comment"># 类别特征的频次</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> cat_cols:</span><br><span class="line">    user_info = freq_enc(user_info,col)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 对所有类别特征做label_encoder</span></span><br><span class="line">user_info = label_enc(user_info,cat_cols)</span><br></pre></td></tr></table></figure>
-<p>点赞量，关注量等交叉特征，直接梭哈所有乘除法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">num_cols = [<span class="string">&#x27;user_fans_num&#x27;</span>,<span class="string">&#x27;user_follow_num&#x27;</span>,<span class="string">&#x27;user_post_num&#x27;</span>,<span class="string">&#x27;user_post_like_num&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> col1 <span class="keyword">in</span> num_cols:</span><br><span class="line">    <span class="keyword">for</span> col2 <span class="keyword">in</span> [col <span class="keyword">for</span> col <span class="keyword">in</span> num_cols <span class="keyword">if</span> col!=col1]:</span><br><span class="line">        user_info[<span class="string">f&#x27;<span class="subst">&#123;col1&#125;</span>_<span class="subst">&#123;col2&#125;</span>_mul&#x27;</span>] = user_info[col1]*user_info[col2]</span><br><span class="line">        user_info[<span class="string">f&#x27;<span class="subst">&#123;col1&#125;</span>_<span class="subst">&#123;col2&#125;</span>_div&#x27;</span>] = user_info[col1]/(user_info[col2]+<span class="number">1e-3</span>)</span><br></pre></td></tr></table></figure>
-<p>类别特征下粉丝量、关注量、发帖量、被点赞量、请求数量的统计值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">num_cols = [<span class="string">&#x27;user_fans_num&#x27;</span>,<span class="string">&#x27;user_follow_num&#x27;</span>,<span class="string">&#x27;user_post_num&#x27;</span>,<span class="string">&#x27;user_post_like_num&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> cat_col <span class="keyword">in</span> cat_cols:</span><br><span class="line">    cat_group = user_info.groupby(cat_col)[num_cols]</span><br><span class="line">    <span class="comment"># 平均值</span></span><br><span class="line">    cat_col_stat = cat_group.transform(np.mean)</span><br><span class="line">    cat_col_stat.rename(columns=&#123;name:<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;cat_col&#125;</span>_mean&#x27;</span> <span class="keyword">for</span> name <span class="keyword">in</span> cat_col_stat.columns&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    user_info = pd.concat([user_info,cat_col_stat],axis=<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 和</span></span><br><span class="line">    cat_col_stat = cat_group.transform(np.<span class="built_in">sum</span>)</span><br><span class="line">    cat_col_stat.rename(columns=&#123;name:<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;cat_col&#125;</span>_sum&#x27;</span> <span class="keyword">for</span> name <span class="keyword">in</span> cat_col_stat.columns&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    user_info = pd.concat([user_info,cat_col_stat],axis=<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 方差</span></span><br><span class="line">    cat_col_stat = cat_group.transform(np.std)</span><br><span class="line">    cat_col_stat.rename(columns=&#123;name:<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;cat_col&#125;</span>_std&#x27;</span> <span class="keyword">for</span> name <span class="keyword">in</span> cat_col_stat.columns&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    user_info = pd.concat([user_info,cat_col_stat],axis=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">del</span> cat_col_stat</span><br></pre></td></tr></table></figure>
-<h4><span id="212-序列特征">2.1.2 序列特征</span></h4>
-<p><strong>用户请求序列特征</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">user_request_list = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)[<span class="string">&#x27;request_target&#x27;</span>].agg(&#123;<span class="string">&#x27;request_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先按照时间进行排序</span></span><br><span class="line">user_request = user_request.sort_values(by=<span class="string">&#x27;request_time&#x27;</span>,)</span><br><span class="line"><span class="comment"># 请求的数量</span></span><br><span class="line">user_action_feat = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)[<span class="string">&#x27;request_user&#x27;</span>].agg(&#123;<span class="string">&#x27;request_num&#x27;</span>:<span class="string">&#x27;count&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户请求的时间统计量，但是80%的用户只有一次请求行为</span></span><br><span class="line">user_action_feat_temp = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)[<span class="string">&#x27;request_time&#x27;</span>].agg(&#123;<span class="string">&#x27;time_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line">user_action_feat = user_action_feat.merge(user_action_feat_temp,on=<span class="string">&#x27;request_user&#x27;</span>,how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_min&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="built_in">min</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_max&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="built_in">max</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_var&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(np.var)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_max-min&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:np.<span class="built_in">max</span>(x)-np.<span class="built_in">min</span>(x))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间间隔的平均值，最大值，最小值，方差</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">diff_value</span>(<span class="params">time</span>):</span><br><span class="line">    time_shift = <span class="built_in">list</span>(time[<span class="number">1</span>:])</span><br><span class="line">    time_shift.append(time[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    diff_time = time_shift-time</span><br><span class="line">    <span class="keyword">return</span> diff_time</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="keyword">lambda</span> x: diff_value(np.array(x)))</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_max&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(<span class="built_in">max</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_var&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(np.var)</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_mean&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(np.mean)</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_min&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(<span class="built_in">min</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><strong>用户请求序列做一个embedding</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sentences = user_request_list[<span class="string">&#x27;request_list&#x27;</span>].values.tolist()</span><br><span class="line">emb_size = <span class="number">64</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(sentences)):</span><br><span class="line">    sentences[i] = [<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> sentences[i]]  <span class="comment"># 数字转化为字符串用于训练w2v</span></span><br><span class="line"></span><br><span class="line">model = Word2Vec(sentences, size=emb_size, window=<span class="number">5</span>, min_count=<span class="number">5</span>, sg=<span class="number">0</span>, hs=<span class="number">0</span>, seed=<span class="number">1</span>, <span class="built_in">iter</span>=<span class="number">5</span>, workers=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">emb_matrix = []</span><br><span class="line"><span class="keyword">for</span> seq <span class="keyword">in</span> sentences:</span><br><span class="line">    vec = []</span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> seq:</span><br><span class="line">        <span class="keyword">if</span> w <span class="keyword">in</span> model.wv.vocab:</span><br><span class="line">            vec.append(model.wv[w])</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(vec) &gt; <span class="number">0</span>:</span><br><span class="line">        emb_matrix.append(np.mean(vec, axis=<span class="number">0</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        emb_matrix.append([<span class="number">0</span>] * emb_size)</span><br><span class="line">emb_matrix = np.array(emb_matrix)</span><br><span class="line"></span><br><span class="line">emb_size = <span class="number">64</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(emb_size):</span><br><span class="line">    user_request_list[<span class="string">&#x27;action_emb_&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(i)] = emb_matrix[:, i]</span><br><span class="line"></span><br><span class="line">user_request_list = user_request_list.drop([<span class="string">&#x27;request_list&#x27;</span>],axis=<span class="number">1</span>)</span><br><span class="line">user_action_feat = user_action_feat.merge(user_request_list,how=<span class="string">&#x27;left&#x27;</span>,on=<span class="string">&#x27;request_user&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>合并基础特征和序列特征</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user_info = user_info.merge(user_action_feat,how=<span class="string">&#x27;left&#x27;</span>,on=<span class="string">&#x27;user&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3><span id="22-模型训练">2.2 模型训练</span></h3>
-<h4><span id="221-交叉验证">2.2.1 交叉验证</span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">folds = KFold(n_splits=<span class="number">10</span>, shuffle=<span class="literal">True</span>, random_state=<span class="number">546789</span>)</span><br><span class="line">oof_preds, test_preds, importances = train_model_cat(train, test, y, folds, cat_cols)</span><br><span class="line"></span><br><span class="line">test_preds[<span class="string">&#x27;label&#x27;</span>] = test_preds[<span class="string">&#x27;label&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="number">0</span> <span class="keyword">if</span> x&lt;<span class="number">0.4</span> <span class="keyword">else</span> <span class="number">1</span>)</span><br><span class="line">test_preds = test_preds.drop_duplicates(subset=[<span class="string">&#x27;user&#x27;</span>])   <span class="comment"># 去除相同的user</span></span><br><span class="line"><span class="comment"># 生成结果</span></span><br><span class="line">test_preds[[<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;label&#x27;</span>]].to_csv(<span class="string">&#x27;submission.csv&#x27;</span>, index=<span class="literal">False</span>, header=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<h4><span id="222-模型训练">2.2.2 模型训练</span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">useless_cols = [<span class="string">&#x27;user&#x27;</span>,<span class="string">&#x27;user_status&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_model_cat</span>(<span class="params">data_, test_, y_, folds_, cat_cols, semi_data_=<span class="literal">None</span></span>):</span><br><span class="line">    oof_preds = np.zeros(data_.shape[<span class="number">0</span>])  <span class="comment"># 验证集预测结果</span></span><br><span class="line">    sub_preds = np.zeros(test_.shape[<span class="number">0</span>])  <span class="comment"># 测试集预测结果</span></span><br><span class="line">    feature_importance_df = pd.DataFrame()</span><br><span class="line">    feats = [f <span class="keyword">for</span> f <span class="keyword">in</span> data_.columns <span class="keyword">if</span> f <span class="keyword">not</span> <span class="keyword">in</span> useless_cols]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 半监督每批训练数据</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> semi_data_ <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        semi_num = semi_data_.shape[<span class="number">0</span>]/<span class="number">5</span></span><br><span class="line">        semi_y = semi_data_[<span class="string">&#x27;user_status&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> n_fold, (trn_idx, val_idx) <span class="keyword">in</span> <span class="built_in">enumerate</span>(folds_.split(data_)):</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> semi_data_ <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            semi_data_batch = semi_data_[feats].iloc[<span class="built_in">int</span>(n_fold*semi_num):<span class="built_in">int</span>((n_fold+<span class="number">1</span>)*semi_num)]</span><br><span class="line">            semi_y_batch = semi_y.iloc[<span class="built_in">int</span>(n_fold*semi_num):<span class="built_in">int</span>((n_fold+<span class="number">1</span>)*semi_num)]</span><br><span class="line">        </span><br><span class="line">            trn_x, trn_y = pd.concat([data_[feats].iloc[trn_idx],semi_data_batch]), pd.concat([y_.iloc[trn_idx],semi_y_batch])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            trn_x, trn_y = data_[feats].iloc[trn_idx], y_.iloc[trn_idx]   <span class="comment"># 训练集数据</span></span><br><span class="line">            </span><br><span class="line">        val_x, val_y = data_[feats].iloc[val_idx], y_.iloc[val_idx]   <span class="comment"># 验证集数据</span></span><br><span class="line">       </span><br><span class="line">        clf = CatBoostClassifier(</span><br><span class="line">            iterations=<span class="number">6000</span>,</span><br><span class="line">            learning_rate=<span class="number">0.08</span>,  <span class="comment"># 0.08</span></span><br><span class="line">            <span class="comment"># num_leaves=2**5,</span></span><br><span class="line">            eval_metric=<span class="string">&#x27;AUC&#x27;</span>,</span><br><span class="line">            task_type=<span class="string">&quot;CPU&quot;</span>,</span><br><span class="line">            loss_function=<span class="string">&#x27;Logloss&#x27;</span>,</span><br><span class="line">            colsample_bylevel = <span class="number">0.8</span>,</span><br><span class="line">            </span><br><span class="line">            subsample=<span class="number">0.9</span>,   <span class="comment"># 0.9</span></span><br><span class="line">            max_depth=<span class="number">7</span>,</span><br><span class="line">            reg_lambda = <span class="number">0.3</span>,</span><br><span class="line">            verbose=-<span class="number">1</span>,</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        clf.fit(trn_x, trn_y, </span><br><span class="line">                eval_set= [(trn_x, trn_y), (val_x, val_y)], </span><br><span class="line">                verbose_eval=<span class="number">300</span>, early_stopping_rounds=<span class="number">100</span>,  <span class="comment"># 这个参数有点小，可以再大一点</span></span><br><span class="line">                cat_features = cat_cols</span><br><span class="line">               )</span><br><span class="line">        oof_preds[val_idx] = clf.predict_proba(val_x)[:, <span class="number">1</span>]   <span class="comment"># 验证集结果</span></span><br><span class="line">        </span><br><span class="line">        sub_preds += clf.predict_proba(test_[feats])[:, <span class="number">1</span>] / folds_.n_splits  <span class="comment"># 测试集结果</span></span><br><span class="line">        </span><br><span class="line">        fold_importance_df = pd.DataFrame()</span><br><span class="line">        fold_importance_df[<span class="string">&quot;feature&quot;</span>] = feats</span><br><span class="line">        fold_importance_df[<span class="string">&quot;importance&quot;</span>] = clf.feature_importances_</span><br><span class="line">        fold_importance_df[<span class="string">&quot;fold&quot;</span>] = n_fold + <span class="number">1</span></span><br><span class="line">        feature_importance_df = pd.concat([feature_importance_df, fold_importance_df], axis=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Fold %2d AUC : %.6f&#x27;</span> % (n_fold + <span class="number">1</span>, roc_auc_score(val_y, oof_preds[val_idx])))</span><br><span class="line">        <span class="keyword">del</span> clf, trn_x, trn_y, val_x, val_y</span><br><span class="line">        gc.collect()</span><br><span class="line">    </span><br><span class="line">    oof_preds = [<span class="number">1</span> <span class="keyword">if</span> i &gt;= <span class="number">0.4</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> oof_preds]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Full F1 score %.6f&#x27;</span> % f1_score(y_, oof_preds))</span><br><span class="line">    test_[<span class="string">&#x27;label&#x27;</span>] = sub_preds</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> oof_preds, test_[[<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;label&#x27;</span>]], feature_importance_df</span><br></pre></td></tr></table></figure>
-<h2><span id="三-解决方案二">三、<strong>解决方案二</strong></span></h2>
-<ul>
-<li><strong>基于账户本身基础特征</strong>，可以做这些类别特征的计数统计、对于粉丝量等数值特征可以做除法的交叉、登录时间和注册时间特征可以做减法交叉，基于请求行为，我们可以对机型、ip、app_version、app_channel做频数统计</li>
-<li><strong>基于用户的请求行为序列</strong>，我们可以构建w2v特征(把用户请求行为序列看成句子，行为看作词，训练Word2Vec模型得到每个行为的表征</li>
-<li><strong>基于用户的请求时间</strong>，我们可以计算请求时间的均值方差、请求时间间隔的统计特征等等。</li>
-</ul>
-<h2><span id="四-anovel-framework-for-social-bots-detection-in-online-social-networksbased-on-graph-embedding-and-community-detection">四、A
-Novel Framework for Social Bots Detection in Online Social Networks
-Based on Graph Embedding and Community Detection</span></h2>
-<h3><span id="摘要">摘要</span></h3>
-<p>随着在线社交网络的广泛普及，近年来用户数量也呈指数级增长。与此同时，社交机器人，即由程序控制的账户，也在上升。OSN的服务提供商经常使用它们来保持社交网络的活跃。与此同时，一些社交机器人也出于恶意目的注册。有必要检测这些恶意社交机器人，以呈现真实的舆论环境。我们提出了BotFinder，一个在OSN中检测恶意社交机器人的框架。具体来说，<strong>它将机器学习和图方法相结合</strong>，以便有效地提取社交机器人的潜在特征。关于特征工程，我们生成二阶特征，并使用编码方法对具有高基数的变量进行编码。这些特征充分利用了标记和未标记的样本。对于图，我们首先通过嵌入方法生成节点向量，然后进一步计算人类和机器人向量之间的相似性；然后，我们使用无监督的方法扩散标签，从而再次提高性能。为了验证该方法的性能，我们在由800多万条用户记录组成的人工竞赛提供的数据集上进行了广泛的实验。结果表明，我们的方法达到了0.8850的F1分数，这比最先进的方法要好得多</p>
-<h3><span id="说明">说明</span></h3>
-<p>与报纸等传统媒体相比。社交机器人，即由程序控制的帐户，可用于保持社交网络的活跃。虽然OSN中存在有益的社交机器人，但一些恶意社交机器人的出现会产生有害影响。例如，一些人可以出于各种目的注册大量帐户，例如增加粉丝数量或恶意喜欢。这些恶意行为已成为威胁社交网络平台健康发展的重要信息安全问题[1-2]。因此，有必要检测那些恶意的社交机器人，也称为社交机器人检测。特别是，当前的大多数研究涉及Twitter和其他国外平台，而很少有研究调查中国的OSN。因此，众多学者致力于研究社交机器人的检测问题。当前与社交机器人检测相关的工作主要分为两类，即机器学习方法和基于图的方法。然而，这一主题仍然存在一些挑战：</p>
-<p>1）
-一般来说，大多数方法依赖于单个算法来识别社交机器人，由于数据集的多样性，这可能不是理想的选择。</p>
-<p>2）
-实际上，大多数数据都是未标记的，这表明标签的数量通常很小。因此，<strong>有效利用未标记数据是一个巨大的挑战</strong>。</p>
-<p>为了应对上述挑战，我们在此共同考虑用户的配置文件、行为以及它们之间的关系。此外，我们将特征工程和图方法相结合，提出了一种检测社交机器人的集成机制BotFinder。首先，在数据集上进行特征工程以提取全局信息。然后，通过嵌入方法生成节点向量。然后，我们计算人类和机器人的向量之间的相似性。最后，为了进一步提高性能，我们采用了无监督方法（这里考虑了社区检测算法）。使用所提出的算法，我们可以轻松地检测这些机器帐户。</p>
-<p><strong>本文的贡献总结如下：</strong></p>
-<p>1）
-首先，在节点数较多、边数较少的情况下，在绘制过程中可能会忽略一些单个节点。然而，机器学习方法无法学习拓扑结构。因此，我们结合机器学习方法和图方法来克服这些问题。</p>
-<p>2）
-其次，在特征工程中，我们试图获得二阶特征，并采用编码方法对具有高基数的变量进行编码，或者换句话说，包含大量不同值的变量进行编码。对于图，我们通过嵌入方法生成节点向量。然后，我们利用无监督方法扩散标签以提高性能。这些方法充分利用了标记和未标记的样本。</p>
-<p>本文的其余部分组织如下。在第二节中，我们回顾了一些相关的工作。在第3节中，我们介绍了拟议的框架BotFinder。然后，在第4节中，我们详细描述了所研究的数据集，并在充分分析的基础上进行了实验。最后，我们在第5节总结了我们的研究。</p>
-<h3><span id="二-related-works"><strong>二、Related works</strong></span></h3>
-<h4><span id="21-机器学习方法">2.1 机器学习方法</span></h4>
-<p>在机器学习方法中，监督学习方法得到了广泛的研究。早期的反作弊算法仅利用用户配置文件或用户行为来构建模型。Breno等人[3]提出了一种使用人工神经网络进行数据预处理和挖掘的方法。Chang等人[4]提出了一种特征选择方法，然后使用决策树来检测机器人。Ganji等人[5]将K-最近邻（KNN）应用于信用卡欺诈检测。Ferrara等人[6-7]利用机器学习和认知行为建模技术分析了2017年法国总统选举和2017年加泰罗尼亚独立公投中的社交机器人。<strong>Denis等人[8]提出了一种用于检测Twitter上机器人的集成学习方法。</strong>
-随着深度学习方法（LSTM、CNN等）的发展，研究人员也尝试开发新的方法来检测社交机器人，以进一步提高检测精度。通过将用户内容视为时间文本数据，Cai等人[9]提出了BeDM方法用于机器人检测。Kudugunta等人[10]提取了用户元数据和推文文本，这些数据被视为LSTM深度网络的输入。在实践中，大多数真实世界的数据都是未标记的，而无监督学习方法被广泛研究，这通常依赖于社交机器人的共同特征。Cresci等人[11-12]提出了一种基于DNA启发技术的改进方法，以模拟在线用户行为。陈等人[13]提出了一种无监督的方法来实时检测推特垃圾邮件活动。姜等人[14]提出了CATCHSYNC，仅使用没有标签的拓扑来检测可疑节点。Su等人[15]提出了物联网RU。Mazza等人[16]将转发的时间序列转换为特征向量，然后进行聚类。</p>
-<h4><span id="22-图算法">2.2 图算法</span></h4>
-<p>机器学习方法只考虑节点的特征。然而，节点之间的关系也包含有价值和有用的信息。随着深度学习和图算法的发展，需要考虑图的拓扑信息以进一步改进。<strong>社交机器人具有图形聚合的特点</strong>。而社区检测用于发现网络中的社区结构，也可以看作是一种广义聚类算法。因此，社区检测算法可能适用于检测社交机器人。许多研究者对这一课题进行了不懈的研究。Guillaume等人[17]提出了一种基于模块化优化的启发式方法。李等人[18]提出了基于深度稀疏自动编码器的WCD算法。对于特征丰富的样本，很难充分挖掘特征中存在的信息。然后，提出了新的方法，首先将节点的拓扑信息转换为特征向量，然后使用机器学习算法进行训练和推理。例如，Lerer等人[19]提出的Pytorch
-BigGraph，<strong>Yu等人[20]提出的NetWalk</strong>，<strong>Grover等人[21]提出的Node2Vec</strong>，P<strong>ham等人[22]提出的Bot2Vec</strong>。此外，Kipf等人[23]提出了图卷积网络（GCN），对节点和网络拓扑的特征进行建模，<strong>Aljohani等人[24]将GCN应用于检测Twitter上的机器人</strong>。李等人[25]提出了用于网络免疫的BPD-DMP算法。聂等人[26]考虑了社交网络和发布内容；然后，他们提出了DCIM算法。高等人[27]对动态行为进行了表征，并提出了一种基于网络的模型。朱等人[28]研究了流行病在多层网络上的传播过程。Su等人[29]提出了检测车载网络中恶意节点的IDE。
-大多数方法依赖于单个算法来识别社交机器人。在准确性和其他相关评估指标方面，以前的识别方法仍然有很大的局限性。</p>
-<h3><span id="三-botfinder"><strong>三、BotFinder</strong></span></h3>
-<p>在本节中，我们主要介绍BotFinder，它主要包括三个步骤：1）我们在表格数据上表示特征工程技术；2）
-我们推导节点嵌入，然后测量人类和机器人之间的相似性；3）
-我们应用社区检测算法来进一步提高性能</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039206.png" alt="image-20220719205923660">
-<figcaption aria-hidden="true">image-20220719205923660</figcaption>
-</figure>
-<p>图1详细说明了这些步骤。第一步，利用特征工程技术生成特征矩阵。第二步，我们使用图嵌入方法生成相似矩阵，然后合并这两个矩阵。然后，我们采用LightGBM[30]来训练合并矩阵并推断临时结果。第三步，我们应用社区检测方法生成部分结果，并使用这些结果校正LightGBM的结果。</p>
-<h4><span id="31-featureengineering">3.1 <strong>Feature
-Engineering</strong></span></h4>
-<p>在这里，我们试图获得<strong>二阶特征、时间间隔特征、计数编码和k倍目标编码</strong>。然后，我们应用LightGBM来训练获得的特征并推断临时结果。</p>
-<p><strong><font color="red">
-二阶特征：为了表示表中分类变量的组合，我们假设二阶特征表示为
-COUNT、NUNIQUE、RATIO</font></strong></p>
-<ul>
-<li><p><strong>COUNT 反映了活动程度。具体来说，我们选择一对变量（即 V1和
-V2），并预计记录这对变量在数据集中出现的次数。我们将其缩写为 COUNT(v1,
-v2)。</strong>例如，用户向使用设备类型（ V1）iPhone12,1和应用程序版本（
-V2）126.7.0组合的人thump-up，这种组合在数据集中出现了k次。然后，使用iPhone12、1和126.7.0的用户将获得k的
-COUNT值。【记录元组出现的次数】【并行化】</p></li>
-<li><p><strong>UNIQUE表明了给定范围内的多样性。我们使用一个变量（
-V1）作为主键，并在另一个变量（V2）中记录唯一类别的数量。我们将其缩写为
-UNIQUE(V1)[V2] 。</strong>例如，对于使用device type（
-V1）iPhone12,1的用户，数据集中有k个不同的应用程序版本。然后，使用iPhone12,1的用户将获得
-UNIQUE 值k。</p></li>
-<li><p><strong>RATIO描述计数比例。它计算为 COUNT(v1, v2) /
-COUNT(v1)</strong>。例如，device type（V1）iPhone12,1 和 app version（
-V2）126.7.0的组合在数据集中出现k次，device
-type（V1）iPhone12在数据集中出现V次。然后，所有使用iPhone12、1和126.7.0的用户将获得
-k/v 的 RATIO 值。</p></li>
-</ul>
-<p><strong>时间间隔特性：请求时间间隔因用户而异。这里，我们主要考虑时间间隔的最大值、最小值、中值和和。</strong></p>
-<p><strong>计数编码：计数编码是通过将类别替换为在数据集上计算的类别计数来进行的</strong>。然而，某些变量的计数可能相同，这可能导致两个类别可能编码为相同值的冲突。这将导致模型性能下降。因此，我们在此介绍一种目标编码技术。</p>
-<p><strong>K-折叠目标编码（或似然编码、影响编码、平均编码）</strong>：目标编码是通过目标（标签）对分类变量进行计数。在这里，我们用目标的相应概率替换分类变量的每一类。为了减少目标泄漏，我们采用k倍目标编码。具体实现如下：</p>
-<ul>
-<li>将训练数据分成10折。</li>
-<li>将折#2-10<strong>目标的平均值</strong>作为折#1的编码值，并类似地计算#2-10的编码值。</li>
-<li>使用训练数据的目标来确定测试数据的编码值。</li>
-</ul>
-<h4><span id="32-similaritycalculation"><strong>3.2 Similarity
-Calculation</strong></span></h4>
-<p><strong>在这里，我们采用Node2vec[21]来获得用户的节点嵌入（向量），然后计算用户和标记用户之间嵌入的余弦相似性</strong>。相似度值表示两个用户具有相同标签的概率；例如，如果user1和user2之间的余弦相似性相对较大，则它们很可能具有高概率的相同标签。</p>
-<p>然后，对于训练集和测试集中的每个节点向量C，我们计算机器人和人类之间的最大和平均余弦相似度，该相似度表示为一个向量。【Smax1、Smean1，Smax0，Smean0】</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039522.png" alt="image-20220719212846481" style="zoom:50%;"></p>
-<h3><span id="33-communitydetection">3.3 <strong>community
-detection</strong></span></h3>
-<p><strong>对于社区检测，我们采用典型的Louvain方法</strong>[17]，将构建的图划分为社区。之后，我们将用以下规则标记社区：</p>
-<blockquote>
-<p>[1] Guillaume L. Fast unfolding of communities in large networks[J].
-Journal Statistical Mechanics: Theory and Experiment, 2008, 10:
-P1008.</p>
-</blockquote>
-<p>1）
-如果具有标签的用户属于同一社区，则社区中的所有用户都应该具有相同的标签。</p>
-<p>2）
-如果社区中的用户没有任何标签，或者用户具有不同的标签，我们将不会进行预测。</p>
-<p><strong>然而，预测可能不会覆盖所有用户。因此，该规则的性能是有限的。但该规则的结果比LightGBM更准确。通过将上述两个步骤结合起来，可以进一步提高性能。</strong></p>
-<h3><span id="四-实验">四、实验</span></h3>
-<p>为了评估该机制的性能，我们从一个大型社交网络平台的数据中心收集了一个数据集(https://security.bytedance.com/fe/ai-challenge#/sec-project?id=2&amp;active=1）。它包含超过800万条记录，包括<strong>用户配置文件</strong>和<strong>用户请求</strong>（关注或喜欢某人）。数据集的基本信息如表1和表2所示：表1显示了用户的个人信息（配置文件），而表2说明了用户的行为（请求），包括当时用于启动请求的设备和应用程序版本。</p>
-<p><strong><font color="red">
-任务描述如下：给定用户配置文件及其请求。只有一小部分用户被标记。因此，我们必须建立一个合理、解释性和有效的模型来检测来自用户的恶意机器人。</font></strong></p>
-<h3><span id="五-结论">五、结论</span></h3>
-<p>本文提出了一种社交机器人检测方法BotFinder。为了验证所开发方法的性能，我们收集了一个包含800多万条用户记录的数据集。同时，应用机器学习和图方法从此类数据集中提取社交机器人的潜在特征。<strong>特别是，对于特征工程，我们生成二阶特征，并使用编码方法对高基数变量进行编码。</strong>在图方面，我们为账户生成节点向量，然后利用无监督方法（这里我们利用社区检测）扩散标签，以进一步提高性能。通过在收集的数据集上进行的实验，所提出的集成机制的有效性得到了相对较大的F1分数0.8850的保证。与现有方法相比，该方法的性能优越。</p>
 
       
     </div>

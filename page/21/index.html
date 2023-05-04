@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-count">257</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,211 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3FG16R6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3FG16R6/" class="post-title-link" itemprop="url">模型部署（4）DaaS-Client</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-28 10:53:47" itemprop="dateCreated datePublished" datetime="2022-03-28T10:53:47+08:00">2022-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:57:46" itemprop="dateModified" datetime="2023-04-26T15:57:46+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="how自动部署开源ai模型到生产环境">HOW
+自动部署开源AI模型到生产环境？</span></h2>
+<h3><span id="一-背景介绍">一、背景介绍</span></h3>
+<p>AI的广泛应用是由AI在开源技术的进步推动的，利用功能强大的开源模型库，数据科学家们可以很容易的训练一个性能不错的模型。但是因为模型生产环境和开发环境的不同，涉及到不同角色人员：模型训练是数据科学家和数据分析师的工作，但是模型部署是开发和运维工程师的事情，导致模型上线部署却不是那么容易。</p>
+<p><strong>DaaS（Deployment-as-a-Service）是AutoDeployAI公司推出的基于Kubernetes的AI模型自动部署系统，提供一键式自动部署开源AI模型生成REST
+API，以方便在生产环境中调用</strong>。下面，我们主要演示在DaaS中如何部署经典机器学习模型，包括<strong>Scikit-learn、XGBoost、LightGBM、和PySpark
+ML Pipelines</strong>。关于深度学习模型的部署，会在下一章中介绍。</p>
+<p><strong>DMatrix 格式</strong>
+在xgboost当中运行速度更快，性能更好。</p>
+<h3><span id="二-部署准备">二、部署准备</span></h3>
+<p>我们使用DaaS提供的Python客户端（DaaS-Client）来部署模型，对于XGBoost和LightGBM，我们同样使用它们的Python
+API来作模型训练。在训练和部署模型之前，我们需要完成以下操作。</p>
+<ul>
+<li><strong>安装Python DaaS-Client</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade git+https://github.com/autodeployai/daas-client.git</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>初始化DaasClient</strong>。使用DaaS系统的URL、账户、密码登陆系统，文本使用的DaaS演示系统安装在本地的Minikube上。完整Jupyter
+Notebook，请参考：<a target="_blank" rel="noopener" href="https://github.com/aipredict/ai-deployment/blob/master/deploy-ai-models-in-daas/deploy-sklearn-xgboost-lightgbm-pyspark.ipynb">deploy-sklearn-xgboost-lightgbm-pyspark.ipynb</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from daas_client import DaasClient</span><br><span class="line"></span><br><span class="line">client = DaasClient(&#x27;https://192.168.64.3:30931&#x27;, &#x27;username&#x27;, &#x27;password&#x27;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>创建项目</strong>。DaaS使用项目管理用户不同的分析任务，一个项目中可以包含用户的各种分析资产：模型、部署、程序脚本、数据、数据源等。项目创建成功后，设置为当前活动项目，发布的模型和创建的部署都会存储在该项目下。<code>create_project</code>函数接受三个参数：
+<ul>
+<li><strong>项目名称</strong>：可以是任意有效的Linux文件目录名。</li>
+<li><strong>项目路由</strong>：使用在部署的REST
+URL中来唯一表示当前项目，只能是小写英文字符(a-z)，数字(0-9)和中横线<code>-</code>，并且<code>-</code>不能在开头和结尾处。</li>
+<li><strong>项目说明</strong>（可选）：可以是任意字符。</li>
+</ul></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">project = <span class="string">&#x27;部署测试&#x27;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> client.project_exists(project):</span><br><span class="line">    client.create_project(project, <span class="string">&#x27;deployment-test&#x27;</span>, <span class="string">&#x27;部署测试项目&#x27;</span>)</span><br><span class="line">client.set_project(project)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>初始化数据</strong>。我们使用流行的分类数据集<code>iris</code>来训练不同的模型，并且把数据分割为训练数据集和测试数据集以方便后续使用。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">seed = <span class="number">123456</span></span><br><span class="line"></span><br><span class="line">iris = datasets.load_iris()</span><br><span class="line">iris_target_name = <span class="string">&#x27;Species&#x27;</span></span><br><span class="line">iris_feature_names = iris.feature_names</span><br><span class="line">iris_df = pd.DataFrame(iris.data, columns=iris_feature_names)</span><br><span class="line">iris_df[iris_target_name] = iris.target</span><br><span class="line"></span><br><span class="line">X, y = iris_df[iris_feature_names], iris_df[iris_target_name]</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.3</span>, random_state=seed)    </span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>模型部署流程。主要包含以下几步</strong>：
+<ul>
+<li><strong>训练模型</strong>。使用模型库提供的API，在<code>iris</code>数据集上训练模型。</li>
+<li><strong>发布模型</strong>。调用<code>publish</code>函数发布模型到DaaS系统。</li>
+<li><strong>测试模型</strong>（可选）。调用<code>test</code>函数获取测试API信息，可以使用任意的REST客户端程序测试模型在DaaS中是否工作正常，使用的是DaaS系统模型测试API。第一次执行<code>test</code>会比较慢，因为DaaS系统需要启动测试运行时环境。</li>
+<li><strong>部署模型</strong>。发布成功后，调用<code>deploy</code>函数部署部署模型。可以使用任意的REST客户端程序测试模型部署，使用的是DaaS系统正式部署API。</li>
+</ul></li>
+</ul>
+<h3><span id="三-部署scikit-learn模型">三、部署Scikit-learn模型</span></h3>
+<ul>
+<li><strong>训练一个Scikit-learn分类模型</strong>：SVC</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"></span><br><span class="line">model = SVC(probability=<span class="literal">True</span>, random_state=seed)</span><br><span class="line">model.fit(X_train, y_train)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>发布Scikit-learn模型</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">publish_resp = client.publish(model,</span><br><span class="line">                            name=<span class="string">&#x27;iris&#x27;</span>,</span><br><span class="line">                            mining_function=<span class="string">&#x27;classification&#x27;</span>,</span><br><span class="line">                            X_test=X_test,</span><br><span class="line">                            y_test=y_test,</span><br><span class="line">                            description=<span class="string">&#x27;A SVC model&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>test</strong>函数必须要指定前两个参数，第一个<strong>model</strong>是训练的模型对象，第二个是模型名称，其余是可选参数：</p>
+<ul>
+<li><strong>mining_function</strong>：指定挖掘功能，可以指定为<code>regression</code>（回归）、<code>classification</code>（分类）、和<code>clustering</code>（聚类）。</li>
+<li><strong>X_test和y_test</strong>：指定测试训练集，发布时计算模型评估指标，比如针对分类模型，计算正确率（Accuracy），对于回归模型，计算可释方差（explained
+Variance）。</li>
+<li><strong>data_test</strong>：
+同样是指定测试训练集，但是该参数用在Spark模型上，非Spark模型通过<code>X_test</code>和<code>y_test</code>指定。</li>
+<li><strong>description</strong>：模型描述。</li>
+<li><strong>params</strong>：记录模型参数设置。</li>
+</ul>
+<p><strong>publish_resp</strong>是一个字典类型的结果，记录了模型名称，和发布的模型版本。该模型是<code>iris</code>模型的第一个版本。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span>&#x27;model_name&#x27;<span class="punctuation">:</span> &#x27;iris&#x27;<span class="punctuation">,</span> &#x27;model_version&#x27;<span class="punctuation">:</span> &#x27;<span class="number">1</span>&#x27;<span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>测试Scikit-learn模型</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test_resp = client.test(publish_resp[<span class="string">&#x27;model_name&#x27;</span>],</span><br><span class="line">                        model_version=publish_resp[<span class="string">&#x27;model_version&#x27;</span>])</span><br></pre></td></tr></table></figure>
+<p><code>test_resp</code>是一个字典类型的结果，记录了测试REST
+API信息。如下，其中<code>access_token</code>是访问令牌，一个长字符串，这里没有显示出来。<code>endpoint_url</code>指定测试REST
+API地址，<code>payload</code>提供了测试当前模型需要输入的请求正文格式。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">      &#x27;access_token&#x27;<span class="punctuation">:</span> &#x27;A-LONG-STRING-OF-BEARER-TOKEN-USED-IN-HTTP-HEADER-AUTHORIZATION&#x27;<span class="punctuation">,</span></span><br><span class="line">			&#x27;endpoint_url&#x27;<span class="punctuation">:</span> &#x27;https<span class="punctuation">:</span><span class="comment">//192.168.64.3:30931/api/v1/test/deployment-test/daas-python37-faas/test&#x27;,</span></span><br><span class="line">			&#x27;payload&#x27;<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      				&#x27;args&#x27;<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              			&#x27;X&#x27;<span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span> &#x27;petal length (cm)&#x27;<span class="punctuation">:</span> <span class="number">1.5</span><span class="punctuation">,</span></span><br><span class="line">                            &#x27;petal width (cm)&#x27;<span class="punctuation">:</span> <span class="number">0.4</span><span class="punctuation">,</span></span><br><span class="line">                            &#x27;sepal length (cm)&#x27;<span class="punctuation">:</span> <span class="number">5.7</span><span class="punctuation">,</span></span><br><span class="line">                            &#x27;sepal width (cm)&#x27;<span class="punctuation">:</span> <span class="number">4.4</span></span><br><span class="line">                          <span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">               &#x27;model_name&#x27;<span class="punctuation">:</span> &#x27;iris&#x27;<span class="punctuation">,</span></span><br><span class="line">               &#x27;model_version&#x27;<span class="punctuation">:</span> &#x27;<span class="number">1</span>&#x27;<span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>使用requests调用测试API，这里我们直接使用<strong>test_resp</strong>返回的测试payload，您也可以使用自定义的数据<code>X</code>，但是参数<code>model_name</code>和<code>model_version</code>必须使用上面输出的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">response = requests.post(test_resp[<span class="string">&#x27;endpoint_url&#x27;</span>],</span><br><span class="line">                        headers=&#123;</span><br><span class="line">      <span class="string">&#x27;Authorization&#x27;</span>: <span class="string">&#x27;Bearer &#123;token&#125;&#x27;</span>.<span class="built_in">format</span>(token=test_resp[<span class="string">&#x27;access_token&#x27;</span>])&#125;,</span><br><span class="line">                        json=test_resp[<span class="string">&#x27;payload&#x27;</span>],</span><br><span class="line">                        verify=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>返回结果，不同于正式部署API，除了预测结果，测试API会同时返回标准控制台输出和标准错误输出内容，以方便用户碰到错误时，查看相关信息。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># response.json()</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">      &#x27;result&#x27;<span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">      &#x27;PredictedValue&#x27;<span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">            &#x27;Probabilities&#x27;<span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">0.8977133931668801</span><span class="punctuation">,</span></span><br><span class="line">                            <span class="number">0.05476023239878367</span><span class="punctuation">,</span></span><br><span class="line">                            <span class="number">0.047526374434336216</span><span class="punctuation">]</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">			&#x27;stderr&#x27;<span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">			&#x27;stdout&#x27;<span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3><span id="四-部署pyspark模型">四、部署PySpark模型</span></h3>
+<p><strong>训练一个PySpark分类模型</strong>：RandomForestClassifier。PySpark模型必须是一个<code>PipelineModel</code>，也就是说必须使用Pipeline来建立模型，哪怕只有一个Pipeline节点。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.classification <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.feature <span class="keyword">import</span> VectorAssembler</span><br><span class="line"><span class="keyword">from</span> pyspark.ml <span class="keyword">import</span> Pipeline</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.getOrCreate()</span><br><span class="line">df = spark.createDataFrame(iris_df)</span><br><span class="line"></span><br><span class="line">df_train, df_test = df.randomSplit([<span class="number">0.7</span>, <span class="number">0.3</span>], seed=seed)</span><br><span class="line">assembler = VectorAssembler(inputCols=iris_feature_names,</span><br><span class="line">                            outputCol=<span class="string">&#x27;features&#x27;</span>)</span><br><span class="line"></span><br><span class="line">rf = RandomForestClassifier(seed=seed).setLabelCol(iris_target_name)</span><br><span class="line">pipe = Pipeline(stages=[assembler, rf])</span><br><span class="line">model = pipe.fit(df_train)</span><br></pre></td></tr></table></figure>
+<p><strong>发布PySpark模型</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">publish_resp = client.publish(model,</span><br><span class="line">                            name=<span class="string">&#x27;iris&#x27;</span>,</span><br><span class="line">                            mining_function=<span class="string">&#x27;classification&#x27;</span>,</span><br><span class="line">                            data_test=df_test,</span><br><span class="line">                            description=<span class="string">&#x27;A RandomForestClassifier of Spark model&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3><span id="五-模型部署管理">五、模型部署管理</span></h3>
+<p>打开浏览器，登陆DaaS管理系统。进入项目<code>部署测试</code>，切换到<code>模型</code>标签页，有一个<code>iris</code>模型，最新版本是<code>v4</code>，类型是<code>Spark</code>即我们最后发布的模型。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549637.jpeg" alt="Daas-models" style="zoom: 33%;"></p>
+<p>点击模型，进入模型主页（概述）。当前<code>v4</code>是一个Spark
+Pipeline模型，正确率是94.23%，并且显示了<code>iris</code>不同版本正确率历史图。下面罗列了模型的输入和输出变量，以及评估结果，当前为空，因为还没有在DaaS中执行任何的模型评估任务。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549145.jpeg" alt="Daas-model-overview-v4" style="zoom: 50%;"></p>
+<p>点击<code>v4</code>，可以自由切换到其他版本。比如，切换到<code>v1</code>。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549781.png" alt="DaaS-model-versions" style="zoom:50%;"></p>
+<p><code>v1</code>版本是一个Scikit-learn
+SVM分类模型，正确率是98.00%。其他信息与<code>v4</code>类似。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549645.jpeg" alt="DaaS-model-overview-v1" style="zoom:50%;"></p>
+<p>切换到模型<code>部署</code>标签页，有一个我们刚才创建的部署<code>iris-svc</code>，鼠标移动到操作菜单，选择<code>修改设置</code>。可以看到，当前部署服务关联的是模型<code>v1</code>，就是我们刚才通过<code>deploy</code>函数部署的<code>iris</code>第一个版本Scikit-learn模型。选择最新的<code>v4</code>，点击命令<code>保存并且重新部署</code>，该部署就会切换到<code>v4</code>版本。</p>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li>DaaS-Client、Sklearn、XGBoost、LightGBM、和PySpark_关注 AI/ML
+模型上线、模型部署-程序员宅基地_</li>
+<li>DaaS-Client：https://github.com/autodeployai/daas-client</li>
+<li>3万字长文
+PySpark入门级学习教程，框架思维:https://zhuanlan.zhihu.com/p/395431025</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -518,6 +723,184 @@ ADTK：https://blog.csdn.net/BF02jgtRS00XKtCx/article/details/115343456</p></li>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3FW9EBT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3FW9EBT/" class="post-title-link" itemprop="url">异常检测（3）HBOS</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:12:56" itemprop="dateCreated datePublished" datetime="2022-03-24T14:12:56+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:24:27" itemprop="dateModified" datetime="2023-04-26T15:24:27+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">异常检测</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-hbos">一、HBOS</span></h3>
+<p><strong>HBOS全名为：Histogram-based Outlier
+Score</strong>。它是一种单变量方法的组合，不能对特征之间的依赖关系进行建模，但是计算速度较快，对大数据集友好，其基本假设是数据集的每个维度相互独立，然后对<strong>每个维度进行区间(bin)划分，区间的密度越高，异常评分越低。理解了这句话，基本就理解了这个算法。</strong></p>
+<h4><span id="11-hbos算法流程"><strong>1.1 HBOS算法流程</strong></span></h4>
+<h5><span id="1-静态宽度直方图"><strong>1、静态宽度直方图</strong></span></h5>
+<p>标准的直方图构建方法，在值范围内使用k个等宽箱，样本落入每个箱的频率（相对数量）作为密度（箱子高度）的估计，时间复杂度：O(n)</p>
+<p><strong>注意：</strong>等宽分箱，每个箱中的数据宽度相同，不是指数据个数相同。例如序列[5,10,11,13,15,35,50,55,72,92,204,215]，数据集中最大值是215，最小值是5，分成3个箱，故每个箱的宽度应该为（215-5）/3=70，所以箱的宽度是70，这就要求箱中数据之差不能超过70，并且要把不超过70的数据全放在一起，最后的分箱结果如下：</p>
+<p><strong>箱一：5,10，11,13,15,35,50,55,72；箱二：92；箱三：204,215</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026218.png" alt="图片" style="zoom:48%;"></p>
+<h5><span id="2-动态宽度直方图"><strong>2、动态宽度直方图</strong></span></h5>
+<p>首先对所有值进行排序，然后固定数量的N/k 个连续值装进一个箱里，其
+中N是总实例数，k是箱个数，<strong>直方图中的箱面积表示实例数</strong>，因为箱的宽度是由箱中第一个值和最后一个值决定的，所有箱的面积都一样，因此每一个箱的高度都是可计算的。这意味着跨度大的箱的高度低，即密度小，只有一种情况例外，超过k个数相等，此时允许在同一个箱里超过N/k值，时间复杂度：O(n×log(n))</p>
+<p>还是用序列[<strong>5,10,11,13,15</strong>,<strong>35,50,55,72</strong>,92,204,215]举例，也是假如分3箱，那么每箱都是4个，宽度为边缘之差，第一个差为15-5=10，第二差为72-35=37，第三个箱宽为215-92=123，为了保持面积相等，所以导致后面的很矮，前面的比较高，如下图所示（非严格按照规则）：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026012.png" alt="图片" style="zoom:50%;"></p>
+<h5><span id="3-算法推导过程"><strong>3、算法推导过程</strong></span></h5>
+<p><strong>对每个维度都计算了一个独立的直方图，其中每个箱子的高度表示密度的估计，然后为了使得最大高度为1（确保了每个特征与异常值得分的权重相等），对直方图进行归一化处理。</strong>最后，每一个实例的HBOS值由以下公式计算：
+<span class="math display">\[
+H B O S(p)=\sum_{i=0}^d \log
+\left(\frac{1}{\operatorname{hist}_i(p)}\right)
+\]</span> 推导过程: 假设样本 <span class="math inline">\(\mathrm{p}\)</span> 第 <span class="math inline">\(\mathrm{i}\)</span> 个特征的概率密度为 pi ( <span class="math inline">\(p\)</span> ) , 则p的概率密度可以计算为, <span class="math inline">\(d\)</span> 为总的特征的个数： <span class="math display">\[
+P(p)=P_1(p) P_2(p) \cdots P_d(p)
+\]</span> 两边取对数： <span class="math display">\[
+\log (P(p))=\log \left(P_1(p) P_2(p) \cdots P_d(p)\right)=\sum_{i=1}^d
+\log \left(P_i(p)\right)
+\]</span> 概率密度越大，异常评分越小，为了方便评分，两边乘以“-1”: <span class="math display">\[
+-\log (P(p))=-1 \sum_{i=1}^d \log \left(P_t(p)\right)=\sum_{i=1}^d
+\frac{1}{\log \left(P_i(p)\right)}
+\]</span> 最后可得： <span class="math display">\[
+H B O S(p)=-\log (P(p))=\sum_{i=1}^d \frac{1}{\log \left(P_i(p)\right)}
+\]</span>
+PyOD是一个可扩展的Python工具包，用于检测多变量数据中的异常值。它可以在一个详细记录API下访问大约
+20 个离群值检测算法。</p>
+<h3><span id="三-xgbod">三、 XGBOD</span></h3>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/349519844">【异常检测】<em>XGBOD</em>：用无监督表示学习改进有监督异常检测</a></p>
+</blockquote>
+<h3><span id="四-copod用统计机器学习检测异常">四、COPOD：用「统计」+「机器学习」检测异常</span></h3>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338189299">COPOD：用「统计」+「机器学习」检测异常</a></p>
+</blockquote>
+<h3><span id="五-more-about-anomalydetection">五、More about Anomaly
+Detection</span></h3>
+<p>那这个异常检测啊,其实也是另外一门学问,那我们课堂上就没有时间讲了,异常检测不是只能用
+Aauto-Encoder 这个技术,Aauto-Encoder
+这个技术,只是众多可能方法里面的其中一个,我们拿它来当做 Aauto-Encoder
+的作业,因为我相信,你未来有很多的机会用得上异常检测这个技术,那实际上有关异常检测更完整的介绍,我们把过去上课的录影放在这边,给大家参考,</p>
+<p>Part 1: https://youtu.be/gDp2LXGnVLQ</p>
+<ul>
+<li><strong>简介</strong></li>
+</ul>
+<p>Part 2: https://youtu.be/cYrNjLxkoXs</p>
+<ul>
+<li><strong>信心分数</strong></li>
+</ul>
+<p>Part 3: https://youtu.be/ueDlm2FkCnw</p>
+<ul>
+<li><p>异常检测系统的评估？</p>
+<ul>
+<li><p>no ACC</p></li>
+<li><p>cost loss设计</p></li>
+<li><p>RUC</p></li>
+</ul></li>
+</ul>
+<p>Part 4: https://youtu.be/XwkHOUPbc0Q</p>
+<p>Part 5: https://youtu.be/Fh1xFBktRLQ</p>
+<ul>
+<li>无监督</li>
+</ul>
+<p>Part 6: https://youtu.be/LmFWzmn2rFY</p>
+<p>Part 7: https://youtu.be/6W8FqUGYyDo</p>
+<p>那以上就是有关 Aauto-Encoder 的部分</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1QZMAVB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -779,588 +1162,6 @@ max操作中暴力地选出一个最大值（产生一个one-hot向量）不同�
 <h3><span id="6-损失函数qampa">6 损失函数Q&amp;A</span></h3>
 <h4><span id="平方误差损失函数和交叉熵损失函数分别适合什么场景">==平方误差损失函数和交叉熵损失函数分别适合什么场景？==</span></h4>
 <p>一般还说，平方损失函数更适合输出为连续，并且最后一层不含sigmod或softmax激活函数的神经网络；交叉熵损失函数更适合二分类或多分类的场景。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/510TZM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/510TZM/" class="post-title-link" itemprop="url">理论基础（4）回归评价指标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 12:03:27" itemprop="dateModified" datetime="2023-04-26T12:03:27+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-回归问题评价指标">一、回归问题评价指标</span></h3>
-<blockquote>
-<p><strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute
-Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
-</blockquote>
-<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
-<span class="math inline">\(x\)</span>, 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
-<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
-则是这个过 程中关键的一个组成部分, 用来<strong>衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距</strong>,
-给模型的优化指明方向。</p>
-<h4><span id="11-均方差损失-mse-l2-loss">1.1 均方差损失 MSE、L2 loss</span></h4>
-<h5><span id="111-基本形式与原理">1.1.1 <strong>基本形式与原理</strong></span></h5>
-<p><strong>均方差Mean Squared Error
-(MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数, 也称为 L2
-Loss</strong>。其基本形式如下: <span class="math display">\[
-J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
-\]</span> 从直觉上理解均方差损失，这个损失函数的最小值为 0
-（当预测等于真实值时），最大值为无穷大。下图是对于真 实值 <span class="math inline">\(y=0\)</span>, 不同的预测值 <span class="math inline">\([-1.5,1.5]\)</span>
-的均方差损失的变化图。横轴是不同的预测值, 纵轴是均方差损失, 可以
-看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加,
-均方差损失呈二次方地增加。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h5><span id="112-背后的假设">1.1.2 背后的假设</span></h5>
-<p><strong>【独立同分布-中心极限定理】</strong>： 如果 <span class="math inline">\(\left\{X_n\right\}\)</span> 独立同分布, 且 <span class="math inline">\(\mathbb{E} X=\mu, \mathbb{D}
-X=\sigma^2&gt;0\)</span> ，则 <span class="math inline">\(\mathrm{n}\)</span> 足够大时 <span class="math inline">\(\bar{X}_n\)</span> 近似服从正态分布 <span class="math inline">\(N\left(\mu, \frac{\sigma^2}{n}\right)\)</span> 即
-<span class="math display">\[
-\lim _{n \rightarrow \infty} P\left(\frac{\bar{X}_n-\mu}{\sigma /
-\sqrt{n}}&lt;a\right)=\Phi(a)=\int_{-\infty}^a \frac{1}{\sqrt{2 \pi}}
-e^{-t^2 / 2} d t
-\]</span> 实际上在一定的假设下,
-我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>
-<span class="math inline">\((\mu=0, \sigma=1)\)</span> ，则给定一个
-<span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
-p\left(y_i \mid x_i\right)=\frac{1}{\sqrt{2 \pi}} \exp
-\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
-\]</span> <strong>进一步我们假设数据集中 <span class="math inline">\(\mathrm{N}\)</span> 个样本点之间相互独立,
-则给定所有 <span class="math inline">\(x\)</span> 输出所有真实值 <span class="math inline">\(y\)</span> 的概率, 即似然 Likelihood</strong>,
-为所有 <span class="math inline">\(p\left(y_i \mid x_i\right)\)</span>
-的累乘 <span class="math display">\[
-L(x, y)=\prod_{i=1}^N \frac{1}{\sqrt{2 \pi}} \exp
-\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
-\]</span> 通常为了计算方便，我们通常最大化对数似然Log-Likelihood <span class="math display">\[
-L L(x, y)=\log (L(x, y))=-\frac{N}{2} \log 2 \pi-\frac{1}{2}
-\sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
-\]</span> 去掉与 <span class="math inline">\(\hat{y_i}\)</span>
-无关的第一项, 然后转化为最小化负对数似然 Negative Log-Likelihood <span class="math display">\[
-N L L(x, y)=\frac{1}{2} \sum_{i=1}^N\left(y_i-\hat{y}_i\right)^2
-\]</span>
-可以看到这个实际上就是均方差损失的形式。<strong>也就是说在模型输出与真实值的误差服从高斯分布的假设下,
-最小化均方差损失函数与极大似然估计本质上是一致的</strong>,
-因此在这个假设能被满足的场景中（比如回归）,
-均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一
-个好的选择。</p>
-<h5><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red">
-hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h5>
-<p><strong>95%的时间区间效果很好，RMSE指标居高不下的原因？</strong>
-<span class="math display">\[
-J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
-\]</span>
-一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
-<p><strong>解决方案</strong>：</p>
-<ul>
-<li>数据预处理将噪音去掉</li>
-<li>将离群点的产生机制建模进去</li>
-<li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
-</ul>
-<h4><span id="12-平均绝对误差-mae">1.2 <strong>平均绝对误差 MAE</strong></span></h4>
-<h5><span id="121-基本形式与原理">1.2.1 <strong>基本形式与原理</strong></span></h5>
-<p><strong>平均绝对误差 Mean Absolute Error (MAE)
-是另一类常用的损失函数, 也称为 L1 Loss</strong>。其基本形式如下 <span class="math display">\[
-J_{M A E}=\frac{1}{N} \sum_{i=1}^N\left|y_i-\hat{y_i}\right|
-\]</span> 同样的我们可以对这个损失函数进行可视化如下图, MAE
-损失的最小值为 0 (当预测等于真实值时），最大值为
-无穷大。可以看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加, MAE
-损失呈线性增长。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232148454.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h5><span id="122-背后的假设">1.2.2 背后的假设</span></h5>
-<p>同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式,
-假设模型预测与真实值之间的误差服 从拉普拉斯分布 Laplace distribution
-<span class="math inline">\((\mu=0, b=1)\)</span>, 则给定一个 <span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
-p\left(y_i \mid x_i\right)=\frac{1}{2} \exp
-\left(-\left|y_i-\hat{y_i}\right|\right)
-\]</span> 与上面推导 MSE 时类似, 我们可以得到的负对数似然实际上就是 MAE
-损失的形式 <span class="math display">\[
-\begin{gathered}
-L(x, y)=\prod_{i=1}^N \frac{1}{2} \exp
-\left(-\left|y_i-\hat{y}_i\right|\right) \\
-L L(x, y)=N \ln \frac{1}{2}-\sum_{i=1}^N\left|y_i-\hat{y}_i\right| \\
-N L L(x, y)=\sum_{i=1}^N\left|y_i-\hat{y}_i\right|
-\end{gathered}
-\]</span></p>
-<h4><span id="13-mae-与-mse-区别">1.3 MAE 与 MSE 区别</span></h4>
-<p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE
-通常可以更快地收敛，但 MAE 损失对于 outlier
-更加健壮</strong>，即更加不易受到 outlier 影响。</p>
-<ul>
-<li><p><strong>MSE 通常比 MAE
-可以更快地收敛</strong>。当使用梯度下降算法时, MSE 损失的梯度为 <span class="math inline">\(-\hat{y}_i\)</span>, 而 MAE 损失的梯度为 <span class="math inline">\(\pm 1\)</span> , 即 MSE 的梯度的 scale
-会随误差大小变化, 而 MAE 的梯度的 scale 则一直保持为 1 , 即便在绝对误 差
-<span class="math inline">\(\left|y_i-\hat{y}_i\right|\)</span>
-很小的时候 MAE 的梯度 scale 也同样为 1 ,
-这实际上是非常不利于模型的训练的。当然你可以通
-过在训练过程中动态调整学习率缓解这个问题, 但是总的来说,
-损失函数梯度之间的差异导致了 MSE 在大部 分时候比 MAE
-收敛地更快。这个也是 MSE 更为流行的原因。</p></li>
-<li><p><strong>MAE 对于异常值（outlier） 更加
-robust</strong>。我们可以从两个角度来理解这一点：</p>
-<ul>
-<li><p>第一个角度是直观地理解，下图是 MAE 和 MSE
-损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE
-损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE
-损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE
-会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151110.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure></li>
-<li><p>第二个角度是从两个损失函数的假设出发，MSE
-假设了误差服从高斯分布，MAE
-假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加
-robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine
-Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution
-Figure 2.8），当右图右侧出现了 outliers
-时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的
-MAE 对 outlier 比高斯分布为假设的 MSE 更加
-robust。<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151431.jpg" alt="img" style="zoom: 67%;"></p></li>
-</ul></li>
-</ul>
-<h4><span id="14-huber-loss">1.4 Huber Loss</span></h4>
-<blockquote>
-<ul>
-<li>在误差接近 0 时使用 MSE，使损失函数可导并且梯度更加稳定</li>
-<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier
-更加健壮。</li>
-</ul>
-</blockquote>
-<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点, MSE
-损失收玫快但容易受 outlier 影响, MAE 对 outlier 更加健壮但是收玫慢,
-Huber LosS 则是一种将 MSE 与 MAE 结合起来, 取两者优点的损失函数,
-也被称作 Smooth Mean Absolute Error Loss 。其原理很简单, 就是在误差接近
-0 时使用 MSE, 误差较大时使用 MAE, 公 式为 <span class="math display">\[
-J_{\text {huber }}=\frac{1}{N} \sum_{i=1}^N
-\mathbb{I}_{\left|y_i-\hat{y_i}\right| \leq \delta}
-\frac{\left(y_i-\hat{y_i}\right)^2}{2}+\mathbb{I}_{\left|y_i-\hat{y}_i\right|&gt;\delta}\left(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
-\delta^2\right)
-\]</span> 上式中 <span class="math inline">\(\delta\)</span> 是 Huber
-Loss 的一个超参数, <span class="math inline">\(\delta\)</span> 的值是
-MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分, 第二项是
-MAE 部分, 在 MAE 的部分公式为 <span class="math inline">\(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
-\delta^2\)</span> 是为了保证误差 <span class="math inline">\(|y-\hat{y}|= \pm \delta\)</span> 时 MAE 和 MSE
-的取值一致，进而保证 Huber Loss 损失连续可导。</p>
-<p>下图是 <span class="math inline">\(\delta=1.0\)</span> 时的 Huber
-Loss, 可以看到在 <span class="math inline">\([-\delta, \delta]\)</span>
-的区间内实际上就是 MSE 损失, 在 <span class="math inline">\((-\infty,
-\delta)\)</span> 和 <span class="math inline">\((\delta,
-\infty)\)</span> 区 间内为 MAE损失。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151667.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="15-分位数损失-quantile-loss">1.5 分位数损失 Quantile Loss</span></h4>
-<blockquote>
-<p><strong>MAE
-中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
-</blockquote>
-<p><strong>分位数回归 Quantile Regression
-是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151641.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的,
-分位数损失形式如下, 式中的 r 分位数系数</strong>。 <span class="math display">\[
-J_{\text {quant }}=\frac{1}{N} \sum_{i=1}^N \mathbb{I}_{\hat{y}_i \geq
-y_i}(1-r)\left|y_i-\hat{y_i}\right|+\mathbb{I}_{\hat{y}_i&lt;y_i}
-r\left|y_i-\hat{y_i}\right|
-\]</span> 我们如何理解这个损失函数呢? 这个损失函数是一个分段的函数, 将
-<span class="math inline">\(\hat{y}_i \geq y_i \quad\)</span> (高估) 和
-<span class="math inline">\(\hat{y}_i&lt;y_i \quad\)</span> (低估) 两种
-情况分开来, 并分别给予不同的系数。当 <span class="math inline">\(r&gt;0.5\)</span> 时,
-低估的损失要比高估的损失更大, 反过来当 <span class="math inline">\(r&lt;0.5\)</span> 时, 高估的损失比低估的损失大;
-分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失,
-进而实现分位数回归</strong>。 特别地, 当 <span class="math inline">\(r=0.5\)</span> 时, 分位数损失退化为 MAE 损失,
-从这里可以看出 MAE 损失实际上是分位数损失的一个特 例 一 中位数回归。</p>
-<p>下图是取不同的分位点 <span class="math inline">\(0.2 、 0.5 、
-0.6\)</span> 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6
-在高估和低 估两种情况下损失是不同的, 而 0.5 实际上就是 MAE。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232152365.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="16-平均绝对百分误差-mape">1.6 平均绝对百分误差 MAPE</span></h4>
-<p>虽然平均绝对误差能够获得一个评价值,
-但是你并不知道这个值代表模型拟合是优还是劣, 只有通过对比才能达到
-效果。当需要以相对的观点来衡量误差时, 则使用MAPE。
-平均绝对百分误差（Mean Absolute Percentage Error, MAPE）是对 MAE
-的一种改进, 考虑了绝对误差相对 真实值的比例。 -
-优点：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。 <span class="math display">\[
-M A P E=\frac{100}{m}
-\sum_{i=1}^m\left|\frac{y_i-f\left(x_i\right)}{y_i}\right|
-\]</span> 在某些场景下, 如房价从 <span class="math inline">\(5
-K\)</span> 到 <span class="math inline">\(50 K\)</span> 之间, <span class="math inline">\(5 K\)</span> 预测成 <span class="math inline">\(10
-K\)</span> 与 <span class="math inline">\(50 K\)</span> 预测成 <span class="math inline">\(45 K\)</span> 的差别是非常大的, 而平均
-绝对百分误差考虑到了这点。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2624Z0W/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2624Z0W/" class="post-title-link" itemprop="url">理论基础（5）模型评估</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 12:10:55" itemprop="dateModified" datetime="2023-04-26T12:10:55+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-ab-测试"><font color="red">一、A/B 测试</font></span></h3>
-<blockquote>
-<p>【AB测试最全干货】史上最全知识点及常见面试题（上篇） -
-数据分析狗一枚的文章 - 知乎 https://zhuanlan.zhihu.com/p/375902281</p>
-</blockquote>
-<h4><span id="引言">引言</span></h4>
-<p>科学家门捷列夫说「没有测量，就没有科学」，在AI场景下我们同样需要定量的数值化指标来指导我们更好地应用模型对数据进行学习和建模。</p>
-<p>事实上，在机器学习领域，对模型的测量和评估至关重要。选择与问题相匹配的评估方法，能帮助我们快速准确地发现在模型选择和训练过程中出现的问题，进而对模型进行优化和迭代。本文我们系统地讲解一下机器学习模型评估相关知识。</p>
-<h4><span id="11-模型评估的目标">1.1 模型评估的目标</span></h4>
-<p><strong>模型评估的目标是选出泛化能力强的模型完成机器学习任务</strong>。实际的机器学习任务往往需要进行大量的实验，经过反复调参、使用多种模型算法（甚至多模型融合策略）来完成自己的机器学习问题，并观察哪种模型算法在什么样的参数下能够最好地完成任务。</p>
-<p>但是我们无法提前获取「未知的样本」，因此我们会基于已有的数据进行切分来完成模型训练和评估，借助于切分出的数据进行评估，可以很好地判定模型状态（过拟合
-or 欠拟合），进而迭代优化。</p>
-<p>在建模过程中，为了获得泛化能力强的模型，我们需要一整套方法及评价指标。</p>
-<ul>
-<li><strong>评估方法</strong>：为保证客观地评估模型，对数据集进行的有效划分实验方法。</li>
-<li><strong>性能指标</strong>：量化地度量模型效果的指标。</li>
-</ul>
-<h4><span id="12-离线与在线实验方法">1.2 离线与在线实验方法</span></h4>
-<p>进行评估的实验方法可以分为「离线」和「在线」两种。</p>
-<h5><span id="离线实验方法">离线实验方法：</span></h5>
-<blockquote>
-<p>在<strong>离线评估</strong>中，经常使用<strong>准确率（Accuracy）、查准率（Precision）、召回率（Recall）、ROC、AUC、PRC</strong>等指标来评估模型。</p>
-</blockquote>
-<p><strong>模型评估通常指离线试验</strong>。原型设计（Prototyping）阶段及离线试验方法，包含以下几个过程：</p>
-<ul>
-<li>使用历史数据训练一个适合解决目标任务的一个或多个机器学习模型。</li>
-<li>对模型进行验证（Validation）与离线评估（Offline Evaluation）。</li>
-<li>通过评估指标选择一个较好的模型。</li>
-</ul>
-<h5><span id="在线实验方法">在线实验方法：</span></h5>
-<blockquote>
-<p><strong>在线评估</strong>与离线评估所用的评价指标不同，一般使用一些商业评价指标，如<strong>用户生命周期值（Customer
-Lifetime value）、广告点击率（Click Through
-Rate）、用户流失率</strong>（Customer Churn Rate）等标。</p>
-</blockquote>
-<p>除了离线评估之外，其实还有一种在线评估的实验方法。由于模型是在老的模型产生的数据上学习和验证的，而线上的数据与之前是不同的，因此离线评估并不完全代表线上的模型结果。因此我们需要在线评估，来验证模型的有效性。</p>
-<p><span class="math inline">\(A/B Test\)</span>
-是目前在线测试中最主要的方法。 <span class="math inline">\(A/B
-Test\)</span> 是为同一个目标制定两个方案让一部分用户使用 <span class="math inline">\(A\)</span> 方案, 另一部分用户使用 <span class="math inline">\(B\)</span> 方案, 记录下用户的使用情况,
-看哪个方案更符合设计目标。如果不做AB实验直接上
-线新方案，新方案甚至可能会毁掉你的产品。</p>
-<h4><span id="13模型离线评估后为什么要进行ab测试"><strong><font color="red"> 1.3
-模型离线评估后，为什么要进行ab测试？</font></strong></span></h4>
-<ul>
-<li><strong>离线评估无法消除过拟合的影响</strong>，因此离线评估结果无法代替线上的评估效果</li>
-<li><strong>离线评估过程中无法模拟线上的真实环境，例如数据丢失、样本反馈延迟</strong></li>
-<li>线上的<strong>某些商业指标例如收益、留存等无法通过离线计算</strong></li>
-</ul>
-<h4><span id="14如何进行线上ab测试">1.4
-<strong>如何进行线上ab测试？</strong></span></h4>
-<p>进行ab测试的主要手段时对用户进行分桶，即将<strong>用户分成实验组和对照组</strong>。实验组使用新模型，对照组使用base模型。<strong>分桶过程中需要保证样本的独立性和采样的无偏性</strong>，确保每个用户只划分到一个桶中，分桶过程中需要保证user
-id是一个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=随机数&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22440144351%22%7D">随机数</a>，才能保证数据无偏的。</p>
-<h3><span id="二-模型评估">二、模型评估</span></h3>
-<h4><span id="21-holdout">2.1 holdout</span></h4>
-<p><strong>留出法是机器学习中最常见的评估方法之一，它会从训练数据中保留出验证样本集，这部分数据不用于训练，而用于模型评估</strong>。</p>
-<h4><span id="22-交叉验证">2.2 交叉验证</span></h4>
-<p><strong>留出法的数据划分，可能会带来偏差</strong>。在机器学习中，另外一种比较常见的评估方法是交叉验证法——
-<span class="math inline">\(K\)</span> <strong>折交叉验证对<span class="math inline">\(K\)</span>
-个不同分组训练的结果进行平均来减少方差</strong>。</p>
-<h4><span id="23-自助法">2.3 自助法</span></h4>
-<p>Bootstrap
-是一种用小样本估计总体值的一种非参数方法，在进化和生态学研究中应用十分广泛。<strong>Bootstrap通过有放回抽样生成大量的伪样本，通过对伪样本进行计算，获得统计量的分布，从而估计数据的整体分布</strong>。</p>
-<h3><span id="三-超参数调优">三、超参数调优</span></h3>
-<p>神经网咯是有许多超参数决定的，例如网络深度，学习率，正则等等。如何寻找最好的超参数组合，是一个老人靠经验，新人靠运气的任务。</p>
-<h4><span id="31-网格搜索">3.1 网格搜索</span></h4>
-<h4><span id="32-随机搜索">3.2 随机搜索</span></h4>
-<h4><span id="33-贝叶斯优化">3.3 贝叶斯优化</span></h4>
-<h5><span id="贝叶斯优化什么黑盒优化">贝叶斯优化什么?【黑盒优化】</span></h5>
-<p>求助 gradient-free
-的优化算法了，这类算法也很多了，<strong>贝叶斯优化就属于无梯度优化算法</strong>中的一种，它希望在尽可能少的试验情况下去尽可能获得优化命题的全局最优解。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211987.jpg" alt="img" style="zoom: 33%;"></p>
-<ul>
-<li>目标函数 <span class="math inline">\(f(x)\)</span> 及其导数末知,
-否则就可以用梯度下降等方法求解。</li>
-<li>计算目标函数时间成本大, 意味着像蚁群算法、遗传算法这种方法也失效了,
-因为计算一次要花费很多时间。</li>
-</ul>
-<h5><span id="概述">概述</span></h5>
-<p>贝叶斯优化,
-是一种使用<strong>贝叶斯定理来指导搜索以找到目标函数的最小值或最大值的方法</strong>,
-就是在每次迭代的时 候, 利用之前观测到的历史信息 (先验知识)
-来进行下一次优化, 通俗点讲, <strong>就是在进行一次迭代的时候,
-先回顾下之前的迭代结果, 结果太差的 <span class="math inline">\(x\)</span> 附近就不去找了, 尽量往结果好一点的
-<span class="math inline">\(x\)</span> 附近去找最优解</strong>,
-这样一来搜索的效率就大大提高了, 这其实和人的思维方式也有点像,
-每次在学习中试错, 并且在下次的时候根据这些经验来找到最 优的策略。</p>
-<h5><span id="贝叶斯优化过程">贝叶斯优化过程</span></h5>
-<p>首先，假设有一个这样的函数<span class="math inline">\(c(x)\)</span>，我们需要找到他的最小值，如下图所示，这也是我们所需要优化的目标函数，但是我们并不能够知道他的具体形状以及表达形式是怎么样的。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211373.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>贝叶斯优化是通过一种叫做代理优化的方式来进行的，就是不知道真实的目标函数长什么样，我们就用一个<strong>代理函数（surrogate
-function）来代替目标函数</strong>，<strong>而这个代理函数就可以通过先采样几个点，再通过这几个点来给他拟合出来</strong>，如下图虚线所示：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211592.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>基于构造的代理函数,
-<strong>我们就可以在可能是最小值的点附近采集更多的点</strong>,
-或者在还没有采样过的区域来采集更多
-的点，有了更多点，就可以<font color="red">更新代理函数</font>，使之更逼近真实的目标函数的形状，这样的话也更容易找到目标函数的
-最小值, 这个采样的过程同样可以通过构建一个采集函数来表示,
-也就是知道了当前代理函数的形状, 如何选择下 一个 <span class="math inline">\(x\)</span> 使得收益最大。</p>
-<p><strong>然后重复以上过程，最终就可以找到函数的最小值点了，这大致就是贝叶斯优化的一个过程:</strong></p>
-<ol type="1">
-<li><strong>初始化一个代理函数的先验分布</strong></li>
-<li><strong>选择数据点 <span class="math inline">\(x\)</span>,
-使得采集函数 <span class="math inline">\(a(x)\)</span>
-取最大值</strong></li>
-<li><strong>在目标函数 <span class="math inline">\(c(x)\)</span>
-中评估数据点 <span class="math inline">\(x\)</span> 并获取其结果 <span class="math inline">\(y\)</span></strong></li>
-<li><strong>使用新数据 <span class="math inline">\((x, y)\)</span>
-更新代理函数，得到一个后验分布 (作为下一步的先验分布)</strong></li>
-<li>重复2-4步，直到达到最大迭代次数</li>
-</ol>
-<p>举个例子, 如图所示, 一开始只有两个点 <span class="math inline">\((\mathrm{t}=2)\)</span>,
-代理函数的分布是紫色的区域那块, 然后根据代理函数算出一
-个采集函数（绿色线), 取采集函数的最大值所在的 <span class="math inline">\(x\)</span> (红色三角处), 算出 <span class="math inline">\(y\)</span>, 然后根据新的点 <span class="math inline">\((x, y)\)</span> 更新 代理函数和采集函数 <span class="math inline">\((\mathrm{t}=3)\)</span>
-，继续重复上面步骤，选择新的采集函数最大值所在的 <span class="math inline">\(x\)</span>, 算出 <span class="math inline">\(y\)</span>, 再更新代理函 数和采集函数,
-然后继续迭代。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211302.jpg" alt="img" style="zoom: 67%;"></p>
-<p>问题的核心就在于代理函数和采集函数如何构建，常用的代理函数有：</p>
-<ol type="1">
-<li><strong>高斯过程（Gaussian processes）</strong></li>
-<li><strong>Tree Parzer Estimator</strong></li>
-<li><strong>概率随机森林：针对类别型变量</strong></li>
-</ol>
-<p>采集函数则需要兼顾两方面的性质：</p>
-<ol type="1">
-<li>利用当前已开发的区域（Exploitation）：即在当前最小值附近继续搜索</li>
-<li>探索尚未开发的区域（Exploration）：即在还没有搜索过的区域里面搜索，可能那里才是全局最优解</li>
-</ol>
-<p><strong>常用的采集函数有：</strong></p>
-<ol type="1">
-<li>Probability of improvement（PI）</li>
-<li>Expected improvement（EI）</li>
-<li>Confidence bound criteria，包括LCB和UCB</li>
-</ol>
-<h4><span id="34-hyperopt">3.4 Hyperopt</span></h4>
-<p>Hyperopt 是一个强大的 Python 库，用于超参数优化，由 jamesbergstra
-开发。Hyperopt
-使用贝叶斯优化的形式进行参数调整，允许你为给定模型获得最佳参数。它可以在大范围内优化具有数百个参数的模型。</p>
-<h3><span id="参考文献">参考文献</span></h3>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390373572"><em>贝叶斯优化</em>(原理+代码解读)</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27916208">LightGBM调参指南(带贝叶斯优化代码)</a></p>
-<ul>
-<li>贝叶斯调参采用高斯过程，考虑之前的参数信息，不断地更新先验；网格搜索未考虑之前的参数信息</li>
-<li>贝叶斯调参迭代次数少，速度快；网格搜索速度慢,参数多时易导致维度爆炸</li>
-<li>贝叶斯调参针对非凸问题依然稳健；网格搜索针对非凸问题易得到局部最优</li>
-</ul>
-<h4><span id="可用的贝叶斯优化框架">可用的贝叶斯优化框架</span></h4>
-<ol type="1">
-<li>BayesianOptimization：<a href="https://link.zhihu.com/?target=https%3A//github.com/fmfn/BayesianOptimization">https://github.com/fmfn/BayesianOptimization</a></li>
-<li>清华开源的openbox：<a href="https://link.zhihu.com/?target=https%3A//open-box.readthedocs.io/zh_CN/latest/index.html">https://open-box.readthedocs.io/zh_CN/latest/index.html</a></li>
-<li>华为开源的HEBO：<a href="https://link.zhihu.com/?target=https%3A//github.com/huawei-noah/HEBO">https://github.com/huawei-noah/HEBO</a></li>
-<li><strong>Hyperopt</strong>：<a href="https://link.zhihu.com/?target=http%3A//hyperopt.github.io/hyperopt/">http://hyperopt.github.io/hype</a></li>
-</ol>
 
       
     </div>
@@ -1995,6 +1796,323 @@ https://zhuanlan.zhihu.com/p/359997979</strong></li>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/510TZM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/510TZM/" class="post-title-link" itemprop="url">理论基础（4）回归评价指标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 12:03:27" itemprop="dateModified" datetime="2023-04-26T12:03:27+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-回归问题评价指标">一、回归问题评价指标</span></h3>
+<blockquote>
+<p><strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute
+Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
+</blockquote>
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
+<span class="math inline">\(x\)</span>, 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
+<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
+则是这个过 程中关键的一个组成部分, 用来<strong>衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距</strong>,
+给模型的优化指明方向。</p>
+<h4><span id="11-均方差损失-mse-l2-loss">1.1 均方差损失 MSE、L2 loss</span></h4>
+<h5><span id="111-基本形式与原理">1.1.1 <strong>基本形式与原理</strong></span></h5>
+<p><strong>均方差Mean Squared Error
+(MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数, 也称为 L2
+Loss</strong>。其基本形式如下: <span class="math display">\[
+J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span> 从直觉上理解均方差损失，这个损失函数的最小值为 0
+（当预测等于真实值时），最大值为无穷大。下图是对于真 实值 <span class="math inline">\(y=0\)</span>, 不同的预测值 <span class="math inline">\([-1.5,1.5]\)</span>
+的均方差损失的变化图。横轴是不同的预测值, 纵轴是均方差损失, 可以
+看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加,
+均方差损失呈二次方地增加。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="112-背后的假设">1.1.2 背后的假设</span></h5>
+<p><strong>【独立同分布-中心极限定理】</strong>： 如果 <span class="math inline">\(\left\{X_n\right\}\)</span> 独立同分布, 且 <span class="math inline">\(\mathbb{E} X=\mu, \mathbb{D}
+X=\sigma^2&gt;0\)</span> ，则 <span class="math inline">\(\mathrm{n}\)</span> 足够大时 <span class="math inline">\(\bar{X}_n\)</span> 近似服从正态分布 <span class="math inline">\(N\left(\mu, \frac{\sigma^2}{n}\right)\)</span> 即
+<span class="math display">\[
+\lim _{n \rightarrow \infty} P\left(\frac{\bar{X}_n-\mu}{\sigma /
+\sqrt{n}}&lt;a\right)=\Phi(a)=\int_{-\infty}^a \frac{1}{\sqrt{2 \pi}}
+e^{-t^2 / 2} d t
+\]</span> 实际上在一定的假设下,
+我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>
+<span class="math inline">\((\mu=0, \sigma=1)\)</span> ，则给定一个
+<span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
+p\left(y_i \mid x_i\right)=\frac{1}{\sqrt{2 \pi}} \exp
+\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
+\]</span> <strong>进一步我们假设数据集中 <span class="math inline">\(\mathrm{N}\)</span> 个样本点之间相互独立,
+则给定所有 <span class="math inline">\(x\)</span> 输出所有真实值 <span class="math inline">\(y\)</span> 的概率, 即似然 Likelihood</strong>,
+为所有 <span class="math inline">\(p\left(y_i \mid x_i\right)\)</span>
+的累乘 <span class="math display">\[
+L(x, y)=\prod_{i=1}^N \frac{1}{\sqrt{2 \pi}} \exp
+\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
+\]</span> 通常为了计算方便，我们通常最大化对数似然Log-Likelihood <span class="math display">\[
+L L(x, y)=\log (L(x, y))=-\frac{N}{2} \log 2 \pi-\frac{1}{2}
+\sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span> 去掉与 <span class="math inline">\(\hat{y_i}\)</span>
+无关的第一项, 然后转化为最小化负对数似然 Negative Log-Likelihood <span class="math display">\[
+N L L(x, y)=\frac{1}{2} \sum_{i=1}^N\left(y_i-\hat{y}_i\right)^2
+\]</span>
+可以看到这个实际上就是均方差损失的形式。<strong>也就是说在模型输出与真实值的误差服从高斯分布的假设下,
+最小化均方差损失函数与极大似然估计本质上是一致的</strong>,
+因此在这个假设能被满足的场景中（比如回归）,
+均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一
+个好的选择。</p>
+<h5><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red">
+hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h5>
+<p><strong>95%的时间区间效果很好，RMSE指标居高不下的原因？</strong>
+<span class="math display">\[
+J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span>
+一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>数据预处理将噪音去掉</li>
+<li>将离群点的产生机制建模进去</li>
+<li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
+</ul>
+<h4><span id="12-平均绝对误差-mae">1.2 <strong>平均绝对误差 MAE</strong></span></h4>
+<h5><span id="121-基本形式与原理">1.2.1 <strong>基本形式与原理</strong></span></h5>
+<p><strong>平均绝对误差 Mean Absolute Error (MAE)
+是另一类常用的损失函数, 也称为 L1 Loss</strong>。其基本形式如下 <span class="math display">\[
+J_{M A E}=\frac{1}{N} \sum_{i=1}^N\left|y_i-\hat{y_i}\right|
+\]</span> 同样的我们可以对这个损失函数进行可视化如下图, MAE
+损失的最小值为 0 (当预测等于真实值时），最大值为
+无穷大。可以看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加, MAE
+损失呈线性增长。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232148454.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="122-背后的假设">1.2.2 背后的假设</span></h5>
+<p>同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式,
+假设模型预测与真实值之间的误差服 从拉普拉斯分布 Laplace distribution
+<span class="math inline">\((\mu=0, b=1)\)</span>, 则给定一个 <span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
+p\left(y_i \mid x_i\right)=\frac{1}{2} \exp
+\left(-\left|y_i-\hat{y_i}\right|\right)
+\]</span> 与上面推导 MSE 时类似, 我们可以得到的负对数似然实际上就是 MAE
+损失的形式 <span class="math display">\[
+\begin{gathered}
+L(x, y)=\prod_{i=1}^N \frac{1}{2} \exp
+\left(-\left|y_i-\hat{y}_i\right|\right) \\
+L L(x, y)=N \ln \frac{1}{2}-\sum_{i=1}^N\left|y_i-\hat{y}_i\right| \\
+N L L(x, y)=\sum_{i=1}^N\left|y_i-\hat{y}_i\right|
+\end{gathered}
+\]</span></p>
+<h4><span id="13-mae-与-mse-区别">1.3 MAE 与 MSE 区别</span></h4>
+<p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE
+通常可以更快地收敛，但 MAE 损失对于 outlier
+更加健壮</strong>，即更加不易受到 outlier 影响。</p>
+<ul>
+<li><p><strong>MSE 通常比 MAE
+可以更快地收敛</strong>。当使用梯度下降算法时, MSE 损失的梯度为 <span class="math inline">\(-\hat{y}_i\)</span>, 而 MAE 损失的梯度为 <span class="math inline">\(\pm 1\)</span> , 即 MSE 的梯度的 scale
+会随误差大小变化, 而 MAE 的梯度的 scale 则一直保持为 1 , 即便在绝对误 差
+<span class="math inline">\(\left|y_i-\hat{y}_i\right|\)</span>
+很小的时候 MAE 的梯度 scale 也同样为 1 ,
+这实际上是非常不利于模型的训练的。当然你可以通
+过在训练过程中动态调整学习率缓解这个问题, 但是总的来说,
+损失函数梯度之间的差异导致了 MSE 在大部 分时候比 MAE
+收敛地更快。这个也是 MSE 更为流行的原因。</p></li>
+<li><p><strong>MAE 对于异常值（outlier） 更加
+robust</strong>。我们可以从两个角度来理解这一点：</p>
+<ul>
+<li><p>第一个角度是直观地理解，下图是 MAE 和 MSE
+损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE
+损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE
+损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE
+会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151110.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure></li>
+<li><p>第二个角度是从两个损失函数的假设出发，MSE
+假设了误差服从高斯分布，MAE
+假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加
+robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine
+Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution
+Figure 2.8），当右图右侧出现了 outliers
+时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的
+MAE 对 outlier 比高斯分布为假设的 MSE 更加
+robust。<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151431.jpg" alt="img" style="zoom: 67%;"></p></li>
+</ul></li>
+</ul>
+<h4><span id="14-huber-loss">1.4 Huber Loss</span></h4>
+<blockquote>
+<ul>
+<li>在误差接近 0 时使用 MSE，使损失函数可导并且梯度更加稳定</li>
+<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier
+更加健壮。</li>
+</ul>
+</blockquote>
+<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点, MSE
+损失收玫快但容易受 outlier 影响, MAE 对 outlier 更加健壮但是收玫慢,
+Huber LosS 则是一种将 MSE 与 MAE 结合起来, 取两者优点的损失函数,
+也被称作 Smooth Mean Absolute Error Loss 。其原理很简单, 就是在误差接近
+0 时使用 MSE, 误差较大时使用 MAE, 公 式为 <span class="math display">\[
+J_{\text {huber }}=\frac{1}{N} \sum_{i=1}^N
+\mathbb{I}_{\left|y_i-\hat{y_i}\right| \leq \delta}
+\frac{\left(y_i-\hat{y_i}\right)^2}{2}+\mathbb{I}_{\left|y_i-\hat{y}_i\right|&gt;\delta}\left(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
+\delta^2\right)
+\]</span> 上式中 <span class="math inline">\(\delta\)</span> 是 Huber
+Loss 的一个超参数, <span class="math inline">\(\delta\)</span> 的值是
+MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分, 第二项是
+MAE 部分, 在 MAE 的部分公式为 <span class="math inline">\(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
+\delta^2\)</span> 是为了保证误差 <span class="math inline">\(|y-\hat{y}|= \pm \delta\)</span> 时 MAE 和 MSE
+的取值一致，进而保证 Huber Loss 损失连续可导。</p>
+<p>下图是 <span class="math inline">\(\delta=1.0\)</span> 时的 Huber
+Loss, 可以看到在 <span class="math inline">\([-\delta, \delta]\)</span>
+的区间内实际上就是 MSE 损失, 在 <span class="math inline">\((-\infty,
+\delta)\)</span> 和 <span class="math inline">\((\delta,
+\infty)\)</span> 区 间内为 MAE损失。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151667.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="15-分位数损失-quantile-loss">1.5 分位数损失 Quantile Loss</span></h4>
+<blockquote>
+<p><strong>MAE
+中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
+</blockquote>
+<p><strong>分位数回归 Quantile Regression
+是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151641.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的,
+分位数损失形式如下, 式中的 r 分位数系数</strong>。 <span class="math display">\[
+J_{\text {quant }}=\frac{1}{N} \sum_{i=1}^N \mathbb{I}_{\hat{y}_i \geq
+y_i}(1-r)\left|y_i-\hat{y_i}\right|+\mathbb{I}_{\hat{y}_i&lt;y_i}
+r\left|y_i-\hat{y_i}\right|
+\]</span> 我们如何理解这个损失函数呢? 这个损失函数是一个分段的函数, 将
+<span class="math inline">\(\hat{y}_i \geq y_i \quad\)</span> (高估) 和
+<span class="math inline">\(\hat{y}_i&lt;y_i \quad\)</span> (低估) 两种
+情况分开来, 并分别给予不同的系数。当 <span class="math inline">\(r&gt;0.5\)</span> 时,
+低估的损失要比高估的损失更大, 反过来当 <span class="math inline">\(r&lt;0.5\)</span> 时, 高估的损失比低估的损失大;
+分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失,
+进而实现分位数回归</strong>。 特别地, 当 <span class="math inline">\(r=0.5\)</span> 时, 分位数损失退化为 MAE 损失,
+从这里可以看出 MAE 损失实际上是分位数损失的一个特 例 一 中位数回归。</p>
+<p>下图是取不同的分位点 <span class="math inline">\(0.2 、 0.5 、
+0.6\)</span> 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6
+在高估和低 估两种情况下损失是不同的, 而 0.5 实际上就是 MAE。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232152365.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="16-平均绝对百分误差-mape">1.6 平均绝对百分误差 MAPE</span></h4>
+<p>虽然平均绝对误差能够获得一个评价值,
+但是你并不知道这个值代表模型拟合是优还是劣, 只有通过对比才能达到
+效果。当需要以相对的观点来衡量误差时, 则使用MAPE。
+平均绝对百分误差（Mean Absolute Percentage Error, MAPE）是对 MAE
+的一种改进, 考虑了绝对误差相对 真实值的比例。 -
+优点：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。 <span class="math display">\[
+M A P E=\frac{100}{m}
+\sum_{i=1}^m\left|\frac{y_i-f\left(x_i\right)}{y_i}\right|
+\]</span> 在某些场景下, 如房价从 <span class="math inline">\(5
+K\)</span> 到 <span class="math inline">\(50 K\)</span> 之间, <span class="math inline">\(5 K\)</span> 预测成 <span class="math inline">\(10
+K\)</span> 与 <span class="math inline">\(50 K\)</span> 预测成 <span class="math inline">\(45 K\)</span> 的差别是非常大的, 而平均
+绝对百分误差考虑到了这点。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2Z6ZKRX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2217,6 +2335,271 @@ D B=\frac{1}{k} \sum_{i=1}^{k} \max _{i \neq j} R_{i j}
 <ul>
 <li>因使用欧式距离, 所以对于环状分布聚类评测很差。</li>
 </ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2624Z0W/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2624Z0W/" class="post-title-link" itemprop="url">理论基础（5）模型评估</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 12:10:55" itemprop="dateModified" datetime="2023-04-26T12:10:55+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-ab-测试"><font color="red">一、A/B 测试</font></span></h3>
+<blockquote>
+<p>【AB测试最全干货】史上最全知识点及常见面试题（上篇） -
+数据分析狗一枚的文章 - 知乎 https://zhuanlan.zhihu.com/p/375902281</p>
+</blockquote>
+<h4><span id="引言">引言</span></h4>
+<p>科学家门捷列夫说「没有测量，就没有科学」，在AI场景下我们同样需要定量的数值化指标来指导我们更好地应用模型对数据进行学习和建模。</p>
+<p>事实上，在机器学习领域，对模型的测量和评估至关重要。选择与问题相匹配的评估方法，能帮助我们快速准确地发现在模型选择和训练过程中出现的问题，进而对模型进行优化和迭代。本文我们系统地讲解一下机器学习模型评估相关知识。</p>
+<h4><span id="11-模型评估的目标">1.1 模型评估的目标</span></h4>
+<p><strong>模型评估的目标是选出泛化能力强的模型完成机器学习任务</strong>。实际的机器学习任务往往需要进行大量的实验，经过反复调参、使用多种模型算法（甚至多模型融合策略）来完成自己的机器学习问题，并观察哪种模型算法在什么样的参数下能够最好地完成任务。</p>
+<p>但是我们无法提前获取「未知的样本」，因此我们会基于已有的数据进行切分来完成模型训练和评估，借助于切分出的数据进行评估，可以很好地判定模型状态（过拟合
+or 欠拟合），进而迭代优化。</p>
+<p>在建模过程中，为了获得泛化能力强的模型，我们需要一整套方法及评价指标。</p>
+<ul>
+<li><strong>评估方法</strong>：为保证客观地评估模型，对数据集进行的有效划分实验方法。</li>
+<li><strong>性能指标</strong>：量化地度量模型效果的指标。</li>
+</ul>
+<h4><span id="12-离线与在线实验方法">1.2 离线与在线实验方法</span></h4>
+<p>进行评估的实验方法可以分为「离线」和「在线」两种。</p>
+<h5><span id="离线实验方法">离线实验方法：</span></h5>
+<blockquote>
+<p>在<strong>离线评估</strong>中，经常使用<strong>准确率（Accuracy）、查准率（Precision）、召回率（Recall）、ROC、AUC、PRC</strong>等指标来评估模型。</p>
+</blockquote>
+<p><strong>模型评估通常指离线试验</strong>。原型设计（Prototyping）阶段及离线试验方法，包含以下几个过程：</p>
+<ul>
+<li>使用历史数据训练一个适合解决目标任务的一个或多个机器学习模型。</li>
+<li>对模型进行验证（Validation）与离线评估（Offline Evaluation）。</li>
+<li>通过评估指标选择一个较好的模型。</li>
+</ul>
+<h5><span id="在线实验方法">在线实验方法：</span></h5>
+<blockquote>
+<p><strong>在线评估</strong>与离线评估所用的评价指标不同，一般使用一些商业评价指标，如<strong>用户生命周期值（Customer
+Lifetime value）、广告点击率（Click Through
+Rate）、用户流失率</strong>（Customer Churn Rate）等标。</p>
+</blockquote>
+<p>除了离线评估之外，其实还有一种在线评估的实验方法。由于模型是在老的模型产生的数据上学习和验证的，而线上的数据与之前是不同的，因此离线评估并不完全代表线上的模型结果。因此我们需要在线评估，来验证模型的有效性。</p>
+<p><span class="math inline">\(A/B Test\)</span>
+是目前在线测试中最主要的方法。 <span class="math inline">\(A/B
+Test\)</span> 是为同一个目标制定两个方案让一部分用户使用 <span class="math inline">\(A\)</span> 方案, 另一部分用户使用 <span class="math inline">\(B\)</span> 方案, 记录下用户的使用情况,
+看哪个方案更符合设计目标。如果不做AB实验直接上
+线新方案，新方案甚至可能会毁掉你的产品。</p>
+<h4><span id="13模型离线评估后为什么要进行ab测试"><strong><font color="red"> 1.3
+模型离线评估后，为什么要进行ab测试？</font></strong></span></h4>
+<ul>
+<li><strong>离线评估无法消除过拟合的影响</strong>，因此离线评估结果无法代替线上的评估效果</li>
+<li><strong>离线评估过程中无法模拟线上的真实环境，例如数据丢失、样本反馈延迟</strong></li>
+<li>线上的<strong>某些商业指标例如收益、留存等无法通过离线计算</strong></li>
+</ul>
+<h4><span id="14如何进行线上ab测试">1.4
+<strong>如何进行线上ab测试？</strong></span></h4>
+<p>进行ab测试的主要手段时对用户进行分桶，即将<strong>用户分成实验组和对照组</strong>。实验组使用新模型，对照组使用base模型。<strong>分桶过程中需要保证样本的独立性和采样的无偏性</strong>，确保每个用户只划分到一个桶中，分桶过程中需要保证user
+id是一个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=随机数&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22440144351%22%7D">随机数</a>，才能保证数据无偏的。</p>
+<h3><span id="二-模型评估">二、模型评估</span></h3>
+<h4><span id="21-holdout">2.1 holdout</span></h4>
+<p><strong>留出法是机器学习中最常见的评估方法之一，它会从训练数据中保留出验证样本集，这部分数据不用于训练，而用于模型评估</strong>。</p>
+<h4><span id="22-交叉验证">2.2 交叉验证</span></h4>
+<p><strong>留出法的数据划分，可能会带来偏差</strong>。在机器学习中，另外一种比较常见的评估方法是交叉验证法——
+<span class="math inline">\(K\)</span> <strong>折交叉验证对<span class="math inline">\(K\)</span>
+个不同分组训练的结果进行平均来减少方差</strong>。</p>
+<h4><span id="23-自助法">2.3 自助法</span></h4>
+<p>Bootstrap
+是一种用小样本估计总体值的一种非参数方法，在进化和生态学研究中应用十分广泛。<strong>Bootstrap通过有放回抽样生成大量的伪样本，通过对伪样本进行计算，获得统计量的分布，从而估计数据的整体分布</strong>。</p>
+<h3><span id="三-超参数调优">三、超参数调优</span></h3>
+<p>神经网咯是有许多超参数决定的，例如网络深度，学习率，正则等等。如何寻找最好的超参数组合，是一个老人靠经验，新人靠运气的任务。</p>
+<h4><span id="31-网格搜索">3.1 网格搜索</span></h4>
+<h4><span id="32-随机搜索">3.2 随机搜索</span></h4>
+<h4><span id="33-贝叶斯优化">3.3 贝叶斯优化</span></h4>
+<h5><span id="贝叶斯优化什么黑盒优化">贝叶斯优化什么?【黑盒优化】</span></h5>
+<p>求助 gradient-free
+的优化算法了，这类算法也很多了，<strong>贝叶斯优化就属于无梯度优化算法</strong>中的一种，它希望在尽可能少的试验情况下去尽可能获得优化命题的全局最优解。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211987.jpg" alt="img" style="zoom: 33%;"></p>
+<ul>
+<li>目标函数 <span class="math inline">\(f(x)\)</span> 及其导数末知,
+否则就可以用梯度下降等方法求解。</li>
+<li>计算目标函数时间成本大, 意味着像蚁群算法、遗传算法这种方法也失效了,
+因为计算一次要花费很多时间。</li>
+</ul>
+<h5><span id="概述">概述</span></h5>
+<p>贝叶斯优化,
+是一种使用<strong>贝叶斯定理来指导搜索以找到目标函数的最小值或最大值的方法</strong>,
+就是在每次迭代的时 候, 利用之前观测到的历史信息 (先验知识)
+来进行下一次优化, 通俗点讲, <strong>就是在进行一次迭代的时候,
+先回顾下之前的迭代结果, 结果太差的 <span class="math inline">\(x\)</span> 附近就不去找了, 尽量往结果好一点的
+<span class="math inline">\(x\)</span> 附近去找最优解</strong>,
+这样一来搜索的效率就大大提高了, 这其实和人的思维方式也有点像,
+每次在学习中试错, 并且在下次的时候根据这些经验来找到最 优的策略。</p>
+<h5><span id="贝叶斯优化过程">贝叶斯优化过程</span></h5>
+<p>首先，假设有一个这样的函数<span class="math inline">\(c(x)\)</span>，我们需要找到他的最小值，如下图所示，这也是我们所需要优化的目标函数，但是我们并不能够知道他的具体形状以及表达形式是怎么样的。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211373.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>贝叶斯优化是通过一种叫做代理优化的方式来进行的，就是不知道真实的目标函数长什么样，我们就用一个<strong>代理函数（surrogate
+function）来代替目标函数</strong>，<strong>而这个代理函数就可以通过先采样几个点，再通过这几个点来给他拟合出来</strong>，如下图虚线所示：</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211592.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>基于构造的代理函数,
+<strong>我们就可以在可能是最小值的点附近采集更多的点</strong>,
+或者在还没有采样过的区域来采集更多
+的点，有了更多点，就可以<font color="red">更新代理函数</font>，使之更逼近真实的目标函数的形状，这样的话也更容易找到目标函数的
+最小值, 这个采样的过程同样可以通过构建一个采集函数来表示,
+也就是知道了当前代理函数的形状, 如何选择下 一个 <span class="math inline">\(x\)</span> 使得收益最大。</p>
+<p><strong>然后重复以上过程，最终就可以找到函数的最小值点了，这大致就是贝叶斯优化的一个过程:</strong></p>
+<ol type="1">
+<li><strong>初始化一个代理函数的先验分布</strong></li>
+<li><strong>选择数据点 <span class="math inline">\(x\)</span>,
+使得采集函数 <span class="math inline">\(a(x)\)</span>
+取最大值</strong></li>
+<li><strong>在目标函数 <span class="math inline">\(c(x)\)</span>
+中评估数据点 <span class="math inline">\(x\)</span> 并获取其结果 <span class="math inline">\(y\)</span></strong></li>
+<li><strong>使用新数据 <span class="math inline">\((x, y)\)</span>
+更新代理函数，得到一个后验分布 (作为下一步的先验分布)</strong></li>
+<li>重复2-4步，直到达到最大迭代次数</li>
+</ol>
+<p>举个例子, 如图所示, 一开始只有两个点 <span class="math inline">\((\mathrm{t}=2)\)</span>,
+代理函数的分布是紫色的区域那块, 然后根据代理函数算出一
+个采集函数（绿色线), 取采集函数的最大值所在的 <span class="math inline">\(x\)</span> (红色三角处), 算出 <span class="math inline">\(y\)</span>, 然后根据新的点 <span class="math inline">\((x, y)\)</span> 更新 代理函数和采集函数 <span class="math inline">\((\mathrm{t}=3)\)</span>
+，继续重复上面步骤，选择新的采集函数最大值所在的 <span class="math inline">\(x\)</span>, 算出 <span class="math inline">\(y\)</span>, 再更新代理函 数和采集函数,
+然后继续迭代。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232211302.jpg" alt="img" style="zoom: 67%;"></p>
+<p>问题的核心就在于代理函数和采集函数如何构建，常用的代理函数有：</p>
+<ol type="1">
+<li><strong>高斯过程（Gaussian processes）</strong></li>
+<li><strong>Tree Parzer Estimator</strong></li>
+<li><strong>概率随机森林：针对类别型变量</strong></li>
+</ol>
+<p>采集函数则需要兼顾两方面的性质：</p>
+<ol type="1">
+<li>利用当前已开发的区域（Exploitation）：即在当前最小值附近继续搜索</li>
+<li>探索尚未开发的区域（Exploration）：即在还没有搜索过的区域里面搜索，可能那里才是全局最优解</li>
+</ol>
+<p><strong>常用的采集函数有：</strong></p>
+<ol type="1">
+<li>Probability of improvement（PI）</li>
+<li>Expected improvement（EI）</li>
+<li>Confidence bound criteria，包括LCB和UCB</li>
+</ol>
+<h4><span id="34-hyperopt">3.4 Hyperopt</span></h4>
+<p>Hyperopt 是一个强大的 Python 库，用于超参数优化，由 jamesbergstra
+开发。Hyperopt
+使用贝叶斯优化的形式进行参数调整，允许你为给定模型获得最佳参数。它可以在大范围内优化具有数百个参数的模型。</p>
+<h3><span id="参考文献">参考文献</span></h3>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390373572"><em>贝叶斯优化</em>(原理+代码解读)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27916208">LightGBM调参指南(带贝叶斯优化代码)</a></p>
+<ul>
+<li>贝叶斯调参采用高斯过程，考虑之前的参数信息，不断地更新先验；网格搜索未考虑之前的参数信息</li>
+<li>贝叶斯调参迭代次数少，速度快；网格搜索速度慢,参数多时易导致维度爆炸</li>
+<li>贝叶斯调参针对非凸问题依然稳健；网格搜索针对非凸问题易得到局部最优</li>
+</ul>
+<h4><span id="可用的贝叶斯优化框架">可用的贝叶斯优化框架</span></h4>
+<ol type="1">
+<li>BayesianOptimization：<a href="https://link.zhihu.com/?target=https%3A//github.com/fmfn/BayesianOptimization">https://github.com/fmfn/BayesianOptimization</a></li>
+<li>清华开源的openbox：<a href="https://link.zhihu.com/?target=https%3A//open-box.readthedocs.io/zh_CN/latest/index.html">https://open-box.readthedocs.io/zh_CN/latest/index.html</a></li>
+<li>华为开源的HEBO：<a href="https://link.zhihu.com/?target=https%3A//github.com/huawei-noah/HEBO">https://github.com/huawei-noah/HEBO</a></li>
+<li><strong>Hyperopt</strong>：<a href="https://link.zhihu.com/?target=http%3A//hyperopt.github.io/hyperopt/">http://hyperopt.github.io/hype</a></li>
+</ol>
 
       
     </div>
@@ -2520,842 +2903,6 @@ ORM框架中创建一个类就代表数据库中的一个表，但是定义这�
 <h4><span id="python可变数据类型-不可变数据类型">Python可变数据类型 不可变数据类型？</span></h4>
 <p><strong>不可变类型</strong>：数值型、字符串型string和元组tuple；不允许变量的值发生变化，如果改变了变量的值，相当于是新建了一个对象。</p>
 <p><strong>可变数据类型</strong>：列表list和字典dict，Set集合</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1M5VH4X/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1M5VH4X/" class="post-title-link" itemprop="url">深度学习（6）LSTM*</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-16 21:45:12" itemprop="dateCreated datePublished" datetime="2022-03-16T21:45:12+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-13 22:55:53" itemprop="dateModified" datetime="2022-07-13T22:55:53+08:00">2022-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>9.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>17 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="lstm和gru算法简单梳理">LSTM和GRU算法简单梳理🍭</span></h2>
-<h3><span id="前言-从反向传播推导到梯度消失and爆炸的原因及解决方案"><font color="red">
-前言 - 从反向传播推导到梯度消失and爆炸的原因及解决方案？</font></span></h3>
-<blockquote>
-<ul>
-<li>从反向传播推导到梯度消失and爆炸的原因及解决方案（从DNN到RNN，内附详细反向传播公式推导）
-- 韦伟的文章 - 知乎 https://zhuanlan.zhihu.com/p/76772734</li>
-</ul>
-<p><strong>本质上</strong>是因为神经网络的更新方法，梯度消失是因为反向传播过程中对梯度的求解会产生sigmoid导数和参数的连乘，sigmoid导数的最大值为0.25，权重一般初始都在0，1之间，乘积小于1，多层的话就会有多个小于1的值连乘，导致靠近输入层的梯度几乎为0，得不到更新。梯度爆炸是也是同样的原因，只是如果初始权重大于1，或者更大一些，多个大于1的值连乘，将会很大或溢出，导致梯度更新过大，模型无法收敛。其实<strong>梯度爆炸和梯度消失问题都是因为网络太深</strong>，网络权值更新不稳定造成的，本质上是因为<strong>梯度反向传播中的连乘效应</strong>。</p>
-</blockquote>
-<h3><span id="一-反向传播推导到梯度消失and爆炸的原因及解决方案">一、反向传播推导到梯度消失and爆炸的原因及解决方案</span></h3>
-<h4><span id="11-反向传播推导">1.1 ==反向传播推导：==</span></h4>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-cbcb60d90cbd259a717cbe991aa93f5c_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>以上图为例开始推起来，先说明几点，i1，i2是输入节点，h1，h2为隐藏层节点，o1，o2为输出层节点，除了输入层，其他两层的节点结构为下图所示：</p>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>举例说明，<img src="https://www.zhihu.com/equation?tex=NET_%7Bo1%7D" alt="[公式]"> 为输出层的输入，也就是隐藏层的输出经过线性变换后的值，
-<img src="https://www.zhihu.com/equation?tex=OUT_%7Bo1%7D" alt="[公式]"> 为经过激活函数sigmoid后的值；同理 <img src="https://www.zhihu.com/equation?tex=NET_%7Bh1%7D" alt="[公式]">
-为隐藏层的输入，也就是输入层经过线性变换后的值， <img src="https://www.zhihu.com/equation?tex=OUT_%7Bh1%7D" alt="[公式]">
-为经过激活函数sigmoid 的值。只有这两层有激活函数，输入层没有。</p>
-<blockquote>
-<p><strong>定义一下sigmoid的函数：</strong> <img src="https://www.zhihu.com/equation?tex=%5Csigma%28z%29+%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D" alt="[公式]"> <strong>说一下sigmoid的求导：</strong></p>
-</blockquote>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Csigma%5E%7B%5Cprime%7D%28z%29+%26%3D%5Cleft%28%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D%5Cright%29%5E%7B%5Cprime%7D+%5C%5C+%26%3D%5Cfrac%7Be%5E%7B-z%7D%7D%7B%5Cleft%281%2Be%5E%7B-z%7D%5Cright%29%5E%7B2%7D%7D+%5C%5C+%26%3D%5Cfrac%7B1%2Be%5E%7B-z%7D-1%7D%7B%5Cleft%281%2Be%5E%7B-z%7D%5Cright%29%5E%7B2%7D%7D+%5C%5C+%26%3D%5Cfrac%7B%5Csigma%28z%29%7D%7B%5Cleft%281%2Be%5E%7B-z%7D%5Cright%29%5E%7B2%7D%7D+%5C%5C+%26%3D%5Csigma%28z%29%281-%5Csigma%28z%29%29+%5Cend%7Baligned%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>定义一下损失函数，这里的损失函数是均方误差函数，即：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=Loss_%7Bt+o+t+a+l%7D%3D%5Csum+%5Cfrac%7B1%7D%7B2%7D%28%5Ctext+%7Btarget+-+output%7D%29%5E%7B2%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>具体到上图，就是：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=Loss_%7Bt+o+t+a+l%7D%3D+%5Cfrac%7B1%7D%7B2%7D%28%5Ctext+%7Btarget1+-+out_o1%7D%29%5E%7B2%7D%2B+%5Cfrac%7B1%7D%7B2%7D%28%5Ctext+%7Btarget2+-+out_o2%7D%29%5E%7B2%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>到这里，所有前提就交代清楚了，前向传播就不推了，默认大家都会，下面推反向传播。</p>
-<ul>
-<li><strong>第一个反向传播（热身）</strong></li>
-</ul>
-<p>先来一个简单的热热身，求一下损失函数对W5的偏导，即： <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_5%7D" alt="[公式]"></p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-cbcb60d90cbd259a717cbe991aa93f5c_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>首先根据链式求导法则写出对W5求偏导的总公式，再把图拿下来对照（如上），可以看出，需要计算三部分的求导【损失函数、激活函数、线性函数】，下面就一步一步来：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E6%80%BB%E5%85%AC%E5%BC%8F%EF%BC%9A%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_5%7D+%3D+%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+out_%7Bo1%7D%7D+%5Cfrac%7B%5Cpartial+out_%7Bo1%7D%7D%7B%5Cpartial+net_%7Bo1%7D%7D+%5Cfrac%7B%5Cpartial+net_%7Bo1%7D%7D%7B%5Cpartial+w_%7B5%7D%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+out_%7Bo1%7D%7D+%3D+%5Cfrac%7B%5Cpartial%5Cfrac%7B1%7D%7B2%7D%28%7Btarget_1+-+out_%7Bo1%7D%7D%29%5E%7B2%7D%2B+%5Cfrac%7B1%7D%7B2%7D%28+%7Btarget_2+-+out_%7Bo2%7D%7D%29%5E%7B2%7D%7D%7B%5Cpartial+out_%7Bo1%7D%7D+%3D+out_%7Bo1%7D+-+target_1%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+out_%7Bo1%7D%7D%7B%5Cpartial+net_%7Bo1%7D%7D+%3D+%5Cfrac%7B%5Cpartial%5Cfrac%7B1%7D%7B1%2Be%5E%7B-net_%7Bo1%7D%7D%7D%7D%7B%5Cpartial+net_%7Bo1%7D%7D+%3D%5Csigma%28net_%7Bo1%7D%29%281-%5Csigma%28net_%7Bo1%7D%29%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+net_%7Bo1%7D%7D%7B%5Cpartial+w_5%7D+%3D+%5Cfrac%7B%5Cpartial+out_%7Bh1%7Dw_5%2Bout_%7Bh2%7Dw_6%7D%7B%5Cpartial+w_5%7D+%3Dout_%7Bh_1%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>综上三个步骤，得到总公式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E6%80%BB%E5%85%AC%E5%BC%8F%EF%BC%9A%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_5%7D+%3D+%28out_%7Bo1%7D+-+target_1%29+%5Ccdot+%28%5Csigma%28net_%7Bo1%7D%29%281-%5Csigma%28net_%7Bo1%7D%29%29%29%5Ccdot+out_%7Bh_1%7D++%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ul>
-<li><strong>第二个反向传播：</strong></li>
-</ul>
-<p>接下来，要求损失函数对w1的偏导，即： <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_1%7D" alt="[公式]"></p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-cbcb60d90cbd259a717cbe991aa93f5c_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>还是把图摆在这，方便看，先写出总公式，对w1求导有个地方要注意，w1的影响不仅来自o1还来自o2，从图上可以一目了然，所以总公式为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E6%80%BB%E5%85%AC%E5%BC%8F%EF%BC%9A%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_1%7D+%3D+%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+out_%7Bo1%7D%7D+%5Cfrac%7B%5Cpartial+out_%7Bo1%7D%7D%7B%5Cpartial+net_%7Bo1%7D%7D+%5Cfrac%7B%5Cpartial+net_%7Bo1%7D%7D%7B%5Cpartial+out_%7Bh1%7D%7D++%5Cfrac%7B%5Cpartial+out_%7Bh1%7D%7D%7B%5Cpartial+net_%7Bh1%7D%7D+%5Cfrac%7B%5Cpartial+net_%7Bh1%7D%7D%7B%5Cpartial+w_1%7D%2B%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+out_%7Bo2%7D%7D+%5Cfrac%7B%5Cpartial+out_%7Bo2%7D%7D%7B%5Cpartial+net_%7Bo2%7D%7D+%5Cfrac%7B%5Cpartial+net_%7Bo2%7D%7D%7B%5Cpartial+out_%7Bh1%7D%7D++%5Cfrac%7B%5Cpartial+out_%7Bh1%7D%7D%7B%5Cpartial+net_%7Bh1%7D%7D+%5Cfrac%7B%5Cpartial+net_%7Bh1%7D%7D%7B%5Cpartial+w_1%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>所以总共分为左右两个式子，分别又对应5个步骤，详细写一下左边，右边同理：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+out_%7Bo1%7D%7D+%3D+out_%7Bo1%7D+-+target_1%5C%5C" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+out_%7Bo1%7D%7D%7B%5Cpartial+net_%7Bo1%7D%7D+%3D+%5Csigma%28net_%7Bo1%7D%29%281-%5Csigma%28net_%7Bo1%7D%29%29+%5C%5C" alt="[公式]"></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+net_%7Bo1%7D%7D%7B%5Cpartial+out_%7Bh1%7D%7D+%3D+%5Cfrac%7B%5Cpartial+out_%7Bh1%7Dw_5%2Bout_%7Bh2%7Dw_6%7D%7B%5Cpartial+out_%7Bh1%7D%7D+%3Dw_5%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+out_%7Bh1%7D%7D%7B%5Cpartial+net_%7Bh1%7D%7D+%3D+%5Csigma%28net_%7Bh1%7D%29%281-%5Csigma%28net_%7Bh1%7D%29%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A+%5Cfrac%7B%5Cpartial+net_%7Bh1%7D%7D%7B%5Cpartial+w_1%7D+%3D+%5Cfrac%7B%5Cpartial+i_1w_1%2Bi_2w_2%7D%7B%5Cpartial+w_1%7D+%3Di_1%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>右边也是同理，就不详细写了，写一下总的公式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_1%7D++%26%3D%5Cleft%28%28out_%7Bo1%7D+-+target_1%29%5Ccdot+%28%5Csigma%28net_%7Bo1%7D%29%281-%5Csigma%28net_%7Bo1%7D%29%29%29%5Ccdot+w_5+%5Ccdot+%28%5Csigma%28net_%7Bh1%7D%29%281-%5Csigma%28net_%7Bh1%7D%29%29%29%5Ccdot+i_1+%5Cright%29+%5C%5C+%26%2B%7B%5Cleft%28%28out_%7Bo2%7D+-+target_2%29%5Ccdot+%28%5Csigma%28net_%7Bo2%7D%29%281-%5Csigma%28net_%7Bo2%7D%29%29%29%5Ccdot+w_7+%5Ccdot+%28%5Csigma%28net_%7Bh1%7D%29%281-%5Csigma%28net_%7Bh1%7D%29%29%29%5Ccdot+i_1+%5Cright%29%7D+%5C%5C+%5Cend%7Baligned%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>这个公式只是对如此简单的一个网络结构的一个节点的偏导，就这么复杂。。亲自推完才深深的意识到。。。</p>
-<p>为了后面描述方便，把上面的公式化简一下， <img src="https://www.zhihu.com/equation?tex=out_%7Bo1%7D+-+target_1" alt="[公式]"> 记为 <img src="https://www.zhihu.com/equation?tex=C_%7Bo1%7D" alt="[公式]"> ，
-<img src="https://www.zhihu.com/equation?tex=%5Csigma%28net_%7Bo1%7D%29%281-%5Csigma%28net_%7Bo1%7D%29%29" alt="[公式]"> 记为 <img src="https://www.zhihu.com/equation?tex=%5Csigma%28net_%7Bo1%7D%29%5E%7B%5Cprime%7D" alt="[公式]"> ，则：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+Loss_%7Bt+o+t+a+l%7D%7D%7B%5Cpartial+w_1%7D+%3D+C_%7Bo1%7D+%5Ccdot+%5Csigma%28net_%7Bo1%7D%29%5E%7B%5Cprime%7D+%5Ccdot+w_5+%5Ccdot+%5Csigma%28net_%7Bh1%7D%29%5E%7B%5Cprime%7D+%5Ccdot+i_1+%2B+C_%7Bo2%7D+%5Ccdot+%5Csigma%28net_%7Bo2%7D%29%5E%7B%5Cprime%7D+%5Ccdot+w_7+%5Ccdot+%5Csigma%28net_%7Bh1%7D%29%5E%7B%5Cprime%7D+%5Ccdot+i_1%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="12梯度消失爆炸产生原因">1.2
-<strong>==梯度消失，爆炸产生原因：==</strong></span></h4>
-<p>从上式其实已经能看出来，求和操作其实不影响，主要是是看乘法操作就可以说明问题，可以看出，损失函数对w1的偏导，与
-<img src="https://www.zhihu.com/equation?tex=C_%7Bo1%7D" alt="[公式]">
-，权重w，sigmoid的导数有关，明明还有输入i为什么不提？因为如果是多层神经网络的中间某层的某个节点，那么就没有输入什么事了。所以产生影响的就是刚刚提的三个因素。</p>
-<p>再详细点描述，如图，多层神经网络：</p>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-0f2ded75fbecc449a25bfd58b8c58d35_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>参考：</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25631496">PENG：神经网络训练中的梯度消失与梯度爆炸282
-赞同 · 26 评论文章</a></p>
-<p>假设（假设每一层只有一个神经元且对于每一层 <img src="https://www.zhihu.com/equation?tex=y_i%3D%5Csigma%5Cleft%28z_i%5Cright%29%3D%5Csigma%5Cleft%28w_ix_i%2Bb_i%5Cright%29" alt="[公式]">，其中<img src="https://www.zhihu.com/equation?tex=%5Csigma" alt="[公式]">为sigmoid函数），如图：</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-ea9beb6c28c7d4e89be89dc5f4cbae2e_1440w.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>则：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Bl%7D%7B%5Cfrac%7B%5Cpartial+C%7D%7B%5Cpartial+b_%7B1%7D%7D%3D%5Cfrac%7B%5Cpartial+C%7D%7B%5Cpartial+y_%7B4%7D%7D+%5Cfrac%7B%5Cpartial+y_%7B4%7D%7D%7B%5Cpartial+z_%7B4%7D%7D+%5Cfrac%7B%5Cpartial+z_%7B4%7D%7D%7B%5Cpartial+x_%7B4%7D%7D+%5Cfrac%7B%5Cpartial+x_%7B4%7D%7D%7B%5Cpartial+z_%7B3%7D%7D+%5Cfrac%7B%5Cpartial+z_%7B3%7D%7D%7B%5Cpartial+x_%7B3%7D%7D+%5Cfrac%7B%5Cpartial+x_%7B3%7D%7D%7B%5Cpartial+z_%7B2%7D%7D+%5Cfrac%7B%5Cpartial+z_%7B2%7D%7D%7B%5Cpartial+x_%7B2%7D%7D+%5Cfrac%7B%5Cpartial+x_%7B2%7D%7D%7B%5Cpartial+z_%7B1%7D%7D+%5Cfrac%7B%5Cpartial+z_%7B1%7D%7D%7B%5Cpartial+b_%7B1%7D%7D%7D+%5C%5C+%7B%3DC_%7By4%7D+%5Csigma%5E%7B%5Cprime%7D%5Cleft%28z_%7B4%7D%5Cright%29+w_%7B4%7D+%5Csigma%5E%7B%5Cprime%7D%5Cleft%28z_%7B3%7D%5Cright%29+w_%7B3%7D+%5Csigma%5E%7B%5Cprime%7D%5Cleft%28z_%7B2%7D%5Cright%29+w_%7B2%7D+%5Csigma%5E%7B%5Cprime%7D%5Cleft%28z_%7B1%7D%5Cright%29%7D%5Cend%7Barray%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>看一下sigmoid函数的求导之后的样子：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-208a4aa5dc657fe86919f3549d853793_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>发现sigmoid函数求导后最大最大也只能是0.25。</strong></p>
-<p>再来看W，一般我们初始化权重参数W时，通常都小于1，用的最多的应该是0，1正态分布吧。</p>
-<p><font color="red"><strong>所以 <img src="https://www.zhihu.com/equation?tex=%7C%5Csigma%27%5Cleft%28z%5Cright%29w%7C%5Cleq0.25" alt="[公式]">
-，多个小于1的数连乘之后，那将会越来越小，导致靠近输入层的层的权重的偏导几乎为0，也就是说几乎不更新，这就是梯度消失的根本原因。</strong></font></p>
-<p>再来看看<strong>梯度爆炸</strong>的原因，也就是说如果 <img src="https://www.zhihu.com/equation?tex=%7C%5Csigma%27%5Cleft%28z%5Cright%29w%7C%5Cgeq1" alt="[公式]">
-时，连乘下来就会导致梯度过大，导致梯度更新幅度特别大，可能会溢出，导致模型无法收敛。sigmoid的函数是不可能大于1了，上图看的很清楚，那只能是w了，这也就是经常看到别人博客里的一句话，初始权重过大，一直不理解为啥。。现在明白了。</p>
-<p>但梯度爆炸的情况一般不会发生，对于sigmoid函数来说， <img src="https://www.zhihu.com/equation?tex=%5Csigma%28z%29%5E%7B%5Cprime%7D" alt="[公式]"> 的大小也与w有关，因为 <img src="https://www.zhihu.com/equation?tex=z%3Dwx%2Bb" alt="[公式]">
-，除非该层的输入值<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">在一直一个比较小的范围内。</p>
-<p>其实<strong>梯度爆炸和梯度消失问题都是因为网络太深</strong>，网络权值更新不稳定造成的，本质上是因为<strong>梯度反向传播中的连乘效应</strong>。</p>
-<p>==<strong>所以，总结一下，为什么会发生梯度爆炸和消失：</strong>==</p>
-<blockquote>
-<p>本质上是因为神经网络的更新方法，梯度消失是因为反向传播过程中对梯度的求解会产生sigmoid导数和参数的连乘，sigmoid导数的最大值为0.25，权重一般初始都在0，1之间，乘积小于1，多层的话就会有多个小于1的值连乘，导致靠近输入层的梯度几乎为0，得不到更新。梯度爆炸是也是同样的原因，只是如果初始权重大于1，或者更大一些，多个大于1的值连乘，将会很大或溢出，导致梯度更新过大，模型无法收敛。</p>
-</blockquote>
-<h3><span id="13-梯度消失-爆炸解决方案">1.3 梯度消失、爆炸解决方案？</span></h3>
-<blockquote>
-<p><strong>参考：</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33006526">DoubleV：详解深度学习中的梯度消失、爆炸原因及其解决方法</a></p>
-<ul>
-<li>预训练加微调</li>
-<li>梯度剪切、正则</li>
-</ul>
-</blockquote>
-<h4><span id="解决方案一预训练加微调"><strong>解决方案一（预训练加微调）：</strong></span></h4>
-<p>提出采取无监督逐层训练方法，其基本思想是每次训练一层隐节点，训练时将上一层隐节点的输出作为输入，而本层隐节点的输出作为下一层隐节点的输入，此过程就是逐层“预训练”（pre-training）；在预训练完成后，再对整个网络进行“微调”（<strong>fine-tunning</strong>）。</p>
-<p>Hinton在训练深度信念网络（Deep Belief
-Networks中，使用了这个方法，在各层预训练完成后，再利用BP算法对整个网络进行训练。此思想相当于是先寻找局部最优，然后整合起来寻找全局最优，此方法有一定的好处，但是目前应用的不是很多了。</p>
-<h4><span id="解决方案二梯度剪切-正则"><strong>解决方案二（梯度剪切、正则）：</strong></span></h4>
-<p><strong>梯度剪切</strong>这个方案主要是针对梯度爆炸提出的，其思想是设置一个梯度剪切阈值，然后更新梯度的时候，如果梯度超过这个阈值，那么就将其强制限制在这个范围之内。这可以防止梯度爆炸。</p>
-<p><strong>正则化</strong>是通过对网络权重做正则限制过拟合，仔细看正则项在损失函数的形式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=Loss%3D%28y-W%5ETx%29%5E2%2B+%5Calpha+%7C%7CW%7C%7C%5E2%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Calpha" alt="[公式]">
-是指正则项系数，因此，如果发生梯度爆炸，权值的范数就会变的非常大，通过正则化项，可以部分限制梯度爆炸的发生。</p>
-<p>注：事实上，在深度神经网络中，往往是梯度消失出现的更多一些</p>
-<h4><span id="解决方案三改变激活函数"><strong><font color="red">
-解决方案三（改变激活函数）：</font></strong></span></h4>
-<p>首先说明一点，<strong>tanh激活函数不能有效的改善这个问题</strong>，先来看tanh的形式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctanh+%28x%29%3D%5Cfrac%7Be%5E%7Bx%7D-e%5E%7B-x%7D%7D%7Be%5E%7Bx%7D%2Be%5E%7B-x%7D%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>再来看tanh的导数图像：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-66a7e4fcf11a2d85c15e7bf7b88b2d1b_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p><strong>发现虽然比sigmoid的好一点，sigmoid的最大值小于0.25，tanh的最大值小于1，但仍是小于1的，所以并不能解决这个问题。</strong></p>
-<p><strong>Relu</strong>:思想也很简单，如果激活函数的导数为1，那么就不存在梯度消失爆炸的问题了，每层的网络都可以得到相同的更新速度，relu就这样应运而生。先看一下relu的数学表达式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7BRe%7D+%5Coperatorname%7Blu%7D%28%5Cmathrm%7Bx%7D%29%3D%5Cmax+%28%5Cmathrm%7Bx%7D%2C+0%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bl%7D%7B0%2C+x%3C0%7D+%5C%5C+%7Bx%2C+x%3E0%7D%5Cend%7Barray%7D%5Cright%5C%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><img src="https://pic2.zhimg.com/80/v2-55475ee2d90cd7257a39f62549a65769_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>从上图中，我们可以很容易看出，<strong>relu函数的导数在正数部分是恒等于1的，因此在深层网络中使用relu激活函数就不会导致梯度消失和爆炸的问题。</strong></p>
-<p><strong>relu</strong>的主要贡献在于：</p>
-<ul>
-<li>解决了梯度消失、爆炸的问题</li>
-<li>计算方便，计算速度快</li>
-<li>加速了网络的训练</li>
-</ul>
-<p>同时也存在一些<strong>缺点</strong>：</p>
-<ul>
-<li><strong>由于负数部分恒为0，会导致一些神经元无法激活（可通过设置小学习率部分解决）</strong></li>
-<li>输出不是以0为中心的</li>
-</ul>
-<p><strong>leakrelu</strong></p>
-<p>leakrelu就是为了解决relu的0区间带来的影响，其数学表达为： <img src="https://www.zhihu.com/equation?tex=leakrelu%3D%5Cbegin%7Bequation%7D+f%28x%29%3D+%5Cbegin%7Bcases%7D+x%2C+%26+%7Bx%5Cgt+0%7D+%5C%5C%5C%5C+x%2Ak%2C+%26+%7Bx%5Cleq+0%7D+%5Cend%7Bcases%7D+%5Cend%7Bequation%7D" alt="[公式]">
-其中k是leak系数，一般选择0.1或者0.2，或者通过学习而来解决死神经元的问题。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-3ab1bd8fb85542a0c85eb907b73fa327_1440w.jpg" alt="img" style="zoom:33%;"></p>
-<p>leakrelu解决了0区间带来的影响，而且包含了relu的所有优点</p>
-<p><strong>elu</strong></p>
-<p>elu激活函数也是为了解决relu的0区间带来的影响，其数学表达为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bcc%7D%7Bx%2C%7D+%26+%7B%5Ctext+%7B+if+%7D+x%3E0%7D+%5C%5C+%7B%5Calpha%5Cleft%28e%5E%7Bx%7D-1%5Cright%29%2C%7D+%26+%7B%5Ctext+%7B+otherwise+%7D%7D%5Cend%7Barray%7D%5Cright.%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其函数及其导数数学形式为：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-ec3c80e51129bd76d49cad6e52d449c2_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>但是elu相对于leakrelu来说，计算要更耗时间一些，因为有e。</p>
-<h4><span id="解决方案四batchnorm梯度消失"><strong>解决方案四（batchnorm）：</strong>【梯度消失】</span></h4>
-<p><strong>Batchnorm</strong>是深度学习发展以来提出的最重要的成果之一了，目前已经被广泛的应用到了各大网络中，具有加速网络收敛速度，提升训练稳定性的效果，Batchnorm本质上是解决反向传播过程中的梯度问题。batchnorm全名是batch
-normalization，简称BN，即批规范化，通过规范化操作将输出信号x规范化到均值为0，方差为1保证网络的稳定性。</p>
-<p>具体的batchnorm原理非常复杂，在这里不做详细展开，此部分大概讲一下batchnorm解决梯度的问题上。具体来说就是反向传播中，经过每一层的梯度会乘以该层的权重，举个简单例子：
-正向传播中<img src="https://www.zhihu.com/equation?tex=f_3%3Df_2%28w%5ET%2Ax%2Bb%29" alt="[公式]">，那么反向传播中，<img src="https://www.zhihu.com/equation?tex=%5Cfrac+%7B%5Cpartial+f_2%7D%7B%5Cpartial+x%7D%3D%5Cfrac%7B%5Cpartial+f_2%7D%7B%5Cpartial+f_1%7Dw" alt="[公式]">，反向传播式子中有w的存在，所以<img src="https://www.zhihu.com/equation?tex=w" alt="[公式]">的大小影响了梯度的消失和爆炸，batchnorm就是通过对每一层的输出做scale和shift的方法，通过一定的规范化手段，<strong>把每层神经网络任意神经元这个输入值的分布【假设原始是正态分布】强行拉回到接近均值为0方差为1的标准正太分布，即严重偏离的分布强制拉回比较标准的分布，<font color="red">
-这样使得激活输入值落在非线性函数对输入比较敏感的区域，这样输入的小变化就会导致损失函数较大的变化，使得让梯度变大，避免梯度消失问题产生</font>，而且梯度变大意味着学习收敛速度快，能大大加快训练速度。</strong></p>
-<h4><span id="解决方案五残差结构"><strong><font color="red">
-解决方案五（残差结构）：</font></strong></span></h4>
-<p><img src="https://pic4.zhimg.com/80/v2-3134d24348c47ca2001d37fef1c3f8bf_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>如图，把输入加入到某层中，这样求导时，总会有个1在，这样就不会梯度消失了。</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Coperatorname%7Bloss%7D%7D%7B%5Cpartial+x_%7Bl%7D%7D%3D%5Cfrac%7B%5Cpartial+%5Coperatorname%7Bloss%7D%7D%7B%5Cpartial+x_%7BL%7D%7D+%5Ccdot+%5Cfrac%7B%5Cpartial+x_%7BL%7D%7D%7B%5Cpartial+x_%7Bl%7D%7D%3D%5Cfrac%7B%5Cpartial+%5Coperatorname%7Bloss%7D%7D%7B%5Cpartial+x_%7BL%7D%7D+%5Ccdot%5Cleft%281%2B%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial+x_%7BL%7D%7D+%5Csum_%7Bi%3Dl%7D%5E%7BL-1%7D+F%5Cleft%28x_%7Bi%7D%2C+W_%7Bi%7D%5Cright%29%5Cright%29%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>式子的第一个因子 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+loss%7D%7B%5Cpartial+%7B%7Bx%7D_%7BL%7D%7D%7D" alt="[公式]"> 表示的损失函数到达 L
-的梯度，小括号中的1表明短路机制可以无损地传播梯度，而另外一项残差梯度则需要经过带有weights的层，梯度不是直接传递过来的。残差梯度不会那么巧全为-1，而且就算其比较小，有1的存在也不会导致梯度消失。所以残差学习会更容易。</p>
-<p><code>注：上面的推导并不是严格的证</code>，只为帮助理解</p>
-<p>==<strong>解决方案六（LSTM）：</strong>==</p>
-<p>在介绍这个方案之前，有必要来推导一下RNN的反向传播，<strong>因为关于梯度消失的含义它跟DNN不一样！不一样！不一样！</strong></p>
-<p>先推导再来说，从这copy的：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28687529">沉默中的思索：RNN梯度消失和爆炸的原因565
-赞同</a></p>
-<p>RNN结构如图：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-ab844e07a86f910d2852198c3117ddb7_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>假设我们的时间序列只有三段， <img src="https://www.zhihu.com/equation?tex=S_%7B0%7D" alt="[公式]">
-为给定值，神经元没有激活函数，则RNN最简单的前向传播过程如下： <img src="https://www.zhihu.com/equation?tex=S_%7B1%7D%3DW_%7Bx%7DX_%7B1%7D%2BW_%7Bs%7DS_%7B0%7D%2Bb_%7B1%7D" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=O_%7B1%7D%3DW_%7Bo%7DS_%7B1%7D%2Bb_%7B2%7D" alt="[公式]"></p>
-<p><img src="https://www.zhihu.com/equation?tex=S_%7B2%7D%3DW_%7Bx%7DX_%7B2%7D%2BW_%7Bs%7DS_%7B1%7D%2Bb_%7B1%7D" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=O_%7B2%7D%3DW_%7Bo%7DS_%7B2%7D%2Bb_%7B2%7D" alt="[公式]"></p>
-<p><img src="https://www.zhihu.com/equation?tex=S_%7B3%7D%3DW_%7Bx%7DX_%7B3%7D%2BW_%7Bs%7DS_%7B2%7D%2Bb_%7B1%7D" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=O_%7B3%7D%3DW_%7Bo%7DS_%7B3%7D%2Bb_%7B2%7D" alt="[公式]"></p>
-<p>假设在t=3时刻，损失函数为 <img src="https://www.zhihu.com/equation?tex=L_%7B3%7D%3D%5Cfrac%7B1%7D%7B2%7D%28Y_%7B3%7D-O_%7B3%7D%29%5E%7B2%7D" alt="[公式]"> 。</p>
-<p>则对于一次训练任务的损失函数为 <img src="https://www.zhihu.com/equation?tex=L%3D%5Csum_%7Bt%3D0%7D%5E%7BT%7D%7BL_%7Bt%7D%7D" alt="[公式]"> ，即每一时刻损失值的累加。</p>
-<p>使用随机梯度下降法训练RNN其实就是对 <img src="https://www.zhihu.com/equation?tex=W_%7Bx%7D+" alt="[公式]"> 、
-<img src="https://www.zhihu.com/equation?tex=W_%7Bs%7D" alt="[公式]">
-、 <img src="https://www.zhihu.com/equation?tex=W_%7Bo%7D" alt="[公式]"> 以及 <img src="https://www.zhihu.com/equation?tex=b_%7B1%7D" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=b_%7B2%7D" alt="[公式]">
-求偏导，并不断调整它们以使L尽可能达到最小的过程。</p>
-<p>现在假设我们我们的时间序列只有三段，t1，t2，t3。</p>
-<p><strong>我们只对t3时刻的 <img src="https://www.zhihu.com/equation?tex=W_%7Bx%7D%E3%80%81W_%7Bs%7D%E3%80%81W_%7B0%7D" alt="[公式]"> 求偏导（其他时刻类似）：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BW_%7B0%7D%7D%7D%3D%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BW_%7Bo%7D%7D%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BW_%7Bx%7D%7D%7D%3D%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B3%7D%7D%7D%7B%5Cpartial%7BW_%7Bx%7D%7D%7D%2B%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B2%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B2%7D%7D%7D%7B%5Cpartial%7BW_%7Bx%7D%7D%7D%2B%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B2%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B2%7D%7D%7D%7B%5Cpartial%7BS_%7B1%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B1%7D%7D%7D%7B%5Cpartial%7BW_%7Bx%7D%7D%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BW_%7Bs%7D%7D%7D%3D%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B3%7D%7D%7D%7B%5Cpartial%7BW_%7Bs%7D%7D%7D%2B%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B2%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B2%7D%7D%7D%7B%5Cpartial%7BW_%7Bs%7D%7D%7D%2B%5Cfrac%7B%5Cpartial%7BL_%7B3%7D%7D%7D%7B%5Cpartial%7BO_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B3%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B3%7D%7D%7D%7B%5Cpartial%7BS_%7B2%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B2%7D%7D%7D%7B%5Cpartial%7BS_%7B1%7D%7D%7D%5Cfrac%7B%5Cpartial%7BS_%7B1%7D%7D%7D%7B%5Cpartial%7BW_%7Bs%7D%7D%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><strong>可以看出对于 <img src="https://www.zhihu.com/equation?tex=W_%7B0%7D" alt="[公式]">
-求偏导并没有长期依赖，但是对于 <img src="https://www.zhihu.com/equation?tex=W_%7Bx%7D%E3%80%81W_%7Bs%7D" alt="[公式]"> 求偏导，会随着时间序列产生长期依赖</strong>。因为 <img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D" alt="[公式]">
-随着时间序列向前传播，而 <img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D" alt="[公式]"> 又是
-<img src="https://www.zhihu.com/equation?tex=W_%7Bx%7D%E3%80%81W_%7Bs%7D" alt="[公式]">的函数。</p>
-<p>根据上述求偏导的过程，我们可以得出任意时刻对 <img src="https://www.zhihu.com/equation?tex=W_%7Bx%7D%E3%80%81W_%7Bs%7D" alt="[公式]"> 求偏导的公式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial%7BL_%7Bt%7D%7D%7D%7B%5Cpartial%7BW_%7Bx%7D%7D%7D%3D%5Csum_%7Bk%3D0%7D%5E%7Bt%7D%7B%5Cfrac%7B%5Cpartial%7BL_%7Bt%7D%7D%7D%7B%5Cpartial%7BO_%7Bt%7D%7D%7D%5Cfrac%7B%5Cpartial%7BO_%7Bt%7D%7D%7D%7B%5Cpartial%7BS_%7Bt%7D%7D%7D%7D%28%5Cprod_%7Bj%3Dk%2B1%7D%5E%7Bt%7D%7B%5Cfrac%7B%5Cpartial%7BS_%7Bj%7D%7D%7D%7B%5Cpartial%7BS_%7Bj-1%7D%7D%7D%7D%29%5Cfrac%7B%5Cpartial%7BS_%7Bk%7D%7D%7D%7B%5Cpartial%7BW_%7Bx%7D%7D%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>任意时刻对<img src="https://www.zhihu.com/equation?tex=W_%7Bs%7D" alt="[公式]"> 求偏导的公式同上。</p>
-<p><font color="red"> 如果加上激活函数， <img src="https://www.zhihu.com/equation?tex=S_%7Bj%7D%3Dtanh%28W_%7Bx%7DX_%7Bj%7D%2BW_%7Bs%7DS_%7Bj-1%7D%2Bb_%7B1%7D%29" alt="[公式]"> ，则 <img src="https://www.zhihu.com/equation?tex=%5Cprod_%7Bj%3Dk%2B1%7D%5E%7Bt%7D%7B%5Cfrac%7B%5Cpartial%7BS_%7Bj%7D%7D%7D%7B%5Cpartial%7BS_%7Bj-1%7D%7D%7D%7D" alt="[公式]"> = <img src="https://www.zhihu.com/equation?tex=%5Cprod_%7Bj%3Dk%2B1%7D%5E%7Bt%7D%7Btanh%5E%7B%27%7D%7DW_%7Bs%7D" alt="[公式]">激活函数tanh和它的导数图像在上面已经说过了，所以原因在这就不赘述了，还是一样的，激活函数导数小于1。</font></p>
-<blockquote>
-<p>==<strong>现在来解释一下，为什么说RNN和DNN的梯度消失问题含义不一样？</strong>==</p>
-<ol type="1">
-<li><strong>先来说DNN中的反向传播：</strong>在上文的DNN反向传播中，我推导了两个权重的梯度，第一个梯度是直接连接着输出层的梯度，求解起来并没有梯度消失或爆炸的问题，因为它没有连乘，只需要计算一步。第二个梯度出现了连乘，也就是说越靠近输入层的权重，梯度消失或爆炸的问题越严重，可能就会消失会爆炸。<strong>一句话总结一下，DNN中各个权重的梯度是独立的，该消失的就会消失，不会消失的就不会消失。</strong></li>
-<li><strong>再来说RNN：</strong>RNN的特殊性在于，它的权重是共享的。抛开W_o不谈，因为它在某时刻的梯度不会出现问题（某时刻并不依赖于前面的时刻），但是W_s和W_x就不一样了，每一时刻都由前面所有时刻共同决定，是一个相加的过程，这样的话就有个问题，当距离长了，计算最前面的导数时，最前面的导数就会消失或爆炸，但当前时刻整体的梯度并不会消失，因为它是求和的过程，当下的梯度总会在，只是前面的梯度没了，但是更新时，由于权值共享，所以整体的梯度还是会更新，<strong>通常人们所说的梯度消失就是指的这个，指的是当下梯度更新时，用不到前面的信息了，因为距离长了，前面的梯度就会消失，也就是没有前面的信息了，但要知道，整体的梯度并不会消失，因为当下的梯度还在，并没有消失。</strong></li>
-<li><strong>一句话概括：</strong>RNN的梯度不会消失，RNN的梯度消失指的是当下梯度用不到前面的梯度了，但DNN靠近输入的权重的梯度是真的会消失。</li>
-</ol>
-</blockquote>
-<p>说完了RNN的反向传播及梯度消失的含义，终于该说<strong>为什么LSTM可以解决这个问题了</strong>，这里默认大家都懂LSTM的结构，对结构不做过多的描述。<strong>见第三节</strong>。【LSTM通过它的“门控装置”有效的缓解了这个问题，这也就是为什么我们现在都在使用LSTM而非普通RNN。】</p>
-<h3><span id="二-lstm-框架结构">二、LSTM 框架结构</span></h3>
-<h4><span id="前言">前言：</span></h4>
-<blockquote>
-<p>LSTM是RNN的一种变体，更高级的RNN，那么它的本质还是一样的，还记得RNN的特点吗，<strong>可以有效的处理序列数据，</strong>当然LSTM也可以，还记得RNN是如何处理有效数据的吗，是不是<strong>每个时刻都会把隐藏层的值存下来，到下一时刻的时候再拿出来用，这样就保证了，每一时刻含有上一时刻的信息</strong>，如图，我们把存每一时刻信息的地方叫做Memory
-Cell，中文就是记忆细胞，可以这么理解。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-a5590a65bf7a93bbaafc1a6b03cf3862_1440w.png" alt="img" style="zoom:50%;"></p>
-<p><strong>RNN什么信息它都存下来，因为它没有挑选的能力，而LSTM不一样，它会选择性的存储信息，因为它能力强，它有门控装置，它可以尽情的选择。</strong>如下图，普通RNN只有中间的Memory
-Cell用来存所有的信息，而从下图我们可以看到，<strong>LSTM多了三个Gate</strong>。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-5602237fa98e90614cea748aa6a8b6d3_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<ul>
-<li><strong>Input
-Gate</strong>：输入门，在每一时刻从输入层输入的信息会首先经过输入门，输入门的开关会决定这一时刻是否会有信息输入到Memory
-Cell。</li>
-<li><strong>Output Gate</strong>：输出门，每一时刻是否有信息从Memory
-Cell输出取决于这一道门。</li>
-<li><strong>Forget Gate</strong>：遗忘门，每一时刻Memory
-Cell里的值都会经历一个是否被遗忘的过程，就是由该门控制的，如果打卡，那么将会把Memory
-Cell里的值清除，也就是遗忘掉。</li>
-</ul>
-<p>在了解LSTM的内部结构之前，我们需要先回顾一下普通RNN的结构，以免在这里很多读者被搞懵，如下：</p>
-<p><img src="https://pic1.zhimg.com/80/v2-acee3e085ee62fe162bcac5cd135b54c_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>我们可以看到，左边是为了简便描述RNN的工作原理而画的缩略图，右边是展开之后，每个时间点之间的流程图，<strong>注意，我们接下来看到的LSTM的结构图，是一个时间点上的内部结构，就是整个工作流程中的其中一个时间点，也就是如下图：</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-ccf7b5baee04f3f24bd04637df9bcd3a_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>注意，<strong>上图是普通RNN的一个时间点的内部结构</strong>，上面已经讲过了公式和原理，<strong>LSTM的内部结构更为复杂，不过如果这么类比来学习，我认为也没有那么难</strong>。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-1428c54d3ae79cf12616e7051c07799d_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<ul>
-<li>Cell：memory cell，也就是一个记忆存储的地方，这里就类似于普通RNN的
-<img src="https://www.zhihu.com/equation?tex=S_t" alt="[公式]">
-，都是用来存储信息的，这里面的信息都会保存到下一时刻，其实标准的叫法应该是
-<img src="https://www.zhihu.com/equation?tex=h_t" alt="[公式]">
-，因为这里对应神经网络里的隐藏层，所以是hidden的缩写，无论普通RNN还是LSTM其实t时刻的记忆细胞里存的信息，都应该被称为
-<img src="https://www.zhihu.com/equation?tex=h_t" alt="[公式]"></li>
-<li><img src="https://www.zhihu.com/equation?tex=a" alt="[公式]">
-是这一时刻的输出，也就是类似于普通RNN里的 <img src="https://www.zhihu.com/equation?tex=O_t" alt="[公式]"></li>
-<li>四个 <img src="https://www.zhihu.com/equation?tex=Z%EF%BC%8CZ_i%EF%BC%8CZ_f%EF%BC%8CZ_o" alt="[公式]"> ，这四个相辅相成，才造就了中间的Memory
-Cell里的值，你肯恩要问普通RNN里有个 <img src="https://www.zhihu.com/equation?tex=X_t+" alt="[公式]">
-作为输入，那LSTM的输入在哪？别着急，其实这四个 <img src="https://www.zhihu.com/equation?tex=Z%EF%BC%8CZ_i%EF%BC%8CZ_f%EF%BC%8CZ_o" alt="[公式]"> 都有输入向量 <img src="https://www.zhihu.com/equation?tex=X_t" alt="[公式]">
-的参与。对了，在解释这四个分别是什么之前，我要先解释一下上图的所有这个符号：<img src="https://pic4.zhimg.com/80/v2-b74b5413f6897f2890b3ede634f60efb_1440w.png" alt="img" style="zoom:50%;">都代表一个激活函数，<strong>LSTM里常用的激活函数有两个，一个是tanh，一个是sigmoid</strong>。</li>
-<li><figure>
-<img src="https://www.zhihu.com/equation?tex=Z%3Dtanh%28W%5Bx_t%2Ch_%7Bt-1%7D%5D%29%5C%5CZ_i%3D%5Csigma%28W_i%5Bx_t%2Ch_%7Bt-1%7D%5D%29%5C%5CZ_f%3D%5Csigma%28W_f%5Bx_t%2Ch_%7Bt-1%7D%5D%29%5C%5CZ_o%3D%5Csigma%28W_o%5Bx_t%2Ch_%7Bt-1%7D%5D%29%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure></li>
-<li><img src="https://www.zhihu.com/equation?tex=Z" alt="[公式]">
-<strong>是最为普通的输入</strong>，可以从上图中看到， <img src="https://www.zhihu.com/equation?tex=Z" alt="[公式]">
-是通过该时刻的输入 <img src="https://www.zhihu.com/equation?tex=X_t" alt="[公式]"> 和上一时刻存在memory cell里的隐藏层信息 <img src="https://www.zhihu.com/equation?tex=h_%7Bt-1%7D" alt="[公式]">
-向量拼接，再与权重参数向量 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]">
-点积，得到的值经过激活函数tanh最终会得到一个数值。</li>
-<li><img src="https://www.zhihu.com/equation?tex=Z_i" alt="[公式]">
-<strong>input gate的缩写i，所以也就是输入门的门控装置</strong>， <img src="https://www.zhihu.com/equation?tex=Z_i+" alt="[公式]">
-同样也是通过该时刻的输入 <img src="https://www.zhihu.com/equation?tex=X_t" alt="[公式]">
-和上一时刻隐藏状态，也就是上一时刻存下来的信息 <img src="https://www.zhihu.com/equation?tex=h_%7Bt-1%7D" alt="[公式]">
-向量拼接，在与权重参数向量 <img src="https://www.zhihu.com/equation?tex=W_i" alt="[公式]">
-点积（注意每个门的权重向量都不一样，这里的下标i代表input的意思，也就是输入门)。得到的值经过激活函数sigmoid的最终会得到一个0-1之间的一个数值，用来作为<strong>输入门的控制信号</strong>。</li>
-<li>以此类推，就不详细讲解 <img src="https://www.zhihu.com/equation?tex=Z_f%EF%BC%8CZ_o" alt="[公式]">
-了，分别是缩写forget和output的门控装置，原理与上述输入门的门控装置类似。上面说了，只有
-<img src="https://www.zhihu.com/equation?tex=Z" alt="[公式]">
-是输入，其他的三个都是门控装置，负责把控每一阶段的信息记录与遗忘，具体是怎样的呢？我们先来看公式：<strong>首先解释一下，经过这个sigmod激活函数后，得到的
-<img src="https://www.zhihu.com/equation?tex=Z_i%EF%BC%8CZ_f%EF%BC%8CZ_o" alt="[公式]">
-都是在0到1之间的数值，1表示该门完全打开，0表示该门完全关闭</strong>，</li>
-</ul>
-</blockquote>
-<h4><span id="lstm迭代过程">==LSTM迭代过程==</span></h4>
-<blockquote>
-<p>LSTM和GRU算法简单梳理🍭: https://zhuanlan.zhihu.com/p/72500407</p>
-</blockquote>
-<p><img src="https://pic3.zhimg.com/80/v2-10f9ec56794c9f89ca2b6ce86c7693ee_1440w.jpg?source=d16d100b" alt="img" style="zoom: 33%;"></p>
-<p><img src="https://pic2.zhimg.com/80/v2-867b66c85751aa3bfeeb4956054e0eb8_1440w.jpg?source=d16d100b" alt="img" style="zoom:67%;"></p>
-<p><img src="https://www.zhihu.com/equation?tex=h_%7Bt%7D" alt="[公式]"> ：当前序列的隐藏状态、 <img src="https://www.zhihu.com/equation?tex=x_%7Bt%7D" alt="[公式]">
-：当前序列的输入数据、 <img src="https://www.zhihu.com/equation?tex=C_%7Bt%7D" alt="[公式]">
-：当前序列的细胞状态、 <img src="https://www.zhihu.com/equation?tex=%5Csigma" alt="[公式]"> ：
-<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-激活函数、 <img src="https://www.zhihu.com/equation?tex=%5Ctanh" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=+%5Ctanh" alt="[公式]">
-激活函数。</p>
-<p><strong>遗忘门：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D++f_%7Bt%7D%3D%5Csigma%5Cleft%28W_%7Bf%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%2Bb_%7Bf%7D%5Cright%29++%5Cend%7Bequation%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><strong>输入门：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D+i_%7Bt%7D+%26%3D%5Csigma%5Cleft%28W_%7Bi%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%2Bb_%7Bi%7D%5Cright%29+%5C%5C+%5Ctilde%7BC%7D_%7Bt%7D+%26%3D%5Ctanh+%5Cleft%28W_%7BC%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%2Bb_%7BC%7D%5Cright%29+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><strong>细胞状态更新：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=C_%7Bt%7D%3DC_%7Bt-1%7D%5Codot+f_t%2Bi_t%5Codot+%5Ctilde%7BC_t%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p><strong>输出门：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D++o_t%26%3D%5Csigma%7B%28W_o%5Ccdot%5Bh_%7Bt-1%7D%2Cx_t%5D%2Bb_o%29%7D%5C%5C+h_t%26%3Do_t%5Codot+%5Ctanh%7B%28C_t%29%7D+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="21-lstm之遗忘门">2.1 LSTM之遗忘门</span></h4>
-<p><img src="https://pic3.zhimg.com/80/v2-e616cbe445d60aee532ef3d9db0fb8f6_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p><strong>遗忘门是控制是否遗忘的</strong>，在 <img src="https://www.zhihu.com/equation?tex=LSTM" alt="[公式]">
-中即以一定的概率控制是否遗忘上一层的细胞状态。图中输入的有前一序列的隐藏状态
-<img src="https://www.zhihu.com/equation?tex=h_%7Bt-1%7D" alt="[公式]"> 和当前序列的输入数据 <img src="https://www.zhihu.com/equation?tex=x_t" alt="[公式]"> ，通过一个
-<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-激活函数得到遗忘门的输出 <img src="https://www.zhihu.com/equation?tex=f_t" alt="[公式]"> 。因为 <img src="https://www.zhihu.com/equation?tex=+sigmoid" alt="[公式]">
-函数的取值在 <img src="https://www.zhihu.com/equation?tex=%5B0%2C+1%5D" alt="[公式]"> 之间，所以 <img src="https://www.zhihu.com/equation?tex=f_t" alt="[公式]">
-表示的是遗忘前一序列细胞状态的概率，数学表达式为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D++f_%7Bt%7D%3D%5Csigma%5Cleft%28W_%7Bf%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%2Bb_%7Bf%7D%5Cright%29++%5Cend%7Bequation%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="22-lstm之输入门">2.2 LSTM之输入门</span></h4>
-<p><img src="https://pic2.zhimg.com/80/v2-1dbddd39ff6a039631b8ff1e4bc294a5_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p><strong>输入门是用来决定哪些数据是需要更新的</strong>，由 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-层决定；然后，一个 <img src="https://www.zhihu.com/equation?tex=%5Ctanh" alt="[公式]"> 层为新的候选值创建一个向量 <img src="https://www.zhihu.com/equation?tex=+%5Ctilde%7BC_t%7D" alt="[公式]"> ，这些值能够加入到当前细胞状态中，数学表达式为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D+i_%7Bt%7D+%26%3D%5Csigma%5Cleft%28W_%7Bi%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%2Bb_%7Bi%7D%5Cright%29+%5C%5C+%5Ctilde%7BC%7D_%7Bt%7D+%26%3D%5Ctanh+%5Cleft%28W_%7BC%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%2Bb_%7BC%7D%5Cright%29+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="23-lstm之细胞状态更新">2.3 LSTM之细胞状态更新</span></h4>
-<p><img src="https://pic4.zhimg.com/80/v2-82f48ff07dd75ee4346ab44c573fe0b7_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p><strong>前面的遗忘门和输入门的结果都会作用于细胞状态</strong> <img src="https://www.zhihu.com/equation?tex=C_t" alt="[公式]">
-，<strong>在决定需要遗忘和需要加入的记忆之后，就可以更新前一序列的细胞状态
-<img src="https://www.zhihu.com/equation?tex=+C_%7Bt-1%7D" alt="[公式]"> 到当前细胞状态 <img src="https://www.zhihu.com/equation?tex=C_t" alt="[公式]">
-了</strong>，前一序列的细胞状态 <img src="https://www.zhihu.com/equation?tex=C_%7Bt-1%7D" alt="[公式]">
-乘以遗忘门的输出 <img src="https://www.zhihu.com/equation?tex=f_t" alt="[公式]"> 表示决定遗忘的信息， <img src="https://www.zhihu.com/equation?tex=+i_t%5Codot+%5Ctilde%7BC_t%7D" alt="[公式]"> 表示新的记忆信息，数学表达式为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=C_%7Bt%7D%3DC_%7Bt-1%7D%5Codot+f_t%2Bi_t%5Codot+%5Ctilde%7BC_t%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h4><span id="24-lstm之输出门">2.4 LSTM之输出门</span></h4>
-<p><img src="https://pic3.zhimg.com/80/v2-6335c8e72a056eeb80970c88988f6bd2_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p><strong>在得到当前序列的细胞状态 <img src="https://www.zhihu.com/equation?tex=C_t" alt="[公式]">
-后，就可以计算当前序列的输出隐藏状态 <img src="https://www.zhihu.com/equation?tex=h_t" alt="[公式]"></strong>
-了，隐藏状态 <img src="https://www.zhihu.com/equation?tex=h_t" alt="[公式]"> 的更新由两部分组成，第一部分是 <img src="https://www.zhihu.com/equation?tex=o_t" alt="[公式]">
-，它由前一序列的隐藏状态 <img src="https://www.zhihu.com/equation?tex=h_%7Bt-1%7D" alt="[公式]">
-和当前序列的输入数据 <img src="https://www.zhihu.com/equation?tex=x_t" alt="[公式]"> 通过激活函数 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-得到，第二部分由当前序列的细胞状态 <img src="https://www.zhihu.com/equation?tex=C_t" alt="[公式]"> 经过 <img src="https://www.zhihu.com/equation?tex=%5Ctanh" alt="[公式]">
-激活函数后的结果组成，数学表达式为</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D++o_t%26%3D%5Csigma%7B%28W_o%5Ccdot%5Bh_%7Bt-1%7D%2Cx_t%5D%2Bb_o%29%7D%5C%5C+h_t%26%3Do_t%5Codot+%5Ctanh%7B%28C_t%29%7D+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<h3><span id="三-gru-框架结构">三、GRU 框架结构</span></h3>
-<p><img src="https://pic3.zhimg.com/80/v2-7547e5c91e1590bf67e0641e9e29ec66_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p><strong>循环门单元( <img src="https://www.zhihu.com/equation?tex=Gated%5C+Recurrent%5C+Unit%2C%5C+GRU" alt="[公式]">
-)，它组合了遗忘门和输入门到一个单独的更新门当中，也合并了细胞状态 <img src="https://www.zhihu.com/equation?tex=C" alt="[公式]">
-和隐藏状态</strong> <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">，并且还做了一些其他的改变使得其模型比标准 <img src="https://www.zhihu.com/equation?tex=LSTM" alt="[公式]">
-模型更简单，其数学表达式式为： <img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cbegin%7Baligned%7D+z_%7Bt%7D+%26%3D%5Csigma%5Cleft%28W_%7Bz%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%5Cright%29+%5C%5C+r_%7Bt%7D+%26%3D%5Csigma%5Cleft%28W_%7Br%7D+%5Ccdot%5Cleft%5Bh_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%5Cright%29+%5C%5C+%5Ctilde%7Bh%7D_%7Bt%7D+%26%3D%5Ctanh+%5Cleft%28W+%5Ccdot%5Cleft%5Br_%7Bt%7D+%5Codot+h_%7Bt-1%7D%2C+x_%7Bt%7D%5Cright%5D%5Cright%29+%5C%5C+h_%7Bt%7D+%26%3D%5Cleft%281-z_%7Bt%7D%5Cright%29+%5Codot+h_%7Bt-1%7D%2Bz_%7Bt%7D+%5Codot+%5Ctilde%7Bh%7D_%7Bt%7D+%5Cend%7Baligned%7D+%5Cend%7Bequation%7D%5C%5C+" alt="[公式]"></p>
-<p>首先介绍 <img src="https://www.zhihu.com/equation?tex=GRU" alt="[公式]"> 的两个门，它们分别是重置门 <img src="https://www.zhihu.com/equation?tex=r_t" alt="[公式]"> 和更新门
-<img src="https://www.zhihu.com/equation?tex=z_t" alt="[公式]">
-，计算方法与 <img src="https://www.zhihu.com/equation?tex=LSTM" alt="[公式]"> 中门的计算方法是一致的；然后是计算候选隐藏层 <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7Bh%7D_t" alt="[公式]"> ，该候选隐藏层和 <img src="https://www.zhihu.com/equation?tex=LSTM" alt="[公式]"> 中的 <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7BC%7D_t" alt="[公式]"> 类似，都可以看成是当前时刻的新信息，<strong>其中 <img src="https://www.zhihu.com/equation?tex=r_t" alt="[公式]">
-用来控制需要保留多少之前的记忆，如果 <img src="https://www.zhihu.com/equation?tex=r_t" alt="[公式]"> 为 <img src="https://www.zhihu.com/equation?tex=0" alt="[公式]"> 则表示 <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7Bh%7D_t" alt="[公式]"> 只保留当前序列的输入信息；最后 <img src="https://www.zhihu.com/equation?tex=+z_t" alt="[公式]">
-控制需要从前一序列的隐藏层 <img src="https://www.zhihu.com/equation?tex=h_%7Bt-1%7D" alt="[公式]">
-中遗忘多少信息和需要加入多少当前序列的隐藏层信息</strong> <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7Bh%7D_t" alt="[公式]"> ，从而得到当前序列的输出隐藏层信息 <img src="https://www.zhihu.com/equation?tex=h_t" alt="[公式]"> ，而 <img src="https://www.zhihu.com/equation?tex=GRU" alt="[公式]">
-是没有输出门的。</p>
-<p>GRU和LSTM的性能差不多，但GRU参数更少，更简单，所以训练效率更高。但是，如果数据的依赖特别长且数据量很大的话，LSTM的效果可能会稍微好一点，毕竟参数量更多。所以默认推荐使用LSTM。</p>
-<h4><span id="参考资料️">参考资料⬇️</span></h4>
-<p><a href="https://link.zhihu.com/?target=http%3A//colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding
-LSTM Networks</a></p>
-<h2><span id="lstm-qampa">LSTM Q&amp;A</span></h2>
-<h3><span id="1-为什么lstm可以解决梯度消失和梯度爆炸">1、为什么LSTM可以解决梯度消失和梯度爆炸？</span></h3>
-<p><img src="https://pic3.zhimg.com/80/v2-10f9ec56794c9f89ca2b6ce86c7693ee_1440w.jpg?source=d16d100b" alt="img" style="zoom: 33%;"></p>
-<p><strong>参考（这个老哥说的是最好的）：</strong><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/34878706">LSTM如何来避免梯度弥散和梯度爆炸？</a></p>
-<ul>
-<li>==<strong>LSTM 中梯度的传播有很多条路径</strong>，<img src="https://www.zhihu.com/equation?tex=c_%7Bt-1%7D+%5Crightarrow+c_t+%3D+f_t%5Codot+c_%7Bt-1%7D+%2B+i_t+%5Codot+%5Chat%7Bc_t%7D" alt="[公式]">
-这条路径上只有逐元素相乘和相加的操作，梯度流最稳定==；但是其他路径（例如
-<img src="https://www.zhihu.com/equation?tex=c_%7Bt-1%7D+%5Crightarrow+h_%7Bt-1%7D+%5Crightarrow+i_t+%5Crightarrow+c_t" alt="[公式]"> )上梯度流与普通 RNN
-类似，照样会发生相同的权重矩阵反复连乘。</li>
-<li><strong>LSTM 刚提出时没有遗忘门</strong>，或者说相当于 <img src="https://www.zhihu.com/equation?tex=f_t%3D1" alt="[公式]">
-，这时候在 <img src="https://www.zhihu.com/equation?tex=c_%7Bt-1%7D+%5Crightarrow+c_t" alt="[公式]"> 直接相连的短路路径上，<img src="https://www.zhihu.com/equation?tex=dl%2Fdc_t" alt="[公式]">
-可以无损地传递给 <img src="https://www.zhihu.com/equation?tex=dl%2Fdc_%7Bt-1%7D" alt="[公式]">
-，从而<strong>这条路径</strong>上的梯度畅通无阻，不会消失。类似于 ResNet
-中的残差连接。</li>
-<li>但是在<strong>其他路径</strong>上，LSTM 的梯度流和普通 RNN
-没有太大区别，依然会爆炸或者消失。由于总的远距离梯度 =
-各条路径的远距离梯度之和，即便其他远距离路径梯度消失了，只要保证有一条远距离路径（就是上面说的那条高速公路）梯度不消失，总的远距离梯度就不会消失（正常梯度
-+ 消失梯度 = 正常梯度）。因此 LSTM
-通过改善<strong>一条路径</strong>上的梯度问题拯救了<strong>总体的远距离梯度</strong>。</li>
-<li>同样，因为总的远距离梯度 =
-各条路径的远距离梯度之和，高速公路上梯度流比较稳定，但其他路径上梯度有可能爆炸，此时总的远距离梯度
-= 正常梯度 + 爆炸梯度 = 爆炸梯度，因此 <strong>LSTM
-仍然有可能发生梯度爆炸</strong>。不过，<strong>==由于 LSTM
-的其他路径非常崎岖，和普通 RNN 相比多经过了很多次激活函数（导数都小于
-1），因此 LSTM
-发生梯度爆炸的频率要低得多==</strong>。实践中梯度爆炸一般通过梯度裁剪来解决。</li>
-<li>对于现在常用的带遗忘门的 LSTM 来说，4 中的分析依然成立，而 3
-分为两种情况：其一是遗忘门接近 1（例如模型初始化时会把 forget bias
-设置成较大的正数，让遗忘门饱和），这时候远距离梯度不消失；其二是<strong>遗忘门接近
-0，但这时模型是故意阻断梯度流的，这不是 bug 而是
-feature</strong>（例如情感分析任务中有一条样本 “A，但是
-B”，模型读到“但是”后选择把遗忘门设置成 0，遗忘掉内容
-A，这是合理的）。当然，常常也存在 f 介于 [0, 1]
-之间的情况，在这种情况下只能说 LSTM
-改善（而非解决）了梯度消失的状况。</li>
-</ul>
-<h3><span id="2-为什么lstm模型中既存在sigmoid又存在tanh两种激活函数">2、为什么LSTM模型中既存在sigmoid又存在tanh两种激活函数？</span></h3>
-<p>关于激活函数的选取，在LSTM中，遗忘门、输入门和输出门使用
-Sigmoid函数作为激活函数;在<strong>生成候选记忆</strong>时，使用双曲正切函数<strong>tanh</strong>作为激活函数。值得注意的是，这两个激活函数都是<strong>饱和</strong>的也就是说在<strong>输入达到一定值的情况下，输出就不会发生明显变化</strong>了。如果是用非饱和的激活图数，例如ReLU，那么将<strong>难以实现门控的效果。</strong></p>
-<ul>
-<li><p>Sigmoid的输出在0-1之同，符合门控的物理定义，且当输入较大或较小时，其输出会非常接近1或0，从而保证该门开或关，在生成候选记亿时，</p></li>
-<li><p><strong>tanh函数，是因为其输出在-1-1之间，这与大多数场景下特征分布是0中心的吻合</strong>。此外，<strong>tanh函数在输入为0近相比
-Sigmoid函数有更大的梯度，通常使模型收敛更快。</strong></p></li>
-</ul>
-<p>激活函数的选择也不是一成不变的。<strong>例如在原始的LSTM中，使用的激活函数是
-Sigmoid函数的变种，h(x)=2sigmoid(x)-1,g(x)＝4
-sigmoid(x)-2，这两个函数的范国分别是[-1，1]和[-2，2]</strong>。并且在原始的LSTM中，只有输入门和输出门，没有遗忘门，其中输入经过输入门后是直接与记忆相加的，所以输入门控g(x)的值是0中心的。</p>
-<p><strong>后来经过大量的研究和实验，人们发现增加遗忘门对LSTM的性能有很大的提升</strong>且<strong>h(x)使用tanh比2
-sigmoid(x)-1要好</strong>，所以现代的LSTM采用
-Sigmoid和tanh作为激活函数。<strong>事实上在门控中，使用
-Sigmoid函数是几乎所有现代神经网络模块的共同选择</strong>。例如在<strong>门控循环单元和注意力机制</strong>中，也广泛使用
-Sigmoid i函数作为门控的激活函数。</p>
-<h4><span id="为什么">为什么？</span></h4>
-<ol type="1">
-<li>门是控制开闭的，全开时值为1，全闭值为０。用于遗忘和保留信息。</li>
-<li>对于求值的激活函数无特殊要求。</li>
-</ol>
-<h4><span id="能更换吗">能更换吗？</span></h4>
-<ol type="1">
-<li>门是控制开闭的，全开时值为1，全闭值为０。用于遗忘和保留信息。门的激活函数只能是值域为０到１的，最常见的就是sigmoid。</li>
-<li>对于求值的激活函数无特殊要求。</li>
-</ol>
-<h3><span id="3-能不能把tanh换成relu">3、能不能把tanh换成relu？</span></h3>
-<p><strong>不行</strong>？对于梯度爆炸的问题用梯度裁剪解决就行了。</p>
-<ol type="1">
-<li><strong>会造成输出值爆炸</strong>。RNN共享参数矩阵，长程的话相当于多个相乘，最后输出类似于
-<img src="https://www.zhihu.com/equation?tex=f%5Cleft%5BW+%5Cldots%5Cleft%5BW+f%5Cleft%5BW+f%5Cleft%5BW+f_%7Bi%7D%5Cright%5D%5Cright%5D%5Cright%5D%5Cright%5D" alt="[公式]"> ，其中是 <img src="https://www.zhihu.com/equation?tex=f" alt="[公式]"> 激活函数，如果 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]">
-有一个大于1的特征值，且使用relu激活函数，那最后的输出值会爆炸。但是使用tanh激活函数，能够把输出值限制在-1和1之间。</li>
-<li><strong>这里relu并不能解决梯度消失或梯度爆炸的问题</strong>。假设有t=3，最后一项输出反向传播对W求导，
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+f_%7B3%7D%7D%7B%5Cpartial+W_%7B1%7D%7D%3D%5Cfrac%7B%5Cpartial+f_%7B3%7D%7D%7B%5Cpartial+a_%7B3%7D%7D+f_%7B2%7D%2B%5Cfrac%7B%5Cpartial+f_%7B3%7D%7D%7B%5Cpartial+a_%7B3%7D%7D+W+%5Cfrac%7B%5Cpartial+f_%7B2%7D%7D%7B%5Cpartial+a_%7B2%7D%7D+f_%7B1%7D%2B%5Cfrac%7B%5Cpartial+f_%7B3%7D%7D%7B%5Cpartial+a_%7B3%7D%7D+W+%5Cfrac%7B%5Cpartial+f_%7B2%7D%7D%7B%5Cpartial+a_%7B2%7D%7D+W+%5Cfrac%7B%5Cpartial+f_%7B1%7D%7D%7B%5Cpartial+a_%7B1%7D%7D+%5Cfrac%7B%5Cpartial+a_%7B1%7D%7D%7B%5Cpartial+W_%7B1%7D%7D" alt="[公式]"> 。我们用最后一项做分析，即使使用了<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=relu&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22350613342%22%7D">relu</a>，
-<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+f_%7B3%7D%7D%7B%5Cpartial+a_%7B3%7D%7D%3D%5Cfrac%7B%5Cpartial+f_%7B2%7D%7D%7B%5Cpartial+a_%7B2%7D%7D%3D%5Cfrac%7B%5Cpartial+f_%7B3%7D%7D%7B%5Cpartial+a_%7B1%7D%7D%3D1" alt="[公式]"> ，还是会有两个 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]">
-相乘，并不能解决梯度消失或梯度爆炸的问题。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3MJS4P5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3MJS4P5/" class="post-title-link" itemprop="url">深度学习（4）CNN</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-16 21:44:58" itemprop="dateCreated datePublished" datetime="2022-03-16T21:44:58+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 21:22:12" itemprop="dateModified" datetime="2023-04-18T21:22:12+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="cnn-门控卷积网络">CNN-门控卷积网络</span></h2>
-<ul>
-<li>https://zhuanlan.zhihu.com/p/59064623</li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/FishPotatoChen/article/details/123389289?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-123389289-blog-108305491.pc_relevant_paycolumn_v3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-123389289-blog-108305491.pc_relevant_paycolumn_v3&amp;utm_relevant_index=2">参数估计</a></li>
-<li>**<font color="red"> 卷积神经网络中用1*1
-卷积有什么作用或者好处呢？</font>** - 初识CV的回答 - 知乎
-https://www.zhihu.com/question/56024942/answer/1850649283</li>
-</ul>
-<h2><span id="一-参数估计">一、参数估计</span></h2>
-<p>卷积操作的本质是<strong>稀疏交互</strong>和<strong>参数共享</strong>。</p>
-<p><strong>稀疏交互</strong>：每个输出神经元仅与前一层特定局部区域内的神经元存在连接权重。<strong>物理意义</strong>：通常图像，文字、语音等现实世界中的数据都具有<strong>局部的特征结构</strong>。</p>
-<p><strong>参数共享</strong>：卷积核中的每一个元素将作用于每一个局部输入的特定位置上。<strong>物理意义</strong>：平移等变性</p>
-<p><strong>池化操作</strong>：针对非重叠区域，均值池化、最大池化。除了能显著降低参数外，还能够保持对平移、伸缩、旋转操作的不变性。</p>
-<h4><span id="11-正向传播">1.1 正向传播</span></h4>
-<p>这里用输入为 <span class="math inline">\(3 * 3\)</span> 矩阵 <span class="math inline">\(A^{l-1}\)</span>, 步长为 1 , 卷积核为 <span class="math inline">\(2 * 2\)</span> 矩阵 <span class="math inline">\(W^{l}\)</span>, 输出为 <span class="math inline">\(2 * 2\)</span> 矩阵 <span class="math inline">\(Z^{l}\)</span> 的卷积层为 例。矩阵 <span class="math inline">\(A^{l-1}\)</span> 可以是整个神经网络的输入,
-也可以是池化层的输出。这个模型简化为输入层 <span class="math inline">\(A^{l-1}\)</span> 经 过卷积计算得到特征图 <span class="math inline">\(Z^{l}, Z^{l}\)</span> 经过激活函数 <span class="math inline">\(\sigma(x)\)</span> 得到输出层 <span class="math inline">\(A^{l}\)</span> (实际上在现实工程中很多时候不用激
-活函数)。对于第 <span class="math inline">\(l\)</span> 层, 有下列表达式:
-<span class="math display">\[
-\left[\begin{array}{lll}
-a_{1} &amp; a_{2} &amp; a_{3} \\
-a_{4} &amp; a_{5} &amp; a_{6} \\
-a_{7} &amp; a_{8} &amp; a_{9}
-\end{array}\right]^{l-1} \Rightarrow\left[\begin{array}{cc}
-\omega_{1} &amp; \omega_{2} \\
-\omega_{3} &amp; \omega_{4}
-\end{array}\right]^{l} \Rightarrow\left[\begin{array}{ll}
-z_{1} &amp; z_{2} \\
-z_{3} &amp; z_{4}
-\end{array}\right]^{l} \Rightarrow\left[\begin{array}{ll}
-a_{1} &amp; a_{2} \\
-a_{3} &amp; a_{4}
-\end{array}\right]^{l}
-\]</span></p>
-<p><span class="math display">\[
-\left\{\begin{aligned}
-a_{1}^{l} &amp;=\sum\left(\left[\begin{array}{ll}
-a_{1} &amp; a_{2} \\
-a_{4} &amp; a_{5}
-\end{array}\right]^{l-1} \cdot\left[\begin{array}{ll}
-\omega_{1} &amp; \omega_{2} \\
-\omega_{3} &amp; \omega_{4}
-\end{array}\right]^{l}\right)=\sigma\left(\omega_{1}
-a_{1}^{l-1}+\omega_{2} a_{2}^{l-1}+\omega_{3} a_{3}^{l-1}+\omega_{4}
-a_{4}^{l-1}+b^{l}\right) \\
-a_{2}^{l} &amp;=\sum\left(\left[\begin{array}{ll}
-a_{2} &amp; a_{3} \\
-a_{5} &amp; a_{6}
-\end{array}\right]^{l-1} \cdot\left[\begin{array}{ll}
-\omega_{1} &amp; \omega_{2} \\
-\omega_{3} &amp; \omega_{4}
-\end{array}\right]^{l}\right)=\sigma\left(\omega_{1}
-a_{2}^{l-1}+\omega_{2} a_{3}^{l-1}+\omega_{3} a_{5}^{l-1}+\omega_{4}
-a_{6}^{l-1}+b^{l}\right) \\
-a_{3}^{l} &amp;=\sum\left(\left[\begin{array}{ll}
-a_{4} &amp; a_{5} \\
-a_{7} &amp; a_{8}
-\end{array}\right]^{l-1} \cdot\left[\begin{array}{ll}
-\omega_{1} &amp; \omega_{2} \\
-\omega_{3} &amp; \omega_{4}
-\end{array}\right]^{l}\right)=\sigma\left(\omega_{1}
-a_{4}^{l-1}+\omega_{2} a_{5}^{l-1}+\omega_{3} a_{7}^{l-1}+\omega_{4}
-a_{8}^{l-1}+b^{l}\right) \\
-a_{4}^{l} &amp;=\sum\left(\left[\begin{array}{ll}
-a_{5} &amp; a_{6} \\
-a_{8} &amp; a_{9}
-\end{array}\right]^{l-1} \cdot\left[\begin{array}{ll}
-\omega_{1} &amp; \omega_{2} \\
-\omega_{3} &amp; \omega_{4}
-\end{array}\right]^{l}\right)=\sigma\left(\omega_{1}
-a_{5}^{l-1}+\omega_{2} a_{6}^{l-1}+\omega_{3} a_{8}^{l-1}+\omega_{4}
-a_{9}^{l-1}+b^{l}\right)
-\end{aligned}\right.
-\]</span></p>
-<p>简单来说, 卷积过程就是对应的位置代入函数之后相加求和,
-不同的函数有不同的参数 <span class="math inline">\(w\)</span> 和 <span class="math inline">\(b\)</span>, 我们需 要训练的是卷积核参数,
-所以这个公式还可以写做 <span class="math inline">\(Z^{l}=W^{l} *
-A^{l-1}+b^{l}, \sigma(x)\)</span> 是激活函数,
-<strong>我们假设是ReLU函数, 求导比较好求</strong>,
-所以我们接下来的计算忽略了对激活层的求导。 <span class="math display">\[
-\sigma(x)=\left\{\begin{array}{lc}
-0 &amp; , \quad x&lt;0 \\
-x &amp; , \quad x&gt;=0
-\end{array}\right.
-\]</span></p>
-<h3><span id="12-反向传播">1.2 反向传播</span></h3>
-<h2><span id="二-cnn-李宏毅">二、CNN - 李宏毅</span></h2>
-<h2><span id="三-cnn-qampa">三、CNN Q&amp;A</span></h2>
-<h4><span id="31卷积神经网络的卷积核大小-个数卷积层数如何确定呢">3.1
-卷积神经网络的卷积核大小、个数，卷积层数如何确定呢？</span></h4>
-<ul>
-<li>https://cloud.tencent.com/developer/article/1462368</li>
-</ul>
-<p>每一层卷积有多少channel数，以及一共有多少层卷积，这些暂时没有理论支撑，一般都是靠感觉去设置几组候选值，然后通过实验挑选出其中的最佳值。这也是现在深度卷积神经网络虽然效果拔群，但是一直为人诟病的原因之一。</p>
-<h4><span id="32卷积神经网络中用11-卷积有什么作用或者好处呢">3.2
-卷积神经网络中用1*1 卷积有什么作用或者好处呢？</span></h4>
-<ul>
-<li>卷积神经网络中用1*1 卷积有什么作用或者好处呢？ - YJango的回答 - 知乎
-https://www.zhihu.com/question/56024942/answer/194997553</li>
-</ul>
-<p><img src="image-20220627212030158.png" alt="image-20220627212030158" style="zoom: 50%;"></p>
-<p><strong>降维</strong>：Inception结构可以看出，这些1X1的卷积的作用是为了让网络根据需要能够更灵活的控制数据的depth的。</p>
-<p><strong>加入非线性</strong>。卷积层之后经过激励层，1*1的卷积在前一层的学习表示上添加了非线性激励（
-non-linear activation ），提升网络的表达能力；</p>
-<p><strong>1 * 1的卷积就是多个feature channels线性叠加，nothing
-more!只不过这个组合系数恰好可以看成是一个1 *
-1的卷积</strong>。这种表示的好处是，完全可以回到模型中其他常见N*N的框架下，不用定义新的层。</p>
 
       
     </div>

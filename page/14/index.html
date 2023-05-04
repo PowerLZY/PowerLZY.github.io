@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-count">257</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,978 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/VR9NEX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/VR9NEX/" class="post-title-link" itemprop="url">深度学习（8）Self Attention*-p1</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-14 23:08:42" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:42+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-25 23:34:26" itemprop="dateModified" datetime="2022-08-25T23:34:26+08:00">2022-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="一-李宏毅-selfattention自注意力机制-p1"><font color="red"> 一、李宏毅-Self
+Attention自注意力机制 - p1</font></span></h2>
+<blockquote>
+<p>相关性查询（q, k）-softmax - 乘上v</p>
+<p>视频链接：https://www.bilibili.com/video/BV1JK4y1D7Wb?p=26&amp;vd_source=29387dc08d18f642078183a6816e93e8</p>
+</blockquote>
+<blockquote>
+<p>跟自己计算关联性重要吗？</p>
+<p>为什么用softmax？relu也行</p>
+</blockquote>
+<p>到目前为止,我们的Network的<strong>Input</strong>都是<strong>一个向量</strong>,不管是在预测这个,YouTube观看人数的问题上啊,还是影像处理上啊,我们的输入都可以看作是一个向量,然后我们的输出,可能是一个<strong>数值</strong>,这个是<strong>Regression</strong>,可能是一个<strong>类别</strong>,这是<strong>Classification</strong></p>
+<h3><span id="11-what-is-the-output">1.1 What is the output?</span></h3>
+<p>我们刚才已经看说输入是一堆向量,它可以是文字,可以是语音,可以是Graph,那这个时候,我们有可能有什么样的<strong>输出呢,</strong>有三种可能性。</p>
+<h4><span id="111每一个向量都有一个对应的label">1.1.1
+每一个向量都有一个对应的Label</span></h4>
+<p>当你的模型,看到输入是四个向量的时候,它就要输出四个Label,而每一个Label,它可能是一个数值,那就是Regression的问题,如果每个Label是一个Class,那就是一个Classification的问题。</p>
+<p><img src="image-20220612171420908.png" alt="image-20220612171420908" style="zoom: 33%;"></p>
+<p>举例来说 在文字处理上,假设你今天要做的是==<strong>POS
+Tagging</strong>==,POS Tagging就是词性标註,你要让机器自动决定每一个词汇
+它是什么样的词性,它是名词 还是动词 还是形容词等等。</p>
+<p>这个任务啊,其实并没有很容易,举例来说,你现在看到一个句子,I saw a
+saw。这并不是打错,并不是“我看一个看”,而是“我看到一个锯子”,这个第二个saw当名词用的时候,它是锯子，那所以机器要知道,第一个saw是个动词,第二个saw虽然它也是个saw,但它是名词,但是每一个输入的词汇,都要有一个对应的输出的词性。</p>
+<h4><span id="112一整个sequence只需要输出一个label">1.1.2
+一整个Sequence,只需要输出一个Label</span></h4>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220612171433616.png" alt="image-20220612171433616" style="zoom:50%;"></p>
+<p>举例来说,如果是文字的话,我们就说<strong>Sentiment
+Analysis</strong>。Sentiment
+Analysis就是给机器看一段话,它要<strong>决定说这段话是正面的还是负面的</strong>。</p>
+<p>那你可以想像说这种应用很有用,假设你的公司开发了一个产品,这个产品上线了,你想要知道网友的评价怎么样,但是你又不可能一则一则网友的留言都去分析,那也许你就可以用这种,Sentiment
+Analysis的技术,让机器自动去判读说,当一则贴文里面有提到某个产品的时候,它是正面的
+还是负面的,那你就可以知道你的产品,在网友心中的评价怎么样,这个是Sentiment
+Analysis给一整个句子,只需要一个Label,那Positive或Negative,那这个就是第二类的输出。</p>
+<p>那如果是语音的例子的话呢,在作业四里面我们会做语者辨认,机器要听一段声音,然后决定他是谁讲的。或者是如果是Graph的话呢,今天你可能想要给一个分子,然后要预测说这个分子,比如说它有没有毒性,或者是它的亲水性如何,那这就是给一个Graph
+输出一个Label。</p>
+<h4><span id="113机器要自己决定应该要输出多少个label">1.1.3
+机器要自己决定,应该要输出多少个Label</span></h4>
+<p>我们不知道应该输出多少个Label,机器要自己决定,应该要输出多少个Label,可能你输入是N个向量,输出可能是N'个Label,为什么是N',机器自己决定。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220612171446043.png" alt="image-20220612171446043" style="zoom:50%;"></p>
+<p>这种任务又叫做==sequence to
+sequence==的任务,那我们在作业五会有sequence to
+sequence的作业,所以这个之后我们还会再讲</p>
+<ul>
+<li>翻译就是sequence to
+sequence的任务,因为输入输出是不同的语言,它们的词汇的数目本来就不会一样多</li>
+<li>或者是语音辨识也是,真正的语音辨识也是一个sequence to
+sequence的任务,输入一句话,然后输出一段文字,这也是一个sequence to
+sequence的任务</li>
+</ul>
+<p>第二种类型有作业四,感兴趣可以去看看作业四的程式，那因为上课时间有限,所以上课,我们今天就先只讲第一个类型,也就是输入跟输出数目一样多的状况。</p>
+<h3><span id="12-sequence-labeling">1.2 Sequence Labeling</span></h3>
+<p>那这种输入跟输出数目一样多的状况又叫做<strong>Sequence
+Labeling</strong>,你要给Sequence里面的每一个向量,都给它一个Label,那要怎么解Sequence
+Labeling的问题呢？那直觉的想法就是我们就拿个<strong>Fully-Connected的Network</strong>。</p>
+<p>然后虽然这个输入是一个Sequence,但我们就各个击破,不要管它是不是一个Sequence,把每一个向量,分别输入到Fully-Connected的Network里面，然后Fully-Connected的Network就会给我们输出,那现在看看,你要做的是Regression还是Classification,产生正确的对应的输出,就结束了,</p>
+<p><font color="red">
+那这么做显然有<strong>非常大的瑕疵</strong>,假设今天是,词性标记的问题,你给机器一个句子,I
+saw a saw,对Fully-Connected
+Network来说,<strong>后面这一个saw跟前面这个saw完全一模一样</strong>,它们是同一个词汇啊。</font></p>
+<h4><span id="方案一window">方案一：Window</span></h4>
+<p>既然Fully-Connected的Network<strong>输入同一个词汇,它没有理由输出不同的东西</strong>。但实际上,你期待第一个saw要输出动词,第二个saw要输出名词,但对Network来说它不可能做到,因为这两个saw
+明明是一模一样的,你叫它一个要输出动词,一个要输出名词,它会非常地困惑,完全不知道要怎么处理。所以怎么办,有没有可能<strong>让Fully-Connected的Network,考虑更多的,比如说上下文的Context的资讯</strong>呢。这是有可能的,你就<strong>把前后几个向量都串起来,一起丢到Fully-Connected的Network就结束了</strong>。</p>
+<p>所以我们可以给Fully-Connected的Network,一整个Window的资讯,让它可以考虑一些上下文的,跟我现在要考虑的这个向量,相邻的其他向量的资讯。把Window开大一点啊,大到可以把整个Sequence盖住就结束了。</p>
+<p>如果你今天说我真的要开一个Window,把整个Sequence盖住,那你可能要<strong>统计一下你的训练资料</strong>,然后看看你的训练资料里面,最长的Sequence有多长,然后开一个Window比最长的Sequence还要长,你才有可能把整个Sequence盖住但是你开一个这么大的Window,意味著说你的Fully-Connected的Network,它需要非常多的参数,那可能不只<strong>运算量很大,可能还容易Overfitting</strong>。</p>
+<h4><span id="方案二self-attention">方案二：self-attention</span></h4>
+<p>Self-Attention的运作方式就是,<strong>Self-Attention会吃一整个Sequence的资讯</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211233215.png" alt="image-20220613211233215" style="zoom:50%;"></p>
+<p>然后你Input几个Vector,它就输出几个Vector,比如说你这边Input一个深蓝色的Vector,这边就给你一个另外一个Vector。这边给个浅蓝色,它就给你另外一个Vector,这边输入4个Vector,它就Output
+4个Vector。那这4个Vector有什么特别的地方呢,<strong>这4个Vector,他们都是考虑一整个Sequence以后才得到的</strong>,那等一下我会讲说Self-Attention,怎么考虑一整个Sequence的资讯。</p>
+<p><strong><font color="red">
+如此一来你这个Fully-Connected的Network,它就不是只考虑一个非常小的范围,或一个小的Window,而是考虑整个Sequence的资讯,再来决定现在应该要输出什么样的结果，这个就是Self-Attention</font></strong>。<strong>Self-Attention不是只能用一次,你可以叠加很多次</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211415203.png" alt="image-20220613211415203" style="zoom:50%;"></p>
+<p>可以Self-Attention的输出,通过Fully-Connected
+Network以后,再做一次Self-Attention,Fully-Connected的Network,再过一次Self-Attention,再重新考虑一次整个Input
+Sequence的资讯,再丢到另外一个Fully-Connected的Network,最后再得到最终的结果。</p>
+<p>所以<strong>可以把Fully-Connected的Network,跟Self-Attention交替使用</strong></p>
+<ul>
+<li>Self-Attention处理整个Sequence的资讯</li>
+<li>Fully-Connected的Network,专注于处理某一个位置的资讯</li>
+<li>再用Self-Attention,再把整个Sequence资讯再处理一次</li>
+<li>然后交替使用Self-Attention跟Fully-Connected</li>
+</ul>
+<p>有关Self-Attention,最知名的相关的文章,就是《Attention is all you
+need》.那在这篇Paper里面呢,Google提出了==Transformer==这样的Network架构,那Transformer就是变形金刚,所以提到这个Network的时候呢,我们就会有变形金刚这个形象。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211500443.png" alt="image-20220613211500443" style="zoom:50%;"></p>
+<p>Transformer我们今天还不会讲到,但我们之后会讲到,Transformer里面一个最重要的Module就是Self-Attention,它就是变形金刚的火种源。那这篇Paper最厉害的地方,就是它有一个<strong>霸气的名字Attention
+is all you need.</strong></p>
+<p>那其实像Self-Attention这样的架构,最早我并不会说它是出现在《Attention
+is all you
+need》这样的Paper,因为其实很多更早的Paper,就有提出过类似的架构,只是不见得叫做Self-Attention,比如说叫做Self-Matching,或者是叫别的名字,不过呢是Attention
+is all you need.这篇Paper,把Self-Attention这个Module,把它发扬光大。</p>
+<h3><span id="13-self-attention过程">1.3 Self-Attention过程</span></h3>
+<p><strong><font color="red">
+Self-Attention的Input,它就是一串的Vector,那这个Vector可能是你整个Network的Input,它也可能是某个Hidden
+Layer的Output,所以我们这边不是用<span class="math inline">\(x\)</span>来表示它，用<span class="math inline">\(a\)</span>来表示它。</font></strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613211620957.png" alt="image-20220613211620957" style="zoom:50%;"></p>
+<p>我们用<span class="math inline">\(a\)</span>来表示它，代表它有可能是前面已经做过一些处理,它是某个Hidden
+Layer的Output,那Input一排a这个向量以后,Self-Attention要Output另外一排b这个向量。那这<strong>每一个b都是考虑了所有的a以后才生成出来的</strong>,所以这边刻意画了非常非常多的箭头,告诉你$b^1
+<span class="math inline">\(考虑了\)</span>a<sup>1<span class="math inline">\(到\)</span>a</sup>4<span class="math inline">\(产生的,\)</span>b<sup>2<span class="math inline">\(考虑\)</span>a</sup>1<span class="math inline">\(到\)</span>a<sup>4<span class="math inline">\(产生的,\)</span>b</sup>3
+b^4$也是一样,考虑整个input的sequence,才产生出来的。</p>
+<p>那接下来呢就是要跟大家说明,<strong>怎么产生<span class="math inline">\(b^1\)</span>这个向量</strong>,那你知道怎么产生<span class="math inline">\(b^1\)</span>这个向量以后,你就知道怎么产生剩下<span class="math inline">\(b^1 b^2 b^3 b^4\)</span>剩下的向量。</p>
+<p><font color="red">
+这里有一个<strong>特别的机制</strong>,<strong>这个机制是根据<span class="math inline">\(a^1\)</span>这个向量,找出整个很长的sequence里面,到底哪些部分是重要的,哪些部分跟判断<span class="math inline">\(a^1\)</span>是哪一个label是有关系的,哪些部分是我们要决定<span class="math inline">\(a^1\)</span>的class,决定<span class="math inline">\(a^1\)</span>的regression数值的时候,所需要用到的资讯</strong>。</font></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212112611.png" alt="image-20220613212112611" style="zoom:50%;"></p>
+<p><strong>每一个向量跟<span class="math inline">\(a^1\)</span>的关联的程度,用一个数值叫α来表示</strong>，这个self-attention的module,<strong>怎么自动决定两个向量之间的关联性</strong>呢,你给它两个向量<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^4\)</span>,它怎么决定<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^4\)</span>有多相关,然后给它一个数值α呢,那这边呢你就需要一个<strong>计算attention的模组</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212206065.png" alt="image-20220613212206065" style="zoom:50%;"></p>
+<p>这个计算attention的模组,就是拿<strong>两个向量作为输入</strong>,然后它就直接输出α那个数值,计算这个α的数值有各种不同的做法：</p>
+<ul>
+<li><p>==dot
+product==：<strong>输入的这两个向量分别乘上两个不同的矩阵</strong>,左边这个向量乘上<span class="math inline">\(W^q\)</span>这个矩阵得到矩阵<span class="math inline">\(q\)</span>,右边这个向量乘上<span class="math inline">\(W^k\)</span>这个矩阵得到矩阵<span class="math inline">\(k\)</span></p>
+<p>再把<span class="math inline">\(q\)</span>跟<span class="math inline">\(k\)</span>做dot product,就是把他们做element-wise
+的相乘,再全部加起来以后就得到一个
+scalar,这个scalar就是α,这是一种计算α的方式</p></li>
+<li><p>==Additive==：把同样这两个向量通过<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span>,得到<span class="math inline">\(q\)</span>跟<span class="math inline">\(k\)</span>,那我们不是把它做Dot-Product,是把它这个串起来,然后丢到这个过一个Activation
+Function，然后再通过一个Transform,然后得到α。</p></li>
+</ul>
+<p>总之有非常多不同的方法,可以计算Attention,可以计算这个α的数值,可以计算这个关联的程度，但是在接下来的讨论里面,我们都<strong>只用左边这个方法</strong>,这也是今日最常用的方法,也<strong>是用在Transformer里面的方法</strong>。那你就要把这边的<span class="math inline">\(a^1\)</span>去跟这边的<span class="math inline">\(a^2 a^3
+a^4\)</span>,分别都去计算他们之间的关联性,也就是计算他们之间的α。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212357947.png" alt="image-20220613212357947" style="zoom:50%;"></p>
+<p>你把<span class="math inline">\(a^1\)</span>乘上$W^q <span class="math inline">\(得到\)</span>q^1$,那这个q有一个名字,我们叫做==Query==,它就像是你搜寻引擎的时候,去搜寻相关文章的问题,就像搜寻相关文章的关键字,所以这边叫做Query。</p>
+<p>然后接下来呢,<span class="math inline">\(a^2 a^3
+a^4\)</span>你都要去把它乘上<span class="math inline">\(W^k\)</span>,得到<span class="math inline">\(k\)</span>这个Vector,<span class="math inline">\(k\)</span>这个Vector叫做==Key==,那你把这个<font color="red">
+<strong>Query q1,跟这个Key k2,算 Inner-Product就得到 α‘
+（注意力矩阵）</strong>。</font>我们这边用<span class="math inline">\(α_{1,2}\)</span>来代表说,Query是1提供的,Key是2提供的时候,这个1跟2他们之间的关联性,这个α这个关联性叫做==Attention的Score==,叫做Attention的分数。</p>
+<p>接下来也要跟<span class="math inline">\(a^3
+a^4\)</span>来计算，把<span class="math inline">\(a_3\)</span>乘上<span class="math inline">\(W^k\)</span>,得到另外一个Key也就是<span class="math inline">\(k^3\)</span>,<span class="math inline">\(a^4\)</span>乘上<span class="math inline">\(W^k\)</span>得到<span class="math inline">\(k^4\)</span>,然后你再把<span class="math inline">\(k^3\)</span>这个Key,跟<span class="math inline">\(q^1\)</span>这个Query做Inner-Product,得到1跟3之间的关联性,得到1跟3的Attention,你把<span class="math inline">\(k^4\)</span>跟<span class="math inline">\(q^1\)</span>做Dot-Product,得到<span class="math inline">\(α_{1,4}\)</span>,得到1跟4之间的关联性。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613212536289.png" alt="image-20220613212536289" style="zoom:50%;"></p>
+<p><font color="red"> 其实一般在实作时候,<strong><span class="math inline">\(q^1\)</span>也会跟自己算关联性</strong>,自己跟自己计算关联性这件事情有多重要。</font>计算出,a1跟每一个向量的关联性以后,接下来这边会<strong>接入一个Soft-Max</strong>。</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613221201944.png" alt="image-20220613221201944" style="zoom:50%;"></p>
+<p><strong><font color="red">这个Soft-Max跟分类的时候的那个Soft-Max是一模一样的
+</font></strong>,所以Soft-Max的输出就是一排α,所以本来有一排α,通过Soft-Max就得到<span class="math inline">\(α&#39;\)</span>。</p>
+<p>这边你<strong>不一定要用Soft-Max,用别的替代也没问题</strong>,比如说有人尝试过说做个ReLU,这边通通做个ReLU,那结果发现还比Soft-Max好一点,所以这边你不一定要用Soft-Max,这边你要用什么Activation
+Function都行,你高兴就好,你可以试试看,那Soft-Max是最常见的,那你可以自己试试看,看能不能试出比Soft-Max更好的结果。</p>
+<p>接下来得到这个<span class="math inline">\(α&#39;\)</span>以后,我们就要根据这个<span class="math inline">\(α&#39;\)</span>去抽取出这个Sequence里面重要的资讯,根据这个α我们已经知道说,哪些向量跟<span class="math inline">\(a^1\)</span>是最有关系的,<strong>怎么抽取重要的资讯呢？</strong></p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220613221501080.png" alt="image-20220613221501080" style="zoom:50%;"></p>
+<ul>
+<li><p>首先把<span class="math inline">\(a^1\)</span>到<span class="math inline">\(a^4\)</span>这边每一个向量,乘上$W^v <span class="math inline">\(得到新的向量,这边分别就是用\)</span>v^1 v^2 v^3
+v^4$来表示</p></li>
+<li><p>接下来把这边的<span class="math inline">\(v^1\)</span>到<span class="math inline">\(v^4\)</span>,每一个向量都去乘上Attention的分数,都去乘上<span class="math inline">\(α&#39;\)</span></p></li>
+<li><p>然后再把它加起来,得到<span class="math inline">\(b^1\)</span></p></li>
+</ul>
+<p><span class="math display">\[
+b^1=\sum_i\alpha&#39;_{1,i}v^i
+\]</span></p>
+<p>如果某一个向量它得到的分数越高,比如说如果<span class="math inline">\(a^1\)</span>跟<span class="math inline">\(a^2\)</span>的关联性很强,这个<span class="math inline">\(α&#39;\)</span>得到的值很大,那我们今天在做Weighted
+Sum以后,得到的<span class="math inline">\(b^1\)</span>的值,就可能会比较接近<span class="math inline">\(v^2\)</span>，所以<strong>谁的那个Attention的分数最大,谁的那个<span class="math inline">\(v\)</span>就会Dominant你抽出来的结果</strong>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2Q8V137/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2Q8V137/" class="post-title-link" itemprop="url">深度学习（8）Self Attention*-p2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-14 23:08:42" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:42+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-25 23:31:11" itemprop="dateModified" datetime="2022-08-25T23:31:11+08:00">2022-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>29 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="二-李宏毅-selfattention自注意力机制-p2"><font color="red"> 二、李宏毅-Self
+Attention自注意力机制 - p2</font></span></h2>
+<p><img src="image-20220613221835154.png" alt="image-20220613221835154" style="zoom:50%;"></p>
+<p>从这一排 vector 得到 <span class="math inline">\(b^1\)</span>,跟从这一排 vector 得到 <span class="math inline">\(b^2\)</span>,它的操作是一模一样的.要强调一点是,这边的
+<span class="math inline">\(b^1\)</span> 到 <span class="math inline">\(b^4\)</span>,它们并<strong>不需要依序产生</strong>,它们是一次同时被计算出来的。</p>
+<p>怎么计算这个 <span class="math inline">\(b^2\)</span>？我们现在的主角,就变成 <span class="math inline">\(a^2\)</span></p>
+<p><img src="image-20220613221854934.png" alt="image-20220613221854934" style="zoom:50%;"></p>
+<ul>
+<li><p>把 <span class="math inline">\(a^2\)</span> 乘上一个 matrix,变成
+<span class="math inline">\(q^2\)</span></p></li>
+<li><p>然后接下来根据 <span class="math inline">\(q^2\)</span>,去对<span class="math inline">\(a^1\)</span>到 <span class="math inline">\(a^4\)</span> 这四个位置,都去计算 attention 的
+score</p>
+<ul>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^1\)</span> 做个这个 dot product</li>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^2\)</span> 也做个 dot product</li>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^3\)</span> 也做 dot product</li>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^4\)</span> 也做 dot product,得到四个分数</li>
+</ul></li>
+<li><p>得到这四个分数以后,可能还会做一个 <strong>normalization
+</strong>和 <strong>softmax</strong>,然后得到最后的 attention 的
+score,<span class="math inline">\(α&#39;_{2,1} \space α&#39;_{2,2}
+\space α&#39;_{2,3} \space α&#39;_{2,4}\)</span>那我们这边用 <span class="math inline">\(α&#39;\)</span>表示经过 normalization
+以后的attention score</p></li>
+<li><p>接下来拿这四个数值,分别乘上 <span class="math inline">\(v^1
+\space v^2 \space v^3 \space v^4\)</span></p>
+<p><img src="image-20220613221952411.png" alt="image-20220613221952411" style="zoom:50%;"></p>
+<ul>
+<li>把 <span class="math inline">\(α&#39;_{2,1}\)</span>乘上 <span class="math inline">\(v^1\)</span></li>
+<li>把 <span class="math inline">\(α&#39;_{2,2}\)</span> 乘上 <span class="math inline">\(v^2\)</span></li>
+<li>把 <span class="math inline">\(α&#39;_{2,3}\)</span> 乘上 <span class="math inline">\(v^3\)</span></li>
+<li>把 <span class="math inline">\(α&#39;_{2,4}\)</span> 乘上 <span class="math inline">\(v^4\)</span>,然后全部加起来就是 $ b^2$</li>
+</ul>
+<p><span class="math display">\[
+  b^2=\sum_iα&#39;_{2,i}v^i
+  \]</span></p></li>
+</ul>
+<p>同理就可以,由 <span class="math inline">\(a^3\)</span> 乘一个
+transform 得到 <span class="math inline">\(q^3\)</span>,然后就计算 <span class="math inline">\(b^3\)</span>,从 <span class="math inline">\(a^4\)</span> 乘一个 transform 得到 <span class="math inline">\(q^4\)</span>,就计算 <span class="math inline">\(b^4\)</span>,以上说的是 Self-attention
+它运作的过程。</p>
+<h3><span id="22-矩阵的角度">2.2 矩阵的角度</span></h3>
+<p>接下来我们从矩阵乘法的角度,再重新讲一次我们刚才讲的,Self-attention
+是怎么运作的，我们现在已经知道每一个 a 都产生 q k v。</p>
+<p><img src="image-20220613222115187.png" alt="image-20220613222115187" style="zoom:50%;"></p>
+<h5><span id="如果要用矩阵运算表示这个操作的话是什么样子呢">如果要用矩阵运算表示这个操作的话,是什么样子呢</span></h5>
+<p>我们每一个 a,都乘上一个矩阵,我们这边用 <span class="math inline">\(W^q\)</span> 来表示它,得到 <span class="math inline">\(q^i\)</span>,每一个 a 都要乘上 <span class="math inline">\(W^q\)</span>,得到<span class="math inline">\(q^i\)</span>,<strong>这些不同的 a
+你可以把它合起来,当作一个矩阵来看待</strong>。</p>
+<p><img src="image-20220613222137478.png" alt="image-20220613222137478" style="zoom:50%;"></p>
+<p>一样$a<sup>2a</sup>3a^4 $也都乘上 <span class="math inline">\(W^q\)</span> 得到$q^2 q^3 $跟 <span class="math inline">\(q^4\)</span>,那你可以<strong>把 a1 到 a4
+拼起来</strong>,看作是一个矩阵,这个矩阵我们用 I 来表示，这个矩阵的四个
+column 就是 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span>。</p>
+<p><span class="math inline">\(I\)</span> 乘上 <span class="math inline">\(W^q\)</span> 就得到另外一个矩阵,我们用 <span class="math inline">\(Q\)</span> 来表示它,这个 <span class="math inline">\(Q\)</span> 就是把 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span> 这四个 vector 拼起来,就是 <span class="math inline">\(Q\)</span> 的四个 column。</p>
+<p>所以我们从 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span>,得到 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span>这个操作,其实就是<strong>把 I
+这个矩阵,乘上另外一个矩阵 <span class="math inline">\(W^q\)</span>，得到矩阵<span class="math inline">\(Q\)</span></strong>。<span class="math inline">\(I\)</span> 这个矩阵它里面的 column就是我们
+Self-attention 的 input是 <span class="math inline">\(a^1\)</span> 到
+<span class="math inline">\(a^4\)</span>；<strong><span class="math inline">\(W^q\)</span>其实是 network
+的参数,它是等一下会被learn出来的</strong> ；<span class="math inline">\(Q\)</span> 的四个 column,就是 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span>。接下来产生 k 跟 v 的操作跟 q
+是一模一样的。</p>
+<p><img src="image-20220613222206939.png" alt="image-20220613222206939" style="zoom:50%;"></p>
+<p>所以每一个 a 得到 q k v ,其实就是把输入的这个,vector sequence
+乘上三个不同的矩阵,你就得到了 q,得到了 k,跟得到了 v。下一步是,每一个 q
+都会去跟每一个 k,去计算这个 inner product,去<strong>得到这个 attention
+的分数</strong>。那得到 attention
+分数这一件事情,如果从矩阵操作的角度来看,它在做什么样的事情呢？</p>
+<p><img src="image-20220613222251046.png" alt="image-20220613222251046" style="zoom:50%;"></p>
+<p>你就是把 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^1\)</span> 做 inner product,得到 <span class="math inline">\(α_{1,1}\)</span>,所以 <span class="math inline">\(α_{1,1}\)</span>就是 <span class="math inline">\(q^1\)</span> 跟<span class="math inline">\(k^1\)</span> 的 inner
+product,那这边我就把这个,<span class="math inline">\(k^1\)</span>它背后的这个向量,把它画成比较宽一点代表说它是
+transpose。同理 <span class="math inline">\(α_{1,2}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^2\)</span>,做 inner product, <span class="math inline">\(α_{1,3}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^3\)</span> 做 inner product,这个 <span class="math inline">\(α_{1,4}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^4\)</span> 做 inner
+product。那这个四个步骤的操作,你其实可以把它拼起来,看作是<strong>矩阵跟向量相乘</strong>。</p>
+<p><img src="image-20220613222335546.png" alt="image-20220613222335546" style="zoom:50%;"></p>
+<p>这四个动作,你可以看作是我们<strong>把 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 拼起来,当作是一个矩阵的四个
+row</strong>。那我们刚才讲过说,我们不只是 <span class="math inline">\(q^1\)</span>,要对<span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 计算 attention,<span class="math inline">\(q^2,q^3,q^4\)</span>也要对 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 计算
+attention,操作其实都是一模一样的。</p>
+<p><img src="image-20220613222430034.png" alt="image-20220613222430034" style="zoom:50%;"></p>
+<p>所以这些 <strong>attention
+的分数可以看作是两个矩阵的相乘</strong>,一个矩阵它的 row,就是 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span>,另外一个矩阵它的 column 。我们会在
+attention 的分数,<strong>做一下 normalization</strong>,比如说你会做
+softmax,你会对这边的每一个 column,每一个 column 做 softmax,让每一个
+column 里面的值相加是 1。</p>
+<p>之前有讲过说 其实这边做
+<strong>softmax不是唯一的选项</strong>,你完全可以选择其他的操作,比如说
+ReLU 之类的,那其实得到的结果也不会比较差,通过了 softmax
+以后,它得到的值有点不一样了,所以我们用 <span class="math inline">\(A&#39;\)</span>,来表示通过 softmax
+以后的结果。</p>
+<p>我们已经计算出 $A' <span class="math inline">\(，那我们把这个\)</span>v^1$ 到 <span class="math inline">\(v^4\)</span>乘上这边的 α 以后,就可以得到 b。</p>
+<p><img src="image-20220613223101872.png" alt="image-20220613223101872" style="zoom:50%;"></p>
+<p>你就把<span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span> 拼起来,你<strong>把 <span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span>当成是V 这个矩阵的四个
+column</strong>,把它拼起来,然后接下来你把 v 乘上,<span class="math inline">\(A&#39;\)</span> 的第一个 column
+以后,你得到的结果就是 <span class="math inline">\(b^1\)</span></p>
+<p>如果你熟悉线性代数的话,你知道说把这个 <span class="math inline">\(A&#39;\)</span> 乘上 V,就是把 <span class="math inline">\(A&#39;\)</span>的第一个 column,乘上 V
+这一个矩阵,你会得到你 output 矩阵的第一个 column。而把 A 的第一个
+column乘上 V 这个矩阵做的事情,其实就是把 V 这个矩阵里面的每一个
+column,<strong>根据第 <span class="math inline">\(A&#39;\)</span>
+这个矩阵里面的每一个 column 里面每一个 element,做 weighted
+sum</strong>,那就得到 <span class="math inline">\(b^1\)</span></p>
+<p>那就是这边的操作,把 <span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span> 乘上 weight,全部加起来得到 <span class="math inline">\(b^1\)</span>,如果你是用矩阵操作的角度来看它,就是把$
+A'$ 的第一个 column 乘上 V,就得到 <span class="math inline">\(b^1\)</span>,然后接下来就是以此类推。</p>
+<p><img src="image-20220613223143878.png" alt="image-20220613223143878" style="zoom:50%;"></p>
+<p>就是以此类推,把 <span class="math inline">\(A&#39;\)</span> 的第二个
+column 乘上 V,就得到 <span class="math inline">\(b^2\)</span>,<span class="math inline">\(A&#39;\)</span> 的第三个 column 乘上 V 就得到
+<span class="math inline">\(b^3\)</span>,<span class="math inline">\(A&#39;\)</span> 的最后一个 column 乘上 V,就得到
+<span class="math inline">\(b^4\)</span>。所以我们等于就是把 <span class="math inline">\(A&#39;\)</span> 这个矩阵,乘上 V 这个矩阵,得到 O
+这个矩阵,O 这个矩阵里面的每一个 column,就是 Self-attention 的输出,也就是
+<span class="math inline">\(b^1\)</span> 到 <span class="math inline">\(b^4\)</span>,</p>
+<p><strong><font color="red"> 所以其实整个
+Self-attention,我们在讲操作的时候,我们在最开始的时候
+跟你讲的时候我们讲说,我们先产生了 q k v,然后再根据这个 q
+去找出相关的位置,然后再对 v 做 weighted
+sum,其实这一串操作,就是一连串矩阵的乘法而已</font></strong>。</p>
+<h3><span id="23-self-attention-流程">2.3 Self-attention 流程</span></h3>
+<h5><span id="我们再复习一下我们刚才看到的矩阵乘法">我们再复习一下我们刚才看到的矩阵乘法：</span></h5>
+<p><img src="image-20220613223238727.png" alt="image-20220613223238727" style="zoom:50%;"></p>
+<ul>
+<li><p>I 是 Self-attention 的 input,Self-attention 的 input
+是一排的vector,这排 vector 拼起来当作矩阵的 column,就是 I；</p></li>
+<li><p>这个 input 分别乘上三个矩阵,<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span> 跟$ W^v$,得到 Q K V ；</p></li>
+<li><p>这三个矩阵,接下来 Q 乘上 K 的 transpose,得到 A 这个矩阵,A
+的矩阵你可能会做一些处理,得到 <span class="math inline">\(A&#39;\)</span>,那有时候我们会把这个 <span class="math inline">\(A&#39;\)</span>,叫做 <strong>Attention
+Matrix</strong>，<strong>生成Q矩阵就是为了得到Attention的score</strong>；</p></li>
+<li><p>然后接下来你把 <span class="math inline">\(A&#39;\)</span> 再乘上
+V,就得到 O,O 就是 Self-attention 这个 layer
+的输出,<strong>生成V是为了计算最后的b，也就是矩阵O；</strong></p></li>
+</ul>
+<p>所以 Self-attention 输入是 I,输出是 O,那你会发现说虽然是叫
+attention,但是<strong>其实 Self-attention layer
+里面,唯一需要学的参数,就只有 <span class="math inline">\(W^q\)</span>
+<span class="math inline">\(W^k\)</span> 跟$ W^v$ 而已,只有<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span> 跟$
+W^v$是未知的</strong>,是需要透过我们的训练资料把它找出来的。但是其他的操作都没有未知的参数,都是我们人为设定好的,都不需要透过
+training data 找出来,那这整个就是 Self-attention 的操作,从 I 到 O
+就是做了 Self-attention。</p>
+<h3><span id="24-multi-head-self-attention">2.4 Multi-head Self-attention</span></h3>
+<p><strong>Self-attention 有一个进阶的版本,叫做 ==Multi-head
+Self-attention==, Multi-head
+Self-attention,其实今天的使用是非常地广泛的</strong>。在作业 4
+里面,助教原来的 code 4 有,Multi-head Self-attention,它的 head
+的数目是设成 2,那刚才助教有给你提示说,把 head 的数目改少一点 改成
+1,其实就可以过medium baseline。</p>
+<p>但并不代表所有的任务,都适合用比较少的
+head,有一些任务,比如说翻译,比如说语音辨识,其实用比较多的
+head,你反而可以得到比较好的结果。至于<strong>需要用多少的
+head,这个又是另外一个 hyperparameter</strong>,也是你需要调的。</p>
+<h5><span id="那为什么我们会需要比较多的head-呢你可以想成说相关这件事情">那为什么我们会需要比较多的
+head 呢,你可以想成说相关这件事情？</span></h5>
+<p>我们在做这个 Self-attention 的时候,我们就是用 q 去找相关的
+k,但是<strong>==相关==这件事情有很多种不同的形式</strong>,有很多种不同的定义,所以也许我们不能只有一个
+q,我们应该要有多个 q,<strong>不同的 q
+负责不同种类的相关性</strong>。</p>
+<h5><span id="所以假设你要做multi-head-self-attention-的话你会怎么操作呢">所以假设你要做
+Multi-head Self-attention 的话,你会怎么操作呢?</span></h5>
+<p><img src="image-20220613223634261.png" alt="image-20220613223634261" style="zoom:50%;"></p>
+<ul>
+<li>先把 a 乘上一个矩阵得到 q</li>
+<li>再把 q 乘上另外两个矩阵,分别得到 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(q^2\)</span>,那这边还有 这边是用两个上标,i
+代表的是位置,然后这个 1 跟 2 代表是,这个位置的第几个 q,所以这边有 <span class="math inline">\(q^{i,1}\)</span> 跟 <span class="math inline">\(q^{i,2}\)</span>,代表说我们有两个 head</li>
+</ul>
+<p>我们认为这个问题,里面有两种不同的相关性,是我们需要产生两种不同的
+head,来找两种不同的相关性。既然 q 有两个,那 k 也就要有两个,那 v
+也就要有两个,从 q 得到 <span class="math inline">\(q^1 q^2\)</span>,从 k
+得到 <span class="math inline">\(k^1 k^2\)</span>,从 v 得到 <span class="math inline">\(v^1 v^2\)</span>,那其实就是把 q 把 k 把
+v,分别乘上两个矩阵,得到这个不同的
+head,就这样子而已,对另外一个位置,也做一样的事情只是现在<span class="math inline">\(q^1\)</span>,它在算这个 attention
+的分数的时候,它就不要管那个 <span class="math inline">\(k^2\)</span>
+了。</p>
+<p><img src="image-20220613223730387.png" alt="image-20220613223730387" style="zoom:50%;"></p>
+<ul>
+<li><p>所以 <span class="math inline">\(q_{i,1}\)</span> 就跟 <span class="math inline">\(k^{i,1}\)</span> 算 attention</p></li>
+<li><p><span class="math inline">\(q_{i,1}\)</span> 就跟 <span class="math inline">\(k^{j,1}\)</span> 算 attention,也就是算这个 dot
+product,然后得到这个 attention 的分数</p></li>
+<li><p>然后今天在做 weighted sum 的时候,也不要管 <span class="math inline">\(v^2\)</span> 了,看 <span class="math inline">\(V^{i,1}\)</span> 跟 <span class="math inline">\(v^{j,1}\)</span> 就好,所以你把 attention 的分数乘
+<span class="math inline">\(v^{i,1}\)</span>,把 attention 的分数乘 <span class="math inline">\(v^{j,1}\)</span></p></li>
+<li><p>然后接下来就得到 <span class="math inline">\(b^{i,1}\)</span></p></li>
+</ul>
+<p>这边只用了其中一个 head,那你会用另外一个
+head,也做一模一样的事情。</p>
+<p><img src="image-20220613223749217.png" alt="image-20220613223749217" style="zoom:50%;"></p>
+<p>所以 <span class="math inline">\(q^2\)</span> 只对 <span class="math inline">\(k^2\)</span> 做 attention,它们在做 weighted sum
+的时候,只对 <span class="math inline">\(v^2\)</span> 做 weighted
+sum,然后接下来你就得到 <span class="math inline">\(b^{i,2}\)</span></p>
+<p>如果你有多个 head,有 8 个 head 有 16 个
+head,那也是一样的操作,那这边是用两个 head 来当作例子,来给你看看有两个
+head 的时候,是怎么操作的,现在得到 <span class="math inline">\(b^{i,1}\)</span> 跟 <span class="math inline">\(b^{i,2}\)</span>。<strong>然后接下来你可能会把
+<span class="math inline">\(b^{i,1}\)</span> 跟 <span class="math inline">\(b^{i,2}\)</span>,把它接起来,然后再通过一个
+transform。</strong></p>
+<p><img src="image-20220613223832789.png" alt="image-20220613223832789" style="zoom:50%;"></p>
+<p>也就是再乘上一个矩阵,然后得到 bi,然后再送到下一层去,那这个就是
+Multi-head attention,一个这个 Self-attention 的变形。</p>
+<h3><span id="25-positional-encoding">2.5 Positional Encoding</span></h3>
+<blockquote>
+
+</blockquote>
+<h4><span id="no-positioninformation-in-self-attention">No position
+information in self-attention</span></h4>
+<p>那讲到目前为止,你会发现说 Self-attention 的这个
+layer,它少了一个也许很重要的资讯,这个资讯是<strong>位置的资讯</strong>。对一个
+Self-attention layer 而言,每一个 input,它是出现在 sequence
+的最前面,还是最后面,它是完全没有这个资讯的。</p>
+<p><font color="red"> 对 Self-attention 而言,<strong>位置 1 跟位置 2
+跟位置 3 跟位置
+4,完全没有任何差别,这四个位置的操作其实是一模一样</strong>,对它来说 q1
+到跟 q4 的距离,并没有特别远,1 跟 4 的距离并没有特别远,2 跟 3
+的距离也没有特别近。</font></p>
+<p>对它来说就是天涯若比邻,所有的位置之间的距离都是一样的,没有任何一个位置距离比较远,也没有任何位置距离比较近,也没有谁在整个
+sequence 的最前面,也没有谁在整个 sequence
+的最后面。但是这样子设计可能会有一些问题,因为有时候位置的资讯也许很重要,举例来说,我们在做这个
+POS
+tagging,就是词性标记的时候,也许你知道说<strong>动词比较不容易出现在句首</strong>,所以如果我们知道说,某一个词汇它是放在句首的,那它是动词的可能性可能就比较低,这样子的位置的资讯往往也是有用的。</p>
+<h4><span id="each-positon-hasa-unique-positional-vector-ei">Each positon has
+a unique positional vector <span class="math inline">\(e^i\)</span></span></h4>
+<p>可是在我们到目前为止,讲的 Self-attention
+的操作里面,根本就没有位置的资讯,所以怎么办呢,所以你做 Self-attention
+的时候,如果你觉得位置的资讯是一个重要的事情,那你可以把位置的资讯把它塞进去,怎么把位置的资讯塞进去呢,这边就要用到一个叫做,==positional
+encoding== 的技术。</p>
+<p><img src="image-20220613224025472.png" alt="image-20220613224025472" style="zoom:50%;"></p>
+<p><font color="red"> <strong>你为每一个位置设定一个 vector,叫做
+positional vector</strong>,这边<strong>用 <span class="math inline">\(e^i\)</span> 来表示,上标 i
+代表是位置,每一个不同的位置</strong></font>,就有不同的 vector,就是 <span class="math inline">\(e^1\)</span> 是一个 vector,<span class="math inline">\(e^2\)</span> 是一个vector,<span class="math inline">\(e^{128}\)</span>
+是一个vector,不同的位置都有一个它专属的 e,然后把这个 e 加到 <span class="math inline">\(a^i\)</span> 上面,就结束了。就是告诉你的
+Self-attention,位置的资讯,如果它看到说 <span class="math inline">\(a^i\)</span> 好像有被加上 $
+e^i$,它就知道说现在出现的位置,应该是在 i 这个位置。</p>
+<p><strong>最早的这个 transformer,就 Attention Is All You Need 那篇
+paper 里面,它用的 $ e^i$长的是这个样子</strong>。</p>
+<p><img src="image-20220613224248928.png" alt="image-20220613224248928" style="zoom:50%;"></p>
+<h4><span id="hand-crafted-or-learned-fromdata">Hand-crafted or Learned from
+data</span></h4>
+<p><strong>这样子的 positional vector,它是 handcrafted
+的,也就是它是人设的</strong>,那人设的这个 vector
+有很多问题,就假设我现在在定这个 vector 的时候,只定到 128,那我现在
+sequence 的长度,如果是 129 怎么办呢？不过在最早的那个,Attention Is All
+You Need paper里面,没有这个问题,<strong>它 vector
+是透过某一个规则所产生的</strong>,透过一个很神奇的sin和cos 的 function
+所产生的。</p>
+<p>其实你不一定要这么产生, <strong>positional
+encoding仍然是一个尚待研究的问题</strong>,你可以创造自己新的方法,或甚至
+positional encoding,是可以根据资料学出来的。那有关 positional
+encoding,你可以再参考一下文献,这个是一个尚待研究的问题,比如说我这边引用了一篇,这个是去年放在
+arxiv 上的论文,所以可以想见这其实都是很新的论文。</p>
+<p><img src="image-20220613224538933.png" alt="image-20220613224538933" style="zoom:50%;"></p>
+<p>里面就是比较了跟提出了,新的 positional encoding</p>
+<ul>
+<li>比如说这个是最早的 positional encoding,它是用一个神奇的 sin function
+所产生的</li>
+<li>那如果你的 positional encoding,你把 positional encoding
+里面的数值,当作 network 参数的一部分,直接 learn
+出来,看起来是这个样子的,这个图是那个横著看的,它是横著看的,它是每一个
+row,代表一个 position,好 所以这个是这个最原始的,用 sin function
+产生的,这个是 learn 出来的</li>
+<li>它里面又有神奇的做法,比如说这个,这个是用 RNN 生出来的,positional
+encording 是用 RNN 出来的,这篇 paper 提出来的叫做 FLOATER,是用个神奇的
+network 生出来的,</li>
+</ul>
+<p>总之你有各式各样不同的方法,来产生 positional
+encoding,那目前我们还不知道哪一种方法最好,这是一个尚待研究中的问题,所以你不用纠结说,为什么
+Sinusoidal 最好,<strong>你永远可以提出新的做法</strong>。</p>
+<h3><span id="26-applications">2.6 Applications …</span></h3>
+<p><strong>Self-attention 当然是用得很广,我们已经提过很多次 transformer
+这个东西</strong>。</p>
+<p><img src="image-20220613224644049.png" alt="image-20220613224644049" style="zoom:50%;"></p>
+<p>那我们大家也都知道说,在 NLP 的领域有一个东西叫做 BERT,BERT 里面也用到
+Self-attention,所以 Self-attention 在 NLP
+上面的应用,是大家都耳熟能详的。但 <strong>Self-attention,不是只能用在
+NLP 相关的应用上,它还可以用在很多其他的问题上</strong>。</p>
+<h3><span id="self-attention-for-speech">Self-attention for Speech</span></h3>
+<p>比如说在做语音的时候,你也可以用
+Self-attention,不过在做语音的时候,你可能会对
+Self-attention,做一些小小的改动。因为一般语音的,如果你要把一段声音讯号,表示成一排向量的话,这排<strong>向量可能会非常地长</strong>。</p>
+<p><img src="image-20220613224723147.png" alt="image-20220613224723147" style="zoom:50%;"></p>
+<p>而每一个向量,其实只代表了 10 millisecond 的长度而已,所以如果今天是 1
+秒鐘的声音讯号,它就有 100 个向量了,5 秒鐘的声音讯号,就 500
+个向量了,你随便讲一句话,都是上千个向量了。所以一段声音讯号,你要描述它的时候,那个像这个
+vector 的 sequence 它的长度是非常可观的,那可观的
+sequence,可观的长度,会造成什么问题呢？</p>
+<p>你想想看,我们今天在<strong>计算这个 attention matrix
+的时候,它的计算complexity 是长度的平方。</strong></p>
+<p><img src="image-20220613224807917.png" alt="image-20220613224807917" style="zoom:50%;"></p>
+<p><strong>计算这个 attention matrix A′你需要做 L 乘以 L 次的 inner
+product,那如果这个 L 的值很大的话,它的计算量就很可观,你也需要很大的这个
+memory,才能够把这个矩阵存下来。</strong></p>
+<p>所以今天如果在做语音辨识的时候,一句话所产生的这个 attention
+matrix,可能会太大,大到你根本就不容易处理,不容易训练,所以怎么办呢？<strong>在做语音的时候,有一招叫做
+==Truncated Self-attention==</strong>。</p>
+<p><img src="image-20220613224906348.png" alt="image-20220613224906348" style="zoom:50%;"></p>
+<p><font color="red"><strong>Truncated Self-attention</strong>
+做的事情就是,我们今天在做 Self-attention
+的时候,<strong>不要看一整句话,就我们就只看一个小的范围就好</strong>，那至于<strong>这个范围应该要多大,那个是人设定的。</strong></font></p>
+<p>那为什么我们知道说,今天在做语音辨识的时候,也许只需要看一个小的范围就好,那就是<strong>取决于你对这个问题的理解</strong>,也许我们要辨识这个位置有什么样的<strong>phoneme</strong>,这个位置有什么样的内容,我们并不需要看整句话,只要看这句话,跟它前后一定范围之内的资讯,其实就可以判断。</p>
+<p>所以如果在做 Self-attention
+的时候,也许没有必要看过一整个句子,也许没有必要让 Self-attention
+考虑一整个句子,也许只需要考虑一个小范围就好,这样就可以加快运算的速度，这个是
+Truncated Self-attention。</p>
+<h3><span id="self-attention-for-image">Self-attention for Image</span></h3>
+<p>那其实 Self-attention
+,还可以被用在影像上,Self-attention那到目前为止,我们在讲 Self-attention
+的时候,我们都说 <strong>Self-attention 适用的范围是：输入是一个 vector
+set
+的时候</strong>，一张图片啊,我们把它看作是一个很长的向量,那<strong>其实一张图片,我们也可以换一个观点,把它看作是一个
+vector 的 set。</strong></p>
+<p><img src="image-20220613225206980.png" alt="image-20220613225206980" style="zoom:50%;"></p>
+<p><strong>这个是一个解析度 5 乘以 10
+的图片,那这一张图片呢,可以看作是一个 tensor,这个 tensor 的大小是 5 乘以
+10 乘以 3,3 代表 RGB 这 3 个 channel。你可以把每一个位置的
+pixel,看作是一个三维的向量,所以每一个
+pixel,其实就是一个三维的向量,那整张图片,其实就是 5 乘以 10
+个向量的set</strong>。</p>
+<p>所以我们其实可以换一个角度,影像这个东西,其实也是一个 vector
+set,它既然也是一个 vector set 的话,你完全可以用 Self-attention
+来处理一张图片,那有没有人用 Self-attention
+来处理一张图片呢,是有的。那这边就举了两个例子,来给大家参考,那现在把
+Self-attention 用在影像处理上,也不算是一个非常石破天惊的事情。</p>
+<p><img src="image-20220613225244115.png" alt="image-20220613225244115" style="zoom:50%;"></p>
+<h3><span id="self-attention-vs-cnn">==Self-attention v.s. CNN==</span></h3>
+<p>我们可以来比较一下,<strong>Self-attention 跟 CNN
+之间,有什么样的差异或者是关联性</strong>。如果我们今天,是用
+Self-attention 来处理一张图片,代表说,假设这个是你要考虑的 pixel,那它产生
+query,其他 pixel 产生 key。</p>
+<p><img src="image-20220613225357976.png" alt="image-20220613225357976" style="zoom:50%;"></p>
+<p>你今天在<strong>做 inner product 的时候,你考虑的不是一个小的receptive
+field的信息,而是整张影像的资讯</strong>，但是今天在做 CNN
+的时候,,会画出一个 receptive field,每一个 filter,每一个 neural,只考虑
+receptive field 范围里面的资讯。</p>
+<p><img src="image-20220613225442244.png" alt="image-20220613225442244" style="zoom:50%;"></p>
+<ul>
+<li>所以如果我们比较 CNN 跟 Self-attention
+的话,<strong><font color="red">CNN 可以看作是一种简化版的 Self-attention
+</font></strong>，因为在做CNN的时候,我们只考虑 receptive field
+里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯,所以
+CNN,是简化版的
+Self-attention。或者是你可以反过来说,<strong><font color="red">
+Self-attention 是一个复杂化的 CNN</font></strong></li>
+<li>在 CNN 里面,我们要划定 receptive field,每一个 neural,只考虑
+receptive field 里面的资讯,而 <strong><font color="red"> receptive field
+的范围跟大小,是人决定的。而对 Self-attention 而言,我们用
+attention,去找出相关的 pixel,就好像是 receptive field
+是自动被学出的,network 自己决定说,receptive field
+的形状长什么样子,network 自己决定说,以这个 pixel 为中心,哪些 pixel
+是我们真正需要考虑的,那些 pixel 是相关的</font></strong>。<strong>所以
+receptive field
+的范围,不再是人工划定,而是让机器自己学出来</strong>。</li>
+</ul>
+<p>其实你可以读一篇 paper,叫做 On the Relationship,between
+Self-attention and Convolutional Layers。</p>
+<p><img src="image-20220613230146104.png" alt="image-20220613230146104" style="zoom:50%;"></p>
+<p>在这篇 paper 里面,会用数学的方式严谨的告诉你说,其实这个
+<strong>CNN就是 Self-attention 的特例,Self-attention
+只要设定合适的参数,它可以做到跟 CNN 一模一样的事情</strong>。所以 self
+attention,是更 flexible 的 CNN,而 CNN 是有受限制的
+Self-attention,Self-attention 只要透过某些设计,某些限制,它就会变成
+CNN。</p>
+<p><img src="image-20220613230212397.png" alt="image-20220613230212397" style="zoom:50%;"></p>
+<p>那这也不是很旧的 paper,你发现它放到网路上的时间呢,是 19 年的 11
+月,所以你知道这些,我们今天上课里面讲的东西,其实都是很新的资讯。<strong><font color="red">
+既然Self-attention 比较 flexible,之前有讲说比较 flexible 的
+model,比较需要更多的 data,如果你 data 不够,就有可能
+overfitting。</font></strong></p>
+<p>如果你今天用不同的 data 量,来训练 CNN 跟
+Self-attention,你确实可以看到我刚才讲的现象。</p>
+<p><img src="image-20220613230309663.png" alt="image-20220613230309663" style="zoom:50%;"></p>
+<p>那这个实验结果,来自于 An image is worth 16 乘以 16 的 words,这个是
+Google 的 paper,它就是把这个 Self-attention,apply
+在影像上面。那其实<strong>把一张影像呢,拆成 16 乘以 16 个
+patch,它把每一个 patch想像成是一个 word</strong>,因为一般我们这个
+Self-attention,比较常用在 NLP 上面,所以他就说,想像每一个 patch
+其实就是一个 word,所以他就取了一个很 fancy 的 title,叫做<strong>一张图值
+16 乘以 16 个文字</strong>。</p>
+<p>横轴是训练的影像的量,那你发现说,对 Google 来说
+用的,所谓的资料量比较少,也是你没有办法用的资料量啦这边有 10 个 million
+就是,1000 万张图,是资料量比较小的 setting,然后资料量比较大的 setting
+呢,有 3 亿张图片,在这个实验里面呢,比较了 Self-attention
+是浅蓝色的这一条线,跟 CNN 是深灰色的这条线。</p>
+<p>就会发现说,<strong>随著资料量越来越多,那 Self-attention
+的结果就越来越好,最终在资料量最多的时候,Self-attention 可以超过
+CNN,但在资料量少的时候,CNN 它是可以比
+Self-attention,得到更好的结果的。</strong></p>
+<p>那为什么会这样,你就可以从 CNN 跟
+Self-attention,它们的弹性来加以解释：</p>
+<ul>
+<li><strong><font color="red"> Self-attention
+它弹性比较大,所以需要比较多的训练资料,训练资料少的时候,就会
+overfitting。</font></strong></li>
+<li>CNN
+它弹性比较小,在训练资料少的时候,结果比较好,但训练资料多的时候,它没有办法从更大量的训练资料得到好处。</li>
+</ul>
+<p>所以这个就是 Self-attention 跟 CNN 的比较，那 Self-attention 跟
+CNN,谁比较好呢,<strong>我应该选哪一个呢,事实上你也可以都用</strong>,在我们作业四里面,如果你要做
+strong baseline 的话,就特别给你一个提示,就是用 conformer,里面就是有用到
+Self-attention,也有用到 CNN。</p>
+<h3><span id="self-attention-vs-rnn"><strong><font color="red">
+Self-attention v.s. RNN</font></strong></span></h3>
+<p>我们来比较一下,Self-attention 跟 RNN,RNN就是 recurrent neural
+network,这门课里面现在就不会讲recurrent neural network,因为 recurrent
+neural network 的角色,很大一部分都可以用 Self-attention 来取代了,但是
+RNN 是什么呢,假设你想知道的话,那这边很快地三言两语把它带过去,RNN 跟
+Self-attention 一样,都是要处理 input 是一个 sequence 的状况。</p>
+<p><img src="image-20220613230659968.png" alt="image-20220613230659968" style="zoom:50%;"></p>
+<p>在 RNN 里面呢</p>
+<ul>
+<li>左边是你的 input sequence,你有一个 <strong>memory</strong> 的
+vector</li>
+<li>然后你有一个 RNN 的 block,这个 RNN 的 block 呢,它吃 memory 的
+vector,吃第一个 input 的 vector</li>
+<li>然后 output 一个东西,然后根据这个 output 的东西,我们通常叫做这个
+hidden,这个 hidden 的 layer 的 output</li>
+<li>然后通过这个 fully connected network,然后再去做你想要的
+prediction</li>
+</ul>
+<p>接下来当sequence 里面,第二个 vector 作为 input
+的时候,也会把前一个时间点吐出来的东西,当做下一个时间点的输入,再丢进 RNN
+里面,然后再产生新的 vector,再拿去给 fully connected network。然后第三个
+vector 进来的时候,你把第三个 vector 跟前一个时间点的输出,一起丢进
+RNN,再产生新的输出,然后在第四个时间点。第四个 vector 输入的时候,把第四个
+vector 跟前一个时间点,产生出来的输出,再一起做处理,得到新的输出,再通过
+fully connected network 的 layer,这个就是 RNN。</p>
+<p>Recurrent Neural Network跟 Self-attention 做的事情其实也非常像,它们的
+<strong>input 都是一个 vector sequence</strong>，Self-attention output
+是另外一个 vector sequence,这里面的每一个 vector,都<strong>考虑了整个
+input sequence 以后</strong>,再给 fully connected network 去做处理。</p>
+<p>那 RNN 呢,它也会 output 另外一群 vector,这<strong>另外一排
+vector</strong> 也会给,fully connected network 做进一步的处理,那
+Self-attention 跟 RNN 有什么不同呢。</p>
+<p><img src="image-20220613230944896.png" alt="image-20220613230944896" style="zoom:50%;"></p>
+<p><strong>当然一个非常显而易见的不同,你可能会说,这边的每一个
+vector,它都考虑了整个 input 的 sequence,而 RNN 每一个
+vector,只考虑了左边已经输入的 vector,它没有考虑右边的
+vector,那这是一个很好的观察。</strong></p>
+<p>但是 <strong>RNN 其实也可以是双向的</strong>,所以如果你 RNN 用双向的
+RNN 的话,其实这边的每一个 hidden 的 output,每一个 memory 的
+output,其实也可以看作是考虑了整个 input 的 sequence。但是假设我们把 RNN
+的 output,跟 Self-attention 的 output 拿来做对比的话,就算你用
+bidirectional 的 RNN,还是有一些差别的。</p>
+<ul>
+<li><p><strong><font color="red">对RNN 来说,假设最右边这个黄色的
+vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory
+里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong></p></li>
+<li><p><strong><font color="red"> 对 Self-attention
+来说没有这个问题,它只要这边输出一个 query,这边输出一个 key,只要它们
+match 得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence
+上非常远的 vector,轻易地抽取资讯,所以这是 RNN 跟
+Self-attention,一个不一样的地方。</font></strong></p></li>
+<li><p>RNN 今天在处理的时候, input 一排 sequence,output 一排 sequence
+的时候,<strong><font color="red"> RNN
+是没有办法平行化的。</font></strong>RNN 它今天 input 一排是
+vector,output 另外一排 vector
+的时候,它没有办法一次处理,没有办法平行处理所有的 output。但
+Self-attention 有一个优势,是它可以平行处理所有的输出,你今天 input 一排
+vector,再 output 这四个 vector 的时候,<strong>这四个 vector
+是平行产生的,并不需要等谁先运算完才把其他运算出来</strong>,output 的这个
+vector,里面的 output 这个 vector sequence 里面,每一个 vector
+都是同时产生出来的。<strong><font color="red">
+所以在运算速度上,Self-attention 会比 RNN
+更有效率。</font></strong></p></li>
+</ul>
+<p><img src="image-20220613231148500.png" alt="image-20220613231148500" style="zoom:50%;"></p>
+<p>那你今天发现说,<strong>很多的应用都往往把 RNN 的架构,逐渐改成
+Self-attention 的架构了</strong>,如果你想要更进一步了解,RNN 跟
+Self-attention 的关係的话,你可以看下面这篇文章,Transformers are
+RNNs,里面会告诉你说,Self-attention 你加上了什么东西以后,其实它就变成了
+RNN,发现说这也不是很旧的 paper,这个是去年的六月放到 arXiv 上。</p>
+<h3><span id="self-attention-for-graph">Self-attention for Graph</span></h3>
+<p>Graph 也可以看作是一堆 vector,那如果是一堆 vector,就可以用
+Self-attention 来处理,所以 Self-attention 也可以用在 Graph
+上面,但是<strong>当我们把 Self-attention,用在Graph
+上面的时候,有什么样特别的地方呢？</strong></p>
+<p><strong><font color="red"> Graph 往往是人为根据某些 domain knowledge
+建出来的,那 domain knowledge
+告诉我们说,这两个向量彼此之间没有关联,我们就没有必要再用机器去学习这件事情。</font></strong></p>
+<p><img src="image-20220613231411144.png" alt="image-20220613231411144" style="zoom:50%;"></p>
+<p>在 Graph 上面,每一个 node 可以表示成一个向量,但<strong>不只有 node
+的资讯,还有 edge 的资讯</strong>,我们知道哪些 node
+之间是有相连的,也就是哪些 node 是有关联的。</p>
+<p>我们知道哪些向量间是有关联,那之前我们在做 Self-attention
+的时候,所谓的关联性是 network 自己找出来的,但是现在既然有了 Graph
+的资讯,<strong>有了 edge
+的资讯,那关联性也许就不需要透过机器自动找出来,这个图上面的 edge
+已经暗示了我们,node 跟 node 之间的关联性</strong>。</p>
+<p>所以今天当你把 Self-attention,用在 Graph
+上面的时候,你有一个选择是你在做这个,Attention Matrix
+计算的时候,你可以<strong>只计算有 edge 相连的 node
+就好</strong>。那如果两个 node
+之间没有相连,那其实很有可能就暗示我们,这两个 node
+之间没有关係,<strong>既然没有关係,我们就不需要再去计算它的 attention
+score,直接把它设为 0 就好了</strong>。</p>
+<h3><span id="27-more">2.7 More</span></h3>
+<p>其实Self-attention 有非常非常多的变形,你可以看一篇 paper
+叫做,<strong>Long Range Arena</strong>,里面比较了各种不同的
+Self-attention 的变形。</p>
+<p><img src="image-20220613231703000.png" alt="image-20220613231703000" style="zoom:50%;"></p>
+<p>Self-attention
+它最大的问题就是,<strong>它的运算量非常地大</strong>,所以怎么样减少
+Self-attention 的运算量,是一个未来的重点,可以看到这边有,各种各式各样
+Self-attention 的变形。</p>
+<p><strong>Self-attention 最早是,用在 Transformer 上面,所以很多人讲
+Transformer 的时候,其实它指的就是这个 Self-attention,有人说广义的
+Transformer,指的就是
+Self-attention</strong>。那所以后来各式各样的,Self-attention
+的变形都这样做,都叫做是什么 former,比如说 Linformer Performer Reformer
+等等,所以 Self-attention 的变形,现在都叫做 xxformer。</p>
+<p>那可以看到，往右代表它运算的速度,所以有很多各式各样新的
+xxformer,它们的速度会比原来的 Transformer 快,但是快的速度带来的就是
+performance 变差。这个纵轴代表是 performance,所以它们往往比原来的
+Transformer,performance 差一点,但是速度会比较快。那到底什么样的
+Self-attention,才能够真的又快又好,这仍然是一个尚待研究的问题,如果你对
+Self-attention,想要进一步研究的话,你还可以看一下,<strong>Efficient
+Transformers: A Survey 这篇 paper,里面会跟你介绍,各式各样 Self-attention
+的变形。</strong></p>
+<h2><span id="三-注意力机制-qampa">三、注意力机制 Q&amp;A</span></h2>
+<h3><span id="31self-attention-cnn-rnn对比">3.1
+Self-Attention、CNN、RNN对比？</span></h3>
+<h4><span id="self-attention-vs-cnn">Self-Attention vs CNN</span></h4>
+<ul>
+<li><strong><font color="red">CNN 可以看作是一种简化版的 Self-attention
+</font></strong>，因为在做CNN的时候,我们只考虑 receptive field
+里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯。</li>
+<li>在 CNN 里面 <strong><font color="red"> receptive field
+的范围跟大小,是人决定的。而对 Self-attention
+,不再是人工划定,而是让机器自己学出来</font></strong>。</li>
+<li><strong>Self-attention 比较 flexible,之前有讲说比较 flexible 的
+model,比较需要更多的 data,如果你 data 不够,就有可能
+overfitting</strong>。</li>
+</ul>
+<h4><span id="self-attention-vs-rnn">Self-Attention vs RNN</span></h4>
+<ul>
+<li><strong><font color="red">RNN 右边的
+vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory
+里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong>
+Self-attention 只要a1输出一个 query,a4输出一个 key,只要它们 match
+得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence 上非常远的
+vector,轻易地抽取资讯,所以这是 RNN 跟
+Self-attention一个不一样的地方。</li>
+<li><strong><font color="red"> RNN
+是没有办法平行化的。所以在运算速度上,Self-attention 会比 RNN
+更有效率。</font></strong></li>
+</ul>
+<h3><span id="32self-attention-cnn-rnn时间复杂度对比">3.2
+Self-Attention、CNN、RNN时间复杂度对比？</span></h3>
+<blockquote>
+<p>##### 计算效率: 一个形状为 <img src="https://www.zhihu.com/equation?tex=N%5Ctimes+M" alt="[公式]">
+的矩阵，与另一个形状为 <img src="https://www.zhihu.com/equation?tex=M%5Ctimes+P" alt="[公式]">
+的矩阵相乘，其运算复杂度来源于乘法操作的次数，时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28NMP%29" alt="[公式]"></p>
+</blockquote>
+<h4><span id="self-attention">Self-Attention</span></h4>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=A%28Q%2CK%2CV%29%3D%5Cmathrm%7BSoftmax%7D%28QK%5ET%29V+%5C%5C+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<ul>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=Q%2CK%2CV%3An%5Ctimes+d" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
+<li>相似度计算 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+n" alt="[公式]"> 运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]">
+矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
+<li>softmax计算：对每行做softmax，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%29" alt="[公式]"> ，则n行的复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2%29" alt="[公式]"></li>
+<li>加权和： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
+运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
+</ul>
+<p>故最后self-attention的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></p>
+<p>对于受限的self-attention，每个元素仅能和周围 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]">
+个元素进行交互，即和 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 维向量做内积运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28rd%29" alt="[公式]"> ，则 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个元素的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%28rnd%29%7D" alt="[公式]"></p>
+<h4><span id="multi-head-attention">Multi-Head Attention</span></h4>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BMultiHead%7D%28Q%2CK%2CV%29%3D%5Cmathrm%7BConcat%28head_1%2C...%2Chead_h%29%7DW%5EO+%5C%5C+%5Cmathrm%7Bwhere%5Cquad+head_i%7D%3DA%28QW_i%5EQ%2CKW_i%5EK%2CVW_i%5EV%29%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>对于multi-head attention，假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 个head，这里
+<img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
+是一个常数，对于每个head，首先需要把三个矩阵分别映射到 <img src="https://www.zhihu.com/equation?tex=d_q%2Cd_k%2Cd_v" alt="[公式]">
+维度。这里考虑一种简化情况： <img src="https://www.zhihu.com/equation?tex=d_q%3Dd_k%3Dd_v%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。(对于dot-attention计算方式， <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d_v" alt="[公式]">
+可以不同)。</p>
+<ul>
+<li>输入线性映射的复杂度： <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 运算，忽略常系数，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"> 。</li>
+<li>Attention操作复杂度：主要在相似度计算及加权和的开销上， <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bd%7D%7Bh%7D%5Ctimes+%7Bn%7D" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7B%7D" alt="[公式]"></li>
+<li>输出线性映射的复杂度：concat操作拼起来形成 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
+的矩阵，然后经过输出线性映射，保证输入输出相同，所以是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 计算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></li>
+</ul>
+<p>故最后的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%2Bnd%5E2%29" alt="[公式]"></p>
+<blockquote>
+<p>注意：多头的计算并不是通过循环完成的，而是通过 transposes and
+reshapes，用矩阵乘法来完成的。假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
+个head，则新的representation dimension： <img src="https://www.zhihu.com/equation?tex=m%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。因为，我们将 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
+的矩阵拆为 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+h%5Ctimes+m" alt="[公式]"> 的张量，再利用转置操作转为 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n+%5Ctimes+m" alt="[公式]"> 的张量。故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]">
+的计算为： <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+m+%5Ctimes+n" alt="[公式]"> 做计算，得到 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+n" alt="[公式]"> 的张量，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28h%5E2n%5E2m%29" alt="[公式]"> ，即 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2dh%29" alt="[公式]"> 。注意，此处 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
+实际是一个常数，故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> 复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"> 。</p>
+</blockquote>
+<h4><span id="recurrent">Recurrent</span></h4>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=h_t%3Df%28Ux_t%2BWh_%7Bt-1%7D%29+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=Ux_t" alt="[公式]">
+： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=m%5Ctimes+1" alt="[公式]">
+运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28md%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=m" alt="[公式]"> 为input size</li>
+<li><img src="https://www.zhihu.com/equation?tex=Wh_%7Bt-1%7D" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+1" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"></li>
+</ul>
+<p>故一次操作的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 次序列操作后的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></p>
+<h4><span id="convolution">Convolution</span></h4>
+<blockquote>
+<p>注: 这里保证输入输出都是一样的，即均是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"></p>
+</blockquote>
+<ul>
+<li>为了保证输入和输出在第一个维度都相同，故需要对输入进行padding操作，因为这里kernel
+size为 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">
+，（实际kernel的形状为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]">
+）如果不padding的话，那么输出的第一个维度为 <img src="https://www.zhihu.com/equation?tex=n-k%2B1" alt="[公式]">
+，因为这里stride是为1的。为了保证输入输出相同，则需要对序列的前后分别padding长度为
+<img src="https://www.zhihu.com/equation?tex=%28k-1%29%2F2" alt="[公式]"> 。</li>
+<li>大小为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]"> 的卷积核一次运算的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28kd%29" alt="[公式]"> ，一共做了 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]">
+次，故复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%29" alt="[公式]"></li>
+<li>为了保证第二个维度在第二个维度都相同，故需要 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]">
+个卷积核，所以卷积操作总的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%5E2%29" alt="[公式]"></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -395,6 +1367,127 @@ Search更好的结果，道理很容易理解，高手下棋想三步，深思�
 Evaluation
 Understudy，它的主要思想是基于N-gram等特征来比较人工翻译和机器翻译结果的相似程度。</strong></p>
 
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1MG9WE6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1MG9WE6/" class="post-title-link" itemprop="url">理论基础（5）归一化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-14 22:12:43" itemprop="dateCreated datePublished" datetime="2022-05-14T22:12:43+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-01 16:08:43" itemprop="dateModified" datetime="2023-05-01T16:08:43+08:00">2023-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="归一化的作用">归一化的作用：</h5>
+<ul>
+<li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>回归系数无法直接解读</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
+<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>“距离”的计算</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
+<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>梯度下降</strong>，在使用梯度下降的方法求解最优化问题时，
+归一化/标准化后可以加快梯度下降的求解速度，即<strong>提升模型的收敛速度</strong>。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/1MG9WE6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -641,127 +1734,6 @@ Understudy，它的主要思想是基于N-gram等特征来比较人工翻译和�
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2SEFCDG/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1MG9WE6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1MG9WE6/" class="post-title-link" itemprop="url">理论基础（5）归一化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 22:12:43" itemprop="dateCreated datePublished" datetime="2022-05-14T22:12:43+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 16:08:43" itemprop="dateModified" datetime="2023-05-01T16:08:43+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="归一化的作用">归一化的作用：</h5>
-<ul>
-<li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>回归系数无法直接解读</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
-<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>“距离”的计算</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
-<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>梯度下降</strong>，在使用梯度下降的方法求解最优化问题时，
-归一化/标准化后可以加快梯度下降的求解速度，即<strong>提升模型的收敛速度</strong>。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/1MG9WE6/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1902,765 +2874,6 @@ side
 loading、注册表自启动等等。值得一提的是，基于衰减的压缩方案往往和剪枝的方案共同使用，也意味着双倍的风险。</li>
 </ul>
 <p>上面几点仅仅是抛砖引玉，除此之外，其他的安全风险还包括：<strong>1）不完整的因果关系数据；2）受限的攻击案例分析等。</strong>可以看到，引入溯源图在解决部分问题的同时也引入了新的安全问题，构建真正安全系统的路还很长。希望大家也可以提出自己的看法，多多交流。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/368N99B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/368N99B/" class="post-title-link" itemprop="url">安全场景（2）恶意加密流量检测*</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-13 12:49:05" itemprop="dateCreated datePublished" datetime="2022-05-13T12:49:05+08:00">2022-05-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-19 00:12:59" itemprop="dateModified" datetime="2022-09-19T00:12:59+08:00">2022-09-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="基于机器学习的恶意加密流量检测">基于机器学习的恶意加密流量检测</span></h2>
-<p>[1] Anderson B, McGrew D. Identifying encrypted malware traffic with
-contextual flow data[C]//Proceedings of the 2016 ACM workshop on
-artificial intelligence and security. 2016: 35-46.</p>
-<figure>
-<img src="image-20220516100235456.png" alt="image-20220516100235456">
-<figcaption aria-hidden="true">image-20220516100235456</figcaption>
-</figure>
-<h4><span id="在进行tls握手时会进行如下几个步骤">在进行TLS握手时，会进行如下几个步骤：</span></h4>
-<ol type="1">
-<li><strong>Client Hello</strong>，客户端提供支持的加密套件数组（cipher
-suites）；</li>
-<li><strong>Server
-Hello</strong>，由服务器端选择一个加密套件，传回服务器端公钥，并进行认证和签名授权（<strong>Certificate</strong>
-+ Signature）；</li>
-<li>客户端传回客户端公钥（<strong>Client Key
-Exchange</strong>），客户端确立连接；</li>
-<li>服务器端确立连接，开始 HTTP 通信。</li>
-</ol>
-<p><img src="https://pic4.zhimg.com/80/v2-a10c338f4c3e283b3b29d0e5752f1beb_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<h3><span id="一-特征提取">一、特征提取</span></h3>
-<h4><span id="11-可观察的数据元统计特征">1.1 可观察的数据元统计特征</span></h4>
-<ul>
-<li><strong>传统流数据</strong> (Flow Meta)
-<ul>
-<li>流入和流出的字节数和数据包数</li>
-<li>源端口和目的端口</li>
-</ul></li>
-<li><strong>字节分布</strong> (BD, Byte Distribution)
-<ul>
-<li>数据包有效负载中遇到的每个字节值的计数</li>
-<li>提供了大量<strong>数据编码</strong>和<strong>数据填充</strong>的信息</li>
-<li>字节分布概率 ≈ 字节分布计数 / 分组有效载荷的总字节数</li>
-<li>特征表示：1×256维字节分布概率序列</li>
-</ul></li>
-<li><strong>分组长度和分组到达间隔时间的序列 </strong>(SPLT, Sequence of
-Packets Length and Times)
-<ul>
-<li><strong>==使用马尔可夫链模型建模==</strong></li>
-</ul></li>
-</ul>
-<h4><span id="12-未加密的tls头部信息特征">1.2 未加密的TLS头部信息特征</span></h4>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220516101251514.png" alt="image-20220516101251514" style="zoom: 33%;"></p>
-<blockquote>
-<p><strong>TLS/SSL协议 过程</strong></p>
-<ul>
-<li>两层子协议：握手协议和记录协议</li>
-<li>握手协议特点
-<ul>
-<li>加密明文但不加密握手过程</li>
-<li>有多个版本但握手参数不变</li>
-</ul></li>
-</ul>
-</blockquote>
-<ul>
-<li><strong>Client Hello</strong>
-<ul>
-<li>列出的密码套件列表(Cipher Suites)
-<ul>
-<li>密钥交换算法、加密算法</li>
-<li>报文认证消息码(MAC)算法</li>
-</ul></li>
-<li>支持的扩展列表(Extensions)
-<ul>
-<li>提供额外功能或设定</li>
-</ul></li>
-</ul></li>
-<li><strong>Server Hello</strong>：选定的密码套件和TLS扩展</li>
-<li><strong>Certificate</strong>：服务器签发的证书信息</li>
-<li><strong>Client Key Exchange</strong>：使用的密钥交换算法参数</li>
-</ul>
-<figure>
-<img src="../../../../../../Library/Application%20Support/typora-user-images/image-20220516101639662.png" alt="image-20220516101639662">
-<figcaption aria-hidden="true">image-20220516101639662</figcaption>
-</figure>
-<h4><span id="13-上下文数据">1.3 上下文数据</span></h4>
-<ul>
-<li><strong>DNS上下文流</strong>
-<ul>
-<li>基于目标IP地址与TLS相关的DNS响应
-<ul>
-<li>域名长度</li>
-<li>DNS响应返回的IP地址数</li>
-<li>DNS TTL值</li>
-<li>域名在Alexa榜的排名</li>
-</ul></li>
-<li>补充了加密流中可能缺失的信息</li>
-</ul></li>
-<li><strong>HTTP上下文流</strong>
-<ul>
-<li>在TLS流5min窗口内的<strong>相同源IP地址的所有HTTP流</strong></li>
-<li>恶意软件可能<strong>利用HTTP的头部字段</strong>来发起恶意活动
-<ul>
-<li>Content-Type、Server、Code</li>
-</ul></li>
-</ul></li>
-</ul>
-<h3><span id="二-工业落地">二、工业落地</span></h3>
-<p>然而，AI技术如没有得到有效运用，也无法在实战中检测到加密的威胁行为。例如无监督学习可以定位未知威胁，但精准度待提升；有监督学习精确度高，却无法覆盖未知威胁。</p>
-<h4><span id="21如何在实战中精准识别加密流量攻击">2.1
-<strong>如何在实战中精准识别加密流量攻击？</strong></span></h4>
-<p><strong>深信服安全团队经过7000+用户实践发现，只有将无监督学习和有监督学习智能化结合，才能最大限度提升加密流量攻击的识别率。</strong></p>
-<figure>
-<img src="https://mmbiz.qpic.cn/mmbiz_png/EJiaEo3Lq9kqe1fjo1Clib3ZyjiaxESYbUib3sYpbgKND3aB0b2gRURRDxECcT3mmFicMQdhdOaPDn2QVjyZ2rV8VrQ/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<h4><span id="22有监督学习精准识别已知加密流量">2.2
-<strong>有监督学习精准识别已知加密流量</strong></span></h4>
-<p>有监督机器学习通过将已知、带标签的行为数据输入系统，学习分析数据行为，并根据数据标签来检测、识别特定的高级威胁。深信服NDR（全流量高级威胁检测系统）应用AI模型，基于有监督机器学习抓取所有上下行流量，<strong>提取1000+维度特征</strong>，同时增加了模型训练算法LightGBM学习特征的权重，对已知高级威胁的检测更为精准。传统的检测方式基于一个模型检测多个场景，不同场景的特征不尽相同，因此误报率很高。<strong><font color="red">
-深信服NDR基于AI模型有监督学习进行场景化建模，一个模型对应一个场景，根据场景特征进行针对性检测</font></strong>，<strong>模型检测精准率能够达到98%</strong>。</p>
-<h4><span id="23无监督学习提前发现未知加密流量">2.3
-<strong>无监督学习提前发现未知加密流量</strong></span></h4>
-<p>无监督的机器学习覆盖了聚类、神经网络等方法，不依赖任何标签值，通过自主学习，挖掘数据内在特征，实现自动化全面检测，更合理地利用资源，提升效率。</p>
-<p>深信服NDR基于AI模型无监督学习方法，通过聚类学习、特征映射等智能分析技术建立设备加密流量动态行为基线，筛选出异常的、可疑的行为，同时结合行为聚合与关联分析，<strong>检测出未知威胁的早期迹象，最大程度地实现自动化检测</strong>，可以快速检测出如下异常，帮助网络安全团队主动预防威胁：</p>
-<ul>
-<li>异常的网络设备JA3</li>
-<li>异常的访问时间和访问频率</li>
-<li>异常的上下行数据包比率</li>
-<li>异常的证书签发机构</li>
-</ul>
-<p><strong>以常见的“服务器权限获取手法webshell加密通信”为例</strong>，攻击者通过渗透系统或网络安装webshell
-，在应用服务器上执行敏感命令、窃取数据、植入病毒，危害极大。‍webshell具有很强的隐蔽性，<strong>传统的、基于单向数据流的流量检测方案，无法实时更新数据，难以有效检测webshell</strong>。</p>
-<p>深信服NDR基于AI模型无监督学习的<strong><font color="red">
-孤立森林异常点</font></strong>检测算法，可以构建特征向量，精准检测“孤立离群”的webshell访问行为，<strong>具有更高检出率，更低误报率</strong>。除了webshell加密通信场景外，深信服NDR同样支持隧道检测、CS漏洞、加密挖矿、加密反弹shell等威胁检测，覆盖多种加密威胁场景。</p>
-<h2><span id="三-算法比赛总结">三、算法比赛总结</span></h2>
-<blockquote>
-<p><a href="../算法比赛/恶意加密流量（1）DataCon2020-恶意加密流量检测.md">恶意加密流量（1）DataCon2020-恶意加密流量检测.md</a></p>
-<p><a href="../算法比赛/恶意加密流量（2）Datacon2021恶意加密流量检测.md">恶意加密流量（2）Datacon2021恶意加密流量检测.md</a></p>
-<p><a href="../算法比赛/恶意加密流量（3）西湖论剑AI大数据安全分析赛.md">恶意加密流量（3）西湖论剑AI大数据安全分析赛.md</a></p>
-<p>#### 流量处理的工具</p>
-<p>#### <strong>zeek</strong>:https://github.com/zeek/zeek</p>
-<p><a target="_blank" rel="noopener" href="https://darkdefender.medium.com/https-medium-com-melanijan93-analysing-pcaps-with-bro-zeek-33340e710012">使用
-Bro/Zeek 分析 PCAP</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/235587.html">流量分析的瑞士军刀：Zeek</a></p>
-<p>Zeek Analysis Tools (ZAT):</p>
-<p>#### joy：</p>
-</blockquote>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/ahlashkari/CICFlowMeter">CICFlowMeter</a>：</p>
-</blockquote>
-<h3><span id="21-数据包级">2.1 数据包级</span></h3>
-<h4><span id="1长度分布">（1）长度分布</span></h4>
-<p>根据Cisco的研究【17】，<strong>恶意软件和普通软件在正向流和反向流中的数据包长度分布不同</strong>。<strong><font color="red">
-例如，当我们使用谷歌搜索时，客户端向服务器发送少量数据包，然后服务器返回大量数据包。然而，恶意软件的作用恰恰相反：恶意软件通常让客户端将数据传输到服务器，然后服务器定期返回调度命令。</font></strong>无论是否加密，数据包长度始终可见，因此它适合作为一种功能。我们将数据包长度和方向编码为一维独立特征。我们推测，感染恶意软件的客户端和服务器之间的一些控制消息的长度总是相似且频繁的，这具有很好的区分程度。<strong>我们考虑每个可能的数据包长度和方向元组。由于Internet上的最大传输单元（MTU）是1500字节，并且数据包的方向有两个发送或接收方向，因此我们的长度分布特征是3000维。</strong>为了提取这些特征，我们计算具有不同长度的所有数据包的数量，并进行规范化以确保概率分布。我们使用随机森林（RF）算法来处理这些特征。因为它能更好地处理高维特征，并且具有可解释性。</p>
-<h4><span id="2长度序列">（2）长度序列</span></h4>
-<p>第二部分，在不使用序列信息的情况下，我们只使用了数据包长度的统计特征，这可能会在时间上丢失一些信息，因此我们提取了数据包长度序列。<strong>我们在每个客户端的双向上取前1000个数据包长度</strong>，并将其放入TextCNN算法中以提取局部序列关系。因为该算法运行速度快，精度高。文本数据的卷积神经网络TextCNN【22】是一种用于句子分类任务的有用的深度学习算法。<strong>在这种情况下，我们将每个数据包的长度视为一个单词，长度序列相当于一个句子</strong>。</p>
-<h4><span id="3服务器ip">（3）服务器IP</span></h4>
-<p>在我们的数据集中，服务器IP地址是一个重要的标识符。<strong>我们假设，在同一地区，如果客户端感染了相同的恶意软件，则可能会导致其访问相同的服务器IP地址</strong>。因此，我们还考虑了对服务器IP地址的访问。<strong>值1或0表示是否访问了特定的服务器IP地址（一个热编码）</strong>。我们使用朴素贝叶斯（NB）算法来处理这些特征。由于朴素贝叶斯算法是一种非参数算法，其本质是寻找特征和标签之间的关系。因此，它可以被视为一个黑名单。</p>
-<h4><span id="4词频分类器">（4）词频分类器</span></h4>
-<p><strong>X509证书在Internet上广泛使用</strong>。它们用于验证实体之间的信任。证书颁发机构通常将X509证书链接在一起。如图2所示。[23]，<strong>X509证书提供URL、组织、签名等信息</strong>。我们从培训集中每个客户端的TLS流中提取X509证书链，并获取证书中<strong>主题</strong>和<strong>颁发者</strong>中包含的单词。我们将所有单词组合在一起，并将客户的流量视为由这些单词组成的句子。与B部分类似，我们计算每个单词的数量并将其用作特征。0我们使用朴素贝叶斯（NB）算法来处理这些特征。如果测试集样本证书中的所有单词从未出现在训练集中，我们将直接推断它是恶意的。因为训练集包含最流行的域名。</p>
-<p><img src="image-20220621131035005.png" alt="image-20220621131035005" style="zoom: 67%;"></p>
-<h4><span id="5tcp状态马尔可夫">==（5）TCP状态马尔可夫==</span></h4>
-<p>我们发现<strong>恶意流量和正常流量之间TCP连接状态的分布是不同的</strong>。表一说明了可能的TCP连接状态[24]。我们按照流出现的时间对其进行排序，然后使用马尔可夫随机场转移矩阵（MRFTM）对该特征进行编码。MRFTM在建模连接状态序列时很有用。MRFTM[i，j]中的每个条目统计第i个和第j个状态之间的转换次数。最后，我们对MRFTM的行进行规范化，以确保适当的马尔可夫链。然后我们将其重塑为一维向量，也就是说，我们使用MRFTM的条目作为特征。我们使用随机森林（RF）算法来处理这些特征。</p>
-<h3><span id="22-会话流级">2.2 会话流级</span></h3>
-<h4><span id="6会话流量统计">（6）会话流量统计</span></h4>
-<p>在加密流量中，上述5种分类器在主机级使用不同的特征提取方法和分类方法。此外，为了进一步提高准确率，防止恶意软件由于缺乏领域知识而欺骗分类器，我们还提取了TLS握手中的明文信息。在这个分类器中，我们首先考虑流级特征。我们仅选择TLS流，并分析每个流。一旦推断流是恶意的，就会推断相应的客户端被感染。我们对TCP和TLS协议进行了深入分析，<strong>提取了1000多个维度的流级特征</strong>，包括以下部分：</p>
-<ul>
-<li><strong>TCP连接状态特性</strong>：如F部分所述，我们对每个流的TCP连接状态进行一次热编码。</li>
-<li><strong>统计特征</strong>：我们还提取常规统计特征，表II显示了相关特征名称和描述。</li>
-</ul>
-<p><img src="../../../../../../Library/Application Support/typora-user-images/image-20220621141516374.png" alt="image-20220621141516374" style="zoom: 33%;"></p>
-<ul>
-<li><strong>长度马尔可夫特征</strong>：数据包长度序列的操作类似于F部分中的TCP连接状态序列。长度值被离散为大小相等的容器。长度数据马尔可夫链有10个箱子，每个箱子150字节。假设一个1500字节的MTU，任何观察到的大小大于1350字节的数据包都被放入同一个bin中。</li>
-<li><strong>TLS握手功能</strong>：我们发现客户端和服务器的TLS协议版本在恶意和良性TLS流之间有不同的分布，因此我们对客户端和服务器的TLS版本进行了一次热编码。此外，由于恶意软件可能使用旧的密码套件，我们在客户端和服务器上都对密码套件和扩展进行n-hot编码，即将所有密码套件和扩展扩展扩展为一维0向量，如果当前流使用某个密码套件或扩展，则相应的位置集值为1。</li>
-<li><strong>TLS证书特性</strong>：我们发现，在恶意流中，很大一部分叶证书是自签名的，或者自签名证书出现在证书链中。恶意软件喜欢利用的自签名证书的成本很低。因此，我们分析从服务器发送的证书：<strong>证书链是否包含自签名证书、叶证书是否过期、证书版本、证书有效期、公钥长度、是否发生警报</strong>。同时，考虑到之前的词频分类器，我们发现一些词无法区分恶意和良性，因此我们还将流词频添加到流特征中。</li>
-</ul>
-<h3><span id="23-主机级特征">2.3 主机级特征</span></h3>
-<h4><span id="7主机级荷载无关特征聚合流级统计信息">（7）<strong>主机级荷载无关特征聚合</strong>
-(流级统计信息)</span></h4>
-<p><strong>单独的看每条流可能漏掉了流之间的关联行为即主机级别的行为</strong>，比如恶意软件在发出正常的访问谷歌流量后可能就要开始进行恶意传输。再比如，有少量正常流也会出现自
-签名，如果我们单独看流，可能就会误判，但是如果我们基于主机提取特征发现同一
-IP
-下有多条流都是自签名，则我们就会有很大的信心认为这是恶意的。因此，我们将上一小节中流级别
-的特征进行聚合，并以流为基本单位提取主机级别特征。</p>
-<p><strong>主机级特征聚合部分主要考虑了如下的特征:</strong></p>
-<ul>
-<li><strong>总包个数</strong>，<strong>每条流的平均包个数</strong>，<strong>时间间隔、包长的均值</strong>，以及上一个小节中证书部分的相关特
-征，即<strong>自签名流数量，过期流数量，有效期过长（比如
-100年）的流数量及其均值。</strong></li>
-<li>TLS 半连接 和无连接</li>
-</ul>
-<h3><span id="24-上下文信息特征">2.4 上下文信息特征</span></h3>
-<h4><span id="8其他应用协议">（8）其他应用协议</span></h4>
-<p><strong><font color="red">HTTP头部信息</font></strong></p>
-<ul>
-<li><strong>Content-Type</strong>，正常流量 HTTP 头部信息汇总值多为
-<code>image/*</code>，而恶意流量为
-<code>text/*、text/html、charset=UTF-8</code> 或者
-<code>text/html;charset=UTF-8</code>。</li>
-<li><strong>User-Agent</strong></li>
-<li><strong>Accept-Language</strong></li>
-<li><strong>Server</strong></li>
-<li><strong>HTTP响应码</strong></li>
-</ul>
-<p><strong><font color="red"> DNS响应信息</font></strong></p>
-<ul>
-<li><strong>==域名的长度==</strong>：正常流量的域名长度分布为均值为6或7的高斯分布（正态分布）；而恶意流量的域名（FQDN全称域名）长度多为6（10）。</li>
-<li><strong>==数字字符及非字母数字(non-alphanumeric
-character)的字符占比==</strong>：正常流量的DNS响应中全称域名的数字字符的占比和非字母数字字符的占比要大。</li>
-<li><strong>DNS解析出的IP数量</strong>：大多数恶意流量和正常流量只返回一个IP地址；其它情况，大部分正常流量返回2-8个IP地址，恶意流量返回4或者11个IP地址。</li>
-<li><strong>TTL值</strong>：正常流量的TTL值一般为60、300、20、30；而恶意流量多为300，大约22%的DNS响应汇总TTL为100，而这在正常流量中很罕见。</li>
-<li><strong>域名是否收录在Alexa网站</strong>：恶意流量域名信息很少收录在Alexa
-top-1,000,000中，而正常流量域名多收录在其中。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/KK562V/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/KK562V/" class="post-title-link" itemprop="url">安全场景（2）离地攻击检测</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-13 12:49:05" itemprop="dateCreated datePublished" datetime="2022-05-13T12:49:05+08:00">2022-05-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-27 21:24:45" itemprop="dateModified" datetime="2022-05-27T21:24:45+08:00">2022-05-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>11k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>20 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="living-off-the-land恶意软件系统分析">Living-Off-The-Land
-恶意软件系统分析</span></h2>
-<blockquote>
-<p>[][AI安全论文] <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5MTM5ODU2Mg==&amp;mid=2247496069&amp;idx=1&amp;sn=f5aecaae5494b900b29f12078a2d632e&amp;chksm=cfcf4148f8b8c85ee56fbab09252bb4dc90f936cfb6decaa860b5e91457c9838cfb35179041a&amp;scene=178&amp;cur_album_id=1776483007625822210#rd">21.S&amp;P21
-Survivalism经典离地攻击（Living-Off-The-Land）恶意软件系统分析</a>:S&amp;P21的离地攻击（Living-Off-The-Land）系统分析，这是一篇非常经典的论文，并且系统性分析文章是另一种讲故事的方式。</p>
-</blockquote>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuMu3z61w35bGkJLmiaMzSMlbhFgicVxHG54dmR1ic5oqLlwSSzT28qicT2Q/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;"></p>
-<blockquote>
-<p>原文作者：Frederick Barr-Smith, Xabier Ugarte-Pedrero, et al.
-<strong>原文标题</strong>：Survivalism: Systematic Analysis of Windows
-Malware Living-Off-The-Land
-<strong>原文链接</strong>：https://ieeexplore.ieee.org/document/9519480
-<strong>发表会议</strong>：2021 IEEE Symposium on Security and Privacy
-(SP)</p>
-</blockquote>
-<p><strong>文章目录：</strong></p>
-<ul>
-<li><p><strong>摘要</strong></p></li>
-<li><p><strong>一.引言</strong></p>
-<p>1.什么是离地攻击</p>
-<p>2.APT中的离地攻击</p>
-<p>3.提出五个关键问题</p>
-<p>4.贡献（Contribution）</p></li>
-<li><p><strong>二.背景和相关工作</strong></p>
-<p>A.LotL Binaries</p>
-<p>B.Scope of our Study</p>
-<p>C.Related Work</p></li>
-<li><p><strong>三.MOTIVATION: 杀毒软件产品 vs
-离地攻击技术</strong></p></li>
-<li><p><strong>四.离地攻击流行性评估</strong></p>
-<p>A.Dataset Composition</p>
-<p>B.Analysis Pipeline</p>
-<p>C.LotL Technique Identification</p>
-<p>D.Parameter Analysis to Identify Execution Purpose</p></li>
-<li><p><strong>五.评估结果</strong></p>
-<p>A.商用恶意软件中LotL技术的流行性（Prevalence）</p>
-<p>B.Comparison of Benign and Malicious Samples</p>
-<p>C.Prevalence of LotL techniques in APT Malware</p></li>
-<li><p><strong>六.案例分析</strong></p></li>
-<li><p><strong>七.要点和讨论</strong></p></li>
-<li><p><strong>八.局限性和未来工作</strong></p></li>
-<li><p><strong>九.个人感受</strong></p></li>
-</ul>
-<h3><span id="摘要">摘要</span></h3>
-<p>随着恶意软件检测算法和方法变得越来越复杂（sophisticated），恶意软件作者也采用（adopt）同样复杂的逃避机制（evasion
-mechansims）来对抗（defeat）它们。<strong>民间证据表明离地攻击技术（Living-Off-The-Land，LotL）是许多恶意软件攻击中最主要的逃避技术之一。这些技术利用（leverage）系统中已经存在的二进制文件来执行（conduct）恶意操作。</strong>基于此，我们首次对Windows系统上使用这些技术的恶意软件进行大规模系统地调查。</p>
-<p>在本文中，我们分析了这些本地系统的二进制文件在多个恶意软件数据集上的使用情况，这些数据集共包含31,805,549个样本。我们发现平均流行率（prevalence）为9.41%。实验结果表明，LotL技术被大量的使用，特别是在高级持久性威胁（Advanced
-Persistent Threat
-，APT）恶意软件样本中，离地攻击占比为26.26%，是社区恶意软件的两倍多。</p>
-<p><strong>为了验证（illustrate）LotL技术的逃逸潜力，我们在本地沙箱环境（sandboxed
-environment）中对几个完全打补丁的Windows系统进行了离地攻击技术的测试，其结果表明在10个最流行的反病毒产品（anti-virus）中存在明显的gap。</strong></p>
-<h3><span id="一-引言">一、引言</span></h3>
-<h4><span id="11-什么是离地攻击">1.1 什么是离地攻击</span></h4>
-<p>恶意软件开发和检测是猫和老鼠的游戏，恶意软件作者不断开发新技术来绕过（bypass）检测系统。像AV杀毒软件（anti-virus）这样的安全产品通过静态和启发式分析（heuristic
-analysis）技术，以检测、分类和防止恶意软件有效执行。</p>
-<p>在过去，许多解决方案严重依赖于基于签名的检测，但不幸的是，由于使用了<strong>多态性（polymorphism）和加壳程序（packers）</strong>，这些方法变得不再那么有效。相反，许多产品开始开发启发式分析解决方案，包括检测恶意行为的算法。这些算法已成为AV引擎的重要组成部分。随着时间的推移，这些算法越来越复杂，因此需要更多创新性的逃避技术。</p>
-<p>恶意软件作者和红队经常研究和发现新方法来绕过安全解决方案。虽然它们的潜在目标本质上可能有所不同，但这两种类型的攻击者通常都利用（leverage）最先进（state-of-the-art）的逃避技术来实现目标。<strong>从防守者的角度来看，为了及时作出响应，了解这些攻击和研究它们的趋势是至关重要的（crucial）</strong>。其中，在红队和恶意软件作者中都流行的规避策略就是使用离地攻击（LotL）技术。</p>
-<p>==<strong>离地攻击（LotL）技术是指使用系统中已经存在或易于安装的二进制文件（如已签名的合法管理工具）来执行后渗透活动（post-exploitation
-activity）。</strong>==</p>
-<ul>
-<li>通过利用这些工具，攻击者可以<strong>实现注册表修改、持久化、网络或系统侦察，或执行其他恶意代码</strong>。它们甚至可以用来减少由恶意活动产生的事件日志，而不需要将其他文件下载到本地的系统中。</li>
-</ul>
-<h4><span id="12-apt中的离地攻击">1.2 APT中的离地攻击</span></h4>
-<p>离地攻击并不是隐蔽的技术，它们在互联网上公开记录着。许多开源的攻击安全工具利用了LotL技术，并且经常被攻击者所使用，从合法的红队到业余的网络攻击者，以及有组织的APT团队。</p>
-<ul>
-<li><code>PoshSpy[15]</code>：是一个俄罗斯APT29攻击模块，它是第一个被检测到的APT组织使用的LotL技术，特别是在PowerShell和Windows
-Management中。</li>
-<li>伊朗威胁组织[1]、APT33、APT34和其他组织也以使用本地Windows二进制文件和其它签名工具而闻名，特别是PowerShell[8]。</li>
-</ul>
-<p>尽管“离地攻击”在信息安全界是一个相对知名的术语，但有时很难找到一个精确的定义。此外，据我们所知，没有任何研究包含了对LotL技术在恶意软件样本中的流行程度的系统分析。关于LotL技术的文档大多以博客的形式出现，并记录着某些恶意软件家族的在野发现，或者攻击者在远程访问受损系统中所使用技术的描述。</p>
-<ul>
-<li>例如，<code>Emotet</code> 和
-<code>Trickbot</code>，两个最常见的远程访问木马（Remote Access
-Trojans，RAT），据称是使用链接的LotL二进制文件来实现持久化。</li>
-<li>作为一种对策，微软描述了对抗使用LotL技术商用RAT的基本步骤。高度逃逸的远程访问木马
-<code>Astaroth</code>，<code>TA505</code>
-组织的一些恶意软件库，<code>Dexphot cryptominer</code> 和
-<code>Nodersok</code> 同期使用的多个LotL二进制文件。</li>
-</ul>
-<h4><span id="13-提出5个关键性问题">1.3 提出5个关键性问题</span></h4>
-<p>在本文中，我们分析了LotL现象，即商用恶意软件中与离地攻击二进制文件利用相关的文件。我们首先描述了什么是LotL
-binary以及它如何被恶意软件利用来实施恶意行为的。</p>
-<p>本文的研究重点是以Windows为主导的操作系统下流行且恶意软件最常针对的目标。<strong>许多基于离地攻击的AV逃逸行为已被记录下来。因此（As
-a
-consequence），安全界很大程度上认为，LotL技术（如代理执行恶意软件）实际上对安全解决方案是有效的。</strong></p>
-<p>首先，我们提出了第一个假设以及第一个研究问题：</p>
-<blockquote>
-<p>#### <strong>问题1：Can LotL techniques effectively evade commercial
-AV?</strong></p>
-<p>#### ==LotL技术能有效地逃避目前大部分安全厂商的杀毒软件检测吗？==</p>
-</blockquote>
-<p>为了回答这个问题，我们评估了一组具有代表性的安全产品，并展示了其中的一些技术，虽然这是攻击者和防御者所熟知的，但仍然是绕过安全解决方案的有效方法，因此对安全行业来说这仍是一个开放的挑战。</p>
-<p><strong>事实上，LotL二进制文件经常被系统管理员和高级计算机用户使用来执行（perform）系统管理任务，这使得即使是对于训练有素的分析人员来说，区分（distinguish）合法行为和恶意行为也非常困难</strong>。我们负责任地向受影响的供应商披露了我们的发现并进行跟进，因此提高了他们的检测能力。</p>
-<p>尽管现有的文档提供了这些技术使用的可靠证据，但仍然不清楚这种现象在恶意软件样本中有多普遍。因此（In
-this way），我们就提出了第二个研究问题：</p>
-<blockquote>
-<p>#### <strong>问题2：How prevalent is the use of LotL binaries in
-malware?</strong></p>
-<p>#### ==在恶意软件中使用LotL二进制文件的情况有多普遍？==</p>
-</blockquote>
-<p>在此基础上，我们试图阐明当前威胁情景中的一些趋势，以确定（identify）：</p>
-<blockquote>
-<p>#### <strong>问题3：What purposes do malware binaries use LotL
-techniques for?</strong></p>
-<p>#### ==恶意软件的二进制文件使用LotL技术的目的是什么？==</p>
-<p>#### <strong>问题4：Which malware families and types use LotL
-binaries most prolifically and how does their usage differ?</strong></p>
-<p>####
-==哪些恶意软件家族和类型使用LotL二进制文件最多，它们的使用情况又有何不同？==</p>
-</blockquote>
-<p>此外，我们还调查（investigate）了为什么这些技术难以检测。部分杀毒软件公司参与了我们的披露，即将恶意攻击与系统管理员执行完全合法的管理任务区分开来是困难的。这就给我们带来了另一个问题：</p>
-<blockquote>
-<p><strong>问题5：What are the overlaps and differences in the behavior
-of legitimate and malicious binaries with respect to the usage of LotL
-binaries? How would this affect detection by heuristic AV
-engines?</strong></p>
-<p>####
-==在使用LotL二进制文件方面，合法和恶意二进制文件的行为有哪些重叠和差异呢？这将如何影响启发式AV引擎的检测呢？==</p>
-</blockquote>
-<p>虽然恶意样本和良性样本之间的LotL二进制使用频率（prevalence）有一些明显的差异，但我们也注意到一些类别存在某些相似性，如<strong>代理执行（proxied
-execution）</strong>。</p>
-<p>最后，<strong>我们将注意力集中在高逃逸和高级持续威胁的恶意软件上，我们发现它利用离地攻击技术是商用恶意软件的两倍</strong>。在表1中列出了一些使用LotL技术进行攻击的APT组织。</p>
-<h4><span id="14-贡献">1.4 贡献</span></h4>
-<p>据我们所知，本文提出了迄今为止对商用和APT恶意软件使用LotL技术最大规模的系统分析。本文的核心（core
-）贡献：</p>
-<ul>
-<li>我们通过测试一组最流行的AV引擎来对抗基于LotL技术部署的恶意载荷，以评估LotL技术的可行性，并展示了离地攻击检测的复杂性对行业仍是一个挑战。<strong>即使在披露9个月后，这些技术仍没有被发现</strong>。</li>
-<li>我们对代表现代商用恶意软件的几个数据集进行了大规模的评估，并确定了LotL技术的流行程度，以及在不同恶意软件家族和类型之间的差异。我们还评估了LotL技术由于假阳性风险可能对行业产生的影响。</li>
-<li>我们评估了一个APT恶意软件数据集，并将其公开以促进（facilitate）后续的研究，并确定它执行LotL技术的频率是商用恶意软件的两倍。此外，我们还确定了哪些APT组织最多地使用LotL技术。</li>
-</ul>
-<h3><span id="二-背景和相关工作">二、背景和相关工作</span></h3>
-<p>我们首先定义LotL二进制文件，并枚举恶意软件使用这些二进制文件的目的。</p>
-<h4><span id="21-lotl-binaries">2.1 LotL Binaries</span></h4>
-<p>近年来，“<code>Living-Off-The-Land binary（LOLbin）</code>”已经成为一个常用词，用来指在网络攻击中广泛使用的二进制文件。历史上，“Living-Off-The-Land”一直被用来表示可以为农业或狩猎提供喂养土地或离地的概念。<strong>转换为恶意软件和入侵领域，攻击者可能利用那些已经可以使用的文件（即系统上已经存在或易于安装的）来发起攻击并躲避检测。</strong></p>
-<p>在本文中，我们将LotL二进制定义为：</p>
-<ul>
-<li>==<strong>任何具有公认合法用途的二进制文件，在攻击期间利用它直接执行恶意行为，或间接协助一系列恶意行动，从而达到恶意结果。</strong>==</li>
-</ul>
-<blockquote>
-<p>In this paper, we define a LotL binary as any binary with a
-recognised legitimate use, that is leveraged during an attack to
-directly perform a malicious action; or to assist indirectly, in a
-sequence of actions that have a final malicious outcome.</p>
-</blockquote>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuuKVSBxwXyah6oA8o8y4YIcSszS9wu9wTcMpoVLldVNGWEmTcXX8Slw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<h4><span id="举例">举例：</span></h4>
-<ul>
-<li>在Windows系统上默认安装的二进制文件（binaries installed），如
-<code>Reg.exe</code> 、<code>Sc.exe</code> 和 <code>Wmic.exe</code>
-是最常被恶意软件执行的文件。</li>
-<li>大多数默认安装的二进制文件都是由微软认证码签名的。认证码签名证明二进制文件没有在编译中被篡改或修改，这些二进制文件甚至可能被列为白名单。<strong>利用可信的LotL二进制文件的恶意软件可能因此避开杀毒软件</strong>。在Windows系统上使用系统二进制文件可以作为恶意软件操作的一部分，更重要的是，许多LotL技术使用系统二进制文件来实现这些二进制文件的目的。</li>
-<li>此外，可以使用外部签名二进制文件（external signed binaries），如
-<code>PsExec.exe</code>
-或其他系统内部二进制文件。虽然它们使用频率不高，但本文的分析也囊括了这些文件。<strong>如APT组织在
-<code>SoftCell</code> 和 <code>Havex</code> 中都使用
-<code>PsExec.exe</code>
-来秘密执行远程命令，从而实现网络中的横向移动。</strong></li>
-<li>某些罕见情况，脆弱的（已签名）驱动程序被用来升级系统上的权限。这是
-<code>RobbinHood</code> 勒索软件和各种 <code>APT wiper</code>
-恶意软件样本所使用的一种技术，针对 <code>Saudi Arabian</code> 系统，包括
-<code>Dustman</code> 、<code>Shamoon</code> 和
-<code>Zerocleare</code>。</li>
-</ul>
-<h4><span id="可追溯性traceability"><strong>可追溯性（Traceability）：</strong></span></h4>
-<ul>
-<li>某些LotL二进制文件可能会比其他文件留下更多的系统日志，安全工具或取证分析人员可以利用这些日志来检测恶意操作。<strong>例如，可以将Powershell配置为具有全面的日志记录</strong>。</li>
-<li>微软甚至建议<strong>阻止在系统上执行一些本机的二进制文件</strong>，除非有充分的理由。</li>
-</ul>
-<h4><span id="22-scope-of-our-study">2.2 Scope of our Study</span></h4>
-<p>在本文中，我们关注的是Windows恶意软件执行系统二进制文件的目的。这些目的通常包括沿着
-<strong>kill
-chain</strong>的进展或逃避AV的检测。所有这些技术都被部署在系统的用户空间中。</p>
-<p><code>hollowing</code> 和 <code>injection（注入）</code>
-不在我们的研究范围内，尽管这是无文件恶意软件部署的常见技术。因为根据我们早期的定义，它们不是LotL技术。</p>
-<h4><span id="23-related-work">2.3 Related Work</span></h4>
-<blockquote>
-<p>离地攻击相关工作较少，并且都非常经典，因此下面罗列了详细的相关研究，仅供自己后续深入，也希望对您有所帮助。</p>
-</blockquote>
-<ul>
-<li>LotL恶意软件及其别名，“advanced volatile
-threat”或“无文件”恶意软件在当前的学术文献中很少被提及。这主要受限于介绍分析少或描述为一个新兴的高逃逸恶意软件变体。</li>
-<li>Li等[31]对恶意PowerShell脚本进行了分析，其中有一个小节专门描述了LotL攻击和无文件攻击作为近年来网络攻击的趋势。（<strong>作者第17篇博客详细介绍过PS经典</strong>）</li>
-<li>Wang等[72]最近发表的一篇关于数据来源分析的论文指出，Living-Off-The-Land
-是一种新兴的、突出的逃避型恶意软件子类（evasive malware
-subtype）。（<strong>经典的You Are What You
-Do后续即将分享</strong>）</li>
-<li>先前的工作[64]进行了介绍性分析，然而LotL恶意软件还没有受到详细的学术分析。（An
-emerging threat Fileless malware: a survey and research
-challenges）</li>
-<li>==<strong>赛门铁克</strong>[73,66]和<strong>思科Talos</strong>的[65]白皮书介绍了这个主题，并对多个数据集的流行性进行了分析。目前，没有论文对包含多个使用LotL技术的Windows恶意软件数据集进行大规模地系统分析。（<strong>经典</strong>）==
-<ul>
-<li>https://www.symantec.com/content/dam/symantec/docs/security-center/white-papers/istr-living-off-the-land-and-fileless-attack-techniques-en.pdf</li>
-<li>https://www.symantec.com/content/dam/symantec/docs/white-papers/living-off-the-land-turning-your-infrastructure-against-you-en.pdf</li>
-<li>https://blog.talosintelligence.com/2019/11/hunting-for-lolbins.html</li>
-</ul></li>
-</ul>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuo3I9Tc2Y5ic4biaG6jqMn0XNQbwVBw1LBM5ibErWYib2DDXc2avCPt2iaXQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<p>在一些论文中提到了LotL技术，强调了高隐蔽（stealthiness）和APT恶意软件曾使用。</p>
-<ul>
-<li><p>在一篇关于恶意软件分析工具Yara的论文中，Cohen[9]将LotL描述 “ LotL
-as a trend that has been recently observed in the tactics used by elite
-threat actors”，我们的分析结果进一步证实了该说法。</p></li>
-<li><p>Hassan等[21]的研究表明，APT恶意软件使用LotL攻击策略来实现持续攻击并分析了两个活动，他们的工作还利用了MITRE
-ATT&amp;CK框架[45]，通过MITRE定义了一个描述和分类知名攻击的分类方法。<strong>许多LotL技术在MITRE
-ATT&amp;CK框架内被索引</strong>。Mitre公司及其常见CVE漏洞是安全领域的既定权威，他们囊括并描述许多LotL技术，这样表明离地攻击是一个值得深入分析的课题。</p></li>
-<li><ul>
-<li><strong>==W. U. Hassan, A. Bates, and D. Marino, “Tactical
-Provenance Analysis for Endpoint Detection and Response Systems,” IEEE
-Symposium on Security and Privacy, 2020.==</strong></li>
-</ul></li>
-</ul>
-<p>==<strong>强烈推荐一个包含LotL二进制和ATT&amp;CK功能映射的资源</strong>：==</p>
-<ul>
-<li>https://github.com/LOLBAS-Project/LOLBAS</li>
-</ul>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuicYc1hL2AJtlQRoibrRvWzTQjdOsicdTsl0q5kzawT3MibrOM71uREq5wQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<p>与我们研究相关的是对基于脚本的恶意软件分析和去混淆。使用LotL技术的恶意软件经常使用恶意脚本作为有效负载。（<strong>下列论文在作者第16篇PowerShell总结博客中详细介绍过</strong>）</p>
-<ul>
-<li>Ugarte等[67]通过识别可疑行为模式，测试了经
-<code>Powershell.exe</code> 二进制调用的恶意脚本。</li>
-<li><strong>Rubin等[61]将机器学习应用于检测PowerShell恶意软件（微软团队）</strong>。</li>
-<li>Curtsinger[11]等人提出了恶意Javascript攻击的检测机制——ZOZZLE。</li>
-</ul>
-<p><strong>虽然这些论文提出了有效的检测方法，但是他们都是为狭隘的恶意载荷（payload）所用，他们没有分析更广泛的恶意软件生态系统和这些有效载荷是如何被LotL二进制文件触发的。</strong></p>
-<h3><span id="三-动机">三、动机</span></h3>
-<p><strong>安全研究人员已经记录了许多使用LotL技术成功躲避安全产品的案例</strong>。在许多情况下，这些<strong>LotL二进制文件被用来代理恶意载荷的执行，使其在一个合法的进程上下文中执行，或者作为一个合法系统进程的子进程生成一个新进程</strong>。在某些情况下，这些有效载荷作为LotL二进制调用的副作用被执行，而在其他情况下，它只是其主要记录行为的结果。此外，许多杀毒产品未能正确检测到这些技术。</p>
-<figure>
-<img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuqG91IHaTia5YXypwibNOxcZymPMV5Ku4TjBhzZlOv1icJx9VnwDhZfVfw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
-<p><strong>为了回答第一个问题，我们首先分析了当前AV产品是否将LotL技术作为恶意行为的指标。</strong></p>
-<p>为此，我们首先选择了10个具有代表性的AV产品（详见附录C），并利用常见<strong>基于LotL的代理执行技术来实施反弹Shell的模拟攻击</strong>。此外，本研究的目的不是测试任何特定AV产品的检测能力或将它们相互比较，而是确定是否存在普遍的检测差距。</p>
-<ul>
-<li>实验在联网的Windows
-10虚拟机执行，并将最新的本地AV产品连接到它们的云组件。</li>
-<li>利用一个反弹Shell来评估AV系统在部署LotL技术的恶意软件中有多脆弱。本文认为能够允许远程执行命令的reverse
-shell是成功执行代码的证明，这与许多远程访问木马（RAT）功能相同。</li>
-<li>通过从不同LotL二进制文件中运行这个反弹shell来进行实验，以测试AV产品是否检测到离地攻击技术是恶意的。</li>
-<li>我们在必要时混淆了反弹shell的有效载荷，并使用各种有效载荷类型来测试AV检测传递机制本身的能力，而不是通过静态签名传递的特定有效载荷（详见附录D）。</li>
-</ul>
-<h4><span id="实验结果如表2所示">实验结果如表2所示：</span></h4>
-<ul>
-<li><strong>可以发现大部分的AV引擎允许我们建立一个反弹Shell并执行命令，它们并没有检测出利用LotL技术的恶意软件，60个中只检测出4个。</strong></li>
-</ul>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuoBzOPNqhU9ce1SlxeLjb0e6mb3RUz0rkP2wrKGjKibMMUltIvMvbUeA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<h4><span id="负责任的披露和回应">负责任的披露和回应：</span></h4>
-<p>此后，我们向相关的AV供应商发布了一份文件，包含我们检查的结果并协助补救。9个月后，我们在Windows
-10机器上重复了类似的测试，这允许我们测试AV供应商是否在他们的产品中包含了新的启发式规则来检测LotL二进制的使用。其结果如下：</p>
-<ul>
-<li><strong>可以发现在60个相同的有效载荷中检测到了25个</strong></li>
-<li>在检测到的反弹shell测试中，我们修改了载荷（利用混淆或运行不同的载荷），同时为LotL二进制文件保持了完全相同的命令行参数，通过利用这些混淆和修改的有效载荷，我们成功地在这25个被拦截的实例中的19个执行了一个反向shell。</li>
-</ul>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuHRbN87ZFfsyVAYjqDAoDicE27vuhSBiaLf4zlGotKd2yrNfxA7Z3h2icw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<p>==<strong>实验结果表明，LotL技术仍然是杀毒软件供应商面临的一个重大挑战。合法用户通常以不可预知的方式使用这些工具，而安全公司很难在没有误报的情况下部署有效的检测策略。</strong>==</p>
-<p>接下来将展示这些技术如何在商用恶意软件中是普遍存在的，以及离地攻击是不应该被安全社区忽视的问题。</p>
-<h3><span id="四-离地攻击流行性评估">四、离地攻击流行性评估</span></h3>
-<p>在本节中，我们测量了恶意软件中LotL技术的流行程度，并试图回答所提出的研究问题。</p>
-<h4><span id="41-数据集描述">4.1 数据集描述</span></h4>
-<p>评估工作是在9个独立的子数据集上进行的。我们总共收集了31,805,549个样本，其中我们从VirusTotal（VT）中获得了16,048,202份行为报告。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXulUhTGQG5b3yfdmTq4NIo8YaKGvb39A0WOwvqUft2aUEB7MwGebkjGw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<p>==<strong>Public Datasets</strong>==</p>
-<p>公共恶意软件数据集，包括商用恶意软件、VirusShare语料库的二进制文件、窗口恶意PE文件、佐治亚理工学院发布的可执行文件、VX-Mumbal和MalShare共享的样本（两个重点的共有数据集）。</p>
-<ul>
-<li>https://impactcybertrust.org/dataset{ }view?idDataset=1143</li>
-<li>https://vx-underground.org/samples.html</li>
-<li>https://malshare.com</li>
-</ul>
-<p><strong>VirusTotal Balanced Dataset</strong></p>
-<p>从VT中收集了237,288个hash值，利用 <code>AVClass</code>
-预处理代码和打标签（家族分类），并平衡数据集中每个族。</p>
-<p><strong>APT Malware</strong></p>
-<p>我们根据一种类似于数据集论文dAPTaset[59]的方法收集了一个APT恶意软件的数据集。我们处理了HTML页面和pdf文件（<code>APTnotes</code>），并提取了这些文件中包含的所有恶意软件的hash值。</p>
-<ul>
-<li>https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-rezaeirad.pdf</li>
-<li>https://github.com/aptnotes/data</li>
-</ul>
-<p>==<strong>Yara Rule Match Malware</strong>==</p>
-<p>部署3个Yara规则来检测LotL二进制文件，并使用Livehunte来识别上传到VT的新的恶意软件hash，并使用LotL技术匹配恶意软件的行为特征。</p>
-<h4><span id="42-analysis-pipeline">4.2 Analysis Pipeline</span></h4>
-<p>当收集了由Windows
-PE二进制文件组成的不同数据集，我们就分析样本的行为。包括三个阶段：</p>
-<ul>
-<li>data collection</li>
-<li>data augmentation</li>
-<li>data analysis</li>
-</ul>
-<blockquote>
-<p>First Seen：首次发现病毒样本的时间戳 AVClass
-Family：某恶意软件样本所属家族 <strong>Behavioural
-Report：恶意行为报告，由特定恶意软件样本执行的进程和Shell命令的列表</strong></p>
-</blockquote>
-<h4><span id="43-lotl-techniqueidentification">4.3 LotL Technique
-Identification</span></h4>
-<p><strong>数据准备就绪，那么如何识别是否使用了LotL技术呢？</strong></p>
-<p>我们使用<strong>模式匹配</strong>来识别恶意软件执行过程中对LotL二进制文件调用的情况，从而处理所有收集到的行为报告（<code>behavioural reports</code>）。行为报告包括两个指标：</p>
-<ul>
-<li><p><strong>Shell Commands（Shell命令）</strong></p>
-<p><strong>恶意二进制文件在主机操作系统中执行的Shell命令</strong>，Shell命令日志可以通过引用系统二进制文件的绝对路径来显示它的执行情况。<strong>同时，Windows的命令提示符还包括许多别名，例如Reg.exe的reg</strong>。</p></li>
-<li><p><strong>Processes（进程）</strong></p>
-<p><strong>进程日志明确由恶意软件样本执行的系统二进制文件</strong>。执行的参数也包含在行为报告中的进程日志中。</p></li>
-</ul>
-<p>在我们的分析中，如果一个样本的行为报告包含至少一个LotL二进制文件的执行，那么它使用了LotL技术。<strong>我们记录了每一个LotL的执行及其参数细节，并将它们插入到数据库中。然后，我们分析了这些恶意软件样本的参数，以确定每个数据集中最==常见的参数类型和执行目的==。</strong></p>
-<p>具体而言，我们确定了这两种独立类型的二进制文件：</p>
-<ul>
-<li><strong>Default System Binaries</strong></li>
-<li><strong>Installed Signed Binaries</strong></li>
-</ul>
-<p>模式匹配优化：模式匹配方法在不断改进，直到所有识别的LotL命令被正确分类和映射到执行目的，并进行了数据清洗处理。</p>
-<ul>
-<li>不带参数的二进制执行移除</li>
-<li>沙箱产物删除（如Explorer.exe和sha256），Web访问不处理</li>
-<li>删除Verclsid.exe的实例</li>
-</ul>
-<h4><span id="44parameter-analysis-to-identify-execution-purpose">==4.4
-Parameter Analysis to Identify Execution Purpose==</span></h4>
-<p>==<strong>为了确定LotL技术的执行目的，我们观察了恶意软件样本提供的参数。</strong>==</p>
-<p>图1说明了四个进程执行的映射。该映射通过识别单独的执行目的来在所有数据集上实施，<strong>例如执行Net.exe时使用stop参数表示任务停止。在将单个命令映射到执行目的之后，我们将为该二进制文件选择所有匹配的执行</strong>。我们在所有系统二进制执行中重复该步骤，直到每次执行被分类为属于特定的执行目的或被错误分类。</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/0RFmxdZEDROicMJKf6AXIujWAvOnAhjXuHicN1aicniaStH5EZY1y22UBUzsMYXomMtNgYwuQYr1AZ8vWfRTPJOFPg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;"></p>
-<p>按照这种方法，我们按目的将参数分为9个独立的类别。</p>
-<p><strong>首先是三种与执行有关的类型：</strong></p>
-<ul>
-<li><strong>Proxied
-Execution</strong>：代理执行，如Mshta.exe执行.hta文件，Rundll32.exe执行.dll文件</li>
-<li><strong>Persistence</strong>：持久化：如果恶意代码配置或修改系统以在未来某个时间点执行命令或存储的作业，那么它就实现了持久性，比如Sc.exe带有创建参数的Bitsadmin.exe，或带有日期时间参数的Schtasks.exe/At.exe</li>
-<li><strong>Delayed Execution</strong>：延迟执行，比如
-Ping.exe执行-n</li>
-</ul>
-<p><strong>接着是三类与底层系统组件的修改有关。恶意软件通常从事这种行为，以便在机器上对目标进行==进一步的传播==或行动。</strong></p>
-<ul>
-<li><strong>Firewall Modification</strong>：防火墙修改，如Netsh.exe</li>
-<li><strong>Registry Modification</strong>：注册表修改，如Reg.exe</li>
-<li><strong>Permissions
-Modification</strong>：权限修改，如Cacls.exe修改文件权限</li>
-</ul>
-<p><strong>最后是与执行或系统修改无关的三类。</strong></p>
-<ul>
-<li><strong>File Opening</strong>：打开文件，如Explorer.exe</li>
-<li><strong>Reconnaissance</strong>：侦察，触发本地或远程配置的横向移动，如Net.exe</li>
-<li><strong>Task
-Stopping</strong>：使用LotL二进制文件秘密停止另一个进程或服务，如Taskkill.exe</li>
-</ul>
 
       
     </div>

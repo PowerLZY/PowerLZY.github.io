@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-count">257</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,466 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1G5MF0A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1G5MF0A/" class="post-title-link" itemprop="url">风控算法（1）字节-色情导流用户识别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-04 11:28:30" itemprop="dateCreated datePublished" datetime="2022-05-04T11:28:30+08:00">2022-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 20:38:59" itemprop="dateModified" datetime="2023-04-18T20:38:59+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1><span id="字节跳动安全ai挑战赛-大佬等等我">字节跳动安全AI挑战赛-大佬等等我</span></h1>
+<ul>
+<li><strong>比赛链接</strong>：https://security.bytedance.com/fe/ai-challenge#/challenge
+<ul>
+<li>基于文本和多模态数据的风险识别
+<ul>
+<li>电商黄牛地址识别</li>
+<li><strong>色情导流用户识别</strong></li>
+</ul></li>
+<li>小样本半监督风险识别
+<ul>
+<li>人机识别</li>
+<li>少样本作弊样本检测任务</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2><span id="色情导流用户识别">色情导流用户识别</span></h2>
+<blockquote>
+<p>色情导流赛道 2ndSolution
+https://github.com/rooki3ray/2021BytedanceSecurityAICompetition_track1</p>
+</blockquote>
+<h3><span id="一-赛题描述">一、赛题描述</span></h3>
+<p>随着互联网的快速发展，网络黑产特别是色情导流也日益增多，给用户带来了极大的伤害。色情导流用户发布色情/低俗内容吸引用户，并且通过二维码、联系方式、短网址等完成导流。本赛题旨在通过提供用户相关数据，运用机器学习等方法对色情导流用户进行识别，提高模型检测的效果。</p>
+<ul>
+<li>输入：<strong>用户的特征，包括基础信息、投稿信息、行为信息</strong>。</li>
+<li>输出：用户的标签（1表示色情导流用户，0表示正常用户）</li>
+<li><strong>评价指标</strong>采用fβ（取β=0.3） <span class="math display">\[ f_{\beta} = (1 + \beta^2)\frac{p*r}{\beta^2*p+r}
+\]</span></li>
+</ul>
+<h4><span id="基础信息">基础信息</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182038415.png" alt="image-20220629211352351" style="zoom:50%;"></p>
+<h4><span id="投稿信息">投稿信息</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182038486.png" alt="image-20220629211559660" style="zoom:50%;"></p>
+<h4><span id="行为信息">行为信息</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182038131.png" alt="image-20220629211703172" style="zoom:50%;"></p>
+<h3><span id="二-数据构成">二、数据构成</span></h3>
+<ul>
+<li>用户基础信息
+<ul>
+<li>性别、粉丝数、个签、关注人数……</li>
+</ul></li>
+<li>用户投稿信息
+<ul>
+<li>视频标题、poi、省份、投稿时间</li>
+</ul></li>
+<li>用户行为信息
+<ul>
+<li>播放次数、点赞数、分享数……</li>
+</ul></li>
+</ul>
+<h3><span id="三-方案说明">三、方案说明</span></h3>
+<ul>
+<li><strong>特征工程</strong>
+<ul>
+<li><strong>log1p 数据平滑</strong></li>
+<li>类别特征（<strong>LabelEncoder</strong>）</li>
+<li>时间特征（<strong>min-max 归一化</strong>）</li>
+<li>文本特征（长度、WordVec）</li>
+<li>交叉特征</li>
+</ul></li>
+<li><strong>模型训练</strong>
+<ul>
+<li>10折lgb交叉验证，均值作为预测结果</li>
+<li>伪标签</li>
+</ul></li>
+<li>最终分数线上第二（0.9906）。</li>
+</ul>
+<h3><span id="四-代码结构">四、代码结构</span></h3>
+<blockquote>
+<p>from config import Config</p>
+<p>import argparse</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── 1_word2vec.py</span><br><span class="line">├── 2_merge_data.py</span><br><span class="line">├── 3_5_train_kfold.py</span><br><span class="line">├── 4_pseudo_label.py</span><br><span class="line">├── config.py</span><br><span class="line">├── data</span><br><span class="line">│   ├── pseudo.csv</span><br><span class="line">│   ├── raw</span><br><span class="line">│   │   ├── 测试数据</span><br><span class="line">│   │   └── 训练数据</span><br><span class="line">│   ├── sentence</span><br><span class="line">│   │   └── signature</span><br><span class="line">│   ├── test.csv</span><br><span class="line">│   ├── train.csv</span><br><span class="line">│   └── ...</span><br><span class="line">├── evaluate_kfold.py</span><br><span class="line">├── __pycache__</span><br><span class="line">├── readme.md</span><br><span class="line">├── requirements.txt</span><br><span class="line">├── run.sh</span><br><span class="line">├── saved</span><br><span class="line">│   ├── <span class="number">1112_1315_0.985_0</span><span class="number">.9934</span></span><br><span class="line">│   │   └── ...</span><br><span class="line">│   ├── <span class="number">1112_1320_0.985</span>_pseudo_0<span class="number">.9934</span></span><br><span class="line">│   │   └── ...</span><br><span class="line">│   ├── 1112_1321_pseudo_0<span class="number">.985_0</span><span class="number">.9942</span></span><br><span class="line">│   │   ├── <span class="number">1112_1321_0.985</span>_results_kfold_0<span class="number">.9942</span>.csv</span><br><span class="line">│   │   ├── log.log</span><br><span class="line">│   │   └── ...</span><br><span class="line">└── utils.py</span><br></pre></td></tr></table></figure>
+<h4><span id="41-runsh">4.1 run.sh</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">python 1_word2vec.py</span><br><span class="line">python 2_merge_data.py</span><br><span class="line">python 3_5_train_kfold.py</span><br><span class="line">python 4_pseudo_label.py</span><br><span class="line">python 3_5_train_kfold.py --pseudo</span><br></pre></td></tr></table></figure>
+<h4><span id="42-1_word2vecpy">4.2 1_word2vec.py</span></h4>
+<h4><span id="43-5_train_kfoldpy">4.3 <strong>5_train_kfold.py</strong></span></h4>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1CE2BYX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1CE2BYX/" class="post-title-link" itemprop="url">风控算法（2）字节-小样本半监督风险识别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-04 11:28:30" itemprop="dateCreated datePublished" datetime="2022-05-04T11:28:30+08:00">2022-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 20:39:52" itemprop="dateModified" datetime="2023-04-18T20:39:52+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>28 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="字节跳动安全ai挑战赛-大佬等等我">字节跳动安全AI挑战赛-大佬等等我</span></h2>
+<ul>
+<li><strong>比赛链接</strong>：https://security.bytedance.com/fe/ai-challenge#/challenge
+<ul>
+<li>基于文本和多模态数据的风险识别
+<ul>
+<li>电商黄牛地址识别</li>
+<li><strong>色情导流用户识别</strong></li>
+</ul></li>
+<li>小样本半监督风险识别
+<ul>
+<li>人机识别</li>
+<li>少样本作弊样本检测任务</li>
+</ul></li>
+</ul></li>
+<li><strong>人工智能竞赛复盘：2021安全AI挑战赛</strong>
+:https://www.bilibili.com/video/BV1PL4y1n7SN?spm_id_from=333.337.search-card.all.click&amp;vd_source=29387dc08d18f642078183a6816e93e8</li>
+<li><strong>炼丹术士Zoro</strong>:https://www.zhihu.com/people/AIMuseum/posts</li>
+<li><strong>字节跳动安全AI挑战赛直播笔记</strong> - 知乎
+https://zhuanlan.zhihu.com/p/435018506</li>
+</ul>
+<h2><span id="小样本半监督风险识别">小样本半监督风险识别</span></h2>
+<h3><span id="一-赛题描述">一、赛题描述</span></h3>
+<p>在真实的社交网络中，存在的作弊用户会影响社交网络平台。在真实场景中，会受到多方面的约束，我们仅能获取到少部分的作弊样本和一部分正常用户样本，<strong>现需利用已有的少量带标签的样本，去挖掘大量未知样本中的剩余作弊样本</strong>。给定一段时间内的样本，其中包含少量作弊样本，部分正常样本以及标签未知的样本。参赛者应该利用这段时间内已有的数据，提出自己的解决方案，以预测标签未知的样本是否为作弊样本。数据处理方法和算法不限，但是参赛者需要综合考虑算法的效果和复杂度，从而构建合理的解决方案。</p>
+<h4><span id="11-赛题数据与评价指标">1.1 赛题数据与评价指标</span></h4>
+<p><strong>赛题数据</strong>：本次比赛给出的数据是T～T+N
+时刻内点赞、关注事件下按比例抽样数据以及其对应账号的基础特征数据。</p>
+<p><strong>评价指标</strong>：本赛题使用F1-score来评估模型的准召程度</p>
+<h3><span id="二-解决方案一">二、 解决方案一</span></h3>
+<p>首先明确本赛题实质上仍然是一个二分类的问题，我们也可以完全从此角度出来先构建出一个基础分类模型，然后再<strong>利用大量无标签的数据进行半监督学习来提升模型性能</strong>。</p>
+<blockquote>
+<p><strong>风险识别：第二名源代码</strong>
+https://github.com/Ljwccc/ByteDanceSecurityAI</p>
+<ul>
+<li>用户侧特征：
+<ul>
+<li>账户本身的基础特征</li>
+<li>账户本身的特征计数统计</li>
+<li>粉丝量、关注量、发帖量、被点赞量、最后登陆时间-注册时间
+乘除交叉</li>
+<li>从请求数据中提取出来的device_type, app_version,
+app_channel类别特征，直接作为静态画像使用</li>
+<li>类别特征下的数值统计特征 min/sum/max/std</li>
+</ul></li>
+<li>请求侧特征：
+<ul>
+<li>用户请求的时间序列特征, 时间差序列特征 min/sum/max/std</li>
+<li>w2v特征， 每个用户的请求ip序列建模</li>
+</ul></li>
+</ul>
+</blockquote>
+<h3><span id="21-特征工程">2.1 特征工程</span></h3>
+<p>从序列特征中提取用户的设备信息、channel信息和app_version信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先 group</span></span><br><span class="line">user_request_cat_group = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">user_request_device_type = user_request_cat_group[<span class="string">&#x27;request_device_type&#x27;</span>].agg(&#123;<span class="string">&#x27;device_type_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line">user_request_channel = user_request_cat_group[<span class="string">&#x27;request_app_channel&#x27;</span>].agg(&#123;<span class="string">&#x27;channel_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line">user_request_app_version = user_request_cat_group[<span class="string">&#x27;request_app_version&#x27;</span>].agg(&#123;<span class="string">&#x27;app_version_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line"></span><br><span class="line">user_request_device_type[<span class="string">&#x27;device_type&#x27;</span>] = user_request_device_type[<span class="string">&#x27;device_type_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">user_request_channel[<span class="string">&#x27;channel&#x27;</span>] = user_request_channel[<span class="string">&#x27;channel_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">user_request_app_version[<span class="string">&#x27;app_version&#x27;</span>] = user_request_app_version[<span class="string">&#x27;app_version_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:x[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">user_feat_from_action = pd.concat([user_request_device_type[[<span class="string">&#x27;request_user&#x27;</span>,<span class="string">&#x27;device_type&#x27;</span>]],user_request_channel[[<span class="string">&#x27;channel&#x27;</span>]], user_request_app_version[[<span class="string">&#x27;app_version&#x27;</span>]]],axis=<span class="number">1</span>).rename(columns=&#123;<span class="string">&#x27;request_user&#x27;</span>:<span class="string">&#x27;user&#x27;</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h4><span id="211-用户基础特征">2.1.1 用户基础特征</span></h4>
+<p>类别特征</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类别特征</span></span><br><span class="line">cat_cols = [<span class="string">&#x27;user_name&#x27;</span>,<span class="string">&#x27;user_profile&#x27;</span>,<span class="string">&#x27;user_register_type&#x27;</span>,<span class="string">&#x27;user_register_app&#x27;</span>,<span class="string">&#x27;user_least_login_app&#x27;</span>,<span class="string">&#x27;user_freq_ip&#x27;</span>,<span class="string">&#x27;user_freq_ip_3&#x27;</span>,<span class="string">&#x27;device_type&#x27;</span>,<span class="string">&#x27;channel&#x27;</span>,<span class="string">&#x27;app_version&#x27;</span>,<span class="string">&#x27;user_freq_ip_2&#x27;</span>,<span class="string">&#x27;user_freq_ip_1&#x27;</span>,]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 手工类别特征</span></span><br><span class="line">user_info[<span class="string">&#x27;user_freq_ip_3&#x27;</span>] = user_info[<span class="string">&#x27;user_freq_ip&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(x).split(<span class="string">&#x27;.&#x27;</span>)[:<span class="number">3</span>])) <span class="comment"># 常用ip取前3位</span></span><br><span class="line">user_info[<span class="string">&#x27;user_freq_ip_2&#x27;</span>] = user_info[<span class="string">&#x27;user_freq_ip&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(x).split(<span class="string">&#x27;.&#x27;</span>)[:<span class="number">2</span>])) <span class="comment"># 常用ip取前2位</span></span><br><span class="line">user_info[<span class="string">&#x27;user_freq_ip_1&#x27;</span>] = user_info[<span class="string">&#x27;user_freq_ip&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="string">&#x27;.&#x27;</span>.join(<span class="built_in">str</span>(x).split(<span class="string">&#x27;.&#x27;</span>)[:<span class="number">1</span>])) <span class="comment"># 常用ip取前1位</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并从request中提取的基础特征</span></span><br><span class="line">user_info = user_info.merge(user_feat_from_action,on=<span class="string">&#x27;user&#x27;</span>,how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line"><span class="keyword">del</span> user_feat_from_action</span><br><span class="line"></span><br><span class="line"><span class="comment"># 类别特征的频次</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> cat_cols:</span><br><span class="line">    user_info = freq_enc(user_info,col)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 对所有类别特征做label_encoder</span></span><br><span class="line">user_info = label_enc(user_info,cat_cols)</span><br></pre></td></tr></table></figure>
+<p>点赞量，关注量等交叉特征，直接梭哈所有乘除法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">num_cols = [<span class="string">&#x27;user_fans_num&#x27;</span>,<span class="string">&#x27;user_follow_num&#x27;</span>,<span class="string">&#x27;user_post_num&#x27;</span>,<span class="string">&#x27;user_post_like_num&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> col1 <span class="keyword">in</span> num_cols:</span><br><span class="line">    <span class="keyword">for</span> col2 <span class="keyword">in</span> [col <span class="keyword">for</span> col <span class="keyword">in</span> num_cols <span class="keyword">if</span> col!=col1]:</span><br><span class="line">        user_info[<span class="string">f&#x27;<span class="subst">&#123;col1&#125;</span>_<span class="subst">&#123;col2&#125;</span>_mul&#x27;</span>] = user_info[col1]*user_info[col2]</span><br><span class="line">        user_info[<span class="string">f&#x27;<span class="subst">&#123;col1&#125;</span>_<span class="subst">&#123;col2&#125;</span>_div&#x27;</span>] = user_info[col1]/(user_info[col2]+<span class="number">1e-3</span>)</span><br></pre></td></tr></table></figure>
+<p>类别特征下粉丝量、关注量、发帖量、被点赞量、请求数量的统计值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">num_cols = [<span class="string">&#x27;user_fans_num&#x27;</span>,<span class="string">&#x27;user_follow_num&#x27;</span>,<span class="string">&#x27;user_post_num&#x27;</span>,<span class="string">&#x27;user_post_like_num&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> cat_col <span class="keyword">in</span> cat_cols:</span><br><span class="line">    cat_group = user_info.groupby(cat_col)[num_cols]</span><br><span class="line">    <span class="comment"># 平均值</span></span><br><span class="line">    cat_col_stat = cat_group.transform(np.mean)</span><br><span class="line">    cat_col_stat.rename(columns=&#123;name:<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;cat_col&#125;</span>_mean&#x27;</span> <span class="keyword">for</span> name <span class="keyword">in</span> cat_col_stat.columns&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    user_info = pd.concat([user_info,cat_col_stat],axis=<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 和</span></span><br><span class="line">    cat_col_stat = cat_group.transform(np.<span class="built_in">sum</span>)</span><br><span class="line">    cat_col_stat.rename(columns=&#123;name:<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;cat_col&#125;</span>_sum&#x27;</span> <span class="keyword">for</span> name <span class="keyword">in</span> cat_col_stat.columns&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    user_info = pd.concat([user_info,cat_col_stat],axis=<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 方差</span></span><br><span class="line">    cat_col_stat = cat_group.transform(np.std)</span><br><span class="line">    cat_col_stat.rename(columns=&#123;name:<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>_<span class="subst">&#123;cat_col&#125;</span>_std&#x27;</span> <span class="keyword">for</span> name <span class="keyword">in</span> cat_col_stat.columns&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    user_info = pd.concat([user_info,cat_col_stat],axis=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">del</span> cat_col_stat</span><br></pre></td></tr></table></figure>
+<h4><span id="212-序列特征">2.1.2 序列特征</span></h4>
+<p><strong>用户请求序列特征</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">user_request_list = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)[<span class="string">&#x27;request_target&#x27;</span>].agg(&#123;<span class="string">&#x27;request_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先按照时间进行排序</span></span><br><span class="line">user_request = user_request.sort_values(by=<span class="string">&#x27;request_time&#x27;</span>,)</span><br><span class="line"><span class="comment"># 请求的数量</span></span><br><span class="line">user_action_feat = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)[<span class="string">&#x27;request_user&#x27;</span>].agg(&#123;<span class="string">&#x27;request_num&#x27;</span>:<span class="string">&#x27;count&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户请求的时间统计量，但是80%的用户只有一次请求行为</span></span><br><span class="line">user_action_feat_temp = user_request.groupby([<span class="string">&#x27;request_user&#x27;</span>],as_index=<span class="literal">False</span>)[<span class="string">&#x27;request_time&#x27;</span>].agg(&#123;<span class="string">&#x27;time_list&#x27;</span>:<span class="built_in">list</span>&#125;)</span><br><span class="line">user_action_feat = user_action_feat.merge(user_action_feat_temp,on=<span class="string">&#x27;request_user&#x27;</span>,how=<span class="string">&#x27;left&#x27;</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_min&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="built_in">min</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_max&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="built_in">max</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_var&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(np.var)</span><br><span class="line">user_action_feat[<span class="string">&#x27;time_max-min&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="keyword">lambda</span> x:np.<span class="built_in">max</span>(x)-np.<span class="built_in">min</span>(x))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间间隔的平均值，最大值，最小值，方差</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">diff_value</span>(<span class="params">time</span>):</span><br><span class="line">    time_shift = <span class="built_in">list</span>(time[<span class="number">1</span>:])</span><br><span class="line">    time_shift.append(time[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    diff_time = time_shift-time</span><br><span class="line">    <span class="keyword">return</span> diff_time</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>] = user_action_feat[<span class="string">&#x27;time_list&#x27;</span>].apply(<span class="keyword">lambda</span> x: diff_value(np.array(x)))</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_max&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(<span class="built_in">max</span>)</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_var&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(np.var)</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_mean&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(np.mean)</span><br><span class="line">user_action_feat[<span class="string">&#x27;diff_time_min&#x27;</span>] = user_action_feat[<span class="string">&#x27;diff_time&#x27;</span>].apply(<span class="built_in">min</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>用户请求序列做一个embedding</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sentences = user_request_list[<span class="string">&#x27;request_list&#x27;</span>].values.tolist()</span><br><span class="line">emb_size = <span class="number">64</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(sentences)):</span><br><span class="line">    sentences[i] = [<span class="built_in">str</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> sentences[i]]  <span class="comment"># 数字转化为字符串用于训练w2v</span></span><br><span class="line"></span><br><span class="line">model = Word2Vec(sentences, size=emb_size, window=<span class="number">5</span>, min_count=<span class="number">5</span>, sg=<span class="number">0</span>, hs=<span class="number">0</span>, seed=<span class="number">1</span>, <span class="built_in">iter</span>=<span class="number">5</span>, workers=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">emb_matrix = []</span><br><span class="line"><span class="keyword">for</span> seq <span class="keyword">in</span> sentences:</span><br><span class="line">    vec = []</span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> seq:</span><br><span class="line">        <span class="keyword">if</span> w <span class="keyword">in</span> model.wv.vocab:</span><br><span class="line">            vec.append(model.wv[w])</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(vec) &gt; <span class="number">0</span>:</span><br><span class="line">        emb_matrix.append(np.mean(vec, axis=<span class="number">0</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        emb_matrix.append([<span class="number">0</span>] * emb_size)</span><br><span class="line">emb_matrix = np.array(emb_matrix)</span><br><span class="line"></span><br><span class="line">emb_size = <span class="number">64</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(emb_size):</span><br><span class="line">    user_request_list[<span class="string">&#x27;action_emb_&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(i)] = emb_matrix[:, i]</span><br><span class="line"></span><br><span class="line">user_request_list = user_request_list.drop([<span class="string">&#x27;request_list&#x27;</span>],axis=<span class="number">1</span>)</span><br><span class="line">user_action_feat = user_action_feat.merge(user_request_list,how=<span class="string">&#x27;left&#x27;</span>,on=<span class="string">&#x27;request_user&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>合并基础特征和序列特征</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user_info = user_info.merge(user_action_feat,how=<span class="string">&#x27;left&#x27;</span>,on=<span class="string">&#x27;user&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3><span id="22-模型训练">2.2 模型训练</span></h3>
+<h4><span id="221-交叉验证">2.2.1 交叉验证</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">folds = KFold(n_splits=<span class="number">10</span>, shuffle=<span class="literal">True</span>, random_state=<span class="number">546789</span>)</span><br><span class="line">oof_preds, test_preds, importances = train_model_cat(train, test, y, folds, cat_cols)</span><br><span class="line"></span><br><span class="line">test_preds[<span class="string">&#x27;label&#x27;</span>] = test_preds[<span class="string">&#x27;label&#x27;</span>].apply(<span class="keyword">lambda</span> x:<span class="number">0</span> <span class="keyword">if</span> x&lt;<span class="number">0.4</span> <span class="keyword">else</span> <span class="number">1</span>)</span><br><span class="line">test_preds = test_preds.drop_duplicates(subset=[<span class="string">&#x27;user&#x27;</span>])   <span class="comment"># 去除相同的user</span></span><br><span class="line"><span class="comment"># 生成结果</span></span><br><span class="line">test_preds[[<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;label&#x27;</span>]].to_csv(<span class="string">&#x27;submission.csv&#x27;</span>, index=<span class="literal">False</span>, header=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<h4><span id="222-模型训练">2.2.2 模型训练</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">useless_cols = [<span class="string">&#x27;user&#x27;</span>,<span class="string">&#x27;user_status&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_model_cat</span>(<span class="params">data_, test_, y_, folds_, cat_cols, semi_data_=<span class="literal">None</span></span>):</span><br><span class="line">    oof_preds = np.zeros(data_.shape[<span class="number">0</span>])  <span class="comment"># 验证集预测结果</span></span><br><span class="line">    sub_preds = np.zeros(test_.shape[<span class="number">0</span>])  <span class="comment"># 测试集预测结果</span></span><br><span class="line">    feature_importance_df = pd.DataFrame()</span><br><span class="line">    feats = [f <span class="keyword">for</span> f <span class="keyword">in</span> data_.columns <span class="keyword">if</span> f <span class="keyword">not</span> <span class="keyword">in</span> useless_cols]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 半监督每批训练数据</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> semi_data_ <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        semi_num = semi_data_.shape[<span class="number">0</span>]/<span class="number">5</span></span><br><span class="line">        semi_y = semi_data_[<span class="string">&#x27;user_status&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> n_fold, (trn_idx, val_idx) <span class="keyword">in</span> <span class="built_in">enumerate</span>(folds_.split(data_)):</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> semi_data_ <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            semi_data_batch = semi_data_[feats].iloc[<span class="built_in">int</span>(n_fold*semi_num):<span class="built_in">int</span>((n_fold+<span class="number">1</span>)*semi_num)]</span><br><span class="line">            semi_y_batch = semi_y.iloc[<span class="built_in">int</span>(n_fold*semi_num):<span class="built_in">int</span>((n_fold+<span class="number">1</span>)*semi_num)]</span><br><span class="line">        </span><br><span class="line">            trn_x, trn_y = pd.concat([data_[feats].iloc[trn_idx],semi_data_batch]), pd.concat([y_.iloc[trn_idx],semi_y_batch])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            trn_x, trn_y = data_[feats].iloc[trn_idx], y_.iloc[trn_idx]   <span class="comment"># 训练集数据</span></span><br><span class="line">            </span><br><span class="line">        val_x, val_y = data_[feats].iloc[val_idx], y_.iloc[val_idx]   <span class="comment"># 验证集数据</span></span><br><span class="line">       </span><br><span class="line">        clf = CatBoostClassifier(</span><br><span class="line">            iterations=<span class="number">6000</span>,</span><br><span class="line">            learning_rate=<span class="number">0.08</span>,  <span class="comment"># 0.08</span></span><br><span class="line">            <span class="comment"># num_leaves=2**5,</span></span><br><span class="line">            eval_metric=<span class="string">&#x27;AUC&#x27;</span>,</span><br><span class="line">            task_type=<span class="string">&quot;CPU&quot;</span>,</span><br><span class="line">            loss_function=<span class="string">&#x27;Logloss&#x27;</span>,</span><br><span class="line">            colsample_bylevel = <span class="number">0.8</span>,</span><br><span class="line">            </span><br><span class="line">            subsample=<span class="number">0.9</span>,   <span class="comment"># 0.9</span></span><br><span class="line">            max_depth=<span class="number">7</span>,</span><br><span class="line">            reg_lambda = <span class="number">0.3</span>,</span><br><span class="line">            verbose=-<span class="number">1</span>,</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        clf.fit(trn_x, trn_y, </span><br><span class="line">                eval_set= [(trn_x, trn_y), (val_x, val_y)], </span><br><span class="line">                verbose_eval=<span class="number">300</span>, early_stopping_rounds=<span class="number">100</span>,  <span class="comment"># 这个参数有点小，可以再大一点</span></span><br><span class="line">                cat_features = cat_cols</span><br><span class="line">               )</span><br><span class="line">        oof_preds[val_idx] = clf.predict_proba(val_x)[:, <span class="number">1</span>]   <span class="comment"># 验证集结果</span></span><br><span class="line">        </span><br><span class="line">        sub_preds += clf.predict_proba(test_[feats])[:, <span class="number">1</span>] / folds_.n_splits  <span class="comment"># 测试集结果</span></span><br><span class="line">        </span><br><span class="line">        fold_importance_df = pd.DataFrame()</span><br><span class="line">        fold_importance_df[<span class="string">&quot;feature&quot;</span>] = feats</span><br><span class="line">        fold_importance_df[<span class="string">&quot;importance&quot;</span>] = clf.feature_importances_</span><br><span class="line">        fold_importance_df[<span class="string">&quot;fold&quot;</span>] = n_fold + <span class="number">1</span></span><br><span class="line">        feature_importance_df = pd.concat([feature_importance_df, fold_importance_df], axis=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Fold %2d AUC : %.6f&#x27;</span> % (n_fold + <span class="number">1</span>, roc_auc_score(val_y, oof_preds[val_idx])))</span><br><span class="line">        <span class="keyword">del</span> clf, trn_x, trn_y, val_x, val_y</span><br><span class="line">        gc.collect()</span><br><span class="line">    </span><br><span class="line">    oof_preds = [<span class="number">1</span> <span class="keyword">if</span> i &gt;= <span class="number">0.4</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> oof_preds]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Full F1 score %.6f&#x27;</span> % f1_score(y_, oof_preds))</span><br><span class="line">    test_[<span class="string">&#x27;label&#x27;</span>] = sub_preds</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> oof_preds, test_[[<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;label&#x27;</span>]], feature_importance_df</span><br></pre></td></tr></table></figure>
+<h2><span id="三-解决方案二">三、<strong>解决方案二</strong></span></h2>
+<ul>
+<li><strong>基于账户本身基础特征</strong>，可以做这些类别特征的计数统计、对于粉丝量等数值特征可以做除法的交叉、登录时间和注册时间特征可以做减法交叉，基于请求行为，我们可以对机型、ip、app_version、app_channel做频数统计</li>
+<li><strong>基于用户的请求行为序列</strong>，我们可以构建w2v特征(把用户请求行为序列看成句子，行为看作词，训练Word2Vec模型得到每个行为的表征</li>
+<li><strong>基于用户的请求时间</strong>，我们可以计算请求时间的均值方差、请求时间间隔的统计特征等等。</li>
+</ul>
+<h2><span id="四-anovel-framework-for-social-bots-detection-in-online-social-networksbased-on-graph-embedding-and-community-detection">四、A
+Novel Framework for Social Bots Detection in Online Social Networks
+Based on Graph Embedding and Community Detection</span></h2>
+<h3><span id="摘要">摘要</span></h3>
+<p>随着在线社交网络的广泛普及，近年来用户数量也呈指数级增长。与此同时，社交机器人，即由程序控制的账户，也在上升。OSN的服务提供商经常使用它们来保持社交网络的活跃。与此同时，一些社交机器人也出于恶意目的注册。有必要检测这些恶意社交机器人，以呈现真实的舆论环境。我们提出了BotFinder，一个在OSN中检测恶意社交机器人的框架。具体来说，<strong>它将机器学习和图方法相结合</strong>，以便有效地提取社交机器人的潜在特征。关于特征工程，我们生成二阶特征，并使用编码方法对具有高基数的变量进行编码。这些特征充分利用了标记和未标记的样本。对于图，我们首先通过嵌入方法生成节点向量，然后进一步计算人类和机器人向量之间的相似性；然后，我们使用无监督的方法扩散标签，从而再次提高性能。为了验证该方法的性能，我们在由800多万条用户记录组成的人工竞赛提供的数据集上进行了广泛的实验。结果表明，我们的方法达到了0.8850的F1分数，这比最先进的方法要好得多</p>
+<h3><span id="说明">说明</span></h3>
+<p>与报纸等传统媒体相比。社交机器人，即由程序控制的帐户，可用于保持社交网络的活跃。虽然OSN中存在有益的社交机器人，但一些恶意社交机器人的出现会产生有害影响。例如，一些人可以出于各种目的注册大量帐户，例如增加粉丝数量或恶意喜欢。这些恶意行为已成为威胁社交网络平台健康发展的重要信息安全问题[1-2]。因此，有必要检测那些恶意的社交机器人，也称为社交机器人检测。特别是，当前的大多数研究涉及Twitter和其他国外平台，而很少有研究调查中国的OSN。因此，众多学者致力于研究社交机器人的检测问题。当前与社交机器人检测相关的工作主要分为两类，即机器学习方法和基于图的方法。然而，这一主题仍然存在一些挑战：</p>
+<p>1）
+一般来说，大多数方法依赖于单个算法来识别社交机器人，由于数据集的多样性，这可能不是理想的选择。</p>
+<p>2）
+实际上，大多数数据都是未标记的，这表明标签的数量通常很小。因此，<strong>有效利用未标记数据是一个巨大的挑战</strong>。</p>
+<p>为了应对上述挑战，我们在此共同考虑用户的配置文件、行为以及它们之间的关系。此外，我们将特征工程和图方法相结合，提出了一种检测社交机器人的集成机制BotFinder。首先，在数据集上进行特征工程以提取全局信息。然后，通过嵌入方法生成节点向量。然后，我们计算人类和机器人的向量之间的相似性。最后，为了进一步提高性能，我们采用了无监督方法（这里考虑了社区检测算法）。使用所提出的算法，我们可以轻松地检测这些机器帐户。</p>
+<p><strong>本文的贡献总结如下：</strong></p>
+<p>1）
+首先，在节点数较多、边数较少的情况下，在绘制过程中可能会忽略一些单个节点。然而，机器学习方法无法学习拓扑结构。因此，我们结合机器学习方法和图方法来克服这些问题。</p>
+<p>2）
+其次，在特征工程中，我们试图获得二阶特征，并采用编码方法对具有高基数的变量进行编码，或者换句话说，包含大量不同值的变量进行编码。对于图，我们通过嵌入方法生成节点向量。然后，我们利用无监督方法扩散标签以提高性能。这些方法充分利用了标记和未标记的样本。</p>
+<p>本文的其余部分组织如下。在第二节中，我们回顾了一些相关的工作。在第3节中，我们介绍了拟议的框架BotFinder。然后，在第4节中，我们详细描述了所研究的数据集，并在充分分析的基础上进行了实验。最后，我们在第5节总结了我们的研究。</p>
+<h3><span id="二-related-works"><strong>二、Related works</strong></span></h3>
+<h4><span id="21-机器学习方法">2.1 机器学习方法</span></h4>
+<p>在机器学习方法中，监督学习方法得到了广泛的研究。早期的反作弊算法仅利用用户配置文件或用户行为来构建模型。Breno等人[3]提出了一种使用人工神经网络进行数据预处理和挖掘的方法。Chang等人[4]提出了一种特征选择方法，然后使用决策树来检测机器人。Ganji等人[5]将K-最近邻（KNN）应用于信用卡欺诈检测。Ferrara等人[6-7]利用机器学习和认知行为建模技术分析了2017年法国总统选举和2017年加泰罗尼亚独立公投中的社交机器人。<strong>Denis等人[8]提出了一种用于检测Twitter上机器人的集成学习方法。</strong>
+随着深度学习方法（LSTM、CNN等）的发展，研究人员也尝试开发新的方法来检测社交机器人，以进一步提高检测精度。通过将用户内容视为时间文本数据，Cai等人[9]提出了BeDM方法用于机器人检测。Kudugunta等人[10]提取了用户元数据和推文文本，这些数据被视为LSTM深度网络的输入。在实践中，大多数真实世界的数据都是未标记的，而无监督学习方法被广泛研究，这通常依赖于社交机器人的共同特征。Cresci等人[11-12]提出了一种基于DNA启发技术的改进方法，以模拟在线用户行为。陈等人[13]提出了一种无监督的方法来实时检测推特垃圾邮件活动。姜等人[14]提出了CATCHSYNC，仅使用没有标签的拓扑来检测可疑节点。Su等人[15]提出了物联网RU。Mazza等人[16]将转发的时间序列转换为特征向量，然后进行聚类。</p>
+<h4><span id="22-图算法">2.2 图算法</span></h4>
+<p>机器学习方法只考虑节点的特征。然而，节点之间的关系也包含有价值和有用的信息。随着深度学习和图算法的发展，需要考虑图的拓扑信息以进一步改进。<strong>社交机器人具有图形聚合的特点</strong>。而社区检测用于发现网络中的社区结构，也可以看作是一种广义聚类算法。因此，社区检测算法可能适用于检测社交机器人。许多研究者对这一课题进行了不懈的研究。Guillaume等人[17]提出了一种基于模块化优化的启发式方法。李等人[18]提出了基于深度稀疏自动编码器的WCD算法。对于特征丰富的样本，很难充分挖掘特征中存在的信息。然后，提出了新的方法，首先将节点的拓扑信息转换为特征向量，然后使用机器学习算法进行训练和推理。例如，Lerer等人[19]提出的Pytorch
+BigGraph，<strong>Yu等人[20]提出的NetWalk</strong>，<strong>Grover等人[21]提出的Node2Vec</strong>，P<strong>ham等人[22]提出的Bot2Vec</strong>。此外，Kipf等人[23]提出了图卷积网络（GCN），对节点和网络拓扑的特征进行建模，<strong>Aljohani等人[24]将GCN应用于检测Twitter上的机器人</strong>。李等人[25]提出了用于网络免疫的BPD-DMP算法。聂等人[26]考虑了社交网络和发布内容；然后，他们提出了DCIM算法。高等人[27]对动态行为进行了表征，并提出了一种基于网络的模型。朱等人[28]研究了流行病在多层网络上的传播过程。Su等人[29]提出了检测车载网络中恶意节点的IDE。
+大多数方法依赖于单个算法来识别社交机器人。在准确性和其他相关评估指标方面，以前的识别方法仍然有很大的局限性。</p>
+<h3><span id="三-botfinder"><strong>三、BotFinder</strong></span></h3>
+<p>在本节中，我们主要介绍BotFinder，它主要包括三个步骤：1）我们在表格数据上表示特征工程技术；2）
+我们推导节点嵌入，然后测量人类和机器人之间的相似性；3）
+我们应用社区检测算法来进一步提高性能</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039206.png" alt="image-20220719205923660">
+<figcaption aria-hidden="true">image-20220719205923660</figcaption>
+</figure>
+<p>图1详细说明了这些步骤。第一步，利用特征工程技术生成特征矩阵。第二步，我们使用图嵌入方法生成相似矩阵，然后合并这两个矩阵。然后，我们采用LightGBM[30]来训练合并矩阵并推断临时结果。第三步，我们应用社区检测方法生成部分结果，并使用这些结果校正LightGBM的结果。</p>
+<h4><span id="31-featureengineering">3.1 <strong>Feature
+Engineering</strong></span></h4>
+<p>在这里，我们试图获得<strong>二阶特征、时间间隔特征、计数编码和k倍目标编码</strong>。然后，我们应用LightGBM来训练获得的特征并推断临时结果。</p>
+<p><strong><font color="red">
+二阶特征：为了表示表中分类变量的组合，我们假设二阶特征表示为
+COUNT、NUNIQUE、RATIO</font></strong></p>
+<ul>
+<li><p><strong>COUNT 反映了活动程度。具体来说，我们选择一对变量（即 V1和
+V2），并预计记录这对变量在数据集中出现的次数。我们将其缩写为 COUNT(v1,
+v2)。</strong>例如，用户向使用设备类型（ V1）iPhone12,1和应用程序版本（
+V2）126.7.0组合的人thump-up，这种组合在数据集中出现了k次。然后，使用iPhone12、1和126.7.0的用户将获得k的
+COUNT值。【记录元组出现的次数】【并行化】</p></li>
+<li><p><strong>UNIQUE表明了给定范围内的多样性。我们使用一个变量（
+V1）作为主键，并在另一个变量（V2）中记录唯一类别的数量。我们将其缩写为
+UNIQUE(V1)[V2] 。</strong>例如，对于使用device type（
+V1）iPhone12,1的用户，数据集中有k个不同的应用程序版本。然后，使用iPhone12,1的用户将获得
+UNIQUE 值k。</p></li>
+<li><p><strong>RATIO描述计数比例。它计算为 COUNT(v1, v2) /
+COUNT(v1)</strong>。例如，device type（V1）iPhone12,1 和 app version（
+V2）126.7.0的组合在数据集中出现k次，device
+type（V1）iPhone12在数据集中出现V次。然后，所有使用iPhone12、1和126.7.0的用户将获得
+k/v 的 RATIO 值。</p></li>
+</ul>
+<p><strong>时间间隔特性：请求时间间隔因用户而异。这里，我们主要考虑时间间隔的最大值、最小值、中值和和。</strong></p>
+<p><strong>计数编码：计数编码是通过将类别替换为在数据集上计算的类别计数来进行的</strong>。然而，某些变量的计数可能相同，这可能导致两个类别可能编码为相同值的冲突。这将导致模型性能下降。因此，我们在此介绍一种目标编码技术。</p>
+<p><strong>K-折叠目标编码（或似然编码、影响编码、平均编码）</strong>：目标编码是通过目标（标签）对分类变量进行计数。在这里，我们用目标的相应概率替换分类变量的每一类。为了减少目标泄漏，我们采用k倍目标编码。具体实现如下：</p>
+<ul>
+<li>将训练数据分成10折。</li>
+<li>将折#2-10<strong>目标的平均值</strong>作为折#1的编码值，并类似地计算#2-10的编码值。</li>
+<li>使用训练数据的目标来确定测试数据的编码值。</li>
+</ul>
+<h4><span id="32-similaritycalculation"><strong>3.2 Similarity
+Calculation</strong></span></h4>
+<p><strong>在这里，我们采用Node2vec[21]来获得用户的节点嵌入（向量），然后计算用户和标记用户之间嵌入的余弦相似性</strong>。相似度值表示两个用户具有相同标签的概率；例如，如果user1和user2之间的余弦相似性相对较大，则它们很可能具有高概率的相同标签。</p>
+<p>然后，对于训练集和测试集中的每个节点向量C，我们计算机器人和人类之间的最大和平均余弦相似度，该相似度表示为一个向量。【Smax1、Smean1，Smax0，Smean0】</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039522.png" alt="image-20220719212846481" style="zoom:50%;"></p>
+<h3><span id="33-communitydetection">3.3 <strong>community
+detection</strong></span></h3>
+<p><strong>对于社区检测，我们采用典型的Louvain方法</strong>[17]，将构建的图划分为社区。之后，我们将用以下规则标记社区：</p>
+<blockquote>
+<p>[1] Guillaume L. Fast unfolding of communities in large networks[J].
+Journal Statistical Mechanics: Theory and Experiment, 2008, 10:
+P1008.</p>
+</blockquote>
+<p>1）
+如果具有标签的用户属于同一社区，则社区中的所有用户都应该具有相同的标签。</p>
+<p>2）
+如果社区中的用户没有任何标签，或者用户具有不同的标签，我们将不会进行预测。</p>
+<p><strong>然而，预测可能不会覆盖所有用户。因此，该规则的性能是有限的。但该规则的结果比LightGBM更准确。通过将上述两个步骤结合起来，可以进一步提高性能。</strong></p>
+<h3><span id="四-实验">四、实验</span></h3>
+<p>为了评估该机制的性能，我们从一个大型社交网络平台的数据中心收集了一个数据集(https://security.bytedance.com/fe/ai-challenge#/sec-project?id=2&amp;active=1）。它包含超过800万条记录，包括<strong>用户配置文件</strong>和<strong>用户请求</strong>（关注或喜欢某人）。数据集的基本信息如表1和表2所示：表1显示了用户的个人信息（配置文件），而表2说明了用户的行为（请求），包括当时用于启动请求的设备和应用程序版本。</p>
+<p><strong><font color="red">
+任务描述如下：给定用户配置文件及其请求。只有一小部分用户被标记。因此，我们必须建立一个合理、解释性和有效的模型来检测来自用户的恶意机器人。</font></strong></p>
+<h3><span id="五-结论">五、结论</span></h3>
+<p>本文提出了一种社交机器人检测方法BotFinder。为了验证所开发方法的性能，我们收集了一个包含800多万条用户记录的数据集。同时，应用机器学习和图方法从此类数据集中提取社交机器人的潜在特征。<strong>特别是，对于特征工程，我们生成二阶特征，并使用编码方法对高基数变量进行编码。</strong>在图方面，我们为账户生成节点向量，然后利用无监督方法（这里我们利用社区检测）扩散标签，以进一步提高性能。通过在收集的数据集上进行的实验，所提出的集成机制的有效性得到了相对较大的F1分数0.8850的保证。与现有方法相比，该方法的性能优越。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1414,6 +1874,123 @@ nn.CrossEntropyLoss = softmax(x)+log(x)+nn.NLLLoss?</span></h4>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3W41PJ7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3W41PJ7/" class="post-title-link" itemprop="url">Pytorch（12）可视化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-02 19:04:03" itemprop="dateCreated datePublished" datetime="2022-05-02T19:04:03+08:00">2022-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-04 19:09:58" itemprop="dateModified" datetime="2022-05-04T19:09:58+08:00">2022-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>195</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="pytorch-学习笔记-可视化">[PyTorch 学习笔记] 可视化</span></h2>
+<blockquote>
+<p>在 PyTorch 中也可以使用 <strong>TensorBoard</strong>，具体是使用
+TensorboardX 来调用 TensorBoard。除了安装 TensorboardX，还要安装
+TensorFlow 和 TensorBoard，其中 TensorFlow 和 TensorBoard 需要一致。</p>
+<ul>
+<li><strong>Captum</strong> 【可解释性】:
+https://captum.ai/docs/introduction</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/K3Z6CF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1605,123 +2182,6 @@ Momentum，这个是目前最常用的优化器，因为它可以使用较大的
 <strong>optim.Rprop</strong>：弹性反向传播，这种优化器通常是在所有样本都一起训练，也就是
 batchsize 为全部样本时使用。</p>
 <p>#### <strong>optim.LBFGS</strong>：BFGS 在内存上的改进</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3W41PJ7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3W41PJ7/" class="post-title-link" itemprop="url">Pytorch（12）可视化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-02 19:04:03" itemprop="dateCreated datePublished" datetime="2022-05-02T19:04:03+08:00">2022-05-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-04 19:09:58" itemprop="dateModified" datetime="2022-05-04T19:09:58+08:00">2022-05-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>195</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="pytorch-学习笔记-可视化">[PyTorch 学习笔记] 可视化</span></h2>
-<blockquote>
-<p>在 PyTorch 中也可以使用 <strong>TensorBoard</strong>，具体是使用
-TensorboardX 来调用 TensorBoard。除了安装 TensorboardX，还要安装
-TensorFlow 和 TensorBoard，其中 TensorFlow 和 TensorBoard 需要一致。</p>
-<ul>
-<li><strong>Captum</strong> 【可解释性】:
-https://captum.ai/docs/introduction</li>
-</ul>
 </blockquote>
 
       
@@ -2027,339 +2487,6 @@ size,在NLP中就对应句子长度，通常来说文本词句的长度是不一
 size里的数据可以做相同的均值方差操作，而靠后的多余的数据的方差和均值难以估计，如下图</p>
 <p><img src="https://pic3.zhimg.com/v2-b54729909bce975857608382ef4cac2a_b.jpg" alt="img" style="zoom:50%;"></p>
 <p>第一个样本里有5个数据通道（可看作特征），第二个样本空间里有3个数据通道（特征），则在提取特征时前三个的均值方差满足同一个norm操作公式，而后面两个由于第二个样本没有数据，所以均值方差不满足其公式，导致误差产生。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2DF1D1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2DF1D1/" class="post-title-link" itemprop="url">Pytorch（14）模型保存与加载</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-02 19:04:03" itemprop="dateCreated datePublished" datetime="2022-05-02T19:04:03+08:00">2022-05-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-05 16:40:25" itemprop="dateModified" datetime="2022-05-05T16:40:25+08:00">2022-05-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="pytorch-学习笔记模型保存与加载">[PyTorch 学习笔记]
-模型保存与加载</span></h2>
-<p>这篇文章主要介绍了序列化与反序列化，以及 PyTorch
-中的模型保存于加载的两种方式，模型的断点续训练。</p>
-<h3><span id="一-序列化与反序列化">一、<strong>序列化与反序列化</strong></span></h3>
-<p>模型在内存中是以对象的逻辑结构保存的，但是在硬盘中是以二进制流的方式保存的。</p>
-<ul>
-<li>序列化是指将内存中的数据以二进制序列的方式保存到硬盘中。PyTorch
-的模型保存就是序列化。</li>
-<li>反序列化是指将硬盘中的二进制序列加载到内存中，得到模型的对象。PyTorch
-的模型加载就是反序列化。</li>
-</ul>
-<h3><span id="二-pytorch中的模型保存与加载"><strong>二、PyTorch
-中的模型保存与加载</strong></span></h3>
-<h4><span id="21-torchsave"><strong>2.1 torch.save</strong></span></h4>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.save(obj, f, pickle_module, pickle_protocol=2, _use_new_zipfile_serialization=False)</span><br></pre></td></tr></table></figure>
-<p>主要参数：</p>
-<ul>
-<li>obj：保存的对象，可以是模型。也可以是
-dict。因为一般在保存模型时，不仅要保存模型，还需要保存优化器、此时对应的
-epoch 等参数。这时就可以用 dict 包装起来。</li>
-<li>f：输出路径</li>
-</ul>
-<h4><span id="22-torchsave">2.2 torch.save</span></h4>
-<p>其中模型保存还有两种方式：</p>
-<h5><span id="221-保存整个-module"><strong>2.2.1 保存整个 Module</strong></span></h5>
-<p>这种方法比较耗时，保存的文件大</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.savev(net, path)</span><br></pre></td></tr></table></figure>
-<h5><span id="222-只保存模型的参数"><strong>2.2.2 只保存模型的参数</strong></span></h5>
-<p>推荐这种方法，运行比较快，保存的文件比较小</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">state_sict = net.state_dict()</span><br><span class="line">torch.savev(state_sict, path)</span><br></pre></td></tr></table></figure>
-<p>下面是保存 LeNet 的例子。在网络初始化中，把权值都设置为
-2020，然后保存模型。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">net = LeNet2(classes=<span class="number">2019</span>)</span><br><span class="line"><span class="comment"># &quot;训练&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;训练前: &quot;</span>, net.features[<span class="number">0</span>].weight[<span class="number">0</span>, ...])</span><br><span class="line">net.initialize()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;训练后: &quot;</span>, net.features[<span class="number">0</span>].weight[<span class="number">0</span>, ...])</span><br><span class="line"></span><br><span class="line">path_model = <span class="string">&quot;./model.pkl&quot;</span></span><br><span class="line">path_state_dict = <span class="string">&quot;./model_state_dict.pkl&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存整个模型</span></span><br><span class="line">torch.save(net, path_model)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存模型参数</span></span><br><span class="line">net_state_dict = net.state_dict()</span><br><span class="line">torch.save(net_state_dict, path_state_dict)</span><br></pre></td></tr></table></figure>
-<p>运行完之后，文件夹中生成了<code>model.pkl</code>和<code>model_state_dict.pkl</code>，分别保存了整个网络和网络的参数</p>
-<h4><span id="23-torchload"><strong>2.3 torch.load</strong></span></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.load(f, map_location=<span class="literal">None</span>, pickle_module, **pickle_load_args)</span><br></pre></td></tr></table></figure>
-<p>主要参数：</p>
-<ul>
-<li>f：文件路径</li>
-<li><strong>map_location：指定存在 CPU 或者 GPU。</strong></li>
-</ul>
-<h3><span id="三-模型的断点续训练">三、<strong>模型的断点续训练</strong></span></h3>
-<p>在训练过程中，可能由于某种意外原因如断点等导致训练终止，这时需要重新开始训练。断点续练是在训练过程中每隔一定次数的
-epoch
-就保存<strong>模型的参数和优化器的参数</strong>，这样如果意外终止训练了，下次就可以重新加载最新的<strong>模型参数和优化器的参数</strong>，在这个基础上继续训练。</p>
-<p>下面的代码中，每隔 5 个 epoch 就保存一次，保存的是一个
-<strong>dict，包括模型参数、优化器的参数、epoch</strong>。然后在 epoch
-大于 5 时，就<code>break</code>模拟训练意外终止。关键代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (epoch+<span class="number">1</span>) % checkpoint_interval == <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">    checkpoint = &#123;<span class="string">&quot;model_state_dict&quot;</span>: net.state_dict(),</span><br><span class="line">                  <span class="string">&quot;optimizer_state_dict&quot;</span>: optimizer.state_dict(),</span><br><span class="line">                  <span class="string">&quot;epoch&quot;</span>: epoch&#125;</span><br><span class="line">    path_checkpoint = <span class="string">&quot;./checkpoint_&#123;&#125;_epoch.pkl&quot;</span>.<span class="built_in">format</span>(epoch)</span><br><span class="line">    torch.save(checkpoint, path_checkpoint)</span><br></pre></td></tr></table></figure>
-<p>在 epoch 大于 5 时，就<code>break</code>模拟训练意外终止</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> epoch &gt; <span class="number">5</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;训练意外中断...&quot;</span>)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-<p>断点续训练的恢复代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">path_checkpoint = <span class="string">&quot;./checkpoint_4_epoch.pkl&quot;</span></span><br><span class="line">checkpoint = torch.load(path_checkpoint)</span><br><span class="line"></span><br><span class="line">net.load_state_dict(checkpoint[<span class="string">&#x27;model_state_dict&#x27;</span>])</span><br><span class="line"></span><br><span class="line">optimizer.load_state_dict(checkpoint[<span class="string">&#x27;optimizer_state_dict&#x27;</span>])</span><br><span class="line"></span><br><span class="line">start_epoch = checkpoint[<span class="string">&#x27;epoch&#x27;</span>]</span><br><span class="line"></span><br><span class="line">scheduler.last_epoch = start_epoch</span><br></pre></td></tr></table></figure>
-<p><strong>需要注意的是，还要设置<code>scheduler.last_epoch</code>参数为保存的
-epoch。模型训练的起始 epoch 也要修改为保存的 epoch。</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1R22EKT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1R22EKT/" class="post-title-link" itemprop="url">Pytorch（15）模型Finetune</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-02 19:04:03" itemprop="dateCreated datePublished" datetime="2022-05-02T19:04:03+08:00">2022-05-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-05 16:52:51" itemprop="dateModified" datetime="2022-05-05T16:52:51+08:00">2022-05-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="pytorch-学习笔记-模型finetune微调">[PyTorch 学习笔记] 模型
-Finetune【微调】</span></h2>
-<p><strong>迁移学习</strong>：把在 source domain
-任务上的学习到的模型应用到 target domain 的任务。</p>
-<p><strong>Finetune
-就是一种迁移学习的方法</strong>。比如做人脸识别，可以把 ImageNet 看作
-source domain，人脸数据集看作 target domain。通常来说 source domain 要比
-target domain 大得多。可以利用 ImageNet
-训练好的网络应用到人脸识别中。</p>
-<p>对于一个模型，通常可以分为前面的 feature extractor (卷积层)和后面的
-classifier，在 Finetune 时，通常不改变 feature extractor
-的权值，也就是冻结卷积层；并且改变最后一个全连接层的输出来适应目标任务，训练后面
-classifier 的权值，这就是 Finetune。<strong>通常 target domain
-的数据比较小，不足以训练全部参数，容易导致过拟合，因此不改变 feature
-extractor 的权值</strong>。</p>
-<h4><span id="finetune-步骤如下">Finetune 步骤如下：</span></h4>
-<ol type="1">
-<li><p><strong>获取预训练模型的参数</strong></p></li>
-<li><p><strong>使用<code>load_state_dict()</code>把参数加载到模型中</strong></p></li>
-<li><p><strong>修改输出层</strong></p></li>
-<li><p><strong>固定 feature extractor 的参数</strong>。这部分通常有 2
-种做法：</p></li>
-<li><ul>
-<li>==<strong>固定卷积层的预训练参数。可以设置<code>requires_grad=False</code>或者<code>lr=0</code></strong>==</li>
-</ul></li>
-<li><ul>
-<li><strong>可以通过<code>params_group</code>给 feature extractor
-==设置一个较小的学习率==</strong></li>
-</ul></li>
-</ol>
-<h4><span id="不使用-finetune"><strong>不使用 Finetune</strong></span></h4>
-<p>第一次我们首先不使用
-Finetune，而是从零开始训练模型，这时只需要修改全连接层即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先拿到 fc 层的输入个数</span></span><br><span class="line">num_ftrs = resnet18_ft.fc.in_features</span><br><span class="line"><span class="comment"># 然后构造新的 fc 层替换原来的 fc 层</span></span><br><span class="line">resnet18_ft.fc = nn.Linear(num_ftrs, classes)</span><br></pre></td></tr></table></figure>
-<p>训练了 25 个 epoch 后的准确率为：70.59%。<strong>训练的 loss
-曲线如下：</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-5ee8d34af79f9efccef5131c24dcaee2_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<h4><span id="使用-finetune不冻结卷积层">使用 Finetune，
-<strong>不冻结卷积层</strong></span></h4>
-<p>然后我们把下载的模型参数加载到模型中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">path_pretrained_model = enviroments.resnet18_path</span><br><span class="line">state_dict_load = torch.load(path_pretrained_model)</span><br><span class="line">resnet18_ft.load_state_dict(state_dict_load)</span><br></pre></td></tr></table></figure>
-<p>训练了 25 个 epoch 后的准确率为：96.08%。训练的 loss 曲线如下：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-f12709c02275380983b1518935b56d21_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<h4><span id="使用-finetune-冻结卷积层">使用 Finetune、
-<strong>冻结卷积层</strong></span></h4>
-<h5><span id="设置requires_gradfalse这里先冻结所有参数然后再替换全连接层相当于冻结了卷积层的参数"><strong>设置<code>requires_grad=False</code></strong>这里先冻结所有参数，然后再替换全连接层，相当于冻结了卷积层的参数：</span></h5>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> resnet18_ft.parameters():</span><br><span class="line">		param.requires_grad = <span class="literal">False</span></span><br><span class="line"> 		<span class="comment"># 首先拿到 fc 层的输入个数</span></span><br><span class="line">		num_ftrs = resnet18_ft.fc.in_features</span><br><span class="line">		<span class="comment"># 然后构造新的 fc 层替换原来的 fc 层</span></span><br><span class="line">		resnet18_ft.fc = nn.Linear(num_ftrs, classes)</span><br></pre></td></tr></table></figure>
-<h4><span id="使用-finetune-设置学习率为0">使用 Finetune、<strong>设置学习率为
-0</strong></span></h4>
-<p><strong>这里把卷积层的学习率设置为
-0，需要在优化器里设置不同的学习率</strong>。首先获取全连接层参数的地址，然后使用
-filter
-过滤不属于全连接层的参数，也就是保留卷积层的参数；接着设置优化器的分组学习率，传入一个
-list，包含 2 个元素，每个元素是字典，对应 2
-个参数组。其中卷积层的学习率设置为 全连接层的 0.1 倍。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先获取全连接层参数的地址</span></span><br><span class="line">fc_params_id = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">id</span>, resnet18_ft.fc.parameters()))   </span><br><span class="line"><span class="comment"># 返回的是parameters的 内存地址</span></span><br><span class="line"><span class="comment"># 然后使用 filter 过滤不属于全连接层的参数，也就是保留卷积层的参数</span></span><br><span class="line">base_params = <span class="built_in">filter</span>(<span class="keyword">lambda</span> p: <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> fc_params_id, resnet18_ft.parameters())</span><br><span class="line"><span class="comment"># 设置优化器的分组学习率，传入一个 list，包含 2 个元素，每个元素是字典，对应 2 个参数组</span></span><br><span class="line">optimizer = optim.SGD([&#123;<span class="string">&#x27;params&#x27;</span>: base_params, <span class="string">&#x27;lr&#x27;</span>: <span class="number">0</span>&#125;, &#123;<span class="string">&#x27;params&#x27;</span>: resnet18_ft.fc.parameters(), <span class="string">&#x27;lr&#x27;</span>: LR&#125;], momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
-<h4><span id="使用分组学习率-对卷积层使用较小的学习率">使用分组学习率、对卷积层使用较小的学习率</span></h4>
-<p><strong>这里不冻结卷积层，而是对卷积层使用较小的学习率，对全连接层使用较大的学习率，需要在优化器里设置不同的学习率</strong>。首先获取全连接层参数的地址，然后使用
-filter
-过滤不属于全连接层的参数，也就是保留卷积层的参数；接着设置优化器的分组学习率，传入一个
-list，包含 2 个元素，每个元素是字典，对应 2
-个参数组。其中卷积层的学习率设置为 全连接层的 0.1 倍。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先获取全连接层参数的地址</span></span><br><span class="line">fc_params_id = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">id</span>, resnet18_ft.fc.parameters()))     </span><br><span class="line"><span class="comment"># 返回的是parameters的 内存地址</span></span><br><span class="line"><span class="comment"># 然后使用 filter 过滤不属于全连接层的参数，也就是保留卷积层的参数</span></span><br><span class="line">base_params = <span class="built_in">filter</span>(<span class="keyword">lambda</span> p: <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> fc_params_id, resnet18_ft.parameters())</span><br><span class="line"><span class="comment"># 设置优化器的分组学习率，传入一个 list，包含 2 个元素，每个元素是字典，对应 2 个参数组</span></span><br><span class="line">optimizer = optim.SGD([&#123;<span class="string">&#x27;params&#x27;</span>: base_params, <span class="string">&#x27;lr&#x27;</span>: LR*<span class="number">0</span>&#125;, &#123;<span class="string">&#x27;params&#x27;</span>: resnet18_ft.fc.parameters(), <span class="string">&#x27;lr&#x27;</span>: LR&#125;], momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
 
       
     </div>

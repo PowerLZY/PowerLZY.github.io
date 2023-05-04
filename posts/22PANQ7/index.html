@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="What‘s the of use-cases Salt Security?">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流量反作弊（7）Salt Security-What‘s the of use-cases Salt Surity?">
+<meta property="og:url" content="https://powerlzy.github.io/posts/22PANQ7/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="What‘s the of use-cases Salt Security?">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041503340.svg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157634.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157755.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157853.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157920.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157068.jpeg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157173.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041459368.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157404.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157461.png">
+<meta property="article:published_time" content="2023-05-03T03:56:22.110Z">
+<meta property="article:modified_time" content="2023-05-04T07:04:06.687Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="工业落地">
+<meta property="article:tag" content="API安全">
+<meta property="article:tag" content="Salt Security">
+<meta property="article:tag" content="DDos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041503340.svg">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/22PANQ7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/22PANQ7/","path":"posts/22PANQ7/","title":"流量反作弊（7）Salt Security-What‘s the of use-cases Salt Surity?"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>流量反作弊（7）Salt Security-What‘s the of use-cases Salt Surity? | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">What‘s the of use-cases
+Salt Security?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、发现所有API（Discover all
+APIs）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 实现全面可视性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 查找影子和僵尸API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 维护最新的API库存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、防止敏感数据泄露（Prevent
+Sensitive Data Exposure）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 详细暴露的敏感数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 发现常见和专有的敏感数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 识别敏感数据暴露的变化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、阻止 API 攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、防止账户接管、数据泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1 基准典型数据访问行为</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2 定点攻击者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.3 防止ATO或未经授权访问数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、“左移”，具有主动API安全性（“Shift
+left&quot; with proactive API security）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.1 API设计分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.2 上下文API安全测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.3 API漂移分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.4 在运行时学到的补救见解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.5 用于构建管道的CI&#x2F;CD集成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">六、加快事件响应（Accelerate
+Incident Response）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6.1 连接攻击者活动的线索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6.2 减少警报和误报</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">6.3 阻止攻击者而不阻止合法流量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">七、提供补救见解（Provide
+Remediation Insights）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7.1 从攻击者那里学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7.2 为开发人员提供洞察力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7.3 关注重要的漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">7.4 发布更安全的API</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">八、简化法规遵从性（Simplify
+Compliance）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">8.1 保持最新的API清单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">8.2 报告敏感数据曝露</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">8.3 识别API更改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">8.4 满足合规要求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">257</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/22PANQ7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="流量反作弊（7）Salt Security-What‘s the of use-cases Salt Surity? | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          流量反作弊（7）Salt Security-What‘s the of use-cases Salt Surity?
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-03 11:56:22" itemprop="dateCreated datePublished" datetime="2023-05-03T11:56:22+08:00">2023-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-04 15:04:06" itemprop="dateModified" datetime="2023-05-04T15:04:06+08:00">2023-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3><span id="whats-the-of-use-casessalt-security">What‘s the of use-cases
+Salt Security?</span></h3>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041503340.svg" alt="img"><span id="more"></span></p>
+<h3><span id="一-发现所有apidiscover-allapis">一、发现所有API（Discover all
+APIs）</span></h3>
+<p><strong>Salt能够自动、持续地发现所有API，捕获有关它们的详细信息，以帮助您消除盲点，评估风险，并在环境不断发展和变化时保护API。</strong></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157634.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="11-实现全面可视性">1.1 实现全面可视性</span></h4>
+<p><font color="red">自动、连续地发现所有内部、外部和第三方API，包括参数、参数函数和暴露的敏感数据等详细信息，以帮助您了解攻击面并评估风险。Salt平台部署在任何应用程序环境中，无需内联或需要代理即可捕获API流量。</font>API不在您的网关中或记录在OpenAPI规范（又名Swagger）中？没问题，我们会全部找到的。</p>
+<h4><span id="12-查找影子和僵尸api">1.2 查找影子和僵尸API</span></h4>
+<p><strong>Salt客户发现的API比他们文档中提到的要多40%到800%。这些未知或影子API对组织来说是一个重大风险，因为它们经常暴露PII或其他敏感数据</strong>。僵尸API——该组织认为已被禁用的不推荐使用的API——带来了另一种风险。上传您的文档文件以与Salt的库存进行比较，并下载我们的完整列表以增强您的文档。</p>
+<h4><span id="13-维护最新的api库存">1.3 维护最新的API库存</span></h4>
+<p>在当今的敏捷和DevOps世界中，API一直在变化，开发人员往往没有及时更新文档。利用Salt平台的连续发现功能，使您的API库存保持最新和准确，尽管这些经常更改。接收新的和更改的API的警报，以便您可以验证从开发/测试到生产的所有API是否符合组织的安全标准。</p>
+<h3><span id="二-防止敏感数据泄露preventsensitive-data-exposure">二、防止敏感数据泄露（Prevent
+Sensitive Data Exposure）</span></h3>
+<p><strong>Salt详细说明了所有API中暴露的敏感数据的每个实例，以降低风险。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157755.png" alt="img" style="zoom:50%;"></p>
+<h4><span id="21-详细暴露的敏感数据">2.1 详细暴露的敏感数据</span></h4>
+<p>Salt平台广泛的发现功能记录了发送或使用PII和其他敏感数据的每个端点。该平台表征了每种数据类型，如社会安全号码、IBAN或账户ID，标记敏感信息，并为您提供一个完整的目录，可用于确定任何潜在风险，并作为<strong>合规审计的一部分。</strong></p>
+<blockquote>
+<p><font color="red">PII，国内隐私保护相关学习</font></p>
+</blockquote>
+<h4><span id="22-发现常见和专有的敏感数据">2.2 发现常见和专有的敏感数据</span></h4>
+<p>敏感数据包括令牌和信息，如持卡人数据、客户专有网络信息（CPNI）、受保护健康信息（PHI）和个人身份信息（PII）。您还可以自定义Salt平台，以识别特定于您的公司或行业的敏感数据。</p>
+<h4><span id="23-识别敏感数据暴露的变化">2.3 识别敏感数据暴露的变化</span></h4>
+<p>Salt平台会自动更新您的敏感数据暴露详细信息，使您能够在API更改时识别新的暴露点。您将收到暴露的敏感数据的新实例的警报，以便评估风险并与开发团队合作以减少暴露。</p>
+<h3><span id="三-阻止-api-攻击">三、阻止 API 攻击</span></h3>
+<p><strong>Salt 使用云规模大数据和获得专利的人工智能 (AI)
+来并行分析和关联数百万用户的活动，以便及早识别和阻止攻击。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157853.png" alt="img" style="zoom: 50%;"></p>
+<ul>
+<li><strong>See all API traffic and maintain a baseline</strong></li>
+</ul>
+<blockquote>
+<p><strong>查看所有 API 流量并维护基线</strong></p>
+</blockquote>
+<p>Salt使用大数据和专利人工智能来分析所有API流量，并为您独特的API建立详细的合法行为基线。该平台在每个实体或API的100多个典型行为属性上维护状态，包括<strong>参数输入的一致性、访问频率、响应量、敏感数据量、数据类型和响应代码等属性</strong>。在API发生变化时，Salt平台将调整基线，避免误报，同时在快速变化的环境中保护您——无需人工干预。</p>
+<ul>
+<li><strong>Identify malicious activity, even “low and slow”
+attacks</strong></li>
+</ul>
+<p><strong>Salt平台关联所有用户活动，因此恶意行为可以在攻击者的侦察阶段早期被识别</strong>。通过分析所有API活动，Salt具备揭示攻击者微妙迹象、区分“不同”的行为和“恶意”的行为，并在攻击者成功之前阻止攻击者所需的上下文。</p>
+<ul>
+<li><strong>Protect against top API threats</strong></li>
+</ul>
+<p><strong>Salt可以识别并阻止web应用程序防火墙（WAF）和API网关错过的攻击</strong>。这些基于代理的工具无法看到API活动的完整上下文，也无法将不同的事务关联回一个公共实体。在很短的学习时间内，Salt平台为您独特的API创建了行为基准，并保护您的API免受攻击，包括<strong>OWASP
+API安全Top 10中概述的威胁</strong>。</p>
+<blockquote>
+<p><strong><font color="red">GET：OWASP API Top 10
+来衡量当前的防御能力状态</font></strong></p>
+</blockquote>
+<ul>
+<li><strong>Stop attackers before they succeed</strong></li>
+</ul>
+<p><strong>Salt捕获完整的攻击时间线，将其显示在我们的仪表板中，并将信息发送到您的SIEM，供事件响应团队进行分析</strong>。您也可以选择让Salt平台自动阻止攻击。Salt利用与内联工具（<strong>如API网关和防火墙</strong>）的集成，在攻击者成功之前阻止他们。</p>
+<blockquote>
+<p><strong><font color="red">GET: 告警信息管理SIEM？</font></strong></p>
+</blockquote>
+<h3><span id="四-防止账户接管-数据泄露">四、防止账户接管、数据泄露</span></h3>
+<p>Salt可以检测到不良行为者试图获得未经授权的账户访问权限的微妙操作，因此我们可以阻止攻击者窃取公司和客户数据。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157920.png" alt="img" style="zoom:50%;"></p>
+<h4><span id="41-基准典型数据访问行为">4.1 基准典型数据访问行为</span></h4>
+<p>Salt平台创建了一个典型行为的基线，并识别任何偏离基线的活动。我们的平台可以检测偏差，例如数据的异常移动以及试图操作令牌、用户ID或API参数。这些攻击通常来自经过身份验证的用户，因此仅仅依靠访问控制来停止exfiltering并不能保证您的数据安全。</p>
+<h4><span id="42-定点攻击者">4.2 定点攻击者</span></h4>
+<p>通过分析所有API活动，Salt平台编译了区分“不同”和“恶意”活动所需的上下文。例如，如果API发生变化，所有用户的行为都会发生变化，但只有攻击者才能显示不同的使用模式。Salt平台将给定实体的所有活动关联起来，因此可以查明试图窃取您的数据的攻击者并阻止他们，或向您的安全团队发送警报。</p>
+<h4><span id="43-防止ato或未经授权访问数据">4.3 防止ATO或未经授权访问数据</span></h4>
+<p>因为Salt平台了解每个实体和API端点的典型行为，所以它会立即检测偏差，例如操作API端点或传输更多数据的位置。您可以将平台配置为自动阻止此类活动，或向事件响应团队发送带有完整攻击时间表的警报，以分析活动并阻止ATO（账户劫持）或数据提取。</p>
+<h3><span id="五-左移具有主动api安全性shiftleft-with-proactive-api-security">五、“左移”，具有主动API安全性（“Shift
+left" with proactive API security）</span></h3>
+<p><strong>Salt支持在构建阶段针对您的API进行API测试和扫描，并结合在运行时学到的修正见解，为开发人员提供强化其API所需的见解。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157068.jpeg" alt="img" style="zoom:50%;"></p>
+<h4><span id="51-api设计分析">5.1 API设计分析</span></h4>
+<p>在测试/开发环境中，Salt平台允许您加载OAS或Swagger文件，并提供对任何安全漏洞的完整分析，例如缺少API端点、缺少参数、与参数定义的差异以及其他有价值的见解。</p>
+<h4><span id="52-上下文api安全测试">5.2 上下文API安全测试</span></h4>
+<p><strong>Salt
+Security平台在预生产、开发和运行时环境中提供了强大的攻击模拟</strong>。这些模拟有助于组织在生命周期的早期发现安全漏洞和业务逻辑缺陷，与CI/CD系统的集成意味着开发人员可以在发布或修改API之前解决安全漏洞。Salt裁缝攻击客户在这些环境中学习到的API。</p>
+<blockquote>
+<p>CI/CD系统是一种软件开发流程，通过自动化测试、构建和部署，使软件开发团队能够更快地交付新功能和修复程序错误。</p>
+</blockquote>
+<h4><span id="53-api漂移分析">5.3 API漂移分析</span></h4>
+<p>Salt平台可以帮助您在暂存/测试环境中针对API运行测试流量。然后，它将这些结果与您的OAS/Swagger文件进行比较，并显示您的文档和实时API流量的分歧。您可以自动导出Salt平台库存的API详细信息，以便轻松保持API文档的最新和准确。</p>
+<h4><span id="54-在运行时学到的补救见解">5.4 在运行时学到的补救见解</span></h4>
+<p>通过在运行时捕获攻击者活动并与开发人员共享，Salt平台暴露了正在使用的黑客侦察策略，并提供了开发人员可以用来填补安全漏洞的详细补救见解。这些见解增加了开发人员的教育，使他们能够在未来不断提高构建的API的安全性。团队可以直接从Salt平台发送Jira票证、Slack通知和其他开发者通信。</p>
+<h4><span id="55-用于构建管道的cicd集成">5.5 用于构建管道的CI/CD集成</span></h4>
+<p>Salt提供了内置的集成，因此您可以在构建阶段简化和自动化API漏洞验证。对于Salt确定未达到安全标准的API，您可以选择允许该构建成功，但需要开发人员签署风险声明，或者选择失败构建，在CI/CD系统中直接向开发人员显示所需的修复。Salt发出的工单包括开发团队需要的细节，以便他们可以在发布构建之前解决安全漏洞和风险。</p>
+<h3><span id="六-加快事件响应accelerateincident-response">六、加快事件响应（Accelerate
+Incident Response）</span></h3>
+<p><strong>Salt提供了攻击者活动的完整视图，统一呈现在时间轴上，以减少调查时间，帮助团队自信地应对攻击。</strong></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157173.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="61-连接攻击者活动的线索">6.1 连接攻击者活动的线索</span></h4>
+<p><font color="red">Salt将同一用户的所有攻击活动相关联到一个攻击时间轴中，为安全团队提供了攻击步骤和顺序的清晰视图。Salt平台能够将分散的活动与单个用户相关联，并识别攻击者使用不同的ID、IP地址和设备来传播攻击的努力。</font></p>
+<h4><span id="62-减少警报和误报">6.2 减少警报和误报</span></h4>
+<p><font color="red">Salt平台具备大数据和人工智能引擎，同时维护着数百万用户之间典型行为的大规模基线。它可以区分简单的一次性用户错误或API更改与攻击者的模式，避免了误报，使许多安全解决方案无法使用。</font>当恶意活动是罪魁祸首时，Salt平台将活动整合起来，仅针对攻击者发送单个警报，而不是每个攻击者活动都发送一个警报，使安全团队能够快速简单地了解情况并采取行动或利用Salt的自动阻止。</p>
+<h4><span id="63-阻止攻击者而不阻止合法流量">6.3 阻止攻击者而不阻止合法流量</span></h4>
+<p>Salt平台为每个用户建立和保留上下文，以区分攻击者。它将攻击者的所有活动相关联并编译成一个时间轴视图展示数据。然后，安全团队可以放心地采取行动并阻止攻击者，而不必担心破坏合法流量。</p>
+<blockquote>
+<p><strong><font color="red">与现有工具和工作流集成</font></strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041459368.png" alt="image-20230504145944888" style="zoom:50%;"></p>
+<p><strong>Salt与您已经使用的工具和工作流配合使用，因此您可以在不引入复杂性或摩擦的情况下开始保护您的API。</strong>有了Salt，您的安全和DevOps团队将：</p>
+<ul>
+<li>通过向您的SIEM发送警报，包括攻击者活动的完整上下文，自信地应对威胁。</li>
+<li>手动或自动使用现有实施点（如API网关或web应用程序防火墙（WAF））阻止攻击者。</li>
+<li>通过Jira、PagerDuty和Slack等工具向DevOps团队发送可操作的见解，有效消除漏洞。</li>
+</ul>
+</blockquote>
+<h3><span id="七-提供补救见解provideremediation-insights">七、提供补救见解（Provide
+Remediation Insights）</span></h3>
+<p><strong>Salt通过在运行时学习的补救见解增强了生产前扫描，以帮助安全和开发团队改进其API的安全状况。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157404.png" alt="img" style="zoom:50%;"></p>
+<h4><span id="71-从攻击者那里学习">7.1 从攻击者那里学习</span></h4>
+<p>Salt平台让您将攻击者变成渗透测试员，并从他们探测API漏洞的活动中获得洞察力。该平台将识别其他方法（如渗透测试、安全测试和扫描）无法发现的高优先级漏洞。</p>
+<h4><span id="72-为开发人员提供洞察力">7.2 为开发人员提供洞察力</span></h4>
+<p><strong>使用Salt平台，您可以轻松为开发人员提供可以用来加强API的洞察力。Salt提供有潜在漏洞的端点、攻击者尝试利用这些漏洞的方式以及修复建议等详细信息。</strong>您可以设置Salt平台将这些洞察力发送给使用现有工作流和工具（如Jira和ServiceNow）的开发团队，以便跟踪漏洞的解决过程。</p>
+<h4><span id="73-关注重要的漏洞">7.3 关注重要的漏洞</span></h4>
+<p>扫描解决方案仅发现已知威胁，并不能评估您组织的独特API。这些解决方案还发现许多理论威胁，使开发团队不知所措，无法优先考虑。使用Salt，您可以立即获得与您的API独特的高优先级漏洞，以便开发团队可以将有限的资源集中在最大的威胁上，以获得最大的影响。</p>
+<h4><span id="74-发布更安全的api">7.4 发布更安全的API</span></h4>
+<p><strong>Salt为您的安全和开发团队提供了持续的现实洞察力，这是预生产扫描或测试无法提供的。</strong>Salt
+Insights包括您组织的API如何在生产环境中使用以及如何被滥用的独特上下文。这些具体而相关的洞察力有助于开发人员建立他们的安全意识，并改进开发最佳实践，以最小化未来的API漏洞。</p>
+<h3><span id="八-简化法规遵从性simplifycompliance">八、简化法规遵从性（Simplify
+Compliance）</span></h3>
+<p><font color="red">Salt维护所有API的最新、全面和整合的库存，包括详细说明那些暴露敏感数据的API，以帮助您满足法规遵从性要求。</font></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031157461.png" alt="Compliance Use Case" style="zoom:50%;"></p>
+<h4><span id="81-保持最新的api清单">8.1 保持最新的API清单</span></h4>
+<p>在快速发展的环境中，API经常变化，因此很难保持最新的清单。Salt平台持续分析所有API，并创建一个全面和综合的清单，即使开发人员进行更改，也可以保持最新。<strong>清单包括已知的API、影子API和僵尸API</strong>——所有人都认为已经被废弃的旧API。Salt平台还包括审计人员日益要求的精细参数细节。</p>
+<h4><span id="82-报告敏感数据曝露">8.2 报告敏感数据曝露</span></h4>
+<p>使用Salt，您可以深入了解每个API，包括敏感数据的曝露位置。使用Salt报告共享或收集敏感数据的确切API端点，以及API如何使用敏感数据的详细信息。</p>
+<h4><span id="83-识别api更改">8.3 识别API更改</span></h4>
+<p>Salt平台帮助您跟踪更新，因此您知道何时发布新的API或现有API发生更改。深入了解每个API使您能够审计新API端点的添加位置或敏感数据的曝露位置。Salt平台会自动更新这些详细信息，以简化报告。</p>
+<h4><span id="84-满足合规要求">8.4 满足合规要求</span></h4>
+<p><strong>Salt平台为您提供满足PCI
+DSS、PSD2、HIPAA、CCPA、GDPR、LGPD或其他法规的数据保护、数据隐私和其他要求所需的洞察力。</strong>Salt仪表板提供了您所有API的完整视图，您可以导出详细报告，帮助审计员记录您当前的API环境和API共享的敏感数据。</p>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li>Salt：https://salt.security/use-cases/discover-all-apis?</li>
+<li>https://salt.security/use-cases</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/22PANQ7/" title="流量反作弊（7）Salt Security-What‘s the of use-cases Salt Surity?">https://powerlzy.github.io/posts/22PANQ7/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" rel="tag"># 工业落地</a>
+              <a href="/tags/API%E5%AE%89%E5%85%A8/" rel="tag"># API安全</a>
+              <a href="/tags/Salt-Security/" rel="tag"># Salt Security</a>
+              <a href="/tags/DDos/" rel="tag"># DDos</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2KH8Z8N/" rel="prev" title="流量反作弊（6）Salt Security-Blocking a Low-rate-per-bot HTTP DDoS Attack">
+                  <i class="fa fa-chevron-left"></i> 流量反作弊（6）Salt Security-Blocking a Low-rate-per-bot HTTP DDoS Attack
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

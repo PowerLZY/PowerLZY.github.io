@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">255</span>
+          <span class="site-state-item-count">257</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">70</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,356 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/X5SQ7R/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/X5SQ7R/" class="post-title-link" itemprop="url">python-装饰器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-11 15:51:56" itemprop="dateCreated datePublished" datetime="2022-06-11T15:51:56+08:00">2022-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-01 16:51:06" itemprop="dateModified" datetime="2022-07-01T16:51:06+08:00">2022-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%B5%81%E7%A8%8B%E7%9A%84Python/" itemprop="url" rel="index"><span itemprop="name">流程的Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="python-函数装饰器和闭包">Python 函数装饰器和闭包</span></h2>
+<blockquote>
+<p>函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。</p>
+</blockquote>
+<p>修饰器和闭包经常在一起讨论,
+因为<strong>修饰器就是闭包的一种形式</strong>.
+闭包还是<strong>回调式异步编程</strong>和<strong>函数式编程风格</strong>的基础.装饰器是语法糖,
+它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:</p>
+<ul>
+<li><strong>把被装饰的函数替换成其他函数</strong></li>
+<li><font color="red">
+<strong>装饰器在加载模块时立即执行</strong></font></li>
+</ul>
+<h3><span id="一-装饰器基础知识">一、装饰器基础知识</span></h3>
+<p><strong>装饰器</strong>是<strong>可调用的对象</strong>,
+其<strong>参数是另一个函数</strong>(被装饰的函数).
+装饰器可能会处理被装饰的函数, 然后把它返回,
+或者将其替换成<strong>另一个函数或可调用对象</strong>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorate</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)复制代码</span><br></pre></td></tr></table></figure>
+<p>这种写法与下面写法完全等价:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)</span><br><span class="line">target = decorate(target)</span><br></pre></td></tr></table></figure>
+<p>要理解立即执行看下等价的代码就知道了,
+<code>target = decorate(target)</code> 这句调用了函数.
+一般情况下装饰函数都会将某个函数作为返回值.</p>
+<h3><span id="二-变量作用域规则">二、变量作用域规则</span></h3>
+<p>要理解装饰器中变量的作用域, 应该要理解闭包,
+我觉得书里将闭包和作用域的顺序换一下比较好. <strong>在python中,
+一个变量的查找顺序是 <code>LEGB</code> (L：Local 局部环境，E：Enclosing
+闭包，G：Global 全局，B：Built-in 内置).</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">base = <span class="number">20</span> <span class="comment"># 3</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_compare</span>():</span><br><span class="line">    base = <span class="number">10</span> <span class="comment"># 2</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">real_compare</span>(<span class="params">value</span>):</span><br><span class="line">    		base = <span class="number">5</span> <span class="comment"># 1</span></span><br><span class="line">        <span class="keyword">return</span> value &gt; base</span><br><span class="line">    <span class="keyword">return</span> real_compare</span><br><span class="line">    </span><br><span class="line">compare_10 = get_compare()</span><br><span class="line"><span class="built_in">print</span>(compare_10(<span class="number">5</span>))复制代码</span><br></pre></td></tr></table></figure>
+<p>在闭包的函数 <code>real_compare</code> 中, 使用的变量
+<code>base</code> 其实是 <code>base = 10</code> 的.
+因为base这个变量在闭包中就能命中, 而不需要去 <code>global</code>
+中获取.</p>
+<h3><span id="三-闭包">三、闭包</span></h3>
+<p>闭包其实挺好理解的, 当匿名函数出现的时候, 才使得这部分难以掌握.
+简单简短的解释闭包就是:</p>
+<p><strong>名字空间与函数捆绑后的结果被称为一个闭包(closure).</strong></p>
+<p>这个名字空间就是 <code>LEGB</code> 中的 <code>E</code> .
+所以闭包不仅仅是将函数作为返回值.
+而是将名字空间和函数捆绑后作为返回值的. 多少人忘了理解这个
+<code>"捆绑"</code> , 不知道变量最终取的哪和哪啊. 哎.</p>
+<h4><span id="标准库中的装饰器">标准库中的装饰器</span></h4>
+<p>python内置了三个用于装饰方法的函数: <code>property</code> 、
+<code>classmethod</code> 和 <code>staticmethod</code> .
+这些是用来丰富类的.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">age</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="number">12</span></span><br></pre></td></tr></table></figure>
+<h3><span id="四-应用">四、应用</span></h3>
+<p>非常适合有切面需求的场景，比如<strong>权限校验，日志记录和性能测试</strong>等等。比如你想要执行某个函数前记录日志或者记录时间来统计性能，又不想改动这个函数，就可以通过装饰器来实现。</p>
+<h5><span id="不用装饰器我们会这样来实现在函数执行前插入日志">不用装饰器，我们会这样来实现在函数执行前插入日志：</span></h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;foo is running&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am foo&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>虽然这样写是满足了需求，但是改动了原有的代码，如果有其他的函数也需要插入日志的话，就需要改写所有的函数，不能复用代码。<strong>可以这么写</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logg</span>(<span class="params">func</span>):</span><br><span class="line">    logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">    func()</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line">use_log(bar)    <span class="comment">#将函数作为参数传入</span></span><br></pre></td></tr></table></figure>
+<p>这样写的确可以复用插入的日志，缺点就是显示的封装原来的函数，我们希望透明的做这件事。<strong>用装饰器来写</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        logging.warn(<span class="string">&#x27;%s is running&#x27;</span> % func.__name___)</span><br><span class="line">        <span class="keyword">return</span> func(*args,**kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am bar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">bar = use_log(bar)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+<p><code>use_log()</code> 就是装饰器，它把真正我们想要执行的函数
+<code>bar()</code>
+封装在里面，返回一个封装了加入代码的新函数，看起来就像是
+<code>bar()</code>
+被装饰了一样。这个例子中的切面就是函数进入的时候，在这个时候，我们插入了一句记录日志的代码。这样写还是不够透明，通过@语法糖来起到
+<code>bar = use_log(bar)</code> 的作用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bar = use_log(bar)<span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        logging.warn(<span class="string">&#x27;%s is running&#x27;</span> % func.__name___)</span><br><span class="line">        <span class="keyword">return</span> func(*args,**kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am bar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@use_log</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">haha</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am haha&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">bar()</span><br><span class="line">haha()</span><br></pre></td></tr></table></figure>
+<h5><span id="装饰器也是可以带参数的这位装饰器提供了更大的灵活性">装饰器也是可以带参数的，这位装饰器提供了更大的灵活性。</span></h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">level</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">func</span>): </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">if</span> level == <span class="string">&quot;warn&quot;</span>:</span><br><span class="line">                logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">            <span class="keyword">return</span> func(*args)</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log(<span class="params">level=<span class="string">&quot;warn&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">name=<span class="string">&#x27;foo&#x27;</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;i am %s&quot;</span> % name)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+<p><font color="red"><strong>实际上是对装饰器的一个函数封装，并返回一个装饰器。</strong></font><strong>这里涉及到作用域的概念，之前有一篇博客提到过。可以把它看成一个带参数的闭包</strong>。当使用
+<code>@use_log(level='warn')</code> 时，会将 <code>level</code>
+的值传给装饰器的环境中。它的效果相当于
+<code>use_log(level='warn')(foo)</code> ，也就是一个三层的调用。</p>
+<p>这里有一个美中不足，<code>decorator</code>
+不会改变装饰的函数的功能，但会悄悄的改变一个 <code>__name__</code>
+的属性(还有其他一些元信息)，因为 <code>__name__</code>
+是跟着函数命名走的。<font color="red"> <strong>可以用
+<code>@functools.wraps(func)</code> 来让装饰器仍然使用 <code>func</code>
+的名字。</strong></font><strong>functools.wraps
+也是一个装饰器，它将原函数的元信息拷贝到装饰器环境中，从而不会被所替换的新函数覆盖掉。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">log</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kw</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;call %s():&#x27;</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kw)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2QJPFS5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2QJPFS5/" class="post-title-link" itemprop="url">工业落地-蚂蚁安全-柳星《我对安全与NLP的实践和思考》</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-11 15:08:50" itemprop="dateCreated datePublished" datetime="2022-06-11T15:08:50+08:00">2022-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 15:14:41" itemprop="dateModified" datetime="2023-04-18T15:14:41+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E9%AB%98%E7%BA%A7%E5%A8%81%E8%83%81%E5%8F%91%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">高级威胁发现</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1><span id="柳星-我对安全与nlp的实践和思考">柳星-我对安全与NLP的实践和思考</span></h1>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/404notf0und">404notf0und</a>/<strong><a target="_blank" rel="noopener" href="https://github.com/404notf0und/FXY">FXY</a></strong></p>
+</blockquote>
+<h3><span id="一-个人思考">一、个人思考</span></h3>
+<p><strong><font color="red">
+通过对安全与NLP的实践和思考，有以下三点产出：</font></strong></p>
+<ul>
+<li><strong>首先，产出一种通用解决方案和轮子，一把梭实现对各种安全场景的安全检测。</strong>通用解决方案给出一类安全问题的解决思路，打造轮子来具体解决这一类问题，而不是使用单个技术点去解决单个问题。<strong>具体来说，将安全与NLP结合，在各种安全场景中，将其安全数据统一视作文本数据，从NLP视角，统一进行文本预处理、特征化、预训练和模型训练。</strong>例如，在Webshell检测中，Webshell文件内容，在恶意软件检测中，API序列，都可以视作长文本数据，使用NLP技术进行分词、向量化、预训练等操作，同理，在Web安全中，SQl、XSS等URL类安全数据，在DNS安全中，DGA域名、DNS隧道等域名安全数据，同样可以视作短文本数据。因此，只要安全场景中安全数据可以看作文本数据，<a target="_blank" rel="noopener" href="https://github.com/404notf0und/FXY">FXY：<em>Security-Scenes-Feature-Engineering-Toolkit</em></a>
+中，内置多种通用特征化方法和多种通用深度学习模型，以支持多种安全场景的特征化和模型训练，达到流水线式作业。</li>
+<li><strong>其次，是对应用能力和底层能力的思考</strong>。之前写过一篇文章《<a target="_blank" rel="noopener" href="https://4o4notfound.org/index.php/archives/188/">应用型安全算法工程师的自我修养</a>》，在我当时预期想法中，我理解的应用型，重点在于解决实际安全问题，不必苛求于对使用技术本身的理解深度，可以不具备研究型、轮子型的底层能力。映射到我自身，我做安全和算法，最初想法很好，安全和算法两者我都要做好，这里做好，仅仅指用好。之后，面试时暴露了问题，主管给出的建议是两者都要做好。这里做好，不单单指用好，还要知其所以然。举个例子，就是不仅要调包调参玩的6，还要掌握算法的底层原理，这就是底层能力。当时，懂，也不懂，似懂非懂，因为，说，永远是别人的，悟，才是自己的。在实现通用解决方案和轮子的过程中，遇到关于word2vec底层的非预期问题，才深刻体会到，底层能力对应用能力的重要性。过程中遇到的预期和非预期问题，下文会详述。<strong>现在我理解的应用型，重点还是在解决安全问题，以及对安全问题本身的理解，但应用型还需具备研究型、轮子型等上下游岗位的底层能力。</strong>安全算法是这样，其他细分安全领域也是一样，都需要底层能力，以发展技术深度。</li>
+<li>最后，带来思考和认识的提升。<strong>从基于机器学习的XX检测，基于深度学习的XX检测，等各种单点检测，到基于NLP的通用安全检测，是一个由点到面的认知提升</strong>。从安全和算法都要做好，到安全和算法都要做好，其中蕴含着认知的提升。从之前写过一篇安全与NLP的文章《<a target="_blank" rel="noopener" href="https://www.4o4notfound.org/index.php/archives/190/">当安全遇上NLP</a>》，到现在这篇文章。对一件事物的认识，在不同阶段应该是不一样的，甚至可能完全推翻自己之前的认识。我们能做的，是保持思考，重新认识过去的经历，提升对事物的认知和认知能力。这个提升认知的过程，类似boosting的残差逼近和强化学习的奖惩，是一个基于不知道不知道-&gt;知道不知道&gt;知道知道-&gt;不知道知道的螺旋式迭代上升过程。</li>
+</ul>
+<h3><span id="二-预期问题">二、预期问题</span></h3>
+<h4><span id="21-分词粒度">2.1 分词粒度</span></h4>
+<p><strong>首先是分词粒度，粒度这里主要考虑字符粒度和词粒度。在不同的安全场景中，安全数据不同，采用的分词粒度也可能不同：</strong></p>
+<ul>
+<li><strong><font color="red">恶意样本检测的动态API行为序列数据，需要进行单词粒度的划分。</font></strong></li>
+<li><strong>域名安全检测中的域名数据，最好采用字符粒度划分。</strong></li>
+<li><strong>URL安全检测中的URL数据，使用字符和单词粒度划分都可以。</strong></li>
+<li><strong>XSS检测文中，是根据具体的XSS攻击模式，写成正则分词函数，对XSS数据进行划分，这是一种基于攻击模式的词粒度分词模式，但这种分词模式很难扩展到其他安全场景中。</strong></li>
+</ul>
+<p><strong>FXY特征化类wordindex和word2vec中参数char_level实现了该功能</strong>。在其他安全场景中，可以根据此思路，写自定义的<strong>基于攻击模式的分词</strong>，但适用范围有限。我这里提供了两种通用词粒度分词模式，第一种是忽略特殊符号的简洁版分词模式，第二种是考虑全量特殊符号的完整版分词模式，这两种分词模式可以适用于各种安全场景中。FXY特征化类word2vec中参数punctuation的值‘concise’，‘all’和‘define’实现了两种通用分词和自定义安全分词功能。下文的实验部分，会测试不同安全场景中，使用字符粒度和词粒度，使用不同词粒度分词模式训练模型的性能对比。</p>
+<h4><span id="22-语料库">2.2 语料库</span></h4>
+<p><strong>关于预训练前字典的建立（语料库）</strong>。特征化类word2vec的预训练需求直接引发了字典建立的相关问题。在word2vec预训练前，需要考虑预训练数据的产生。基于深度学习的XSS检测文中，是通过<strong>建立一个基于黑样本数据的指定大小的字典，不在字典内的数据全部泛化为一个特定词，将泛化后的数据作为预训练的数据</strong>。这里我们将此思路扩充，增加使用全量数据建立任意大小的字典。具体到word2vec类中，参数one_class的True
+or
+False决定了预训练的数据来源是单类黑样本还是全量黑白样本，参数vocabulary_size的值决定了字典大小，如果为None，就不截断，为全量字典数据。下文的实验部分会测试是<strong>单类黑样本预训练</strong>word2vec好，还是<strong>全量数据预训练</strong>更占优势，是<strong>字典截断</strong>好，还是用全量字典来预训练好。</p>
+<h4><span id="23-序列">2.3 序列</span></h4>
+<p><font color="red">
+<strong>关于序列的问题，具体地说，是长文本数据特征化需求</strong>。</font><strong>webshell检测等安全场景，引发了序列截断和填充的问题。</strong>短文本数据的特征化，可以保留所有原始信息。而在某些安全场景中的长文本数据，特征化比较棘手，保留全部原始信息不太现实，需要对其进行截断，截断的方式主要有<strong>字典截断、序列软截断、序列硬截断</strong>。</p>
+<ul>
+<li><strong>序列软截断</strong>是指对不在某个范围内（参数num_words控制范围大小）的数据，直接去除或填充为某值，长文本选择直接去除，缩短整体序列的长度，尽可能保留后续更多的原始信息。如果长本文数据非常非常长，那么就算有字典截断和序列软截断，截断后的序列也可能非常长，超出了模型和算力的承受范围;</li>
+<li><strong>序列硬截断</strong>（参数max_length控制）可以发挥实际作用，直接整整齐齐截断和填充序列，保留指定长度的序列数据。这里需要注意的是，为了兼容后文将说到的“预训练+微调”训练模式中的<strong>预训练矩阵</strong>，序列填充值默认为0。</li>
+</ul>
+<h4><span id="24-词向量">2.4 词向量</span></h4>
+<p>词向量的问题，具体说，是词嵌入向量问题。词嵌入向量的产生有三种方式：</p>
+<ul>
+<li>词序列索引+有嵌入层的深度学习模型</li>
+<li>word2vec预训练产生词嵌入向量+无嵌入层的深度学习模型</li>
+<li><strong>word2vec预训练产生预训练矩阵+初始化参数为预训练矩阵的嵌入层的深度学习模型。</strong></li>
+</ul>
+<p>这里我把这三种方式简单叫做微调、预训练、预训练+微调，从特征工程角度，这三种方式是产生词嵌入向量的方法，从模型角度，也可以看作是模型训练的三种方法。第一种微调的方式实现起来比较简单，直接使用keras的文本处理类Tokenizer就可以分词，转换为词序列，得到词序列索引，输入到深度学习模型中即可。第二种预训练的方式，调个gensim库中word2vec类预训练，对于不在预训练字典中的数据，其词嵌入向量直接填充为0，第三种预训练+微调的方式，稍微复杂一点，简单来说就是前两种方式的组合，用第二种方式得到预训练矩阵，作为嵌入层的初始化权重矩阵参数，用第一种方式得到词序列索引，作为嵌入层的原始输入。下文的实验部分会测试并对比按这三种方式训练模型的性能，<strong>先说结论：预训练+微调&gt;预训练&gt;微调</strong>。</p>
+<h3><span id="三-非预期问题">三、非预期问题</span></h3>
+<h4><span id="31已知的库和函数不能满足我们的需求">3.1
+已知的库和函数不能满足我们的需求</span></h4>
+<p>使用keras的文本处理类Tokenizer预处理文本数据，得到词序列索引，完全没有问题。<strong>但类Tokenizer毕竟是文本数据处理类，没有考虑到安全领域的需求。</strong>
++ <strong><font color="red">
+类Tokenizer的单词分词默认会过滤所有的特殊符号，仅保留单词，而特殊符号在安全数据中是至关重要的，很多payload的构成都有着大量特殊符号，忽略特殊符号会流失部分原始信息。</font></strong>
++
+<strong>首先阅读了keras的文本处理源码和序列处理源码</strong>，不仅搞懂了其结构和各函数的底层实现方式，还学到了一些trick和优质代码的特性。搞懂了其结构和各函数的底层实现方式，还学到了一些trick和优质代码的特性。下图为Tokenizer类的结构。借鉴并改写Tokenizer类，加入了多种分词模式，我们实现了wordindex类。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181514240.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="32-对word2vec的理解不到位">3.2 对word2vec的理解不到位</span></h4>
+<p>第二个非预期问题是，对word2vec的理解不到位，尤其是其底层原理和代码实现，导致会有一些疑惑，无法得到验证，这是潜在的问题。虽然可以直接调用gensim库中的word2vec类暂时解决问题，但我还是决定把word2vec深究深究，一方面可以答疑解惑，另一方面，就算不能调用别人的库，自己也可以造轮子自给自足。限于篇幅问题，不多讲word2vec的详细原理，原理是我们私下里花时间可以搞清楚的，不算是干货，对原理有兴趣的话，这里给大家推荐几篇优质文章，在github仓库<a target="_blank" rel="noopener" href="https://github.com/404notf0und/Always-Learning">Always-Learning</a>中。</p>
+<p><strong>word2vec本质上是一个神经网络模型，具体来说此神经网络模型是一个输入层-嵌入层-输出层的三层结构，我们用到的词嵌入向量只是神经网络模型的副产物，是模型嵌入层的权重矩阵。</strong>以word2vec实现方式之一的skip-gram方法为例，此方法本质是通过中心词预测周围词。如果有一段话，要对这段话训练一个word2vec模型，那么很明显需要输入数据，还要是打标的数据。以这段话中的某个单词为中心词为例，在一定滑动窗口内的其他单词都默认和此单词相关，此单词和周围其他单词，一对多产生多个组合，默认是相关的，因此label为1，即是输入数据的y为1，而这些单词组合的one-hot编码是输入数据的x。<strong>那么很明显label全为1，全为positive
+sample，需要负采样来中和。这里的负采样不是简单地从滑动窗口外采样，而是按照词频的概率，取概率最小的一批样本来做负样本（这个概念下面马上要用到），因为和中心词毫不相关，自然label为0。</strong></p>
+<p><strong><font color="red">
+tensorflow中的nce_loss函数实现了负采样。</font></strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3178,933 +3528,6 @@ eigenvectors of the Hessian matrix</li>
 <li>python+numpy实现线性回归中梯度下降算法（对比sklearn官方demo） -
 sciengieer的文章 - 知乎 https://zhuanlan.zhihu.com/p/390002941</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1T7T14B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1T7T14B/" class="post-title-link" itemprop="url">模型训练（6）Local Minimum And Saddle Point</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-09 11:34:59" itemprop="dateCreated datePublished" datetime="2022-06-09T11:34:59+08:00">2022-06-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 18:29:53" itemprop="dateModified" datetime="2023-05-01T18:29:53+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">训练技巧</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>19 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="李宏毅课程笔记whengradient-is-small">李宏毅课程笔记：When
-gradient is small</span></h3>
-<h3><span id="一-critical-point">一、Critical Point</span></h3>
-<h4><span id="11-training-fails-because">1.1 Training Fails because</span></h4>
-<p>现在我们要讲的是Optimization的部分,所以我们要讲的东西基本上跟Overfitting没有什么太大的关联,我们只讨论Optimization的时候,怎么把gradient
-descent做得更好,那为什么Optimization会失败呢？</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444482.png" alt="image-20220616161429257" style="zoom:67%;"></p>
-<p>你常常在做Optimization的时候,你会发现,<strong>随著你的参数不断的update,你的training的loss不会再下降</strong>,但是你对这个loss仍然不满意,就像我刚才说的,你可以把deep的network,跟linear的model,或比较shallow
-network
-比较,发现说它没有做得更好,所以你觉得deepnetwork,没有发挥它完整的力量,所以Optimization显然是有问题的。</p>
-<p><strong>但有时候你会甚至发现,一开始你的model就train不起来,一开始你不管怎么update你的参数,你的loss通通都掉不下去,那这个时候到底发生了什么事情呢？</strong></p>
-<p>过去常见的一个猜想,是因为我们现在走到了一个地方,<strong>这个地方参数对loss的微分为零</strong>,当你的参数对loss微分为零的时候,gradient
-descent就没有办法再update参数了,这个时候training就停下来了,loss当然就不会再下降了。</p>
-<p>讲到gradient为零的时候,大家通常脑海中最先浮现的,可能就是<strong>local
-minima</strong>,所以常有人说做deep learning,用gradient
-descent会卡在local minima,然后所以gradient descent不work,所以deep
-learning不work。</p>
-<p><strong>但是如果有一天你要写,跟deep
-learning相关paper的时候,你千万不要讲卡在local
-minima这种事情,别人会觉得你非常没有水准,为什么？</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444929.png" alt="image-20220626143535169"></p>
-<p>因为<strong>不是只有local
-minima的gradient是零</strong>,还有其他可能会让gradient是零,比如说
-<strong>saddle point</strong>,所谓的saddle
-point,其实就是gradient是零,但是不是local minima,也不是local
-maxima的地方,像在右边这个例子里面
-红色的这个点,它在左右这个方向是比较高的,前后这个方向是比较低的,它就像是一个马鞍的形状,所以叫做saddle
-point,那中文就翻成<strong>鞍点</strong>。</p>
-<p>像saddle point这种地方,它也是gradient为零,但它不是local
-minima,那像这种gradient为零的点,统称为critical
-point,所以<strong>你可以说你的loss,没有办法再下降,也许是因为卡在了critical
-point,但你不能说是卡在local minima,因为saddle
-point也是微分为零的点</strong></p>
-<p>但是今天如果你发现你的gradient,真的很靠近零,卡在了某个critical
-point,我们有没有办法知道,到底是local minima,还是saddle
-point？其实是有办法的</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444794.png" alt="image-20220616161554342" style="zoom:50%;"></p>
-<p><strong>为什么我们想要知道到底是卡在local minima,还是卡在saddle
-point呢</strong></p>
-<ul>
-<li>因为如果是<strong>卡在local
-minima,那可能就没有路可以走了</strong>,因为四周都比较高,你现在所在的位置已经是最低的点,loss最低的点了,往四周走
-loss都会比较高,你会不知道怎么走到其他的地方去</li>
-<li>但saddle point就比较没有这个问题,如果你今天是<strong>卡在saddle
-point的话,saddle
-point旁边还是有路可以走的,</strong>还是有路可以让你的loss更低的,你只要逃离saddle
-point,你就有可能让你的loss更低</li>
-</ul>
-<p><strong>所以鉴别今天我们走到,critical point的时候,到底是local
-minima,还是saddle
-point,是一个值得去探讨的问题,那怎么知道今天一个critical
-point,到底是属于local minima,还是saddle point呢？</strong></p>
-<h4><span id="12-warning-of-math">1.2 Warning of Math</span></h4>
-<p>这边需要用到一点数学,以下这段其实没有很难的数学,就只是微积分跟线性代数,但如果你没有听懂的话,以下这段skip掉是没有关系的，那怎么知道说一个点,到底是local
-minima,还是saddle point呢？</p>
-<p>你要知道我们loss function的形状,可是我们怎么知道,loss
-function的形状呢,network本身很复杂,用复杂network算出来的loss
-function,显然也很复杂,我们怎么知道loss
-function,长什么样子,虽然我们没有办法完整知道,整个loss function的样子</p>
-<h5><span id="taylerseries-approximation"><strong><font color="red"> Tayler
-Series Approximation</font></strong></span></h5>
-<p>但是如果给定某一组参数,比如说蓝色的这个<span class="math inline">\(θ&#39;\)</span>,在<span class="math inline">\(θ&#39;\)</span>附近的loss
-function,是有办法被写出来的,它写出来就像是这个样子：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444883.png" alt="image-20220626143850955" style="zoom:67%;"></p>
-<p>所以这个<span class="math inline">\(L(θ)\)</span>完整的样子写不出来,但是它在<span class="math inline">\(θ&#39;\)</span>附近,你可以用这个式子来表示它,这个式子是,Tayler
-Series
-Appoximation泰勒级数展开,这个假设你在微积分的时候,已经学过了,所以我就不会细讲这一串是怎么来的,但我们就只讲一下它的概念,这一串里面包含什么东西呢?</p>
-<ul>
-<li><p>第一项是<span class="math inline">\(L(θ&#39;)\)</span>,就告诉我们说,当<span class="math inline">\(θ\)</span>跟<span class="math inline">\(θ&#39;\)</span>很近的时候,<span class="math inline">\(L(θ)\)</span>应该跟<span class="math inline">\(L(θ&#39;)\)</span>还蛮靠近的</p></li>
-<li><p>第二项是<span class="math inline">\((θ-θ&#39;)^Tg\)</span></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444585.png" alt="image-20220626143927098" style="zoom:67%;"></p>
-<p><strong><span class="math inline">\(g\)</span>是一个向量,这个g就是我们的gradient</strong>,我们用绿色的这个g来代表gradient,这个<strong>gradient会来弥补,<span class="math inline">\(θ&#39;\)</span>跟<span class="math inline">\(θ\)</span>之间的差距</strong>,我们虽然刚才说<span class="math inline">\(θ&#39;\)</span>跟<span class="math inline">\(θ\)</span>,它们应该很接近,但是中间还是有一些差距的,那这个差距,第一项我们用这个gradient,来表示他们之间的差距,有时候gradient会写成<span class="math inline">\(∇L(θ&#39;)\)</span>,这个地方的<span class="math inline">\(g\)</span>是一个向量,<strong>它的第i个component,就是θ的第i个component对L的微分</strong>,光是看g还是没有办法,完整的描述L(θ),你还要看第三项</p></li>
-<li><p>第三项跟Hessian有关,这边有一个$H $</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444461.png" alt="image-20220626143956011" style="zoom:67%;"></p>
-<p>这个<span class="math inline">\(H\)</span>叫做Hessian,它是一个矩阵,这个第三项是,再<span class="math inline">\((θ-θ&#39;)^TH(θ-θ&#39;)\)</span>,所以第三项会再补足,再加上gradient以后,与真正的L(θ)之间的差距.<strong>H里面放的是L的二次微分</strong>,<strong>它第i个row,第j个column的值,就是把θ的第i个component,对L作微分,再把θ的第j个component,对L作微分,再把θ的第i个component,对L作微分,做两次微分以后的结果</strong>
-就是这个<span class="math inline">\(H_i{_j}\)</span></p></li>
-</ul>
-<p>如果这边你觉得有点听不太懂的话,也没有关系,反正你就记得这个<span class="math inline">\(L(θ)\)</span>,这个loss function,这个error
-surface在<span class="math inline">\(θ&#39;\)</span>附近,可以写成这个样子,这个式子跟两个东西有关系,<strong>跟gradient有关系,跟hessian有关系,gradient就是一次微分,hessian就是里面有二次微分的项目</strong></p>
-<h5><span id="hession">Hession</span></h5>
-<p><strong>那如果我们今天走到了一个critical
-point,意味著gradient为零,也就是绿色的这一项完全都不见了</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444340.png" alt="image-20220626144155017" style="zoom:50%;"></p>
-<p><span class="math inline">\(g\)</span><strong>是一个zero
-vector,绿色的这一项完全都不见了</strong>,只剩下红色的这一项,所以当在critical
-point的时候,这个loss function,它可以被近似为<span class="math inline">\(L(θ&#39;)\)</span>,加上红色的这一项。我们可以<strong>根据红色的这一项来判断</strong>,在<span class="math inline">\(θ&#39;\)</span>附近的error
-surface,到底长什么样子。知道error surface长什么样子,我就可以判断。</p>
-<h5><span id="判断-θ39它是一个local-minima还是一个saddlepoint"><strong><font color="red">判断 <span class="math inline">\(θ&#39;\)</span>它是一个local minima,还是一个saddle
-point</font>。</strong></span></h5>
-<p>我们可以靠这一项来了解,这个error
-surface的地貌,大概长什么样子,知道它地貌长什么样子,我们就可以知道说,现在是在什么样的状态,这个是Hessian。</p>
-<p>那我们就来看一下怎么根据Hessian,怎么根据红色的这一项,来判断θ'附近的地貌。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011444553.png" alt="image-20220626144347777" style="zoom:67%;"></p>
-<p>我们现在为了等一下符号方便起见,我们<strong>把<span class="math inline">\((θ-θ&#39;)\)</span>用<span class="math inline">\(v\)</span>这个向量来表示</strong></p>
-<ul>
-<li>如果今天对任何可能的<span class="math inline">\(v\)</span><strong>,<span class="math inline">\(v^THv\)</span>都大于零</strong>,也就是说
-现在θ不管代任何值,v可以是任何的v,也就是θ可以是任何值,不管θ代任何值,<strong>红色框框里面通通都大于零</strong>,那意味著说
-<span class="math inline">\(L(θ)&gt;L(θ&#39;)\)</span>。<span class="math inline">\(L(θ)\)</span>不管代多少 只要在<span class="math inline">\(θ&#39;\)</span>附近,<span class="math inline">\(L(θ)\)</span>都大于<span class="math inline">\(L(θ&#39;)\)</span>,<strong>代表<span class="math inline">\(L(θ&#39;)\)</span>是附近的一个最低点,所以它是local
-minima</strong></li>
-<li>如果今天反过来说,对所有的<span class="math inline">\(v\)</span>而言,<strong><span class="math inline">\(v^THv\)</span>都小于零,也就是红色框框里面永远都小于零</strong>,也就是说<span class="math inline">\(θ\)</span>不管代什么值,红色框框里面都小于零,意味著说<span class="math inline">\(L(θ)&lt;L(θ&#39;)\)</span>,<strong>代表<span class="math inline">\(L(θ&#39;)\)</span>是附近最高的一个点,所以它是local
-maxima</strong></li>
-<li>第三个可能是假设,<strong><span class="math inline">\(v^THv\)</span>,有时候大于零
-有时候小于零</strong>,你代不同的v进去
-代不同的θ进去,红色这个框框里面有时候大于零,有时候小于零,意味著说在θ'附近,有时候L(θ)&gt;L(θ')
-有时候L(θ)&lt;L(θ'),在L(θ')附近,有些地方高
-有些地方低,这意味著什么,<strong>这意味著这是一个saddle
-point</strong></li>
-</ul>
-<p>但是你这边是说我们要代所有的<span class="math inline">\(v\)</span>,去看<span class="math inline">\(v^THv\)</span>是大于零,还是小于零.我们怎么有可能把所有的v,都拿来试试看呢,所以有一个更简便的方法,去确认说这一个条件或这一个条件,会不会发生.</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445282.png" alt="image-20220626144425820" style="zoom:67%;"></p>
-<p><strong><font color="red">
-这个就直接告诉你结论,线性代数理论上是有教过这件事情的,如果今天对所有的v而言,<span class="math inline">\(v^THv\)</span>都大于零,那这种矩阵叫做positive
-definite 正定矩阵,positive definite的矩阵,它所有的eigen
-value特征值都是正的</font></strong></p>
-<p>所以如果你今天算出一个hessian,你不需要把它跟所有的v都乘看看,你只要去直接看这个H的eigen
-value,如果你发现：</p>
-<ul>
-<li><strong>所有eigen
-value都是正的</strong>,那就代表说这个条件成立,就<span class="math inline">\(v^THv\)</span>,会大于零,也就代表说是一个local
-minima。所以你从hessian metric可以看出,它是不是local
-minima,你只要算出hessian metric算完以后,看它的eigen
-value发现都是正的,它就是local minima。</li>
-<li>那反过来说也是一样,如果今天在这个状况,对所有的v而言,<span class="math inline">\(v^THv\)</span>小于零,那H是negative
-definite,那就代表所有<strong>eigen
-value都是负的</strong>,就保证他是local maxima</li>
-<li><strong>那如果eigen value有正有负</strong>,那就代表是saddle
-point,</li>
-</ul>
-<p>那假设在这里你没有听得很懂的话,你就可以记得结论,<strong>你只要算出一个东西,这个东西的名字叫做hessian,它是一个矩阵,这个矩阵如果它所有的eigen
-value,都是正的,那就代表我们现在在local
-minima,如果它有正有负,就代表在saddle point。</strong></p>
-<p>那如果刚才讲的,你觉得你没有听得很懂的话,我们这边举一个例子：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445797.png" alt="image-20220626145009069">
-<figcaption aria-hidden="true">image-20220626145009069</figcaption>
-</figure>
-<p>我们现在有一个史上最废的network,输入一个x,它只有一个neuron，乘上<span class="math inline">\(w₁\)</span>,而且这个neuron,还没有activation
-function,所以x乘上<span class="math inline">\(w₁\)</span>以后
-之后就输出,然后再乘上<span class="math inline">\(w₂\)</span>
-然后就再输出,就得到最终的数据就是y.总之这个function非常的简单 <span class="math display">\[
-y= w₁×w₂×x
-\]</span> 我们有一个史上最废的training set,这个data
-set说,我们只有一笔data,这笔data是x,是1的时候,它的level是1
-所以输入1进去,你希望最终的输出跟1越接近越好</p>
-<p>而这个史上最废的training,它的error
-surface,也是有办法直接画出来的,因为反正只有两个参数 w₁
-w₂,连bias都没有,假设没有bias,只有w₁跟w₂两个参数,这个network只有两个参数
-w₁跟w₂,那我们可以穷举所有w₁跟w₂的数值,算出所有w₁
-w₂数值所代来的loss,然后就画出error surface 长这个样</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445240.png" alt="image-20220626145041635">
-<figcaption aria-hidden="true">image-20220626145041635</figcaption>
-</figure>
-<p>四个角落loss是高的,好 那这个图上你可以看出来说,有一些critical
-point,这个黑点点的地方(0,0),<strong>原点的地方是critical
-point</strong>,然后事实上,<strong>右上三个黑点也是一排critical
-point,左下三个点也是一排critical
-point</strong>。如果你更进一步要分析,他们是saddle point,还是local
-minima的话,那圆心这个地方,<strong>原点这个地方 它是saddle
-point</strong>,为什么它是saddle point呢？你往左上这个方向走
-loss会变大,往右下这个方向走 loss会变大,往左下这个方向走
-loss会变小,往右下这个方向走 loss会变小,它是一个saddle point。</p>
-<p>而这两群critical point,它们都是local
-minima,所以这个山沟里面,有一排local minima,这一排山沟里面有一排local
-minima,然后在原点的地方,有一个saddle point,这个是我们把error
-surface,暴力所有的参数,得到的loss
-function以后,得到的loss的值以后,画出error
-surface,可以得到这样的结论。</p>
-<p>现在假设如果不暴力所有可能的loss,如果要直接算说一个点,是local
-minima,还是saddle point的话 怎么算呢</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445178.png" alt="image-20220626145125121" style="zoom: 67%;"></p>
-<p>我们可以把loss的function写出来,这个loss的function 这个L是 <span class="math display">\[
-L=(\hat{y}-w_1 w_2 x)^2
-\]</span> 正确答案 ŷ减掉model的输出,也就是w₁ w₂x,这边取square
-error,这边<strong>只有一笔data,所以就不会summation over所有的training
-data</strong>,因为反正只有一笔data,x代1
-ŷ代1,我刚才说过只有一笔训练资料最废的,所以只有一笔训练资料,所以loss
-function就是<span class="math inline">\(L=(\hat{y}-w_1 w_2
-x)^2\)</span>,那你可以把这一个loss
-function,它的gradient求出来,w₁对L的微分,w₂对L的微分写出来是这个样子
-<span class="math display">\[
-\frac{∂L}{∂w_1 }=2(1-w_1 w_2 )(-w_2 )
-\]</span></p>
-<p><span class="math display">\[
-\frac{∂L}{∂w_2 }=2(1-w_1 w_2 )(-w_1 )
-\]</span></p>
-<p>​ 这个东西 <span class="math display">\[
-\begin{bmatrix}
-\frac{∂L}{∂w_1 }\\\
-\frac{∂L}{∂w_2 }
-\end{bmatrix}
-\]</span>
-就是所谓的g,所谓的gradient,什么时候gradient会零呢,什么时候会到一个critical
-point呢?</p>
-<p>举例来说 如果w₁=0 w₂=0,就在圆心这个地方,如果w₁代0 w₂代0,w₁对L的微分
-w₂对L的微分,算出来就都是零
-就都是零,这个时候我们就知道说,原点就是一个critical
-point,但<strong>它是local maxima,它是local maxima,local
-minima,还是saddle point呢,那你就要看hessian才能够知道了</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445367.png" alt="image-20220626145206428" style="zoom:67%;"></p>
-<p>当然 我们刚才已经暴力所有可能的w₁
-w₂了,所以你已经知道说,它显然是一个saddle
-point,但是现在假设还没有暴力所有可能的loss,所以我们要看看能不能够用H,用Hessian看出它是什么样的critical
-point,那怎么算出这个H呢？</p>
-<p><strong>H它是一个矩阵,这个矩阵里面元素就是L的二次微分</strong>,所以这个矩阵里面第一个row,第一个coloumn的位置,就是w₁对L微分两次,第一个row
-第二个coloumn的位置,就是先用w₂对L作微分,再用w₁对L作微分,然后这边就是w₁对L作微分,w₂对L作微分,然后w₂对L微分两次,这四个值组合起来,就是我们的hessian,那这个hessian的值是多少呢</p>
-<p>这个hessian的式子,我都已经把它写出来了,你只要把w₁=0 w₂=0代进去,代进去
-你就得到在原点的地方,hessian是这样的一个矩阵 <span class="math display">\[
-\begin{bmatrix}
-{0}&amp;-2\\\
-{-2}&amp;0
-\end{bmatrix}
-\]</span> 这个hessian告诉我们,它是local minima,还是saddle
-point呢,那你就要看这个矩阵的eigen value,算一下发现,这个矩阵有两个eigen
-value,2跟-2 <strong>eigen value有正有负,代表saddle point</strong></p>
-<p>所以我们现在就是用一个例子,跟你操作一下
-告诉你说,你怎么从hessian看出一个点,它一个critical point 它是saddle
-point,还是local minima</p>
-<h4><span id="13-dont-afraid-of-saddlepoint">1.3 Don't afraid of saddle
-point</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445833.png" alt="image-20220626145319827" style="zoom:67%;"></p>
-<p>如果今天你卡的地方是saddle
-point,也许你就不用那么害怕了,因为如果你今天你发现,你停下来的时候,是因为saddle
-point 停下来了,那其实就有机会可以放心了。</p>
-<p>因为H它不只可以帮助我们判断,现在是不是在一个saddle
-point,它还指出了我们参数,可以update的方向,就之前我们参数update的时候,都是看gradient
-看g,但是我们走到某个地方以后,发现g变成0了 不能再看g了,g不见了
-gradient没有了<strong>,但如果是一个saddle
-point的话,还可以再看H,怎么再看H呢,H怎么告诉我们,怎么update参数呢</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445962.png" alt="image-20220626145640713" style="zoom:67%;"></p>
-<p>我们这边假设<span class="math inline">\(\mu\)</span>是H的eigenvector特征向量,然后<span class="math inline">\(λ\)</span>是u的eigen
-value特征值。如果我们把这边的<span class="math inline">\(v\)</span>换成<span class="math inline">\(\mu\)</span>的话,我们把<span class="math inline">\(\mu\)</span>乘在H的左边,跟H的右边,也就是<span class="math inline">\(\mu^TH\mu\)</span>, <span class="math inline">\(H\mu\)</span>会得到<span class="math inline">\(λ\mu\)</span>，因为<span class="math inline">\(\mu\)</span>是一个eigen vector。H乘上eigen
-vector特征向量会得到特征向量λ eigen value乘上eigen vector即<span class="math inline">\(λ\mu\)</span></p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445930.png" alt="image-20220626145734569">
-<figcaption aria-hidden="true">image-20220626145734569</figcaption>
-</figure>
-<p>所以我们在这边得到uᵀ乘上λu,然后再整理一下,把uᵀ跟u乘起来,得到‖u‖²,所以得到λ‖u‖²</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445674.png" alt="image-20220626145742180">
-<figcaption aria-hidden="true">image-20220626145742180</figcaption>
-</figure>
-<p>假设我们这边v,代的是一个eigen vector,我们这边θ减θ',放的是一个eigen
-vector的话,会发现说我们这个红色的项里面,其实就是λ‖u‖²</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445829.png" alt="image-20220626145756118" style="zoom:67%;"></p>
-<p>那今天如果λ<strong>小于零</strong>,eigen
-value小于零的话,那λ‖u‖²就会小于零,因为‖u‖²一定是正的,所以eigen
-value是负的,那这一整项就会是<strong>负的</strong>,也就是u的transpose乘上H乘上u,它是负的,也就是<strong>红色这个框里是负的</strong>。所以这意思是说假设<span class="math inline">\(θ-θ&#39;=\mu\)</span>,那这一项<span class="math inline">\((θ-θ&#39;)^TH(θ-θ&#39;)\)</span>就是负的,也就是<span class="math inline">\(L(θ)&lt;L(θ&#39;)\)</span>。也就是说假设<span class="math inline">\(θ-θ&#39;=\mu\)</span>,也就是,<strong>你在θ'的位置加上u,沿著u的方向做update得到θ,你就可以让loss变小</strong>。</p>
-<p>因为根据这个式子,你只要θ减θ'等于u,loss就会变小,所以你今天只要让θ等于θ'加u,你就可以让loss变小,你只要沿著u,也就是eigen
-vector的方向,去更新你的参数 去改变你的参数,你就可以让loss变小了</p>
-<p><strong><font color="red"> 所以虽然在critical
-point没有gradient,如果我们今天是在一个saddle
-point,你也不一定要惊慌,你只要找出负的eigen value,再找出它对应的eigen
-vector,用这个eigen
-vector去加θ',就可以找到一个新的点,这个点的loss比原来还要低。</font></strong></p>
-<h5><span id="举具体的例子">举具体的例子：</span></h5>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011445872.png" alt="image-20220626145931496" style="zoom: 67%;"></p>
-<p>刚才我们已经发现,原点是一个critical
-point,它的Hessian长这个样,那我现在发现说,这个Hessian有一个负的eigen
-value,这个eigen value等于-2,那它对应的eigen
-vector,它有很多个,其实是无穷多个对应的eigen
-vector,我们就取一个出来,我们取<span class="math inline">\(\begin{bmatrix}{1} \\\
-{1}\end{bmatrix}\)</span>是它对应的一个eigen
-vector,那我们其实只要顺著这个u的方向,顺著<span class="math inline">\(\begin{bmatrix}{1} \\\
-{1}\end{bmatrix}\)</span>这个vector的方向,去更新我们的参数,就可以找到一个,比saddle
-point的loss还要更低的点。</p>
-<p>如果以今天这个例子来看的话,你的saddle
-point在(0,0)这个地方,你在这个地方会没有gradient,Hessian的eigen
-vector告诉我们,只要往<span class="math inline">\(\begin{bmatrix}{1} \\\
-{1}\end{bmatrix}\)</span>的方向更新,你就可以让loss变得更小,也就是说你可以逃离你的saddle
-point,然后让你的loss变小,所以从这个角度来看,似乎saddle
-point并没有那么可怕。如果你今天在training的时候,你的gradient你的训练停下来,你的gradient变成零,你的训练停下来,是因为saddle
-point的话,那似乎还有解。</p>
-<p><strong>但是当然实际上,在实际的implementation里面,你几乎不会真的把Hessian算出来</strong>,这个要是二次微分,要计算这个矩阵的computation,需要的运算量非常非常的大,更遑论你还要把它的eigen
-value,跟 eigen
-vector找出来,所以在实作上,你几乎没有看到,有人用这一个方法来逃离saddle
-point。</p>
-<p><strong>等一下我们会讲其他,也有机会逃离saddle
-point的方法,他们的运算量都比要算这个H,还要小很多</strong>,那今天之所以我们把,这个saddle
-point跟 eigen vector,跟Hessian的eigen
-vector拿出来讲,是想要告诉你说,如果是卡在saddle
-point,也许没有那么可怕,最糟的状况下你还有这一招,可以告诉你要往哪一个方向走.</p>
-<h4><span id="14-saddle-point-vs-localminima">1.4 Saddle Point v.s. Local
-Minima</span></h4>
-<p>讲到这边你就会有一个问题了,这个问题是,那到底<strong>saddle
-point跟local minima,谁比较常见呢</strong>,我们说,saddle
-point其实并没有很可怕,那如果我们今天,常遇到的是saddle
-point,比较少遇到local minima,那就太好了,那到底saddle point跟local
-minima,哪一个比较常见呢?</p>
-<p>总之这个<strong>从三维的空间来看,是没有路可以走的东西,在高维的空间中是有路可以走的,error
-surface会不会也一样呢？</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446813.png" alt="image-20220626150135469" style="zoom:67%;"></p>
-<p>而经验上,如果你自己做一些实验的话,也支持这个假说</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446029.png" alt="image-20220626150207285" style="zoom: 67%;"></p>
-<p>这边是训练某一个network的结果,每一个点代表,训练那个network训练完之后,把它的Hessian拿出来进行计算,所以这边的每一个点,都代表一个network,就我们训练某一个network,然后把它训练训练,训练到gradient很小,卡在critical
-point,把那组参数出来分析,看看它比较像是saddle point,还是比较像是local
-minima</p>
-<ul>
-<li>纵轴代表training的时候的loss,就是我们今天卡住了,那个loss没办法再下降了,那个loss是多少,那很多时候,你的loss在还很高的时候,训练就不动了
-就卡在critical point,那很多时候loss可以降得很低,才卡在critical
-point,这是纵轴的部分</li>
-<li>横轴的部分是minimum ratio,minimum ratio是<strong>eigen
-value的数目分之正的eigen value的数目</strong>,又<strong>如果所有的eigen
-value都是正的,代表我们今天的critical point,是local
-minima,如果有正有负代表saddle
-point</strong>,那在实作上你会发现说,你几乎找不到完全所有eigen
-value都是正的critical point,你看这边这个例子里面,这个minimum
-ratio代表eigen value的数目分之正的eigen
-value的数目,最大也不过0.5到0.6间而已,代表说只有一半的eigen
-value是正的,还有一半的eigen value是负的,</li>
-</ul>
-<p>所以今天虽然在这个图上,越往右代表我们的critical point越像local
-minima,<strong>但是它们都没有真的,变成local
-minima</strong>,就算是在最极端的状况,我们仍然有一半的case,我们的eigen
-value是负的,这一半的case eigen
-value是正的,代表说在所有的维度里面有一半的路,这一半的路
-如果要让loss上升,还有一半的路可以让loss下降。</p>
-<p><strong><font color="red"> 所以从经验上看起来,其实local
-minima并没有那么常见,多数的时候,你觉得你train到一个地方,你gradient真的很小,然后所以你的参数不再update了,往往是因为你卡在了一个saddle
-point。</font></strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011446758.png" alt="image-20220616164405732" style="zoom: 33%;"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1HFEDWZ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1HFEDWZ/" class="post-title-link" itemprop="url">模型训练（5）Batch Normalization</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-09 11:34:59" itemprop="dateCreated datePublished" datetime="2022-06-09T11:34:59+08:00">2022-06-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 18:27:22" itemprop="dateModified" datetime="2023-05-01T18:27:22+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">训练技巧</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>12k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>22 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="李宏毅课程笔记quickintroduction-of-batch-normalization">李宏毅课程笔记：Quick
-Introduction of Batch Normalization</span></h3>
-<p>本篇是一个很快地介绍,Batch Normalization 这个技术</p>
-<h3><span id="一-changinglandscape不变化的景观">一、Changing
-Landscape（不变化的景观）</span></h3>
-<p>之前才讲过说,我们能不能够直接改error surface 的 landscape,我们觉得说
-error surface 如果很崎嶇的时候,它比较难
-train,那我们能不能够直接把山剷平,让它变得比较好 train 呢？</p>
-<p><strong><font color="red">Batch Normalization</font></strong>
-就是其中一个,<strong>把山剷平的想法</strong>。我们一开始就跟大家讲说,不要小看
-optimization 这个问题,有时候就算你的 error surface 是
-convex的,它就是一个碗的形状,都不见得很好
-train。假设你的两个参数啊,它们对 <strong>Loss
-的斜率差别非常大</strong>,在 <span class="math inline">\(w_1\)</span>
-这个方向上面,你的斜率变化很小,在 <span class="math inline">\(w_2\)</span> 这个方向上面斜率变化很大。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011440832.png" alt="image-20220616212321383">
-<figcaption aria-hidden="true">image-20220616212321383</figcaption>
-</figure>
-<p>如果是<strong>固定的 learning
-rate</strong>,你可能很难得到好的结果,所以我们才说你需要adaptive 的
-learning rate、 Adam 等等比较进阶的 optimization
-的方法,才能够得到好的结果。</p>
-<p>现在我们要从另外一个方向想,<strong>直接把难做的 error surface
-把它改掉</strong>,看能不能够改得好做一点。在做这件事之前,也许我们第一个要问的问题就是,有这一种状况,$w_1
-$ 跟 <span class="math inline">\(w_2\)</span>
-它们的<strong>斜率差很多</strong>的这种状况,到底是从什麼地方来的。</p>
-<p>假设我现在有一个非常非常非常简单的 model,它的输入是 <span class="math inline">\(x_1\)</span> 跟 <span class="math inline">\(x_2\)</span>,它对应的参数就是 $ w_1 $ 跟 <span class="math inline">\(w_2\)</span>,它是一个 linear 的 model,没有
-activation function。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011440514.png" alt="image-20220616212341359" style="zoom:67%;"></p>
-<p>$ w_1 $ 乘 <span class="math inline">\(x_1\)</span>,<span class="math inline">\(w_2\)</span> 乘 <span class="math inline">\(x_2\)</span> 加上 b 以后就得到 y,然后会计算 y 跟
-<span class="math inline">\(\hat{y}\)</span> 之间的差距当做 e,把所有
-training data e 加起来就是你的 Loss，然后去 minimize 你的
-Loss，那什麼样的状况我们会產生像上面这样子,<strong>比较不好 train 的
-error surface</strong> 呢？</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011440611.png" alt="image-20220616212421658" style="zoom:67%;"></p>
-<p>当我们对 <strong>$ w_1 $ 有一个小小的改变</strong>,比如说加上 delta $
-w_1 $ 的时候,那这个 L 也会有一个改变,那这个 $ w_1 $ 呢,是透过 $ w_1 $
-改变的时候,你就改变了 y,y 改变的时候你就改变了
-e,然后接下来就<strong>改变了 L</strong>。</p>
-<p>那什麼时候 $ w_1 $ 的改变会对 L 的影响很小呢,也就是它在 error surface
-上的斜率会很小呢？一个可能性是当你的 <strong>input
-很小的时候</strong>,假设 <span class="math inline">\(x_1\)</span>
-的值在不同的 training example 裡面,它的值都很小,那因為 <span class="math inline">\(x_1\)</span> 是直接乘上 $ w_1 $，如果 <span class="math inline">\(x_1\)</span> 的值都很小,$ w_1 $
-有一个变化的时候,它得到的,它<strong>对 y 的影响也是小的</strong>,对 e
-的影响也是小的,它对 L 的影响就会是小的。反之呢,如果今天是 <span class="math inline">\(x_2\)</span> 的话。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011440761.png" alt="image-20220616212503953" style="zoom:67%;"></p>
-<p>那假设 <strong><span class="math inline">\(x_2\)</span>
-的值都很大</strong>,当你的 <span class="math inline">\(w_2\)</span>
-有一个小小的变化的时候,虽然 <span class="math inline">\(w_2\)</span>
-这个变化可能很小,但是因為它乘上了 <span class="math inline">\(x_2\)</span>,<span class="math inline">\(x_2\)</span> 的值很大,那 y 的变化就很大,那 e
-的变化就很大,那 L 的变化就会很大,就会导致我们在 w
-这个方向上,做变化的时候,我们把 w 改变一点点,那我们的 error surface
-就会有很大的变化。</p>
-<p>所以你发现说,既然在这个 linear 的 model 裡面,当我们 input 的
-feature,<strong>每一个 dimension 的值,它的 scale
-差距很大</strong>的时候,我们就可能產生像这样子的 error
-surface,就可能產生<strong>不同方向,斜率非常不同,坡度非常不同的 error
-surface</strong>。</p>
-<p>所以怎麼办呢,我们有没有可能给feature 裡面<strong>不同的
-dimension,让它有同样的数值的范围</strong>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441571.png" alt="image-20220616212559236" style="zoom:67%;"></p>
-<p>如果我们可以给不同的
-dimension,同样的数值范围的话,那我们可能就可以製造比较好的 error
-surface,让 training 变得比较容易一点</p>
-<p>其实有很多不同的方法,这些不同的方法,往往就合起来统称為Feature
-Normalization</p>
-<h3><span id="二-feature-normalization">二、Feature Normalization</span></h3>
-<p>以下所讲的方法只是Feature Normalization 的一种可能性,它<strong>并不是
-Feature Normalization 的全部</strong>,假设 <span class="math inline">\(x^1\)</span> 到 <span class="math inline">\(x^R\)</span>,是我们所有的训练资料的 feature
-vector</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441532.png" alt="image-20220616221138101" style="zoom:67%;"></p>
-<p>我们把所有训练资料的 feature vector ,统统都集合起来,那每一个 vector
-,<span class="math inline">\(x_1\)</span> 裡面就 $x^1_1 $代表 <span class="math inline">\(x_1\)</span> 的第一个 element,$x^2_1 $,就代表
-<span class="math inline">\(x_2\)</span> 的第一个 element,以此类推</p>
-<p>那我们把<strong>不同笔资料即不同 feature vector,同一个
-dimension</strong> 裡面的数值,把它取出来,然后去计算某一个 dimension 的
-mean，它的 mean 呢 就是<span class="math inline">\(m_i\)</span>，我们计算第 i 个 dimension
-的,standard deviation,我们用<span class="math inline">\(\sigma_i\)</span>来表示它</p>
-<p>那接下来我们就可以做一种 normalization,那这种 normalization
-其实叫做<strong>标準化</strong>,其实叫
-standardization,不过我们这边呢,就等一下都统称 normalization 就好了 <span class="math display">\[
-\tilde{x}^r_i ← \frac{x^r_i-m_i}{\sigma_i}
-\]</span> 我们就是把这边的某一个数值x,减掉这一个 dimension 算出来的
-mean,再除掉这个 dimension,算出来的 standard deviation,得到新的数值叫做
-<span class="math inline">\(\tilde{x}\)</span></p>
-<p>然后得到新的数值以后,<strong>再把新的数值把它塞回去</strong>,以下都用这个
-tilde来代表有被 normalize 后的数值</p>
-<p>那做完 normalize 以后有什麼好处呢？</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441247.png" alt="image-20220616221152221" style="zoom:67%;"></p>
-<ul>
-<li><p>做完 normalize 以后啊,这个 dimension 上面的数值就会平均是
-0,然后它的 variance就会是 1,所以<strong>这一排数值的分布就都会在 0
-上下</strong></p></li>
-<li><p>对每一个 dimension都做一样的 normalization,就会发现所有 feature
-不同 dimension 的数值都在 0 上下,那你可能就可以<strong>製造一个,比较好的
-error surface</strong></p></li>
-</ul>
-<p>所以像这样子 Feature Normalization 的方式,往往对你的 training
-有帮助,它可以让你在做 gradient descent 的时候,这个 gradient
-descent,<strong>它的 Loss 收敛更快一点,可以让你的 gradient
-descent,它的训练更顺利一点</strong>,这个是 Feature Normalization</p>
-<h3><span id="三-considering-deep-learning">三、Considering Deep Learning</span></h3>
-<p><span class="math inline">\(\tilde{x}\)</span> 代表 normalize 的
-feature,把它丢到 deep network 裡面,去做接下来的计算和训练,所以把 <span class="math inline">\(x_1\)</span> tilde 通过第一个 layer 得到 <span class="math inline">\(z^1\)</span>,那你有可能通过 activation
-function,不管是选 Sigmoid 或者 ReLU 都可以,然后再得到 <span class="math inline">\(a^1\)</span>,然后再通过下一层等等,那就看你有几层
-network 你就做多少的运算</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441807.png" alt="image-20220616221202386" style="zoom:67%;"></p>
-<p>所以每一个 x 都做类似的事情,但是如果我们进一步来想的话,对 <span class="math inline">\(w_2\)</span> 来说</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441112.png" alt="image-20220616221211793" style="zoom:67%;"></p>
-<p>这边的 <span class="math inline">\(a^1\)</span> <span class="math inline">\(a^3\)</span> 这边的 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^3\)</span>,其实也是另外一种 input,如果这边 <span class="math inline">\(\tilde{x}\)</span>,虽然它已经做 normalize
-了,但是通过 $ w_1 $ 以后它就<strong>没有做 normalize</strong>,如果 <span class="math inline">\(\tilde{x}\)</span> 通过 $ w_1 $ 得到是 <span class="math inline">\(z^1\)</span>,而 <span class="math inline">\(z^1\)</span> 不同的 dimension
-间,它的数值的分布仍然有很大的差异的话,那我们要 train <span class="math inline">\(w_2\)</span> 第二层的参数,会不会也有困难呢</p>
-<p>对 <span class="math inline">\(w_2\)</span> 来说,这边的 a 或这边的 z
-其实也是一种 feature,我们应该要对这些 feature 也做 normalization</p>
-<p>那如果你选择的是 Sigmoid,那可能比较推荐对 z 做 Feature
-Normalization,因為Sigmoid 是一个 s 的形状,那它在 0
-附近斜率比较大,所以如果你对 z 做 Feature Normalization,把所有的值都挪到
-0 附近,那你到时候算 gradient 的时候,算出来的值会比较大</p>
-<p>那不过因為你不见得是用 sigmoid ,所以你也不一定要把 Feature
-Normalization放在 z
-这个地方,如果是选别的,也许你选a也会有好的结果,也说不定，<strong>Ingeneral
-而言,这个 normalization,要放在 activation function
-之前,或之后都是可以的,在实作上,可能没有太大的差别</strong>,好
-那我们这边呢,就是对 z 呢,做一下 Feature Normalization，</p>
-<p>那怎麼对 z 做 Feature Normalization 呢</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441486.png" alt="image-20220616221239128" style="zoom:67%;"></p>
-<p>那你就把 z,想成是另外一种 feature ,我们这边有 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span>,我们就把 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span> 拿出来</p>
-<ul>
-<li><strong>算一下它的 mean</strong>，这边的 <span class="math inline">\(μ\)</span> 是一个 vector,我们就把 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span>,这三个 vector 呢,把它平均起来,得到
-<span class="math inline">\(μ\)</span> 这个 vector</li>
-<li><strong>算一个 standard deviation</strong>,这个 standard deviation
-呢,这边这个成 <span class="math inline">\(\sigma\)</span>,它也代表了一个
-vector,那这个 vector 怎麼算出来呢,你就把 <span class="math inline">\(z^i\)</span>减掉 <span class="math inline">\(μ\)</span>,然后取平方,这边的平方,这个 notation
-有点 abuse 啊,这边的平方就是指,对每一个 element
-都去做平方,然后再开根号,这边开根号指的是对每一个
-element,向量裡面的每一个 element,都去做开根号,得到 <span class="math inline">\(\sigma\)</span>,反正你知道我的意思就好</li>
-</ul>
-<p>把这三个 vector,裡面的每一个 dimension,都去把它的 <span class="math inline">\(μ\)</span> 算出来,把它的 <span class="math inline">\(\sigma\)</span> 算出来,好
-我这边呢,就不把那些箭头呢 画出来了,从 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span>,算出 <span class="math inline">\(μ\)</span>,算出 <span class="math inline">\(\sigma\)</span>。</p>
-<p>接下来就把这边的每一个 z ,都去减掉 <span class="math inline">\(μ\)</span> 除以 <span class="math inline">\(\sigma\)</span>,你把 <span class="math inline">\(z^i\)</span>减掉 <span class="math inline">\(μ\)</span>,除以 <span class="math inline">\(\sigma\)</span>,就得到 <span class="math inline">\(z^i\)</span>的 tilde。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011441288.png" alt="image-20220616221403703" style="zoom:50%;"></p>
-<p>那这边的 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span>,它都是<strong>向量</strong>,所以这边这个除的意思是<strong>element
-wise 的相除</strong>,就是 <span class="math inline">\(z^i\)</span>减
-<span class="math inline">\(μ\)</span>,它是一个向量,所以分子的地方是一个向量,分母的地方也是一个向量,把这个两个向量,它们对应的
-element 的值相除,是我这边这个除号的意思,这边得到 Z 的 tilde。</p>
-<p>所以我们就是把 <span class="math inline">\(z^1\)</span> 减 <span class="math inline">\(μ\)</span> 除以 <span class="math inline">\(\sigma\)</span>,得到 <span class="math inline">\(z^1\)</span> tilde,同理 <span class="math inline">\(z^2\)</span> 减 <span class="math inline">\(μ\)</span> 除以 <span class="math inline">\(\sigma\)</span>,得到 <span class="math inline">\(z^2\)</span> tilde,<span class="math inline">\(z^3\)</span> 减 <span class="math inline">\(μ\)</span> 除以 <span class="math inline">\(\sigma\)</span>,得到 <span class="math inline">\(z^3\)</span> tilde,那就把这个 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span>,做 Feature Normalization,变成 <span class="math inline">\(z^1\)</span> tilde,<span class="math inline">\(z^2\)</span> tilde 跟 <span class="math inline">\(z^3\)</span> 的 tilde。</p>
-<p>接下来就看你爱做什麼 就做什麼啦,通过 activation function,得到其他
-vector,然后再通过,再去通过其他 layer 等等,这样就可以了,这样你就等於对
-<span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span>,做了 Feature Normalization,变成 <span class="math inline">\(\tilde{z}^1\)</span> <span class="math inline">\(\tilde{z}^2\)</span> <span class="math inline">\(\tilde{z}^3\)</span> 。</p>
-<p>在这边有一件有趣的事情,这边的 <span class="math inline">\(μ\)</span>
-跟 <span class="math inline">\(\sigma\)</span>,它们其实都是根据 <span class="math inline">\(z^1\)</span> <span class="math inline">\(z^2\)</span> <span class="math inline">\(z^3\)</span> 算出来的。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442381.png" alt="image-20220616221515889" style="zoom: 67%;"></p>
-<p>所以这边 <span class="math inline">\(z^1\)</span>
-啊,它本来,如果我们没有做 Feature Normalization 的时候,你改变了 <span class="math inline">\(z^1\)</span> 的值,你会改变这边 a
-的值,但是现在啊,当你改变 <span class="math inline">\(z^1\)</span>
-的值的时候,<span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span> 也会跟著改变,<span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span> 改变以后,<span class="math inline">\(z^2\)</span> 的值 <span class="math inline">\(a^2\)</span> 的值,<span class="math inline">\(z^3\)</span> 的值 <span class="math inline">\(a^3\)</span> 的值,也会跟著改变。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442075.png" alt="image-20220616221555203" style="zoom: 67%;"></p>
-<p>所以<strong>之前</strong>,我们每一个 <span class="math inline">\(\tilde{x}_1\)</span> <span class="math inline">\(\tilde{x}_2\)</span> <span class="math inline">\(\tilde{x}_3\)</span>,它是<strong>独立分开处理的</strong>,但是我们在做
-<strong>Feature Normalization 以后</strong>,这三个
-example,它们变得<strong>彼此关联</strong>了。</p>
-<p>我们这边 <span class="math inline">\(z^1\)</span> 只要有改变,接下来
-<span class="math inline">\(z^2\)</span> <span class="math inline">\(a^2\)</span> <span class="math inline">\(z^3\)</span> <span class="math inline">\(a^3\)</span>,也都会跟著改变,所以这边啊,其实你要把,当你有做
-Feature Normalization 的时候,你要把这一整个 process,就是有收集一堆
-feature,把这堆 feature 算出 <span class="math inline">\(μ\)</span> 跟
-<span class="math inline">\(\sigma\)</span> 这件事情,当做是 network
-的一部分。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442417.png" alt="image-20220616221637917" style="zoom:67%;"></p>
-<p>也就是说,你现在有一个比较大的 network</p>
-<ul>
-<li>你之前的 network,都只吃一个 input,得到一个 output</li>
-<li>现在你有一个比较大的 network,这个大的 network,它是吃一堆
-input,用这堆 input 在这个 network 裡面,要算出 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span>,然后接下来產生一堆 output</li>
-</ul>
-<p>那这个地方比较抽象,只可会意 不可言传这样子</p>
-<p>那这边就会有一个问题了,因為你的训练资料裡面的 data 非常多,现在一个
-data set,benchmark corpus 都上百万笔资料， GPU 的
-memory,根本没有办法,把它整个 data set 的 data 都 load 进去。</p>
-<p><strong><font color="red"> 在实作的时候,你不会让这一个 network
-考虑整个 training data 裡面的所有 example,你只会考虑一个 batch 裡面的
-example</font></strong>,举例来说,你 batch 设 64,那你这个巨大的
-network,就是把 64 笔 data 读进去,算这 64 笔 data 的 <span class="math inline">\(μ\)</span>,算这 64 笔 data 的 <span class="math inline">\(\sigma\)</span>,对这 64 笔 data 都去做
-normalization</p>
-<p>因為我们在实作的时候,我们只对一个 batch 裡面的 data,做
-normalization,所以这招叫做 <strong>Batch Normalization</strong></p>
-<p>那这个 Batch Normalization,显然有一个问题
-就是,<strong>你一定要有一个够大的 batch,你才算得出 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span></strong>,假设你今天,你 batch size
-设 1,那你就没有什麼 <span class="math inline">\(μ\)</span> 或 <span class="math inline">\(\sigma\)</span> 可以算</p>
-<p>所以这个 Batch Normalization,是适用於 batch size 比较大的时候,因為
-batch size 如果比较大,<strong>也许这个 batch size 裡面的
-data,就足以表示,整个 corpus
-的分布</strong>,那这个时候你就可以,把这个本来要对整个 corpus,做 Feature
-Normalization 这件事情,改成只在一个 batch,做 Feature Normalization,作為
-approximation。</p>
-<p><strong>在做 Batch Normalization
-的时候,往往还会有这样的设计你算出这个 <span class="math inline">\(\tilde{z}\)</span> 以后</strong></p>
-<ul>
-<li><strong><font color="red"> 接下来你会把这个 <span class="math inline">\(\tilde{z}\)</span>,再乘上另外一个向量叫做 <span class="math inline">\(γ\)</span>,这个 <span class="math inline">\(γ\)</span> 也是一个向量,所以你就是把 <span class="math inline">\(\tilde{z}\)</span> 跟 <span class="math inline">\(γ\)</span> 做 element wise 的相乘,把 z
-这个向量裡面的 element,跟 <span class="math inline">\(γ\)</span>
-这个向量裡面的 element,两两做相乘。</font></strong></li>
-<li><strong><font color="red"> 再加上 <span class="math inline">\(β\)</span> 这个向量,得到 <span class="math inline">\(\hat{z}\)</span>。</font></strong></li>
-</ul>
-<p><strong>而 <span class="math inline">\(β\)</span> 跟 <span class="math inline">\(γ\)</span>,你要把它想成是 network
-的参数,它是另外再被learn出来的,</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442134.png" alt="image-20220616222053826" style="zoom:50%;"></p>
-<h5><span id="那為什麼要加上-β-跟-γ-呢">那為什麼要加上 <span class="math inline">\(β\)</span> 跟 <span class="math inline">\(γ\)</span> 呢？</span></h5>
-<p>有人可能会觉得说,如果我们做 normalization 以后,那这边的 <span class="math inline">\(\tilde{z}\)</span>,它的平均就一定是
-0,那也许,<strong>今天如果平均是 0 的话,就是给那 network
-一些限制</strong>,那<strong>也许这个限制会带来什麼负面的影响</strong>,所以我们把
-<span class="math inline">\(β\)</span> 跟 <span class="math inline">\(γ\)</span> 加回去。</p>
-<p>然后让 network 呢,现在它的 hidden layer 的 output平均不是 0
-的话,他就自己去learn这个 <span class="math inline">\(β\)</span> 跟 <span class="math inline">\(γ\)</span>,来调整一下输出的分布,来调整这个 <span class="math inline">\(\hat{z}\)</span> 的分布</p>
-<p>但讲到这边又会有人问说,刚才不是说做 Batch Normalization
-就是,為了要让每一个不同的 dimension,它的 range
-都是一样吗,现在如果加去乘上 <span class="math inline">\(γ\)</span>,再加上 <span class="math inline">\(β\)</span>,把 <span class="math inline">\(γ\)</span> 跟 <span class="math inline">\(β\)</span> 加进去,</p>
-<h5><span id="这样不会不同dimension-的分布它的-range-又都不一样了吗">这样不会不同
-dimension 的分布,它的 range 又都不一样了吗？</span></h5>
-<p>有可能,但是你实际上在训练的时候,这个 <span class="math inline">\(γ\)</span> 跟 <span class="math inline">\(β\)</span> 的初始值啊</p>
-<ul>
-<li><strong>你会把这个 <span class="math inline">\(γ\)</span> 的初始值
-就都设為 1,所以 <span class="math inline">\(γ\)</span>
-是一个裡面的值,一开始其实是一个裡面的值,全部都是 1 的向量</strong></li>
-<li><strong>那 <span class="math inline">\(β\)</span>
-是一个裡面的值,全部都是 0 的向量,所以 <span class="math inline">\(γ\)</span> 是一个 one vector,都是 1 的向量,<span class="math inline">\(β\)</span> 是一个 zero vector,裡面的值都是 0
-的向量</strong></li>
-</ul>
-<p>所以让你的 network 在一开始训练的时候,每一个 dimension
-的分布,是比较接近的,也许训练到后来,你已经训练够长的一段时间,已经找到一个比较好的
-error surface,走到一个比较好的地方以后,那再把 <span class="math inline">\(γ\)</span> 跟 <span class="math inline">\(β\)</span> 慢慢地加进去,好所以加 Batch
-Normalization,往往对你的训练是有帮助的。</p>
-<h3><span id="四-testing">四、Testing</span></h3>
-<h5><span id="这个batch-normalization-在-inference或是-testing的时候会有什麼样的问题呢">这个
-Batch Normalization 在 inference,或是 testing
-的时候,会有什麼样的问题呢？</span></h5>
-<p>在 testing 的时候,如果 当然如果今天你是在做作业,我们一次会把所有的
-testing 的资料给你,所以你确实也可以在 testing 的资料上面,製造一个一个
-batch。</p>
-<p><strong>但是假设你真的有系统上线,你是一个真正的线上的
-application,你可以说,我今天一定要等 30,比如说你的 batch size 设
-64,我一定要等 64
-笔资料都进来,我才一次做运算吗,这显然是不行的。</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442171.png" alt="image-20220616222338443" style="zoom: 67%;"></p>
-<p>但是在做 Batch Normalization 的时候,一个 <span class="math inline">\(\tilde{x}\)</span>,一个 normalization 过的 feature
-进来,然后你有一个 z,你的 z 呢,要减掉 <span class="math inline">\(μ\)</span> 跟除 <span class="math inline">\(\sigma\)</span>,那这个 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span>,是<strong>用一个 batch
-的资料算出来的</strong></p>
-<h5><span id="但如果今天在testing-的时候根本就没有-batch那我们要怎麼算这个-μ跟怎麼算这个-sigma-呢">但如果今天在
-testing 的时候,根本就没有 batch,那我们要怎麼算这个 <span class="math inline">\(μ\)</span>,跟怎麼算这个 <span class="math inline">\(\sigma\)</span> 呢？</span></h5>
-<p>所以真正的,这个实作上的解法是这个样子的,如果你看那个 PyTorch
-的话呢,Batch Normalization 在 testing
-的时候,你并不需要做什麼特别的处理,PyTorch 帮你处理好了</p>
-<p><strong><font color="red"> 在 training 的时候,如果你有在做 Batch
-Normalization 的话,在 training 的时候,你每一个 batch 计算出来的 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span>,他都会拿出来算 moving
-average</font></strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442960.png" alt="image-20220616222438574" style="zoom:67%;"></p>
-<p>你每一次取一个 batch 出来的时候,你就会算一个 <span class="math inline">\(μ^1\)</span>,取第二个 batch 出来的时候,你就算个
-<span class="math inline">\(μ^2\)</span>,一直到取第 t 个 batch
-出来的时候,你就算一个 <span class="math inline">\(μ^t\)</span>
-。接下来你会算一个 moving average,你会把你现在算出来的 <span class="math inline">\(μ\)</span> 的一个平均值,叫做 <span class="math inline">\(μ\)</span> bar,乘上某一个
-factor,那这也是一个常数,这个这也是一个 constant,这也是一个那个 hyper
-parameter,也是需要调的。</p>
-<p>在 PyTorch 裡面,我没记错 他就设 0.1,我记得他 P 就设 0.1,好,然后加上 1
-减 P,乘上 <span class="math inline">\(μ^t\)</span> ,然后来更新你的 <span class="math inline">\(μ\)</span> 的平均值,然后最后在 testing
-的时候,你就不用算 batch 裡面的 <span class="math inline">\(μ\)</span> 跟
-<span class="math inline">\(\sigma\)</span> 了。</p>
-<p>因為 testing 的时候,在真正 application 上,也没有 batch
-这个东西,你就直接拿 <span class="math inline">\(\barμ\)</span> 跟 <span class="math inline">\(\bar\sigma\)</span> ,也就是 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span> 在训练的时候,得到的 moving
-average,<span class="math inline">\(\barμ\)</span> 跟 <span class="math inline">\(\bar\sigma\)</span> ,来取代这边的 <span class="math inline">\(μ\)</span> 跟 <span class="math inline">\(\sigma\)</span>,这个就是 Batch Normalization,在
-testing 的时候的运作方式。</p>
-<h3><span id="五-comparison">五、Comparison</span></h3>
-<p>好 那这个是从 Batch
-Normalization,原始的文件上面截出来的一个实验结果,那在原始的文件上还讲了很多其他的东西,举例来说,我们今天还没有讲的是<strong>,Batch
-Normalization 用在 CNN
-上,要怎麼用呢</strong>,那你自己去读一下原始的文献,裡面会告诉你说,Batch
-Normalization 如果用在 CNN 上,应该要长什麼样子。</p>
-<blockquote>
-<p><strong>卷积层上的BN使用</strong>，其实也是使用了<strong>类似权值共享的策略</strong>，<strong>把一整张特征图当做一个神经元进行处理</strong>。</p>
-<p>卷积神经网络经过卷积后得到的是一系列的特征图，如果min-batch
-sizes为m，那么网络某一层输入数据可以表示为四维矩阵(m,f,p,q)，m为min-batch
-sizes，f为特征图个数，p、q分别为特征图的宽高。</p>
-<p>在cnn中我们可以把每个特征图看成是一个特征处理（一个神经元），因此在使用Batch
-Normalization，mini-batch size 的大小就是：m * p *
-q，于是对于每个特征图都只有一对可学习参数：γ、β。</p>
-<p>相当于求取所有样本所对应的一个特征图的所有神经元的平均值、方差，然后对这个特征图神经元做归一化。</p>
-<ul>
-<li><strong>nb在每一个特征图上的所有点沿着一个batch的样本数据的方向对数据进行求和，求平均等处理，不考虑不同特征图的数据间的运算。</strong></li>
-<li><strong>lrb在每一个特征图上沿着不同特征图的方向对数据进行求和，求平均等处理，不考虑不同输入样本数据间的运算。</strong></li>
-</ul>
-</blockquote>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011442587.png" alt="image-20220616222534083">
-<figcaption aria-hidden="true">image-20220616222534083</figcaption>
-</figure>
-<p>这个是原始文献上面截出来的一个数据</p>
-<ul>
-<li>横轴呢,代表的是训练的过程，纵轴代表的是 validation set 上面的
-accuracy</li>
-<li>那这个<strong>黑色</strong>的虚线是<strong>没有做 Batch
-Normalization</strong> 的结果,它用的是 inception 的 network,就是某一种
-network 架构啦,也是以 CNN 為基础的 network 架构</li>
-<li>然后如果有做 Batch
-Normalization,你会得到<strong>红色</strong>的这一条虚线,那你会发现说,红色这一条虚线,它<strong>训练的速度,显然比黑色的虚线还要快很多</strong>,虽然最后收敛的结果啊,就你只要给它足够的训练的时间,可能都跑到差不多的
-accuracy,但是<strong>红色这一条虚线,可以在比较短的时间内,就跑到一样的
-accuracy</strong>,那这边这个蓝色的菱形,代表说这几个点的那个 accuracy
-是一样的</li>
-<li><strong>粉红色</strong>的线是 sigmoid function,就 sigmoid function
-一般的认知,我们虽然还没有讨论这件事啦,但一般都会选择 ReLu,而不是用
-sigmoid function,因為 sigmoid function,它的 training
-是比较困难的,但是这边想要强调的点是说,<strong>就算是 sigmoid
-比较难搞的,加 Batch Normalization,还是 train 的起来</strong>,那这边没有
-sigmoid,没有做 Batch Normalization
-的结果,因為在这个实验上,作者有说,sigmoid 不加 Batch Normalization,根本连
-train 都 train 不起来</li>
-<li>蓝色的实线跟这个蓝色的虚线呢,是把 learning rate 设比较大一点,乘
-5,就是 learning rate 变原来的 5 倍,然后乘 30,就是 learning rate 变原来的
-30 倍,那因為<strong>如果你做 Batch Normalization 的话,那你的 error
-surface 呢,会比较平滑
-比较容易训练,所以你可以把你的比较不崎嶇,所以你就可以把你的 learning rate
-呢,设大一点</strong></li>
-</ul>
-<h3><span id="六-internal-covariate-shift">六、Internal Covariate Shift?</span></h3>
-<p><strong>好接下来的问题就是,Batch
-Normalization,它為什麼会有帮助呢</strong>,在原始的 Batch
-Normalization,那篇 paper 裡面,他提出来一个概念,叫做<strong>internal
-covariate shift,covariate
-shift</strong>(训练集和预测集样本分布不一致的问题就叫做“<em>covariate
-shift</em>”现象) 这个词汇是原来就有的,internal covariate
-shift,我认為是,Batch Normalization 的作者自己发明的。他认為说今天在
-train network 的时候,会有以下这个问题,这个问题是这样。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011443501.png" alt="image-20220616225043073" style="zoom: 67%;"></p>
-<p>network 有很多层</p>
-<ul>
-<li><p>x 通过第一层以后 得到 a</p></li>
-<li><p>a 通过第二层以后 得到 b</p></li>
-<li><p>计算出 gradient 以后,把 A update 成 A′,把 B 这一层的参数 update
-成 B′</p></li>
-</ul>
-<p>但是作者认為说,我们在计算 B,update 到 B′ 的 gradient
-的时候,这个时候前一层的参数是 A 啊,或者是前一层的 output 是小 a 啊</p>
-<p>那当前一层从 A 变成 A′ 的时候,它的 output 就从小 a 变成小 a′ 啊</p>
-<p>但是我们计算这个 gradient 的时候,我们是根据这个 a 算出来的啊,所以这个
-update 的方向,也许它<strong>适合用在 a 上,但不适合用在 a′
-上面</strong></p>
-<p>那如果说 Batch Normalization 的话,我们会让,因為我们每次都有做
-normalization,我们就会让 a 跟 a′
-呢,它的分布比较接近,也许这样就会对训练呢,有帮助。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011443393.png" alt="image-20220616225149673" style="zoom:67%;"></p>
-<p>但是有一篇 paper 叫做,How Does Batch Normalization,Help
-Optimization,然后他就<strong>打脸了internal covariate shift
-的这一个观点</strong>。</p>
-<p>在这篇 paper 裡面,他从各式各样的面向来告诉你说,i<strong>nternal
-covariate shift,首先它不一定是 training network 的时候的一个问题,然后
-Batch Normalization,它会比较好,可能不见得是因為,它解决了 internal
-covariate shift。</strong></p>
-<p>那在这篇 paper
-裡面呢,他做了很多很多的实验,比如说他比较了训练的时候,这个 a 的分布的变化
-发现<strong>,不管有没有做 Batch
-Normalization,它的变化都不大</strong>。</p>
-<p>然后他又说,就算是变化很大,对 training
-也没有太大的伤害,然后他又说,不管你是根据 a 算出来的 gradient,还是根据 a′
-算出来的 gradient,方向居然都差不多。</p>
-<p>所以他告诉你说,internal covariate shift,可能不是 training network
-的时候,最主要的问题,它可能也不是,Batch Normalization
-会好的一个的关键,那有关更多的实验,你就自己参见这篇文章。</p>
-<h5><span id="為什麼-batchnormalization-会比较好呢">為什麼 Batch
-Normalization 会比较好呢？</span></h5>
-<p>那在这篇 How Does Batch Normalization,Help Optimization
-这篇论文裡面,他从实验上,也从理论上,至少<strong>支持了 Batch
-Normalization,可以改变 error surface,让 error surface
-比较不崎嶇这个观点</strong>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011443110.png" alt="image-20220616225308853" style="zoom:67%;"></p>
-<p>所以这个观点是有理论的支持,也有实验的佐证的,那在这篇文章裡面呢,作者还讲了一个非常有趣的话,他说他觉得啊,这个
-Batch Normalization 的 positive impact。</p>
-<p>因為他说,如果我们要让 network,这个 error surface
-变得比较不崎嶇,<strong>其实不见得要做 Batch
-Normalization,感觉有很多其他的方法,都可以让 error surface
-变得不崎嶇</strong>,那他就试了一些其他的方法,发现说,跟 Batch
-Normalization performance
-也差不多,甚至还稍微好一点,所以他就讲了下面这句感嘆。</p>
-<p>他觉得说,这个,positive impact of batchnorm on training,可能是
-somewhat,<strong>serendipitous</strong>,什麼是 serendipitous
-呢,这个字眼可能可以翻译成偶然的,但偶然并没有完全表达这个词汇的意思,这个词汇的意思是说,你发现了一个什麼意料之外的东西。</p>
-<p>那这篇文章的作者也觉得,Batch Normalization
-也像是盘尼西林一样,是一种偶然的发现,但无论如何,它是一个有用的方法。</p>
-<h3><span id="to-learn-more">To learn more ……</span></h3>
-<p>那其实 Batch Normalization,不是唯一的 normalization,normalization
-的方法有一把啦,那这边就是列了几个比较知名的,</p>
-<p>Batch Renormalization https://arxiv.org/abs/1702.03275 Layer
-Normalization https://arxiv.org/abs/1607.06450 Instance Normalization
-https://arxiv.org/abs/1607.08022 Group Normalization
-https://arxiv.org/abs/1803.08494 Weight Normalization
-https://arxiv.org/abs/1602.07868 Spectrum Normalization
-https://arxiv.org/abs/1705.10941</p>
 
       
     </div>
