@@ -153,13 +153,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">257</span>
+          <span class="site-state-item-count">263</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -196,6 +196,597 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2T4SP03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2T4SP03/" class="post-title-link" itemprop="url">算法长征（2）链表</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-23 18:13:19" itemprop="dateCreated datePublished" datetime="2022-05-23T18:13:19+08:00">2022-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-13 15:27:37" itemprop="dateModified" datetime="2022-07-13T15:27:37+08:00">2022-07-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="链表">链表</span></h2>
+<blockquote>
+<p>在对链表进行操作时，一种常用的技巧是添加一个哑节点（dummy
+node），它的 next
+指针指向链表的头节点。这样一来，我们就不需要对头节点进行特殊的判断了。</p>
+</blockquote>
+<h4><span id="剑指offer-06-从尾到头打印链表"></span></h4>
+<ul>
+<li><strong>递归、辅助栈</strong></li>
+</ul>
+<p>输入一个链表的头节点，<strong>从尾到头反过来返回每个节点的值（用数组返回）</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">  	<span class="keyword">def</span> <span class="title function_">reversePrint</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">    		<span class="comment"># 递归法</span></span><br><span class="line">        <span class="keyword">return</span> self.reversePrint(head.<span class="built_in">next</span>) + [head.val] <span class="keyword">if</span> head <span class="keyword">else</span> []</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reversePrint</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">      	<span class="comment"># 辅助栈法</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">while</span> head:</span><br><span class="line">            ans.append(head.val)</span><br><span class="line">            head = head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">list</span>(<span class="built_in">reversed</span>(ans))</span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-24-反转链表"></span></h4>
+<p>定义一个函数，输入一个链表的头节点，<strong>反转该链表并输出反转后链表的头节点</strong>。</p>
+<ul>
+<li><strong>递归、迭代</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">      	<span class="comment"># 迭代</span></span><br><span class="line">        cur, pre = head, <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            tmp = cur.<span class="built_in">next</span> <span class="comment"># 暂存后继节点 cur.next</span></span><br><span class="line">            cur.<span class="built_in">next</span> = pre <span class="comment"># 修改 next 引用指向</span></span><br><span class="line">            pre = cur      <span class="comment"># pre 暂存 cur</span></span><br><span class="line">            cur = tmp      <span class="comment"># cur 访问下一节点</span></span><br><span class="line">        <span class="keyword">return</span> pre</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">      	<span class="comment"># 递归</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">recur</span>(<span class="params">cur, pre</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> cur: <span class="keyword">return</span> pre     <span class="comment"># 终止条件</span></span><br><span class="line">            res = recur(cur.<span class="built_in">next</span>, cur) <span class="comment"># 递归后继节点</span></span><br><span class="line">            cur.<span class="built_in">next</span> = pre             <span class="comment"># 修改节点引用指向</span></span><br><span class="line">            <span class="keyword">return</span> res                 <span class="comment"># 返回反转链表的头节点</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> recur(head, <span class="literal">None</span>)       <span class="comment"># 调用递归并返回</span></span><br></pre></td></tr></table></figure>
+<h4><span id="剑指offer-35-复杂链表的复制"></span></h4>
+<p>请实现 copyRandomList
+函数，复制一个复杂链表。<strong>在复杂链表中，每个节点除了有一个 next
+指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者
+null</strong>。</p>
+<ul>
+<li>defaultdict()，空为0</li>
+</ul>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">copyRandomList</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="comment"># 拼接+拆分 【哈希表】</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dic = collections.defaultdict()</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            dic[cur] = Node(cur.val)</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            dic[cur].<span class="built_in">next</span> = dic[cur.<span class="built_in">next</span>] <span class="keyword">if</span> cur.<span class="built_in">next</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">            dic[cur].random = dic[cur.random] <span class="keyword">if</span> cur.random <span class="keyword">else</span> <span class="literal">None</span><span class="comment"># keyerror</span></span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> dic[head]</span><br></pre></td></tr></table></figure></p>
+<h4><span id="剑指-offer-ii-021删除链表的倒数第-n-个结点"></span></h4>
+<p>给定一个链表，<strong>删除链表的倒数第 <code>n</code>
+个结点</strong>，并且返回链表的头结点。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeNthFromEnd</span>(<span class="params">self, head: ListNode, n: <span class="built_in">int</span></span>) -&gt; ListNode:</span><br><span class="line">        dummy = ListNode(<span class="number">0</span>, head)</span><br><span class="line">        first = head</span><br><span class="line">        second = dummy</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            first = first.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">while</span> first:</span><br><span class="line">            first = first.<span class="built_in">next</span></span><br><span class="line">            second = second.<span class="built_in">next</span></span><br><span class="line">        second.<span class="built_in">next</span> = second.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-022链表中环的入口节点"></span></h4>
+<p>给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着
+next 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回
+null。</p>
+<p>为了表示给定链表中的环，我们使用整数 pos
+来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是
+-1，则在该链表中没有环。注意，pos
+仅仅是用于标识环的情况，并不会作为参数传递到函数中。</p>
+<p>说明：不允许修改给定的链表。</p>
+<p><strong>示例 1：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png" alt="img" style="zoom:50%;"></p>
+<blockquote>
+<p>输入：head = [3,2,0,-4], pos = 1 输出：返回索引为 1 的链表节点
+解释：链表中有一个环，其尾部连接到第二个节点。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">detectCycle</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        fast = slow = head</span><br><span class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.<span class="built_in">next</span>:</span><br><span class="line">            fast = fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">            slow = slow.<span class="built_in">next</span></span><br><span class="line">            <span class="keyword">if</span> fast == slow:</span><br><span class="line">                fast = head</span><br><span class="line">                <span class="keyword">while</span> fast != slow:</span><br><span class="line">                    fast = fast.<span class="built_in">next</span></span><br><span class="line">                    slow = slow.<span class="built_in">next</span></span><br><span class="line">                <span class="keyword">return</span> slow</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-023两个链表的第一个重合节点"></span></h4>
+<p>给定两个单链表的头节点 <code>headA</code> 和 <code>headB</code>
+，请找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回
+<code>null</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getIntersectionNode</span>(<span class="params">self, headA: ListNode, headB: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> headA <span class="keyword">and</span> <span class="keyword">not</span> headB:</span><br><span class="line">            <span class="keyword">return</span> headA</span><br><span class="line">        p, q = headA, headB</span><br><span class="line">        <span class="keyword">while</span> p != q:</span><br><span class="line">            p = p.<span class="built_in">next</span> <span class="keyword">if</span> p <span class="keyword">else</span> headB</span><br><span class="line">            q = q.<span class="built_in">next</span> <span class="keyword">if</span> q <span class="keyword">else</span> headA</span><br><span class="line">        <span class="keyword">return</span> p</span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-025-链表中的两数相加"></span></h4>
+<p>给定两个 <strong>非空链表</strong> <code>l1</code>和 <code>l2</code>
+来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。</p>
+<ul>
+<li>从后往前加【反转链表初始化】、倒序添加</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addTwoNumbers</span>(<span class="params">self, l1: ListNode, l2: ListNode</span>) -&gt; ListNode:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">                <span class="keyword">return</span> head</span><br><span class="line">            pre, cur = <span class="literal">None</span>, head</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                tmp = cur.<span class="built_in">next</span></span><br><span class="line">                cur.<span class="built_in">next</span> = pre</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = tmp</span><br><span class="line">            <span class="keyword">return</span> pre</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> l1 <span class="keyword">and</span> <span class="keyword">not</span> l2:</span><br><span class="line">            <span class="keyword">return</span> </span><br><span class="line">        l1 = reverseList(l1)</span><br><span class="line">        l2 = reverseList(l2)</span><br><span class="line">        more = <span class="number">0</span></span><br><span class="line">        p = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> l1 <span class="keyword">or</span> l2:</span><br><span class="line">            <span class="comment"># 倒序添加</span></span><br><span class="line">            val1 = l1.val <span class="keyword">if</span> l1 <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            val2 = l2.val <span class="keyword">if</span> l2 <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">            total = val1 + val2 + more</span><br><span class="line">            more, cur = <span class="built_in">divmod</span>(total, <span class="number">10</span>)</span><br><span class="line">            p = ListNode(cur, p)</span><br><span class="line">            l1 = l1.<span class="built_in">next</span> <span class="keyword">if</span> l1 <span class="keyword">else</span> l1</span><br><span class="line">            l2 = l2.<span class="built_in">next</span> <span class="keyword">if</span> l2 <span class="keyword">else</span> l2</span><br><span class="line">        <span class="keyword">if</span> more != <span class="number">0</span>:</span><br><span class="line">            p = ListNode(more, p)</span><br><span class="line">        <span class="keyword">return</span> p</span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-026重排链表"></span></h4>
+<p>给定一个单链表 L 的头节点 head ，单链表 L 表示为：</p>
+<p>L0 → L1 → … → Ln-1 → Ln 请将其重新排列后变为：</p>
+<p>L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …</p>
+<p>不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。</p>
+<ul>
+<li><strong>列表的中点、插入节点</strong>; 线性表存储</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reorderList</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Do not return anything, modify head in-place instead.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">            pre, cur = <span class="literal">None</span>, head</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                tmp = cur.<span class="built_in">next</span></span><br><span class="line">                cur.<span class="built_in">next</span> = pre</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = tmp</span><br><span class="line">            <span class="keyword">return</span> pre</span><br><span class="line">        fast, slow = head.<span class="built_in">next</span>, head</span><br><span class="line">        <span class="keyword">while</span> fast <span class="keyword">and</span> fast.<span class="built_in">next</span>:</span><br><span class="line">            slow, fast = slow.<span class="built_in">next</span>, fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        mid, slow.<span class="built_in">next</span> = slow.<span class="built_in">next</span>, <span class="literal">None</span></span><br><span class="line">        left, cur = head, reverseList(mid)</span><br><span class="line">        slow.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">while</span> cur:</span><br><span class="line">            tmp = cur.<span class="built_in">next</span></span><br><span class="line">            cur.<span class="built_in">next</span> = left.<span class="built_in">next</span></span><br><span class="line">            left.<span class="built_in">next</span> = cur</span><br><span class="line">            left = cur.<span class="built_in">next</span></span><br><span class="line">            cur = tmp</span><br><span class="line">        <span class="keyword">return</span> head</span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-027回文链表"></span></h4>
+<p>给定一个链表的 <strong>头节点</strong> <code>head</code>
+<strong>，</strong>请判断其是否为回文链表。如果一个链表是回文，那么链表节点序列从前往后看和从后往前看是相同的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isPalindrome</span>(<span class="params">self, head: ListNode</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">reverseList</span>(<span class="params">head: ListNode</span>) -&gt; ListNode:</span><br><span class="line">            pre, cur = <span class="literal">None</span>, head</span><br><span class="line">            <span class="keyword">while</span> cur:</span><br><span class="line">                tmp = cur.<span class="built_in">next</span></span><br><span class="line">                cur.<span class="built_in">next</span> = pre</span><br><span class="line">                pre = cur</span><br><span class="line">                cur = tmp</span><br><span class="line">            <span class="keyword">return</span> pre</span><br><span class="line">        slow = fast = head</span><br><span class="line">        <span class="keyword">while</span> fast.<span class="built_in">next</span> <span class="keyword">and</span> fast.<span class="built_in">next</span>.<span class="built_in">next</span>:</span><br><span class="line">            slow, fast = slow.<span class="built_in">next</span>, fast.<span class="built_in">next</span>.<span class="built_in">next</span></span><br><span class="line">        left, right = head, slow.<span class="built_in">next</span></span><br><span class="line">        slow.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        right = reverseList(right)</span><br><span class="line">        <span class="keyword">while</span> left <span class="keyword">and</span> right:</span><br><span class="line">            <span class="keyword">if</span> left.val != right.val:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            left, right = left.<span class="built_in">next</span>, right.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-028-展平多级双向链表"></span></h4>
+<p>多级双向链表中，除了指向下一个节点和前一个节点指针之外，它还有一个子链表指针，可能指向单独的双向链表。这些子列表也可能会有一个或多个自己的子项，依此类推，生成多级数据结构，如下面的示例所示。</p>
+<p>给定位于列表第一级的头节点，请扁平化列表，即将这样的多级双向链表展平成普通的双向链表，使所有结点出现在单级双链表中。</p>
+<ul>
+<li><strong>深度优先搜索</strong>、<strong>栈迭代</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">flatten</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">      	<span class="comment"># 栈迭代</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dummy = Node(-<span class="number">1</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">        pre = dummy</span><br><span class="line">        stk = [head]</span><br><span class="line">        <span class="keyword">while</span> stk:</span><br><span class="line">            x = stk.pop()</span><br><span class="line">            pre.<span class="built_in">next</span> = x</span><br><span class="line">            x.prev = pre</span><br><span class="line">            <span class="keyword">if</span> x.<span class="built_in">next</span>:</span><br><span class="line">                stk.append(x.<span class="built_in">next</span>)</span><br><span class="line">            <span class="keyword">if</span> x.child:</span><br><span class="line">                stk.append(x.child)</span><br><span class="line">                x.child = <span class="literal">None</span></span><br><span class="line">            pre = x</span><br><span class="line">        dummy.<span class="built_in">next</span>.prev = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="built_in">next</span></span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">flatten</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="keyword">if</span> head == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        dummy = Node(-<span class="number">1</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">pre: <span class="string">&#x27;Node&#x27;</span>, cur: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cur == <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> pre   </span><br><span class="line">            pre.<span class="built_in">next</span> = cur</span><br><span class="line">            cur.prev = pre</span><br><span class="line"></span><br><span class="line">            nxt_head = cur.<span class="built_in">next</span>         <span class="comment">#相当于4</span></span><br><span class="line"></span><br><span class="line">            tail = dfs(cur, cur.child)  <span class="comment">#相当于dfs(3, 7)</span></span><br><span class="line">            cur.child = <span class="literal">None</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> dfs(tail, nxt_head)  <span class="comment">#相当于dfs(12, 4)</span></span><br><span class="line">        dfs(dummy, head)</span><br><span class="line">        dummy.<span class="built_in">next</span>.prev = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> dummy.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
+<h4><span id="剑指-offer-ii-029排序的循环链表"></span></h4>
+<p>给定<strong>循环单调非递减列表中的一个点</strong>，<strong>写一个函数向这个列表中插入一个新元素
+insertVal</strong>
+，使这个列表仍然是循环升序的。给定的可以是这个列表中任意一个顶点的指针，并不一定是这个列表中最小元素的指针。</p>
+<p>如果有多个满足条件的插入位置，可以选择任意一个位置插入新的值，插入后整个列表仍然保持有序。如果列表为空（给定的节点是
+null），需要创建一个循环有序列表并返回这个节点。否则。请返回原先给定的节点。</p>
+<ul>
+<li>循环链表边界判断</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, head: <span class="string">&#x27;Node&#x27;</span>, insertVal: <span class="built_in">int</span></span>) -&gt; <span class="string">&#x27;Node&#x27;</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">            node =  Node(insertVal)</span><br><span class="line">            node.<span class="built_in">next</span> = node</span><br><span class="line">            <span class="keyword">return</span> node</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> cur.val &lt;= insertVal &lt;= cur.<span class="built_in">next</span>.val:</span><br><span class="line">                cur.<span class="built_in">next</span> = Node(insertVal, cur.<span class="built_in">next</span>)</span><br><span class="line">                <span class="keyword">return</span> head</span><br><span class="line">            <span class="keyword">elif</span> cur.<span class="built_in">next</span>.val &lt; cur.val:</span><br><span class="line">                <span class="keyword">if</span> insertVal &gt;= cur.val <span class="keyword">or</span> insertVal &lt;= cur.<span class="built_in">next</span>.val:</span><br><span class="line">                    cur.<span class="built_in">next</span> = Node(insertVal, cur.<span class="built_in">next</span>)</span><br><span class="line">                    <span class="keyword">return</span> head</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 走到原点了，还是没有</span></span><br><span class="line">                <span class="keyword">if</span> cur.<span class="built_in">next</span> == head:</span><br><span class="line">                    cur.<span class="built_in">next</span> = Node(insertVal, cur.<span class="built_in">next</span>)</span><br><span class="line">                    <span class="keyword">return</span> head</span><br><span class="line">            cur = cur.<span class="built_in">next</span></span><br></pre></td></tr></table></figure>
+<h4><span id="列表反转二">列表反转二</span></h4>
+<h4><span id></span></h4>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1SP3CDD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1SP3CDD/" class="post-title-link" itemprop="url">算法长征-Hot100</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-23 18:06:46 / 修改时间：18:44:04" itemprop="dateCreated datePublished" datetime="2022-05-23T18:06:46+08:00">2022-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>781</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="一-前缀树">一、前缀树</span></h2>
+<blockquote>
+<p>一种好用的树结构：Trie树:https://zhuanlan.zhihu.com/p/508575094</p>
+</blockquote>
+<h3><span id="11trie树简介-有限状态自动机-文本词频统计"><strong>1.1
+Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3>
+<p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
+<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward
+Fredkin把它读作/ˈtriː/ "tree"。但是，其他作者把它读作/ˈtraɪ/ "try"。</p>
+<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。
+Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i”
+，“in”，“inn”。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-8740aeac82cd2fc980cd1148ab1a64dc_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>另外，<strong>单词查找树，Trie树，是一种树形结构，是一种哈希树的变种</strong>。<strong>典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计</strong>。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。</p>
+<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3>
+<p>它有3个基本性质：</p>
+<ul>
+<li>根节点不包含字符，除根节点外每一个节点都只包含一个字符；</li>
+<li>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串；</li>
+<li>每个节点的所有子节点包含的字符都不相同。</li>
+</ul>
+<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3>
+<p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
+<h2><span id="二-lru">二、LRU</span></h2>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2G3EX7Q/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2G3EX7Q/" class="post-title-link" itemprop="url">算法长征（13）结构设计</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-23 18:06:46" itemprop="dateCreated datePublished" datetime="2022-05-23T18:06:46+08:00">2022-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-11 14:41:39" itemprop="dateModified" datetime="2022-07-11T14:41:39+08:00">2022-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="一-前缀树">一、前缀树</span></h2>
+<blockquote>
+<p>一种好用的树结构：Trie树:https://zhuanlan.zhihu.com/p/508575094</p>
+</blockquote>
+<h3><span id="11trie树简介-有限状态自动机-文本词频统计"><strong>1.1
+Trie树简介</strong> [有限状态自动机] [文本词频统计]</span></h3>
+<p>在计算机科学中，trie，又称<strong>前缀树</strong>或<strong>字典树</strong>，是一种有序树，用于保存关联数组，其中的键通常是字符串。与二叉查找树不同，键不是直接保存在节点中，而是由节点在树中的位置决定。一个节点的所有子孙都有相同的前缀，也就是这个节点对应的字符串，而根节点对应空字符串。一般情况下，不是所有的节点都有对应的值，只有叶子节点和部分内部节点所对应的键才有相关的值。</p>
+<p>Trie这个术语来自于retrieval。根据词源学，trie的发明者Edward
+Fredkin把它读作/ˈtriː/ "tree"。但是，其他作者把它读作/ˈtraɪ/ "try"。</p>
+<p>在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。<strong>Trie可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的</strong>。
+Eg.一个保存了8个单词的字典树的结构如下图所示，8个单词分别是：“A”，“to”，“tea”，“ted”，“ten”，“i”
+，“in”，“inn”。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-8740aeac82cd2fc980cd1148ab1a64dc_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>另外，<strong>单词查找树，Trie树，是一种树形结构，是一种哈希树的变种</strong>。<strong>典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计</strong>。它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。</p>
+<h3><span id="12-trie树性质">1.2 <strong>Trie树性质</strong></span></h3>
+<p>它有3个基本性质：</p>
+<ul>
+<li>根节点不包含字符，除根节点外每一个节点都只包含一个字符；</li>
+<li>从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串；</li>
+<li>每个节点的所有子节点包含的字符都不相同。</li>
+</ul>
+<h3><span id="13-基本操作">1.3 <strong>基本操作</strong></span></h3>
+<p>其基本操作有：查找、插入和删除,当然删除操作比较少见。</p>
+<h3><span id="14-实现方法"><strong>1.4 实现方法</strong></span></h3>
+<p>搜索字典项目的方法为：</p>
+<ul>
+<li>从根结点开始一次搜索；</li>
+<li>取得要查找关键词的第一个字母，并根据该字母选择对应的子树并转到该子树继续进行检索；</li>
+<li>在相应的子树上，取得要查找关键词的第二个字母,并进一步选择对应的子树进行检索。</li>
+<li>迭代过程……</li>
+<li>在某个结点处，关键词的所有字母已被取出，则读取附在该结点上的信息，即完成查找。
+其他操作类似处理</li>
+</ul>
+<h3><span id="15-实现trie-前缀树">1.5 实现<strong>Trie (前缀树)</strong></span></h3>
+<p>Trie（发音类似 "try"）或者说 前缀树
+是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。</p>
+<p><strong>请你实现 Trie 类：</strong></p>
+<ul>
+<li><strong>Trie()</strong> :初始化前缀树对象。
+<ul>
+<li>self.children = [None] * 26 , <strong>指向子节点的指针数组
+children</strong></li>
+<li>self.isEnd = False ,
+表示该节点<strong>是否为字符串的结尾</strong>。</li>
+</ul></li>
+<li><strong>void insert(String word)</strong> :向前缀树中插入字符串 word
+。
+<ul>
+<li>我们<strong>从字典树的根开始</strong>，插入字符串。对于当前字符对应的子节点，有两种情况：
+<ul>
+<li><strong>子节点存在</strong>。沿着指针移动到子节点，继续处理下一个字符。</li>
+<li><strong>子节点不存在</strong>。创建一个新的子节点，记录在children
+数组的对应位置上，然后沿着指针移动到子节点，继续搜索下一个字符。</li>
+</ul></li>
+<li>重复以上步骤，直到处理字符串的最后一个字符，然后将当前节点标记为字符串的结尾。</li>
+</ul></li>
+<li><strong>boolean search(String word)</strong> 如果字符串 word
+在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+<ul>
+<li>我们从字典树的根开始，查找前缀。对于当前字符对应的子节点，有两种情况：
+<ul>
+<li>子节点存在。沿着指针移动到子节点，继续搜索下一个字符。</li>
+<li>子节点不存在。说明字典树中不包含该前缀，返回空指针。</li>
+</ul></li>
+<li>重复以上步骤，直到返回空指针或搜索完前缀的最后一个字符。</li>
+</ul></li>
+<li><strong>boolean startsWith(String prefix)</strong>
+如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true
+；否则，返回 false 。</li>
+</ul>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">输入</span><br><span class="line">[&quot;Trie&quot;, &quot;insert&quot;, &quot;search&quot;, &quot;search&quot;, &quot;startsWith&quot;, &quot;insert&quot;, &quot;search&quot;]</span><br><span class="line">[[], [&quot;apple&quot;], [&quot;apple&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;], [&quot;app&quot;]]</span><br><span class="line">输出</span><br><span class="line">[null, null, true, false, true, null, true]</span><br><span class="line"></span><br><span class="line">解释</span><br><span class="line">Trie trie = new Trie();</span><br><span class="line">trie.insert(&quot;apple&quot;);</span><br><span class="line">trie.search(&quot;apple&quot;);   // 返回 True</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 False</span><br><span class="line">trie.startsWith(&quot;app&quot;); // 返回 True</span><br><span class="line">trie.insert(&quot;app&quot;);</span><br><span class="line">trie.search(&quot;app&quot;);     // 返回 True</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.children = [<span class="literal">None</span>] * <span class="number">26</span></span><br><span class="line">        self.isEnd = <span class="literal">False</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">searchPrefix</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="string">&quot;Trie&quot;</span>:</span><br><span class="line">        node = self <span class="comment"># 根节点</span></span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> prefix:</span><br><span class="line">            ch = <span class="built_in">ord</span>(ch) - <span class="built_in">ord</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.children[ch]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            node = node.children[ch]</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        node = self</span><br><span class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> word:</span><br><span class="line">            ch = <span class="built_in">ord</span>(ch) - <span class="built_in">ord</span>(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.children[ch]:</span><br><span class="line">                node.children[ch] = Trie()</span><br><span class="line">            node = node.children[ch]</span><br><span class="line">        node.isEnd = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, word: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        node = self.searchPrefix(word)</span><br><span class="line">        <span class="keyword">return</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> node.isEnd</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">startsWith</span>(<span class="params">self, prefix: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">return</span> self.searchPrefix(prefix) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<h2><span id="二-lru">二、LRU</span></h2>
+<h4><span id="146lru-缓存"></span></h4>
+<p>请你设计并实现一个满足 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/LRU">LRU
+(最近最少使用) 缓存</a> 约束的数据结构。</p>
+<p>实现 <code>LRUCache</code> 类：</p>
+<ul>
+<li><code>LRUCache(int capacity)</code> 以 <strong>正整数</strong>
+作为容量 <code>capacity</code> 初始化 LRU 缓存</li>
+<li><code>int get(int key)</code> 如果关键字 <code>key</code>
+存在于缓存中，则返回关键字的值，否则返回 <code>-1</code> 。</li>
+<li><code>void put(int key, int value)</code> 如果关键字
+<code>key</code> 已经存在，则变更其数据值 <code>value</code>
+；如果不存在，则向缓存中插入该组 key-value
+。如果插入操作导致关键字数量超过 capacity ，则应该 逐出
+最久未使用的关键字。</li>
+</ul>
+<p>函数 <code>get</code> 和 <code>put</code> 必须以 <code>O(1)</code>
+的平均时间复杂度运行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DLinkedNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, key = <span class="number">0</span>, value = <span class="number">0</span></span>):</span><br><span class="line">        self.key = key</span><br><span class="line">        self.value = value</span><br><span class="line">        self.prev = <span class="literal">None</span></span><br><span class="line">        self.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LRUCache</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, capacity: <span class="built_in">int</span></span>):</span><br><span class="line">      	<span class="comment"># 使用伪头部和伪尾部节点    </span></span><br><span class="line">        self.cache = <span class="built_in">dict</span>()</span><br><span class="line">        self.head = DLinkedNode()</span><br><span class="line">        self.tail = DLinkedNode()</span><br><span class="line">        self.head.<span class="built_in">next</span> = self.tail</span><br><span class="line">        self.tail.prev = self.head</span><br><span class="line">        self.capacity = capacity</span><br><span class="line">        self.size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, key: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.cache:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="comment"># 如果 key 存在，先通过哈希表定位，再移到头部</span></span><br><span class="line">        node = self.cache[key]</span><br><span class="line">        self.moveToHead(node)<span class="comment"># &quot;如果数据被访问过。那未来的访问几率更高&quot;</span></span><br><span class="line">        <span class="keyword">return</span> node.value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">put</span>(<span class="params">self, key: <span class="built_in">int</span>, value: <span class="built_in">int</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.cache:</span><br><span class="line">          	<span class="comment"># 如果 key 不存在，创建一个新的节点</span></span><br><span class="line">            node = DLinkedNode(key, value)</span><br><span class="line">            <span class="comment"># 添加进哈希表</span></span><br><span class="line">            self.cache[key] = node</span><br><span class="line">            <span class="comment"># 添加至双向链表的头部</span></span><br><span class="line">            self.size += <span class="number">1</span></span><br><span class="line">            self.addToHead(node)</span><br><span class="line">            <span class="keyword">if</span> self.size &gt; self.capacity:</span><br><span class="line">              	<span class="comment"># 如果超出容量，删除双向链表的尾部节点</span></span><br><span class="line">                removed = self.removeTail()</span><br><span class="line">                <span class="comment"># 删除哈希表中对应的项</span></span><br><span class="line">                self.cache.pop(removed.key)</span><br><span class="line">                self.size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          	<span class="comment"># 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部</span></span><br><span class="line">            node = self.cache[key]</span><br><span class="line">            node.value = value</span><br><span class="line">            self.moveToHead(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">addToHead</span>(<span class="params">self, node</span>):</span><br><span class="line">        node.prev = self.head</span><br><span class="line">        node.<span class="built_in">next</span> = self.head.<span class="built_in">next</span></span><br><span class="line">        self.head.<span class="built_in">next</span>.prev = node</span><br><span class="line">        self.head.<span class="built_in">next</span> = node</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeNode</span>(<span class="params">self, node</span>): </span><br><span class="line">        node.prev.<span class="built_in">next</span> = node.<span class="built_in">next</span></span><br><span class="line">        node.<span class="built_in">next</span>.prev = node.prev</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">moveToHead</span>(<span class="params">self, node</span>):</span><br><span class="line">        self.removeNode(node)</span><br><span class="line">        self.addToHead(node)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">removeTail</span>(<span class="params">self</span>):</span><br><span class="line">        node = self.tail.prev</span><br><span class="line">        self.removeNode(node)</span><br><span class="line">        <span class="keyword">return</span> node</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>LFU，最近不经常使用</strong>，把数据加入到链表中，按频次排序，一个数据被访问过，把它的频次+1，发生淘汰的时候，把频次低的淘汰掉。
+比如有数据 1，1，1，2，2，3 缓存中有（1(3次)，2(2次)）
+当3加入的时候，得把后面的2淘汰，变成（1(3次)，3(1次)） 区别：LRU 是得把
+1 淘汰。</p>
+</blockquote>
+<h2><span id="三-并查集">三、并查集</span></h2>
+<h4><span id="剑指-offer-ii-117相似的字符串"></span></h4>
+<p>如果交换字符串 <code>X</code> 中的两个不同位置的字母，使得它和字符串
+<code>Y</code> 相等，那么称 <code>X</code> 和 <code>Y</code>
+两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。例如，"tars"
+和 "rats" 是相似的 (交换 0 与 2 的位置)； "rats" 和 "arts"
+也是相似的，但是 "star" 不与 "tars"，"rats"，或 "arts" 相似。</p>
+<p>总之，它们通过相似性形成了两个关联组：{"tars", "rats", "arts"} 和
+{"star"}。注意，"tars" 和 "arts"
+是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。</p>
+<p>给定一个字符串列表 strs。列表中的每个字符串都是 strs
+中其它所有字符串的一个 字母异位词 。请问 strs
+中有多少个相似字符串组？</p>
+<p><strong>字母异位词（anagram）</strong>，一种把某个字符串的字母的位置（顺序）加以改换所形成的新词。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UnionFind</span>:</span><br><span class="line">  	<span class="comment"># 并查集</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.parent = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        self.count = n</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">if</span> self.parent[x] == x:</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        self.parent[x] = self.find(self.parent[x])</span><br><span class="line">        <span class="keyword">return</span> self.parent[x]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">union</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        x, y = self.find(x), self.find(y)</span><br><span class="line">        <span class="keyword">if</span> x != y:</span><br><span class="line">            self.parent[x] = y</span><br><span class="line">            self.count -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">numSimilarGroups</span>(<span class="params">self, strs: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">      	<span class="comment"># 相似的字符串</span></span><br><span class="line">        m, n = <span class="built_in">len</span>(strs), <span class="built_in">len</span>(strs[<span class="number">0</span>])</span><br><span class="line">        un = UnionFind(m)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, m):</span><br><span class="line">                cnt = <span class="number">0</span></span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                    <span class="keyword">if</span> strs[i][k] != strs[j][k]:</span><br><span class="line">                        cnt += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">if</span> cnt &gt; <span class="number">2</span>:</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">else</span>: <span class="comment"># 上下文管理器</span></span><br><span class="line">                    un.union(i, j)</span><br><span class="line">        <span class="keyword">return</span> un.count</span><br></pre></td></tr></table></figure>
+<h2><span id="四-序列化与反序列化">四、序列化与反序列化</span></h2>
+<ul>
+<li>https://zhuanlan.zhihu.com/p/40462507</li>
+</ul>
+<p><strong>序列化：</strong>把对象转化为可传输的字节序列过程称为序列化。</p>
+<p><strong>反序列化：</strong>把字节序列还原为对象的过程称为反序列化。</p>
+<h4><span id="41-序列化的定义">4.1 序列化的定义</span></h4>
+<p><strong>序列化</strong>：把对象转化为可传输的字节序列过程称为序列化。</p>
+<p><strong>反序列化</strong>：把字节序列还原为对象的过程称为反序列化。</p>
+<h4><span id="42-为什么要序列化">4.2 为什么要序列化？</span></h4>
+<p>其实序列化最终的目的是为了对象可以<strong>跨平台存储，和进行网络传输</strong>。而我们进行跨平台存储和网络传输的方式就是IO，而我们的IO支持的数据格式就是字节数组。序列化只是一种拆装组装对象的规则，那么这种规则肯定也可能有多种多样，比如现在常见的序列化方式有：</p>
+<p><strong>JDK（不支持跨语言）、JSON、XML、Hessian、Kryo（不支持跨语言）、Thrift、Protostuff、FST（不支持跨语言）</strong></p>
+<h4><span id="剑指offer-37-序列化二叉树"></span></h4>
+<p>请实现两个函数，分别用来序列化和反序列化二叉树。你需要设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列
+/
+反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。</p>
+<ul>
+<li><h5><span id="深度优先遍历">深度优先遍历</span></h5></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Codec</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">serialize</span>(<span class="params">self, root</span>):</span><br><span class="line">        <span class="comment"># 后续遍历 比 前序遍历快很多 pop(), pop(0)</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DFS : ncodes a tree to a single string.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;None&#x27;</span></span><br><span class="line">        <span class="keyword">return</span>  <span class="built_in">str</span>(self.serialize(root.left)) + <span class="string">&#x27;,&#x27;</span> + <span class="built_in">str</span>(self.serialize(root.right)) + <span class="string">&#x27;,&#x27;</span> + <span class="built_in">str</span>(root.val) </span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deserialize</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Decodes your encoded data to tree.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :type data: str</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">dfslist:<span class="built_in">list</span>(<span class="params"></span>)</span>):</span><br><span class="line">            val = dfslist.pop()</span><br><span class="line">            <span class="keyword">if</span> val == <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            root = TreeNode(<span class="built_in">int</span>(val))</span><br><span class="line">            root.right = dfs(dfslist)</span><br><span class="line">            root.left = dfs(dfslist)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        dfslist = data.split(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> dfs(dfslist)</span><br></pre></td></tr></table></figure>
+<h2><span id="五-线段树">五、线段树</span></h2>
+<ul>
+<li>算法学习笔记(14):
+线段树：https://zhuanlan.zhihu.com/p/106118909</li>
+</ul>
+<p><strong>线段树</strong>（Segment
+Tree）几乎是算法竞赛最常用的数据结构了，它主要用于维护<strong>区间信息</strong>（要求满足结合律）。与树状数组相比，它可以实现
+<img src="https://www.zhihu.com/equation?tex=O%28%5Clog+n%29" alt="[公式]">
+的<strong>区间修改</strong>，还可以同时支持<strong>多种操作</strong>（加、乘)，更具通用性。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-5e9124a6147143e51cea46755e9a0398_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BIT</span>:</span><br><span class="line">    <span class="comment"># 线段树: 动态维护前缀和数据的结构</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.n = n</span><br><span class="line">        self.tree = [<span class="number">0</span>] * (n+<span class="number">1</span>)</span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lowbit</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="comment"># 二进制最小位1的位置</span></span><br><span class="line">        <span class="keyword">return</span> x&amp;(-x)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, x</span>):</span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> x&gt;<span class="number">0</span>:</span><br><span class="line">            ans += self.tree[x]</span><br><span class="line">            x -= BIT.lowbit(x)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">while</span> x&lt;=self.n:</span><br><span class="line">            self.tree[x] += <span class="number">1</span></span><br><span class="line">            x += BIT.lowbit(x)</span><br></pre></td></tr></table></figure>
+<h4><span id="剑指offer-51-数组中的逆序对"></span></h4>
+<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
+<ul>
+<li><h4><span id="离散化树状数组">离散化树状数组</span></h4>
+<ul>
+<li><strong>单点更新 <code>update(i, v)</code>：</strong> 把序列
+i<em>i</em> 位置的数加上一个值 v<em>，这题 v</em>=1</li>
+<li><strong>区间查询 <code>query(i)</code>：</strong> 查询序列
+[1⋯<em>i</em>] 区间的区间和，即 i<em>i</em> 位置的前缀和</li>
+</ul></li>
+</ul>
+<p><strong>修改和查询的时间代价都是 O<em>(log</em>n<em>)，其中
+n</em>为需要维护前缀和的序列的长度。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reversePairs</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 离散化+线性数组 nums = [7,5,6,4]</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="comment"># 求每个数比他小的有几个</span></span><br><span class="line">        tmp = <span class="built_in">sorted</span>(nums)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            nums[i] = bisect.bisect_left(tmp, nums[i]) + <span class="number">1</span></span><br><span class="line">        <span class="comment"># nums = [4,2,3,1]</span></span><br><span class="line">        bit = BIT(n) <span class="comment"># [0,0,0,0,0]</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            ans += bit.query(nums[i] - <span class="number">1</span>)</span><br><span class="line">            bit.update(nums[i])</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+<h2><span id="自动机">自动机</span></h2>
+<p><strong>字符串处理的题目往往涉及复杂的流程以及条件情况</strong>，如果直接上手写程序，一不小心就会写出极其臃肿的代码。</p>
+<p>因此，为了有条理地分析每个输入字符的处理方法，我们可以使用自动机这个概念：</p>
+<p>我们的程序在每个时刻有一个状态 s，每次从序列中输入一个字符
+c，并根据字符 c 转移到下一个状态
+s'。这样，我们只需要建立一个覆盖所有情况的从 s 与 c 映射到 s'
+的表格即可解决题目中的问题。</p>
+<h4><span id="算法">算法：</span></h4>
+<p>本题可以建立如下图所示的自动机：</p>
+<p><img src="https://assets.leetcode-cn.com/solution-static/8/fig1.png" alt="fig1" style="zoom: 50%;"></p>
+<p>我们也可以用下面的表格来表示这个自动机：</p>
+<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220617125627816.png" alt="image-20220617125627816" style="zoom:50%;"></p>
+<p>接下来编程部分就非常简单了：我们只需要把上面这个状态转换表抄进代码即可。另外自动机也需要记录当前已经输入的数字，只要在
+s' 为 in_number 时，更新我们输入的数字，即可最终得到输入的数字。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">INT_MAX = <span class="number">2</span> ** <span class="number">31</span> - <span class="number">1</span></span><br><span class="line">INT_MIN = -<span class="number">2</span> ** <span class="number">31</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Automaton</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.state = <span class="string">&#x27;start&#x27;</span></span><br><span class="line">        self.sign = <span class="number">1</span></span><br><span class="line">        self.ans = <span class="number">0</span></span><br><span class="line">        self.table = &#123;</span><br><span class="line">            <span class="string">&#x27;start&#x27;</span>: [<span class="string">&#x27;start&#x27;</span>, <span class="string">&#x27;signed&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;signed&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;in_number&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;in_number&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;end&#x27;</span>: [<span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>, <span class="string">&#x27;end&#x27;</span>],</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_col</span>(<span class="params">self, c</span>):</span><br><span class="line">        <span class="keyword">if</span> c.isspace():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">or</span> c == <span class="string">&#x27;-&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> c.isdigit():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, c</span>):</span><br><span class="line">        self.state = self.table[self.state][self.get_col(c)]</span><br><span class="line">        <span class="keyword">if</span> self.state == <span class="string">&#x27;in_number&#x27;</span>:</span><br><span class="line">            self.ans = self.ans * <span class="number">10</span> + <span class="built_in">int</span>(c)</span><br><span class="line">            self.ans = <span class="built_in">min</span>(self.ans, INT_MAX) <span class="keyword">if</span> self.sign == <span class="number">1</span> <span class="keyword">else</span> <span class="built_in">min</span>(self.ans, -INT_MIN)</span><br><span class="line">        <span class="keyword">elif</span> self.state == <span class="string">&#x27;signed&#x27;</span>:</span><br><span class="line">            self.sign = <span class="number">1</span> <span class="keyword">if</span> c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">else</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">myAtoi</span>(<span class="params">self, <span class="built_in">str</span>: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        automaton = Automaton()</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">str</span>:</span><br><span class="line">            automaton.get(c)</span><br><span class="line">        <span class="keyword">return</span> automaton.sign * automaton.ans</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -681,7 +1272,7 @@ x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2MJPMT3/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/28WW17E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -699,7 +1290,7 @@ x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2MJPMT3/" class="post-title-link" itemprop="url">威胁发现-安全知识图谱 | 绿盟</a>
+          <a href="/posts/28WW17E/" class="post-title-link" itemprop="url">工业落地-【draft】安全知识图谱 | 绿盟</a>
         </h2>
 
         <div class="post-meta-container">
@@ -709,9 +1300,15 @@ x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-05-16 16:33:21 / 修改时间：21:08:26" itemprop="dateCreated datePublished" datetime="2022-05-16T16:33:21+08:00">2022-05-16</time>
+      <time title="创建时间：2022-05-16 16:33:21" itemprop="dateCreated datePublished" datetime="2022-05-16T16:33:21+08:00">2022-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-06 16:42:15" itemprop="dateModified" datetime="2023-05-06T16:42:15+08:00">2023-05-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -723,11 +1320,15 @@ x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E9%AB%98%E7%BA%A7%E5%A8%81%E8%83%81%E5%8F%91%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">高级威胁发现</span></a>
         </span>
     </span>
 
@@ -757,19 +1358,12 @@ x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
     
     <div class="post-body" itemprop="articleBody">
           <h2><span id="安全知识图谱-绿盟">安全知识图谱 | 绿盟</span></h2>
-<blockquote>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1446900744649240576">安全知识图谱 -
-知乎</a>
-：本文为安全知识图谱技术白皮书《践行安全知识图谱，携手迈进认知智能》精华解读系列</li>
-</ul>
-</blockquote>
 <p>本文为<strong>安全知识图谱技术白皮书</strong>《<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=践行安全知识图谱，携手迈进认知智能&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22442423245%22%7D">践行安全知识图谱，携手迈进认知智能</a>》精华解读系列<strong>第四篇</strong>，介绍了如何利用知识图谱相关技术实现攻击路径调查，主要依据图表示学习与图谱推理实现攻击路径评估与路径修复。</p>
 <h3><span id="三-知识图谱视角下的威胁评估">三、知识图谱视角下的威胁评估</span></h3>
 <p>本文为安全知识图谱技术白皮书《践行安全知识图谱，携手迈进认知智能》精华解读系列第三篇——利用知识图谱助力攻击画像与威胁评估。主要利用知识图谱<strong>表示学习技术</strong>，<strong>对攻击源或攻击行为进行威胁评估</strong>。</p>
 <h4><span id="31-攻击画像的痛点">3.1 攻击画像的痛点</span></h4>
 <p><strong>攻击画像及风险评估是针对复杂的企业环境，利用采集到的日志或设备告警构建相关的威胁图谱，以图的形式来刻画攻击和攻击源，然后利用图的相关方法对攻击源和企业运行环境进行风险与威胁评估</strong>。</p>
-<p>企业为了应对网络威胁，通常会部署多个检测设备（如<strong>网络入侵检测系统IDS/IPS、全流量检测和网络应用防护系统WAF</strong>等）。由于检测设备规则的敏感性，企业安全运营每天需要面临大量威胁告警关联分析，海量告警远远超出了运营人员的事件排查能力。当前的<strong>==攻击检测设备缺少对这种事件关联的分析能力，从而导致高误报问题==</strong>，检测设备产生的告警日志通常是低级的、孤立的，安全运营人员需要丰富的安全知识和经验才能针对告警做出相关地研判，这进一步增加了企业安全运营的挑战。</p>
+<p>企业为了应对网络威胁，通常会部署多个检测设备（如<strong>网络入侵检测系统IDS/IPS、全流量检测和网络应用防护系统WAF</strong>等）。由于检测设备规则的敏感性，企业安全运营每天需要面临大量威胁告警关联分析，海量告警远远超出了运营人员的事件排查能力。当前的<strong><font color="red">攻击检测设备缺少对这种事件关联的分析能力，从而导致高误报问题</font></strong>，检测设备产生的告警日志通常是低级的、孤立的，安全运营人员需要丰富的安全知识和经验才能针对告警做出相关地研判，这进一步增加了企业安全运营的挑战。</p>
 <p>因此，在安全大数据涌现与高级威胁对抗的大背景下，将安全知识图谱应用到企业智能安全运营中，对提升安全运营的自动化水平，减少对人力投入与专家经验的依赖，降低威胁分析与响应的周期等方面具有至关重要的作用。</p>
 <h4><span id="32-知识图谱表示学习">3.2 知识图谱表示学习</span></h4>
 <p>在安全知识图谱的应用中，知识图谱表示学习具有关键作用。<strong>知识图谱表示学习通过让机器尽可能全面地学习知识，从而表现出类似于人类的行为，同时采用知识图谱表示方法来表示知识</strong>。知识图谱表示方法是研究计算机表示知识的可行性、有效性的一般方法，是把人类知识表示成机器能处理的数据结构和系统控制结构的策略。</p>
@@ -792,6 +1386,12 @@ x_1 \in \mathbb{R}^{n_1}, x_2 \in \mathbb{R}^{n_2}, x_3 \in
 简写为
 h，r，t）中的关系relation看作从实体head到实体tail的transform，通过不断调整head、relation和tail的向量，使（h
 + r） 尽可能与 tail 相等，即 h + r = t，如图3所示。</p>
+<h3><span id="参看文献">参看文献</span></h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1446900744649240576">安全知识图谱 -
+知乎</a>
+：本文为安全知识图谱技术白皮书《践行安全知识图谱，携手迈进认知智能》精华解读系列</li>
+</ul>
 
       
     </div>
@@ -1489,656 +2089,8 @@ RAID 2016 与 ACSAC 2020 都是很不错的成绩。==</strong></p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/C7WFJN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/C7WFJN/" class="post-title-link" itemprop="url">安全场景（4）Webshell检测</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-15 17:20:29" itemprop="dateCreated datePublished" datetime="2022-05-15T17:20:29+08:00">2022-05-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-20 16:07:03" itemprop="dateModified" datetime="2022-05-20T16:07:03+08:00">2022-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>382</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="深度学习phpwebshell查杀引擎demo">深度学习PHP
-webshell查杀引擎demo</span></h2>
-<blockquote>
-<ul>
-<li>https://www.cdxy.me/?p=788</li>
-<li><strong>==Webshell研究综述：检测与对抗技术的动态博弈进展==</strong>：https://zhuanlan.zhihu.com/p/259985000</li>
-</ul>
-</blockquote>
-<h5><span id="传统webshell查杀思路">传统webshell查杀思路</span></h5>
-<ul>
-<li>规则系统</li>
-<li>旁路执行</li>
-<li>沙箱</li>
-</ul>
-<h5><span id="基于机器学习深度学习的webshell查杀引擎通过专家知识提取特征训练分类器其结果受样本-特征-结构等多种因素影响">基于机器学习/深度学习的webshell查杀引擎，通过专家知识提取特征训练分类器，其结果受样本、特征、结构等多种因素影响。</span></h5>
-<h5><span id="特征维度">特征维度：</span></h5>
-<ul>
-<li><strong>统计特征</strong> (信息熵/重合指数/最长词/可压缩比)</li>
-<li><strong>历史数据特征</strong>
-(计算单个文件的落盘时间/文件创建进程/文件类型/代码风格/权限和同目录下其他文件的"距离")</li>
-<li><strong>OP指令层特征</strong> (指令/调用链/参数文本特征)</li>
-<li><strong>动态特征</strong>
-(文件读写/网络连接，可依靠沙箱或旁路执行能力解决编码混淆类case)</li>
-<li><strong>文本语义</strong> (n-gram/TF-IDF/word2vec/CNN/RNN)</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1W08D2X/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1W08D2X/" class="post-title-link" itemprop="url">安全场景（1）恶意软件检测*</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-15 17:19:58" itemprop="dateCreated datePublished" datetime="2022-05-15T17:19:58+08:00">2022-05-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 16:35:01" itemprop="dateModified" datetime="2023-04-26T16:35:01+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.8k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>14 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="机器学习在恶意软件检测中的应用">机器学习在恶意软件检测中的应用</span></h3>
-<ul>
-<li>http://www.hackdig.com/04/hack-645468.htm</li>
-</ul>
-<p>现状</p>
-<p>挑战</p>
-<ul>
-<li>鲁棒性：因为这种模式毕竟是数据驱动的，在数据集上得出的结论往往会与现实世界有偏差，极高准确率下的检测结果往往是由于模型对于数据的过拟合造成的，这样的模型一旦投入生产反而会成为黑客组织攻击的对象。所以如何提高模型鲁棒性泛化性也是学术界一直在探讨的热点问题。</li>
-<li>可解释性：</li>
-<li>概念漂移：由于恶意软件是随着时间不断进化的，所以通过现有数据集训练好的机器学习模型可能在未来某个时候会不再适用，而重新训练模型往往伴随着巨大的成本。所以如何在低成本的条件下让模型持久使用也是一个亟待解决的问题。</li>
-</ul>
-<h3><span id="二-恶意软件静态分析">二、恶意软件静态分析</span></h3>
-<h3><span id="三-恶意软件动态行为">三、恶意软件动态行为</span></h3>
-<ul>
-<li>[Zhang+, 2020] Dynamic Malware Analysis with Feature Engineering and
-Feature Learning</li>
-<li>https://github.com/joddiy/DynamicMalwareAnalysis</li>
-<li>[Chen+, 2021] Ransomware Early Detection Method Based on Short API
-Sequence</li>
-<li>Behavioral Malware Classification using Convolutional Recurrent
-Neural Networks</li>
-</ul>
-<p><strong>An Inside Look into the Practice of Malware
-Analysis</strong></p>
-<table>
-<colgroup>
-<col style="width: 38%">
-<col style="width: 61%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>技术思路</strong></th>
-<th><strong>相关工具</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>函数调用分析</strong></td>
-<td>TTAnalyze[Bayer+, 2006]/Anubis[Mandl+,
-2009]/Lastline、CWSandbox[Willems+,
-2007]/ThreatAnalyzer、Capture[Seifert+, 2007]、MalTRAK[Vasudevan+,
-2008]、dAnubis[Neugschwandtner+, 2010]</td>
-</tr>
-<tr class="even">
-<td><strong>执行控制</strong></td>
-<td>DynamoRIO[Bruening+, 2004]、VAMPiRE[Vasudevan+,
-2005]、SPiKE[Vasudevan+, 2006]、Cobra[Vasudevan+,
-2006]、MineSweeper[Brumley+, 2007]、Ether[Dinaburg+,
-2008]、Arancino[Polino+, 2017]</td>
-</tr>
-<tr class="odd">
-<td><strong>流量跟踪</strong></td>
-<td>Vigilante[Costa+, 2005]、Panorama[Yin+, 2007]、Dytan[Clause+,
-2007]、TQana[Egele+, 2007]</td>
-</tr>
-<tr class="even">
-<td><strong>分析恶意软件在执行过程中留下的痕迹</strong></td>
-<td>HookFinder[Liang+, 2008]、LiveDM[Rhee+, 2010]、TrumanBox[Gorecki+,
-2011]、Vis[Yu+, 2012]、Actaeon[Graziano+, 2013]、MASHKA[Korkin+,
-2014]、AMAL[Mohaisen+, 2015]、CIASandbox[Lin+, 2016]/VTCSandbox[Lin+,
-2018]</td>
-</tr>
-<tr class="odd">
-<td><strong>侧信道分析</strong></td>
-<td>WattsUpDoc[Clark+, 2013]、NumChecker[Wang+, 2013]</td>
-</tr>
-</tbody>
-</table>
-<h4><span id="31-执行控制"><strong>3.1 执行控制</strong></span></h4>
-<p>偶尔停止恶意软件的执行，并检查恶意进程和操作系统的状态</p>
-<h4><span id="32-流量跟踪">3.2 <strong>流量跟踪</strong></span></h4>
-<p>跟踪通过恶意软件执行代码产生的流信息</p>
-<h4><span id="33分析恶意软件在执行过程中留下的痕迹">3.3
-<strong>分析恶意软件在执行过程中留下的痕迹</strong></span></h4>
-<h5><span id="1易失性内存分析">（1）<strong>易失性内存分析</strong></span></h5>
-<p>如果检查近年来进行的恶意软件检测研究，可以认为经常使用位于易失性内存中的数据，<strong>因为内存转储可以存储与便携式可执行程序（PE）的行为和结构相关的信息</strong>。此外，在大多数情况下，<strong><font color="red">
-内存转储对混淆和打包技术都很健壮。</font></strong>根据定义，内存转储过程是提取存在于计算机物理和虚拟内存中的临时数据。内存转储也在不同的命名约定下引用，例如核心转储或系统转储，并且它主要由软件开发人员在调试阶段使用。<strong>通过内存转储，可以提取物理内存中所有进程或特定进程的数据</strong>。<strong>转储目标进程时，可以显示进程的线程堆栈、文本段、数据段、堆区域和DLL调用的布局。</strong>内存转储过程有很多工具。然而，在研究过程中，我们使用了<strong>Procdump</strong>（Procdump
-v9.0，Microsoft 2019）v9.0，这是Microsoft开发的命令行应用程序。</p>
-<p><strong><font color="red">
-Procdump工具允许用户监视进程并获取转储文件。</font></strong>作为一种命令行实用程序，它首先可用于Microsoft
-Windows操作系统，后来也提供了Linux支持。Procdump的一个优点是，它还使我们能够捕获进程占用的虚拟地址空间。</p>
-<blockquote>
-<p>dump文件是一个进程或者系统在某一个给定的时间的快照。dump文件中包含了程序运行的模块信息、线程信息、堆栈调用信息、异常信息等数据。</p>
-</blockquote>
-<p>Dumpware10数据集中涉及的PE文件是在1903版Windows
-10附带的Windows沙盒环境中运行的，以使其内容位于物理和虚拟地址空间中。通过这种方式，我们还保护我们的物理系统免受恶意活动的影响。为了获得转储文件，我们通过提供–ma和–w启动参数来执行Prodcump。第一个参数“-ma”告诉工具收集属于目标进程的完整内存转储，而“-w”强制工具等待进程运行。在我们的实验中，我们首先运行Procdump工具，然后故意延迟5000毫秒。在第三阶段，运行PE文件并完成转储操作。延迟的基本原理只是为了确保Procdump和指定的恶意应用程序处于活动状态。请注意，生成的转储文件的扩展名会根据主机的操作系统而变化。例如，Windows版本的Procdump创建。dmp文件，而Linux版本生成的转储文件具有。vmcore扩展。接下来，我们找到了所有。dmp文件根据其类别放入各自的文件夹中。</p>
-<p>另一个重要的一点是，转储文件的大小因多个因素（即依赖的DLL文件）而异。<strong>此外，通过我们语料库的PE文件生成的转储文件大小在10
-MB到100 MB之间。</strong>如（Dai et
-al.，2018）所述，<strong>每个进程都由内存空间中的几个区域组成，以存储不同的块，如DLL、环境变量、进程堆、线程堆栈、数据段和文本段</strong>。此外，根据（Korkin
-和Nesterov，2015），操作系统采用地址空间布局随机化（ASLR）方案，表明这些块的位置是随机的，尤其是在可用内存相对较小的情况下。因此，为了收集更一致和统一的内存转储，我们为沙盒环境分配了足够大的内存（&gt;16
-GB）。</p>
-<h5><span id="2内纯转储图像表示法">（2）内纯转储图像表示法：</span></h5>
-<p><strong>Nataraj等人（2011）发明的二进制到图像转换的激增激发了许多新的反恶意软件研究</strong>。这种二进制文件的可视化填补了计算机视觉与可执行文件字节级序列之间的空白。在整个研究过程中，为了获得合适的表示，我们基本上（a）<strong>采用基于RGB的编码将转储文件转换为图像</strong>，（b）<strong>在这些字节到图像的渲染过程中使用各种列宽方案。</strong></p>
-<p>我们在整个研究过程中收集的内存转储数据的内容大小非常大，而且变化很大。因此，与其他应用灰度编码的研究（如Nataraj
-et al.，2011，Dai et al.，2018，Yuan et
-al.，2020）不同，我们更倾向于使用RGB编码从恶意软件转储文件生成图像。请注意，<strong>在（Bozkir
-et
-al.，2019）中，作者采用了相同的方法从静态恶意软件文件生成恶意软件图像。在这方面，每个像素代表产生颜色的3个序列字节。</strong>这种方法的主要动机是在图像的每一行中存储更多的字节，以便在字节级对齐方面具有更好的一致性。通过这种方式，可以在图像的每一行中放置更多的信息，这样，属于相似样本的视觉相似性将更加明显，并且易于识别。其次，基于RGB的编码使图像更加紧凑，因为在图像调整后，像素空间将以1/3的比例减少，从而减少失真。然而，应该注意的是，与8位灰度编码相比，当内存转储中的字节级变化变得显著时，这种方法可能存在缺点。</p>
-<p>同时，对于字节到图像的转换，我们首先更新和修改了年发布的名为“bin2png”的Python脚本https://github.com/ESultanik/bin2png.接下来，我们运行这个脚本来创建源输入图像。该脚本是用Python
-2.7编写的。但是，我们修改了它，使其在Python
-3平台下运行。同时，与有损JPG格式相比，我们更喜欢无损PNG
-for-mat格式。</p>
-<p>在恶意软件检测文献的研究中，存在各种字节到图像的呈现方案。<strong>例如，在他们的研究中，Dai等人（2018）将内存转储数据转换为。png编码的灰度图像，根据文件大小具有2048或4096像素的恒定宽度。</strong>然而，据我们所知，没有人对这些渲染影响分类精度的方式进行过比较研究。换句话说，这里我们要讨论的是如何为分析选择列宽。如图2所示，<strong>我们选择了4种不同的列宽，例如（1）224px，（2）300px，（3）4096，最后是（4）平方根方案。</strong>正如前3个方案的名称所指，它们与初始图像宽度相对应，而与内存转储文件大小无关。我们应用的最后一个方案（即平方根）遵循不同的策略。我们计算了表示（转储文件大小）/3的数字的平方根，而不是预先确定的图像宽度。这里，由于采用了3通道颜色编码，我们将PE的字节大小除以3，并调整了正方形的边缘，使其在必要时包含零填充元素。这样，我们获得了4种不同类型的输入图像，用于表示相同的训练集和评估集。因此，作为一个研究问题，我们还研究了初始图像渲染的效果，如图3所示。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191543253.png" alt="image-20220624153009565" style="zoom: 33%;"></p>
-<p>方形尺寸转换背后的基本原理描述如下。众所周知，机器学习方法需要等长的特征向量来进行分类、聚类等。因此，在大量情况下，任何基于计算机视觉的方法都必须产生大小相等的特征向量（即签名）来表示图像。正如下一小节所指出的，我们在签名生成阶段提取基于GIST和HOG的图像描述符。除了要点之外，由于有向梯度直方图算法的性质，它需要对大小相等的图像进行处理，以生成具有相同长度的特征。</p>
-<p>此外，<strong>HOG计算中的一些重要参数，如单元大小、每个块中的单元数，会产生大小不同的特征向量</strong>。因此，有一个规范的图像大小是必不可少的义务。还应注意的是，将图像调整为正方形大小无疑会导致视觉信息损失到一定程度，因为这种转换会扭曲图像。尽管如此，之前的研究（Dai
-et al.，2018，Bozkir et al.，2019，Yuan et
-al.，2020）和我们目前的工作表明，这种损失并没有那么显著，辨别性视觉线索和模式仍然存在。为此，我们取得了两个重要的优势：（1）<strong>我们通过HOG描述符“均衡”了图像的大小</strong>；（2）<strong>我们使数据准备好用现代卷积神经网络建模</strong>。</p>
-<p>因此，我们已将PEs的字节序列转换为可称为内存转储图像的区分性视觉元素。此外，我们还调查了不同预处理技术的结果并进行了比较。</p>
-<h5><span id="3视觉特征提取">（3）视觉特征提取</span></h5>
-<p>为了在内存转储图像中提取可能的有区别的视觉模式，我们使用了两种不同的视觉特征描述符，即GIST和HOG。<strong>为了获取GIST描述符，我们使用了名为“leargist”的Python包</strong>（Pyleargist
-2019）。之所以选择此实现，不仅是因为它速度快，而且使我们能够计算具有960维向量的彩色GIST描述符。在整个研究过程中，我们使用了一台配备Intel
-8750处理器和24 GB内存的计算机。GIST特征计算所需的时间平均为1.67秒。</p>
-<p><strong>我们还使用“Skimage.features”Python包计算了内存转储图像的HOG特性</strong>。这个包提供了一组有用的描述符，如HOG、SIFT和局部二进制模式。在HOG特征生成过程中，我们首先将输入图像的大小调整为256×256。此操作可以被视为300×300图像的缩小，而可以被视为224×224图像的放大过程。接下来，我们将cellize参数设置为32，方向设置为9，同时将cellerlock参数定义为2×2。此外，我们还采用了“L2
-Normsys”块规范化方案。作为结果，我们获得了1764个d特征向量。计算HOG特征所需的时间平均为1.12秒。</p>
-<h4><span id="34-侧信道分析">3.4 <strong>侧信道分析</strong></span></h4>
-<p>通过监测电子设备物理组件的功耗和电磁辐射或内部CPU事件来分析恶意软件</p>
-<h4><span id="综述"><strong>综述：</strong></span></h4>
-<ul>
-<li><p>Deep Learning and Open Set Malware Classification: A
-Survey.</p></li>
-<li><p><strong>A Survey of Machine Learning Methods and Challenges for
-Windows Malware Classification</strong></p></li>
-<li><p><strong>Survey of machine learning techniques for malware
-analysis</strong></p></li>
-<li><p>A Survey on malware analysis and mitigation techniques</p></li>
-<li><p><strong>Dynamic Malware Analysis in the Modern Era - A State of
-the Art Survey</strong></p></li>
-<li><p>A survey of similarities in banking malware behaviours</p></li>
-<li><p>A state-of-the-art survey of malware detection approaches using
-data mining techniques</p></li>
-<li><p>A survey of malware behavior description and analysis</p></li>
-<li><p>A Survey on Metamorphic Malware Detection based on Hidden Markov
-Model</p></li>
-<li><p>Machine Learning Aided Static Malware Analysis: A Survey and
-Tutorial</p></li>
-<li><p>Malware Dynamic Analysis Evasion Techniques: A Survey</p></li>
-<li><p>A Survey of Stealth Malware Attacks, Mitigation Measures, and
-Steps Toward Autonomous Open World Solutions(无文件攻击）</p></li>
-<li><p><strong>A Survey on Malware Detection Using Data Mining
-Techniques</strong></p></li>
-<li><p>Malware Methodologies and Its Future: A Survey</p></li>
-<li><p>On the Security of Machine Learning in Malware C&amp;C Detection:
-A Survey</p></li>
-<li><p>Kernel Malware Core Implementation: A Survey.</p></li>
-<li><p>A Survey of Visualization Systems for Malware Analysis.</p></li>
-<li><p>A Survey on Mining Program-Graph Features for Malware
-Analysis.</p></li>
-<li><p>Evolution and Detection of Polymorphic and Metamorphic Malwares:
-A Survey</p></li>
-</ul>
-<h3><span id="四-常见系统可执行文件格式">四、常见系统可执行文件格式</span></h3>
-<h4><span id="41-windows">4.1 Windows</span></h4>
-<h4><span id="42-android">4.2 Android</span></h4>
-<h4><span id="43-mac">4.3 MAC</span></h4>
-<p>macho和elf是指格式</p>
-<h3><span id="五-机器学习算法在工业界的应用">五、机器学习算法在工业界的应用</span></h3>
-<p><strong>首先普及一个概念——NGAV。NGAV（Next-Gen
-AntiVirus）是下一代反病毒软件简称</strong>，它是一些厂商提出来的新的病毒检测概念，旨在用新技术弥补传统恶意软件检测的短板。</p>
-<ul>
-<li>多家杀毒引擎厂商将机器学习视作NGAV的重要技术，包括McAfee[11],
-Vmware[9], CrowdStrike[10], Avast[6]</li>
-<li>越来越多的厂商开始关注机器学习技术，并发表相关的研究(卡巴斯基[7],火眼[8])，火眼还是用机器学习技术对APT进行分析（组织相似度溯源）</li>
-</ul>
-<p>越来越多的安全厂商将机器学习视为反病毒软件的一个关键技术，但需要注意，NGAV并不是一个清晰的定义，你没法去界定一个反病毒软件是上一代产品还是下一代产品。衡量反病毒软件的性能只有对恶意软件的检测率、计算消耗、误报率等，我们只是从现状分析得到越来越多安全领域结合了机器学习。</p>
-<p><strong>作为安全从业人员或科研人员，机器学习技术也是我们必须要关注的一个技术。</strong></p>
-<p>机器学习算法需要解决的问题如下：</p>
-<ul>
-<li><strong>算力问题</strong>：机器学习和深度学习算法需要大量的算力，如果我们在本地部署还需要GPU的支持，这样就带来了一个硬件配置问题，所以如何减小模型的size及提升模型的检测能力是一个关键性的问题。</li>
-<li><strong>大规模的特征数据</strong>：特征对于分类训练非常关键，如何抽取这些数据特征呢？</li>
-<li><strong>可解释性</strong>：这个问题可以说是机器学习算法和深度学习算法在反病毒软件应用中最关键的一个问题，病毒的对抗是黑客与安全从业人员的对抗的前线，如果我们训练的模型是不可解释的，那么一旦被黑客发现某些规则存在的弱点，他们就可以针对这些弱点设计免杀方法，从而绕过造成重大安全隐患。另一方面，如果机器学习算法是不可解释黑盒的，用户他也是不可接受的，难以起到保护重要。</li>
-<li><strong>误报需要维持极度的低水平</strong>：误报是反病毒软件用户体验的一个重要指标，传统的特征码技术、主动防御技术都具有误报低的特性，而机器学习是一个预测技术，会存在一些误报，如何避免这些误报并且提高检测的查全率也是重要的问题。</li>
-<li>算法需要根据恶意软件作者的变化快速适应新的检测特征：这也是关键性问题，在机器学习模型应用中，恶意软件是不断变化的，而机器学习算法部署到本地中，它的参数是不变的，所以在长时间的恶意演化中其模型或参数不再适用，其检测结果会有影响。目前，云沙箱、在线更新病毒库特征是一些解决方法。</li>
-</ul>
-<blockquote>
-<p>McAfee[11]:
-https://www.mcafee.com/enterprise/en-us/security-awareness/endpoint/what-is-next-gen-endpoint-protection.html</p>
-<p>Vmware[9]:https://www.carbonblack.com/resources/definitions/what-is-next-generation-antivirus/</p>
-<p>CrowdStrike[10]:https://www.crowdstrike.com/epp-101/next-generation-antivirus-ngav/</p>
-<p>Avast[6]:https://www.avast.com/technology/malware-detection-and-blocking</p>
-<p>卡巴斯基[7]:https://media.kaspersky.com/en/enterprise-security/Kaspersky-Lab-Whitepaper-Machine-Learning.pdf</p>
-<p>火眼[8]:https://www.fireeye.com/blog/threat-research/2019/03/clustering-and-associating-attacker-activity-at-scale.html</p>
-</blockquote>
-<hr>
-<h3><span id="材料整理">材料整理</span></h3>
-<p>清华整理的综述</p>
-<p>git项目</p>
-<p>论文</p>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li><p>杨航峰：DataCon大数据安全分析比赛冠军思路分享 - 杨航锋的文章 -
-知乎 https://zhuanlan.zhihu.com/p/64252076</p></li>
-<li><p><a target="_blank" rel="noopener" href="https://github.com/islem-esi/DeepMalwareDetector">DeepMalwareDetector</a>:<strong>A
-Deep Learning framework that analyses Windows PE files to detect
-malicious Softwares</strong></p></li>
-<li><p>secml</p></li>
-<li><p>Lief</p></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/QAPBHZ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/QAPBHZ/" class="post-title-link" itemprop="url">深度学习（8）Attention</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-14 23:08:42" itemprop="dateCreated datePublished" datetime="2022-05-14T23:08:42+08:00">2022-05-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-12 19:40:02" itemprop="dateModified" datetime="2022-07-12T19:40:02+08:00">2022-07-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1><span id="attention-注意力机制">Attention-注意力机制</span></h1>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://paddlepedia.readthedocs.io/en/latest/tutorials/deep_learning/model_tuning/attention/attention_description.html">注意力机制</a></p>
-<p>如何理解attention中的Q,K,V？ - 林亿的回答 - 知乎
-https://www.zhihu.com/question/298810062/answer/2274132657</p>
-<p>Self-attention中dot-product操作为什么要被缩放：https://www.zhihu.com/question/339723385/answer/782509914</p>
-</blockquote>
-<h3><span id="一-注意力机制是什么">一、注意力机制是什么</span></h3>
-<p>假设有一天热爱绘画的你决定去户外写生，你来到一片山坡上，极目远去，心旷神怡。头顶一片蔚蓝，脚踩一席草绿，远处山川连绵，眼前花草送香，暖阳含羞云后，轻风拂动衣襟，鸟啼虫鸣入耳，美景丹青共卷。</p>
-<p>你集中精神，拿起画笔将蓝天、白云、青草等等这些元素，按照所思所想纷纷绘入画板。在绘画的过程中，你会持续地关注你构思到画板上的元素（比如蓝天，白云），而不会太多关注那些其他的元素，比如风，虫鸣，阳光等等。即你的精神是聚焦在你关心的那些事物上，这其实就是注意力的体现，这种有意识的聚焦被称为<strong>聚焦式注意力（Focus
-Attention</strong>）。</p>
-<p>在深度学习领域，模型往往需要接收和处理大量的数据，然而在特定的某个时刻，往往只有少部分的某些数据是重要的，这种情况就非常适合<strong>Attention机制</strong>发光发热。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220529190526010.png" alt="image-20220529190526010" style="zoom:50%;"></p>
-<p>举个例子，<strong>上图</strong>展示了一个机器翻译的结果，在这个例子中，我们想将”who
-are
-you”翻译为”你是谁”，传统的模型处理方式是一个seq-to-seq的模型，其包含一个encoder端和一个decoder端，其中encoder端对”who
-are
-you”进行编码，然后将整句话的信息传递给decoder端，由decoder解码出”我是谁”。在这个过程中，decoder是逐字解码的，在每次解码的过程中，如果接收信息过多，可能会导致模型的内部混乱，从而导致错误结果的出现。</p>
-<p>我们可以使用<strong>Attention机制</strong>来解决这个问题，从<strong>图中</strong>可以看到，在生成”你”的时候和单词”you”关系比较大，和”who
-are”关系不大，所以我们更希望在这个过程中能够使用<strong>Attention机制</strong>，将更多注意力放到”you”上，而不要太多关注”who
-are”，从而提高整体模型的表现。</p>
-<blockquote>
-<p>备注：在深度学习领域，无意识的<strong>显著性注意力</strong>更加常见。</p>
-</blockquote>
-<p>Attention机制自提出以来，出现了很多不同Attention应用方式，但大道是共同的，均是将模型的注意力聚焦在重要的事情上。本文后续将选择一些经典或常用的Attention机制展开讨论。</p>
-<h3><span id="二-经典注意力机制">二、经典注意力机制</span></h3>
-<h4><span id="21用机器翻译任务带你看attention机制的计算">2.1
-用机器翻译任务带你看Attention机制的计算</span></h4>
-<p>单独地去讲<strong>Attention机制</strong>会有些抽象，也有些枯燥，所以我们不妨以<strong>机器翻译</strong>任务为例，通过讲解<strong>Attention机制</strong>在机器翻译任务中的应用方式，来了解<strong>Attention机制</strong>的使用。</p>
-<p>什么是机器翻译任务？以<strong>中译英</strong>为例，机器翻译是将一串中文语句翻译为对应的英文语句，如<strong>图1</strong>所示。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220529201640683.png" alt="image-20220529201640683" style="zoom:50%;"></p>
-<p>图1展示了一种经典的机器翻译结构Seq-to-Seq,
-并且向其中添加了Attention计算。<strong>Seq-to-Seq结
-构包含两个部分：Encoder和Decoder</strong>。其中Encoder用于将中文语句进行编码,
-这些编码后续将提 供给Decoder进行使用;
-Decoder将根据Encoder的数据进行解码。我们还是以图1为例详细解释一
-下Decoder的解码过程。 更明确的讲,
-图1展示的是生成单词"machine"时的计算方式。首先将前一个时刻的输出状态
-<span class="math inline">\(q_{2}\)</span> 和 Encoder的输出 <span class="math inline">\(h=\left[h_{1}, h_{2}, h_{3}, h_{4}\right]\)</span>
-进行Attention计算, 得到一个当前时刻的 context, 用公式可 以这样组织:
-<span class="math display">\[
-\begin{aligned}
-{\left[a_{1}, a_{2}, a_{3}, a_{4}\right] }
-&amp;=\operatorname{softmax}\left(\left[s\left(q_{2}, h_{1}\right),
-s\left(q_{2}, h_{2}\right), s\left(q_{2}, h_{3}\right), s\left(q_{2},
-h_{4}\right)\right]\right) \\
-\text { context } &amp;=\sum_{i=1}^{4} a_{i} \cdot h_{i}
-\end{aligned}
-\]</span> 我们来解释一下, 这里的 <span class="math inline">\(s\left(q_{i}, h_{j}\right)\)</span>
-表示注意力打分函数, 它是个标量, 其大小描述了当前时刻在这
-些Encoder的结果上的关注程度,
-这个函数在后边会展开讨论。然后用softmax对这个结果进行归一 化,
-最后使用加权评价获得当前时刻的上下文向量 context。这个context
-可以解释为：截止到当前 已经有了"I love",
-在此基础上下一个时刻应该更加关注源中文语句的那些内容。这就是关于
-Attention机制的一个完整计算。</p>
-<p><strong>最后,
-将这个context和上个时刻的输出”love"进行融合作为当前时刻RNN单元的输入</strong>。图1中采用了继续融合上一步的输出结果,
-例如上述描述中融合了"love", 在有些实现中, 并没 有融入这个上一步的输出,
-默认 <span class="math inline">\(q_{2}\)</span>
-中已经携带了"love"的信息, 这也是合理的。</p>
-<h4><span id="22-注意力机制的正式引入">2.2 注意力机制的正式引入</span></h4>
-<p>前边我们通过机器翻译任务介绍了<strong>Attention机制</strong>的整体计算。但是还有点<strong>小尾巴</strong>没有展开，就是那个<strong>注意力打分函数</strong>的计算，现在我们将来讨论这个事情。但在讲这个函数之前，我们先来对上边的<strong>Attention机制</strong>的计算做个总结，<strong>图2</strong>详细地描述了Attention机制的计算原理。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220529202937945.png" alt="image-20220529202937945" style="zoom:50%;"></p>
-<p>假设现在我们要对一组输入 <span class="math inline">\(H=\left[h_{1},
-h_{2}, h_{3}, \ldots, h_{n}\right]\)</span>
-使用<strong>Attention机制</strong>计算重要的内容, 这里往
-往需要一个<strong>查询向量</strong> <span class="math inline">\(q\)</span> (这个向量往往和你做的任务有关,
-比如机器翻译中用到的那个 <span class="math inline">\(q_{2}\)</span> ),
-然后通 过一个<strong>打分函数</strong>计算查询向量 <span class="math inline">\(q\)</span> 和每个输入 <span class="math inline">\(h_{i}\)</span> 之间的相关性,
-得出一个分数。<strong>接下来使用softmax 对这些分数进行归一化,
-归一化后的结果便是查询向量 <span class="math inline">\(q\)</span>
-在各个输入 <span class="math inline">\(h_{i}\)</span>
-上的注意力分布</strong><span class="math inline">\(a=\left[a_{1}, a_{2},
-a_{3}, \ldots, a_{n}\right]\)</span>, 其中每一项数值和原始的输入<span class="math inline">\(H=\left[h_{1}, h_{2}, h_{3}, \ldots,
-h_{n}\right]\)</span> 一一对应。以 <span class="math inline">\(a_{i}\)</span> 为例, 相关计算公式如下: <span class="math display">\[
-a_{i}=\operatorname{softmax}\left(s\left(h_{i},
-q\right)\right)=\frac{\exp \left(s\left(h_{i},
-q\right)\right)}{\sum_{j=1}^{n} \exp \left(s\left(h_{j},
-q\right)\right)}
-\]</span> 最后根据这些注意力分布可以去有选择性的从输入信息 <span class="math inline">\(H\)</span> 中提取信息, 这里比较常用的信息提取方式,
-是一种”软性”的信息提取（图2展示的就是一种"软性"注意力）,
-即根据注意力分布对输入信 息进行加权求和，最终的这个结果 context
-体现了模型当前应该关注的内容： <span class="math display">\[
-\text { context }=\sum_{i=1}^{n} a_{i} \cdot h_{i}
-\]</span> 现在我们来解决之前一直没有展开的小尾巴-打分函数,
-它可以使用以下几种方式来计算: - <strong>加性模型</strong>: <span class="math inline">\(s(h, q)=v^{T} \tanh (W h+U q)\)</span> -
-<strong>点积模型</strong>: <span class="math inline">\(s(h, q)=h^{T}
-q\)</span> - <strong><font color="red"> 缩放点积模型</font></strong>:
-<span class="math inline">\(s(h, q)=\frac{h^{T} q}{\sqrt{D}}\)</span> -
-<strong>双线性模型</strong>: <span class="math inline">\(s(h, q)=h^{T} W
-q\)</span></p>
-<p>以上公式中的参数 <span class="math inline">\(W 、 U\)</span> 和 <span class="math inline">\(v\)</span> 均是可学习的参数矩阵或向量, <span class="math inline">\(D\)</span> 为输入向量的维度。下边我们来分
-析一下这些分数计算方式的差别。</p>
-<p><strong>加性模型</strong>引入了可学习的参数, 将查询向量 <span class="math inline">\(q\)</span> 和原始输入向量 <span class="math inline">\(h\)</span> 映射到不同的向量空间后进行计算打分,
-显然相较于加性模型, <strong>点积模型</strong>具有更好的计算效率。</p>
-<p>另外, 当输入向量的维度比较高的时候,
-<strong>点积模型</strong>通常有比较大的方差, 从而导致Softmax函数的
-梯度会比较小。因此<strong>缩放点积模型</strong>通过除以一个<strong>平方根项</strong>来平滑分数数值,
-也相当于平滑最终的<strong>注意力分布</strong>, 缓解这个问题。</p>
-<p>最后, <strong>双线性模型</strong>可以重塑为 <span class="math inline">\(s\left(h_{i}, q\right)=h^{T} W q=h^{T}\left(U^{T}
-V\right) q=(U h)^{T}(V q)\)</span>, 即分别对查询向量 <span class="math inline">\(q\)</span> 和原始输入向量 <span class="math inline">\(h\)</span> 进行线性变换之后,
-再计算点积。<strong>相比点积模型, 双线性模型在计算相似度时
-引入了非对称性</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/14/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/14/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

@@ -153,13 +153,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">257</span>
+          <span class="site-state-item-count">263</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -196,6 +196,400 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/181HVAR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/181HVAR/" class="post-title-link" itemprop="url">深度学习-NLP（7）ELMO</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-06-22 22:08:00 / 修改时间：22:19:51" itemprop="dateCreated datePublished" datetime="2022-06-22T22:08:00+08:00">2022-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>962</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="elmo-具有上下文语境的词嵌入">ELMO-具有上下文语境的词嵌入</span></h2>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/504527165</p>
+</blockquote>
+<p><img src="https://pic3.zhimg.com/v2-17095ae7e4d6965c968518e446e64475_720w.png?source=d16d100b" alt="ELMO-具有上下文语境的词嵌入-长文多图预警" style="zoom:67%;"></p>
+<h4><span id="1从静态词嵌入到动态词嵌入具有语境的词嵌入">1.从静态词嵌入到动态词嵌入（具有语境的词嵌入）</span></h4>
+<p><strong>词嵌入：</strong>将词用一个具有语义信息的多维向量来表示</p>
+<p><strong>静态词嵌入：</strong>多维稠密向量来表示，是一个固定的向量，不会根据语境的差异发生改变，
+<strong>没办法结合语境给出正确的词向量，即一词多义的问题</strong></p>
+<p><strong>动态词嵌入：</strong>根据不同的上下文语境调整词的语义，能较好的应对<strong>一词多义(polysemy)</strong>问题</p>
+<p>如何做到动态词嵌入呢？NAACL 2018 best paper <strong>ELMO(Embeddings
+from Language Model)</strong>能给你一个较好的答案</p>
+<h4><span id="2elmodeepcontextualized-word-representations">2.ELMO：Deep
+Contextualized Word Representations</span></h4>
+<p>可以看到模型整体由 <strong>前向+后向LSTM</strong> 与
+<strong>CNN</strong> 字符嵌入组成，详情见下图，还是非常直观的</p>
+<ul>
+<li><strong>CNN字符嵌入:</strong> 输入一句话(多个word)
+先由CNN字符嵌入进行编码
+得到每个word的词向量,简单来说就是<strong>把一个词分解成字母，然后对字母进行卷积操作获得词向量</strong>;</li>
+<li><strong>将词向量按照顺序分别输入到前向 后向
+LSTM中进行嵌入：</strong>其实就是基于已知的词预测下一个词，对词的编码采用LSTM架构（不熟悉LSTM的话就简单看成是一个编码器就行了）前向+后向分别是从前到后和从后到前，<strong>注意：前向和后向的LSTM之间并不连接，why?
+假如连接了预测过程就相当于泄题了，这个地方比较抽象，让我再深入一下：</strong>
+<ul>
+<li>假如这里有一句话，由N个词组成 <img src="https://www.zhihu.com/equation?tex=%28x_1%2Cx_2%2C...%2Cx_N%29" alt="[公式]">
+组成,LSTM具有较好的记忆能力，能够记忆已经给出序列的信息，前向LSTM从前向后扫的时候会不停的记忆已知的信息，每一时刻预测结果出来以后会将其信息存储起来，这样每次预测下一时刻信息的时候都会已知前面词的信息，比如：预测
+<img src="https://www.zhihu.com/equation?tex=x_2" alt="[公式]"> 时已知
+<img src="https://www.zhihu.com/equation?tex=x_1" alt="[公式]"> ；预测
+<img src="https://www.zhihu.com/equation?tex=x_3" alt="[公式]"> 时已知
+<img src="https://www.zhihu.com/equation?tex=x_1%2Cx_2" alt="[公式]">.</li>
+<li>相应的，后向LSTM也一样，只不过词的输入顺序反过来了，在这里是从 <img src="https://www.zhihu.com/equation?tex=x_N+%5Crightarrow+x_%7BN-1%7D%2C...%2C+%5Crightarrow+x_%7B2%7D+%5Crightarrow+x_1%2C+" alt="[公式]">
+当t=N-1的时候,<strong>（就相当于前向LSTM的t=2时刻）</strong>，
+后向LSTM会存储着 <img src="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3" alt="[公式]"> 的信息</li>
+<li>对于前向LSTM来说，<strong>在t=3时刻</strong>，预测x_3,
+后向LSTM存储着的 <img src="https://www.zhihu.com/equation?tex=x_N%2Cx_%7BN-1%7D%2C...%2Cx_4%2Cx_3" alt="[公式]">
+信息，<strong>由于前向LSTM与后向LSTM的连接给了两者信息交互的机会（泄题的机会)</strong>，因此这时候后向的LSTM会告诉前向LSTM：嘿
+boy，不要再猜了，答案就是X3</li>
+</ul></li>
+<li><strong>将CNN层的输出与多个LSTM层的输出拼接在一起
+就得到一个词的表示了</strong></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/16VDGF1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/16VDGF1/" class="post-title-link" itemprop="url">机器学习（8）【Nan】马尔可夫模型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-22 12:54:43" itemprop="dateCreated datePublished" datetime="2022-06-22T12:54:43+08:00">2022-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-18 22:17:36" itemprop="dateModified" datetime="2022-07-18T22:17:36+08:00">2022-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">概率图模型</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="马尔可夫模型">马尔可夫模型</span></h2>
+<blockquote>
+<p>如何用简单易懂的例子解释条件随机场（CRF）模型？它和HMM有什么区别？ -
+Scofield的回答 - 知乎
+https://www.zhihu.com/question/35866596/answer/236886066</p>
+</blockquote>
+<h3><span id="一-概念">一、概念</span></h3>
+<h4><span id="11-随机过程">1.1 随机过程</span></h4>
+<p><strong>随机过程就是一些统计模型，利用这些统计模型可以对自然界的一些事物进行预测和处理</strong>，比如天气预报，比如股票，比如市场分析，比如人工智能。它的应用还真是多了去了。</p>
+<h4><span id="12-马尔可夫链-markov-chain">1.2 马尔可夫链 （Markov Chain）</span></h4>
+<blockquote>
+<p>马尔可夫链 （Markov Chain）是什么鬼 - 车卡门的文章 - 知乎
+https://zhuanlan.zhihu.com/p/26453269</p>
+</blockquote>
+<p>马尔可夫链就是这样一个任性的过程，它将来的状态分布只取决于现在，跟过去无关！实际上就是一个随机变量随时间按照Markov性进行变化的过程。</p>
+<h4><span id="13-马尔可夫模型hiddenmarkov-models">1.3 马尔可夫模型（Hidden
+Markov Models）</span></h4>
+<p>既是马尔可夫模型，就一定存在<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=马尔可夫链&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A%2264187492%22%7D">马尔可夫链</a>，该马尔可夫链服从马尔可夫性质：即无记忆性。也就是说，这一时刻的状态，受且只受前一时刻的影响，而不受更往前时刻的状态的影响。在这里我们仍然使用非常简单的天气模型来做说明。</p>
+<p><img src="https://picx.zhimg.com/80/648a55725e67d718d97d6a475891d70b_1440w.png" alt="img" style="zoom:50%;"></p>
+<p>在这个马尔可夫模型中，存在三个状态，Sunny， Rainy，
+Cloudy，同时图片上标的是各个状态间的转移概率（如果不明白什么是转移概率，那建议先去学习什么是马尔可夫再来看HMM）。</p>
+<p><strong><font color="red"> 现在我们要说明什么是
+HMM。既是隐形，说明这些状态是观测不到的，相应的，我们可以通过其他方式来『猜测』或是『推断』这些状态，这也是
+HMM 需要解决的问题之一。</font></strong></p>
+<blockquote>
+<p>举个例子，我女朋友现在在北京工作，而我还在法国读书。每天下班之后，她会根据天气情况有相应的活动：或是去商场购物，或是去公园散步，或是回家收拾房间。我们有时候会通电话，她会告诉我她这几天做了什么，而闲着没事的我呢，则要通过她的行为猜测这几天对应的天气最有可能是什么样子的。</p>
+<p>以上就是一个简单的
+HMM，天气状况属于状态序列，而她的行为则属于观测序列。天气状况的转换是一个马尔可夫序列。而根据天气的不同，有相对应的概率产生不同的行为。在这里，为了简化，把天气情况简单归结为晴天和雨天两种情况。雨天，她选择去散步，购物，收拾的概率分别是0.1，0.4，0.5，
+而如果是晴天，她选择去散步，购物，收拾的概率分别是0.6，0.3，0.1。而天气的转换情况如下：这一天下雨，则下一天依然下雨的概率是0.7，而转换成晴天的概率是0.3；这一天是晴天，则下一天依然是晴天的概率是0.6，而转换成雨天的概率是0.4.
+同时还存在一个初始概率，也就是第一天下雨的概率是0.6，
+晴天的概率是0.4.</p>
+<p><img src="https://pic4.zhimg.com/80/792e033ff9b0418b3b6c9bbaef30fd83_1440w.png" alt="img" style="zoom:50%;"></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3PV2CVF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3PV2CVF/" class="post-title-link" itemprop="url">风控算法（4）西湖论剑-告警误报检测</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-19 14:46:27" itemprop="dateCreated datePublished" datetime="2022-06-19T14:46:27+08:00">2022-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-12 15:27:41" itemprop="dateModified" datetime="2022-07-12T15:27:41+08:00">2022-07-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>82</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="西湖论剑-告警误报检测">西湖论剑-告警误报检测</span></h2>
+<blockquote>
+<p>2020西湖论剑Ai大数据安全分析竞赛思路分享 - 杨航锋的文章 - 知乎
+https://zhuanlan.zhihu.com/p/295179638</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1517,6 +1911,10 @@ saw this threat actor".</p>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
         </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E9%AB%98%E7%BA%A7%E5%A8%81%E8%83%81%E5%8F%91%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">高级威胁发现</span></a>
+        </span>
     </span>
 
   
@@ -1951,393 +2349,8 @@ learning的部分呢,这个BERT跟GPT我们就讲到这边。</p>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/28RKHA6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/28RKHA6/" class="post-title-link" itemprop="url">深度学习-NLP（6）【Nan】FastText</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-13 16:58:03" itemprop="dateCreated datePublished" datetime="2022-06-13T16:58:03+08:00">2022-06-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-21 22:02:29" itemprop="dateModified" datetime="2023-04-21T22:02:29+08:00">2023-04-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="fasttext">FastText</span></h2>
-<blockquote>
-<ul>
-<li>FastText代码详解(一) - BlockheadLS的文章 - 知乎
-https://zhuanlan.zhihu.com/p/52154254</li>
-<li>【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎
-https://zhuanlan.zhihu.com/p/442768234</li>
-<li><strong>fastText原理及实践 - 陈运文的文章</strong> - 知乎
-https://zhuanlan.zhihu.com/p/32965521</li>
-</ul>
-</blockquote>
-<h3><span id="abstract">Abstract</span></h3>
-<p>“本文探索了一种简单有效的文本分类基准（方法）。我们的实验表明，我们的快速文本分类器fastText在准确性方面与深度学习分类器平分秋色，其训练和评估速度（相比深度学习模型更是）要快许多个数量级。我们可以使用标准的多核CPU在不到10分钟的时间内用fastText训练超过10亿个单词，并在一分钟之内将50万个句子在31万2千个类中做分类。”</p>
-<p>作者中又出现了托老师，不知道是不是受他影响，这篇文章在表述上也很有word2vec的味道，更不用说模型本身。fastText和word2vec的卖点都是简单高效（快）。</p>
-<h3><span id="一-什么是fasttext">一、什么是fastText？</span></h3>
-<p>先说结论，fastText在不同语境中至少有两个含义：</p>
-<ol type="1">
-<li>在文章Bag of Tricks for Efficient Text Classification[<a href="#ref_1">1]</a>中，fastText是作者提出的文本分类器的名字。<strong>与sub-word无关！也不是新的词嵌入训练模型！是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=word2vec&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">word2vec</a>中CBOW模型的简单变种。</strong></li>
-<li>作为Facebook开源包，<a href="https://link.zhihu.com/?target=https%3A//fasttext.cc/">fastText</a>是用来训练词嵌入或句嵌入的，其不仅包括1中论文的代码实现，还包括Enriching
-Word Vectors with Subword Information[<a href="#ref_2">2]</a>及FastText.zip: Compressing text classification
-models[<a href="#ref_3">3]</a>两文的代码实现。</li>
-</ol>
-<p>本来觉得这些含义区别不重要，直到连我自己都被弄迷糊了。在写这篇解读前，我心中的fastText一直是第三种含义：<strong>用sub-word信息加强词嵌入训练，解决OOV（Out-Of-Vocabulary）表征的方法</strong>。结果带着这个预先的理解读Bag
-of Tricks for Efficient Text Classification，越读越迷惑。</p>
-<p>为理清思路，fastText（一）中我们就先讲讲Bag of Tricks for Efficient
-Text Classification中的fastText，fastText（二）则围绕Enriching Word
-Vectors with Subword Information。</p>
-<h3><span id="二-一句话介绍fasttext">二、一句话介绍fastText</span></h3>
-<p>word2vec的CBOW模型中将中心词替换为类别标签就得到了fastText。</p>
-<p>具体到一些小区别：</p>
-<ul>
-<li>CBOW中词袋的大小由window_size决定，而fastText中就是整个要分类的文本。</li>
-<li>CBOW实际运行中用Hierarchical <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=softmax&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">softmax</a>，fastText用softmax或Hierarchical
-softmax，具体试类的数量决定。</li>
-</ul>
-<p>这就是一个标配版且可以实际应用的fastText了，我要再强调三点它和CBOW无区别的地方，因为在别的讲该论文的文章中看到了一些错误的理解：</p>
-<ul>
-<li>CBOW和fastText都是用平均值来预测的。（CBOW不是求和，是求平均）</li>
-<li>N-gram对于CBOW和fastText都是锦上添花的元素，不是标配。</li>
-<li><strong><font color="red">
-词向量初始化都是随机的</font></strong>，fastText并没有在word2vec预训练词嵌入的基础上再训练。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/RGS2PC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/RGS2PC/" class="post-title-link" itemprop="url">恶意加密流量（3）西湖论剑AI大数据安全分析赛</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-12 20:23:33" itemprop="dateCreated datePublished" datetime="2022-06-12T20:23:33+08:00">2022-06-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 20:38:38" itemprop="dateModified" datetime="2023-04-18T20:38:38+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">加密流量检测</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>99</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="西湖论剑ai大数据安全分析赛加密恶意流量检测">西湖论剑AI大数据安全分析赛加密恶意流量检测</span></h2>
-<blockquote>
-<p>数据集：csv</p>
-<p>加密恶意流量检测初赛第一名，决赛第二名方案：https://github.com/undefinedXD/WestLakeSwordComp</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/DTTFVX/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/DTTFVX/" class="post-title-link" itemprop="url">大数据处理（1）高维向量相似度匹配</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-11 19:01:05" itemprop="dateCreated datePublished" datetime="2022-06-11T19:01:05+08:00">2022-06-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-19 13:52:45" itemprop="dateModified" datetime="2023-03-19T13:52:45+08:00">2023-03-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大数据处理</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>845</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="文本相似度匹配">文本相似度匹配</span></h2>
-<blockquote>
-<p>from 《Scaling Up All Pairs Similarity Search》</p>
-<p>海量文本的成对相似度的高性能计算（待续） - 马东什么的文章 - 知乎
-https://zhuanlan.zhihu.com/p/457947482</p>
-</blockquote>
-<h4><span id="摘要">摘要：</span></h4>
-<p>对于高维空间中的大量稀疏向量数据，我们研究了寻找相似性分数(由余弦距离等函数确定)高于给定阈值的所有向量对的问题。我们提出了一个简单的算法<strong>，基于新的索引和优化策略，解决了这个问题，而不依赖于近似方法或广泛的参数调整</strong>。我们展示了该方法在广泛的相似阈值设置中有效地处理各种数据集，与以前的最先进的方法相比有很大的加速。</p>
-<p>(海量成对文本相似度问题对于反欺诈而言非常重要，因为无论是电商中重要的地址信息，还是设备或用户的离散features之间的相似度计算和构图，都依赖于高性能的文本相似度计算方法，在实践中，我们不可能直接写双循环去做计算，即使是离线也往往需要耗费大量的时间)</p>
-<h3><span id="一-介绍">一、介绍</span></h3>
-<p>许多现实世界的应用程序需要解决一个相似度搜索问题，在这个问题中，人们对所有相似度高于指定阈值的对象对都感兴趣。</p>
-<ul>
-<li>web搜索的查询细化:搜索引擎通常会建议其他查询公式（例如你在百度中输入百，会给你推荐百度）。生成此类查询建议的一种方法是根据查询[19]的搜索结果的相似性来查找所有的相似查询对。由于目标是只提供高质量的建议，所以我们只需要找到相似度高于阈值的查询对（topk问题）。</li>
-<li>协同过滤:协同过滤算法通过确定哪些用户有相似的品味来进行推荐。因此，算法需要计算相似度高于某个阈值的相似用户对。</li>
-<li>接近重复的文档检测和消除:特别是在文档索引领域，检测和清除等价的文档是重要的。在许多情况下，由于简单的相等性检验不再满足要求，微小修改的存在使这种检测变得困难。通过具有很高的相似度阈值的相似度搜索，可以实现近重复检测（这方面的工作之前看过simhash，google做海量网页去重的方法）。</li>
-<li>团伙检测:最近的工作已经应用算法在一个应用程序中寻找所有相似的用户，以识别点击欺诈者[13]团伙。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

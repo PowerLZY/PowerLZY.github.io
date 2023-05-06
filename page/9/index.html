@@ -153,13 +153,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">257</span>
+          <span class="site-state-item-count">263</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -196,6 +196,391 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/28RKHA6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/28RKHA6/" class="post-title-link" itemprop="url">深度学习-NLP（6）【Nan】FastText</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-13 16:58:03" itemprop="dateCreated datePublished" datetime="2022-06-13T16:58:03+08:00">2022-06-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-21 22:02:29" itemprop="dateModified" datetime="2023-04-21T22:02:29+08:00">2023-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="fasttext">FastText</span></h2>
+<blockquote>
+<ul>
+<li>FastText代码详解(一) - BlockheadLS的文章 - 知乎
+https://zhuanlan.zhihu.com/p/52154254</li>
+<li>【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎
+https://zhuanlan.zhihu.com/p/442768234</li>
+<li><strong>fastText原理及实践 - 陈运文的文章</strong> - 知乎
+https://zhuanlan.zhihu.com/p/32965521</li>
+</ul>
+</blockquote>
+<h3><span id="abstract">Abstract</span></h3>
+<p>“本文探索了一种简单有效的文本分类基准（方法）。我们的实验表明，我们的快速文本分类器fastText在准确性方面与深度学习分类器平分秋色，其训练和评估速度（相比深度学习模型更是）要快许多个数量级。我们可以使用标准的多核CPU在不到10分钟的时间内用fastText训练超过10亿个单词，并在一分钟之内将50万个句子在31万2千个类中做分类。”</p>
+<p>作者中又出现了托老师，不知道是不是受他影响，这篇文章在表述上也很有word2vec的味道，更不用说模型本身。fastText和word2vec的卖点都是简单高效（快）。</p>
+<h3><span id="一-什么是fasttext">一、什么是fastText？</span></h3>
+<p>先说结论，fastText在不同语境中至少有两个含义：</p>
+<ol type="1">
+<li>在文章Bag of Tricks for Efficient Text Classification[<a href="#ref_1">1]</a>中，fastText是作者提出的文本分类器的名字。<strong>与sub-word无关！也不是新的词嵌入训练模型！是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=word2vec&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">word2vec</a>中CBOW模型的简单变种。</strong></li>
+<li>作为Facebook开源包，<a href="https://link.zhihu.com/?target=https%3A//fasttext.cc/">fastText</a>是用来训练词嵌入或句嵌入的，其不仅包括1中论文的代码实现，还包括Enriching
+Word Vectors with Subword Information[<a href="#ref_2">2]</a>及FastText.zip: Compressing text classification
+models[<a href="#ref_3">3]</a>两文的代码实现。</li>
+</ol>
+<p>本来觉得这些含义区别不重要，直到连我自己都被弄迷糊了。在写这篇解读前，我心中的fastText一直是第三种含义：<strong>用sub-word信息加强词嵌入训练，解决OOV（Out-Of-Vocabulary）表征的方法</strong>。结果带着这个预先的理解读Bag
+of Tricks for Efficient Text Classification，越读越迷惑。</p>
+<p>为理清思路，fastText（一）中我们就先讲讲Bag of Tricks for Efficient
+Text Classification中的fastText，fastText（二）则围绕Enriching Word
+Vectors with Subword Information。</p>
+<h3><span id="二-一句话介绍fasttext">二、一句话介绍fastText</span></h3>
+<p>word2vec的CBOW模型中将中心词替换为类别标签就得到了fastText。</p>
+<p>具体到一些小区别：</p>
+<ul>
+<li>CBOW中词袋的大小由window_size决定，而fastText中就是整个要分类的文本。</li>
+<li>CBOW实际运行中用Hierarchical <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=softmax&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">softmax</a>，fastText用softmax或Hierarchical
+softmax，具体试类的数量决定。</li>
+</ul>
+<p>这就是一个标配版且可以实际应用的fastText了，我要再强调三点它和CBOW无区别的地方，因为在别的讲该论文的文章中看到了一些错误的理解：</p>
+<ul>
+<li>CBOW和fastText都是用平均值来预测的。（CBOW不是求和，是求平均）</li>
+<li>N-gram对于CBOW和fastText都是锦上添花的元素，不是标配。</li>
+<li><strong><font color="red">
+词向量初始化都是随机的</font></strong>，fastText并没有在word2vec预训练词嵌入的基础上再训练。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/RGS2PC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/RGS2PC/" class="post-title-link" itemprop="url">恶意加密流量（3）西湖论剑AI大数据安全分析赛</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-12 20:23:33" itemprop="dateCreated datePublished" datetime="2022-06-12T20:23:33+08:00">2022-06-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 20:38:38" itemprop="dateModified" datetime="2023-04-18T20:38:38+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">算法比赛</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E7%AE%97%E6%B3%95%E6%AF%94%E8%B5%9B/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E5%8A%A0%E5%AF%86%E6%B5%81%E9%87%8F%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">加密流量检测</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>99</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="西湖论剑ai大数据安全分析赛加密恶意流量检测">西湖论剑AI大数据安全分析赛加密恶意流量检测</span></h2>
+<blockquote>
+<p>数据集：csv</p>
+<p>加密恶意流量检测初赛第一名，决赛第二名方案：https://github.com/undefinedXD/WestLakeSwordComp</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/DTTFVX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/DTTFVX/" class="post-title-link" itemprop="url">大数据处理（1）高维向量相似度匹配</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-11 19:01:05" itemprop="dateCreated datePublished" datetime="2022-06-11T19:01:05+08:00">2022-06-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-19 13:52:45" itemprop="dateModified" datetime="2023-03-19T13:52:45+08:00">2023-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大数据处理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>845</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="文本相似度匹配">文本相似度匹配</span></h2>
+<blockquote>
+<p>from 《Scaling Up All Pairs Similarity Search》</p>
+<p>海量文本的成对相似度的高性能计算（待续） - 马东什么的文章 - 知乎
+https://zhuanlan.zhihu.com/p/457947482</p>
+</blockquote>
+<h4><span id="摘要">摘要：</span></h4>
+<p>对于高维空间中的大量稀疏向量数据，我们研究了寻找相似性分数(由余弦距离等函数确定)高于给定阈值的所有向量对的问题。我们提出了一个简单的算法<strong>，基于新的索引和优化策略，解决了这个问题，而不依赖于近似方法或广泛的参数调整</strong>。我们展示了该方法在广泛的相似阈值设置中有效地处理各种数据集，与以前的最先进的方法相比有很大的加速。</p>
+<p>(海量成对文本相似度问题对于反欺诈而言非常重要，因为无论是电商中重要的地址信息，还是设备或用户的离散features之间的相似度计算和构图，都依赖于高性能的文本相似度计算方法，在实践中，我们不可能直接写双循环去做计算，即使是离线也往往需要耗费大量的时间)</p>
+<h3><span id="一-介绍">一、介绍</span></h3>
+<p>许多现实世界的应用程序需要解决一个相似度搜索问题，在这个问题中，人们对所有相似度高于指定阈值的对象对都感兴趣。</p>
+<ul>
+<li>web搜索的查询细化:搜索引擎通常会建议其他查询公式（例如你在百度中输入百，会给你推荐百度）。生成此类查询建议的一种方法是根据查询[19]的搜索结果的相似性来查找所有的相似查询对。由于目标是只提供高质量的建议，所以我们只需要找到相似度高于阈值的查询对（topk问题）。</li>
+<li>协同过滤:协同过滤算法通过确定哪些用户有相似的品味来进行推荐。因此，算法需要计算相似度高于某个阈值的相似用户对。</li>
+<li>接近重复的文档检测和消除:特别是在文档索引领域，检测和清除等价的文档是重要的。在许多情况下，由于简单的相等性检验不再满足要求，微小修改的存在使这种检测变得困难。通过具有很高的相似度阈值的相似度搜索，可以实现近重复检测（这方面的工作之前看过simhash，google做海量网页去重的方法）。</li>
+<li>团伙检测:最近的工作已经应用算法在一个应用程序中寻找所有相似的用户，以识别点击欺诈者[13]团伙。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -608,6 +993,10 @@ tensorflow中的nce_loss函数实现了负采样。</font></strong></p>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E6%A3%80%E6%B5%8B/" itemprop="url" rel="index"><span itemprop="name">恶意软件检测</span></a>
         </span>
     </span>
 
@@ -2140,1414 +2529,8 @@ Decoder,也讲完了它们中间的关係,也讲了怎么训练,也讲了种种�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/PSEWDM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/PSEWDM/" class="post-title-link" itemprop="url">深度学习（9）Transformer-code</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-10 21:00:41" itemprop="dateCreated datePublished" datetime="2022-06-10T21:00:41+08:00">2022-06-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-13 21:12:11" itemprop="dateModified" datetime="2022-07-13T21:12:11+08:00">2022-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq/" itemprop="url" rel="index"><span itemprop="name">Seq2Seq</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>19k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>35 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1><span id="transformer">Transformer</span></h1>
-<blockquote>
-<p>Transformer：（Self-attention）自注意力机制的序列到序列的模型</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/415318478">Transformer
-代码完全解读!</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/471328838/answer/1996725528">如何从浅入深理解transformer？</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/428626879/answer/1556915218">Transformer和GNN有什么联系吗？</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48508221"><strong>详解<em>Transformer</em>
-（Attention Is All You Need）</strong></a></li>
-<li><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/438634058"><em>Transformer</em>代码+面试细节</a></strong></li>
-</ul>
-</blockquote>
-<h3><span id="一-模型结构概述">一、模型结构概述</span></h3>
-<p>如下是Transformer的两个结构示意图：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-7d8daf8e5dbba5ed3f26f3e03f61d395_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>上图是从一篇英文博客中截取的Transformer的结构简图，下图是原论文中给出的结构简图，更细粒度一些，可以结合着来看。</p>
-<p><img src="https://pic1.zhimg.com/80/v2-f70598121a15f713eeafa4bc696d528c_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>模型大致分为<code>Encoder</code>(编码器)和<code>Decoder</code>(解码器)两个部分，分别对应上图中的左右两部分。</p>
-<p><strong>编码器</strong>由N个相同的层堆叠在一起(我们后面的实验取N=6)，每一层又有两个子层：</p>
-<ul>
-<li>第一个子层是一个<code>Multi-Head Attention</code>(<strong>==多头的自注意机制==</strong>)
-<ul>
-<li>Self-attention多个头类似于cnn中多个卷积核的作用，使用多头注意力，能够从不同角度提取信息，提高信息提取的全面性。</li>
-</ul></li>
-<li>第二个子层是一个简单的<code>Feed Forward</code>(全连接前馈网络)</li>
-<li>两个子层都添加了一个<strong>残差连接</strong>+==layer
-normalization==的操作。</li>
-</ul>
-<p><strong>解码器</strong>同样是堆叠了N个相同的层，不过和编码器中每层的结构稍有不同。</p>
-<ul>
-<li>第一个子层是一个<code>Multi-Head Attention</code>(<strong>==多头的自注意机制==</strong>)</li>
-<li>第二个子层是一个简单的<code>Feed Forward</code>(全连接前馈网络)</li>
-<li><strong>==Masked Multi-Head Attention==</strong></li>
-<li>每个子层同样也用了<strong>==residual==</strong>以及layer
-normalization。</li>
-</ul>
-<p>模型的输入由<code>Input Embedding</code>和<code>Positional Encoding</code>(位置编码)两部分组合而成。</p>
-<p>模型的输出由Decoder的输出简单的经过softmax得到。</p>
-<h3><span id="二-模型输入">二、<strong>模型输入</strong></span></h3>
-<p>首先我们来看模型的输入是什么样的，先明确模型输入，后面的模块理解才会更直观。输入部分包含两个模块，<code>Embedding</code>和<code>Positional Encoding</code>。</p>
-<h4><span id="21-embedding层"><strong>2.1 Embedding层</strong></span></h4>
-<p><strong>Embedding层的作用是将某种格式的输入数据，例如文本，转变为模型可以处理的向量表示，来描述原始数据所包含的信息</strong>。<code>Embedding</code>层输出的可以理解为当前时间步的特征，如果是文本任务，这里就可以是<code>Word Embedding</code>，如果是其他任务，就可以是任何合理方法所提取的特征。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Embeddings</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, vocab</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        类的初始化函数</span></span><br><span class="line"><span class="string">        d_model：指词嵌入的维度</span></span><br><span class="line"><span class="string">        vocab:指词表的大小</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">super</span>(Embeddings, self).__init__()</span><br><span class="line">        <span class="comment">#之后就是调用nn中的预定义层Embedding，获得一个词嵌入对象self.lut</span></span><br><span class="line">        self.lut = nn.Embedding(vocab, d_model)</span><br><span class="line">        <span class="comment">#最后就是将d_model传入类中</span></span><br><span class="line">        self.d_model =d_model</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Embedding层的前向传播逻辑</span></span><br><span class="line"><span class="string">        参数x：这里代表输入给模型的单词文本通过词表映射后的one-hot向量</span></span><br><span class="line"><span class="string">        将x传给self.lut并与根号下self.d_model相乘作为结果返回</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        embedds = self.lut(x)</span><br><span class="line">        <span class="keyword">return</span> embedds * math.sqrt(self.d_model)</span><br></pre></td></tr></table></figure>
-<h4><span id="22-位置编码">2.2 <strong>位置编码</strong></span></h4>
-<p><strong><code>Positional Encodding</code>位置编码的作用是为模型提供当前时间步的前后出现顺序的信息</strong>。因为Transformer不像RNN那样的循环结构有前后不同时间步输入间天然的先后顺序，所有的时间步是同时输入，并行推理的，因此在时间步的特征中融合进位置编码的信息是合理的。位置编码可以有很多选择，可以是固定的，也可以设置成可学习的参数。这里，我们使用固定的位置编码。<strong>具体地，使用不同频率的sin和cos函数来进行位置编码</strong>，如下所示：
-<span class="math display">\[
-\begin{gathered}
-P E_{(p o s, 2 i)}=\sin \left(p o s / 10000^{2 i / d_{\text {model
-}}}\right) \\
-P E_{(p o s, 2 i+1)}=\cos \left(p o s / 10000^{2 i / d_{\text {model
-}}}\right)
-\end{gathered}
-\]</span>
-其中pos代表时间步的下标索引，向量也就是第pos个时间步的位置编码，编码长度同<code>Embedding</code>层，这里我们设置的是512。上面有两个公式，代表着位置编码向量中的元素，奇数位置和偶数位置使用两个不同的公式。思考：<strong>为什么上面的公式可以作为位置编码？</strong>我的理解：在上面公式的定义下，<strong><font color="red">
-时间步p和时间步p+k的位置编码的内积，即是与p无关，只与k有关的定值（不妨自行证明下试试）。也就是说，任意两个相距k个时间步的位置编码向量的内积都是相同的，这就相当于蕴含了两个时间步之间相对位置关系的信息。</font></strong>此外，每个时间步的位置编码又是唯一的，这两个很好的性质使得上面的公式作为位置编码是有理论保障的。下面是位置编码模块的代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PositionalEncoding</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, dropout, max_len=<span class="number">5000</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        位置编码器类的初始化函数</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        共有三个参数，分别是</span></span><br><span class="line"><span class="string">        d_model：词嵌入维度</span></span><br><span class="line"><span class="string">        dropout: dropout触发比率</span></span><br><span class="line"><span class="string">        max_len：每个句子的最大长度</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">super</span>(PositionalEncoding, self).__init__()</span><br><span class="line">        self.dropout = nn.Dropout(p=dropout)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Compute the positional encodings</span></span><br><span class="line">        <span class="comment"># 注意下面代码的计算方式与公式中给出的是不同的，但是是等价的，你可以尝试简单推导证明一下。</span></span><br><span class="line">        <span class="comment"># 这样计算是为了避免中间的数值计算结果超出float的范围，</span></span><br><span class="line">        pe = torch.zeros(max_len, d_model)</span><br><span class="line">        position = torch.arange(<span class="number">0</span>, max_len).unsqueeze(<span class="number">1</span>)</span><br><span class="line">        div_term = torch.exp(torch.arange(<span class="number">0</span>, d_model, <span class="number">2</span>) *</span><br><span class="line">                             -(math.log(<span class="number">10000.0</span>) / d_model))</span><br><span class="line">        pe[:, <span class="number">0</span>::<span class="number">2</span>] = torch.sin(position * div_term)</span><br><span class="line">        pe[:, <span class="number">1</span>::<span class="number">2</span>] = torch.cos(position * div_term)</span><br><span class="line">        pe = pe.unsqueeze(<span class="number">0</span>)</span><br><span class="line">        self.register_buffer(<span class="string">&#x27;pe&#x27;</span>, pe)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = x + Variable(self.pe[:, :x.size(<span class="number">1</span>)], requires_grad=<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">return</span> self.dropout(x)</span><br></pre></td></tr></table></figure>
-<p>因此，可以认为，最终模型的输入是若干个时间步对应的embedding，每一个时间步对应一个embedding，可以理解为是当前时间步的一个综合的特征信息，即包含了本身的语义信息，又包含了当前时间步在整个句子中的位置信息。</p>
-<h4><span id="23encoder和decoder都包含输入模块"><strong>2.3
-Encoder和Decoder都包含输入模块</strong></span></h4>
-<p>此外有一个点刚刚接触Transformer的同学可能不太理解，<strong>编码器和解码器两个部分都包含输入，且两部分的输入的结构是相同的，只是推理时的用法不同，编码器只推理一次，而解码器是类似RNN那样循环推理，不断生成预测结果的。</strong></p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-ab0188042d72481d479f8951dc0d702c_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>怎么理解？假设我们现在做的是一个法语-英语的机器翻译任务，想把<code>Je suis étudiant</code>翻译为<code>I am a student</code>。那么我们输入给编码器的就是时间步数为3的embedding数组，编码器只进行一次并行推理，即获得了对于输入的法语句子所提取的若干特征信息。而对于解码器，是循环推理，逐个单词生成结果的。最开始，由于什么都还没预测，我们会将编码器提取的特征，以及一个句子起始符传给解码器，解码器预期会输出一个单词<code>I</code>。然后有了预测的第一个单词，我们就将<code>I</code>输入给解码器，会再预测出下一个单词<code>am</code>，再然后我们将<code>I am</code>作为输入喂给解码器，以此类推直到预测出句子终止符完成预测。</p>
-<h3><span id="三-encoder">三、<strong>Encoder</strong></span></h3>
-<h4><span id="31-编码器"><strong>3.1 编码器</strong></span></h4>
-<p><strong><font color="red">
-编码器作用是用于对输入进行特征提取，为解码环节提供有效的语义信息整体来看编码器由N个编码器层简单堆叠而成</font></strong>，因此实现非常简单，代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义一个clones函数，来更方便的将某个结构复制若干份</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clones</span>(<span class="params">module, N</span>):</span><br><span class="line">    <span class="string">&quot;Produce N identical layers.&quot;</span></span><br><span class="line">    <span class="keyword">return</span> nn.ModuleList([copy.deepcopy(module) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N)])</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Encoder</span></span><br><span class="line"><span class="string">    The encoder is composed of a stack of N=6 identical layers.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, layer, N</span>):</span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line">        <span class="comment"># 调用时会将编码器层传进来，我们简单克隆N分，叠加在一起，组成完整的Encoder</span></span><br><span class="line">        self.layers = clones(layer, N)</span><br><span class="line">        self.norm = LayerNorm(layer.size)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, mask</span>):</span><br><span class="line">        <span class="string">&quot;Pass the input (and mask) through each layer in turn.&quot;</span></span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers:</span><br><span class="line">            x = layer(x, mask)</span><br><span class="line">        <span class="keyword">return</span> self.norm(x)</span><br></pre></td></tr></table></figure>
-<p><strong>上面的代码中有一个小细节，就是编码器的输入除了x，也就是embedding以外，还有一个<code>mask</code>，为了介绍连续性</strong>，这里先忽略，后面会讲解。下面我们来看看单个的编码器层都包含什么，如何实现。</p>
-<h4><span id="32-编码器层"><strong>3.2 编码器层</strong></span></h4>
-<p>每个编码器层由两个子层连接结构组成：<strong>第一个子层包括一个多头自注意力层和规范化层以及一个残差连接</strong>；<strong>第二个子层包括一个前馈全连接层和规范化层以及一个残差连接</strong>；如下图所示：</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-4a57b7e6f8a4a7260c4e841f393f873a_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>可以看到，两个子层的结构其实是一致的，只是中间核心层的实现不同</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-ee127bacaf444e5c3612ca819b53bb8c_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-4f3a1f34553d5d568c99e8d2ace9e6c0_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>我们先定义一个SubLayerConnection类来描述这种结构关系:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SublayerConnection</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; </span></span><br><span class="line"><span class="string">    实现子层连接结构的类</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size, dropout</span>):</span><br><span class="line">        <span class="built_in">super</span>(SublayerConnection, self).__init__()</span><br><span class="line">        self.norm = LayerNorm(size)</span><br><span class="line">        self.dropout = nn.Dropout(dropout)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, sublayer</span>):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 原paper的方案</span></span><br><span class="line">        <span class="comment">#sublayer_out = sublayer(x)</span></span><br><span class="line">        <span class="comment">#x_norm = self.norm(x + self.dropout(sublayer_out))</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 稍加调整的版本</span></span><br><span class="line">        sublayer_out = sublayer(x)</span><br><span class="line">        sublayer_out = self.dropout(sublayer_out)</span><br><span class="line">        x_norm = x + self.norm(sublayer_out)</span><br><span class="line">        <span class="keyword">return</span> x_norm</span><br></pre></td></tr></table></figure>
-<p>注：上面的实现中，我对残差的链接方案进行了小小的调整，和原论文有所不同。<strong>把x从norm中拿出来，保证永远有一条“高速公路”，这样理论上会收敛的快一些，但我无法确保这样做一定是对的，请一定注意</strong>。定义好了SubLayerConnection，我们就可以实现EncoderLayer的结构了.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EncoderLayer</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;EncoderLayer is made up of two sublayer: self-attn and feed forward&quot;</span>                                                                                                         </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size, self_attn, feed_forward, dropout</span>):</span><br><span class="line">        <span class="built_in">super</span>(EncoderLayer, self).__init__()</span><br><span class="line">        self.self_attn = self_attn</span><br><span class="line">        self.feed_forward = feed_forward</span><br><span class="line">        self.sublayer = clones(SublayerConnection(size, dropout), <span class="number">2</span>)</span><br><span class="line">        self.size = size   <span class="comment"># embedding&#x27;s dimention of model, 默认512</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, mask</span>):</span><br><span class="line">        <span class="comment"># attention sub layer</span></span><br><span class="line">        x = self.sublayer[<span class="number">0</span>](x, <span class="keyword">lambda</span> x: self.self_attn(x, x, x, mask))</span><br><span class="line">        <span class="comment"># feed forward sub layer</span></span><br><span class="line">        z = self.sublayer[<span class="number">1</span>](x, self.feed_forward)</span><br><span class="line">        <span class="keyword">return</span> z</span><br></pre></td></tr></table></figure>
-<p>继续往下拆解，我们需要了解 attention层 和
-feed_forward层的结构以及如何实现。</p>
-<h4><span id="33-注意力机制-self-attention">3.3 注意力机制 Self-Attention</span></h4>
-<p>人类在观察事物时，无法同时仔细观察眼前的一切，只能聚焦到某一个局部。通常我们大脑在简单了解眼前的场景后，能够很快把注意力聚焦到最有价值的局部来仔细观察，从而作出有效判断。或许是基于这样的启发，大家想到了在算法中利用注意力机制。注意力计算：它需要三个指定的输入Q（query），K（key），V（value），然后通过下面公式得到注意力的计算结果。</p>
-<blockquote>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=A%28Q%2CK%2CV%29%3D%5Cmathrm%7BSoftmax%7D%28QK%5ET%29V+%5C%5C+" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<ul>
-<li><figure>
-<img src="https://www.zhihu.com/equation?tex=Q%2CK%2CV%3An%5Ctimes+d" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure></li>
-<li>相似度计算 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+n" alt="[公式]"> 运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]">
-矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
-<li>softmax计算：对每行做softmax，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%29" alt="[公式]"> ，则n行的复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2%29" alt="[公式]"></li>
-<li>加权和： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
-运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
-</ul>
-<p>故最后self-attention的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]">; 对于受限的self-attention，每个元素仅能和周围 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]">
-个元素进行交互，即和 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 维向量做内积运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28rd%29" alt="[公式]"> ，则 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个元素的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%28rnd%29%7D" alt="[公式]"></p>
-</blockquote>
-<p><strong>计算流程图如下：</strong></p>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-be94b689af1b76a1f64a2581709d67cd_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>可以这么简单的理解，<strong>当前时间步的注意力计算结果，是一个组系数
-*
-每个时间步的特征向量value的累加，而这个系数，通过当前时间步的query和其他时间步对应的key做内积得到，这个过程相当于用自己的query对别的时间步的key做查询，判断相似度，决定以多大的比例将对应时间步的信息继承过来</strong>。下面是注意力模块的实现代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">attention</span>(<span class="params">query, key, value, mask=<span class="literal">None</span>, dropout=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;Compute &#x27;Scaled Dot Product Attention&#x27;&quot;</span></span><br><span class="line">    <span class="comment">#首先取query的最后一维的大小，对应词嵌入维度</span></span><br><span class="line">    d_k = query.size(-<span class="number">1</span>)</span><br><span class="line">    <span class="comment">#按照注意力公式，将query与key的转置相乘，这里面key是将最后两个维度进行转置，再除以缩放系数得到注意力得分张量scores</span></span><br><span class="line">    scores = torch.matmul(query, key.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) / math.sqrt(d_k)</span><br><span class="line">    <span class="comment">#接着判断是否使用掩码张量</span></span><br><span class="line">    <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment">#使用tensor的masked_fill方法，将掩码张量和scores张量每个位置一一比较，如果掩码张量则对应的scores张量用-1e9这个置来替换</span></span><br><span class="line">        scores = scores.masked_fill(mask == <span class="number">0</span>, -<span class="number">1e9</span>)</span><br><span class="line">    <span class="comment">#对scores的最后一维进行softmax操作，使用F.softmax方法，这样获得最终的注意力张量</span></span><br><span class="line">    p_attn = F.softmax(scores, dim = -<span class="number">1</span>)</span><br><span class="line">    <span class="comment">#之后判断是否使用dropout进行随机置0</span></span><br><span class="line">    <span class="keyword">if</span> dropout <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        p_attn = dropout(p_attn)</span><br><span class="line">    <span class="comment">#最后，根据公式将p_attn与value张量相乘获得最终的query注意力表示，同时返回注意力张量</span></span><br><span class="line">    <span class="keyword">return</span> torch.matmul(p_attn, value), p_attn</span><br></pre></td></tr></table></figure>
-<h4><span id="34-多头注意力机制"><strong>3.4 多头注意力机制</strong></span></h4>
-<p><strong>刚刚介绍了attention机制，在搭建EncoderLayer时候所使用的Attention模块，实际使用的是多头注意力，可以简单理解为多个注意力模块组合在一起。</strong></p>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-e0f18101e6c6c621c87bcb880eb3c795_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong><font color="red">
-多头注意力机制的作用：这种结构设计能让每个注意力机制去优化每个词汇的不同特征部分，从而均衡同一种注意力机制可能产生的偏差，让词义拥有来自更多元表达，实验表明可以从而提升模型效果。</font></strong></p>
-<blockquote>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BMultiHead%7D%28Q%2CK%2CV%29%3D%5Cmathrm%7BConcat%28head_1%2C...%2Chead_h%29%7DW%5EO+%5C%5C+%5Cmathrm%7Bwhere%5Cquad+head_i%7D%3DA%28QW_i%5EQ%2CKW_i%5EK%2CVW_i%5EV%29%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>对于multi-head attention，假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 个head，这里
-<img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
-是一个常数，对于每个head，首先需要把三个矩阵分别映射到 <img src="https://www.zhihu.com/equation?tex=d_q%2Cd_k%2Cd_v" alt="[公式]">
-维度。这里考虑一种简化情况： <img src="https://www.zhihu.com/equation?tex=d_q%3Dd_k%3Dd_v%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。(对于dot-attention计算方式， <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d_v" alt="[公式]">
-可以不同)。</p>
-<ul>
-<li>输入线性映射的复杂度： <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 运算，忽略常系数，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"> 。</li>
-<li>Attention操作复杂度：主要在相似度计算及加权和的开销上， <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bd%7D%7Bh%7D%5Ctimes+%7Bn%7D" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7B%7D" alt="[公式]"></li>
-<li>输出线性映射的复杂度：concat操作拼起来形成 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
-的矩阵，然后经过输出线性映射，保证输入输出相同，所以是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
-<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 计算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></li>
-</ul>
-<p>故最后的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%2Bnd%5E2%29" alt="[公式]"></p>
-</blockquote>
-<p>举个更形象的例子，<strong>bank是银行的意思，如果只有一个注意力模块，那么它大概率会学习去关注类似money、loan贷款这样的词。如果我们使用多个多头机制，那么不同的头就会去关注不同的语义，比如bank还有一种含义是河岸，那么可能有一个头就会去关注类似river这样的词汇，这时多头注意力的价值就体现出来了</strong>。下面是多头注意力机制的实现代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadedAttention</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, h, d_model, dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="comment">#在类的初始化时，会传入三个参数，h代表头数，d_model代表词嵌入的维度，dropout代表进行dropout操作时置0比率，默认是0.1</span></span><br><span class="line">        <span class="built_in">super</span>(MultiHeadedAttention, self).__init__()</span><br><span class="line">        <span class="comment">#在函数中，首先使用了一个测试中常用的assert语句，判断h是否能被d_model整除，这是因为我们之后要给每个头分配等量的词特征，也就是embedding_dim/head个</span></span><br><span class="line">        <span class="keyword">assert</span> d_model % h == <span class="number">0</span></span><br><span class="line">        <span class="comment">#得到每个头获得的分割词向量维度d_k</span></span><br><span class="line">        self.d_k = d_model // h</span><br><span class="line">        <span class="comment">#传入头数h</span></span><br><span class="line">        self.h = h</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#创建linear层，通过nn的Linear实例化，它的内部变换矩阵是embedding_dim x embedding_dim，然后使用，为什么是四个呢，这是因为在多头注意力中，Q,K,V各需要一个，最后拼接的矩阵还需要一个，因此一共是四个</span></span><br><span class="line">        self.linears = clones(nn.Linear(d_model, d_model), <span class="number">4</span>)</span><br><span class="line">        <span class="comment">#self.attn为None，它代表最后得到的注意力张量，现在还没有结果所以为None</span></span><br><span class="line">        self.attn = <span class="literal">None</span></span><br><span class="line">        self.dropout = nn.Dropout(p=dropout)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, query, key, value, mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment">#前向逻辑函数，它输入参数有四个，前三个就是注意力机制需要的Q,K,V，最后一个是注意力机制中可能需要的mask掩码张量，默认是None</span></span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># Same mask applied to all h heads.</span></span><br><span class="line">            <span class="comment">#使用unsqueeze扩展维度，代表多头中的第n头</span></span><br><span class="line">            mask = mask.unsqueeze(<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#接着，我们获得一个batch_size的变量，他是query尺寸的第1个数字，代表有多少条样本</span></span><br><span class="line">        nbatches = query.size(<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 1) Do all the linear projections in batch from d_model =&gt; h x d_k </span></span><br><span class="line">        <span class="comment"># 首先利用zip将输入QKV与三个线性层组到一起，然后利用for循环，将输入QKV分别传到线性层中，做完线性变换后，开始为每个头分割输入，这里使用view方法对线性变换的结构进行维度重塑，多加了一个维度h代表头，这样就意味着每个头可以获得一部分词特征组成的句子，其中的-1代表自适应维度，计算机会根据这种变换自动计算这里的值，然后对第二维和第三维进行转置操作，为了让代表句子长度维度和词向量维度能够相邻，这样注意力机制才能找到词义与句子位置的关系，从attention函数中可以看到，利用的是原始输入的倒数第一和第二维，这样我们就得到了每个头的输入</span></span><br><span class="line">        query, key, value = \</span><br><span class="line">            [l(x).view(nbatches, -<span class="number">1</span>, self.h, self.d_k).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">             <span class="keyword">for</span> l, x <span class="keyword">in</span> <span class="built_in">zip</span>(self.linears, (query, key, value))]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2) Apply attention on all the projected vectors in batch. </span></span><br><span class="line">        <span class="comment"># 得到每个头的输入后，接下来就是将他们传入到attention中，这里直接调用我们之前实现的attention函数，同时也将mask和dropout传入其中</span></span><br><span class="line">        x, self.attn = attention(query, key, value, mask=mask, </span><br><span class="line">                                 dropout=self.dropout)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 3) &quot;Concat&quot; using a view and apply a final linear. </span></span><br><span class="line">        <span class="comment"># 通过多头注意力计算后，我们就得到了每个头计算结果组成的4维张量，我们需要将其转换为输入的形状以方便后续的计算，因此这里开始进行第一步处理环节的逆操作，先对第二和第三维进行转置，然后使用contiguous方法。这个方法的作用就是能够让转置后的张量应用view方法，否则将无法直接使用，所以，下一步就是使用view重塑形状，变成和输入形状相同。  </span></span><br><span class="line">        x = x.transpose(<span class="number">1</span>, <span class="number">2</span>).contiguous() \</span><br><span class="line">             .view(nbatches, -<span class="number">1</span>, self.h * self.d_k)</span><br><span class="line">        <span class="comment">#最后使用线性层列表中的最后一个线性变换得到最终的多头注意力结构的输出</span></span><br><span class="line">        <span class="keyword">return</span> self.linears[-<span class="number">1</span>](x)</span><br></pre></td></tr></table></figure>
-<h4><span id="35-前馈全连接层"><strong>3.5 前馈全连接层</strong></span></h4>
-<p><strong>EncoderLayer中另一个核心的子层是 Feed Forward
-Layer</strong>，我们这就介绍一下。在进行了Attention操作之后，encoder和decoder中的每一层都包含了一个全连接前向网络，对每个position的向量分别进行相同的操作，包括两个线性变换和一个ReLU激活输出：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-776124756aeaa1aab51f630819d372b7_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong><font color="red"> Feed Forward Layer
-其实就是简单的由两个前向全连接层组成，核心在于，Attention模块每个时间步的输出都整合了所有时间步的信息，==而Feed
-Forward
-Layer每个时间步只是对自己的特征的一个进一步整合，与其他时间步无关。==</font></strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PositionwiseFeedForward</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, d_ff, dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="comment">#初始化函数有三个输入参数分别是d_model，d_ff，和dropout=0.1，第一个是线性层的输入维度也是第二个线性层的输出维度，因为我们希望输入通过前馈全连接层后输入和输出的维度不变，第二个参数d_ff就是第二个线性层的输入维度和第一个线性层的输出，最后一个是dropout置0比率。</span></span><br><span class="line">        <span class="built_in">super</span>(PositionwiseFeedForward, self).__init__()</span><br><span class="line">        self.w_1 = nn.Linear(d_model, d_ff)</span><br><span class="line">        self.w_2 = nn.Linear(d_ff, d_model)</span><br><span class="line">        self.dropout = nn.Dropout(dropout)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment">#输入参数为x，代表来自上一层的输出，首先经过第一个线性层，然后使用F中的relu函数进行激活，之后再使用dropout进行随机置0，最后通过第二个线性层w2，返回最终结果</span></span><br><span class="line">        <span class="keyword">return</span> self.w_2(self.dropout(F.relu(self.w_1(x))))</span><br></pre></td></tr></table></figure>
-<p>到这里Encoder中包含的主要结构就都介绍了，上面的代码中涉及了两个小细节还没有介绍，<strong>layer
-normalization 和 mask</strong>，下面来简单讲解一下。</p>
-<h4><span id="36-规范化层"><strong>3.6. 规范化层</strong></span></h4>
-<p><strong>规范化层的作用：它是所有深层网络模型都需要的标准网络层，因为随着网络层数的增加，通过多层的计算后输出可能开始出现过大或过小的情况，这样可能会导致学习过程出现异常，模型可能收敛非常慢</strong>。因此都会在一定层后接规范化层进行数值的规范化，使其特征数值在合理范围内。Transformer中使用的normalization手段是layer
-norm，实现代码很简单，如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;Construct a layernorm module (See citation for details).&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, feature_size, eps=<span class="number">1e-6</span></span>):</span><br><span class="line">        <span class="comment">#初始化函数有两个参数，一个是features,表示词嵌入的维度,另一个是eps它是一个足够小的数，在规范化公式的分母中出现,防止分母为0，默认是1e-6。</span></span><br><span class="line">        <span class="built_in">super</span>(LayerNorm, self).__init__()</span><br><span class="line">        <span class="comment">#根据features的形状初始化两个参数张量a2，和b2，第一初始化为1张量，也就是里面的元素都是1，第二个初始化为0张量，也就是里面的元素都是0，这两个张量就是规范化层的参数。因为直接对上一层得到的结果做规范化公式计算，将改变结果的正常表征，因此就需要有参数作为调节因子，使其即能满足规范化要求，又能不改变针对目标的表征，最后使用nn.parameter封装，代表他们是模型的参数</span></span><br><span class="line">        self.a_2 = nn.Parameter(torch.ones(feature_size))</span><br><span class="line">        self.b_2 = nn.Parameter(torch.zeros(feature_size))</span><br><span class="line">        <span class="comment">#把eps传到类中</span></span><br><span class="line">        self.eps = eps</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">    <span class="comment">#输入参数x代表来自上一层的输出，在函数中，首先对输入变量x求其最后一个维度的均值，并保持输出维度与输入维度一致，接着再求最后一个维度的标准差，然后就是根据规范化公式，用x减去均值除以标准差获得规范化的结果。</span></span><br><span class="line">    <span class="comment">#最后对结果乘以我们的缩放参数，即a2,*号代表同型点乘，即对应位置进行乘法操作，加上位移参b2，返回即可</span></span><br><span class="line">        mean = x.mean(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        std = x.std(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> self.a_2 * (x - mean) / (std + self.eps) + self.b_2</span><br></pre></td></tr></table></figure>
-<h4><span id="37-掩码及其作用"><strong>3.7 掩码及其作用</strong></span></h4>
-<p><strong>掩码：掩代表遮掩，码就是我们张量中的数值，它的尺寸不定，里面一般只有0和1；代表位置被遮掩或者不被遮掩。</strong>掩码的作用：<strong><font color="red">
-在transformer中，掩码主要的作用有两个，一个是屏蔽掉无效的padding区域，一个是屏蔽掉来自“未来”的信息。</font></strong></p>
-<p><strong>Encoder中的掩码主要是起到第一个作用，Decoder中的掩码则同时发挥着两种作用</strong>。屏蔽掉无效的padding区域：我们训练需要组batch进行，就以机器翻译任务为例，一个batch中不同样本的输入长度很可能是不一样的，此时我们要设置一个最大句子长度，然后对空白区域进行padding填充，而填充的区域无论在Encoder还是Decoder的计算中都是没有意义的，因此需要用mask进行标识，屏蔽掉对应区域的响应。屏蔽掉来自未来的信息：我们已经学习了attention的计算流程，它是会综合所有时间步的计算的，那么在解码的时候，就有可能获取到未来的信息，这是不行的。因此，这种情况也需要我们使用mask进行屏蔽。现在还没介绍到Decoder，如果没完全理解，可以之后再回过头来思考下。mask的构造代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">subsequent_mask</span>(<span class="params">size</span>):</span><br><span class="line">    <span class="comment">#生成向后遮掩的掩码张量，参数size是掩码张量最后两个维度的大小，它最后两维形成一个方阵</span></span><br><span class="line">    <span class="string">&quot;Mask out subsequent positions.&quot;</span></span><br><span class="line">    attn_shape = (<span class="number">1</span>, size, size)</span><br><span class="line">    <span class="comment">#然后使用np.ones方法向这个形状中添加1元素，形成上三角阵</span></span><br><span class="line">    subsequent_mask = np.triu(np.ones(attn_shape), k=<span class="number">1</span>).astype(<span class="string">&#x27;uint8&#x27;</span>)</span><br><span class="line">    <span class="comment">#最后将numpy类型转化为torch中的tensor，内部做一个1- 的操作。这个其实是做了一个三角阵的反转，subsequent_mask中的每个元素都会被1减。</span></span><br><span class="line">    <span class="comment">#如果是0，subsequent_mask中的该位置由0变成1</span></span><br><span class="line">    <span class="comment">#如果是1，subsequect_mask中的该位置由1变成0</span></span><br><span class="line">    <span class="keyword">return</span> torch.from_numpy(subsequent_mask) == <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>以上便是编码器部分的全部内容，有了这部分内容的铺垫，解码器的介绍就会轻松一些。</p>
-<h3><span id="四-decoder"><strong>四、 Decoder</strong></span></h3>
-<h4><span id="41-解码器整体结构"><strong>4.1 解码器整体结构</strong></span></h4>
-<p>解码器的作用：根据编码器的结果以及上一次预测的结果，输出序列的下一个结果。整体结构上，解码器也是由N个相同层堆叠而成。构造代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用类Decoder来实现解码器</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;Generic N layer decoder with masking.&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, layer, N</span>):</span><br><span class="line">        <span class="comment">#初始化函数的参数有两个，第一个就是解码器层layer，第二个是解码器层的个数N</span></span><br><span class="line">        <span class="built_in">super</span>(Decoder, self).__init__()</span><br><span class="line">        <span class="comment">#首先使用clones方法克隆了N个layer，然后实例化一个规范化层，因为数据走过了所有的解码器层后最后要做规范化处理。</span></span><br><span class="line">        self.layers = clones(layer, N)</span><br><span class="line">        self.norm = LayerNorm(layer.size)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, memory, src_mask, tgt_mask</span>):</span><br><span class="line">        <span class="comment">#forward函数中的参数有4个，x代表目标数据的嵌入表示，memory是编码器层的输出，source_mask，target_mask代表源数据和目标数据的掩码张量，然后就是对每个层进行循环，当然这个循环就是变量x通过每一个层的处理，得出最后的结果，再进行一次规范化返回即可。</span></span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers:</span><br><span class="line">            x = layer(x, memory, src_mask, tgt_mask)</span><br><span class="line">        <span class="keyword">return</span> self.norm(x)</span><br></pre></td></tr></table></figure>
-<h4><span id="42-解码器层"><strong>4.2 解码器层</strong></span></h4>
-<p><strong>每个解码器层由三个子层连接结构组成，第一个子层连接结构包括一个多头自注意力子层和规范化层以及一个残差连接，第二个子层连接结构包括一个多头注意力子层和规范化层以及一个残差连接，第三个子层连接结构包括一个前馈全连接子层和规范化层以及一个残差连接。</strong></p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-fda2b501fe89662dd5f76326b102c650_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>解码器层中的各个子模块，如，多头注意力机制，规范化层，前馈全连接都与编码器中的实现相同。</p>
-<p>有一个细节需要注意，第一个子层的多头注意力和编码器中完全一致，<strong><font color="red">
-第二个子层，它的多头注意力模块中，query来自上一个子层，key 和 value
-来自编码器的输出。</font></strong>可以这样理解，就是第二层负责，利用解码器已经预测出的信息作为query，去编码器提取的各种特征中，查找相关信息并融合到当前特征中，来完成预测。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用DecoderLayer的类实现解码器层</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DecoderLayer</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;Decoder is made of self-attn, src-attn, and feed forward (defined below)&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size, self_attn, src_attn, feed_forward, dropout</span>):</span><br><span class="line">        <span class="comment">#初始化函数的参数有5个，分别是size，代表词嵌入的维度大小，同时也代表解码器的尺寸，第二个是self_attn，多头自注意力对象，也就是说这个注意力机制需要Q=K=V，第三个是src_attn,多头注意力对象，这里Q!=K=V，第四个是前馈全连接层对象，最后就是dropout置0比率</span></span><br><span class="line">        <span class="built_in">super</span>(DecoderLayer, self).__init__()</span><br><span class="line">        self.size = size</span><br><span class="line">        self.self_attn = self_attn</span><br><span class="line">        self.src_attn = src_attn</span><br><span class="line">        self.feed_forward = feed_forward</span><br><span class="line">        <span class="comment">#按照结构图使用clones函数克隆三个子层连接对象</span></span><br><span class="line">        self.sublayer = clones(SublayerConnection(size, dropout), <span class="number">3</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, memory, src_mask, tgt_mask</span>):</span><br><span class="line">        <span class="comment">#forward函数中的参数有4个，分别是来自上一层的输入x，来自编码器层的语义存储变量memory，以及源数据掩码张量和目标数据掩码张量，将memory表示成m之后方便使用。</span></span><br><span class="line">        <span class="string">&quot;Follow Figure 1 (right) for connections.&quot;</span></span><br><span class="line">        m = memory</span><br><span class="line">        <span class="comment">#将x传入第一个子层结构，第一个子层结构的输入分别是x和self-attn函数，因为是自注意力机制，所以Q,K,V都是x，最后一个参数时目标数据掩码张量，这时要对目标数据进行遮掩，因为此时模型可能还没有生成任何目标数据。</span></span><br><span class="line">        <span class="comment">#比如在解码器准备生成第一个字符或词汇时，我们其实已经传入了第一个字符以便计算损失，但是我们不希望在生成第一个字符时模型能利用这个信息，因此我们会将其遮掩，同样生成第二个字符或词汇时，模型只能使用第一个字符或词汇信息，第二个字符以及之后的信息都不允许被模型使用。</span></span><br><span class="line">        x = self.sublayer[<span class="number">0</span>](x, <span class="keyword">lambda</span> x: self.self_attn(x, x, x, tgt_mask))</span><br><span class="line">        <span class="comment">#接着进入第二个子层，这个子层中常规的注意力机制，q是输入x;k,v是编码层输出memory，同样也传入source_mask，但是进行源数据遮掩的原因并非是抑制信息泄露，而是遮蔽掉对结果没有意义的padding。</span></span><br><span class="line">        x = self.sublayer[<span class="number">1</span>](x, <span class="keyword">lambda</span> x: self.src_attn(x, m, m, src_mask))</span><br><span class="line">        <span class="comment">#最后一个子层就是前馈全连接子层，经过它的处理后就可以返回结果，这就是我们的解码器结构</span></span><br><span class="line">        <span class="keyword">return</span> self.sublayer[<span class="number">2</span>](x, self.feed_forward)</span><br></pre></td></tr></table></figure>
-<h3><span id="五-模型输出"><strong>五、模型输出</strong></span></h3>
-<p>输出部分就很简单了，每个时间步都过一个 线性层 + softmax层</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-27f90c6393de75bc8d237fca3e4758b8_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>线性层的作用：通过对上一步的线性变化得到指定维度的输出，也就是转换维度的作用。转换后的维度对应着输出类别的个数，如果是翻译任务，那就对应的是文字字典的大小。</strong></p>
-<h3><span id="六-模型构建">六、<strong>模型构建</strong></span></h3>
-<p>下面是Transformer总体架构图，回顾一下，再看这张图，是不是每个模块的作用都有了基本的认知。</p>
-<p><img src="https://pic1.zhimg.com/80/v2-f70598121a15f713eeafa4bc696d528c_1440w.jpg" alt="img" style="zoom: 50%;"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Model Architecture</span></span><br><span class="line"><span class="comment">#使用EncoderDecoder类来实现编码器-解码器结构</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EncoderDecoder</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    A standard Encoder-Decoder architecture. </span></span><br><span class="line"><span class="string">    Base for this and many other models.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, encoder, decoder, src_embed, tgt_embed, generator</span>):</span><br><span class="line">        <span class="comment">#初始化函数中有5个参数，分别是编码器对象，解码器对象,源数据嵌入函数，目标数据嵌入函数，以及输出部分的类别生成器对象.</span></span><br><span class="line">        <span class="built_in">super</span>(EncoderDecoder, self).__init__()</span><br><span class="line">        self.encoder = encoder</span><br><span class="line">        self.decoder = decoder</span><br><span class="line">        self.src_embed = src_embed    <span class="comment"># input embedding module(input embedding + positional encode)</span></span><br><span class="line">        self.tgt_embed = tgt_embed    <span class="comment"># ouput embedding module</span></span><br><span class="line">        self.generator = generator    <span class="comment"># output generation module</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, src, tgt, src_mask, tgt_mask</span>):</span><br><span class="line">        <span class="string">&quot;Take in and process masked src and target sequences.&quot;</span></span><br><span class="line">        <span class="comment">#在forward函数中，有四个参数，source代表源数据，target代表目标数据,source_mask和target_mask代表对应的掩码张量,在函数中，将source source_mask传入编码函数，得到结果后与source_mask target 和target_mask一同传给解码函数</span></span><br><span class="line">        memory = self.encode(src, src_mask)</span><br><span class="line">        res = self.decode(memory, src_mask, tgt, tgt_mask)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, src, src_mask</span>):</span><br><span class="line">        <span class="comment">#编码函数，以source和source_mask为参数,使用src_embed对source做处理，然后和source_mask一起传给self.encoder</span></span><br><span class="line">        src_embedds = self.src_embed(src)</span><br><span class="line">        <span class="keyword">return</span> self.encoder(src_embedds, src_mask)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decode</span>(<span class="params">self, memory, src_mask, tgt, tgt_mask</span>):</span><br><span class="line">        <span class="comment">#解码函数，以memory即编码器的输出，source_mask target target_mask为参数,使用tgt_embed对target做处理，然后和source_mask,target_mask,memory一起传给self.decoder</span></span><br><span class="line">        target_embedds = self.tgt_embed(tgt)</span><br><span class="line">        <span class="keyword">return</span> self.decoder(target_embedds, memory, src_mask, tgt_mask)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Full Model</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">make_model</span>(<span class="params">src_vocab, tgt_vocab, N=<span class="number">6</span>, d_model=<span class="number">512</span>, d_ff=<span class="number">2048</span>, h=<span class="number">8</span>, dropout=<span class="number">0.1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    构建模型</span></span><br><span class="line"><span class="string">    params:</span></span><br><span class="line"><span class="string">        src_vocab:</span></span><br><span class="line"><span class="string">        tgt_vocab:</span></span><br><span class="line"><span class="string">        N: 编码器和解码器堆叠基础模块的个数</span></span><br><span class="line"><span class="string">        d_model: 模型中embedding的size，默认512</span></span><br><span class="line"><span class="string">        d_ff: FeedForward Layer层中embedding的size，默认2048</span></span><br><span class="line"><span class="string">        h: MultiHeadAttention中多头的个数，必须被d_model整除</span></span><br><span class="line"><span class="string">        dropout:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    c = copy.deepcopy</span><br><span class="line">    attn = MultiHeadedAttention(h, d_model)</span><br><span class="line">    ff = PositionwiseFeedForward(d_model, d_ff, dropout)</span><br><span class="line">    position = PositionalEncoding(d_model, dropout)</span><br><span class="line">    model = EncoderDecoder(</span><br><span class="line">        Encoder(EncoderLayer(d_model, c(attn), c(ff), dropout), N),</span><br><span class="line">        Decoder(DecoderLayer(d_model, c(attn), c(attn), c(ff), dropout), N),</span><br><span class="line">        nn.Sequential(Embeddings(d_model, src_vocab), c(position)),</span><br><span class="line">        nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),</span><br><span class="line">        Generator(d_model, tgt_vocab))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># This was important from their code. </span></span><br><span class="line">    <span class="comment"># Initialize parameters with Glorot / fan_avg.</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> model.parameters():</span><br><span class="line">        <span class="keyword">if</span> p.dim() &gt; <span class="number">1</span>:</span><br><span class="line">            nn.init.xavier_uniform_(p)</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
-<h1><span id="transformer-qampa">Transformer Q&amp;A</span></h1>
-<blockquote>
-<p>3，Transformer的Feed Forward层在训练的时候到底在训练什么？ -
-zzzzzzz的回答 - 知乎
-https://www.zhihu.com/question/499274875/answer/2250085650</p>
-</blockquote>
-<h4><span id="feed-forward-networkffn的作用"><strong>Feed forward network
-(FFN)的作用？</strong></span></h4>
-<p>Transformer在抛弃了 LSTM 结构后，FFN
-中的激活函数成为了一个主要的提供<strong>非线性变换</strong>的单元。</p>
-<h4><span id="gelu原理相比relu的优点"><strong>GELU原理？相比RELU的优点？</strong></span></h4>
-<p>ReLU会<strong>确定性</strong>的将输入乘上一个0或者1(当x&lt;0时乘上0，否则乘上1)，Dropout则是随机乘上0。而GELU虽然也是将输入乘上0或1，但是输入到底是乘以0还是1，是在<strong>取决于输入自身</strong>的情况下<strong>随机</strong>选择的。</p>
-<p>什么意思呢？具体来说：</p>
-<p>我们将神经元的输入 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 乘上一个服从伯努利分布的 <img src="https://www.zhihu.com/equation?tex=m" alt="[公式]">
-。而该伯努利分布又是依赖于 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 的：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=m+%5Csim+Bernoulli%28%5CPhi%28x%29%29+%2C+~where+~%5CPhi%28x%29+%3D+P%28X+%3C%3D+x%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=X+%5Csim+N%280%2C+1%29" alt="[公式]">，那么 <img src="https://www.zhihu.com/equation?tex=%5CPhi%28x%29" alt="[公式]">
-就是标准正态分布的累积分布函数。这么做的原因是因为神经元的输入 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">
-往往遵循正态分布，尤其是深度网络中普遍存在Batch
-Normalization的情况下。当<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">减小时，<img src="https://www.zhihu.com/equation?tex=%5CPhi%28x%29" alt="[公式]">的值也会减小，此时<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">被“丢弃”的可能性更高。所以说这是<strong>随机依赖于输入</strong>的方式。</p>
-<p>现在，给出GELU函数的形式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=GELU%28x%29+%3D+%5CPhi%28x%29+%2A+I%28x%29+%2B+%281+-+%5CPhi%28x%29%29+%2A+0x+%3D+x%5CPhi%28x%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中 <img src="https://www.zhihu.com/equation?tex=%5CPhi%28x%29" alt="[公式]">
-是上文提到的标准正态分布的累积分布函数。因为这个函数没有解析解，所以要用近似函数来表示。</p>
-<h5><span id="图像">图像：</span></h5>
-<p><img src="https://pic3.zhimg.com/v2-0fde0599700a8045a7c1b7d006de33fa_b.jpg" alt="img" style="zoom:50%;"></p>
-<h5><span id="导数形式">导数形式：</span></h5>
-<p><img src="https://pic4.zhimg.com/v2-c55ded292a81733eb0944abdc4332d43_b.jpg" alt="img" style="zoom:50%;"></p>
-<p>GELU和RELU一样，可以解决梯度消失，所以，GELU的优点就是在ReLU上增加随机因素，x越小越容易被mask掉。</p>
-<h4><span id="为什么用layernorm不用batchnorm">==<strong>为什么用layernorm不用batchnorm？</strong>==</span></h4>
-<p>对于RNN来说，sequence的长度是不一致的，所以用很多padding来表示无意义的信息。如果BN会导致有意义的embedding损失信息。所以，BN一般用于CNN，而LN用于RNN。</p>
-<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=layernorm&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22438634058%22%7D">layernorm</a>是在hidden
-size的维度进行的，跟batch和seq_len无关。每个hidden
-state都计算自己的均值和方差，这是因为不同hidden
-state的量纲不一样。beta和gamma的维度都是(hidden_size,)，经过白化的hidden
-state * beta + gamma得到最后的结果。</p>
-<p>LN在BERT中主要起到白化的作用，增强模型稳定性（如果删除则无法收敛）</p>
-<h4><span id="multi-head-self-attention">==Multi-head Self-Attention==</span></h4>
-<p>如果是<strong>单头</strong>注意力，就是每个位置的embedding对应 <img src="https://www.zhihu.com/equation?tex=Q%2CK%2CV" alt="[公式]">
-三个向量，这三个向量分别是embedding点乘 <img src="https://www.zhihu.com/equation?tex=W_Q%2CW_K%2CW_V" alt="[公式]">
-矩阵得来的。每个位置的Q向量去乘上所有位置的K向量，其结果经过softmax变成attention
-score，以此作为权重对所有V向量做<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=加权求和&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22438634058%22%7D">加权求和</a>即可。</p>
-<p>用公式表示为：<img src="https://www.zhihu.com/equation?tex=Attention%28Q%2CK%2CV%29+%3D+softmax%28%5Cfrac%7BQK%5ET%7D%7B%5Csqrt%7Bd_k%7D%7D%29V" alt="[公式]"></p>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 为 <img src="https://www.zhihu.com/equation?tex=Q%2CK" alt="[公式]"> 向量的hidden size。除以 <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 叫做scaled
-dot product.</p>
-<ul>
-<li><h5><span id="多头注意力是怎样的呢"><strong>多头</strong>注意力是怎样的呢？</span></h5></li>
-</ul>
-<p>Transformer中先通过切头（<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=spilt&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22438634058%22%7D">spilt</a>）再分别进行Scaled
-Dot-Product Attention。</p>
-<p><strong>step1</strong>：一个768维的hidden向量，被映射成Q，K，V。
-然后三个向量分别切分成12(head_num)个小的64维的向量，每一组小向量之间做attention。不妨假设batch_size为32，<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=seqlen&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22438634058%22%7D">seqlen</a>为512，隐层维度为768，12个head。</p>
-<blockquote>
-<p>hidden(32 x 512 x 768) -&gt; Q(32 x 512 x 768) -&gt; 32 x 12 x 512 x
-64 hidden(32 x 512 x 768) -&gt; K(32 x 512 x 768) -&gt; 32 x 12 x 512 x
-64 hidden(32 x 512 x 768) -&gt; V(32 x 512 x 768) -&gt; 32 x 12 x 512 x
-64</p>
-</blockquote>
-<p><strong>step2</strong>：然后Q和K之间做attention，得到一个32 x 12 x
-512 x 512的权重矩阵（时间复杂度O( <img src="https://www.zhihu.com/equation?tex=n%5E2d" alt="[公式]">
-))，然后根据这个权重矩阵加权V中切分好的向量，得到一个32 x 12 x 512 x 64
-的向量，拉平输出为768向量。</p>
-<blockquote>
-<p>32 x 12 x 512 x 64(query_hidden) * 32 x 12 x 64 x 512(key_hidden)
--&gt; 32 x 12 x 512 x 512 32 x 12 x 64 x 512(value_hidden) * 32 x 12 x
-512 x 512 (权重矩阵) -&gt; 32 x 12 x 512 x 64</p>
-</blockquote>
-<p>然后再还原成 -&gt; 32 x 512 x 768
-。简言之是12个头，每个头都是一个64维度，分别去与其他的所有位置的hidden
-embedding做attention然后再合并还原。</p>
-<ul>
-<li><h5><span id="多头机制为什么有效">多头机制为什么有效？</span></h5></li>
-</ul>
-<p>类似于CNN中通过多通道机制进行特征选择。Transformer中使用切头(split)的方法，是为了在不增加复杂度（
-<img src="https://www.zhihu.com/equation?tex=O%28n%5E2d%29" alt="[公式]"> )的前提下享受类似CNN中“不同卷积核”的优势。</p>
-<h4><span id="为什么要做scaled-dotproduct">==为什么要做scaled dot
-product?==</span></h4>
-<p>当输入信息的维度 d 比较高，会导致 softmax
-函数接近饱和区，梯度会比较小。因此，缩放点积模型可以较好地解决这一问题。</p>
-<h4><span id="为什么用双线性点积模型即qk两个向量">==为什么用双线性点积模型（即Q，K两个向量）？==</span></h4>
-<p>双线性点积模型使用Q，K两个向量，而不是只用一个Q向量，这样引入非对称性，更具健壮性（Attention对角元素值不一定是最大的，也就是说当前位置对自身的注意力得分不一定最高）。</p>
-<h4><span id="transformer的非线性来自于哪里">==Transformer的非线性来自于哪里？==</span></h4>
-<ul>
-<li>FFN的gelu激活函数</li>
-<li>self-attention：注意self-attention是非线性的（因为有相乘和softmax）</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2D5Z22P/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2D5Z22P/" class="post-title-link" itemprop="url">模型训练（3）Adaptive Learning Rate</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-09 11:34:59" itemprop="dateCreated datePublished" datetime="2022-06-09T11:34:59+08:00">2022-06-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 18:26:10" itemprop="dateModified" datetime="2023-05-01T18:26:10+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">训练技巧</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>13k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>24 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="李宏毅课程笔记adaptivelearning-rate">李宏毅课程笔记：Adaptive
-Learning Rate</span></h3>
-<p>critical
-point其实不一定是,你在训练一个Network的时候,会遇到的最大的障碍,今天要告诉大家的是一个叫做Adaptive
-Learning Rate的技术,我们要给每一个参数不同的learning rate</p>
-<h3><span id="一-training-stuck-smallgradient">一、Training stuck ≠ Small
-Gradient</span></h3>
-<h5><span id="peoplebelieve-training-stuck-because-the-parameters-are-around-a-criticalpoint">People
-believe training stuck because the parameters are around a critical
-point …</span></h5>
-<p><strong>人们认为，由于参数处于临界点附近，培训陷入困境</strong>;為什麼我说这个critical
-point不一定是我们训练过程中,最大的阻碍呢？</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011433865.png" alt="image-20220616182046388">
-<figcaption aria-hidden="true">image-20220616182046388</figcaption>
-</figure>
-<p>往往同学们,在训练一个network的时候,你会把它的loss记录下来,所以你会看到,你的loss原来很大,随著你参数不断的update,横轴代表参数update的次数,随著你参数不断的update,这个loss会越来越小,最后就卡住了,你的loss不再下降。</p>
-<p>那多数这个时候,大家就会猜说,那是不是走到了critical
-point,因為gradient等於零的关係,所以我们没有办法再更新参数,但是真的是这样吗？</p>
-<p>当我们说 走到critical
-point的时候,意味著gradient非常的小,但是你有确认过,当<strong>你的loss不再下降的时候,gradient真的很小吗？</strong>其实多数的同学可能,都没有确认过这件事,而事实上在这个例子裡面,在今天我show的这个例子裡面,当我们的loss不再下降的时候,gradient并没有真的变得很小</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011433585.png" alt="image-20220616182117000"></p>
-<p>gradient是一个向量，下面是gradient的norm,即gradient这个向量的长度,随著参数更新的时候的变化,你会发现说<strong>虽然loss不再下降,但是这个gradient的norm,gradient的大小并没有真的变得很小</strong></p>
-<p>这样子的结果其实也不难猜想,也许你遇到的是这样子的状况</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434572.png"></p>
-<p>这个是我们的error surface,然后你现在的gradient,在error
-surface山谷的两个谷壁间,<strong>不断的来回的震荡</strong></p>
-<p>这个时候你的loss不会再下降,所以你会觉得它真的卡到了critical
-point,卡到了saddle point,卡到了local
-minima吗？不是的,<strong>它的gradient仍然很大,只是loss不见得再减小了</strong></p>
-<p>所以你要注意,当你今天训练一个network,train到后来发现,loss不再下降的时候,你不要随便说,我卡在local
-minima,我卡在saddle
-point,<strong>有时候根本两个都不是,你只是单纯的loss没有办法再下降</strong></p>
-<p>就是為什麼你在在<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/ga642381/ML2021-Spring/blob/main/HW02/HW02-2.ipynb">作业2-2</a>,会有一个作业叫大家,算一下gradient的norm,然后算一下说,你现在是卡在saddle
-point,还是critical
-point,因為多数的时候,当你说你训练卡住了,很少有人会去分析卡住的原因,為了强化你的印象,我们有一个作业,让你来分析一下,卡住的原因是什麼,</p>
-<h4><span id="11-wait-a-minute">1.1 Wait a minute</span></h4>
-<p>有的同学就会有一个问题,如果我们在训练的时候,其实很少卡到saddle
-point,或者是local minima,那这一个图是怎麼做出来的呢?</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434590.png" alt="image-20220616182149914" style="zoom:67%;"></p>
-<p>我们上次有画过这个图是说我们现在训练一个Network,训练到现在参数<strong>在critical
-point附近,然后我们再来根据eigen value的正负号,来判断说这个critical
-point,比较像是saddle point,还是local minima</strong></p>
-<p>那如果实际上在训练的时候,要走到saddle point,或者是local
-minima,是一件困难的事情,那这个图到底是怎麼画出来的。那这边告诉大家一个秘密,这个图你要训练出这样子的结果,你要训练到你的参数很接近critical
-point,用一般的gradient descend,其实是做不到的,用一般的gradient descend
-train,你往往会得到的结果是,你在这个gradient还很大的时候,你的loss就已经掉了下去,这个是需要特别方法train的。</p>
-<p>所以做完这个实验以后,我更感觉你要走到一个critical
-point,其实是困难的一件事,多数时候training,在还没有走到critical
-point的时候,就已经停止了,那这并不代表说,critical
-point不是一个问题,我只是想要告诉你说,我们真正目前,<strong>当你用gradient
-descend,来做optimization的时候,你真正应该要怪罪的对象,往往不是critical
-point,而是其他的原因。</strong></p>
-<h4><span id="12training-can-be-difficult-even-without-critical-points">1.2
-Training can be difficult even without critical points</span></h4>
-<p>如果今天critical
-point不是问题的话,為什麼我们的training会卡住呢,我这边举一个非常简单的例子,我这边有一个,非常简单的error
-surface</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434181.png"></p>
-<p>我们只有两个参数,这两个参数值不一样的时候,Loss的值不一样,我们就画出了一个error
-surface,这个<strong>error
-surface的最低点</strong>在黄色X这个地方,事实上,这个error
-surface是convex的形状(可以理解为凸的或者凹的，convex
-optimization常翻译为“凸优化”)</p>
-<p>如果你不知道convex是什麼,没有关係,总之它是一个,它的这个等高线是椭圆形的,只是它在横轴的地方,它的gradient非常的小,它的坡度的变化非常的小,非常的平滑,所以这个椭圆的长轴非常的长,短轴相对之下比较短,在纵轴的地方gradient的变化很大,error
-surface的坡度非常的陡峭</p>
-<p>那现在我们要从<strong>黑点</strong>这个地方,这个地方当作<strong>初始的点</strong>,然后来做gradient
-descend，你可能觉得说,这个convex的error surface,做gradient
-descend,有什麼难的吗？不就是一路滑下来,然后可能再走过去吗,应该是非常容易。你实际上自己试一下,你会发现说,就连这种convex的error
-surface,形状这麼简单的error surface,你用gradient
-descend,都不见得能把它做好,举例来说这个是我实际上,自己试了一下的结果</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434016.png"></p>
-<p>我learning
-rate设10⁻²的时候,我的这个参数在峡谷的两端,我的参数在山壁的两端不断的震盪,我的loss掉不下去,但是gradient其实仍然是很大的。那你可能说,就是因為你<strong>learning
-rate设太大了</strong>阿,learning
-rate决定了我们update参数的时候步伐有多大,learning
-rate显然步伐太大,你没有办法慢慢地滑到山谷裡面只要把learning
-rate设小一点,不就可以解决这个问题了吗？</p>
-<p>事实不然,因為我试著去,调整了这个learning
-rate,就会发现你光是要train这种convex的optimization的问题,你就觉得很痛苦,我就调这个learning
-rate,从10⁻²,一直调到10⁻⁷,调到10⁻⁷以后,终於不再震盪了</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434853.png"></p>
-<p>终於从这个地方滑滑滑,滑到山谷底终於左转,但是你发现说,这个训练永远走不到终点,因為我的<strong>learning
-rate已经太小了</strong>,竖直往上这一段这个很斜的地方,因為这个坡度很陡,gradient的值很大,所以还能够前进一点,左拐以后这个地方坡度已经非常的平滑了,这麼小的learning
-rate,根本没有办法再让我们的训练前进。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434838.png" alt style="zoom:50%;"></p>
-<p>事实上在左拐这个地方,看到这边一大堆黑点,这边<strong>有十万个点</strong>,这个是张辽八百冲十万的那个十万,但是我都没有办法靠近,这个local
-minima的地方,所以显然<strong>就算是一个convex的error
-surface,你用gradient descend也很难train</strong></p>
-<p>这个convex的optimization的问题,确实有别的方法可以解,但是你想想看,如果今天是更复杂的error
-surface,你真的要train一个deep network的时候,gradient
-descend是你,唯一可以仰赖的工具,但是gradient
-descend这个工具,连这麼简单的error surface都做不好,一室之不治
-何以天下国家為,这麼简单的问题都做不好,那如果难的问题,它又怎麼有可能做好呢</p>
-<p>所以我们需要更好的gradient
-descend的版本,<strong><font color="red">在之前我们的gradient
-descend裡面,所有的参数都是设同样的learning rate,这显然是不够的,learning
-rate它应该要為,每一个参数客製化</font></strong>,所以接下来我们就是要讲,客製化的learning
-rate,怎麼做到这件事情</p>
-<h3><span id="二-differentparameters-needs-different-learning-rate">二、Different
-parameters needs different learning rate</span></h3>
-<p>那我们要怎麼客製化learning
-rate呢,我们不同的参数到底,需要什麼样的learning
-rate呢？从刚才的例子裡面,其实我们可以看到一个大原则,<strong>如果在某一个方向上,我们的gradient的值很小,非常的平坦,那我们会希望learning
-rate调大一点,如果在某一个方向上非常的陡峭,坡度很大,那我们其实期待,learning
-rate可以设得小一点</strong>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011434345.png"></p>
-<h5><span id="那这个learningrate要如何自动的根据这个gradient的大小做调整呢">那这个learning
-rate要如何自动的,根据这个gradient的大小做调整呢？</span></h5>
-<p><strong>我们要改一下,gradient
-descend原来的式子,我们只放某一个参数update的式子,我们之前在讲gradient
-descend,</strong>我们往往是讲,所有参数update的式子,那这边為了等一下简化这个问题,我们只看一个参数,但是你完全可以把这个方法,推广到所有参数的状况
-<span class="math display">\[
-{θ{_i}{^{t+1}}} ← {θ{_i}{^{t}}}-{\eta}{g{_i}{^{t}}}
-\]</span> 我们只看一个参数,这个参数叫做<span class="math inline">\({θ{_i}{^{t}}}\)</span>,这个<span class="math inline">\({θ{_i}{^{t}}}\)</span>在第t个iteration的值,减掉在第t个iteration这个参数i算出来的gradient
-<span class="math inline">\({g{_i}{^{t}}}\)</span> <span class="math display">\[
-{g{_i}{^{t}}}=\frac{\partial{L}}{\partial{θ_i}}|_{θ=θ^t}
-\]</span> 这个<span class="math inline">\({g{_i}{^{t}}}\)</span>代表在第t个iteration,也就是θ等於θᵗ的时候,参数θᵢ对loss的微分,我们把这个θᵢᵗ减掉learning
-rate,乘上gᵢᵗ会更新learning rate到θᵢᵗ⁺¹,<strong>这是我们原来的gradient
-descend</strong>,<strong>我们的learning rate是固定的</strong></p>
-<p>现在我们要有一个<strong>随著参数客製化的learning
-rate</strong>,我们把原来learning rate <span class="math inline">\(η\)</span>这一项呢,改写成<span class="math inline">\(\frac{η}{σᵢᵗ}\)</span> <span class="math display">\[
-{θ{_i}{^{t+1}}} ← {θ{_i}{^{t}}}-{\frac{η}{σᵢᵗ}}{g{_i}{^{t}}}
-\]</span> <strong><font color="red"> 这个<span class="math inline">\(σᵢᵗ\)</span>你发现它有一个上标t,有一个下标i,这代表说这个σ这个参数,首先它是depend
-on i的,不同的参数我们要给它不同的σ,同时它也是iteration
-dependent的,不同的iteration我们也会有不同的σ。</font></strong></p>
-<p>所以当我们把我们的learning rate,从η改成<span class="math inline">\(\frac{η}{σᵢᵗ}\)</span>的时候,我们就有一个,parameter
-dependent的learning rate,接下来我们是要看说,这个parameter
-dependent的learning rate有什麼常见的计算方式。</p>
-<h4><span id="21-root-mean-square">2.1 Root mean square</span></h4>
-<p>那这个σ有什麼样的方式,可以把它计算出来呢,一个常见的类型是算,gradient的<strong>Root
-Mean Square（均方根）</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011435453.png" alt="image-20220616183815859" style="zoom:50%;"></p>
-<p>现在参数要update的式子,我们从θᵢ⁰初始化参数减掉gᵢ⁰,乘上learning rate
-η除以σᵢ⁰,就得到θᵢ¹, <span class="math display">\[
-{θ{_i}{^{1}}} ← {θ{_i}{^{0}}}-{\frac{η}{σᵢ^0}}{g{_i}{^{0}}}
-\]</span></p>
-<ul>
-<li><p>这个<strong>σᵢ⁰</strong>在<strong>第一次update参数</strong>的时候,这个σᵢ⁰是(gᵢ⁰)²开根号
-<span class="math display">\[
-  {σᵢ^0}=\sqrt{({g{_i}{^{0}}})^2}=|{g{_i}{^{0}}}|
-  \]</span>
-这个gᵢ⁰就是我们的gradient,就是gradient的平方开根号,其实就是gᵢ⁰的绝对值,所以你把gᵢ⁰的绝对值代到<span class="math inline">\({θ{_i}{^{1}}} ←
-{θ{_i}{^{0}}}-{\frac{η}{σᵢ^0}}{g{_i}{^{0}}}\)</span>,这个式子中gᵢ⁰跟这个根号底下的gᵢ⁰,它们的大小是一样的,所以式子中这一项只会有一个,要嘛是正一
-要嘛是负一,就代表说我们第一次在update参数,从θᵢ⁰update到θᵢ¹的时候,要嘛是加上η
-要嘛是减掉η,跟这个gradient的大小没有关係,是看你η设多少,这个是第一步的状况</p></li>
-<li><p>重点是接下来怎麼处理,那θᵢ¹它要一样,减掉gradient gᵢ¹乘上η除以σᵢ¹,
-<span class="math display">\[
-  {θ{_i}{^{1}}}-{\frac{η}{σᵢ^1}}{g{_i}{^{1}}}
-  \]</span> 现在在第二次update参数的时候,是要除以σᵢ¹
-,这个σᵢ¹就是我们过去,<strong>所有计算出来的gradient,它的平方的平均再开根号</strong>
-<span class="math display">\[
-  {σᵢ^1}=\sqrt{\frac{1}{2}[{(g{_i}{^{0}}})^2+{(g{_i}{^{1}}})^2]}
-  \]</span>
-我们到目前為止,在第一次update参数的时候,我们算出了gᵢ⁰,在第二次update参数的时候,我们算出了gᵢ¹,所以这个σᵢ¹就是(gᵢ⁰)²,加上(gᵢ¹)²除以½再开根号,这个就是Root
-Mean Square,我们算出这个σᵢ¹以后,我们的learning
-rate就是η除以σᵢ¹,然后把θᵢ¹减掉,η除以σᵢ¹乘以gᵢ¹ 得到θᵢ² <span class="math display">\[
-  {θ{_i}{^{2}}} ← {θ{_i}{^{1}}}-{\frac{η}{σᵢ^1}}{g{_i}{^{1}}}
-  \]</span></p></li>
-<li><p>同样的操作就反覆继续下去,在θᵢ²的地方,你要减掉η除以σᵢ²乘以gᵢ²,
-<span class="math display">\[
-  {θ{_i}{^{2}}}-{\frac{η}{σᵢ^2}}{g{_i}{^{2}}}
-  \]</span>
-那这个σ是什麼呢,这个σᵢ²就是过去,所有算出来的gradient,它的平方和的平均再开根号
-<span class="math display">\[
-  {σᵢ^2}=\sqrt{\frac{1}{3}[{(g{_i}{^{0}}})^2+{(g{_i}{^{1}}})^2+{(g{_i}{^{2}}})^2]}
-  \]</span> 所以你把gᵢ⁰取平方,gᵢ¹取平方
-gᵢ²取平方,的平均再开根号,得到σᵢ²放在这个地方,然后update参数 <span class="math display">\[
-  {θ{_i}{^{3}}} ← {θ{_i}{^{2}}}-{\frac{η}{σᵢ^2}}{g{_i}{^{2}}}
-  \]</span></p></li>
-<li><p>所以这个process这个过程,就反覆继续下去,到第t次update参数的时候,其实这个是第t
-+ 1次,第t +
-1次update参数的时候,你的这个σᵢᵗ它就是过去所有的gradient,gᵢᵗ从第一步到目前為止,所有算出来的gᵢᵗ的平方和,再平均
-再开根号得到σᵢᵗ, <span class="math display">\[
-  {σᵢ^t}=\sqrt{\frac{1}{t+1}\sum_{i=0}^{t}{(g{_i}{^{t}}})^2}
-  \]</span> 然后在把它除learning rate,然后用这一项当作是,新的learning
-rate来update你的参数, <span class="math display">\[
-  {θ{_i}{^{t+1}}} ← {θ{_i}{^{t}}}-{\frac{η}{σᵢ^t}}{g{_i}{^{t}}}
-  \]</span></p></li>
-</ul>
-<h4><span id="22-adagrad">2.2 Adagrad</span></h4>
-<p>那这一招被用在一个叫做Adagrad的方法裡面,<strong>為什麼这一招可以做到我们刚才讲的,坡度比较大的时候,learning
-rate就减小,坡度比较小的时候,learning rate就放大呢?</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011435534.png"></p>
-<p>你可以想像说,现在我们有两个参数:<strong>一个叫θᵢ¹ 一个叫θᵢ² θᵢ¹坡度小
-θᵢ²坡度大</strong></p>
-<ul>
-<li>θᵢ¹因為它坡度小,所以你在θᵢ¹这个参数上面,算出来的gradient值都比较小</li>
-<li>因為gradient算出来的值比较小,然后这个σ是gradient的平方和取平均再开根号</li>
-</ul>
-<p><span class="math display">\[
-{σᵢ^t}=\sqrt{\frac{1}{t+1}\sum_{i=0}^{t}{(g{_i}{^{t}}})^2}
-\]</span></p>
-<ul>
-<li>所以算出来的σ就小,σ小 learning rate就大 <span class="math display">\[
-  {\frac{η}{σᵢ^t}}
-  \]</span></li>
-</ul>
-<p>反过来说θᵢ²,θᵢ²是一个比较陡峭的参数,在θᵢ²这个方向上loss的变化比较大,所以算出来的gradient都比较大,,你的σ就比较大,你在update的时候
-你的step,你的参数update的量就比较小</p>
-<p>所以有了σ这一项以后,你就可以随著gradient的不同,每一个参数的gradient的不同,来自动的调整learning
-rate的大小,那这个并不是,你今天会用的最终极的版本,</p>
-<h4><span id="23-rmsprop">2.3 RMSProp</span></h4>
-<p>刚才那个版本,就算是同一个参数,它需要的learning
-rate,也会随著时间而改变,我们刚才的假设,好像是同一个参数,它的gradient的大小,就会固定是差不多的值,但事实上并不一定是这个样子的。举例来说我们来看,这个新月形的error
-surface：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011435083.png" alt style="zoom:67%;"></p>
-<p>如果我们考虑横轴的话,考虑左右横的水平线的方向的话,你会发现说,在绿色箭头这个地方坡度<strong>比较陡峭,所以我们需要比较小的learning
-rate</strong>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011435667.png" style="zoom: 67%;"></p>
-<p>但是走到了中间这一段，到了红色箭头的时候呢,坡度又变得平滑了起来,<strong>平滑了起来就需要比较大的learning
-rate</strong>,所以就算是<strong>同一个参数同一个方向,我们也期待说,learning
-rate是可以动态的调整的</strong>,于是就有了一个新的招数,这个招数叫做RMS
-Prop。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436790.png"></p>
-<p>RMS Prop这个方法,<strong>它的第一步跟刚才讲的Root Mean
-Square,也就是那个Apagrad的方法,是一模一样的</strong> <span class="math display">\[
-{σᵢ^0}=\sqrt{({g_i^0})^2}
-\]</span>
-我们看第二步,一样要算出σᵢ¹,只是我们现在算出σᵢ¹的方法跟刚才,算Root Mean
-Square的时候不一样,刚才在算Root Mean
-Square的时候,每一个gradient都有同等的重要性,但<strong>在RMS
-Prop裡面,它决定你可以自己调整,现在的这个gradient,你觉得它有多重要</strong>
-<span class="math display">\[
-{σᵢ^1}=\sqrt[]{\alpha(σ_i^0)^2+(1-\alpha)(g_i^1)^2}
-\]</span> 所以在RMS
-Prop裡面,我们这个σᵢ¹它是前一步算出来的σᵢ⁰,裡面就是有gᵢ⁰,所以这个<strong>σᵢ⁰就代表了gᵢ⁰的大小</strong>,所以它是(σᵢ⁰)²,乘上α加上(1-α),乘上现在我们刚算出来的,新鲜热腾腾的gradient就是gᵢ¹</p>
-<p>那这个<strong>α就像learning
-rate一样,这个你要自己调它,它是一个hyperparameter</strong></p>
-<ul>
-<li>如果我今天<strong>α设很小趋近於0</strong>,就代表我觉得<strong>gᵢ¹相较於之前所算出来的gradient而言,比较重要</strong></li>
-<li>我<strong>α设很大趋近於1</strong>,那就代表我觉得<strong>现在算出来的gᵢ¹比较不重要,之前算出来的gradient比较重要</strong></li>
-</ul>
-<p>所以同理在第三次update参数的时候,我们要算σᵢ²
-,我们就把σᵢ¹拿出来取平方再乘上α,那σᵢ¹裡面有gᵢ¹跟σᵢ⁰
-,σᵢ⁰裡面又有gᵢ⁰,所以你知道σᵢ¹裡面它有gᵢ¹有gᵢ⁰,
-然后这个gᵢ¹跟gᵢ⁰呢他们会被乘上α,然后再加上1-α乘上这个(gᵢ²)² <span class="math display">\[
-{σᵢ^2}=\sqrt[]{\alpha(σ_i^1)^2+(1-\alpha)(g_i^2)^2}
-\]</span> 所以这个α就会决定说gᵢ²,它在整个σᵢ²裡面佔有多大的影响力</p>
-<p>那同样的过程就反覆继续下去,σᵢᵗ等於根号α乘上(σᵢᵗ⁻¹)²,加上(1-α) (gᵢᵗ)²,
-<span class="math display">\[
-{σᵢ^t}=\sqrt[]{\alpha(σ_i^{t-1})^2+(1-\alpha)(g_i^t)^2}
-\]</span>
-你用α来决定现在刚算出来的gᵢᵗ,它有多重要,好那这个就是RMSProp。那RMSProp我们刚刚讲过说,透过α这一项你可以决定说,gᵢᵗ相较於之前存在,σᵢᵗ⁻¹裡面的gᵢᵗ到gᵢᵗ⁻¹而言,它的重要性有多大,如果你用RMS
-Prop的话,你就可以动态调整σ这一项,我们现在假设从这个地方开始：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436779.png" alt="image-20220616194330541" style="zoom: 67%;"></p>
-<p>这个黑线是我们的error
-surface,从这个地方开始你要update参数,好你这个球就从这边走到这边,那因為一路上都很平坦,很平坦就代表说g算出来很小,代表现在update参数的时候,我们会走比较大的步伐</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436078.png" alt="image-20220616194342782" style="zoom:67%;"></p>
-<p>接下来继续滚,滚到这边以后我们gradient变大了,如果不是RMS
-Prop,原来的Adagrad的话它反应比较慢,但如果你用RMS
-Prop,然后呢你把α设小一点,你就是让新的,刚看到的gradient影响比较大的话,那你就可以很快的让σ的值变大,也可以很快的让你的步伐变小</p>
-<p>你就可以踩一个煞车,本来很平滑走到这个地方,突然变得很陡,那RMS
-Prop可以很快的踩一个煞车,把learning
-rate变小,如果你没有踩剎车的话,你走到这裡这个地方,learning
-rate太大了,那gradient又很大,两个很大的东西乘起来,你可能就很快就飞出去了,飞到很远的地方</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436278.png" alt="image-20220616194447003" style="zoom: 67%;"></p>
-<p>如果继续走,又走到平滑的地方了,因為这个σᵢᵗ
-你可以调整α,让它比较看重於,最近算出来的gradient,所以你gradient一变小,σ可能就反应很快,它的这个值就变小了,然后呢你走的步伐就变大了,这个就是RMS
-Prop,</p>
-<h4><span id="24-adam">2.4 Adam</span></h4>
-<p>那今天你最常用的,optimization的策略,有人又叫做optimizer,今天最常用的optimization的策略,就是Adam</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436991.png"></p>
-<p>Adam就是RMS
-Prop加上Momentum,那Adam的演算法跟原始的论文https://arxiv.org/pdf/1412.6980.pdf</p>
-<p>今天pytorch裡面,都帮你写得好好的了,所以这个你今天,不用担心这种optimization的问题,optimizer这个deep
-learning的套件,往往都帮你做好了,然后这个optimizer裡面,也有一些参数需要调,也有一些hyperparameter,需要人工决定,但是你往往用预设的,那一种参数就够好了,你自己调有时候会调到比较差的,往往你直接copy,这个pytorch裡面,Adam这个optimizer,然后预设的参数不要随便调,就可以得到不错的结果了,关於Adam的细节,就留给大家自己研究</p>
-<h3><span id="三-learning-rate-scheduling">三、Learning Rate Scheduling</span></h3>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436318.png" alt style="zoom:67%;"></p>
-<p>我们刚才讲说这个简单的error
-surface,我们都train不起来,现在我们来看一下,加上Adaptive Learning
-Rate以后,train不train得起来。</p>
-<p>那这边是採用,最原始的Adagrad那个做法啦,就是把过去看过的,这个learning
-rate通通都,过去看过的gradient,通通都取平方再平均再开根号当作这个σ
-,做起来是这个样子的</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011436316.png" alt style="zoom:67%;"></p>
-<p>这个走下来没有问题,然后接下来在左转的时候,这边也是update了十万次,之前update了十万次,只卡在左转这个地方</p>
-<p>那现在有Adagrad以后,你可以再继续走下去,走到非常接近终点的位置,因為当你走到这个地方的时候,你因為这个左右的方向的,这个gradient很小,所以learning
-rate会自动调整,左右这个方向的,learning
-rate会自动变大,所以你这个步伐就可以变大,就可以不断的前进</p>
-<p>接下来的问题就是,為什麼快走到终点的时候突然爆炸了呢？你想想看
-我们在做这个σ的时候,我们是把过去所有看到的gradient,都拿来作平均</p>
-<ul>
-<li><p>所以这个纵轴的方向,在这个初始的这个地方,感觉gradient很大</p></li>
-<li><p>可是这边走了很长一段路以后,这个纵轴的方向,gradient算出来都很小,所以纵轴这个方向,这个y轴的方向就累积了很小的σ</p></li>
-<li><p>因為我们在这个y轴的方向,看到很多很小的gradient,所以我们就累积了很小的σ,累积到一个地步以后,这个step就变很大,然后就爆走就喷出去了</p></li>
-<li><p>喷出去以后没关係,有办法修正回来,因為喷出去以后,就走到了这个gradient比较大的地方,走到gradient比较大的地方以后,这个σ又慢慢的变大,σ慢慢变大以后,这个参数update的距离,Update的步伐大小就慢慢的变小</p></li>
-</ul>
-<p>你就发现说走著走著,突然往左右喷了一下,但是这个喷了一下不会永远就是震盪,不会做简谐运动停不下来,这个力道慢慢变小,有摩擦力
-让它慢慢地慢慢地,又回到中间这个峡谷来,然后但是又累计一段时间以后
-又会喷,然后又慢慢地回来
-怎麼办呢,<strong>有一个方法也许可以解决这个问题,这个叫做learning
-rate的scheduling</strong></p>
-<h5><span id="什麼是learningrate的scheduling呢">什麼是learning
-rate的scheduling呢？</span></h5>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437242.png" alt="image-20220616194800158" style="zoom: 67%;"></p>
-<p>我们刚才这边还有一项η,这个η是一个固定的值,learning rate
-scheduling的意思就是说,我们<strong>不要把η当一个常数,我们把它跟时间有关</strong></p>
-<p><strong><font color="red"> 最常见的策略叫做Learning Rate
-Decay,也就是说，随著时间的不断地进行,随著参数不断的update,我们这个η让它越来越小。</font></strong></p>
-<p>那这个也就合理了,因為一开始我们距离终点很远,随著参数不断update,我们距离终点越来越近,所以我们把learning
-rate减小,让我们参数的更新踩了一个煞车,让我们参数的更新能够慢慢地慢下来,所以刚才那个状况,如果加上Learning
-Rate Decay有办法解决。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437755.png" alt="image-20220616195004172" style="zoom: 67%;"></p>
-<p>刚才那个状况,如果加上Learning Rate
-Decay的话,我们就可以很平顺的走到终点,因為在这个地方,这个η已经变得非常的小了,虽然说它本来想要左右乱喷,但是因為乘上这个非常小的η,就停下来了
-就可以慢慢地走到终点,那除了Learning Rate
-Decay以外,还有另外一个经典，常用的Learning Rate
-Scheduling的方式,叫做Warm Up</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437476.png" alt="image-20220616195017126" style="zoom:67%;"></p>
-<p>Warm Up这个方法,听起来有点匪夷所思,这Warm
-Up的方法是<strong>让learning rate,要先变大后变小</strong>,你会问说
-变大要变到多大呢,变大速度要多快呢
-，小速度要多快呢,<strong>这个也是hyperparameter</strong>,你要自己用手调的,但是大方向的大策略就是,learning
-rate要先变大后变小,那这个方法听起来很神奇,就是一个黑科技这样,这个黑科技出现在,很多远古时代的论文裡面。</p>
-<p>这个warm up,最近因為在训练BERT的时候,往往需要用到Warm
-Up,所以又被大家常常拿出来讲,但它并不是有BERT以后,才有Warm Up的,Warm
-Up这东西远古时代就有了,举例来说,Residual Network裡面是有Warm Up的</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437761.png" alt="image-20220616195035436" style="zoom:67%;"></p>
-<p>这边是放了Residual
-network,放在arXiv上面的文章连结啦,今天这种有关machine learning
-的,文章往往在投conference之前,投国际会议之前,就先放到一个叫做arXiv的网站上,把它公开来让全世界的人都可以看。</p>
-<p>你其实看这个arXiv的网址,你就可以知道,这篇文章是什麼时候放到网路上的,怎麼看呢
-arXiv的前四个数字,这15代表年份,代表说residual
-network这篇文章,是2015年放到arXiv上面的,后两个数字代表月份,所以它是15年的12月,15年的年底放在arXiv上面的</p>
-<p>所以五六年前的文章,在deep
-learning变化,这麼快速的领域裡面,五六年前就是上古时代,那在上古时代,这个Residual
-Network裡面,就已经记载了Warm Up的这件事情,它说我们<strong>用learning
-rate 0.01,取Warm Up,先用learning rate 0.01,再把learning
-rate改成0.1</strong></p>
-<p>用过去我们通常最常见的train,Learning Rate
-Scheduling的方法,就是让learning rate越来越小,但是Residual
-Network,这边特别註明它反其道而行,一开始要设0.01
-接下来设0.1,还特别加一个註解说,一开始就用0.1反而就train不好,不知道為什麼
-也没解释,反正就是train不好,需要Warm
-Up这个黑科技。而在这个黑科技,在知名的Transformer裡面(这门课也会讲到),也用一个式子提了它。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437043.png" alt="image-20220616195112806" style="zoom:80%;"></p>
-<p>它这边有一个式子说,它的learning
-rate遵守这一个,神奇的function来设定,它的learning
-rate,这个神奇的function,乍看之下会觉得 哇
-在写什麼,不知道在写些什麼。这个东西你实际上,把这个function画出来,你实际上把equation画出来的话,就会发现它就是Warm
-Up,learning rate会先增加,然后接下来再递减。所以你发现说Warm
-Up这个技术,在很多知名的network裡面都有,被当作一个黑科技,就论文裡面不解释说,為什麼要用这个,但就偷偷在一个小地方,你没有注意到的小地方告诉你说,这个network要用这种黑科技,才能够把它训练起来。那為什麼需要warm
-Up呢,这个仍然是今天,一个可以研究的问题啦。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437649.png" alt="image-20220616195206977" style="zoom:80%;"></p>
-<p>这边有一个可能的解释是说,你想想看当我们在用Adam RMS
-Prop,或Adagrad的时候,我们会需要计算σ,它是一个统计的结果,<strong>σ告诉我们,某一个方向它到底有多陡,或者是多平滑</strong>,那这个统计的结果,<strong>要看得够多笔数据以后,这个统计才精準,所以一开始我们的统计是不精準的</strong></p>
-<p>一开始我们的σ是不精準的,所以我们一开始不要让我们的参数,走离初始的地方太远,先让它在初始的地方呢,做一些像是探索这样,所以<strong>一开始learning
-rate比较小,是让它探索 收集一些有关error
-surface的情报</strong>,先收集有关σ的统计数据,<strong>等σ统计得比较精準以后,在让learning
-rate呢慢慢地爬升</strong></p>
-<p>所以这是一个解释,為什麼我们需要warm
-up的可能性,那如果你想要学更多,有关warm
-up的东西的话,你其实可以看一篇paper,它是Adam的进阶版叫做RAdam,裡面对warm
-up这件事情,有更多的理解。</p>
-<h3><span id="四-summary-of-optimization">四、Summary of Optimization</span></h3>
-<p>所以我们从最原始的gradient descent,进化到这一个版本：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437020.png" alt="image-20220616202420654" style="zoom:80%;"></p>
-<p>这个版本裡面</p>
-<ul>
-<li><p>我们有Momentum,也就是说我们现在,不是完全顺著gradient的方向,现在不是完全顺著这一个时间点,算出来的gradient的方向,来update参数,而是把过去,所有算出来gradient的方向,做一个加总当作update的方向,这个是momentum</p></li>
-<li><p>接下来应该要update多大的步伐呢,我们要除掉,gradient的Root Mean
-Square</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437789.png" alt="image-20220616202442527" style="zoom:67%;"></p>
-<p>那讲到这边可能有同学会觉得很困惑,这一个momentum是考虑,过去所有的gradient,这个σ也是考虑过去所有的gradient,一个放在分子一个放在分母,都考虑过去所有的gradient,不就是正好<strong>抵销了吗</strong>？,</p>
-<p><strong>但是其实这个Momentum跟这个σ,它们在使用过去所有gradient的方式是不一样的</strong>：</p>
-<ul>
-<li><p><strong><font color="red">
-Momentum是直接把所有的gradient通通都加起来,所以它有考虑方向,它有考虑gradient的正负号,它有考虑gradient是往左走还是往右走。</font></strong></p></li>
-<li><p><strong><font color="red"> Root Mean
-Square,它就不考虑gradient的方向了</font></strong>。它只考虑gradient的大小,记不记得我们在算σ的时候,我们都要取平方项,我们都要把gradient取一个平方项,我们是把平方的结果加起来,所以我们只考虑gradient的大小,不考虑它的方向,所以Momentum跟这个σ,算出来的结果并不会互相抵销掉。</p></li>
-</ul></li>
-<li><p>那最后我们还会加上,一个learning rate的scheduling：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011437624.png" alt="image-20220616202650308" style="zoom:80%;"></p>
-<p>那这个是今天<strong>optimization</strong>的,完整的版本了,这种Optimizer,除了Adam以外,Adam可能是今天最常用的,但除了Adam以外,还有各式各样的变形,但其实各式各样的变形都不脱,就是要嘛不同的方法算M,要嘛不同的方法算σ,要嘛不同的,Learning
-Rate Scheduling的方式。</p></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/N29PC4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/N29PC4/" class="post-title-link" itemprop="url">模型训练（4）Batch and Momentum</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-09 11:34:59" itemprop="dateCreated datePublished" datetime="2022-06-09T11:34:59+08:00">2022-06-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 18:26:35" itemprop="dateModified" datetime="2023-05-01T18:26:35+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">训练技巧</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>11k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>21 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-李宏毅课程笔记batchand-momentum">一、李宏毅课程笔记：Batch
-and Momentum</span></h3>
-<h4><span id="11-review-optimization-withbatch">1.1 Review： Optimization with
-Batch</span></h4>
-<p>上次我们有讲说,我们<strong>实际上在算微分的时候,并不是真的对所有 Data
-算出来的 L 作微分</strong>,你是把所有的 Data 分成一个一个的
-Batch,有的人是叫Mini Batch ,那我这边叫做
-Batch,其实指的是一样的东西,助教投影片里面,是写 Mini Batch。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438961.png" style="zoom:67%;"></p>
-<p>每一个 Batch 的大小呢,就是大 B 一笔的资料,我们每次<strong>在 Update
-参数的时候,我们是拿大 B 一笔资料出来,算个 Loss,算个 Gradient,Update
-参数</strong>,拿另外B一笔资料,再算个 Loss,再算个 Gradient,再 Update
-参数,以此类推,所以我们不会拿所有的资料一起去算出 Loss,我们只会拿一个
-Batch 的资料,拿出来算 Loss。</p>
-<p><strong>所有的 Batch 看过一遍,叫做一个
-Epoch</strong>,那事实上啊,你今天在做这些 Batch 的时候,你会做一件事情叫做
-Shuffle</p>
-<p>Shuffle
-有很多不同的做法,但一个常见的做法就是,<strong><font color="red">
-在每一个 Epoch 开始之前,会分一次 Batch,然后呢,每一个 Epoch 的 Batch
-都不一样</font></strong>,就是第一个 Epoch,我们分这样子的 Batch,第二个
-Epoch,会重新再分一次 Batch,所以哪些资料在同一个 Batch 里面,每一个 Epoch
-都不一样的这件事情,叫做 <strong>Shuffle</strong>。</p>
-<h4><span id="12-small-batch-vs-largebatch">1.2 Small Batch v.s. Large
-Batch</span></h4>
-<p>​ 我们先解释为什么要用 Batch,再说 Batch 对 Training
-带来了什么样的帮助。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438778.png" alt="image-20220616164656382" style="zoom:50%;"></p>
-<p>我们来比较左右两边这两个 Case,那假设现在我们有20笔训练资料</p>
-<ul>
-<li>左边的 Case 就是没有用 Batch,Batch
-Size,直接设的跟我训练资料一样多,这种状况叫做 Full Batch,就是没有用 Batch
-的意思</li>
-<li>那右边的 Case 就是,Batch Size 等於1</li>
-</ul>
-<p>​ 这是两个最极端的状况</p>
-<p>我们先来看左边的 Case,在左边 Case 里面,因为没有用 Batch,我们的 Model
-必须把20笔训练资料都看完,才能够计算 Loss,才能够计算
-Gradient,所以我们必须要把<strong>所有20笔 Example s
-都看完以后,我们的参数才能够 Update
-一次</strong>。就假设开始的地方在上边边,把所有资料都看完以后,Update
-参数就从这里移动到下边。</p>
-<p>如果 Batch Size 等於1的话,代表我们只需要拿一笔资料出来算
-Loss,我们就可以 Update 我们的参数,所以每次我们 Update
-参数的时候,看一笔资料就好,所以我们开始的点在这边,看一笔资料 就 Update
-一次参数,再看一笔资料 就 Update 一次参数,如果今天总共有20笔资料的话
-那<strong>在每一个 Epoch 里面,我们的参数会 Update
-20次</strong>,那不过,因为我们现在是只看一笔资料,就 Update
-一次参数,所以用一笔资料算出来的 Loss,显然是比较 Noisy 的,所以我们今天
-Update 的方向,你会发现它是曲曲折折的</p>
-<p>所以如果我们比较左边跟右边，哪一个比较好呢,他们有什么差别呢？</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438236.png" alt="image-20220616165328450" style="zoom:50%;"></p>
-<p>你会发现左边没有用 Batch
-的方式,它蓄力的时间比较长,还有它技能冷却的时间比较长,你要把所有的资料都看过一遍,才能够
-Update 一次参数</p>
-<p>而右边的这个方法,Batch Size
-等於1的时候,蓄力的时间比较短,每次看到一笔参数,每次看到一笔资料,你就会更新一次你的参数</p>
-<p>所以今天假设有20笔资料,看完所有资料看过一遍,你已经更新了20次的参数,但是左边这样子的方法有一个优点,就是它这一步走的是稳的,那右边这个方法它的缺点,就是它每一步走的是不稳的</p>
-<p>看起来左边的方法跟右边的方法,他们各自都有擅长跟不擅长的东西,左边是蓄力时间长,但是威力比较大,右边技能冷却时间短,但是它是比较不準的,看起来各自有各自的优缺点,但是你会觉得说,左边的方法技能冷却时间长,右边的方法技能冷却时间短,那只是你没有考虑并行运算的问题。</p>
-<p><strong>实际上考虑并行运算的话,左边这个并不一定时间比较长</strong></p>
-<h4><span id="13larger-batch-size-does-not-require-longer-time-to-compute-gradient">1.3
-Larger batch size does not require longer time to compute gradient</span></h4>
-<p>这边是真正的实验结果了,事实上,比较大的 Batch Size,你要算
-Loss,再进而算 Gradient,所需要的时间,不一定比小的 Batch Size
-要花的时间长。</p>
-<p>那以下是做在一个叫做 MNIST 上面,MNIST (Mixed National Institute of
-Standards and Technology
-database)是美国国家标准与技术研究院收集整理的大型手写数字数据库,机器要做的事情,就是给它一张图片,然后判断这张图片,是0到9的哪一个数字,它要做数字的分类,那
-MNIST 呢
-是机器学习的helloworld,就是假设你今天,从来没有做过机器学习的任务,一般大家第一个会尝试的机器学习的任务,往往就是做
-MNIST 做手写数字辨识,</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438827.png" alt="image-20220616165208136" style="zoom:50%;"></p>
-<p>这边我们就是做了一个实验,我们想要知道说,给机器一个 Batch,它要计算出
-Gradient,进而 Update 参数,到底需要花多少的时间</p>
-<p>这边列出了 Batch Size 等於1 等於10,等於100 等於1000
-所需要耗费的时间</p>
-<p><strong>你会发现说 Batch Size
-从1到1000,需要耗费的时间几乎是一样的,你可能直觉上认为有1000笔资料</strong>,那需要计算
-Loss,然后计算
-Gradient,花的时间不会是一笔资料的1000倍吗,但是实际上并不是这样的</p>
-<p><strong><font color="red"> 因为在实际上做运算的时候,我们有
-GPU,可以做并行运算,是因为你可以做平行运算的关係,这1000笔资料是平行处理的,所以1000笔资料所花的时间,并不是一笔资料的1000倍</font></strong>。当然
-GPU 平行运算的能力还是有它的极限,当你的 Batch Size
-真的非常非常巨大的时候,GPU 在跑完一个 Batch,计算出 Gradient
-所花费的时间,还是会随著 Batch Size 的增加,而逐渐增长</p>
-<p>所以今天如果 Batch Size
-是从1到1000,所需要的时间几乎是一样的,但是当你的 Batch Size 增加到
-10000,乃至增加到60000的时候,你就会发现 GPU 要算完一个 Batch,把这个 Batch
-里面的资料都拿出来算 Loss,再进而算 Gradient,所要耗费的时间,确实有随著
-Batch Size 的增加而逐渐增长,但你会发现这边用的是
-V100,所以它挺厉害的,给它60000笔资料,一个 Batch
-里面,塞了60000笔资料,它在10秒鐘之内,也是把 Gradient 就算出来</p>
-<p>而那这个 Batch Size
-的大小跟时间的关係,其实每年都会做这个实验,我特别把旧的投影片放在这边了,如果你有兴趣的话m,,可以看到这个时代的演进这样,17年的时候用的是那个980啊,2015年的时候用的是那个760啊,然后980要跑什么60000个
-Batch,那要跑好几分鐘才跑得完啊,现在只要10秒鐘就可以跑得完了,你可以看到这个时代的演进,</p>
-<h4><span id="14-smallerbatch-requires-longer-time-for-one-epoch">1.4 Smaller
-batch requires longer time for one epoch</span></h4>
-<p>所以 GPU 虽然有平行运算的能力,但它平行运算能力终究是有个极限,所以你
-Batch Size 真的很大的时候,时间还是会增加的</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438416.png" alt="image-20220616165344706" style="zoom: 67%;"></p>
-<p>但是因为有平行运算的能力,因此实际上,当你的 <strong>Batch Size
-小的时候,你要跑完一个 Epoch,花的时间是比大的 Batch Size
-还要多</strong>的,怎么说呢</p>
-<p>如果今天假设我们的训练资料只有60000笔,那 Batch Size 设1,那你要60000个
-Update 才能跑完一个 Epoch,如果今天是 Batch Size 等於1000,你要60个 Update
-才能跑完一个 Epoch,假设今天一个 Batch Size 等於1000,要算 Gradient
-的时间根本差不多,那60000次 Update,跟60次 Update
-比起来,它的时间的差距量就非常可观了</p>
-<p>所以左边这个图是 Update 一次参数,拿一个 Batch 出来计算一个
-Gradient,Update 一次参数所需要的时间,右边这个图是,跑完一个完整的
-Epoch,需要花的时间,你会发现左边的图跟右边的图,它的趋势正好是相反的,假设你
-Batch Size 这个1,跑完一个 Epoch,你要 Update
-60000次参数,它的时间是非常可观的,但是假设你的 Batch Size
-是1000,你只要跑60次,Update 60次参数就会跑完一个 Epoch,所以你跑完一个
-Epoch,看完所有资料的时间,如果你的 Batch Size 设1000,其实是比较短的,Batch
-Size 设1000的时候,把所有的资料看过一遍,其实是比 Batch Size 设1
-还要更快</p>
-<p>所以如果我们看右边这个图的话,看完一个
-Batch,把所有的资料看过一次这件事情,大的 Batch Size
-反而是较有效率的,是不是跟你直觉想的不太一样</p>
-<p>在没有考虑平行运算的时候,你觉得大的 Batch
-比较慢,但实际上,在有考虑平行运算的时候,一个 Epoch 大的 Batch
-花的时间反而是比较少的</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438492.png" alt="image-20220616165607814">
-<figcaption aria-hidden="true">image-20220616165607814</figcaption>
-</figure>
-<p>我们如果要比较这个 Batch Size
-大小的差异的话,看起来直接用技能时间冷却的长短,并不是一个精确的描述,看起来在技能时间上面,大的
-Batch 并没有比较吃亏,甚至还佔到优势了.</p>
-<p>所以事实上,20笔资料 Update 一次的时间,跟右边看一笔资料 Update
-一次的时间,如果你用 GPU 的话,其实可能根本就是所以一样的,所以大的
-Batch,它的技能时间,它技能冷却的时间,并没有比较长,那所以这时候你可能就会说,欸
-那个大的 Batch 的劣势消失了,那难道它真的就,那这样看起来大的 Batch
-应该比较好?</p>
-<p>你不是说大的 Batch,这个 Update 比较稳定,小的 Batch,它的 Gradient
-的方向比较 Noisy 吗,那这样看起来,大的 Batch 好像应该比较好哦,小的 Batch
-应该比较差,因为现在大的 Batch
-的劣势已经,因为平行运算的时间被拿掉了,它好像只剩下优势而已.</p>
-<p>那神奇的地方是 <strong>Noisy 的 Gradient,反而可以帮助
-Training</strong>,这个也是跟直觉正好相反的</p>
-<p>如果你今天拿不同的 Batch
-来训练你的模型,你可能会得到这样子的结果,左边是坐在 MNIST 上,右边是坐在
-CIFAR-10 上,不管是 MNIST 还是 CIFAR-10,都是影像辨识的问题</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438160.png" alt="image-20220616165544738"></p>
-<ul>
-<li>横轴代表的是 Batch Size,从左到右越来越大</li>
-<li>纵轴代表的是正确率,越上面正确率越高,当然正确率越高越好</li>
-</ul>
-<p>而如果你今天看 Validation Acc 上的结果，会发现说,Batch Size
-越大,Validation Acc 上的结果越差,但这个不是 Overfitting,因为如果你看你的
-Training 的话,会发现说 Batch Size 越大,Training
-的结果也是越差的,而我们现在用的是同一个模型哦,照理说,它们可以表示的
-Function 就是一模一样的</p>
-<p>但是神奇的事情是,大的 Batch Size,往往在 Training
-的时候,会给你带来比较差的结果</p>
-<p>所以这个是什么样的问题,同样的 Model,所以这个不是 Model Bias
-的问题,<strong>这个是 Optimization 的问题,代表当你用大的 Batch Size
-的时候,你的 Optimization 可能会有问题</strong>,小的 Batch
-Size,Optimization 的结果反而是比较好的,好 为什么会这样子呢</p>
-<h4><span id="15-noisy-update-isbetter-for-training">1,5 “Noisy” update is
-better for training</span></h4>
-<p>为什么小的 Batch Size,在 Training Set 上会得到比较好的结果,为什么
-Noisy 的 Update,Noisy 的 Gradient 会在 Training
-的时候,给我们比较好的结果呢？一个可能的解释是这样子的</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438387.png" alt="image-20220626154658708" style="zoom:67%;"></p>
-<p>假设你是 Full Batch,那你今天在 Update 你的参数的时候,你就是沿著一个
-Loss Function 来 Update 参数,今天 Update 参数的时候走到一个 Local
-Minima,走到一个 Saddle Point,显然就停下来了,Gradient
-是零,如果你不特别去看Hession的话,那你用 Gradient Descent
-的方法,你就没有办法再更新你的参数了</p>
-<p>但是假如是 Small Batch 的话,因为我们每次是挑一个 Batch 出来,算它的
-Loss,所以等於是,等於你每一次 Update 你的参数的时候,你用的 Loss Function
-都是越有差异的,你选到第一个 Batch 的时候,你是用 L1 来算你的
-Gradient,<strong>你选到第二个 Batch 的时候,你是用 L2 来算你的
-Gradient,假设你用 L1 算 Gradient 的时候,发现 Gradient 是零,卡住了,但 L2
-它的 Function 跟 L1 又不一样,L2 就不一定会卡住,所以 L1 卡住了
-没关係,换下一个 Batch 来,L2 再算 Gradient。</strong></p>
-<p><strong>你还是有办法 Training 你的 Model,还是有办法让你的 Loss
-变小,所以今天这种 Noisy 的 Update 的方式,结果反而对
-Training,其实是有帮助的。</strong></p>
-<h4><span id="16-noisy-update-isbetter-for-generalization">1.6 “Noisy” update is
-better for generalization</span></h4>
-<p>那这边还有另外一个更神奇的事情，其实<strong>小的 Batch 也对 Testing
-有帮助</strong>。</p>
-<p>假设我们今天在 Training 的时候,都不管是大的 Batch 还小的 Batch,都
-Training 到一样好,刚才的 Case是Training 的时候就已经 Training
-不好了。</p>
-<p>假设你有一些方法,你努力的调大的 Batch 的 Learning
-Rate,然后想办法把大的 Batch,跟小的 Batch Training
-得一样好,结果你会发现<strong>小的 Batch,居然在 Testing
-的时候会是比较好的</strong>,那以下这个实验结果是引用自,On Large-Batch
-Training For Deep Learning,Generalization Gap And Sharp
-Minimahttps://arxiv.org/abs/1609.04836,这篇 Paper 的实验结果：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438308.png" alt="image-20220626154838373">
-<figcaption aria-hidden="true">image-20220626154838373</figcaption>
-</figure>
-<p>那这篇 Paper 里面,作者 Train 了六个 Network 里面有 CNN 的,有 Fully
-Connected Network 的,做在不同的 Cover
-上,来代表这个实验是很泛用的,在很多不同的 Case
-都观察到一样的结果,那它有小的 Batch,一个 Batch 里面有256笔 Example,大的
-Batch 就是那个 Data Set 乘 0.1,Data Set 乘 0.1,Data Set
-有60000笔,那你就是一个 Batch 里面有6000笔资料</p>
-<p>然后他想办法,在大的 Batch 跟小的 Batch,都 Train 到差不多的 Training
-的 Accuracy,所以刚才我们看到的结果是,Batch Size 大的时候,Training
-Accuracy 就已经差掉了,这边不是想办法 Train 到大的 Batch 的时候,Training
-Accuracy 跟小的 Batch,其实是差不多的</p>
-<p>但是就算是在 Training 的时候结果差不多,Testing
-的时候你还是看到了,小的 Batch 居然比大的 Batch 差,Training
-的时候都很好,<strong>Testing 的时候大的 Batch 差,代表 Over
-Fitting</strong>,这个才是 Over Fitting 对不对,好
-那为什么会有这样子的现象呢？在这篇文章里面也给出了一个解释,</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011438056.png" alt="image-20220626154919498" style="zoom:67%;"></p>
-<p>假设这个是我们的 Training Loss,那在这个 Training Loss
-上面呢,可能有很多个 Local Minima,有不只一个 Local Minima,那这些 Local
-Minima 它们的 Loss 都很低,它们 Loss 可能都趋近於 0,但是这个
-<strong>Local Minima,还是有好 Minima 跟坏 Minima 之分</strong></p>
-<p>如果一个 Local Minima 它在一个峡谷里面,它是坏的
-Minima,然后它在一个平原上,它是好的 Minima,为什么会有这样的差异呢</p>
-<ul>
-<li>因为假设现<strong>在 Training 跟 Testing 中间,有一个
-Mismatch</strong>,Training 的 Loss 跟 Testing 的 Loss,它们那个 Function
-不一样,有可能是本来你 Training 跟 Testing 的 Distribution就不一样。</li>
-<li>那也有可能是因为 Training 跟 Testing,你都是从 Sample 的 Data
-算出来的,也许 Training 跟 Testing,Sample 到的 Data
-不一样,那所以它们算出来的 Loss,当然是有一点差距。</li>
-</ul>
-<p>那我们就假设说这个 Training 跟 Testing,它的差距就是把 Training 的
-Loss,这个 Function
-往右平移一点,这时候你会发现,对左边这个在一个盆地里面的 Minima
-来说,它的在 Training 跟 Testing
-上面的结果,不会差太多,只差了一点点,但是对右边这个在峡谷里面的 Minima
-来说,一差就可以天差地远</p>
-<p>它在这个 Training Set 上,算出来的 Loss 很低,但是因为 Training 跟
-Testing 之间的不一样,所以 Testing 的时候,这个 Error Surface
-一变,它算出来的 Loss 就变得很大,而很多人相信这个<strong>大的 Batch
-Size,会让我们倾向於走到峡谷里面,而小的 Batch
-Size,倾向於让我们走到盆地里面</strong></p>
-<p>那他直觉上的想法是这样,就是小的 Batch,它有很多的 Loss,它每次 Update
-的方向都不太一样,所以如果今天这个峡谷非常地窄,它可能一个不小心就跳出去了,因为每次
-Update 的方向都不太一样,它的 Update
-的方向也就随机性,所以一个很小的峡谷,没有办法困住小的 Batch</p>
-<p>如果峡谷很小,它可能动一下就跳出去,之后停下来如果有一个非常宽的盆地,它才会停下来,那对於大的
-Batch Size,反正它就是顺著规定
-Update,然后它就很有可能,走到一个比较小的峡谷里面</p>
-<p>但这只是一个解释,那也不是每个人都相信这个解释,那这个其实还是一个<strong>尚待研究的问题</strong>那这边就是比较了一下,大的
-Batch 跟小的 Batch</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439577.png" alt="image-20220616171325318" style="zoom: 67%;"></p>
-<p>左边这个是第一个 Column 是小的 Batch,第二个 Column 是大的 Batch</p>
-<p>在有平行运算的情况下,小的 Batch 跟大的
-Batch,其实运算的时间并没有太大的差距,除非你的大的 Batch
-那个大是真的非常大,才会显示出差距来。但是一个 Epoch 需要的时间,小的
-Batch 比较长,大的 Batch 反而是比较快的,所以从一个 Epoch
-需要的时间来看,大的 Batch 其实是佔到优势的。</p>
-<p>而小的 Batch,你会 Update 的方向比较 Noisy,大的 Batch Update
-的方向比较稳定,但是 Noisy 的 Update 的方向,反而在 Optimization
-的时候会佔到优势,而且在 Testing 的时候也会佔到优势,所以大的 Batch 跟小的
-Batch,它们各自有它们擅长的地方。</p>
-<p><strong><font color="red">所以 Batch Size,变成另外一个 你需要去调整的
-Hyperparameter。</font></strong></p>
-<p>那我们能不能够鱼与熊掌兼得呢,我们能不能够截取大的 Batch 的优点,跟小的
-Batch 的优点,我们用大的 Batch Size
-来做训练,用平行运算的能力来增加训练的效率,但是训练出来的结果同时又得到好的结果呢,又得到好的训练结果呢。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439138.png" alt="image-20220626155139635" style="zoom:67%;"></p>
-<p>这是有可能的,有很多文章都在探讨这个问题,那今天我们就不细讲,我们把这些
-Reference 列在这边给大家参考,那你发现这些
-Paper,往往它想要做的事情都是什么,哇 76分鐘 Train BERT,15分鐘 Train
-ResNet,一分鐘 Train Imagenet
-等等,这为什么他们可以做到那么快,就是因为他们 Batch Size
-是真的开很大,比如说在第一篇 Paper 里面,Batch Size 里面有三万笔 Example
-这样,Batch Size 开很大,Batch Size 开大
-真的就可以算很快,你可以在很短的时间内看到大量的资料,那他们需要有一些特别的方法来解决,Batch
-Size 可能会带来的劣势。</p>
-<h3><span id="二-momentum">二、Momentum</span></h3>
-<p><strong><font color="red"> Momentum,这也是另外一个,有可能可以对抗
-Saddle Point,或 Local Minima 的技术</font></strong>,Momentum
-的运作是这个样子的，</p>
-<h4><span id="21-small-gradient">2.1 Small Gradient</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439981.png" alt="image-20220616171440148" style="zoom:80%;"></p>
-<p>它的概念,你可以想像成在物理的世界里面,假设 Error Surface
-就是真正的斜坡,而我们的参数是一个球,你把球从斜坡上滚下来,如果今天是
-Gradient Descent,它走到 Local Minima 就停住了,走到 Saddle Point
-就停住了</p>
-<p>但是在物理的世界里,一个球如果从高处滚下来,从高处滚下来就算滚到 Saddle
-Point,如果有<strong>惯性</strong>,它从左边滚下来,因为惯性的关係它还是会继续往右走,甚至它走到一个
-Local
-Minima,如果今天它的动量够大的话,它还是会继续往右走,甚至翻过这个小坡然后继续往右走</p>
-<p>那所以今天在物理的世界里面,一个球从高处滚下来的时候,它并不会被 Saddle
-Point,或 Local Minima卡住,不一定会被 Saddle Point,或 Local Minima
-卡住,我们有没有办法运用这样子的概念,到 Gradient Descent
-里面呢,那这个就是我们等一下要讲的,Momentum 这个技术</p>
-<h4><span id="22-vanilla-gradient-descent">2.2 Vanilla Gradient Descent</span></h4>
-<p>那我们先很快的复习一下,原来的 Gradient Descent 长得是什么样子,这个是
-Vanilla 的 Gradient Descent,Vanilla
-的意思就是一般的的意思,它直译是香草的,但就其实是一般的,一般的 Gradient
-Descent 长什么样子呢？</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439050.png" alt="image-20220616171504634">
-<figcaption aria-hidden="true">image-20220616171504634</figcaption>
-</figure>
-<p>​</p>
-<p>一般的 Gradient Descent 是说,我们有一个初始的参数叫做 <span class="math inline">\(θ^0\)</span>,我们计算一下 Gradient,然后计算完这个
-Gradient 以后呢,我们往 Gradient 的反方向去 Update 参数 <span class="math display">\[
-θ^1 = θ^0 - {\eta}g^0
-\]</span> 我们到了新的参数以后,再计算一次 Gradient,再往 Gradient
-的反方向,再 Update 一次参数,到了新的位置以后再计算一次 Gradient,再往
-Gradient 的反方向去 Update 参数,这个 Process 就一直这样子下去</p>
-<h4><span id="23-gradient-descent-momentum">2.3 Gradient Descent + Momentum</span></h4>
-<p>加上 Momentum 以后,每一次我们在移动我们的参数的时候,我们不是只往
-Gradient Descent,我们不是只往 Gradient 的反方向来移动参数,我们是
-<strong>Gradient
-的反方向,加上前一步移动的方向,两者加起来的结果,去调整去到我们的参数,</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439582.png" alt="image-20220616171740139" style="zoom:50%;"></p>
-<p>那具体说起来是这个样子,一样找一个初始的参数,然后我们假设前一步的参数的
-Update 量呢,就设为 0 <span class="math display">\[
-m^0 = 0
-\]</span> 接下来在 <span class="math inline">\(θ^0\)</span> 的地方,计算
-Gradient 的方向<span class="math inline">\(g^0\)</span>，然后接下来你要决定下一步要怎么走,它是
-Gradient 的方向加上前一步的方向,不过因为前一步正好是
-0,现在是刚初始的时候所以前一步是 0,所以 Update 的方向,跟原来的 Gradient
-Descent 是一样的,这没有什么有趣的地方</p>
-<p><span class="math display">\[
-m^1 = {\lambda}m^0-{\eta}g^0\\\
-θ^1 = θ^0 + m^1
-\]</span> 但从第二步开始,有加上 Momentum
-以后就不太一样了,从第二步开始,我们计算 <span class="math inline">\(g^1\)</span>,然后接下来我们 Update 的方向,不是
-<span class="math inline">\(g^1\)</span>的反方向,而是根据上一次 Update
-方向,也就是 m1 减掉 g1,当做我们新的 Update 的方向,这边写成 m2 <span class="math display">\[
-m^2 = {\lambda}m^1-{\eta}g^1
-\]</span> 那我们就看下面这个图</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439226.png" alt="image-20220616171749421">
-<figcaption aria-hidden="true">image-20220616171749421</figcaption>
-</figure>
-<p>g1 告诉我们,<strong>Gradient
-告诉我们要往红色反方向这边走</strong>,但是我们不是只听 Gradient
-的话,加上 Momentum 以后,我们不是只根据 Gradient
-的反方向,来调整我们的参数,我们<strong>也会看前一次 Update
-的方向</strong></p>
-<ul>
-<li>如果前一次说要往<strong><span class="math inline">\(m^1\)</span>蓝色及蓝色虚线</strong>这个方向走</li>
-<li>Gradient 说要往<strong>红色反方向这个方向</strong>走</li>
-<li><strong>把两者相加起来</strong>,走两者的折中,也就是往<strong>蓝色<span class="math inline">\(m^2\)</span>这一个方向走</strong>,所以我们就移动了
-m2,走到 θ2 这个地方</li>
-</ul>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439931.png" alt="image-20220616171805517">
-<figcaption aria-hidden="true">image-20220616171805517</figcaption>
-</figure>
-<p>接下来就反覆进行同样的过程,在这个位置我们计算出
-Gradient,但我们不是只根据 Gradient
-反方向走,我们看前一步怎么走,前一步走这个方向,走这个蓝色虚线的方向,我们把蓝色的虚线加红色的虚线,前一步指示的方向跟
-Gradient 指示的方向,当做我们下一步要移动的方向</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439028.png"></p>
-<p>每一步的移动,我们都用 m 来表示,那这个 m
-其实可以写成之前所有算出来的,Gradient 的 Weighted
-Sum.从右边的这个式子,其实就可以轻易的看出来 <span class="math display">\[
-m^0 = 0\\\
-m^1 = -{\eta}g^0\\\
-m^2 = -{\lambda}{\eta}g^0-{\eta}g^1\\\
-...
-\]</span> m0 我们把它设为 0,m1 是 m0 减掉 g0,m0 为 0,所以 m1 就是 g0
-乘上负的 η,m2 是 λ 乘上 m1,λ 就是另外一个参数,就好像 η 是 Learning Rate
-我们要调,λ 是另外一个参数,这个也是需要调的,m2 等於 λ 乘上 m1,减掉 η 乘上
-g1,然后 m1 在哪里呢,m1 在这边,你把 m1 代进来,就知道说 m2,等於负的 λ 乘上
-η 乘以 g0,减掉 η 乘上 g1,它是 g0 跟 g1 的 Weighted Sum</p>
-<p>以此类推,所以你会发现说,现在这个加上 Momentum 以后,一<strong>个解读是
-Momentum 是,Gradient
-的负反方向加上前一次移动的方向</strong>,那但另外一个解读方式是,所谓的
-Momentum,<strong>当加上 Momentum 的时候,我们 Update
-的方向,不是只考虑现在的 Gradient,而是考虑过去所有 Gradient
-的总合.</strong></p>
-<p>​ 有一个更简单的例子,希望帮助你了解 Momentum</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439946.png" alt="image-20220616172323699" style="zoom:67%;"></p>
-<p>那我们从这个地方开始 Update 参数,根据 Gradient
-的方向告诉我们,应该往右 Update 参数,那现在没有前一次 Update
-的方向,所以我们就完全按照 Gradient 给我们的指示,往右移动参数,好
-那我们的参数,就往右移动了一点到这个地方</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439011.png" alt="image-20220616172349096" style="zoom:67%;"></p>
-<p>Gradient
-变得很小,告诉我们往右移动,但是只有往右移动一点点,但前一步是往右移动的,我们把前一步的方向用虚线来表示,放在这个地方,我们把之前
-Gradient
-告诉我们要走的方向,跟前一步移动的方向加起来,得到往右走的方向,那再往右走
-走到一个 Local Minima,照理说走到 Local Minima,一般 Gradient Descent
-就无法向前走了,因为已经没有这个 Gradient 的方向,那走到 Saddle Point
-也一样,没有 Gradient 的方向已经无法向前走了</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011439099.png" alt="image-20220616172359508" style="zoom:67%;"></p>
-<p>但没有关係,如果有 Momentum 的话,你还是有办法继续走下去,因为 Momentum
-不是只看 Gradient,Gradient 就算是
-0,你还有前一步的方向,前一步的方向告诉我们向右走,我们就继续向右走,甚至你走到这种地方,Gradient
-告诉你应该要往左走了,但是假设你前一步的影响力,比 Gradient
-要大的话,你还是有可能继续往右走,甚至翻过一个小丘,搞不好就可以走到更好
-Local Minima,这个就是 Momentum 有可能带来的好处。</p>
-<h3><span id="concluding-remarks">Concluding Remarks</span></h3>
-<ul>
-<li><strong>Critical points have zero gradients.</strong></li>
-<li>Critical points can be either <strong>saddle points or local
-minima</strong>.
-<ul>
-<li>Can be determined by the Hessian matrix.</li>
-<li>Local minima may be rare.</li>
-<li>It is possible to escape saddle points along the direction of
-eigenvectors of the Hessian matrix</li>
-</ul></li>
-<li>Smaller batch size and momentum help escape critical points.</li>
-</ul>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li>python+numpy实现线性回归中梯度下降算法（对比sklearn官方demo） -
-sciengieer的文章 - 知乎 https://zhuanlan.zhihu.com/p/390002941</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

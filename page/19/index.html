@@ -153,13 +153,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">257</span>
+          <span class="site-state-item-count">263</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -196,6 +196,808 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/32RS544/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/32RS544/" class="post-title-link" itemprop="url">模型部署（1）【draft】概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 14:35:29" itemprop="dateCreated datePublished" datetime="2022-04-29T14:35:29+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:59:24" itemprop="dateModified" datetime="2023-04-26T15:59:24+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="机器学习一模型训练及线上部署相关笔记">机器学习（一）：模型训练及线上部署相关笔记</span></h3>
+<p>https://www.shangmayuan.com/a/2331a95928b344d782ac08ac.html</p>
+<ul>
+<li>GBDT+LR模型训练及线上部署</li>
+<li>Java调用jpmml类</li>
+</ul>
+<h3><span id="一-离线模型offline">一、离线模型(Offline)</span></h3>
+<p>离线模型存在于很多业务场景中，其中最常见的业务场景就是用在推荐系统的召回阶段，由于在推荐系统中，<strong>召回并不要求是实时的</strong>，可以根据业务的需要，调整成每天一次，或者每几个小时跑一次即可，因此，这类的模型，一般我们只需要使用<strong>Linux下的crontab定时任务脚本</strong>，每隔一段时间来启动一次就可以，然后将log文件输出到指定的文件下即可。这种方式一般来讲仅限离线模型的部署，其本质上就是一段定时任务的代码。</p>
+<h3><span id="二-在线online近似在线nearline模型">二、在线(Online)/近似在线(NearLine)模型</span></h3>
+<p>在生产系统中，实时推理和预测是最常见的需求，也是对于很多深度学习模型来说所必须达到的点。下面简介一些深度学习模型在实时预测时常见的几种部署方法：</p>
+<h4><span id="21将模型预测直接打包成http接口">2.1
+将模型预测直接打包成http接口</span></h4>
+<p>将模型直接打包成一个http接口的形式是在企业中比较常见的模型上线的方式，<strong>所谓的将预测直接打包成http接口实际上一般是指将我们训练好的模型直接在线上进行预测</strong>。我们来试想一个场景，当一个模型训练好之后，我们如果想要验证这个模型的好坏，我们首先能想到的办法就是找一批数据来测试一下。实际上，将模型预测直接打包成http接口也是利用了这样的思路。</p>
+<p>在这里，我们可以<strong>将训练好的模型提前进行加载，并初始化若干个消息队列和worker，当有新的待预测数据进入的时候，我们直接将数据通过消息队列传入到模型中进行推理和预测，最终得到结果。</strong></p>
+<p>而<strong>对于外层接收输入，我们一般可以将接收的地方使用flask打包成一个http接口，等待传入即可。</strong></p>
+<p>使用这种方式直接打包成http接口的好处在于打包和部署相对比较方便，对于一些相对比较<strong>轻量级且对并发量要求不是很高的情况下相对还是比较好用的。使用值得注意的是，如果对于一个相对比较大的模型来讲，这种方式推理的时间相对就会比较长，从用户输入到结果返回可能需要200ms左右。</strong></p>
+<h4><span id="22-pmml">2.2 PMML</span></h4>
+<blockquote>
+<p>使用PMML部署机器学习模型 : https://zhuanlan.zhihu.com/p/79197337</p>
+</blockquote>
+<p>PMML (Predictive Model Markup Language)
+是一套通用的且与平台和环境无关的模型表示语言，<strong>机器学习在模型部署方面的一种标准部署方案，其形式是采用XML语言标记形式</strong>。我们可以将自己训练的机器学习模型打包成PMML模型文件的形式，然后使用目标环境的解析PMML模型的库来完成模型的加载并做预测。PMML是一套基于XML的标准，通过
+XML Schema 定义了使用的元素和属性，主要由以下核心部分组成：</p>
+<p><strong>数据字典（Data Dictionary）</strong>，描述输入数据。</p>
+<p><strong>数据转换（Transformation Dictionary和Local
+Transformations）</strong>，应用在输入数据字段上生成新的派生字段。</p>
+<p><strong>模型定义 （Model）</strong>，每种模型类型有自己的定义。</p>
+<p><strong>输出（Output）</strong>，指定模型输出结果。</p>
+<p>目前，大部分机器学习库都支持直接打包成PMML模型文件的相关函数，例如在Python中的LightGBM库，XGBoost库，Keras库等，都有对PMML的支持，直接使用相应的命令就可以生成，而在Java、R等语言中，也有相关的库可以进行PMML文件生成的命令。一般来讲，使用PMML文件进行预测的过程如下：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261553349.jpg" alt="img" style="zoom: 50%;"></p>
+<p><strong>由于其平台无关性，导致PMML可以实现跨平台部署，是企业中部署机器学习模型的常见解决方案。</strong></p>
+<h4><span id="23-tensorflow-serving">2.3 TensorFlow Serving</span></h4>
+<p>使用TensorFlow Serving进行服务部署，一般需要2台以上机器。</p>
+<ul>
+<li>其中一台作为TensorFlow
+Serving的服务器，这台服务器是专门来做模型部署和预测用，对于这台服务器，一般建议使用GPU服务器，这样会使整个推理预测的过程变得很快；</li>
+<li>另外一台服务器是业务服务器，也就是接收用户的输入以及其他业务处理的服务器。我们可以把模型部署到TensorFlow
+Serving的服务器上，而一般我们只需要先在服务器上使用docker创建一个TensorFlow
+Serving服务，然后将模型文件上传上去，当有请求进来的时候，业务服务会直接对模型所在的服务器发起服务调用，并得到模型预测的结果。</li>
+</ul>
+<h3><span id="三-实际用时的一些部署方法组合">三、实际用时的一些部署方法组合</span></h3>
+<h4><span id="31-rpmmlsparkairflow调度">3.1 R+pmml+spark+airflow调度</span></h4>
+<p>用R语言训练模型并转为pmml文件，然后使用spark将这个pmml文件封装为jar，使用airflow提交到yarn。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">val is: InputStream = fs.open(path)</span><br><span class="line"></span><br><span class="line">val pmml: PMML = PMMLUtil.unmarshal(is)</span><br><span class="line"></span><br><span class="line">modelEvaluator = ModelEvaluatorFactory.newInstance.newModelEvaluator(pmml)</span><br></pre></td></tr></table></figure>
+<h4><span id="32-pythonsklearnairflow调度">3.2 python+sklearn+airflow调度</span></h4>
+<p>使用python训练好sklearn模型，并joblib.dumps()保存，然后在python文件中joblib.load()加载改文件，使用airflow离线调度。</p>
+<h4><span id="33-xgboostsparkxgb4j">3.3 xgboost+spark+xgb4j</span></h4>
+<ul>
+<li>使用分布式的<strong>spark版的xgboost</strong>，训练好的模型直接保存为model.booster.saveModel(hdfsOutStream)二进制文件.然后<strong>xgboost4j加载该文件XGBoost.loadModel(is)实现线上实时预测</strong>。</li>
+</ul>
+<h4><span id="34tensorflowtensorflow的java库">3.4
+tensorflow+tensorflow的java库</span></h4>
+<h3><span id="四-不同需求对应的不同平台部署方案">四、不同需求对应的不同平台部署方案</span></h3>
+<h5><span id="1-放到服务器上跑要求吞吐和时延重点是吞吐这种应用在互联网企业居多一般是互联网产品的后端ai计算例如人脸验证-语音服务-应用了深度学习的智能推荐等">1、放到服务器上跑，要求吞吐和时延（重点是吞吐）这种应用在互联网企业居多，一般是互联网产品的后端AI计算，例如人脸验证、语音服务、应用了深度学习的智能推荐等。</span></h5>
+<p>由于一般是大规模部署，这时不仅仅要考虑吞吐和时延，还要考虑功耗和成本。所以除了软件外，硬件也会下功夫，比如使用推理专用的NVIDIA
+P4、寒武纪MLU100等。这些推理卡比桌面级显卡功耗低，单位能耗下计算效率更高，且硬件结构更适合高吞吐量的情况软件上，一般都不会直接上深度学习框架。对于NVIDIA的产品，一般都会使用TensorRT来加速（不仅可以加速前传，还包含调度功能）。TensorRT用了CUDA、CUDNN，而且还有<strong>图优化、fp16、int8量化</strong>等。</p>
+<h3><span id="五-模型部署时一些常用的trick">五、模型部署时一些常用的trick</span></h3>
+<h4><span id="51-模型压缩">5.1 模型压缩</span></h4>
+<p>基于参数修剪和共享的方法针对模型参数的冗余性，试图去除冗余和不重要的项。基于低秩因子分解的技术使用矩阵/张量分解来估计深度学习模型的信息参数。基于传输/紧凑卷积滤波器的方法设计了特殊的结构卷积滤波器来降低存储和计算复杂度。知识蒸馏方法通过学习一个蒸馏模型，训练一个更紧凑的神经网络来重现一个更大的网络的输出。</p>
+<p>一般来说，参数修剪和共享，低秩分解和知识蒸馏方法可以用于全连接层和卷积层的CNN，但另一方面，使用转移/紧凑型卷积核的方法仅支持卷积层。低秩因子分解和基于转换/紧凑型卷积核的方法提供了一个端到端的流水线，可以很容易地在CPU/GPU环境中实现。相反参数修剪和共享使用不同的方法，如矢量量化，二进制编码和稀疏约束来执行任务，这导致常需要几个步骤才能达到目标。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2SGD3Q6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2SGD3Q6/" class="post-title-link" itemprop="url">模型部署（5）Treelite加速</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 13:22:19" itemprop="dateCreated datePublished" datetime="2022-04-29T13:22:19+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:52:59" itemprop="dateModified" datetime="2023-04-26T15:52:59+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="treelite树模型部署加速工具支持xgboost-lightgbm和sklearn">Treelite：树模型部署加速工具（支持XGBoost、LightGBM和Sklearn）</span></h2>
+<h3><span id="一-treelite介绍"><strong>一、TreeLite介绍</strong></span></h3>
+<p>TreeLite能够树模型编译优化为单独库，可以很方便的用于模型部署。经过优化后可以将XGBoost模型的预测速度提高2-6倍。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261551831.jpg"></p>
+<p>如上图，黑色曲线为XGBoost在不同batch
+size下的吞吐量，红色曲线为XGBoost经过TreeLite编译后的吞吐量。</p>
+<p>Treelite支持众多的树模型，特别是随机森林和GBDT。同时Treelite可以很好的支持XGBoost,
+LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译。</p>
+<h3><span id="二-treelite原理"><strong>二、TreeLite原理</strong></span></h3>
+<p><strong>TreeLite主要在两方面完成了改进。</strong></p>
+<ul>
+<li><p><strong>逻辑分支</strong></p>
+<ul>
+<li><p>这个指令是<strong>gcc引入</strong>的，作用是<strong>允许程序员将最有可能执行的分支告诉编译器</strong>。这个指令的写法为：<code>__builtin_expect(EXP, N)</code>。意思是：EXP==N的概率很大。【<strong>减少重新取跳转地址</strong>】__builtin_expect
+说明: https://www.jianshu.com/p/2684613a300f</p></li>
+<li><p><strong>构建树模型+
+计算好每个分支下面样本的个数+提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p></li>
+</ul></li>
+<li><p><strong>逻辑比较</strong></p>
+<ul>
+<li><strong>浮点数比较，转化为整数型比较</strong>。</li>
+</ul></li>
+</ul>
+<h4><span id="21-逻辑分支"><strong>2.1 逻辑分支</strong></span></h4>
+<p>对于树模型而言，节点的分类本质使用if语句完成，而CPU在执行if语句时会等待条件逻辑的计算。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( [conditional expression] ) &#123;</span><br><span class="line">  <span class="built_in">foo</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">bar</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果在构建树模型时候，提前计算好每个分支下面样本的个数，则可以提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211426056.jpg" alt="img" style="zoom: 67%;"></p>
+<p>借助于编译命令，可以完成逻辑计算加速。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* expected to be false */</span></span><br><span class="line"><span class="keyword">if</span>( __builtin_expect([condition],<span class="number">0</span>))&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="22-逻辑比较">2.2 逻辑比较</span></h4>
+<p>原始的分支比较可能会有浮点数比较逻辑，可以量化为数值比较逻辑。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].fvalue &lt; <span class="number">1.5</span>) &#123;  </span><br><span class="line"><span class="comment">/* floating-point comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].qvalue &lt; <span class="number">3</span>) &#123;     </span><br><span class="line"><span class="comment">/* integer comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><p>项目链接：<a href="https://link.zhihu.com/?target=https%3A//treelite.readthedocs.io/">https://treelite.readthedocs.io/</a></p></li>
+<li><p>项目论文：<a href="https://link.zhihu.com/?target=https%3A//mlsys.org/Conferences/doc/2018/196.pdf">https://mlsys.org/Conferences/doc/2018/196.pdf</a></p></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/367YBF3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/367YBF3/" class="post-title-link" itemprop="url">模型部署（3）部署优化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 12:59:13" itemprop="dateCreated datePublished" datetime="2022-04-29T12:59:13+08:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:57:38" itemprop="dateModified" datetime="2023-04-26T15:57:38+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="模型部署优化的学习路线是什么">模型部署优化的学习路线是什么？</span></h3>
+<ul>
+<li>https://segmentfault.com/a/1190000040491572</li>
+</ul>
+<p>模型部署优化这个方向其实比较宽泛。从模型完成训练，到最终将模型部署到实际硬件上，整个流程中会涉及到很多不同层面的工作，每一个环节对技术点的要求也不尽相同。</p>
+<p><strong>部署的流程大致可以分为以下几个环节：</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211425187.png" alt="模型部署流程" style="zoom: 67%;"></p>
+<h3><span id="一-模型转换">一、模型转换</span></h3>
+<p>从训练框架得到模型后，根据需求转换到相应的模型格式。模型格式的选择通常是根据公司业务端
+SDK 的需求，通常为 caffe 模型或 onnx
+模型，以方便模型在不同的框架之间适配。该环节的工作需要对相应的训练框架以及
+caffe/onnx 等模型格式有所了解。常用的 Pytorch 和 TensorFlow
+等框架都有十分成熟的社区和对应的博客或教程；caffe 和 onnx
+模型格式也有很多可参考和学习的公开文档。</p>
+<p>即使没找到有可参考的文章时，好在二者都是开源的，依然可以通过对源码和样例代码的阅读来寻找答案。</p>
+<h3><span id="二-模型优化">二、模型优化</span></h3>
+<p>此处的模型优化是指与后端无关的通用优化，比如<strong>常量折叠</strong>、<strong>算数优化</strong>、<strong>依赖优化</strong>、<strong>函数优化</strong>、<strong>算子融合</strong>以及<strong>模型信息简化</strong>等等。</p>
+<p>部分训练框架会在训练模型导出时就包含部分上述优化过程，同时如果模型格式进行了转换操作，不同
+IR
+表示之间的差异可能会引入一些冗余或可优化的计算，因此在模型转换后通常也会进行一部分的模型优化操作。</p>
+<p><strong>该环节的工作需要对计算图的执行流程、各个 op
+的计算定义、程序运行性能模型有一定了解，才能知道如果进行模型优化，如何保证优化后的模型具有更好的性能。</strong></p>
+<p>了解得越深入，越可以挖掘到更多的模型潜在性能。</p>
+<h3><span id="三-模型压缩">三、模型压缩</span></h3>
+<p>广义上来讲，模型压缩也属于模型优化的一部分。模型压缩本身也包括很多种方法，比如剪枝、蒸馏、量化等等。模型压缩的根本目的是希望获得一个较小的模型，减少存储需求的同时降低计算量，从而达到加速的目的。</p>
+<p><strong>该环节的工作需要对压缩算法本身、模型涉及到的算法任务及模型结构设计、硬件平台计算流程三个方面都有一定的了解。</strong></p>
+<p>当因模型压缩操作导致模型精度下降时，对模型算法的了解，和该模型在硬件上的计算细节有足够的了解，才能分析出精度下降的原因，并给出针对性的解决方案。</p>
+<p><strong>对于模型压缩更重要的往往是工程经验，</strong>
+因为在不同的硬件后端上部署相同的模型时，由于硬件计算的差异性，对精度的影响往往也不尽相同，这方面只有通过积累工程经验来不断提升。</p>
+<p>OpenPPL也在逐步开源自己的模型压缩工具链，并对上述提到的模型算法、压缩算法和硬件平台适配等方面的知识进行介绍。</p>
+<h3><span id="四-模型部署">四、模型部署</span></h3>
+<p>模型部署是整个过程中最复杂的环节。从工程上讲，主要的核心任务是<strong>模型打包</strong>、<strong>模型加密</strong>，并进行SDK封装。</p>
+<p><strong>在一个实际的产品中，往往会用到多个模型。模型打包是指将模型涉及到的前后处理，以及多个模型整合到一起，并加入一些其他描述性文件。</strong>模型打包的格式和模型加密的方法与具体的
+SDK 相关。<strong>在该环节中主要涉及到的技能与 SDK
+开发更为紧密。</strong></p>
+<p>从功能上讲，对部署最后的性能影响最大的肯定是SDK中包含的后端库，即实际运行模型的推理库。开发一个高性能推理库所需要的技能点就要更为广泛，并且专业。</p>
+<p>并行计算的编程思想在不同的平台上是通用的，但不同的硬件架构的有着各自的特点，推理库的开发思路也不尽相同，这也就要求对开发后端的架构体系有着一定的了解。</p>
+<p>具体到不同架构的编程学习，建议参考当前各大厂开源的推理库来进一步学习。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/10D4W42/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/10D4W42/" class="post-title-link" itemprop="url">大数据处理Q&A</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-28 22:46:44" itemprop="dateCreated datePublished" datetime="2022-04-28T22:46:44+08:00">2022-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 13:34:49" itemprop="dateModified" datetime="2023-03-07T13:34:49+08:00">2023-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大数据处理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>393</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4><span id="面试常见的大数据相关问题">面试常见的大数据相关问题</span></h4>
+<ul>
+<li>https://anchorety.github.io/2019/08/14/%E9%9D%A2%E8%AF%95%E5%B8%B8%E8%A7%81%E7%9A%84%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/</li>
+</ul>
+<h4><span id="海量日志数据提取出某日访问百度次数最多的那个ip">海量日志数据，提取出某日访问百度次数最多的那个IP？</span></h4>
+<ul>
+<li>http://zoeyyoung.github.io/get-most-visit-ip.html</li>
+</ul>
+<p>具体做法如下：</p>
+<ol type="1">
+<li>按照IP地址的Hash(IP)%1024值,
+把海量IP日志分别存储到1024个小文件中.</li>
+<li>对于每一个小文件, 构建一个以IP为key, 出现次数为value的HashMap,
+同时记录当前出现次数最多的那个IP地址;</li>
+<li>得到1024个小文件中的出现次数最多的IP,
+再依据常规的排序算法得到总体上出现次数最多的IP.</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1EHVYXP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1EHVYXP/" class="post-title-link" itemprop="url">模型部署（6）XGBoost4J</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-28 20:41:49" itemprop="dateCreated datePublished" datetime="2022-04-28T20:41:49+08:00">2022-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 15:57:55" itemprop="dateModified" datetime="2023-04-26T15:57:55+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" itemprop="url" rel="index"><span itemprop="name">模型部署</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>425</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="分布式-xgboost4j-spark基本原理">分布式 XGBoost4J - Spark
+基本原理</span></h3>
+<p><strong>XGBoost4J-Spark</strong>是一个项目，旨在通过使XGBoost适应Apache
+Spark的MLLIB框架，无缝集成XGBoost和Apache
+Spark。通过集成，用户不仅可以使用XGBoost的高性能算法实现，还可以利用Spark强大的数据处理引擎实现以下功能：</p>
+<ul>
+<li>特征工程：特征提取，变换，降维和选择等。</li>
+<li>管道：构造，评估和调整ML管道</li>
+<li>持久性：持久化并加载机器学习模型，甚至整个管道</li>
+</ul>
+<p>本文将介绍使用XGBoost4J-Spark构建机器学习管道的端到端过程。讨论</p>
+<ul>
+<li>使用Spark预处理数据以适合XGBoost / XGBoost4J-Spark的数据接口</li>
+<li>使用XGBoost4J-Spark训练XGBoost模型</li>
+<li>使用Spark服务XGBoost模型（预测）</li>
+<li>使用XGBoost4J-Spark构建机器学习管道</li>
+<li>在生产中运行XGBoost4J-Spark</li>
+</ul>
+<h3><span id="参考文献">参考文献</span></h3>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390643240">模型上线之模型即服务（三）自动上线框架</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/351495832">机器学习中的并行计算</a></p></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3SZGXMB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3SZGXMB/" class="post-title-link" itemprop="url">安全场景-二进制文件SCA</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-28 13:14:41" itemprop="dateCreated datePublished" datetime="2022-04-28T13:14:41+08:00">2022-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-20 16:06:36" itemprop="dateModified" datetime="2022-05-20T16:06:36+08:00">2022-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>139</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li>腾讯安全科恩实验室推出首款免费在线SCA平台：BinaryAI：https://www.freebuf.com/sectool/284239.html</li>
+<li>源代码与二进制文件SCA检测原理：https://www.huaweicloud.com/zhishi/vss-010.html</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -868,986 +1670,8 @@ MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依�
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1J88NKC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1J88NKC/" class="post-title-link" itemprop="url">工业落地-CrowdStrike《无文件攻击白皮书》解析</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-26 18:24:52" itemprop="dateCreated datePublished" datetime="2022-04-26T18:24:52+08:00">2022-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-18 15:08:09" itemprop="dateModified" datetime="2023-04-18T15:08:09+08:00">2023-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E9%AB%98%E7%BA%A7%E5%A8%81%E8%83%81%E5%8F%91%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">高级威胁发现</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>12 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="theforrester-wavetm-endpoint-detection-and-response-providers-q22022"><strong>The
-Forrester Wave™: Endpoint Detection And Response Providers, Q2
-2022</strong></span></h2>
-<p>在我们对端点检测和响应提供商的 20 个标准评估中，我们确定了 15
-个最重要的——Bitdefender、BlackBerry Cylance、Check Point Software
-Technologies、CrowdStrike、Cybereason、Elastic、FireEye、Fortinet、McAfee、Microsoft、Palo
-Alto Networks、SentinelOne 、Sophos、趋势科技和 VMware Carbon Black —
-并对它们进行了研究、分析和评分。该报告显示了每个供应商如何衡量并帮助安全专业人员根据他们的需求选择合适的供应商。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505869.png" alt="image-20220426183404208" style="zoom: 33%;"></p>
-<h1><span id="crowdstrike无文件攻击白皮书解析">CrowdStrike《无文件攻击白皮书》解析</span></h1>
-<blockquote>
-<p>原文链接：https://www.secrss.com/articles/26671</p>
-</blockquote>
-<p>CrowdStrike是端点保护平台（EPP）的最强者，是云交付的下一代端点保护的领导者。由于CrowdStrike邮件推送了“<strong>无文件攻击白皮书</strong>”《谁需要恶意软件？<strong>对手如何使用无文件攻击来规避你的安全措施</strong>》（Who
-Needs Malware? How Adversaries Use Fileless Attacks To Evade Your
-Security），笔者顺手对其进行了<strong>全文翻译</strong>。</p>
-<p><strong>无文件攻击（Fileless
-attack）</strong>是<strong>不向磁盘写入可执行文件</strong>的攻击方法，难以被常规方法检测出来。根据CrowdStrike统计，“10个成功突破的攻击向量中有8个使用了无文件攻击技术。”即
-<strong>80%的成功入侵都使用了无文件攻击</strong> <strong>。</strong>
-根据二八原理，这显然是安全人员应该高度关注的技术类型。</p>
-<p><strong>无文件攻击白皮书</strong>解释了<strong>无文件攻击的工作原理、传统解决方案失效的原因，以及CrowdStrike解决该难题的方法</strong>。CrowdStrike的解决方案是<strong>应用程序清单、漏洞利用阻断、攻击指标（IOA）、托管狩猎、无签名人工智能等技术的集成化方法</strong>。</p>
-<p>除了全文翻译外，笔者主要在文末做了两块内容增补：一是关于CrowdStrike<strong>Threat
-Graph（威胁图</strong>）的技术思想<strong>，因为威胁图 是 CrowdStrike
-Falcon（猎鹰）端点保护平台的“ </strong>大脑” ；二是
-关于CrowdStrike提出的<strong>攻击指标</strong>（IOA）<strong>与传统的失陷指标（IOC）</strong>的对比。<strong>笔者认为，这两类技术领域具有战略价值</strong>。如果说全文翻译只花费一小时的话，这些增补内容反而消耗了笔者两个小时。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505079.png" alt="img" style="zoom:33%;"></p>
-<p>随着安全措施在检测和阻止恶意软件和网络攻击方面越来越出色，对手和网络犯罪分子被迫不断开发新技术来逃避检测。其中一种高级技术涉及<strong><font color="red">
-“无文件”（fileless）攻击，即不向磁盘写入可执行文件。</font></strong>这类攻击特别有效地躲避了传统防病毒（AV）解决方案，因为传统防病毒（AV）方法寻找被保存到磁盘上的文件并扫描这些文件以确定它们是否恶意。</p>
-<p>虽然无文件攻击并不新鲜，但它们正变得越来越普遍。在2016年的调查中，CrowdStrike
-Services事件响应团队发现，<strong>10个成功入侵的攻击向量中有8个使用了无文件攻击技术</strong>。为了帮助您了解无文件攻击所带来的风险，本白皮书解释了无文件攻击的工作原理、当前解决方案对其无能为力的原因，以及CrowdStrike解决这一难题的行之有效的方法。</p>
-<h3><span id="什么是无文件攻击">什么是无文件攻击？</span></h3>
-<p>当攻击者通过消除将PE（可移植可执行文件）复制到磁盘驱动器的传统步骤来逃避检测时，就会发生无文件或无恶意软件的攻击。<strong>有多种技术可以采取这种方式危害系统</strong>。</p>
-<ul>
-<li><p><strong>漏洞利用和漏洞利用工具包</strong>，通常通过利用操作系统（OS）或已安装应用程序中存在的漏洞，直接在内存中执行攻击。</p></li>
-<li><p><strong>使用盗用的凭证</strong>，是发起无文件攻击的另一种普遍方法。Verizon在其2017年的DBIR（数据泄露调查报告）中发现，81%的数据泄露涉及弱口令、默认口令或被盗口令，比上一年增加了18%。这使得攻击者能够像普通用户一样访问系统。</p></li>
-<li><p>一旦实现初步突破，对手就可以<strong>依赖操作系统本身提供的工具</strong>，如Windows管理工具和Windows
-<strong>PowerShell</strong>，以执行进一步的操作，而不必将文件保存到磁盘。例如，它们可以通过在注册表、内核中隐藏代码，或者通过创建允许它们随意访问系统的用户帐户来<strong>建立持久化</strong>，而无需向磁盘写入任何内容。</p></li>
-</ul>
-<p>在安全行业，对上述这些技术的使用，通常被称为“<strong>living off the
-land</strong>”（离地生存？生存手段？）。</p>
-<h4><span id="真实案例一个无文件入侵的解剖">真实案例：一个无文件入侵的解剖</span></h4>
-<p>通过展示CrowdStrike
-Services事件响应团队发现的一个真实的案例，我们可以检查端到端的无恶意软件入侵是什么样子。</p>
-<p>在本例中，首个目标是<strong>使用Microsoft
-ISS并运行SQL服务器数据库的web服务器</strong>。对于最初的入侵，攻击者使用了一个web
-shell，一个可以被上传到web服务器并在其上执行的简短脚本。脚本可以用web服务器支持的任何语言编写，比如Perl、Python、ASP或PHP。Web
-Shell在此类攻击中很流行，因为它们可以通过<strong>利用系统上存在的漏洞直接加载到内存中</strong>，而无需将任何内容写入磁盘。在这一特定的攻击中，对手使用SQL注入，将其web
-shell嵌入到服务器。</p>
-<blockquote>
-<p>WEB
-Shell允许使用web浏览器来远程访问系统。它们可以用ASP或PHP或任何其他web脚本语言编写，代码可以非常小。如下所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506159.png" alt="img" style="zoom:50%;"></p>
-<p>由于web服务器<strong>没有正确检查转义字符</strong>，攻击者能够简单地将web
-shell回传到服务器上。所用的web shell，名为“<strong>China
-Chopper</strong>”（中国菜刀/直升机），包含了JavaScript命令，值得注意的是它只使用了72个字符。在内存中执行web
-shell，使攻击者能够使用Chopper用户界面，对web服务器执行任意命令。通过对web服务器的完全远程访问，攻击者通过执行编码的PowerShell命令，来窃取凭据。</p>
-</blockquote>
-<p>第一步是从远程服务器下载脚本，将脚本直接加载到内存中，然后执行它。这个脚本反过来窃取了缓存在web服务器内存中的所有纯文本密码。在几秒钟内，攻击者获得了系统上所有帐户的多个用户名和密码。</p>
-<p><strong>PowerShell是一个合法的Windows工具</strong>，它允许攻击者在受损系统上执行任何操作，而不必在磁盘上写入恶意软件。为了进一步做混淆，攻击者可以对其PowerShell脚本进行编码，如下所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506444.png" alt="img" style="zoom:50%;"></p>
-<p>下一步是让攻击者在服务器上实现<strong>持久化</strong>。为了在不需要任何恶意软件的情况下执行此操作，攻击者使用了一种称为“<strong>粘滞键</strong>”（Sticky
-Keys）的技术。通过修改Windows注册表中的一行，攻击者可以使用PowerShell或WMI命令，轻松完成此操作，从而将Windows屏幕键盘进程，设置为<strong>调试模式</strong>。</p>
-<p><strong>粘滞键（Sticky
-Keys）</strong>是使攻击者<strong>无需登录凭据</strong>即可<strong>访问命令shell</strong>的注册表项。如下所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506654.png" alt="img" style="zoom:50%;"></p>
-<p>当设置为调试模式时，屏幕键盘允许具有远程访问权限的任何人，以系统权限打开命令行，而无需登录。一旦设置了该注册表项，攻击者可以通过打开到web服务器的远程桌面连接，随时返回。此外，访问系统而<strong>不在Windows事件历史记录中生成登录事件</strong>，会使攻击者的行为几乎无法追踪。</p>
-<blockquote>
-<p>现在小结一下，本案例中，<strong>在不同的攻击阶段所使用的文件技术</strong>包括：</p>
-<ul>
-<li><p><strong>初始入侵</strong>：针对Web服务器的<strong>SQL注入</strong>攻击；</p></li>
-<li><p><strong>命令与控制（C2）</strong>：“中国菜刀/直升机”的<strong>Web
-Shell</strong>；</p></li>
-<li><p><strong>提升权限</strong>：使用<strong>PowerShell脚本</strong>转储<strong>凭据</strong>；</p></li>
-<li><p><strong>建立持久化</strong>：修改<strong>注册表</strong>粘滞键技术。</p></li>
-</ul>
-</blockquote>
-<h3><span id="作案工具真实世界的无文件恶意软件">作案工具：真实世界的无文件恶意软件</span></h3>
-<p>无文件恶意软件经常使用的工具和技术包括：</p>
-<ul>
-<li><strong>漏洞利用工具包</strong></li>
-<li><strong>利用合法工具，如WMI和PowerShell</strong></li>
-<li><strong>使用被盗凭证</strong></li>
-<li><strong>注册表驻留恶意软件</strong></li>
-<li><strong>内存型（Memory-only）恶意软件</strong></li>
-</ul>
-<p><strong>1）漏洞利用工具包（Exploit kits）</strong></p>
-<p>漏洞利用是一种允许攻击者利用操作系统或应用程序漏洞来访问系统的技术。<strong>漏洞利用是一种高效的无文件技术</strong>，因为它们可以直接注入内存中，而无需将任何内容写入磁盘。</p>
-<p>通过允许攻击者自动化和大规模执行初始突破，漏洞利用工具包使得攻击者的生活更轻松、工作更高效。<strong>所需要做的只是，诱使受害者进入漏洞利用工具包服务器</strong>，办法通常是网络钓鱼或社会工程。</p>
-<p>这些工具包通常提供对许多漏洞的攻击，以及一个管理控制台，一旦成功利用漏洞，攻击者就可以控制失陷的系统。有些漏洞利用工具包甚至提供了扫描受害者系统中的漏洞的功能，因此可以快速构建并启动成功的漏洞攻击。</p>
-<p><strong>2）注册表驻留恶意软件</strong></p>
-<p>注册表驻留恶意软件是安装在Windows注册表中的恶意软件，以便在逃避检测的同时，保持持久性。第一种是<strong>Poweliks</strong>，此后就出现了许多变体。一些变体，如Kovter，使用了类似的注册表隐藏技术，来保持不被发现。Poweliks<strong>调用C2（命令和控制）服务器</strong>，攻击者可以从该服务器向受损系统发送进一步的指令。所有这些操作，都可以在没有任何文件写入磁盘的情况下进行。</p>
-<p><strong>3）内存型（Memory-only）恶意软件</strong></p>
-<p>有些恶意软件只存在于内存中，以逃避检测。新版本的<strong>Duqu蠕虫</strong>就是这种情况，它只驻留在内存中，不会被发现。Duqu
-2.0有两个版本：第一个是后门，它允许攻击者在组织中站稳脚跟。如果攻击者认为目标值得攻击，他可以使用Duqu
-2.0的高级版本，该版本提供了诸如侦察、横向移动、数据渗出等附加功能。Duqu2.0以成功攻破电信行业的公司以及至少一家知名的安全软件提供商而闻名。</p>
-<p><strong>4）无文件型勒索软件</strong></p>
-<p>甚至勒索软件攻击者，现在也在使用无文件技术，来实现他们的目标。在这类勒索软件中，<strong>恶意代码要么嵌入文档中以使用本机脚本语言（如宏），要么使用漏洞直接写入内存</strong>。然后，勒索软件<strong>使用合法的管理工具如PowerShell，来加密人质文件</strong>，而所有这些都不需要写入磁盘。</p>
-<h3><span id="为何传统技术无法抵御无文件攻击">为何传统技术无法抵御无文件攻击</span></h3>
-<p>由于传统安全解决方案极难检测到无文件攻击，因此无文件攻击正在增加。让我们来看看，为什么当今市场上的一些端点保护技术，对这些无恶意软件入侵如此脆弱。</p>
-<p><strong>1）传统防病毒（AV）</strong>旨在寻找已知恶意软件的特征码。由于无文件攻击没有恶意软件，所以AV没有可检测的特征码。</p>
-<p><strong>2）基于机器学习（ML）</strong>的反恶意软件方法，在应对无文件攻击时，面临着与传统AV相同的挑战。<strong>ML动态分析</strong>未知文件，并将其区分为好的或坏的。但是我们已经注意到，在无文件攻击中，<strong>没有要分析的文件</strong>，因此ML无法提供帮助。</p>
-<p><strong>3）白名单方法</strong>包括列出一台机器上所有良好的进程，以防止未知进程执行。无文件攻击的问题在于，它们利用易受攻击的合法白名单应用程序，并利用内置的操作系统可执行文件。阻止用户和操作系统共同依赖的应用程序，并不是一个好的选项。</p>
-<p><strong>4）使用失陷指标（IOC）工具</strong>来防止无文件攻击也不是很有效。本质上，<strong>IOC类似于传统的AV签名，因为它们是攻击者留下的已知恶意制品</strong>。然而，由于它们利用合法的进程，并且在内存中操作，所以无文件攻击不会留下制品，因此IOC工具几乎找不到任何东西。</p>
-<p><strong>5）另一种方法涉及沙箱</strong>，它可以采取多种形式，包括基于网络的爆破和微虚拟化。由于无文件攻击不使用PE文件，因此沙盒没有什么可爆破的。即便真有东西被发送到沙箱，因为无文件攻击通常会劫持合法进程，大多数沙箱也都会忽略它。</p>
-<h3><span id="crowdstrike的解决方案">CrowdStrike的解决方案</span></h3>
-<p>正如我们所看到的，如果您依赖基于签名的方法、沙盒、白名单甚至机器学习保护方法，那么想检测无文件技术是非常有挑战性的。</p>
-<p>为了抵御秘密的、无文件的攻击，<strong>CrowdStrike独特地将多种方法结合到一个强大的集成式方法中，提供了无与伦比的端点保护</strong>。CrowdStrikeFalcon平台通过单个的轻量级代理提供了云原生的下一代端点保护，并提供一系列互补的预防和检测方法：</p>
-<ul>
-<li><p><strong>应用程序清单（Application
-inventory）</strong>：可以发现在您的环境中运行的任何应用程序，帮助您找到漏洞，以便您可以修补或更新它们，使之不会成为漏洞利用工具包的目标。</p></li>
-<li><p><strong>漏洞利用阻断（Exploit
-blocking）</strong>：通过未修补漏洞的漏洞利用方法，来阻断无文件攻击的执行。</p></li>
-<li><p><strong><font color="red"> 攻击指标（IOA，Indicators of
-Attack）：</font></strong>在攻击的早期阶段，识别并阻止恶意活动，以免其完全执行并造成损害。此能力还可以防止那些新的勒索软件类别，那些勒索软件不使用文件加密受害者系统。**</p></li>
-<li><p><strong>托管狩猎（Managed
-hunting）</strong>：全天候地主动搜索由于无文件技术而产生的恶意活动。</p></li>
-</ul>
-<h4><span id="ioa攻击指标的力量">IOA（攻击指标）的力量</span></h4>
-<blockquote>
-<p><strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列,
-IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</strong></p>
-</blockquote>
-<p>IOA之所以引人注目，是因为它们提供了<strong>针对无文件攻击的独特的主动预防能力</strong>。<strong>IOA寻找攻击可能正在进行的迹象，而不是关心攻击的步骤是如何执行的</strong>。<strong>迹象可以包括代码执行、试图隐身、横向移动等等</strong>。<strong>如何启动或执行这些步骤对IOAs来说并不重要</strong>。</p>
-<p><strong><font color="red">
-IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</font></strong></p>
-<p>此外，在无文件攻击的情况下，恶意代码可以利用诸如PowerShell之类的合法脚本语言，而无需写入磁盘。正如我们所看到的，这对于基于签名的方法、白名单、沙箱甚至机器学习来说都是一个挑战。相比之下，<strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列。</strong>这可以暴露最隐秘的无文件方法，因此它们可以被迅速处理。</p>
-<p>最后，由于IOA会查看意图、上下文、活动序列，因此<strong>即使恶意活动是使用合法帐户实施的，也可以检测和阻止这些活动</strong>，攻击者使用窃取的凭据时通常会出现这种情况。</p>
-<p>所有这些使得<strong>IOA成为防止无文件恶意软件攻击的突破口</strong>。IOA不再基于磁盘上可执行文件的存在与否，来开展无文件攻击这场徒劳的战斗，而是在<strong>造成任何损害之前监视、检测、阻止此类攻击的影响</strong>。</p>
-<h4><span id="托管狩猎">托管狩猎</span></h4>
-<p>托管狩猎（Managed
-Hunt）是针对文件攻击的另一种独特而有效的防御措施。<strong>Falcon
-OverWatch</strong>（猎鹰看守）是Falcon平台的<strong>威胁搜索组件</strong>，它提供了一个<strong>额外的保护层</strong>，来抵御无文件攻击。</p>
-<p><strong>利用Falcon平台的强大功能，OverWatch（看守）团队全天候主动狩猎威胁，监控客户的环境，并狩猎那些标准安全技术无法检测到但可能表明正在发生攻击的狡猾活动。</strong>Falcon
-OverWatch确保即使是最复杂和最隐蔽的攻击，也能在发生时被发现。它通过狩猎和识别难以检测的、复杂的、尖端的攻击，生成有意义的警报和精确的指导性补救建议，从而提高您对抗无文件技术的效率。</p>
-<h4><span id="结论">结论</span></h4>
-<p>由于漏洞利用工具包的存在，导致了攻击组合的高效性和易创建性，很可能会提高无文件黑客技术的普及率。不幸的是，鉴于传统杀毒软件无法阻止无文件攻击，犯罪黑客越来越可能将注意力集中在这些隐形技术上。因此，安全专家需要在他们的安全策略中，考虑无文件恶意软件和无文件攻击的存在。</p>
-<p>正如本文所解释的那样，传统的安全措施在面对无文件攻击时可能不够有效，需要新的保护方法。CrowdStrike
-Falcon（猎鹰平台）提供了一种全面的解决方案，不仅可以防御无文件攻击，而且还可以很好地防御已知和未知的恶意软件威胁。</p>
-<h3><span id="威胁图和攻击指标">威胁图和攻击指标</span></h3>
-<p>CrowdStrike将自身定位为<strong>云交付</strong>的<strong>下一代端点保护</strong>的领导者。CrowdStrike是第一家也是唯一一家统一了<strong>下一代防病毒、端点检测和响应（EDR）、IT卫生、漏洞评估、全天候托管狩猎服务</strong>的公司——全部通过<strong>一个轻量级代理</strong>提供，彻底革新了端点保护。CrowdStrike的<strong>端点保护平台</strong>（EPP）如下图所示：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507229.png" alt="img" style="zoom:50%;"></p>
-<h4><span id="威胁图threat-graph">威胁图（Threat Graph）</span></h4>
-<p>CrowdStrike
-Falcon（猎鹰）平台由两种紧密集成的<strong>专有技术</strong>组成：一个是易于部署的智能<strong>轻量级代理</strong>；另一个是基于云的动态<strong>图数据库</strong>，即上面提到的<strong>威胁图</strong>（Threat
-Graph）。</p>
-<p><strong>下表进一步梳理了威胁图的主要特性</strong>：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507209.png" alt="img" style="zoom:50%;"></p>
-<p>https://www.crowdstrike.com/cybersecurity-101/indicators-of-compromise/ioa-vs-ioc/</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/30588BP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/30588BP/" class="post-title-link" itemprop="url">理论基础（3）优化算法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-23 15:07:13" itemprop="dateCreated datePublished" datetime="2022-04-23T15:07:13+08:00">2022-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 15:56:27" itemprop="dateModified" datetime="2023-05-01T15:56:27+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="总结">总结：</h4>
-<ul>
-<li>SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。</li>
-<li>Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。</li>
-<li>Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。</li>
-<li>Adam利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率,在经过偏置的校正后,每一次迭代后的学习率都有个确定的范围,使得参数较为平稳。</li>
-</ul>
-<h4 id="引言"><strong>引言</strong></h4>
-<p><strong>最优化问题</strong>是计算数学中最为重要的研究方向之一。而在深度学习领域，优化算法的选择也是一个模型的重中之重。即使在数据集和模型架构完全相同的情况下，采用不同的优化算法，也很可能导致截然不同的训练效果。</p>
-<p>梯度下降是目前神经网络中使用最为广泛的优化算法之一。为了弥补朴素梯度下降的种种缺陷，研究者们发明了一系列变种算法，从最初的
-SGD (随机梯度下降) 逐步演进到
-NAdam。<strong>然而，许多学术界最为前沿的文章中，都并没有一味使用
-Adam/NAdam 等公认“好用”的自适应算法，很多甚至还选择了最为初级的 SGD 或者
-SGD with Momentum 等</strong>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/30588BP/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/M1YMBK/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/M1YMBK/" class="post-title-link" itemprop="url">理论基础（2）激活函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-23 14:35:33" itemprop="dateCreated datePublished" datetime="2022-04-23T14:35:33+08:00">2022-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-01 15:56:01" itemprop="dateModified" datetime="2023-05-01T15:56:01+08:00">2023-05-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="一激活函数">一、激活函数</h3>
-<p><strong><font color="red">
-激活函数简述激活函数是向神经网络中引入非线性因素，通过激活函数神经网络就可以拟合各种曲线。激活函数主要分为饱和激活函数（Saturated
-Neurons）和非饱和函数（One-sided
-Saturations）。</font></strong>Sigmoid和Tanh是饱和激活函数，而ReLU以及其变种为非饱和激活函数。非饱和激活函数主要有如下优势：</p>
-<ul>
-<li><strong>非饱和激活函数可以解决梯度消失问题</strong>。</li>
-<li><strong>非饱和激活函数可以加速收敛</strong>。</li>
-</ul>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301635756.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/M1YMBK/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/322BXWN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/322BXWN/" class="post-title-link" itemprop="url">机器学习（14）【Nan】LDA(主题模型)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-20 12:38:36" itemprop="dateCreated datePublished" datetime="2022-04-20T12:38:36+08:00">2022-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-05 16:55:36" itemprop="dateModified" datetime="2022-07-05T16:55:36+08:00">2022-07-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">概率图模型</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>421</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="ldalatentdirichlet-allocation-主题模型"></span></h2>
-<p><strong>同一个主题，在不同的文章中，他出现的比例(概率)是不同的</strong>，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！</p>
-<blockquote>
-<p>LDA于2003年由 David Blei, Andrew Ng和 Michael I.
-Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔。于是牛人们看不下去了，纷纷站出来发表了各种教程。国内方面rickjin有著名的《<a href="https://link.zhihu.com/?target=http%3A//www.52nlp.cn/author/rickjin">LDA数学八卦</a>》，国外的Gregor
-Heinrich有著名的《<a href="https://link.zhihu.com/?target=https%3A//users.soe.ucsc.edu/~amichelo/docs/text-est2.pdf">Parameter
-estimation for text
-analysis</a>》。其实有了这两篇互补的通俗教程，大家沉住心看个4、5遍，基本就可以明白LDA为什么是简单的了。那么其实也没我什么事了，然而心中总有一种被大牛点播的豁然开朗的快感，实在是不吐不快啊。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/19BYM1P/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/19BYM1P/" class="post-title-link" itemprop="url">深度学习（5）RNN</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-18 15:08:33" itemprop="dateCreated datePublished" datetime="2022-04-18T15:08:33+08:00">2022-04-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-13 22:11:33" itemprop="dateModified" datetime="2022-07-13T22:11:33+08:00">2022-07-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">【draft】深度学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E3%80%90draft%E3%80%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="rnn">RNN</span></h2>
-<blockquote>
-<p>史上最详细循环神经网络讲解（RNN/LSTM/GRU）:https://zhuanlan.zhihu.com/p/123211148</p>
-</blockquote>
-<h3><span id="一-什么是循环神经网络"><strong>一、什么是循环神经网络</strong></span></h3>
-<p><strong>RNN对具有序列特性的数据非常有效，它能挖掘数据中的时序信息以及语义信息</strong>，利用了RNN的这种能力，使深度学习模型在解决语音识别、语言模型、机器翻译以及时序分析等NLP领域的问题时有所突破。</p>
-<p>我们需要重点来了解一下RNN的特点这句话，什么是<strong>序列特性</strong>呢？我个人理解，就是<strong>符合时间顺序，逻辑顺序，或者其他顺序就叫序列特性</strong>，举几个例子：</p>
-<ul>
-<li>拿人类的某句话来说，也就是人类的自然语言，是不是符合某个逻辑或规则的字词拼凑排列起来的，这就是符合序列特性。</li>
-<li>语音，我们发出的声音，每一帧每一帧的衔接起来，才凑成了我们听到的话，这也具有序列特性、</li>
-<li>股票，随着时间的推移，会产生具有顺序的一系列数字，这些数字也是具有序列特性。</li>
-</ul>
-<h3><span id="二-为什么要发明循环神经网络"><strong>二、为什么要发明循环神经网络</strong></span></h3>
-<p>我们先来看一个NLP很常见的问题，命名实体识别，举个例子，现在有两句话：</p>
-<p>第一句话：I like eating apple！（我喜欢吃苹果！）</p>
-<p>第二句话：The Apple is a great
-company！（苹果真是一家很棒的公司！）</p>
-<p>现在的任务是要给apple打Label，我们都知道第一个apple是一种水果，第二个apple是苹果公司，假设我们现在有大量的已经标记好的数据以供训练模型，当我们使用全连接的神经网络时，我们做法是把apple这个单词的特征向量输入到我们的模型中（如下图），在输出结果时，让我们的label里，正确的label概率最大，来训练模型，但我们的语料库中，有的apple的label是水果，有的label是公司，这将导致，模型在训练的过程中，预测的准确程度，取决于训练集中哪个label多一些，这样的模型对于我们来说完全没有作用。<strong>问题就出在了我们没有结合上下文去训练模型，而是单独的在训练apple这个单词的label，这也是全连接神经网络模型所不能做到的，于是就有了我们的循环神经网络。</strong></p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h3><span id="三-循环神经网络的结构及原理"><strong>三、循环神经网络的结构及原理：</strong></span></h3>
-<p><img src="https://pic1.zhimg.com/80/v2-8f534b5db1f3d8a5c4ccd029be4a15b4_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>上图就是RNN的结构，我第一次看到这图的第一反应是，不是说好的循环神经网络么，起码得是神经网络啊，神经网络不是有很多球球么，也就是神经元，这RNN咋就这几个球球，不科学啊，看不懂啊！！！！随着慢慢的了解RNN，才发现这图看着是真的清楚，因为RNN的特殊性，如果展开画成那种很多神经元的神经网络，会很麻烦。</p>
-<p>我们先来讲解一下上面这幅图，首先不要管右边的W，只看X,U,S,V,O，这幅图就变成了，如下：</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>不看W的话，上面那幅图展开就是全连接神经网络，其中X是一个向量，也就是某个字或词的特征向量，作为输入层，如上图也就是3维向量，U是输入层到隐藏层的参数矩阵，在上图中其维度就是3X4，S是隐藏层的向量，如上图维度就是4，V是隐藏层到输出层的参数矩阵，在上图中就是4X2，O是输出层的向量，在上图中维度为2。</p>
-<p><strong>弄懂了RNN结构的左边，那么右边这个W到底是什么啊？</strong>把上面那幅图打开之后，是这样的：
-<img src="https://pic4.zhimg.com/80/v2-8abf977157000e6dad8589ec60ed6c3f_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>等等，这又是什么？？别慌，很容易看，举个例子，有一句话是，I love
-you，那么在利用RNN做一些事情时，比如命名实体识别，上图中的 <img src="https://www.zhihu.com/equation?tex=X_%7Bt-1%7D" alt="[公式]">
-代表的就是I这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X" alt="[公式]">
-代表的是love这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X_%7Bt%2B1%7D" alt="[公式]">
-代表的是you这个单词的向量，以此类推，我们注意到，上图展开后，W一直没有变，<strong>W其实是每个时间点之间的权重矩阵</strong>，我们注意到，RNN之所以可以解决序列问题，<strong>是因为它可以记住每一时刻的信息，==每一时刻的隐藏层不仅由该时刻的输入层决定，还由上一时刻的隐藏层决定==</strong>，公式如下，其中
-<img src="https://www.zhihu.com/equation?tex=O_t" alt="[公式]">
-代表t时刻的输出, <img src="https://www.zhihu.com/equation?tex=S_t" alt="[公式]"> 代表t时刻的隐藏层的值：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-9524a28210c98ed130644eb3c3002087_1440w.jpg" alt="img" style="zoom: 33%;"></p>
-<p><strong>值得注意的一点是，在整个训练过程中，每一时刻所用的都是同样的W。</strong></p>
-<h4><span id="四-举个例子方便理解"><strong>四、举个例子，方便理解：</strong></span></h4>
-<p>假设现在我们已经训练好了一个RNN，如图，<strong>我们假设每个单词的特征向量是二维的，也就是输入层的维度是二维，且隐藏层也假设是二维，输出也假设是二维</strong>，所有权重的值都为1且没有偏差且所有激活函数都是线性函数，现在输入一个序列，到该模型中，我们来一步步求解出输出序列：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-09ce45f29378cb2695b3b4fcd2015047_1440w.png" alt="img" style="zoom:75%;"></p>
-<p>你可能会好奇W去哪了？<strong>W在实际的计算中，在图像中表示非常困难
-，所以我们可以想象上一时刻的隐藏层的值是被存起来，等下一时刻的隐藏层进来时，上一时刻的隐藏层的值通过与权重相乘，两者相加便得到了下一时刻真正的隐藏层</strong>，如图
-<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">
-可以看做每一时刻存下来的值，当然初始时<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">是没有存值的，因此初始值为0：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-2c3522b9d250a44cfaeddecbcd139275_1440w.jpg" alt="img" style="zoom:80%;"></p>
-<p>当我们输入第一个序列，【1,1】，如下图，其中隐藏层的值，也就是绿色神经元，是通过公式
-<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 计算得到的，因为所有权重都是1，所以也就是 <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A0%2B1%2A0%3D2" alt="[公式]">
-（我把向量X拆开计算的，由于篇幅关系，我只详细列了其中一个神经元的计算过程，希望大家可以看懂，看不懂的请留言），输出层的值4是通过公式
-<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]"> 计算得到的，也就是 <img src="https://www.zhihu.com/equation?tex=2%2A1%2B2%2A1%3D4" alt="[公式]">
-（同上，也是只举例其中一个神经元），得到输出向量【4,4】：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-c01a8a5c476aa2bd189965aa149d9e85_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>当【1,1】输入过后，我们的记忆里的 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]">
-已经不是0了，而是把这一时刻的隐藏状态放在里面，即变成了2，如图，输入下一个向量【1,1】，隐藏层的值通过公式<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 得到， <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A2%2B1%2A2%3D6" alt="[公式]"> ，输出层的值通过公式<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]">，得到 <img src="https://www.zhihu.com/equation?tex=6%2A1%2B6%2A1%3D12" alt="[公式]"> ，最终得到输出向量【12,12】：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-5170c41f0285a718b890979e125832ed_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>同理，该时刻过后 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]">
-的值变成了6，也就是输入第二个【1,1】过后所存下来的值，同理，输入第三个向量【2,2】，如图，细节过程不再描述，得到输出向量【32,32】：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-7ba6fd916892a89211b5ee6a5940d2b2_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>由此，我们得到了最终的输出序列为：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-e21cfad47c16012c38d2acd9c75039d7_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>至此，一个完整的RNN结构我们已经经历了一遍，我们注意到，每一时刻的输出结果都与上一时刻的输入有着非常大的关系，如果我们将输入序列换个顺序，那么我们得到的结果也将是截然不同，这就是RNN的特性，可以处理序列数据，同时对序列也很敏感。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2RCG5GH/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2RCG5GH/" class="post-title-link" itemprop="url">Python（2）多进程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-17 15:04:24" itemprop="dateCreated datePublished" datetime="2022-04-17T15:04:24+08:00">2022-04-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-21 14:30:10" itemprop="dateModified" datetime="2023-04-21T14:30:10+08:00">2023-04-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%B5%81%E7%A8%8B%E7%9A%84Python/" itemprop="url" rel="index"><span itemprop="name">流程的Python</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="python多进程可以多核多线程no协程">Python多进程[可以多核]
-多线程【No】协程</span></h2>
-<blockquote>
-<p><strong>multiprocessing ---
-基于进程的并行</strong>:https://docs.python.org/zh-cn/3/library/multiprocessing.html</p>
-<p><strong>Python进阶</strong>：https://ebook-python-study.readthedocs.io/zh_CN/latest/index.html</p>
-</blockquote>
-<h3><span id="一-进程的定义">一、进程的定义</span></h3>
-<h5><span id="进程一个程序运行起来后代码用到的资源称之为进程它是操作系统分配资源的基本单元">进程：一个程序运行起来后，代码+用到的资源
-称之为进程，它是操作系统分配资源的基本单元。</span></h5>
-<h5><span id="线程操作系统能够进行运算调度的最小单位">线程：<strong>操作系统能够进行运算调度的最小单位</strong>。</span></h5>
-<h5><span id="协程协程是python个中另外一种实现多任务的方式只不过比线程更小占用更小执行单元理解为需要的资源-因为它自带cpu上下文-这样只要在合适的时机-我们可以把一个协程切换到另一个协程-只要这个过程中保存或恢复cpu上下文那么程序还是可以运行的">协程：协程是python个中另外一种实现多任务的方式，只不过比线程更小占用更小执行单元（理解为需要的资源）。
-因为它自带CPU上下文。这样只要在合适的时机， 我们可以把一个协程
-切换到另一个协程。 只要这个过程中保存或恢复
-CPU上下文那么程序还是可以运行的。</span></h5>
-<p>https://anchorety.github.io/2018/12/30/python%E5%A4%9A%E8%BF%9B%E7%A8%8B/</p>
-<p>在介绍Python中的线程之前，先明确一个问题，Python中的多线程是<strong>假的多线程</strong>！
-为什么这么说，我们先明确一个概念，<strong>全局解释器锁</strong>（GIL）。</p>
-<p>Python代码的执行由Python虚拟机（解释器）来控制。Python在设计之初就考虑要在主循环中，同时只有一个线程在执行，就像单CPU的系统中运行多个进程那样，内存中可以存放多个程序，但任意时刻，只有一个程序在CPU中运行。同样地，虽然Python解释器可以运行多个线程，只有一个线程在解释器中运行。</p>
-<p><strong>对Python虚拟机的访问由全局解释器锁（GIL）来控制，正是这个锁能保证同时只有一个线程在运行</strong>。在多线程环境中，Python虚拟机按照以下方式执行。</p>
-<blockquote>
-<p>1.设置GIL。</p>
-<p>2.切换到一个线程去执行。</p>
-<p>3.运行。</p>
-<p>4.把线程设置为睡眠状态。</p>
-<p>5.解锁GIL。</p>
-<p>6.再次重复以上步骤。</p>
-</blockquote>
-<p>对所有面向I/O的（会调用内建的操作系统C代码的）程序来说，GIL会在这个I/O调用之前被释放，以<strong>允许其他线程在这个线程等待I/O的时候运行</strong>。</p>
-<p>如果某线程并未使用很多I/O操作，它会在自己的时间片内一直占用处理器和GIL。也就是说，I/O密集型的Python程序比CPU密集型的Python程序更能充分利用多线程的好处。</p>
-<p>任何Python线程执行前，必须先获得GIL锁，然后，每执行100条字节码，解释器就自动释放GIL锁，让别的线程有机会执行。这个GIL全局锁实际上把所有线程的执行代码都给上了锁，所以，多线程在Python中只能交替执行，即使100个线程跑在100核CPU上，也只能用到1个核。</p>
-<h3><span id="11-multiprocessing">1.1 multiprocessing</span></h3>
-<h3><span id="12-joblib">1.2 joblib</span></h3>
-<blockquote>
-<p>Python之并行--基于joblib - 半个冯博士的文章 - 知乎
-https://zhuanlan.zhihu.com/p/180347090</p>
-</blockquote>
-<p>首先<code>joblib</code>里面最常用到的一个类和一个方法分别是<code>Parallel</code>和<code>delayed</code>。<code>Parallel</code>主要用于初始化并行计算时需要用到的参数，而<code>delayed</code>则主要用来指定需要被并行的参数。比如官方给出的以下示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"><span class="keyword">from</span> joblib <span class="keyword">import</span> Parallel, delayed</span><br><span class="line">Parallel(n_jobs=<span class="number">2</span>)(delayed(sqrt)(i ** <span class="number">2</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line">[<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>, <span class="number">9.0</span>]</span><br></pre></td></tr></table></figure>
-<p>这段代码其实已经基本看出方法的主要使用模式了。</p>
-<p>解释一下：</p>
-<ul>
-<li><code>Parallel(n_jobs=2)</code>:
-指定两个CPU（默认是分配给不同的CPU）</li>
-<li>后面的<code>delayed(sqrt)</code>表示要用的函数是<code>sqrt</code>，这里这种用法就非常类似<code>C++</code>里面的<strong>委托(delegate)</strong>。</li>
-<li><code>(i ** 2) for i in range(10)</code>:
-这里注意<code>(i**2)</code>的括号和<code>delayed(sqrt)</code>是紧挨着的。这一小段表示<strong>要传递给<code>delayed</code>中指定的函数的参数是<code>i^2</code>。</strong></li>
-</ul>
-<p>那么结合这么一小段程序，其实已经能大致理解它的使用方法了。这里最开始可能主要不习惯的是要用到了Python里面的<a href="https://link.zhihu.com/?target=https%3A//blog.mioshu.com/archives/328.html">内部函数</a>机制。</p>
-<h2><span id="二-多进程应用">二、多进程应用</span></h2>
-<h3><span id="21-python多进程读写公共数据-异步读取">2.1、python多进程读写公共数据 -
-异步读取</span></h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing, os, time  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment">#公共数据</span></span><br><span class="line">temp = np.zeros((<span class="number">4</span>,<span class="number">12</span>))</span><br><span class="line"><span class="comment"># 回调函数，用于多进程读写公共数据的，我的理解：多进程在回调函数这里是串行的，否则同时读写会乱掉</span></span><br><span class="line"><span class="comment"># 回调函数必须只有一个输入参数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mycallback</span>(<span class="params">index</span>):</span><br><span class="line">    i,j = index[<span class="number">0</span>],index[<span class="number">1</span>]</span><br><span class="line">    temp[i,j] = i+j</span><br><span class="line"><span class="comment"># 多进程处理的耗时的算法函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">multiprocess</span>(<span class="params">i,j</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;子进程开始执行&gt;&gt;&gt; pid=&#123;&#125;,ppid=&#123;&#125;,编号&#123;&#125;&quot;</span>.<span class="built_in">format</span>(os.getpid(), os.getppid(), i))</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> (i,j)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    time_start = time.time()</span><br><span class="line">    MultiP = multiprocessing.Pool(<span class="number">2</span>)  <span class="comment"># 多进程</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;主进程开始执行&gt;&gt;&gt; parent_pid=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(os.getpid()))</span><br><span class="line">            MultiP.apply_async(multiprocess, args=(i, j), callback=mycallback)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关闭进程池，停止接受其它进程</span></span><br><span class="line">    MultiP.close()</span><br><span class="line">    <span class="comment"># 阻塞进程 等待进程池中的所有进程执行完毕，必须在close()之后调用</span></span><br><span class="line">    MultiP.join()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;主进程终止&quot;</span>)</span><br><span class="line">    time_end = time.time()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;totally cost&#x27;</span>, time_end - time_start)</span><br><span class="line">    <span class="built_in">print</span>(temp)</span><br></pre></td></tr></table></figure>
-<h5><span id="异步非阻塞式">异步非阻塞式：</span></h5>
-<p>正因为是异步非阻塞式的，不用等待当前运行的子进程执行完毕，随时根据系统调度来进行进程切换。基本上主进程和三个子进程，四个进程是同时运行的。</p>
-<h3><span id="22python中多进程读取excel文件-异步读取返回值管理">2.2
-python中多进程读取excel文件 - 异步读取，返回值管理</span></h3>
-<blockquote>
-<p>https://blog.csdn.net/hynkoala/article/details/93895004</p>
-</blockquote>
-<p>首先准备:当前文件上级目录下有个excels目录，目录里存在15份.xls文件，每个文件1000条数据，需要通过多进程对这些文件读取为pandas的dataframe格式</p>
-<blockquote>
-<p>进程池最大数量设为10：6.580815315246582</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># @datetime:6/26/0026</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;通过多进程加速读取excel的测试&quot;&quot;&quot;</span></span><br><span class="line">__author__ = <span class="string">&quot;hanyaning@deri.energy&quot;</span></span><br><span class="line"><span class="keyword">import</span> os.path</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> service <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"></span><br><span class="line">logger = logger.MyLogger(<span class="string">&quot;multi_process&quot;</span>).getLogger()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getExcelData</span>(<span class="params">path</span>):</span><br><span class="line">    logger.info(<span class="string">&quot;开始读取excel，当前进程pid：&quot;</span> + <span class="built_in">str</span>(os.getpid()))</span><br><span class="line">    data = pd.DataFrame()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        <span class="keyword">raise</span> FileNotFoundError()</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(path):</span><br><span class="line">        logger.info(<span class="string">&quot;读取Excel文件完毕，当前进程pid：&quot;</span> + <span class="built_in">str</span>(os.getpid()))</span><br><span class="line">    <span class="keyword">return</span> data.append(pd.read_excel(path, skiprows=<span class="number">1</span>, skipfooter=<span class="number">1</span>), sort=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    excel_path = os.path.join(os.getcwd(), <span class="string">&quot;../excels&quot;</span>)</span><br><span class="line">    xls_names = [x <span class="keyword">for</span> x <span class="keyword">in</span> os.listdir(excel_path) <span class="keyword">if</span> x.endswith(<span class="string">&quot;.xls&quot;</span>)]</span><br><span class="line">    startTime = time.time()</span><br><span class="line"></span><br><span class="line">    p_list = []</span><br><span class="line">    <span class="comment"># 使用进程池Pool</span></span><br><span class="line">    pool = Pool(processes=<span class="number">10</span>)</span><br><span class="line">    pool_data_list = []</span><br><span class="line">    data = pd.DataFrame()</span><br><span class="line">    <span class="keyword">for</span> file_name <span class="keyword">in</span> xls_names:</span><br><span class="line">        <span class="comment"># 需要注意不能直接在这里调用get方法获取数据,原因是apply_async后面 get()等待线程运行结束才会下一个,这里多进程会变成阻塞执行</span></span><br><span class="line">        pool_data_list.append(pool.apply_async(getExcelData, (os.path.join(excel_path, file_name))))</span><br><span class="line">    pool.close()</span><br><span class="line">    <span class="comment"># 需要阻塞以下，等所有子进程执行完毕后主线程才继续执行</span></span><br><span class="line">    pool.join()</span><br><span class="line">    <span class="keyword">for</span> pool_data <span class="keyword">in</span> pool_data_list:</span><br><span class="line">        <span class="comment"># 这里再使用get()方法可以获取返回值</span></span><br><span class="line">        data = data.append(pool_data.get())</span><br><span class="line">    endTime = time.time()</span><br><span class="line">    <span class="built_in">print</span>(endTime - startTime)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">len</span>(data))</span><br></pre></td></tr></table></figure>
-<h4><span id="单进程读取对照测试">单进程读取对照测试</span></h4>
-<blockquote>
-<p>耗时：12.019948959350586</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ExcelReader</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, path, file_suffix=<span class="string">&quot;.xls&quot;</span></span>):</span><br><span class="line">        self.path = path</span><br><span class="line">        self.file_suffix = file_suffix</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getData</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(self.path):</span><br><span class="line">            <span class="keyword">raise</span> FileNotFoundError()</span><br><span class="line">        data = pd.DataFrame()</span><br><span class="line">        <span class="keyword">if</span> os.path.isdir(self.path):</span><br><span class="line">            xls_names = [x <span class="keyword">for</span> x <span class="keyword">in</span> os.listdir(self.path) <span class="keyword">if</span> x.endswith(self.file_suffix)]</span><br><span class="line">            logger.info(<span class="string">&quot;开始&quot;</span>)</span><br><span class="line">            <span class="keyword">for</span> xls_name <span class="keyword">in</span> xls_names:</span><br><span class="line">                df = pd.read_excel(os.path.join(self.path, xls_name), skiprows=<span class="number">1</span>, skipfooter=<span class="number">1</span>)</span><br><span class="line">                data = data.append(df, sort=<span class="literal">False</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;读取Excel文件完毕，共读取&quot;</span> + <span class="built_in">str</span>(xls_names.__len__()) + <span class="string">&quot;个文件&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    reader = ExcelReader(os.path.join(os.getcwd(), <span class="string">&quot;../excels&quot;</span>))</span><br><span class="line">    data = reader.getData()</span><br><span class="line">    end = time.time()</span><br><span class="line">    <span class="built_in">print</span>(end - start)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">len</span>(data))</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/18/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/20/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/18/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/20/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

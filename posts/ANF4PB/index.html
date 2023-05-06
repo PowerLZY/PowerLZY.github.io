@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于溯源图的入侵检测   浙大：https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;li-zhen-yuan-20&#x2F;posts 武大： 中科院：     image-20230320161317805  从早期的对恶意程序的动静态分析，到现在业界比较热门的对攻击链的检测，这个议题已经历很多很多。但很多现有的研究因为开销和误报问题并没有被真正的用于生产环境。而现有的安全产品大多基于静态分析和简">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级威胁发现（1）基于溯源图的入侵检测">
+<meta property="og:url" content="https://powerlzy.github.io/posts/ANF4PB/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="基于溯源图的入侵检测   浙大：https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;li-zhen-yuan-20&#x2F;posts 武大： 中科院：     image-20230320161317805  从早期的对恶意程序的动静态分析，到现在业界比较热门的对攻击链的检测，这个议题已经历很多很多。但很多现有的研究因为开销和误报问题并没有被真正的用于生产环境。而现有的安全产品大多基于静态分析和简">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553343.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553381.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553747.jpg">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553024.png">
+<meta property="article:published_time" content="2022-05-13T06:35:37.644Z">
+<meta property="article:modified_time" content="2023-05-06T08:42:38.184Z">
+<meta property="article:author" content="lzy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553343.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/ANF4PB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/ANF4PB/","path":"posts/ANF4PB/","title":"高级威胁发现（1）基于溯源图的入侵检测"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>高级威胁发现（1）基于溯源图的入侵检测 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">基于溯源图的入侵检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">前言：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">网络空间威胁检测面临的一些研究问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1、溯源图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2、如何在溯源图中高效的定位威胁呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3、溯源图在检测上的优势？【待补充】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4、基于溯源图做入侵检测、关联分析和告警消减中的常见问题和可能的风险</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.1
+用溯源图进行检测过程中遇到的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">4.2
+带有风险的缓解措施和针对性的绕过手段</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/ANF4PB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="高级威胁发现（1）基于溯源图的入侵检测 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高级威胁发现（1）基于溯源图的入侵检测
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-13 14:35:37" itemprop="dateCreated datePublished" datetime="2022-05-13T14:35:37+08:00">2022-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-06 16:42:38" itemprop="dateModified" datetime="2023-05-06T16:42:38+08:00">2023-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">学术前沿</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%AD%A6%E6%9C%AF%E5%89%8D%E6%B2%BF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/%E9%AB%98%E7%BA%A7%E5%A8%81%E8%83%81%E5%8F%91%E7%8E%B0/" itemprop="url" rel="index"><span itemprop="name">高级威胁发现</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="基于溯源图的入侵检测">基于溯源图的入侵检测</span></h2>
+<blockquote>
+<ul>
+<li>浙大：https://www.zhihu.com/people/li-zhen-yuan-20/posts</li>
+<li>武大：</li>
+<li>中科院：</li>
+</ul>
+</blockquote>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553343.png" alt="image-20230320161317805">
+<figcaption aria-hidden="true">image-20230320161317805</figcaption>
+</figure>
+<p>从早期的对恶意程序的动静态分析，到现在业界比较热门的对攻击链的检测，这个议题已经历很多很多。但很多现有的研究因为开销和误报问题并没有被真正的用于生产环境。而现有的安全产品大多基于静态分析和简单的动态分析，并不能很好的为攻击建模，已经越来越难适应复杂多变的攻击形式和攻击场景；</p>
+<blockquote>
+<p><strong>2019 CCS 议题 Cyber Threat
+共有四篇文章</strong>，列举如下：</p>
+<ol type="1">
+<li><strong>Log2vec: A Heterogeneous Graph Embedding Based Approach for
+Detecting Cyber Threats within Enterprise</strong>, Fucheng Liu, Yu Wen,
+Dongxue Zhang, Xihe Jiang (Chinese Academy of Science),Xinyu Xing (The
+Pennsylvania State University),Dan Meng (Chinese Academy of
+Science)</li>
+<li><strong>POIROT: Aligning Attack Behavior with Kernel Audit Records
+for Cyber Threat Hunting</strong>, Sadegh M. Milajerdi (UIC),Birhanu
+Eshete (University of Michigan-Dearborn),Rigel Gjomemo (UIC),V.N.
+Venkatakrishnan (UIC)</li>
+<li><strong>Effective and Light-Weight Deobfuscation and Semantic-Aware
+Attack Detection for PowerShell Scripts</strong>, Zhenyuan LI (Zhejiang
+University),Qi Alfred Chen (University of California, Irvine),Chunlin
+Xiong (Zhejiang University),Yan Chen (Northwestern University),Tiantian
+Zhu (Zhejiang University of Technology),Hai Yang (MagicShield Inc)</li>
+<li><strong>MalMax: Multi-Aspect Execution for Automated Dynamic Web
+Server Malware Analysis</strong>, Abbas Naderi-Afooshteh (University of
+Virginia),Yonghwi Kwon (University of Virginia),Jack Davidson
+(University of Virginia),Anh Nguyen-Tuong (University of Virginia),Ali
+Razmjoo-Qalaei,Mohammad-Reza Zamiri-Gourabi (ZDResearch)</li>
+</ol>
+</blockquote>
+<p>其中，前两篇都用图表示攻击流程，然后分别采用机器学习的方法和图匹配的类规则方法进行检测。而后两篇则将关注点放在脚本类的恶意程序上。前者（也就是我们的工作）用主要是静态分析的方法解决混淆问题，而后者则用动态方法分析了恶意程序变体的问题。下面我们分两组讨论这四篇文章。</p>
+<h3><span id="前言">前言：</span></h3>
+<h4><span id="网络空间威胁检测面临的一些研究问题">网络空间威胁检测面临的一些研究问题？</span></h4>
+<ul>
+<li><strong>缓慢又隐蔽的高级持续性威胁的检测难题</strong>：高级持续性威胁（Advanced
+Persistent
+Threat）往往采用隐蔽的攻击形式，在很长的一段时间内缓慢的渗透入目标系统并长期潜伏以达到攻击目的。因为其缓慢又隐蔽的特性，传统的防御手段往往很难对其实施有效的监控。正所谓“我设置阈值过高，就会错过攻击；我设置阈值过低，就没空管理系统（误报太多）”。</li>
+<li><strong>用什么数据什么结构准确度表示一个威胁行为的问题</strong>：用什么方式表示一个威胁或攻击行为一直以来被研究者关注。不同的表示方式都有其优点与缺点，很难给出一个绝对的判断，应该根据不同场景做不同选择。举例来说，<strong>现在常用的威胁情报（IoC）使用非常简单的数据，包括恶意的IP、恶意文件的Hash，几乎没有任何鲁棒性可言</strong>，但却是现实中常用的安全工具，有效的保护了许多系统的安全。其他常见的方式还包括，系统调用的序列、API调用树、代码动态执行图等。一般而言，简单的结构意味着更高的效率，但表达能力更差，误报的概率更高。而复杂的结构，表达能力更好的同时检测效率却受到影响。</li>
+<li><strong>如何设计检测算法权衡威胁检测的响应速度与检测精度矛盾</strong>：威胁检测的系统的响应速度很大程度的影响了该系统的应用场景和价值。响应速度越快，就能越早的定位并阻止进一步的攻击发生，从而尽可能的减小损失。但是鱼与熊掌往往不可得兼，效率高、响应速度快的速度在检测能力上往往不如响应速度慢、收集数据更加全面的系统。现有的系统都尝试在响应速度和检测精度之间找到一个行之有效的平衡点。</li>
+<li><strong>如何设计存储系统以权衡存储空间与查询效率之间的矛盾</strong>：如前面所说，高级持续性威胁往往是“low
+and
+slow”的，攻击的周期可能长达几十天。此外，为了保护系统安全，日志系统往往需要保存很长一段时间内的日志以便事后的取证（Digital
+Forensic）分析。因此系统有很强的存储的日志的需求。对一个大公司来说，这可能以为着PB级的存储以及百万美元的开销。因此<strong>日志存储系统的设计和针对性的数据压缩算法</strong>也是必不可少的。</li>
+</ul>
+<h4><span id="1-溯源图">1、溯源图</span></h4>
+<p>溯源图（Provenance
+Graph）描述计算机中的事件并在图中进行威胁检测是最近几年学术界和工业界都很关注的一个课题。使用图的形式，相比于之前常用的序列有更加好的表达能力。但是图上计算的复杂性，也给研究人员带来了许多的挑战，很多研究组在近几年带来了许多的研究成果（我可能会在后面展开讲讲这方面工作，也是一个很有意思的题目）。<strong>值得一提的是本议题第二篇文章
+POIROT（大侦探波罗）的“侦探”三部曲（SLEUTH，HOLMES，POIROT）都发表在四大会上，有兴趣的同学可以在<a href="http://link.zhihu.com/?target=https%3A//www.researchgate.net/profile/Sadegh_Milajerdi%3FenrichId%3Drgreq-edb099d62869d1044744443018cd8dac-XXX%26enrichSource%3DY292ZXJQYWdlOzMzNjA1NzMyNztBUzo4MDcyNjA4MTMwMjUyODJAMTU2OTQ3NzM4NDE2Ng%3D%3D%26el%3D1_x_5%26_esc%3DpublicationCoverPdf">这里</a>找到更多。</strong></p>
+<p><strong><font color="red">
+溯源图是由计算机中的实体为节点（进程、文件、网络套接字）、将实体间的操作（进程文件、开启新的进程）视为节点之间的边，这样就构成了一个有向信息图。</font></strong>溯源图可以用来表示系统中的各种行为，包括各种攻击行为。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553381.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553747.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="2-如何在溯源图中高效的定位威胁呢">2、如何在溯源图中高效的定位威胁呢？</span></h4>
+<h5><span id="poirot-签名匹配">POIROT 签名匹配：</span></h5>
+<p>在 POIROT 中，作者们创新的提出了另一种和溯源图类似的图 --
+查询图。<strong>他们先人工的分析 APT
+攻击白皮书，入侵报告等威胁情报并手工提取出其中涉及的实体和实体间的操作，构成查询图（Gq）</strong>。然后给出了一个专门设计的图匹配算法，从而实现了个高效的检测。这其实是一种类似<strong>签名匹配的检测算法</strong>，因此优点在于较高的效率和低的误报率。但是缺点也很明显，这种方法无法检测未知的攻击，对变体的抵抗能力也比较弱。而且提取特征的过程全是手工完成的，人力成本较高。</p>
+<h5><span id="log2vec-异常检测">Log2vec 异常检测：</span></h5>
+<p>首先值得一提的是，这也是一片国内的文章，出自中科院信工所。他们将最近在机器学习领域很火的
+Graph Embedding
+方法迁移到了“溯源图”上（这里需要说明，他们说使用的图结构在溯源图的基础上加上了很多额外的联系，因此联系更紧密）。他们的主要贡献在于证明了
+Graph Embedding
+在可以用于加强版的溯源图，使得生成的向量有很好的表达能力，可以用于攻击的检测。</p>
+<h4><span id="3-溯源图在检测上的优势待补充">3、溯源图在检测上的优势？【待补充】</span></h4>
+<p>利用这些边和节点，溯源图可以表示出系统对象之间的数据流与控制流关系，从而<strong>将存在因果联系（Causality）的节点连接起来，无论两个节点之间相隔多少的其他节点，或者发生时间相差多少</strong>。以RQ1中的高级持续性威胁为例，无论攻击如何隐蔽与缓慢，我们都可以在溯源图中找到对应的节点与因果联系，从而对其进行有效的检测。</p>
+<p>溯源图包含着丰富的系统行为语义，也有很强的<strong>关联分析能力</strong>，因此在检测未知威胁和告警关联、<strong>误报过滤方面</strong>有着很强能力、很好的效果。</p>
+<h4><span id="4-基于溯源图做入侵检测-关联分析和告警消减中的常见问题和可能的风险">4、基于溯源图做入侵检测、关联分析和告警消减中的常见问题和可能的风险</span></h4>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191553024.png" alt="基于溯源图做入侵检测、关联分析和告警消减中的常见问题和可能的风险">
+<figcaption aria-hidden="true">基于溯源图做入侵检测、关联分析和告警消减中的常见问题和可能的风险</figcaption>
+</figure>
+<blockquote>
+<p><strong>基于溯源图的入侵检测和告警关联分析方案已经越来越多的被各大安全厂商采纳作为新的检测引擎核心</strong>。溯源图包含着丰富的系统行为语义，也有很强的关联分析能力，因此在检测未知威胁和告警关联、误报过滤方面有着很强能力、很好的效果。然而基于系统溯源图的检测系统本身也会引入新的问题，一些错误的使用可能会导致新的风险。本文整理归纳了利用系统溯源图做威胁检测过程中可能遇到的一些常见问题，和潜在的攻击方式，希望引起大家重视。</p>
+</blockquote>
+<h4><span id="41用溯源图进行检测过程中遇到的问题">4.1
+用溯源图进行检测过程中遇到的问题</span></h4>
+<p><strong><font color="red">
+利用溯源图进行检测的最大问题，或者说挑战，就是性能问题。主要表现在两个方面：</font></strong></p>
+<ul>
+<li><p>数据量过大带来的<strong>数据收集开销</strong>：为了构建完整的系统溯源图，检测系统需要收集大量的数据，一般来说单台主机一天收集的数据量会在GB这一数量级。因此存储和处理数据会带来很大的开销。</p></li>
+<li><p>图结构处理带来的<strong>计算开销</strong>：因为溯源图原始的图结构，完整的处理其信息会引入大量的开销。</p></li>
+</ul>
+<h4><span id="42带有风险的缓解措施和针对性的绕过手段">4.2
+带有风险的缓解措施和针对性的绕过手段</span></h4>
+<p>对于安全系统，尤其是面向业界的安全系统而言，性能就是生命，直接决定了乙方会不会接受安全产品。所以，从业者采用了各种方式来缓解性能压力，这些方法从原理上来说可以分为两大类：<strong>“剪枝”</strong>与<strong>“衰减”</strong>。</p>
+<p><strong>“剪枝”就是将被认为无关的攻击路径整条排除</strong>，不予考虑；<strong>“衰减”则是认为局部的可疑行为只会与临近的行为关联</strong>，所以行为的影响力会随着图中距离的变远而逐步减小。（具体的实现比较复杂，不再赘述。）实际情况中，这两种方法往往可以一起使用使性能最优。</p>
+<p>然而，需要注意的是这两种方案都有可能导致攻击漏报，而攻击者也完全可以利用这两个特性来针对性的构造攻击。事实上，了解原理后，有些攻击的构造会相当的容易。接下来我会由简单到复杂介绍几个具体的缓解方法和对应的攻击构造思路：</p>
+<ul>
+<li>利用包括<strong>数字签名</strong>在内的<strong>简单白名单策略</strong>进行<strong>剪枝</strong>：<strong>利用白名单进行初步的数据过滤是一种很直接也很有效的方法，但是过于简单的白名单策略可能导致攻击者很容易的绕过</strong>。以数字签名为例，绕过数字签名的方式有很多：包括签名伪造、DLL
+Side loading以及最近很火的供应链攻击方案。</li>
+<li>基于<strong>局部异常行为</strong>的<strong>剪枝</strong>：攻击行为往往会导致异常的系统行为（溯源图中的边），比如不应该出现的进程对文件访问等。部分工作针对这一特性认为“常见的系统行为就是相对安全的，因此可以忽略”。针对这一类的缓解方案，攻击者可以采用Live-off-the-Land的攻击思路，即尽可能的采用系统中原有的数据访问路径。<strong><font color="red">
+比如说经典的Gitpwn攻击，利用Git的代码提交流程完成源代码的窃取和上传。可以避免异常的文件访问和网络传输流程，从而完成攻击。</font></strong></li>
+<li><strong>衰减</strong>：利用衰减的思路，<strong>安全分析人员通过控制检测点的传播轮数（保留时间）</strong>，可以有效控制每次需要处理的图的规模，从而大幅度的降低的算法的复杂度。然而攻击者可以通过加长攻击链（增加攻击间隔）来避免被检测。需要注意的是加长攻击需要使得溯源图中节点的距离变大，如下图所示，常规的有核心控制节点的攻击图并不能真正拉长攻击链。这里可以使用的攻击技术报告DLL
+side
+loading、注册表自启动等等。值得一提的是，基于衰减的压缩方案往往和剪枝的方案共同使用，也意味着双倍的风险。</li>
+</ul>
+<p>上面几点仅仅是抛砖引玉，除此之外，其他的安全风险还包括：<strong>1）不完整的因果关系数据；2）受限的攻击案例分析等。</strong>可以看到，引入溯源图在解决部分问题的同时也引入了新的安全问题，构建真正安全系统的路还很长。希望大家也可以提出自己的看法，多多交流。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/ANF4PB/" title="高级威胁发现（1）基于溯源图的入侵检测">https://powerlzy.github.io/posts/ANF4PB/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/368N99B/" rel="prev" title="安全场景（2）恶意加密流量检测*">
+                  <i class="fa fa-chevron-left"></i> 安全场景（2）恶意加密流量检测*
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/21E1VBV/" rel="next" title="深度学习（10）AutoEncoder">
+                  深度学习（10）AutoEncoder <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>
