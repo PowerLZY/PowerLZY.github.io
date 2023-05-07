@@ -1272,6 +1272,174 @@ OPTICS算法中也需要两个输入参数, 但该算法对 <span class="math in
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1P85MAS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/1P85MAS/" class="post-title-link" itemprop="url">聚类（4）总结</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-15 22:23:33" itemprop="dateCreated datePublished" datetime="2022-03-15T22:23:33+08:00">2022-03-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-22 17:26:15" itemprop="dateModified" datetime="2023-04-22T17:26:15+08:00">2023-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E8%81%9A%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">聚类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-聚类算法">一、聚类算法</span></h3>
+<blockquote>
+<p>常用聚类算法 - 小胡子的文章 - 知乎
+https://zhuanlan.zhihu.com/p/104355127</p>
+<p><strong>K-means, K-medians, K-mediods and K-centers</strong> -
+仲基的文章 - 知乎 https://zhuanlan.zhihu.com/p/398600714</p>
+</blockquote>
+<p>什么是聚类算法？聚类是一种机器学习技术，它涉及到数据点的分组。给定一组数据点，我们可以使用聚类算法将每个数据点划分为一个特定的组。理论上，同一组中的数据点应该具有相似的属性和/或特征，而不同组中的数据点应该具有高度不同的属性和/或特征。<strong>聚类是一种无监督学习的方法</strong>，是许多领域中常用的统计数据分析技术。</p>
+<p><strong>聚类算法主要包括以下五类：</strong></p>
+<ul>
+<li><strong>基于分层的聚类（hierarchical methods）</strong></li>
+</ul>
+<p>这种方法对给定的数据集进行逐层，直到某种条件满足为止。具体可分为合并型的“自下而上”和分裂型的“自下而上”两种方案。如在“自下而上”方案中，初始时每一个数据记录都组成一个单独的组，在接下来的迭代中，它把那些相互邻近的组合并成一个组，直到所有的记录组成一个分组或者某个条件满足为止。<strong>代表算法有：<em>BIRCH算法</em>（1996）、<em>CURE算法</em>、CHAMELEON算法等。</strong></p>
+<blockquote>
+<p>层次聚类通过计算不同类别数据点间的相似度来创建一棵有层次的嵌套聚类树。在聚类树中，不同类别的原始数据点是树的最低层，树的顶层是一个聚类的根节点。</p>
+<p><strong>最小距离的层次聚类算法</strong>通过自下而上合并创建聚类树，合并算法通过计算两类数据点间的欧式距离来计算不同类别数据点间的相似度，对所有数据点中最为相似的两个数据点进行组合，组合后，最小距离（Single
+Linkage）的计算方法是将两个组合数据点中距离最近的两个数据点间的距离作为这两个组合数据点的距离。并反复迭代这一过程。</p>
+</blockquote>
+<ul>
+<li><strong>基于划分的聚类（partitioning methods）</strong></li>
+</ul>
+<p>给定一个有N个记录的数据集，分裂法将构造K个分组，每一个分组就代表一个聚类，K&lt;N,而且这K个分组满足下列条件：（1）每一个分组至少包含一个数据记录；（2）每一个数据记录属于且仅属于一个分组（咋某些模糊聚类算法中可以放宽条件）。对于给定的K，算法首先给出一个初始的分组方法，以后通过反复迭代的方法改变分组，使得每一次改进之后的分组方案都较前一次好，而所谓好的标准是：同一分组中的记录越近越好，而不同分组中的记录越远越好。使用这个基本思想的算法有：<strong><em>K-means算法</em>、<em>K-medoids算法</em>、<em>CLARANS算法</em></strong></p>
+<ul>
+<li><strong>基于密度的聚类（density-based methods）</strong></li>
+</ul>
+<p>基于密度的方法和其他方法的一个根本区别是：它不是基于各种各样的距离的，而是基于魔都的，这样就能克服基于距离的算法只能发现“类圆形”的聚类的缺点。这个方法的指导思想为：只要一个区域的点的密度大过某个阈值，就把它加到与之相近的聚类中去，代表算法有<strong>：<em>DBSCAN（Density-Based
+Spatial Clustering of Applic with
+Noise）算法（1996）</em>、<em>OPTICS（Ordering Points to Identify
+Clustering
+Structure）算法（1999）</em>、<em>DENCLUE算法（1998）</em>、<em>WaveCluster算法（1998，具有O（N）时间复杂性，但只适用于低维数据）</em></strong></p>
+<ul>
+<li><strong>基于网格的聚类（grid-based methods）</strong></li>
+</ul>
+<p>这种方法首先将数据空间划分成为有限个单元（cell）的网络结构，所有的处理都是以单个的单元为对象的。这么处理的一个突出的优点就是处理速度很快，通常这是与目标数据库中记录的个数无关，它只与把数据空间分成多少个单元有关。代表算法有：<strong><em>STING（Statistical
+Information Grid）</em>、<em>CLIQUE（Clustering In
+Quest）算法（1998）</em>、<em>WaveCluster算法</em>。</strong>其中STRING算法把数据空间层次地划分为单元格，依赖于存储在网格单元中的统计信息进行聚类；CLIQUE算法结合了密度和网格的方法。</p>
+<ul>
+<li><strong>基于模型的聚类（model-based methods）</strong></li>
+</ul>
+<p>基于模型的方法给每一个聚类假定一个模型，然后去寻找能够很好地满足这个模型的数据集。这样一个模型可能是数据点在空间中的密度分布函数或者其它。它的一个潜在的假定就是：目标数据集是由一系列的概率分布所决定的。通常有两种尝试方向：统计的方案和神经网络的方案。</p>
+<h3><span id="二-聚类评估">二、聚类评估</span></h3>
+<p>由于数据以及需求的多样性，没有一种算法能够适用于所有的数据类型、数据簇或应用场景，似乎每种情况都可能需要一种不同的评估方法或度量标准。例
+如，K均值聚类可以用<strong>误差平方</strong>和来评估，但是基于密度的数据簇可能不是球形，
+误差平方和则会失效。在许多情况下，判断聚类算法结果的好坏强烈依赖于主观解释。尽管如此，聚类算法的评估还是必需的，它是聚类分析中十分重要的部分之一。</p>
+<p>聚类评估的任务是估计在数据集上进行聚类的可行性，以及聚类方法产生结
+果的质量。这一过程又分为三个子任务。</p>
+<ol type="1">
+<li><p><strong>估计聚类趋势。</strong></p>
+<p>这一步骤是检测数据分布中是否存在非随机的簇结构。如果数据是基本随机
+的，那么聚类的结果也是毫无意义的。我们可以观察聚类误差是否随聚类类别数
+量的增加而单调变化，如果数据是基本随机的，即不存在非随机簇结构，那么聚
+类误差随聚类类别数量增加而变化的幅度应该较不显著，并且也找不到一个合适
+的K对应数据的真实簇数。</p></li>
+<li><p><strong>判定数据簇数。</strong></p>
+<p>确定聚类趋势之后，我们需要找到与真实数据分布最为吻合的簇数，据此判定聚类结果的质量。数据簇数的判定方法有很多，例如<strong>手肘法</strong>和<strong>Gap
+Statistic</strong>方
+法。需要说明的是，用于评估的最佳数据簇数可能与程序输出的簇数是不同的。
+例如，有些聚类算法可以自动地确定数据的簇数，但可能与我们通过其他方法确定的最优数据簇数有所差别。</p></li>
+<li><p><strong>测定聚类质量。</strong></p>
+<p>在无监督的情况下，我们可以通过考察簇的分离情况和簇的紧凑情况来评估聚类的效果。定义评估指标可以展现面试者实际解决和分析问题的能力。事实上测量指标可以有很多种，以下列出了几种常用的度量指标，更多的指标可以阅读相关文献。</p></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/X8CSWX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1476,174 +1644,6 @@ https://zhuanlan.zhihu.com/p/412918565</li>
 HDBSCAN works</a></font></li>
 <li>聚类算法(Clustering Algorithms)之层次聚类(Hierarchical Clustering) -
 小玉的文章 - 知乎 https://zhuanlan.zhihu.com/p/363879425</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1P85MAS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1P85MAS/" class="post-title-link" itemprop="url">聚类（4）总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-15 22:23:33" itemprop="dateCreated datePublished" datetime="2022-03-15T22:23:33+08:00">2022-03-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 17:26:15" itemprop="dateModified" datetime="2023-04-22T17:26:15+08:00">2023-04-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E8%81%9A%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">聚类</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-聚类算法">一、聚类算法</span></h3>
-<blockquote>
-<p>常用聚类算法 - 小胡子的文章 - 知乎
-https://zhuanlan.zhihu.com/p/104355127</p>
-<p><strong>K-means, K-medians, K-mediods and K-centers</strong> -
-仲基的文章 - 知乎 https://zhuanlan.zhihu.com/p/398600714</p>
-</blockquote>
-<p>什么是聚类算法？聚类是一种机器学习技术，它涉及到数据点的分组。给定一组数据点，我们可以使用聚类算法将每个数据点划分为一个特定的组。理论上，同一组中的数据点应该具有相似的属性和/或特征，而不同组中的数据点应该具有高度不同的属性和/或特征。<strong>聚类是一种无监督学习的方法</strong>，是许多领域中常用的统计数据分析技术。</p>
-<p><strong>聚类算法主要包括以下五类：</strong></p>
-<ul>
-<li><strong>基于分层的聚类（hierarchical methods）</strong></li>
-</ul>
-<p>这种方法对给定的数据集进行逐层，直到某种条件满足为止。具体可分为合并型的“自下而上”和分裂型的“自下而上”两种方案。如在“自下而上”方案中，初始时每一个数据记录都组成一个单独的组，在接下来的迭代中，它把那些相互邻近的组合并成一个组，直到所有的记录组成一个分组或者某个条件满足为止。<strong>代表算法有：<em>BIRCH算法</em>（1996）、<em>CURE算法</em>、CHAMELEON算法等。</strong></p>
-<blockquote>
-<p>层次聚类通过计算不同类别数据点间的相似度来创建一棵有层次的嵌套聚类树。在聚类树中，不同类别的原始数据点是树的最低层，树的顶层是一个聚类的根节点。</p>
-<p><strong>最小距离的层次聚类算法</strong>通过自下而上合并创建聚类树，合并算法通过计算两类数据点间的欧式距离来计算不同类别数据点间的相似度，对所有数据点中最为相似的两个数据点进行组合，组合后，最小距离（Single
-Linkage）的计算方法是将两个组合数据点中距离最近的两个数据点间的距离作为这两个组合数据点的距离。并反复迭代这一过程。</p>
-</blockquote>
-<ul>
-<li><strong>基于划分的聚类（partitioning methods）</strong></li>
-</ul>
-<p>给定一个有N个记录的数据集，分裂法将构造K个分组，每一个分组就代表一个聚类，K&lt;N,而且这K个分组满足下列条件：（1）每一个分组至少包含一个数据记录；（2）每一个数据记录属于且仅属于一个分组（咋某些模糊聚类算法中可以放宽条件）。对于给定的K，算法首先给出一个初始的分组方法，以后通过反复迭代的方法改变分组，使得每一次改进之后的分组方案都较前一次好，而所谓好的标准是：同一分组中的记录越近越好，而不同分组中的记录越远越好。使用这个基本思想的算法有：<strong><em>K-means算法</em>、<em>K-medoids算法</em>、<em>CLARANS算法</em></strong></p>
-<ul>
-<li><strong>基于密度的聚类（density-based methods）</strong></li>
-</ul>
-<p>基于密度的方法和其他方法的一个根本区别是：它不是基于各种各样的距离的，而是基于魔都的，这样就能克服基于距离的算法只能发现“类圆形”的聚类的缺点。这个方法的指导思想为：只要一个区域的点的密度大过某个阈值，就把它加到与之相近的聚类中去，代表算法有<strong>：<em>DBSCAN（Density-Based
-Spatial Clustering of Applic with
-Noise）算法（1996）</em>、<em>OPTICS（Ordering Points to Identify
-Clustering
-Structure）算法（1999）</em>、<em>DENCLUE算法（1998）</em>、<em>WaveCluster算法（1998，具有O（N）时间复杂性，但只适用于低维数据）</em></strong></p>
-<ul>
-<li><strong>基于网格的聚类（grid-based methods）</strong></li>
-</ul>
-<p>这种方法首先将数据空间划分成为有限个单元（cell）的网络结构，所有的处理都是以单个的单元为对象的。这么处理的一个突出的优点就是处理速度很快，通常这是与目标数据库中记录的个数无关，它只与把数据空间分成多少个单元有关。代表算法有：<strong><em>STING（Statistical
-Information Grid）</em>、<em>CLIQUE（Clustering In
-Quest）算法（1998）</em>、<em>WaveCluster算法</em>。</strong>其中STRING算法把数据空间层次地划分为单元格，依赖于存储在网格单元中的统计信息进行聚类；CLIQUE算法结合了密度和网格的方法。</p>
-<ul>
-<li><strong>基于模型的聚类（model-based methods）</strong></li>
-</ul>
-<p>基于模型的方法给每一个聚类假定一个模型，然后去寻找能够很好地满足这个模型的数据集。这样一个模型可能是数据点在空间中的密度分布函数或者其它。它的一个潜在的假定就是：目标数据集是由一系列的概率分布所决定的。通常有两种尝试方向：统计的方案和神经网络的方案。</p>
-<h3><span id="二-聚类评估">二、聚类评估</span></h3>
-<p>由于数据以及需求的多样性，没有一种算法能够适用于所有的数据类型、数据簇或应用场景，似乎每种情况都可能需要一种不同的评估方法或度量标准。例
-如，K均值聚类可以用<strong>误差平方</strong>和来评估，但是基于密度的数据簇可能不是球形，
-误差平方和则会失效。在许多情况下，判断聚类算法结果的好坏强烈依赖于主观解释。尽管如此，聚类算法的评估还是必需的，它是聚类分析中十分重要的部分之一。</p>
-<p>聚类评估的任务是估计在数据集上进行聚类的可行性，以及聚类方法产生结
-果的质量。这一过程又分为三个子任务。</p>
-<ol type="1">
-<li><p><strong>估计聚类趋势。</strong></p>
-<p>这一步骤是检测数据分布中是否存在非随机的簇结构。如果数据是基本随机
-的，那么聚类的结果也是毫无意义的。我们可以观察聚类误差是否随聚类类别数
-量的增加而单调变化，如果数据是基本随机的，即不存在非随机簇结构，那么聚
-类误差随聚类类别数量增加而变化的幅度应该较不显著，并且也找不到一个合适
-的K对应数据的真实簇数。</p></li>
-<li><p><strong>判定数据簇数。</strong></p>
-<p>确定聚类趋势之后，我们需要找到与真实数据分布最为吻合的簇数，据此判定聚类结果的质量。数据簇数的判定方法有很多，例如<strong>手肘法</strong>和<strong>Gap
-Statistic</strong>方
-法。需要说明的是，用于评估的最佳数据簇数可能与程序输出的簇数是不同的。
-例如，有些聚类算法可以自动地确定数据的簇数，但可能与我们通过其他方法确定的最优数据簇数有所差别。</p></li>
-<li><p><strong>测定聚类质量。</strong></p>
-<p>在无监督的情况下，我们可以通过考察簇的分离情况和簇的紧凑情况来评估聚类的效果。定义评估指标可以展现面试者实际解决和分析问题的能力。事实上测量指标可以有很多种，以下列出了几种常用的度量指标，更多的指标可以阅读相关文献。</p></li>
 </ol>
 
       
