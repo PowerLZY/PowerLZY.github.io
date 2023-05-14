@@ -625,175 +625,6 @@ B-树相比，这在大多数情况下为查找（目前最常见的操作）提
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/387JGHJ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/387JGHJ/" class="post-title-link" itemprop="url">风控算法（3）技术算法-PU Learning</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-01 11:58:14" itemprop="dateCreated datePublished" datetime="2022-07-01T11:58:14+08:00">2022-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-21 14:40:38" itemprop="dateModified" datetime="2023-04-21T14:40:38+08:00">2023-04-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="pulearning在风控中的应用理论篇">PU
-Learning在风控中的应用（理论篇）</span></h2>
-<h4><span id="一-风控业务背景">一、风控业务背景</span></h4>
-<p>在实际分类场景中，我们经常会遇到类似这样的问题：<strong>只有已标记的正样本，以及未标记的样本</strong>。比如金融风控场景，只有部分用户被标记为欺诈用户，剩下的大量用户未被标记。虽然这其中大多数信用良好，但仍有少量可能为欺诈用户。</p>
-<p>为了方便操作，我们可以将未标记的样本都作为负样本进行训练，但存在几个缺陷：</p>
-<ol type="1">
-<li>正负样本极度不平衡，负样本数量远远超过正样本，效果很差。</li>
-<li>某些关键样本会干扰分类器的最优分隔面的选择，尤其是SVM。</li>
-</ol>
-<p>如何辨别未标记样本中的正负样本，提升模型准确度，就成为一个值得思考的问题。PU
-Learning就是解决这种场景的一种学习方法。</p>
-<p>本文尝试回答以下几个问题：</p>
-<ul>
-<li>我们如何将从PU数据中学习的问题形式化？</li>
-<li><strong>通常对PU数据进行哪些假设以便于学习算法的设计？</strong></li>
-<li><strong>我们可以从PU数据估计类先验吗？为什么这很有用？</strong></li>
-<li><strong>我们如何从PU数据中学习模型？</strong></li>
-<li><strong>我们如何在PU环境中评估模型？</strong></li>
-<li>PU数据何时以及为什么出现在实际应用中？</li>
-<li>PU学习与机器学习的其他领域有什么关系？</li>
-</ul>
-<p><strong>数学符号含义速查</strong>： <span class="math inline">\(x\)</span> ：某样例的特征向量, <span class="math inline">\(x \in \boldsymbol{x}\)</span></p>
-<p><span class="math inline">\(y\)</span> : 某样例的标签变量, <span class="math inline">\(y \in \boldsymbol{y}=\{0,1\}\)</span></p>
-<p><span class="math inline">\((\boldsymbol{x}, \boldsymbol{y})\)</span>
-: 某样本二元组</p>
-<p><span class="math inline">\(s\)</span> : 某样例是否被标注的指示变量,
-<span class="math inline">\(s \in s=\{0,1\}\)</span></p>
-<p><span class="math inline">\(\alpha\)</span> ：先验类别（Class
-Prior)， <span class="math inline">\(\alpha=\operatorname{Pr}(y=1)\)</span>
-，指正类别先验比例</p>
-<p><span class="math inline">\(c\)</span> : 标签频率（Label Frequency)，
-<span class="math inline">\(c=\operatorname{Pr}(s=1 \mid y=1)\)</span>,
-指L集合占总体P集的比例 <span class="math inline">\(e\)</span> :
-倾向评分函数 (Propensity Score) , <span class="math inline">\(e(x)=\operatorname{Pr}(s=1 \mid y=1,
-x)\)</span></p>
-<p><span class="math inline">\(f(x)\)</span> :
-总体样本的概率密度分布函数, <span class="math inline">\(\quad
-f(x)=\operatorname{Pr}(x \mid y \in\{0,1\})\)</span></p>
-<p><span class="math inline">\(f_{+}(x)\)</span> :
-正样本的概率密度分布函数, <span class="math inline">\(\quad
-f_{+}(x)=\operatorname{Pr}(x \mid y=1)\)</span></p>
-<p><span class="math inline">\(f_{-}(x)\)</span> :
-负样本的概率密度分布函数, <span class="math inline">\(\quad
-f_{-}(x)=\operatorname{Pr}(x \mid y=0)\)</span></p>
-<p><span class="math inline">\(f_l(x)\)</span> : 有标签 (labeled)
-样本的概率密度分布函数, <span class="math inline">\(\quad
-f_l(x)=\operatorname{Pr}(x \mid s=1) \subset f_{+}(x)\)</span></p>
-<p><span class="math inline">\(f_u(x)\)</span> : 无标签 (unlabeled)
-样本的概率密度分布函数， <span class="math inline">\(\quad
-f_u(x)=\operatorname{Pr}(x \mid s=0)\)</span></p>
-<p><span class="math inline">\(\hat{\theta}\)</span> : 对参数 <span class="math inline">\(\theta\)</span> 的估计值</p>
-<p><span class="math inline">\(P:\)</span> 正样本集, Positive,
-已标注的正样本</p>
-<p><span class="math inline">\(N\)</span> : 负样本集, Negative,
-实际末知</p>
-<p><span class="math inline">\(L\)</span> : 有标签样本集, Labeled,
-只有正样本</p>
-<p><span class="math inline">\(U\)</span> : 无标签样本集, Unlabeled,
-包括末知的正负样本</p>
-<p><span class="math inline">\(P U:\)</span>
-正样本和无标签样本组成的集合</p>
-<p><span class="math inline">\(R N\)</span> : 可靠的负样本</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1EHB2HT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1108,6 +939,175 @@ Estimation，MLE）属于频率主义学派方法，其蕴含的朴素思想在�
 <li>达到迭代次数上限： <img src="https://www.zhihu.com/equation?tex=k+%3D+k_%7Bmax%7D" alt="[公式]"></li>
 <li>学习曲线变化很小：<img src="https://www.zhihu.com/equation?tex=+%7C%7CJ%28w%5E%7Bk%2B1%7D%29%E2%88%92J%28w%5Ek%29%7C%7C+" alt="[公式]"> 小于阈值。</li>
 </ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/387JGHJ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/387JGHJ/" class="post-title-link" itemprop="url">风控算法（3）技术算法-PU Learning</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-01 11:58:14" itemprop="dateCreated datePublished" datetime="2022-07-01T11:58:14+08:00">2022-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-21 14:40:38" itemprop="dateModified" datetime="2023-04-21T14:40:38+08:00">2023-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="pulearning在风控中的应用理论篇">PU
+Learning在风控中的应用（理论篇）</span></h2>
+<h4><span id="一-风控业务背景">一、风控业务背景</span></h4>
+<p>在实际分类场景中，我们经常会遇到类似这样的问题：<strong>只有已标记的正样本，以及未标记的样本</strong>。比如金融风控场景，只有部分用户被标记为欺诈用户，剩下的大量用户未被标记。虽然这其中大多数信用良好，但仍有少量可能为欺诈用户。</p>
+<p>为了方便操作，我们可以将未标记的样本都作为负样本进行训练，但存在几个缺陷：</p>
+<ol type="1">
+<li>正负样本极度不平衡，负样本数量远远超过正样本，效果很差。</li>
+<li>某些关键样本会干扰分类器的最优分隔面的选择，尤其是SVM。</li>
+</ol>
+<p>如何辨别未标记样本中的正负样本，提升模型准确度，就成为一个值得思考的问题。PU
+Learning就是解决这种场景的一种学习方法。</p>
+<p>本文尝试回答以下几个问题：</p>
+<ul>
+<li>我们如何将从PU数据中学习的问题形式化？</li>
+<li><strong>通常对PU数据进行哪些假设以便于学习算法的设计？</strong></li>
+<li><strong>我们可以从PU数据估计类先验吗？为什么这很有用？</strong></li>
+<li><strong>我们如何从PU数据中学习模型？</strong></li>
+<li><strong>我们如何在PU环境中评估模型？</strong></li>
+<li>PU数据何时以及为什么出现在实际应用中？</li>
+<li>PU学习与机器学习的其他领域有什么关系？</li>
+</ul>
+<p><strong>数学符号含义速查</strong>： <span class="math inline">\(x\)</span> ：某样例的特征向量, <span class="math inline">\(x \in \boldsymbol{x}\)</span></p>
+<p><span class="math inline">\(y\)</span> : 某样例的标签变量, <span class="math inline">\(y \in \boldsymbol{y}=\{0,1\}\)</span></p>
+<p><span class="math inline">\((\boldsymbol{x}, \boldsymbol{y})\)</span>
+: 某样本二元组</p>
+<p><span class="math inline">\(s\)</span> : 某样例是否被标注的指示变量,
+<span class="math inline">\(s \in s=\{0,1\}\)</span></p>
+<p><span class="math inline">\(\alpha\)</span> ：先验类别（Class
+Prior)， <span class="math inline">\(\alpha=\operatorname{Pr}(y=1)\)</span>
+，指正类别先验比例</p>
+<p><span class="math inline">\(c\)</span> : 标签频率（Label Frequency)，
+<span class="math inline">\(c=\operatorname{Pr}(s=1 \mid y=1)\)</span>,
+指L集合占总体P集的比例 <span class="math inline">\(e\)</span> :
+倾向评分函数 (Propensity Score) , <span class="math inline">\(e(x)=\operatorname{Pr}(s=1 \mid y=1,
+x)\)</span></p>
+<p><span class="math inline">\(f(x)\)</span> :
+总体样本的概率密度分布函数, <span class="math inline">\(\quad
+f(x)=\operatorname{Pr}(x \mid y \in\{0,1\})\)</span></p>
+<p><span class="math inline">\(f_{+}(x)\)</span> :
+正样本的概率密度分布函数, <span class="math inline">\(\quad
+f_{+}(x)=\operatorname{Pr}(x \mid y=1)\)</span></p>
+<p><span class="math inline">\(f_{-}(x)\)</span> :
+负样本的概率密度分布函数, <span class="math inline">\(\quad
+f_{-}(x)=\operatorname{Pr}(x \mid y=0)\)</span></p>
+<p><span class="math inline">\(f_l(x)\)</span> : 有标签 (labeled)
+样本的概率密度分布函数, <span class="math inline">\(\quad
+f_l(x)=\operatorname{Pr}(x \mid s=1) \subset f_{+}(x)\)</span></p>
+<p><span class="math inline">\(f_u(x)\)</span> : 无标签 (unlabeled)
+样本的概率密度分布函数， <span class="math inline">\(\quad
+f_u(x)=\operatorname{Pr}(x \mid s=0)\)</span></p>
+<p><span class="math inline">\(\hat{\theta}\)</span> : 对参数 <span class="math inline">\(\theta\)</span> 的估计值</p>
+<p><span class="math inline">\(P:\)</span> 正样本集, Positive,
+已标注的正样本</p>
+<p><span class="math inline">\(N\)</span> : 负样本集, Negative,
+实际末知</p>
+<p><span class="math inline">\(L\)</span> : 有标签样本集, Labeled,
+只有正样本</p>
+<p><span class="math inline">\(U\)</span> : 无标签样本集, Unlabeled,
+包括末知的正负样本</p>
+<p><span class="math inline">\(P U:\)</span>
+正样本和无标签样本组成的集合</p>
+<p><span class="math inline">\(R N\)</span> : 可靠的负样本</p>
 
       
     </div>
