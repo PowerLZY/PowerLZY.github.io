@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-bounce.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks  在本篇文章中我们将讨论DataDome公司[8]是如何利用基于流的异常值检测和 SliceLine 来快速安全地生成大量可用于阻止恶意流量的规则&#x2F;签名。虽然机器学习(ML)的使用变得越来越普遍，但在安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2">
+<meta property="og:url" content="https://powerlzy.github.io/posts/DDBFGD/index.html">
+<meta property="og:site_name" content="PowerLZY&#39;s Blog">
+<meta property="og:description" content="Leveraging Streaming-Based Outlier Detection and SliceLine to Stop Heavily Distributed Bot Attacks  在本篇文章中我们将讨论DataDome公司[8]是如何利用基于流的异常值检测和 SliceLine 来快速安全地生成大量可用于阻止恶意流量的规则&#x2F;签名。虽然机器学习(ML)的使用变得越来越普遍，但在安">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141133299.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141535180.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141554340.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141555875.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141340635.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141357815.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141424895.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141432739.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141437571.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141446088.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141455725.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141511200.png">
+<meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141514301.png">
+<meta property="article:published_time" content="2023-05-14T08:16:21.887Z">
+<meta property="article:modified_time" content="2023-05-14T08:16:21.887Z">
+<meta property="article:author" content="lzy">
+<meta property="article:tag" content="工业落地">
+<meta property="article:tag" content="业务安全">
+<meta property="article:tag" content="API安全">
+<meta property="article:tag" content="BlackHat">
+<meta property="article:tag" content="Distributed Bot Attacks">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141133299.png">
+
+
+<link rel="canonical" href="https://powerlzy.github.io/posts/DDBFGD/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://powerlzy.github.io/posts/DDBFGD/","path":"posts/DDBFGD/","title":"2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2 | PowerLZY's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">PowerLZY's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">本博客主要用于记录个人学习笔记（测试阶段）</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">Leveraging
+Streaming-Based Outlier Detection and SliceLine to Stop Heavily
+Distributed Bot Attacks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、手动检测和阻止分布式攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 检测流量峰值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 深入了解不同字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 观察一个规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、使用
+Sliceline检测和阻止分布式攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 Sliceline 原理解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 分布式攻击的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3
+案例分析：凭据填充攻击被Sliceline阻止</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、结论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">相关链接</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="lzy"
+      src="/images/cat_mac.jpg">
+  <p class="site-author-name" itemprop="name">lzy</p>
+  <div class="site-description" itemprop="description">相比到达的地方，同行的人更重要！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/PowerLZY" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;PowerLZY" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:3289218653@qq.com" title="E-Mail → mailto:3289218653@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/DDBFGD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2 | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-14 16:16:21" itemprop="dateCreated datePublished" datetime="2023-05-14T16:16:21+08:00">2023-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2><span id="leveragingstreaming-based-outlier-detection-and-sliceline-to-stop-heavilydistributed-bot-attacks">Leveraging
+Streaming-Based Outlier Detection and SliceLine to Stop Heavily
+Distributed Bot Attacks</span></h2>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141133299.png" alt="image-20230514113324227" style="zoom: 25%;"></p>
+<p><strong>在本篇文章中我们将讨论DataDome公司<sup>[8]</sup>是如何利用<font color="red">基于流的异常值检测和
+SliceLine
+来快速安全地生成大量可用于阻止恶意流量的规则/签名。</font></strong>虽然机器学习(ML)的使用变得越来越普遍，但在安全环境中规则仍然很重要。事实上，公司已经投资了大量有效的规则引擎，能够快速评估大量规则。此外，规则通常更方便创建、操作和解释，因此在ML方法之外仍然很有价值。</p>
+<p>虽然 SliceLine 最初设计用于识别 ML
+模型表现不佳的数据子集，但它的使用可以<strong>适应以无监督方式生成大量与攻击相关的规则，即不使用标记数据</strong>。此外，利用机器人检测问题来说明如何使用
+SliceLine 即时生成大量恶意签名。</p>
+<p>该研究还将展示优化的 SliceLine Python
+开源实现，并展示如何将其用于特定但困难的机器人检测子集：<strong>分布式凭证填充攻击</strong>，<strong>攻击者利用数千个受感染的
+IP
+地址进行攻击和绕过传统的安全机制，例如速率限制策略</strong>。通过一个真实世界的例子，该研究将首先解释如何使用基于流的检测来检测此类攻击，以及该研究如何使用数据建模在服务器端信号（HTTP
+标头、TLS 指纹、IP 地址等）上应用 <strong>SliceLine</strong>
+来识别并生成与分布式攻击相关的阻止签名。<font color="red">这种方法使该研究能够在去年阻止
+59 位客户超过 2.85 亿次恶意登录尝试。</font></p>
+<p>最后，该研究将解释这种方法如何推广到除机器人检测之外的其他安全用例，以及如何在不同的规则引擎中使用它。</p>
+<span id="more"></span>
+<h3><span id="一-说明">一、说明</span></h3>
+<p><strong>机器人检测是指识别和区分人类用户和自动化软件程序(Bot：Program
+to automate
+actions)的过程</strong>。术语“bot”可以指各种程序，包括搜索引擎爬虫和设计用于进行抢购或拒绝服务攻击的恶意bot。</p>
+<p>机器人检测很重要，因为机器人可用于各种目的，其中一些可能是有害或不道德的。例如，<strong>机器人可用于进行欺诈活动，如账户接管或凭证填充，从网站中获取敏感信息，或在社交媒体平台上自动发布垃圾邮件</strong>。</p>
+<ul>
+<li>凭证填充/账户接管→ 窃取用户帐户;</li>
+<li>DDoS攻击→ 使网站/移动应用程序不可用;</li>
+<li>Carding→ 测试被盗的信用卡;</li>
+<li>操纵投票→ 生成虚假的浏览量，增加点赞、转发等数量。</li>
+</ul>
+<p>可以使用多种技术和信号进行机器人检测，包括使用ML分析<strong>用户行为模式</strong><sup>[2]</sup>、<strong>浏览器指纹识别</strong><sup>[3][4]</sup>和其他形式的指纹识别，如<strong>TLS指纹识别</strong><sup>[5]</sup>。一些常见的机器人活动指标包括<strong>高频请求、用户行为不一致的模式和使用非标准用户代理或其他识别信息。</strong></p>
+<p>有效的机器人检测是维护在线系统和平台安全和完整性的重要组成部分，并被广泛应用于各种组织，包括电子商务网站、社交媒体平台和金融机构。尽管ML技术越来越多地用于机器人检测，但大多数公司仍有高效的规则引擎可与ML算法配合使用。<font color="red">规则的优点是可以立即部署以减轻攻击，并且高度可解释，使它们成为ML机器人检测的良好补充。</font></p>
+<p>在本文中，重点关注使用可以在<strong>应用层收集的信息进行机器人检测</strong>，更具体地说是<strong>HTTP头</strong>和<strong>客户端信息</strong>。特别是，该研究将解释如何<strong>使用流算法分析大量流量数据，识别异常事件或异常值</strong>，并<strong>分析底层流量签名以推断规则</strong>。这些技术可以转移到其他机器人检测信号和其他网络安全领域中，其中可以执行行为分析，以识别可疑数据部分，然后使用这些信息提取规则。</p>
+<p>越来越多机器人使用的<strong>IP代理+社区驱动的反检测框架</strong>的绕过技术。利用数千个住宅代理分散他们的攻击，不断更改和伪造他们的签名/指纹。</p>
+<ul>
+<li><strong>使用代理分发攻击</strong>：避免基于IP的速率限制。</li>
+<li><strong>使用住宅代理分发攻击</strong>：避免基于信誉的阻止。</li>
+<li><strong>使用与目标网站位于同一国家/地区的住宅代理进行分布式攻击</strong>：避免地理阻塞。</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141535180.png" alt="image-20230514153539082" style="zoom:50%;"></p>
+<center>
+<font color="red">How to block these ever-evolving and distributed
+bots?</font>
+<center>
+<h3><span id="二-手动检测和阻止分布式攻击">二、手动检测和阻止分布式攻击</span></h3>
+<h4><span id="21-检测流量峰值">2.1 检测流量峰值</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141554340.png" alt="image-20230514155453228" style="zoom: 33%;"></p>
+<h4><span id="22-深入了解不同字段">2.2 深入了解不同字段</span></h4>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141555875.png" alt="image-20230514155536782">
+<figcaption aria-hidden="true">image-20230514155536782</figcaption>
+</figure>
+<h4><span id="23-观察一个规则">2.3 观察一个规则</span></h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Country=Russia &amp;&amp; User Agent=Mozilla/5.0 (Macintosh;Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>指纹解析网站：https://www.useragentstring.com/Chrome99.0.4844.84_id_19983.php</p>
+</blockquote>
+<center>
+<font color="red">How to automate the analysis?</font>
+<center>
+<h3><span id="三-使用sliceline检测和阻止分布式攻击">三、使用
+Sliceline检测和阻止分布式攻击</span></h3>
+<p><strong>整体流程概述：</strong></p>
+<ul>
+<li><p>对登录进行聚合统计【有token实体的内容？】：</p>
+<ul>
+<li><p>唯一User Agent的数量；</p></li>
+<li><p>唯一IP的数量；</p></li>
+<li><p>会话数量；</p></li>
+</ul></li>
+<li><p>使用基于z-score的异常检测算法检测结果时间序列上的异常值【发现异常开始时间】；</p></li>
+<li><p>推送描述攻击的事件（客户、开始时间）；</p></li>
+<li><p>在流式处理中实施（使用Apache
+Flink），使用Sliceline自动化生成规则；</p></li>
+</ul>
+<h4><span id="31-sliceline-原理解析">3.1 Sliceline 原理解析</span></h4>
+<p><strong>Sliceline是由Sagadeeva等人提出的算法<sup>[1]</sup>，可用于ML模型调试</strong>。在训练ML模型时，通常会计算模型在一些保留数据集上的平均性能（模型评估）。Sliceline允许找到特征空间中哪些区域负责非常高的==错误率==。换句话说，它找到<strong>特征切片</strong>，即模型表现低于平均水平的特征空间的子空间。这些切片实际上表示为特征条件的合取式，可以轻松转换为规则。</p>
+<p>该算法以数据集和数据集中每个样本的错误作为输入。它要求数据集中的特征是分类的。这适用于机器人检测问题，因为收集的数据大多是分类数据，例如用户代理、国家或有关设备类型的信息(GPU型号等)。请注意，这并不意味着它不能与连续特征一起使用。在连续特征的情况下，我们需要应用预处理来定义不同的间隔并将每个值分配到一个间隔中。这个过程称为二值化，将连续特征转换为分类特征。【<strong>这里应该是指离散化处理</strong>】</p>
+<p>我们使用一个简单的例子来说明Sliceline的预期用例：调试ML模型。在下面例子中，考虑一个只有3个特征f1、f2和f3的数据集。此外，假设训练了一个分类模型，并计算了保留数据集中每个样本相关的对数损失（交叉熵损失函数）。</p>
+<blockquote>
+<p><strong>二分类交叉熵损失函数：</strong>对数损失（log
+loss）是一种用于评估分类模型预测结果的损失函数。对数损失通常用于二元分类问题，它测量了模型预测的概率分布与实际标签的差异。对数损失越小，表示模型的预测结果越接近于真实标签，因此模型的性能越好。对数损失的取值范围是0到正无穷，当模型的预测完全准确时，对数损失为0，而当模型的预测完全错误时，对数损失趋近于正无穷。对数损失越大，表示模型的预测与真实标签之间的差异越大，因此模型的性能越差。</p>
+</blockquote>
+<p><span class="math display">\[
+J(\theta)=-\frac{1}{N} \sum_{i=1}^N y^{(i)} \log
+\left(h_\theta\left(x^{(i)}\right)\right)+\left(1-y^{(i)}\right) \log
+\left(1-h_\theta\left(x^{(i)}\right)\right)
+\]</span></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141340635.png" alt="image-20230514134017574" style="zoom:50%;"></p>
+<center>
+图1：具有3个分类特征和相关的每个样本错误的示例数据集
+<center>
+<p><strong>Sliceline可以通过此输入找到的切片示例有：</strong></p>
+<ul>
+<li>f1 = b的平均误差为0.9；</li>
+<li>f2 = d ∧ f3 = f的平均误差为0.85；</li>
+</ul>
+<p>这两个切片的误差都高于数据集的平均误差0.38。</p>
+<p>原则上，我们寻找的切片可以是许多特征的组合，<strong>可能的切片空间随着特征的数量和基数的增加呈指数级增长</strong>。Sliceline通过使用两种技术来探索这个空间：【<font color="red">本质上是把原始数据转换为二进制向量，用逻辑运算与矩阵运算来代替数据扫描，加快速度</font>】</p>
+<ul>
+<li>枚举和评估使用<strong>稀疏线性代数</strong>的切片，这可以从现有的高效实现中获益；（Enumerating
+and evaluating slices using <strong>sparse linear algebra</strong> that
+can profit from existing efficient implementations.）</li>
+<li>基于平衡<strong>切片大小</strong>和<strong>平均切片误差</strong>的分数，无需访问数据即可修剪切片候选项。（Pruning
+of slice candidates without accessing the data based on a score that
+balances between the slice size and the average slice error.）</li>
+</ul>
+<p>这些技术使算法高效且可扩展，其确切复杂度高度依赖于数据集的细节。</p>
+<p>虽然在本文中我们不会详细介绍Sliceline算法的实现细节，但我们希望为读者提供一些有关使用线性代数评估和生成规则的直觉。首先，我们从玩具数据集开始，并进行第一次转换：<strong>独热编码</strong>。独热编码是一种方法，可以通过创建每个特征值的一列来将分类数据编码为数字。在下面的示例中，特征f1有3个值a、b和c，因此为了对其进行编码，我们创建了3个二进制列，如下所示。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141357815.png" alt="image-20230514135737715" style="zoom: 50%;"></p>
+<center>
+图2：展示如何使用矩阵乘法来查找匹配样本的示例
+<center>
+<p><strong>同样的转换也允许我们将规则表示为二进制向量：向量将在实施条件的位置包含值1。</strong>例如，对于规则f1
+=
+b，二进制向量的第二个元素将是1，因为此条件在独热编码空间的第二列中表示。我们可以用这种方式表示所有候选规则，并轻松计算指示哪个样本符合每个规则的掩码。<strong>如果我们将独热编码的特征矩阵F和规则矩阵R表示为F和R，则矩阵乘积FxR的结果正好给出了这一点：一个掩码，其中行对应于样本，列对应于规则。</strong>该矩阵的第i行第j列元素等于1，这意味着样本i与规则j匹配。</p>
+<p><strong>有了这个掩码L，我们可以轻松计算每个切片的平均误差，即与某个规则匹配的样本集的平均误差。</strong>这个计算在Sliceline算法中非常重要，因为它允许计算得分，根据这个得分，可以探索可能的切片空间。因此，为了计算平均切片误差，我们首先计算误差向量与掩码L的矩阵乘积，这给出了<strong>切片中的总误差</strong>（E<sup>T</sup>
+*
+L）。我们也可以计算L与<strong>单位向量</strong>的乘积，有效地计算<strong>匹配每个规则的样本数</strong>。<strong>最后，我们可以逐元素地将总误差和切片大小相除，以获得平均误差。这就是使用线性代数操作评估规则的主要思想。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141424895.png" alt="image-20230514142421803" style="zoom:50%;"></p>
+<center>
+图3：显示如何使用点积计算平均切片误差的示例
+<center>
+<p>虽然Sliceline最初是作为一种模型调试技术提出的，但我们可以重新利用它，并将其用于生成针对特定数据组的规则。在网络安全的背景下，我们处于这样一种情况：防御者收集了来自两个数据组的数据：</p>
+<ul>
+<li>Group 0：一个被认为是正常的群体，主要由非恶意样本组成。</li>
+<li>Group 1：另一个数据组，包含恶意和正常流量样本。</li>
+</ul>
+<p>可以将Group 0分配给正常数据，将Group
+1分配给可疑数据。<font color="red">如果我们将该组视为我们提供给Sliceline算法的错误，它将找到针对可疑组的切片，因为它是具有更高误差的一组。</font>我们在下面展示了相同的样例数据集，其中错误被组替换。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141432739.png" alt="image-20230514143215654" style="zoom:50%;"></p>
+<center>
+图4：具有3个分类特征和相关组的示例数据集
+<center>
+<p>这种简单的技术允许我们生成针对机器人流量的规则，<strong><font color="red">前提是我们可以定义两组不同的数据。</font></strong></p>
+<h5><span id="1sliceline的python开源优化实现">（1）Sliceline的Python开源优化实现</span></h5>
+<p>原论文作者<sup>[1]</sup>提供了R和Apache
+SystemDS的算法实现。我们决定使用Python实现它，并将其作为一个包开源给社区。<strong>我们首先重新使用Python实现了逻辑，然后实现了一些性能改进，这使得与R实现相比速度提高了1000倍</strong>。这是可能的，<strong>因为我们使用了可用的Python库，如Numpy，这些库利用底层的C++代码和稀疏矩阵</strong>。此外，我们还用矩阵乘法替换了一些for循环结构，进一步提高了速度。该包的源代码可在GitHub上获取<sup>[6]</sup>，与pandas
+python库兼容，并遵循scikit-learn API规范。</p>
+<h5><span id="2应用sliceline到一个demo-bot检测数据集">（2）应用Sliceline到一个Demo-Bot检测数据集</span></h5>
+<p>在本节中，我们将Sliceline应用于一个简单的玩具数据集，该数据集由<strong>HTTP头</strong>和<strong>上下文信息</strong>组成，用于Bot检测问题。为简单起见，我们创建了一个流量数据集，具有人类和Bot的特征。我们使用了来自一个法国电子商务网站的数据。我们收集了来自法语国家的旧会话数据，并将它们分配给Group
+0。我们还收集了来自同一网站的来自非法语国家的数据，这些数据使用数据中心IP地址或最近被标记为<strong>代理的IP</strong>，将Group
+1分配给可疑流量。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141437571.png" alt="image-20230514143718482">
+<figcaption aria-hidden="true">image-20230514143718482</figcaption>
+</figure>
+<center>
+图5：由人类（第0组）和潜在机器人（第1组）流量组成的真实世界电子商务流量数据集示例
+<center>
+<p>以下Python代码示例展示了我们如何将Sliceline应用于数据集。我们使用pandas数据帧df存储数据集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sliceline.slicefinder <span class="keyword">import</span> Slicefinder</span><br><span class="line"></span><br><span class="line">sf = Slicefinder(</span><br><span class="line">    alpha = <span class="number">0.80</span>,</span><br><span class="line">    k = <span class="number">4</span>,</span><br><span class="line">    max_l = df.shape[<span class="number">1</span>],</span><br><span class="line">    min_sup = <span class="number">1</span>,</span><br><span class="line">    verbose = <span class="literal">True</span></span><br><span class="line">)</span><br><span class="line">sf.fit(df.drop(<span class="string">&quot;group&quot;</span>, axis=<span class="number">1</span>), df[<span class="string">&quot;group&quot;</span>])</span><br></pre></td></tr></table></figure>
+<p><strong>一旦将算法拟合到数据上，我们就可以使用找到的切片来生成最适合我们需求的语法规则。</strong>例如，我们可以这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="built_in">slice</span>, stats <span class="keyword">in</span> <span class="built_in">zip</span>(sf.top_slices_, sf.top_slices_statistics_):</span><br><span class="line">    rule = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> feat, value <span class="keyword">in</span> <span class="built_in">zip</span>(df.columns, <span class="built_in">slice</span>):</span><br><span class="line">        <span class="keyword">if</span> value <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">if</span> rule <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">           rule = <span class="string">f&quot;`<span class="subst">&#123;feat&#125;</span>`=`<span class="subst">&#123;value&#125;</span>`&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">        	 rule += <span class="string">f&quot; &amp;&amp; `<span class="subst">&#123;feat&#125;</span>`=`<span class="subst">&#123;value&#125;</span>`&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;rule&#125;</span> | slice size: <span class="subst">&#123;stats[<span class="string">&#x27;slice_size&#x27;</span>]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>在我们的案例中，这段简单的代码给出了以下规则：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">`Country`=`Germany` | slice size: 4149.0</span><br><span class="line">`User Agent`=`Chrome` &amp;&amp; `Country`=`Germany` | slice size: 4133.0</span><br><span class="line">`Country`=`Germany` &amp;&amp; `Accept Language`=`en-US,en;q=0.9` | slice size:</span><br><span class="line">4097.0</span><br><span class="line">`User Agent`=`Chrome` &amp;&amp; `Country`=`Germany` &amp;&amp; `Accept</span><br><span class="line">Language`=`en-US,en;q=0.9` | slice size: 4097.0</span><br></pre></td></tr></table></figure>
+<p>这意味着，对于这个特定的网站，<strong>攻击来自德国，使用Chrome和特定的接受语言标头</strong>。</p>
+<h4><span id="32-分布式攻击的应用">3.2 分布式攻击的应用</span></h4>
+<p><strong>Sliceline可以应用于分布式Bot攻击检测问题，通过定义两个不同的流量组</strong>【<font color="red">用攻击前和攻击期间的来标签，使任务做到无监督</font>】：</p>
+<ul>
+<li><strong>攻击前的流量</strong>：这部分流量仅包含人类数据（Group
+0）；</li>
+<li><strong>攻击期间的流量</strong>：这部分流量包含人类和Bot流量（Group
+1）；</li>
+</ul>
+<p><font color="red">请注意，在实际情况下，Group
+0可能包含一些残留的Bot流量。它如何影响Sliceline生成的规则的质量取决于Group
+0中Bot流量的比例以及它与Group 1中也存在的Bot流量的相似程度。</font></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141446088.png" alt="image-20230514144648991">
+<figcaption aria-hidden="true">image-20230514144648991</figcaption>
+</figure>
+<center>
+图6：时间序列图，说明Sliceline使用的2个组：攻击前的人类流量（绿色，Group
+0）和混合的Bot和人类流量（红色，Group 1）
+<center>
+<p>上图中展示了这个想法，假设异常检测算法提供了攻击开始时间，然后稍后触发流量分析。如果我们将攻击前的流量标识为Group
+0，将攻击期间的流量标识为Group
+1，那么通过应用Sliceline，我们将找到针对Bot流量的规则。</p>
+<p>我们提出的检测分布式攻击的方法不依赖于IP或会话的流量分析。<strong>相反，我们分析每个【客户】的全局流量。为此，我们计算几个聚合并分析它们随时间的演变。</strong>我们计算的聚合的示例包括：</p>
+<ul>
+<li><strong>请求的数量</strong>；</li>
+<li><strong>唯一User Agent的数量</strong>；</li>
+<li><strong>唯一国家的数量</strong>；</li>
+<li><strong>唯一IP地址的数量</strong>；</li>
+</ul>
+<p><strong>所有聚合都使用Apache
+Flink<sup>[7]</sup>在10分钟的窗口中以流式处理方式计算。</strong>请注意，时间窗口的大小可以根据用例进行参数化：</p>
+<ul>
+<li><strong>较小的时间窗口可以更快地进行检测，但可能会增加误报率；</strong></li>
+<li><strong>较大的时间窗口可能会在异常检测中引入滞后，但可以降低误报率的风险；</strong></li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141455725.png"></p>
+<center>
+图7：四个不同聚合时间序列的示例（请求计数、IP数量、用户代理数量、国家数量）
+<center>
+<p>我们独立分析每个时间序列，并使用<strong><font color="red">基于z-score的算法检测极高值</font></strong>。滚动窗口允许我们估计正常数据的分布，并基于该分布计算新值的z-score。如果z-score超过一定阈值，则宣布攻击开始，并触发流量分析。</p>
+<p>该算法轻量级且可以轻松地以流式处理方式实现。该算法可能会遇到两个不同的问题：</p>
+<ul>
+<li><strong>误报：</strong>检测到攻击不是由Bot引起的，可能是因为z-score阈值过于敏感，或者因为由于某些特殊事件（突发新闻、限量销售等）导致流量增加。</li>
+<li><strong>漏报：</strong>错过本应该检测到的攻击。</li>
+</ul>
+<p><strong><font color="red">为了解决漏报问题，可以收集示例时间序列并标记需要检测的攻击。这个带标签的数据集可以进一步用于更好地调整阈值。</font></strong></p>
+<p>关于误报，随后的规则生成步骤可以防止我们生成针对正常业务的规则。<strong>如果流量激增是由正常业务流量引起的，则Sliceline将不会发现攻击前后流量特征的任何差异，因此将不会生成任何规则</strong>。【有点意思，规则挖掘类似告警聚类，有降误报的能力】</p>
+<h4><span id="33案例分析凭据填充攻击被sliceline阻止">3.3
+案例分析：凭据填充攻击被Sliceline阻止</span></h4>
+<p>为了说明我们的方法，我们展示了一个使用我们的流式异常检测和Sliceline相结合的游戏平台攻击的具体例子。图8展示了4个不同的时间序列：</p>
+<ul>
+<li><strong>蓝色：</strong>被检测引擎分类为人类的HTTP登录流量（可能包含尚未检测到的Bot流量）。</li>
+<li><strong>橙色：</strong>在部署到检测引擎之前与Sliceline生成的规则匹配的流量（攻击的未检测子集）。</li>
+<li><strong>绿色：</strong>蓝色-橙色时间序列。在实施Sliceline生成的规则后被认为是人类流量。</li>
+<li><strong>红色：</strong>Sliceline生成的规则匹配并被阻止的HTTP登录流量。</li>
+</ul>
+<p><font color="red">首先：游戏平台的登录流量出现了一个小的峰值（蓝色线），被我们的异常检测算法捕捉到。</font><font color="blue">然后，Sliceline被应用，并生成了一条规则，随后阻止了由红色线表示的所有流量，在一周内总计超过3百万个请求。</font></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141511200.png" alt="image-20230514151139084">
+<figcaption aria-hidden="true">image-20230514151139084</figcaption>
+</figure>
+<center>
+图8：与Slisline在游戏平台登录端点上的应用程序相关的时间序列
+<center>
+<p>下面显示了相同的阻塞流量，但我们显示的不是请求号，而是不同IP的数量。<strong>超过18.7万个不同的IP被用来分发这次攻击。</strong></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141514301.png" alt="image-20230514151422173">
+<figcaption aria-hidden="true">image-20230514151422173</figcaption>
+</figure>
+<center>
+图9：在游戏平台上进行凭证填充攻击时，IP地址的不同数量/3h
+<center>
+<p>虽然我们利用Sliceline在不同的ML管道中生成规则，但我们结合基于流式处理的异常检测和Sliceline的方法能够保护登录终端，每个月跨多个客户阻止约220万次恶意登录尝试。</p>
+<h3><span id="四-结论">四、结论</span></h3>
+<p><font color="red">为了绕过传统的Bot检测技术，如基于IP的速率限制和基于签名的阻止，Bot趋向于在数千个IP地址上分布其攻击，并频繁更改其指纹。</font>我们提出了一种结合基于流式处理的异常检测和Sliceline的方法来检测分布式Bot攻击。</p>
+<p>虽然Sliceline最初是作为一种ML模型调试算法提出的，但我们展示了如何使用它来生成与恶意Bot流量活动匹配的规则。这种方法使我们能够每月跨多个客户阻止约220万次恶意登录尝试。</p>
+<p>我们实现并开源了Sliceline的优化Python版本。我们重写了部分代码，利用了矩阵乘法和稀疏矩阵，相比R实现，速度提升了1000倍。</p>
+<p>在本文中，我们使用分布式Bot攻击检测问题展示了我们的方法。然而，我们的方法完全不依赖于规则引擎，可以应用于其他网络安全设置，只要能够定义正常和异常行为的组。</p>
+<h3><span id="参考文献">参考文献</span></h3>
+<p>[1] Sagadeeva, Svetlana, and Matthias Boehm. "Sliceline: Fast,
+linear-algebra-based slice finding for ml model debugging." Proceedings
+of the 2021 International Conference on Management of Data. 2021.</p>
+<p>[2] Jacob, Gregoire, Engin Kirda, Christopher Kruegel, and Giovanni
+Vigna. "PUBCRAWL: Protecting Users and Businesses from CRAWLers." In
+USENIX Security Symposium, pp. 507-522. 2012.</p>
+<p>[3] Bursztein, Elie, et al. "Picasso: Lightweight device class
+fingerprinting for web clients." Proceedings of the 6th Workshop on
+Security and Privacy in Smartphones and Mobile Devices. 2016.</p>
+<p>[4] Vastel, Antoine, et al. "FP-Crawlers: studying the resilience of
+browser fingerprinting to block crawlers." MADWeb'20-NDSS Workshop on
+Measurements, Attacks, and Defenses for the Web. 2020.</p>
+<p>[5] Li, Xigao, et al. "Good bot, bad bot: Characterizing automated
+browsing activity." 2021 IEEE symposium on security and privacy (sp).
+IEEE, 2021.</p>
+<p>[6] https://github.com/DataDome/sliceline</p>
+<p>[7] https://flink.apache.org/</p>
+<p>[8] https://datadome.co/</p>
+<h3><span id="相关链接">相关链接</span></h3>
+<ul>
+<li>https://datadome.co/datadome_events/black-hat-asia-2023-here-we-come/</li>
+<li><a target="_blank" rel="noopener" href="https://www.blackhat.com/asia-23/briefings/schedule/index.html#leveraging-streaming-based-outlier-detection-and-sliceline-to-stop-heavily-distributed-bot-attacks-30984">Leveraging
+Streaming-Based Outlier Detection and SliceLine to Stop Heavily
+Distributed Bot Attacks</a></li>
+<li><a target="_blank" rel="noopener" href="https://mboehm7.github.io/resources/sigmod2021b_sliceline.pdf">SliceLine:
+Fast, Linear-Algebra-based Slice Finding for ML Model Debugging</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.blackhat.com/asia-23/sponsored-sessions/schedule/index.html#war-of-the-bots-learnings-from-thwarting-new-automated-attack-vectors-32031">War
+of the Bots: Learnings from Thwarting New Automated Attack
+Vectors</a></li>
+</ul>
+</center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center></center>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lzy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://powerlzy.github.io/posts/DDBFGD/" title="2">https://powerlzy.github.io/posts/DDBFGD/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" rel="tag"># 工业落地</a>
+              <a href="/tags/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" rel="tag"># 业务安全</a>
+              <a href="/tags/API%E5%AE%89%E5%85%A8/" rel="tag"># API安全</a>
+              <a href="/tags/BlackHat/" rel="tag"># BlackHat</a>
+              <a href="/tags/Distributed-Bot-Attacks/" rel="tag"># Distributed Bot Attacks</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/2X0D06Q/" rel="prev" title="流量反作弊（3）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击">
+                  <i class="fa fa-chevron-left"></i> 流量反作弊（3）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzy</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>-->
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("03/01/2023 10:00:00"); //此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒.";
+    }
+setInterval("createtime()",250);
+</script>
+
+    </div>
+  </footer>
+
+  
+
+  <a href="https://github.com/PowerLZY" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+        <script src="//cdn.jsdelivr.net/npm/js-base64/base64.min.js"></script>
+        <script>
+        const hasAttr = (e,a) => a.some(_=> e.attr(_)!==undefined);
+        $('a').each(function() {
+          const $this = $(this);
+          if(hasAttr($this,["data-fancybox","ignore-external-link"])) return;
+          const href = $this.attr('href');
+          if (href && href.match('^((http|https|thunder|qqdl|ed2k|Flashget|qbrowser|ftp|rtsp|mms)://)')) {
+            const strs = href.split('/');
+            if (strs.length >= 3) {
+                const host = strs[2];
+                if (host !== 'powerlzy.github.io' || window.location.host) {
+                    $this.attr('href', '/go.html?u='+Base64.encode(href)+'').attr('rel', 'external nofollow noopener noreferrer');
+                    if (true) {
+                        $this.attr('target', '_blank');
+                    }
+                }
+            }
+          }
+        });
+        </script></body>
+</html>

@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-count">72</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,398 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/231N929/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/231N929/" class="post-title-link" itemprop="url">流量反作弊（4）Salt Security-API安全最佳实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-26 20:13:37 / 修改时间：21:50:26" itemprop="dateCreated datePublished" datetime="2023-04-26T20:13:37+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="salt-security-api安全最佳实践">Salt Security
+API安全最佳实践</h3>
+<p><strong>在多数情况下，专门部署的API安全工具可以更容易、更自动化解决API安全问题。此类平台在整个API生命周期中支持一系列功能，并为组织的API业务逻辑提供必要的上下文以阻止攻击和数据暴露。</strong></p>
+<p>这份API安全最佳实践将帮助企业弥补API安全策略中的差距，以下是关于如何确定问题范围和活动优先顺序的一些建议：</p>
+<ul>
+<li>测试API安全性同时，还需要API运行时捕获未经过标准构建更改的API和测试工具不能发现的API。</li>
+<li>确保覆盖所有环境和软件供应链，而不仅仅是由API网关或API管理平台管理的API。</li>
+<li>如果您不采取API防护措施，可以将重点放在API运行时防护上，将其作为“止血”措施、减缓攻击者的速度并为应用程序和API团队争取时间的一种方式。</li>
+</ul>
+<p><font color="red">以下内容翻译来至：SaltSecurity
+Checklist-API_Security_Best_Practices</font></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/231N929/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3859BFD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3859BFD/" class="post-title-link" itemprop="url">博客分类目录设计</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-19 20:13:41" itemprop="dateCreated datePublished" datetime="2023-04-19T20:13:41+08:00">2023-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-06 17:10:28" itemprop="dateModified" datetime="2023-05-06T17:10:28+08:00">2023-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">博客搭建</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>850</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="powelzys-blog">PoweLZY’s Blog</span></h2>
+<blockquote>
+<ul>
+<li><p>比赛相关整理</p></li>
+<li><p>好论文整理</p></li>
+<li><p>公司整理的可开源笔记</p></li>
+</ul>
+</blockquote>
+<h3><span id="分类目录">分类目录</span></h3>
+<h4><span id="一-工程">一、[工程]</span></h4>
+<ul>
+<li><strong><font color="red"> 大数据处理</font></strong>
+<ul>
+<li>高维向量相似度匹配</li>
+<li>Spark 基础</li>
+</ul></li>
+<li>计算机基础
+<ul>
+<li>计算机网络</li>
+<li>数据库</li>
+<li>操作系统</li>
+</ul></li>
+<li><strong><font color="blue">【开源工具】2.0</font></strong>
+<ul>
+<li>网络安全
+<ul>
+<li>【沙箱】</li>
+<li>【zeek】</li>
+</ul></li>
+<li>深度学习
+<ul>
+<li>【Pytorch框架】</li>
+</ul></li>
+<li>画图
+<ul>
+<li>【network】</li>
+<li>【matplotlib】</li>
+</ul></li>
+</ul></li>
+<li><strong>数据结构</strong></li>
+<li><strong>流畅的Python</strong></li>
+</ul>
+<h4><span id="二-算法">二、算法</span></h4>
+<ul>
+<li><strong>机器学习</strong>
+<ul>
+<li>理论基础</li>
+<li>线性模型</li>
+<li>决策树（拆分 + 总结）</li>
+<li>支持向量机</li>
+<li>贝叶斯分类器</li>
+<li>集成学习</li>
+<li>聚类</li>
+<li>降维</li>
+<li>【概率图模型】</li>
+<li>推荐算法</li>
+<li>异常检测</li>
+<li><strong><font color="red">【社区发现】</font></strong>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/556291759">万物皆网络，万字长文详解<em>社区发现</em>算法Louvain</a></li>
+</ul></li>
+<li><strong><font color="red">反欺诈算法</font></strong>
+<ul>
+<li>SynchroTrap、Oddball、LockInfer、CatchSync等<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=反欺诈算法&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2937955407%7D">反欺诈算法</a>，深入研究应用，春花秋月又一年。</li>
+</ul></li>
+</ul></li>
+<li>特征工程</li>
+<li>模型部署</li>
+<li><strong><font color="red">[深度学习]</font></strong>
+<ul>
+<li>CNN</li>
+<li>RNN
+<ul>
+<li>RNN</li>
+<li>LSTM</li>
+<li>GRU</li>
+</ul></li>
+<li>Seq2Seq
+<ul>
+<li>Attention</li>
+<li>Transformer</li>
+<li>AutoEncoder</li>
+</ul></li>
+<li>GNN</li>
+<li>NLP</li>
+<li>模型训练</li>
+<li>优化算法</li>
+</ul></li>
+</ul>
+<h4><span id="三-应用">三、[应用]</span></h4>
+<ul>
+<li><strong><font color="red"> 算法应用</font></strong>
+<ul>
+<li>网络安全
+<ul>
+<li>【身份认证】</li>
+<li><strong><font color="red">恶意软件检测</font></strong>【tags：对论文，开源项目，比赛WP等总结性整理】</li>
+<li><strong><font color="red">恶意加密流量检测</font></strong></li>
+<li>【恶意域名识别】</li>
+<li>【智能安全运维】
+<ul>
+<li>【TODO】：《信息安全技术-网络安全态势感知通用技术要求》：https://mp.weixin.qq.com/s/Cla3XmPIVaCBKIVNU-TAFQ</li>
+</ul></li>
+<li>【威胁情报】</li>
+<li>高级威胁检测</li>
+</ul></li>
+<li>业务安全
+<ul>
+<li>业务安全常用算法归纳</li>
+<li>风控算法基础</li>
+<li>【接口安全-waap】</li>
+</ul></li>
+<li>【AI安全】
+<ul>
+<li></li>
+</ul></li>
+</ul></li>
+<li><strong>工业落地：企业公开发表的论文或白皮书</strong>
+<ul>
+<li>网络安全
+<ul>
+<li><strong><font color="red">恶意软件检测</font></strong></li>
+</ul></li>
+<li>业务安全
+<ul>
+<li><strong><font color="red">
+【补充WAAP产品白皮书】</font></strong></li>
+</ul></li>
+</ul></li>
+<li><strong>算法比赛：算法比赛的top方案</strong>
+<ul>
+<li><font color="red">网络安全</font>
+<ul>
+<li>【360
+BDCI】：https://github.com/PowerLZY/malware_classification_bdci</li>
+<li>【2021 Datacon】：</li>
+<li>【2020 Datacon】：</li>
+</ul></li>
+<li>业务安全</li>
+</ul></li>
+<li><strong>学术前沿：学术论文</strong>
+<ul>
+<li>网络安全
+<ul>
+<li><strong><font color="red">恶意软件检测</font></strong></li>
+<li><strong><font color="red">恶意加密流量检测</font></strong></li>
+<li>【AI安全】</li>
+</ul></li>
+<li>业务安全
+<ul>
+<li></li>
+</ul></li>
+</ul></li>
+</ul>
+<h4><span id="四-随笔">四、随笔</span></h4>
+<ul>
+<li>面试准备</li>
+<li>面试汇总</li>
+<li>面试必看-ML整理</li>
+<li>面试必看-DL整理</li>
+<li>安全算法工程师的自我修养
+<ul>
+<li>风控心得</li>
+<li>内容安全心得</li>
+</ul></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -483,7 +875,7 @@ the Time of Registration: An Unsupervised Approach</strong></p>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-29 16:31:05" itemprop="dateModified" datetime="2023-04-29T16:31:05+08:00">2023-04-29</time>
+      <time title="修改时间：2023-05-07 17:35:25" itemprop="dateModified" datetime="2023-05-07T17:35:25+08:00">2023-05-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -506,7 +898,7 @@ the Time of Registration: An Unsupervised Approach</strong></p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>916</span>
+      <span>928</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -676,150 +1068,6 @@ Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
 <h3><span id="一-说明">一、说明</span></h3>
 <p>机器学习（ML）和数据驱动的应用程序从根本上改变了IT格局的许多方面，从面向用户的应用程序到后端决策系统，再到软件和硬件堆栈的优化[21，36，56]。开发和部署用于生产的ML管道过程中的关键步骤是<strong>数据验证（分析输入数据特征）</strong>[56，59]和<strong>模型调试（分析有效的ML模型特征）</strong>[22，56，60]。需要考虑的方面包括数据误差（如异质性、人为误差、测量误差）、缺乏模型泛化（如过拟合、不平衡、域外预测）以及系统偏差和缺乏公平性。缺乏模型验证和调试可能会导致无声但严重的问题[56]。例如，种族偏见的监狱风险评估[6]、基于积雪的狼检测[58]和基于图像水印的马检测[38]。模型调试旨在识别此类问题。</p>
 <p>模型调试技术：除了基本数据调试和验证[56，59]、服务期间的模型准确性监测和比较[56，60]，以及通过混淆矩阵进行手动模型误差分析（例如，正确标签与预测标签的矩阵可视化）外，还存在几种先进的模型调试技术。计算机视觉领域的例子有显著性图[30，63，70]、逐层相关性传播[8，38]和基于遮挡的解释[75]，它们都旨在找到对预测有重大影响的输入图像区域。数据管理界最近通过利用这种计算中固有的重叠，为基于遮挡的解释贡献了有效的增量计算方法[47，48]。然而，对于具有连续和分类特征的结构化数据和预测任务，文献相对较少。现有的工作包括解释表[25]（主要关注数据摘要）和切片查找器[18，19]，其目的是查找前K个数据切片（例如，谓词的连接词，如性别女性和博士学位），其中训练的模型的表现明显不如整个数据集。找到这样的有问题的切片对于理解缺乏训练数据或模型偏差非常有用，但也可以作为改进模型的途径</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2X0D06Q/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2X0D06Q/" class="post-title-link" itemprop="url">流量反作弊（3）2023 BlackHat：利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-04-10 21:28:54" itemprop="dateCreated datePublished" datetime="2023-04-10T21:28:54+08:00">2023-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-05 13:11:34" itemprop="dateModified" datetime="2023-05-05T13:11:34+08:00">2023-05-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>812</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="leveragingstreaming-based-outlier-detection-and-sliceline-to-stop-heavilydistributed-bot-attacks">Leveraging
-Streaming-Based Outlier Detection and SliceLine to Stop Heavily
-Distributed Bot Attacks</span></h2>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305042134872.png" alt="2023 亚洲黑帽大会 - DataDome">
-<figcaption aria-hidden="true">2023 亚洲黑帽大会 - DataDome</figcaption>
-</figure>
-<blockquote>
-<ul>
-<li>利用基于流的离群值检测和 SliceLine 来阻止分布广泛的机器人攻击:</li>
-<li>DataDome:https://datadome.co/</li>
-</ul>
-</blockquote>
-<p>在此演示文稿中，我们将讨论如何利用基于流的异常值检测和 SliceLine
-来快速安全地生成大量可用于阻止恶意流量的规则/签名。</p>
-<p>虽然 ML
-的使用变得越来越广泛，但规则仍然相关。事实上，公司在能够快速评估大量规则的高效规则引擎方面投入了大量资金。此外，规则通常更便于创建、操作和解释，这使得它们除了
-ML 方法之外仍然有价值。</p>
-<p>我们证明，虽然 SliceLine 最初设计用于识别 ML
-模型表现不佳的数据子集，但它的使用可以适应以无监督方式生成大量与攻击相关的规则，即不使用标记数据。此外，我们利用机器人检测问题来说明如何使用
-SliceLine 即时生成大量恶意签名。</p>
-<p>我们还将展示我们优化的 SliceLine Python
-开源实现，并展示如何将其用于特定但困难的机器人检测子集：分布式凭证填充攻击，攻击者利用数千个受感染的
-IP 地址进行攻击和绕过传统的安全机制，例如速率限制策略。</p>
-<p>通过一个真实世界的例子，我们将首先解释如何使用基于流的检测来检测此类攻击，以及我们如何使用数据建模在服务器端信号（HTTP
-标头、TLS 指纹、IP 地址等）上应用 <strong>SliceLine</strong>
-来识别并生成与分布式攻击相关的阻止签名。这种方法使我们能够在去年阻止 59
-位客户超过 2.85 亿次恶意登录尝试。</p>
-<p>最后，我们将解释这种方法如何推广到除机器人检测之外的其他安全用例，以及如何在不同的规则引擎中使用它。</p>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li>https://datadome.co/datadome_events/black-hat-asia-2023-here-we-come/</li>
-</ul>
 
       
     </div>
@@ -1441,165 +1689,6 @@ Serving；对于复杂模型或需要分析的模型，需通过近线或离线�
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
 <li>https://zhuanlan.zhihu.com/p/599625620</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3FP6W7B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/3FP6W7B/" class="post-title-link" itemprop="url">风控反欺诈（5）【draft】京东零售-基于NLP的风控算法模型构建实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-04-01 16:55:55" itemprop="dateCreated datePublished" datetime="2023-04-01T16:55:55+08:00">2023-04-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-05-06 16:52:51" itemprop="dateModified" datetime="2023-05-06T16:52:51+08:00">2023-05-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/%E9%A3%8E%E6%8E%A7%E5%8F%8D%E4%BD%9C%E5%BC%8A/" itemprop="url" rel="index"><span itemprop="name">风控反作弊</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="京东零售基于nlp的风控算法模型构建实践">京东零售基于NLP的风控算法模型构建实践</span></h3>
-<p><strong>导读：</strong>本团队主要负责京东零售领域的风控算法模型构建，针对京东零售风控方面，业务要求不断地更新、模型失效快、更新迭代慢以及成本高昂等情况，我们提出了自己设计研发的
-NLP
-预训练架构模型和<strong>用户行为预训练模型</strong>，并进行预训练模型的平台化，方便一键部署开发，快速迭代，简单易用，推理速度提升等，有效解决了业务问题，并在公开数据集上也得到了很好的效果。</p>
-<h3><span id="一-背景介绍">一、背景介绍</span></h3>
-<figure>
-<img src="image-20230401170044956.png" alt="image-20230401170044956">
-<figcaption aria-hidden="true">image-20230401170044956</figcaption>
-</figure>
-<p>如上图所示，京东零售风控的任务是维护京东零售平台健康的交易生态环境，主要包括主站
-APP、PC 端等。场景包括 C 端和 B 端两大部分。</p>
-<p><strong>C
-端风控主要针对恶意刷券，使用外挂软件获取权益，比如用一些黑客软件抢茅台等，还有一些广告辱骂的内容，比如发小广告、不合规的内容等，以及价格方面的管控等</strong>。B
-端风控主要是针对商家刷单行为、恶意套利行为，以及客服防骚扰。</p>
-<figure>
-<img src="image-20230401170213571.png" alt="image-20230401170213571">
-<figcaption aria-hidden="true">image-20230401170213571</figcaption>
-</figure>
-<p><strong>如上图所示，零售风控算法能力整体上分为用户行为和文本两大部分。</strong>用户行为这一块，通过上面提到的场景，算法人员可以将这些场景的数据构建成统计特征、序列行为特征，比如浏览页面等。文本这一块，主要是内容风控，包含舆情，地址异常等场景识别作为基础，以
-NLP 的文本特征作为识别的基础。风控领域相对于其他领域的 NLP
-场景，其主要的特点是异音异形字的识别，比如加微信，如上图中所示，通过一些异形字体，+薇信，躲避文本的风控检测。</p>
-<p><strong>以上两大场景，存在以下几个问题：</strong></p>
-<ul>
-<li>第一，失效快，比如广告引流场景，模型很快就会有效果衰减，具体原因就是恶意攻击者，会反复尝试不同的字体和形式，用以破解算法模型，从而达到自己的目的，导致模型失效或者效果下降。</li>
-<li>第二，针对新的业务场景，需要大量的人工标注数据，人工标注的成本会非常高，而且耗时比较长。</li>
-<li>第三，建模的效率低，效果差，因为首先要做特征，特征完之后，再预训练模型，整个链条拉得非常长，等到模型做好之后，业务方可能不需要这个模型了，或是效果不能达到预期，有的模型效果要求准确率达到接近
-100%。</li>
-</ul>
-<p>针对这三个问题，我们做了一些思考研究。针对失效快的问题，是否可以建立一个长期有效的机制来解决；针对需要人工标注大量数据这个问题，是否可以建立一个小样本学习能力的模型，不需要标注那么多的标签数据，使用无监督的方式进行训练；针对建模效率低、效果差等，是否可建立一个特征，模型平台化自动生成的机制，使预训练模型和大模型更好地发挥作用，快速建模和生成模型。</p>
-<p>基于以上思考，我们依赖于预训练技术，做了一些改进优化。</p>
-<h3><span id="二-nlp-预训练"><strong>二、NLP 预训练</strong></span></h3>
-<figure>
-<img src="image-20230401170745015.png" alt="image-20230401170745015">
-<figcaption aria-hidden="true">image-20230401170745015</figcaption>
-</figure>
-<p>如上图所示，NLP
-是风控内容、舆情、地址等风控能力的基础，而且，近年来，<strong>预训练技术是处理
-NLP
-的最常用的方式。整体的流程如上图所示：首先数据采集，然后进行模型预训练，最后对模型进行微调。</strong></p>
-<figure>
-<img src="image-20230401170908842.png" alt="image-20230401170908842">
-<figcaption aria-hidden="true">image-20230401170908842</figcaption>
-</figure>
-<h4><span id="三-用户行为预训练">三、<strong>用户行为预训练</strong></span></h4>
-<h3><span id="参考文献">参考文献</span></h3>
-<ul>
-<li>https://zhuanlan.zhihu.com/p/600326545</li>
 </ul>
 
       

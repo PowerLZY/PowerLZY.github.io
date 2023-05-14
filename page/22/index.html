@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-count">72</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -205,7 +205,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2WWJ575/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1QZMAVB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -223,7 +223,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2WWJ575/" class="post-title-link" itemprop="url">理论基础（4）其他评价指标</a>
+          <a href="/posts/1QZMAVB/" class="post-title-link" itemprop="url">理论基础（2）损失函数</a>
         </h2>
 
         <div class="post-meta-container">
@@ -234,14 +234,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+      <time title="创建时间：2022-03-24 14:08:53" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:53+08:00">2022-03-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 12:09:01" itemprop="dateModified" datetime="2023-04-26T12:09:01+08:00">2023-04-26</time>
+      <time title="修改时间：2023-04-17 20:28:26" itemprop="dateModified" datetime="2023-04-17T20:28:26+08:00">2023-04-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -268,14 +268,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.7k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>10 分钟</span>
     </span>
 </div>
 
@@ -286,89 +286,503 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-相似性度量指标">一、相似性度量指标</span></h3>
+          <h2><span id="损失函数">损失函数</span></h2>
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
+<span class="math inline">\(x\)</span> , 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
+<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
+则是这 个过程中关键的一个组成部分, 用来衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距, 给模型的优化指明方向。</p>
+<p>本文将介绍机器学习、深度学习中分类与回归常用的几种损失函数,
+包括<strong>均方差损失 Mean Squared Loss、平 均绝对误差损失 Mean
+Absolute Error Loss、Huber Loss、分位数损失 Quantile
+Loss、交叉樀损失函数 Cross Entropy Loss、Hinge 损失 Hinge
+Loss</strong>。主要介绍各种损失函数的基本形式、原理、特点等方面。</p>
+<p><img src="https://s2.loli.net/2023/04/17/GA3Y4CvZ1PlLOup.png" alt="img" style="zoom: 67%;"></p>
+<h3><span id="前言">前言</span></h3>
+<p>在正文开始之前, 先说下关于 Loss Function、Cost Function 和 Objective
+Function 的区别和联系。在机器学习 的语境下这三个术语经常被交叉使用。</p>
+<ul>
+<li><strong>损失函数</strong> Loss Function
+通常是<strong>针对单个训练样本而言,</strong> 给定一个模型输出 <span class="math inline">\(\hat{y}\)</span> 和一个真实 <span class="math inline">\(y\)</span>, 损失函数输 出一个实值损失 <span class="math inline">\(L=f\left(y_i, \hat{y_i}\right)\)</span></li>
+<li><strong>代价函数</strong> Cost Function
+通常是<strong>针对整个训练集</strong>（或者在使用 mini-batch gradient
+descent 时一个 minibatch）的总损失 <span class="math inline">\(J=\sum_{i=1}^N f\left(y_i,
+\hat{y}_i\right)\)</span></li>
+<li><strong>目标函数</strong> Objective Function 是一个更通用的术语,
+表示任意希望被优化的函数, 用于机器学习领域和非机 器学习领域
+(比如运筹优化)</li>
+</ul>
+<p>一句话总结三者的关系就是：<font color="red"> <strong>A loss function
+is a part of a cost function which is a type of an objective
+function.</strong></font></p>
+<p>由于损失函数和代价函数只是在针对样本集上有区别，因此在本文中统一使用了损失函数这个术语，但下文的相关公式实际上采用的是代价函数
+Cost Function 的形式，请读者自行留意。</p>
+<h4><span id="结构风险函数">结构风险函数</span></h4>
+<p>损失函数（loss function）是用来估量模型的预测值f(x)与真实值<span class="math inline">\(Y\)</span>不一致的程度，它是一个非负实数值函数，通常使用<span class="math inline">\(L(Y,f(x))\)</span>来表示，损失函数越小，模型的鲁棒性就越好。损失函数是经验风险函数的核心部分，也是结构风险函数的重要组成部分。模型的结构风险函数包括了经验风险项和正则项，通常可以表示成如下的式子：</p>
+<p><img src="https://s2.loli.net/2023/04/17/mEXD8ocy2UtFlbN.png" alt="image-20220821223950768" style="zoom:50%;"></p>
+<p>前面的均值函数表示的是经验风险函数，L代表的是损失函数，后面的Φ是正则化项（regularizer）或者叫惩罚项（penalty
+term）,它可以是L1，也可以是L2等其他的正则函数。整个式子表示的意思是找到使目标函数最小时的θ值。下面列出集中常见的损失函数。</p>
+<h3><span id="一-对数损失函数逻辑回归mle-交叉熵损失函数">一、
+对数损失函数（逻辑回归）MLE 【交叉熵损失函数】</span></h3>
 <blockquote>
-<p>机器学习中的相似性度量方法 - 天下客的文章 - 知乎
-https://zhuanlan.zhihu.com/p/411876558</p>
+<p>https://zhuanlan.zhihu.com/p/52100927</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tsyccnh/article/details/79163834">一文搞懂交叉熵在机器学习中的使用，透彻理解交叉熵背后的直觉</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35709485">损失函数｜交叉熵损失函数</a></p>
 </blockquote>
-<p>描述样本之间相似度的方法有很多种，一般来说常用的有相关系数和欧式距离。本文对机器学习中常用的相似性度量方法进行了总结。<strong>在做分类时，常常需要估算不同样本之间的相似性度量（Similarity
-Measurement），</strong>这时通常采用的方法就是计算样本间的“距离”（distance）。采用什么样的方法计算距离是很讲究的，甚至关系到分类的正确与否。</p>
+<p>有些人可能觉得逻辑回归的损失函数就是平方损失，其实并不是。<strong>平方损失函数可以通过线性回归在假设样本是高斯分布的条件下推导得到</strong>，而逻辑回归得到的并不是平方损失。在逻辑回归的推导中，<strong>它假设样本服从伯努利分布（0-1分布），然后求得满足该分布的似然函数</strong>，接着取对数求极值等等。而逻辑回归并没有求似然函数的极值，而是把极大化当做是一种思想，进而推导出它的经验风险函数为：</p>
+<p><strong>最小化负的似然函数</strong>（即<span class="math inline">\(maxF(y,f(x))—&gt;min−F(y,f(x))\)</span>)。从损失函数的视角来看，它就成了<strong>log损失函数了。</strong></p>
+<h4><span id="原理解释1条件概率下方便计算极大似然估计">原理解释1：<strong>==条件概率下方便计算极大似然估计==</strong></span></h4>
+<p>Log损失函数的标准形式：</p>
+<p><span class="math inline">\(L(Y,P(Y|X))=−logP(Y|X)\)</span></p>
+<p>刚刚说到，<strong>取对数是为了方便计算极大似然估计</strong>，因为在MLE中，直接求导比较困难，所以通常都是先取对数再求导找极值点。损失函数<span class="math inline">\(L(Y.P(Y|X))\)</span>表达的是样本在分类<span class="math inline">\(Y\)</span>的情况下，使概率<span class="math inline">\(P(Y|X)\)</span>达到最大值（换言之，就是利用已知的样本分布，找到最有可能（即最大概率）导致这种分布的参数值；或者什么样的参数才能使我们观测到目前这组数据的概率最大）。因为log函数是单调递增的，所以<span class="math inline">\(logP(Y|X)\)</span>也会达到最大值，因此在前面加上负号之后，最大化<span class="math inline">\(P(Y|X)\)</span>就等价于最小化<span class="math inline">\(L\)</span>了。</p>
+<p><strong>logistic回归</strong>的<span class="math inline">\(P(y|x)\)</span>表达式如下（为了将类别标签y统一为1和0，下面将表达式分开表示）：</p>
+<p><img src="https://s2.loli.net/2023/04/17/2aLAcdN97nRS8QV.png" alt="image-20220322202521355" style="zoom:50%;"></p>
+<p>将上面的公式合并在一起，可得到第i个样本正确预测的概率：</p>
+<p><img src="https://s2.loli.net/2023/04/17/ebZvW8hzNMuED3d.png" alt="image-20220322202548296" style="zoom:50%;"></p>
+<p>上式是对一个样本进行建模的数据表达。对于所有的样本，假设每条样本生成过程独立，在整个样本空间中（N个样本）的概率分布为：</p>
+<p><img src="https://s2.loli.net/2023/04/17/2hZLDVKEaSQMPys.png" alt="image-20220322202618734" style="zoom:50%;"></p>
+<p>将上式代入到对数损失函数中，得到最终的损失函数为：</p>
+<p><img src="https://s2.loli.net/2023/04/17/ZLaI9mACg5pojqv.png" alt="image-20220322202653661" style="zoom:50%;"></p>
+<h4><span id="原理解释2相对熵kl散度推理">原理解释2：相对熵（KL散度）推理</span></h4>
+<blockquote>
+<p>相对熵又称KL散度,如果我们对于同一个随机变量 x 有两个单独的概率分布
+P(x) 和 Q(x)，我们可以使用 KL 散度（Kullback-Leibler (KL)
+divergence）来衡量这两个分布的差异.<span class="math inline">\(DKL\)</span>的值越小，表示q分布和p分布越接近.</p>
+</blockquote>
+<h5><span id="相对熵">相对熵:</span></h5>
+<p><img src="https://s2.loli.net/2023/04/17/y8ulY5HqIKrJRZW.png" alt="image-20220330133351613" style="zoom:50%;"></p>
+<h5><span id="相对熵-信息熵-交叉熵">相对熵 = 信息熵 + 交叉熵 ：</span></h5>
+<p><img src="https://s2.loli.net/2023/04/17/ZiDJTfWudUFmwx7.png" alt="image-20220330134202064" style="zoom:50%;"></p>
+<p><strong>【对数损失函数（Log loss
+function）】和【交叉熵损失函数（Cross-entroy loss
+funtion）】在很多文献内是一致的，因为他们的表示式的本质是一样的。</strong></p>
+<h3><span id="二-平方损失函数线性回归gbdt最小二乘法ordinary-leastsquaresmse">二、
+平方损失函数（线性回归，GBDT，最小二乘法，Ordinary Least
+Squares）MSE</span></h3>
+<p>最小二乘法是线性回归的一种，OLS
+将问题转化成了一个凸优化问题。在线性回归中，它假设样本和噪声都服从高斯分布（为什么假设成高斯分布呢？其实这里隐藏了一个小知识点，就是中心极限定理，可以参考【central
+limit
+theorem】），最后通过极大似然估计（MLE）可以推导出最小二乘式子。最小二乘的基本原则是：最优拟合直线应该是使各点到回归直线的距离和最小的直线，即平方和最小。换言之，OLS是基于<strong>距离</strong>的，而这个距离就是我们用的最多的欧几里得距离。为什么它会选择使用欧式距离作为误差度量呢（即Mean
+squared error， MSE），主要有以下几个原因：</p>
 <ul>
-<li><strong>欧式距离</strong>：k-means</li>
-<li><strong>曼哈顿距离</strong>：</li>
-<li><strong>切比雪夫距离</strong>：</li>
-<li>闵可夫斯基距离</li>
-<li>标准化欧氏距离</li>
-<li>马氏距离</li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=夹角余弦&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2255493039%22%7D">夹角余弦</a></li>
-<li><strong>汉明距离</strong>：simhash</li>
-<li><strong>杰卡德距离&amp;杰卡德相似系数</strong>:
-<strong>杰卡德相似系数是衡量两个集合的相似度一种指标。</strong></li>
-<li>相关系数&amp;相关距离</li>
-<li>信息熵</li>
+<li>简单，计算方便；</li>
+<li>欧氏距离是一种很好的相似性度量标准；</li>
+<li>在不同的表示域变换后特征性质不变。</li>
 </ul>
-<h3><span id="二-推荐算法评价指标">二、推荐算法评价指标</span></h3>
-<ul>
-<li>推荐算法评价指标 - 一干正事就犯困的文章 - 知乎
-https://zhuanlan.zhihu.com/p/359528909</li>
-</ul>
-<h4><span id="21-ap">2.1 AP</span></h4>
-<p><code>AP</code> 衡量的是训练好的模型在每个类别上的好坏；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232155563.jpg" alt="img" style="zoom: 67%;"></p>
-<p><strong>AP总结了一个精确召回曲线，作为在每个阈值处获得的精度的加权平均值,
-并且与以前的阈值相比, 召回率的增 加用作权重</strong>: <span class="math display">\[
-A P=\sum_n\left(R_n-R_{(n-1))} P_n)\right.
-\]</span> 其中和分别是第 <span class="math inline">\(\mathrm{n}\)</span>
-个阈值 1 时的精度和召回率。此实现末进行揷值,
-并且与使用梯形规则计算精确调用曲线下的面
-积有所不同，后者使用线性揷值并且可能过于乐观。</p>
-<h4><span id="22-map">2.2 MAP</span></h4>
-<p><strong>MAP (Mean Average Precision)
-常用于排序任务，MAP的计算涉及另外两个指标：Precision和Recall</strong></p>
-<ul>
-<li><strong>Precision和Precision@k</strong>,
-推荐算法中的精度precision计算如下：</li>
-</ul>
-<p><span class="math display">\[
-\text { precision }=\frac{\text { 算法结果中相关的item数量 }}{\text {
-推荐的item总数量 }}
-\]</span></p>
-<p>可以看出Precision的计算没有考虑结果列表中item的顺序，Precision@k则通过切片的方式将顺序隐含在结果
-中。Precision@k表示列表前k项的Precision, 随着k的变化,
-可以得到一系列precision值, 用 <span class="math inline">\(P(k)\)</span>
-表示。</p>
-<ul>
-<li><strong>Recall和Recall@k</strong>,
-推荐算法中的召回率recall计算如下：</li>
-</ul>
-<p><span class="math display">\[
-\text { recall }=\frac{\text { 算法结果中相关的 } i t e m \text { 数量
-}}{\text { 所有相关的item数量 }}
-\]</span></p>
-<p>与Precision@kk相似, recall@k表示结果列表前k项的recall, 随着k的变化,
-可以得到一系列的recall值, 用 <span class="math inline">\(r(k)\)</span>
-表示。</p>
-<ul>
-<li><strong>AP@N</strong>, AP (Average Precision)
-平均精度的计算以Precision@k为基础, 可以体现出结果列表中item顺序的重要性,
-其 计算过程如下:</li>
-</ul>
-<p><span class="math display">\[
-A P @ N=\frac{1}{m} \sum_{k=1}^N(P(k) \quad \text { if kth item is
-relevant })=\frac{1}{m} \sum_{k=1}^N P(k) \cdot r e l(k)
-\]</span></p>
-<p>其中, <span class="math inline">\(\mathrm{N}\)</span> 表示要求推荐的
-<span class="math inline">\(\mathrm{N}\)</span> 个item, <span class="math inline">\(\mathrm{m}\)</span> 表示所有相关的item总数, <span class="math inline">\(r e l(k)\)</span> 表示第 <span class="math inline">\(k\)</span> 个item是否相关, 相关为 1 , 反 之为
-0</p>
-<p>AP@N的值越大，表示推荐列表中相关的item数量越多以及相关item的排名越靠前</p>
-<ul>
-<li><strong>MAP@N</strong></li>
-</ul>
-<p><strong>AP@N评价了算法对单个用户的性能，MAP@N则是算法对多个用户的平均值，是平均数的平均，其计算过程如下</strong>：
+<p>平方损失（Square loss）的标准形式如下：<span class="math inline">\(L(Y,f(X))=(Y−f(x))^2\)</span>当样本个数为n时，此时的损失函数变为：</p>
+<p><img src="https://s2.loli.net/2023/04/17/NfeyG4SLkFhJBwt.png" alt="image-20220322202912962" style="zoom:50%;"></p>
+<p><span class="math inline">\(Y−f(X)\)</span>
+表示的是<strong>残差</strong>，整个式子表示的是残差的平方和，而我们的目的就是最小化这个目标函数值（注：该式子未加入正则项），也就是最小化残差的平方和（residual
+sum of squares，RSS）。</p>
+<p>而在实际应用中，通常会使用<strong>均方差</strong>（MSE）作为一项衡量指标，公式如下：</p>
+<p><img src="https://s2.loli.net/2023/04/17/9CsrcO3pPXwHoKZ.png" alt="image-20220322202957484" style="zoom:50%;"></p>
+<h3><span id="三-指数损失函数adaboost">三、 指数损失函数（Adaboost）</span></h3>
+<blockquote>
+<p>Adaboost训练误差以指数下降。所以说，指数损失本身并没有带来优化上的特殊，优点在于计算和表达简单。</p>
+</blockquote>
+<p>学过Adaboost算法的人都知道，它是前向分步加法算法的特例，是一个加和模型，损失函数就是指数函数。在Adaboost中，经过m此迭代之后，可以得到<span class="math inline">\(fm(x)\)</span>:</p>
+<p><img src="https://s2.loli.net/2023/04/17/2FKCHj4EDLwxob3.png" alt="image-20220322203050695" style="zoom:50%;"></p>
+<p><strong>Adaboost</strong>每次迭代时的目的是为了找到最小化下列式子时的参数
+<span class="math inline">\(a\)</span> 和 <span class="math inline">\(G\)</span>：</p>
+<p><img src="https://s2.loli.net/2023/04/17/XIEqZ21U8ikoOt4.png" alt="image-20220322203141435" style="zoom:50%;"></p>
+<p>而指数损失函数(exp-loss）的标准形式如下:</p>
+<p><img src="https://s2.loli.net/2023/04/17/wDyvbnklec61FYp.png" alt="image-20220322203221432" style="zoom:50%;"></p>
+<p>可以看出，Adaboost的目标式子就是指数损失，在给定N个样本的情况下，Adaboost的损失函数为：</p>
+<p><img src="https://s2.loli.net/2023/04/17/6t2QfviewSNLbzV.png" alt="image-20220322203238853" style="zoom:50%;"></p>
+<h3><span id="四-hinge合页损失函数svmadvgan">四、 ==Hinge
+合页损失函数==（SVM，advGAN）</span></h3>
+<p><img src="https://s2.loli.net/2023/04/17/EgYO37JubfLwke8.png" alt="image-20220401165315551" style="zoom:50%;"></p>
+<p>线性支持向量机学习除了原始最优化问题，还有另外一种解释，就是最优化以下目标函数：</p>
+<p><img src="https://s2.loli.net/2023/04/17/kMKy9zPi5hmITxL.png" alt="image-20220322205741804" style="zoom:50%;"></p>
+<p>目标函数的第一项是经验损失或经验风险函数：</p>
+<p><img src="https://s2.loli.net/2023/04/17/uJzUqdVDQMf7kCb.png" alt="image-20220322205801232" style="zoom:50%;"></p>
+<p>称为<strong>合页损失函数</strong>（hinge loss
+function）。下标”+”表示以下取正值的函数：</p>
+<p><img src="https://s2.loli.net/2023/04/17/w6VqUnRyaLfETKh.png" alt="image-20220322205844003" style="zoom:50%;"></p>
+<p>这就是说，当样本点<span class="math inline">\((xi,yi)\)</span>被正确分类且函数间隔（确信度）<span class="math inline">\(yi(w·xi+b)\)</span>大于1时，损失是0，否则损失是<span class="math inline">\(1−yi(w·xi+b)\)</span>。目标函数的第二项是系数为
+<span class="math inline">\(λ\)</span> 的 <span class="math inline">\(w\)</span> 的 <span class="math inline">\(L2\)</span> 范数，是正则化项。</p>
+<p>接下来证明线性支持向量机原始最优化问题：</p>
+<p><img src="https://s2.loli.net/2023/04/17/jDeMzx3QAoZaPw2.png" alt="image-20220322210000477" style="zoom:50%;"></p>
+<p><img src="https://s2.loli.net/2023/04/17/qKU6kzHTI21BmLV.png" alt="image-20220322210121285" style="zoom:50%;"></p>
+<p>先令<span class="math inline">\([1−yi(w·xi+b)]+=ξi\)</span>，则<span class="math inline">\(ξi≥0\)</span>，第二个约束条件成立；由<span class="math inline">\([1−yi(w·xi+b)]+=ξi\)</span>，当<span class="math inline">\(1−yi(w·xi+b)&gt;0\)</span>时，有<span class="math inline">\(yi(w·xi+b)=1−ξi\)</span>;当<span class="math inline">\(1−yi(w·xi+b)≤0\)</span>时，<span class="math inline">\(ξi=0\)</span>，有<span class="math inline">\(yi(w·xi+b)≥1−ξi\)</span>，所以第一个约束条件成立。所以两个约束条件都满足，最优化问题可以写作</p>
+<p><img src="https://s2.loli.net/2023/04/17/gi1eSxGrA7MYTQh.png" alt="image-20220322210943775" style="zoom:50%;"></p>
+<p>若取 <span class="math inline">\(λ=1/2C\)</span> 则:</p>
+<p><img src="https://s2.loli.net/2023/04/17/8Q6BU1lkfF4S3Dd.png" alt="image-20220322211012150" style="zoom:50%;"></p>
+<h3><span id="五-softmax函数和sigmoid函数的区别与联系">五、Softmax函数和Sigmoid函数的区别与联系</span></h3>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/356976844</p>
+</blockquote>
+<h4><span id="51-分类任务">5.1 分类任务</span></h4>
+<h4><span id="sigmoid">sigmoid</span></h4>
+<blockquote>
+<p>Sigmoid
+=<strong>==多标签分类问题==</strong>=多个正确答案=非独占输出（例如胸部X光检查、住院）。构建分类器，解决有多个正确答案的问题时，用Sigmoid函数分别处理各个原始输出值。</p>
+</blockquote>
+<blockquote>
+<p>Softmax
+=<strong>多类别分类问题</strong>=只有一个正确答案=互斥输出（例如手写数字，鸢尾花）。构建分类器，解决只有唯一正确答案的问题时，用Softmax函数处理各个原始输出值。Softmax函数的分母综合了原始输出值的所有因素，这意味着，Softmax函数得到的不同概率之间相互关联。</p>
+</blockquote>
+<p><strong>Sigmoid函数</strong>是一种logistic函数，它将任意的值转换到
+<img src="https://www.zhihu.com/equation?tex=%5B0%2C+1%5D" alt="[公式]"> 之间，如图1所示，函数表达式为： <img src="https://www.zhihu.com/equation?tex=Sigmoid%28x%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"> 。</p>
+<p>它的导函数为： <img src="https://www.zhihu.com/equation?tex=Sigmoid%5E%7B%27%7D%28x%29%3DSigmoid%28x%29%5Ccdot+%281-Sigmoid%28x%29%29" alt="[公式]"> 。</p>
+<figure>
+<img src="https://s2.loli.net/2023/04/17/i1SyjnQTHW7pYRA.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>优点</strong>：</p>
+<ol type="1">
+<li>Sigmoid函数的输出在(0,1)之间，输出范围有限，优化稳定，可以用作<strong>输出层</strong>。</li>
+<li>连续函数，便于<strong>求导</strong>。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol type="1">
+<li>最明显的就是<strong>饱和性</strong>，从上图也不难看出其两侧导数逐渐趋近于0，容易造成<strong>梯度消失</strong>。</li>
+</ol>
+<p>2.激活函数的偏移现象。Sigmoid函数的输出值均大于0，使得输出不是0的均值，这会导致后一层的神经元将得到上一层非0均值的信号作为输入，这会对梯度产生影响。</p>
+<ol start="3" type="1">
+<li>计算复杂度高，因为Sigmoid函数是指数形式。</li>
+</ol>
+<h4><span id="softmax">Softmax</span></h4>
+<p><strong>Softmax函数</strong>，又称<strong>归一化指数函数</strong>，函数表达式为：
+<img src="https://www.zhihu.com/equation?tex=Softmax%28x%29%3D%5Cfrac%7Be%5E%7Bx_%7Bi%7D%7D%7D%7B%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%7Be%5E%7Bx_%7Bj%7D%7D%7D%7D" alt="[公式]"> 。</p>
+<p><img src="https://s2.loli.net/2023/04/17/tuUkTdM47K6jVXx.jpg" alt="img" style="zoom: 67%;"></p>
+<p><strong>Softmax函数是二分类函数Sigmoid在多分类上的推广，目的是将多分类的结果以概率的形式展现出来。</strong>如图2所示，Softmax直白来说就是将原来输出是3,1,-3通过Softmax函数一作用，就映射成为(0,1)的值，而这些值的累和为1（满足概率的性质），那么我们就可以将它理解成概率，在最后选取输出结点的时候，我们就可以选取概率最大（也就是值对应最大的）结点，作为我们的预测目标。</p>
+<p>由于Softmax函数先拉大了输入向量元素之间的差异（通过指数函数），然后才归一化为一个概率分布，在应用到分类问题时，它使得各个类别的概率差异比较显著，最大值产生的概率更接近1，这样输出分布的形式更接近真实分布。</p>
+<p><strong>Softmax可以由三个不同的角度来解释。从不同角度来看softmax函数，可以对其应用场景有更深刻的理解：</strong></p>
+<ol type="1">
+<li><strong>softmax可以当作argmax的一种平滑近似</strong>，与arg
+max操作中暴力地选出一个最大值（产生一个one-hot向量）不同，softmax将这种输出作了一定的平滑，即将one-hot输出中最大值对应的1按输入元素值的大小分配给其他位置。</li>
+<li><strong>softmax将输入向量归一化映射到一个类别概率分布</strong>，即
+<img src="https://www.zhihu.com/equation?tex=n" alt="[公式]">
+个类别上的概率分布（前文也有提到）。这也是为什么在深度学习中常常将softmax作为MLP的最后一层，并配合以交叉熵损失函数（对分布间差异的一种度量)。</li>
+<li>从<strong>概率图模型</strong>的角度来看，softmax的这种形式可以理解为一个概率无向图上的联合概率。因此你会发现，条件最大熵模型与softmax回归模型实际上是一致的，诸如这样的例子还有很多。由于概率图模型很大程度上借用了一些热力学系统的理论，因此也可以从物理系统的角度赋予softmax一定的内涵。</li>
+</ol>
+<h4><span id="52-总结">5.2 总结</span></h4>
+<ol type="1">
+<li>如果模型输出为非互斥类别，且可以同时选择多个类别，则采用Sigmoid函数计算该网络的原始输出值。</li>
+<li>如果模型输出为<strong>互斥类别</strong>，且只能选择一个类别，则采用Softmax函数计算该网络的原始输出值。</li>
+<li><strong>Sigmoid函数</strong>可以用来解决<strong>多标签问题</strong>，<strong>Softmax</strong>函数用来解决<strong>单标签问题</strong>。</li>
+<li>对于某个分类场景，当Softmax函数能用时，Sigmoid函数一定可以用。</li>
+</ol>
+<h3><span id="6-损失函数qampa">6 损失函数Q&amp;A</span></h3>
+<h4><span id="平方误差损失函数和交叉熵损失函数分别适合什么场景">==平方误差损失函数和交叉熵损失函数分别适合什么场景？==</span></h4>
+<p>一般还说，平方损失函数更适合输出为连续，并且最后一层不含sigmod或softmax激活函数的神经网络；交叉熵损失函数更适合二分类或多分类的场景。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/510TZM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/510TZM/" class="post-title-link" itemprop="url">理论基础（4）回归评价指标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 12:03:27" itemprop="dateModified" datetime="2023-04-26T12:03:27+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-回归问题评价指标">一、回归问题评价指标</span></h3>
+<blockquote>
+<p><strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute
+Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
+</blockquote>
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
+<span class="math inline">\(x\)</span>, 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
+<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
+则是这个过 程中关键的一个组成部分, 用来<strong>衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距</strong>,
+给模型的优化指明方向。</p>
+<h4><span id="11-均方差损失-mse-l2-loss">1.1 均方差损失 MSE、L2 loss</span></h4>
+<h5><span id="111-基本形式与原理">1.1.1 <strong>基本形式与原理</strong></span></h5>
+<p><strong>均方差Mean Squared Error
+(MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数, 也称为 L2
+Loss</strong>。其基本形式如下: <span class="math display">\[
+J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span> 从直觉上理解均方差损失，这个损失函数的最小值为 0
+（当预测等于真实值时），最大值为无穷大。下图是对于真 实值 <span class="math inline">\(y=0\)</span>, 不同的预测值 <span class="math inline">\([-1.5,1.5]\)</span>
+的均方差损失的变化图。横轴是不同的预测值, 纵轴是均方差损失, 可以
+看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加,
+均方差损失呈二次方地增加。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="112-背后的假设">1.1.2 背后的假设</span></h5>
+<p><strong>【独立同分布-中心极限定理】</strong>： 如果 <span class="math inline">\(\left\{X_n\right\}\)</span> 独立同分布, 且 <span class="math inline">\(\mathbb{E} X=\mu, \mathbb{D}
+X=\sigma^2&gt;0\)</span> ，则 <span class="math inline">\(\mathrm{n}\)</span> 足够大时 <span class="math inline">\(\bar{X}_n\)</span> 近似服从正态分布 <span class="math inline">\(N\left(\mu, \frac{\sigma^2}{n}\right)\)</span> 即
 <span class="math display">\[
-M A P @ N=\frac{1}{|U|} \sum_{u=1}^{|U|}(A P @ N) u=\frac{1}{|U|} \sum
-u=1^{|U|}\left(\frac{1}{m} \sum_{k=1}^N P_u(k) \cdot r e l_u(k)\right)
+\lim _{n \rightarrow \infty} P\left(\frac{\bar{X}_n-\mu}{\sigma /
+\sqrt{n}}&lt;a\right)=\Phi(a)=\int_{-\infty}^a \frac{1}{\sqrt{2 \pi}}
+e^{-t^2 / 2} d t
+\]</span> 实际上在一定的假设下,
+我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>
+<span class="math inline">\((\mu=0, \sigma=1)\)</span> ，则给定一个
+<span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
+p\left(y_i \mid x_i\right)=\frac{1}{\sqrt{2 \pi}} \exp
+\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
+\]</span> <strong>进一步我们假设数据集中 <span class="math inline">\(\mathrm{N}\)</span> 个样本点之间相互独立,
+则给定所有 <span class="math inline">\(x\)</span> 输出所有真实值 <span class="math inline">\(y\)</span> 的概率, 即似然 Likelihood</strong>,
+为所有 <span class="math inline">\(p\left(y_i \mid x_i\right)\)</span>
+的累乘 <span class="math display">\[
+L(x, y)=\prod_{i=1}^N \frac{1}{\sqrt{2 \pi}} \exp
+\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
+\]</span> 通常为了计算方便，我们通常最大化对数似然Log-Likelihood <span class="math display">\[
+L L(x, y)=\log (L(x, y))=-\frac{N}{2} \log 2 \pi-\frac{1}{2}
+\sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span> 去掉与 <span class="math inline">\(\hat{y_i}\)</span>
+无关的第一项, 然后转化为最小化负对数似然 Negative Log-Likelihood <span class="math display">\[
+N L L(x, y)=\frac{1}{2} \sum_{i=1}^N\left(y_i-\hat{y}_i\right)^2
+\]</span>
+可以看到这个实际上就是均方差损失的形式。<strong>也就是说在模型输出与真实值的误差服从高斯分布的假设下,
+最小化均方差损失函数与极大似然估计本质上是一致的</strong>,
+因此在这个假设能被满足的场景中（比如回归）,
+均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一
+个好的选择。</p>
+<h5><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red">
+hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h5>
+<p><strong>95%的时间区间效果很好，RMSE指标居高不下的原因？</strong>
+<span class="math display">\[
+J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
+\]</span>
+一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>数据预处理将噪音去掉</li>
+<li>将离群点的产生机制建模进去</li>
+<li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
+</ul>
+<h4><span id="12-平均绝对误差-mae">1.2 <strong>平均绝对误差 MAE</strong></span></h4>
+<h5><span id="121-基本形式与原理">1.2.1 <strong>基本形式与原理</strong></span></h5>
+<p><strong>平均绝对误差 Mean Absolute Error (MAE)
+是另一类常用的损失函数, 也称为 L1 Loss</strong>。其基本形式如下 <span class="math display">\[
+J_{M A E}=\frac{1}{N} \sum_{i=1}^N\left|y_i-\hat{y_i}\right|
+\]</span> 同样的我们可以对这个损失函数进行可视化如下图, MAE
+损失的最小值为 0 (当预测等于真实值时），最大值为
+无穷大。可以看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加, MAE
+损失呈线性增长。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232148454.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h5><span id="122-背后的假设">1.2.2 背后的假设</span></h5>
+<p>同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式,
+假设模型预测与真实值之间的误差服 从拉普拉斯分布 Laplace distribution
+<span class="math inline">\((\mu=0, b=1)\)</span>, 则给定一个 <span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
+p\left(y_i \mid x_i\right)=\frac{1}{2} \exp
+\left(-\left|y_i-\hat{y_i}\right|\right)
+\]</span> 与上面推导 MSE 时类似, 我们可以得到的负对数似然实际上就是 MAE
+损失的形式 <span class="math display">\[
+\begin{gathered}
+L(x, y)=\prod_{i=1}^N \frac{1}{2} \exp
+\left(-\left|y_i-\hat{y}_i\right|\right) \\
+L L(x, y)=N \ln \frac{1}{2}-\sum_{i=1}^N\left|y_i-\hat{y}_i\right| \\
+N L L(x, y)=\sum_{i=1}^N\left|y_i-\hat{y}_i\right|
+\end{gathered}
 \]</span></p>
+<h4><span id="13-mae-与-mse-区别">1.3 MAE 与 MSE 区别</span></h4>
+<p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE
+通常可以更快地收敛，但 MAE 损失对于 outlier
+更加健壮</strong>，即更加不易受到 outlier 影响。</p>
+<ul>
+<li><p><strong>MSE 通常比 MAE
+可以更快地收敛</strong>。当使用梯度下降算法时, MSE 损失的梯度为 <span class="math inline">\(-\hat{y}_i\)</span>, 而 MAE 损失的梯度为 <span class="math inline">\(\pm 1\)</span> , 即 MSE 的梯度的 scale
+会随误差大小变化, 而 MAE 的梯度的 scale 则一直保持为 1 , 即便在绝对误 差
+<span class="math inline">\(\left|y_i-\hat{y}_i\right|\)</span>
+很小的时候 MAE 的梯度 scale 也同样为 1 ,
+这实际上是非常不利于模型的训练的。当然你可以通
+过在训练过程中动态调整学习率缓解这个问题, 但是总的来说,
+损失函数梯度之间的差异导致了 MSE 在大部 分时候比 MAE
+收敛地更快。这个也是 MSE 更为流行的原因。</p></li>
+<li><p><strong>MAE 对于异常值（outlier） 更加
+robust</strong>。我们可以从两个角度来理解这一点：</p>
+<ul>
+<li><p>第一个角度是直观地理解，下图是 MAE 和 MSE
+损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE
+损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE
+损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE
+会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151110.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure></li>
+<li><p>第二个角度是从两个损失函数的假设出发，MSE
+假设了误差服从高斯分布，MAE
+假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加
+robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine
+Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution
+Figure 2.8），当右图右侧出现了 outliers
+时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的
+MAE 对 outlier 比高斯分布为假设的 MSE 更加
+robust。<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151431.jpg" alt="img" style="zoom: 67%;"></p></li>
+</ul></li>
+</ul>
+<h4><span id="14-huber-loss">1.4 Huber Loss</span></h4>
+<blockquote>
+<ul>
+<li>在误差接近 0 时使用 MSE，使损失函数可导并且梯度更加稳定</li>
+<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier
+更加健壮。</li>
+</ul>
+</blockquote>
+<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点, MSE
+损失收玫快但容易受 outlier 影响, MAE 对 outlier 更加健壮但是收玫慢,
+Huber LosS 则是一种将 MSE 与 MAE 结合起来, 取两者优点的损失函数,
+也被称作 Smooth Mean Absolute Error Loss 。其原理很简单, 就是在误差接近
+0 时使用 MSE, 误差较大时使用 MAE, 公 式为 <span class="math display">\[
+J_{\text {huber }}=\frac{1}{N} \sum_{i=1}^N
+\mathbb{I}_{\left|y_i-\hat{y_i}\right| \leq \delta}
+\frac{\left(y_i-\hat{y_i}\right)^2}{2}+\mathbb{I}_{\left|y_i-\hat{y}_i\right|&gt;\delta}\left(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
+\delta^2\right)
+\]</span> 上式中 <span class="math inline">\(\delta\)</span> 是 Huber
+Loss 的一个超参数, <span class="math inline">\(\delta\)</span> 的值是
+MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分, 第二项是
+MAE 部分, 在 MAE 的部分公式为 <span class="math inline">\(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
+\delta^2\)</span> 是为了保证误差 <span class="math inline">\(|y-\hat{y}|= \pm \delta\)</span> 时 MAE 和 MSE
+的取值一致，进而保证 Huber Loss 损失连续可导。</p>
+<p>下图是 <span class="math inline">\(\delta=1.0\)</span> 时的 Huber
+Loss, 可以看到在 <span class="math inline">\([-\delta, \delta]\)</span>
+的区间内实际上就是 MSE 损失, 在 <span class="math inline">\((-\infty,
+\delta)\)</span> 和 <span class="math inline">\((\delta,
+\infty)\)</span> 区 间内为 MAE损失。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151667.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="15-分位数损失-quantile-loss">1.5 分位数损失 Quantile Loss</span></h4>
+<blockquote>
+<p><strong>MAE
+中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
+</blockquote>
+<p><strong>分位数回归 Quantile Regression
+是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151641.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的,
+分位数损失形式如下, 式中的 r 分位数系数</strong>。 <span class="math display">\[
+J_{\text {quant }}=\frac{1}{N} \sum_{i=1}^N \mathbb{I}_{\hat{y}_i \geq
+y_i}(1-r)\left|y_i-\hat{y_i}\right|+\mathbb{I}_{\hat{y}_i&lt;y_i}
+r\left|y_i-\hat{y_i}\right|
+\]</span> 我们如何理解这个损失函数呢? 这个损失函数是一个分段的函数, 将
+<span class="math inline">\(\hat{y}_i \geq y_i \quad\)</span> (高估) 和
+<span class="math inline">\(\hat{y}_i&lt;y_i \quad\)</span> (低估) 两种
+情况分开来, 并分别给予不同的系数。当 <span class="math inline">\(r&gt;0.5\)</span> 时,
+低估的损失要比高估的损失更大, 反过来当 <span class="math inline">\(r&lt;0.5\)</span> 时, 高估的损失比低估的损失大;
+分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失,
+进而实现分位数回归</strong>。 特别地, 当 <span class="math inline">\(r=0.5\)</span> 时, 分位数损失退化为 MAE 损失,
+从这里可以看出 MAE 损失实际上是分位数损失的一个特 例 一 中位数回归。</p>
+<p>下图是取不同的分位点 <span class="math inline">\(0.2 、 0.5 、
+0.6\)</span> 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6
+在高估和低 估两种情况下损失是不同的, 而 0.5 实际上就是 MAE。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232152365.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="16-平均绝对百分误差-mape">1.6 平均绝对百分误差 MAPE</span></h4>
+<p>虽然平均绝对误差能够获得一个评价值,
+但是你并不知道这个值代表模型拟合是优还是劣, 只有通过对比才能达到
+效果。当需要以相对的观点来衡量误差时, 则使用MAPE。
+平均绝对百分误差（Mean Absolute Percentage Error, MAPE）是对 MAE
+的一种改进, 考虑了绝对误差相对 真实值的比例。 -
+优点：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。 <span class="math display">\[
+M A P E=\frac{100}{m}
+\sum_{i=1}^m\left|\frac{y_i-f\left(x_i\right)}{y_i}\right|
+\]</span> 在某些场景下, 如房价从 <span class="math inline">\(5
+K\)</span> 到 <span class="math inline">\(50 K\)</span> 之间, <span class="math inline">\(5 K\)</span> 预测成 <span class="math inline">\(10
+K\)</span> 与 <span class="math inline">\(50 K\)</span> 预测成 <span class="math inline">\(45 K\)</span> 的差别是非常大的, 而平均
+绝对百分误差考虑到了这点。</p>
 
       
     </div>
@@ -813,7 +1227,7 @@ https://zhuanlan.zhihu.com/p/359997979</strong></li>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/510TZM/">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2WWJ575/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/cat_mac.jpg">
@@ -831,7 +1245,7 @@ https://zhuanlan.zhihu.com/p/359997979</strong></li>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/510TZM/" class="post-title-link" itemprop="url">理论基础（4）回归评价指标</a>
+          <a href="/posts/2WWJ575/" class="post-title-link" itemprop="url">理论基础（4）其他评价指标</a>
         </h2>
 
         <div class="post-meta-container">
@@ -849,7 +1263,7 @@ https://zhuanlan.zhihu.com/p/359997979</strong></li>
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 12:03:27" itemprop="dateModified" datetime="2023-04-26T12:03:27+08:00">2023-04-26</time>
+      <time title="修改时间：2023-04-26 12:09:01" itemprop="dateModified" datetime="2023-04-26T12:09:01+08:00">2023-04-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -876,14 +1290,14 @@ https://zhuanlan.zhihu.com/p/359997979</strong></li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.4k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -894,464 +1308,89 @@ https://zhuanlan.zhihu.com/p/359997979</strong></li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-回归问题评价指标">一、回归问题评价指标</span></h3>
+          <h3><span id="一-相似性度量指标">一、相似性度量指标</span></h3>
 <blockquote>
-<p><strong>均方差损失 Mean Squared Loss、平均绝对误差损失 Mean Absolute
-Error Loss、Huber Loss、分位数损失 Quantile Loss</strong></p>
+<p>机器学习中的相似性度量方法 - 天下客的文章 - 知乎
+https://zhuanlan.zhihu.com/p/411876558</p>
 </blockquote>
-<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
-<span class="math inline">\(x\)</span>, 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
-<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
-则是这个过 程中关键的一个组成部分, 用来<strong>衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距</strong>,
-给模型的优化指明方向。</p>
-<h4><span id="11-均方差损失-mse-l2-loss">1.1 均方差损失 MSE、L2 loss</span></h4>
-<h5><span id="111-基本形式与原理">1.1.1 <strong>基本形式与原理</strong></span></h5>
-<p><strong>均方差Mean Squared Error
-(MSE)损失是机器学习、深度学习回归任务中最常用的一种损失函数, 也称为 L2
-Loss</strong>。其基本形式如下: <span class="math display">\[
-J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
-\]</span> 从直觉上理解均方差损失，这个损失函数的最小值为 0
-（当预测等于真实值时），最大值为无穷大。下图是对于真 实值 <span class="math inline">\(y=0\)</span>, 不同的预测值 <span class="math inline">\([-1.5,1.5]\)</span>
-的均方差损失的变化图。横轴是不同的预测值, 纵轴是均方差损失, 可以
-看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加,
-均方差损失呈二次方地增加。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232145431.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h5><span id="112-背后的假设">1.1.2 背后的假设</span></h5>
-<p><strong>【独立同分布-中心极限定理】</strong>： 如果 <span class="math inline">\(\left\{X_n\right\}\)</span> 独立同分布, 且 <span class="math inline">\(\mathbb{E} X=\mu, \mathbb{D}
-X=\sigma^2&gt;0\)</span> ，则 <span class="math inline">\(\mathrm{n}\)</span> 足够大时 <span class="math inline">\(\bar{X}_n\)</span> 近似服从正态分布 <span class="math inline">\(N\left(\mu, \frac{\sigma^2}{n}\right)\)</span> 即
-<span class="math display">\[
-\lim _{n \rightarrow \infty} P\left(\frac{\bar{X}_n-\mu}{\sigma /
-\sqrt{n}}&lt;a\right)=\Phi(a)=\int_{-\infty}^a \frac{1}{\sqrt{2 \pi}}
-e^{-t^2 / 2} d t
-\]</span> 实际上在一定的假设下,
-我们可以使用最大化似然得到均方差损失的形式。假设<strong>模型预测与真实值之间的误差服从标准高斯分布</strong>
-<span class="math inline">\((\mu=0, \sigma=1)\)</span> ，则给定一个
-<span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
-p\left(y_i \mid x_i\right)=\frac{1}{\sqrt{2 \pi}} \exp
-\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
-\]</span> <strong>进一步我们假设数据集中 <span class="math inline">\(\mathrm{N}\)</span> 个样本点之间相互独立,
-则给定所有 <span class="math inline">\(x\)</span> 输出所有真实值 <span class="math inline">\(y\)</span> 的概率, 即似然 Likelihood</strong>,
-为所有 <span class="math inline">\(p\left(y_i \mid x_i\right)\)</span>
-的累乘 <span class="math display">\[
-L(x, y)=\prod_{i=1}^N \frac{1}{\sqrt{2 \pi}} \exp
-\left(-\frac{\left(y_i-\hat{y}_i\right)^2}{2}\right)
-\]</span> 通常为了计算方便，我们通常最大化对数似然Log-Likelihood <span class="math display">\[
-L L(x, y)=\log (L(x, y))=-\frac{N}{2} \log 2 \pi-\frac{1}{2}
-\sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
-\]</span> 去掉与 <span class="math inline">\(\hat{y_i}\)</span>
-无关的第一项, 然后转化为最小化负对数似然 Negative Log-Likelihood <span class="math display">\[
-N L L(x, y)=\frac{1}{2} \sum_{i=1}^N\left(y_i-\hat{y}_i\right)^2
-\]</span>
-可以看到这个实际上就是均方差损失的形式。<strong>也就是说在模型输出与真实值的误差服从高斯分布的假设下,
-最小化均方差损失函数与极大似然估计本质上是一致的</strong>,
-因此在这个假设能被满足的场景中（比如回归）,
-均方差损失是一个很好的损失函数选择；当这个假设没能被满足的场景中（比如分类），均方差损失不是一
-个好的选择。</p>
-<h5><span id="hulu-百面机器学习-平方根误差的意外"><strong><font color="red">
-hulu 百面机器学习 —— 平方根误差的”意外“</font></strong></span></h5>
-<p><strong>95%的时间区间效果很好，RMSE指标居高不下的原因？</strong>
-<span class="math display">\[
-J_{M S E}=\frac{1}{N} \sum_{i=1}^N\left(y_i-\hat{y_i}\right)^2
-\]</span>
-一般情况下RSME能反应预测值与真实值的偏离程度，但是<strong>易受离群点</strong>的影响；</p>
-<p><strong>解决方案</strong>：</p>
+<p>描述样本之间相似度的方法有很多种，一般来说常用的有相关系数和欧式距离。本文对机器学习中常用的相似性度量方法进行了总结。<strong>在做分类时，常常需要估算不同样本之间的相似性度量（Similarity
+Measurement），</strong>这时通常采用的方法就是计算样本间的“距离”（distance）。采用什么样的方法计算距离是很讲究的，甚至关系到分类的正确与否。</p>
 <ul>
-<li>数据预处理将噪音去掉</li>
-<li>将离群点的产生机制建模进去</li>
-<li>更鲁棒的模型评估指标：<strong>平均绝对百分比误差</strong>（MAPE），<strong>分位数损失</strong></li>
+<li><strong>欧式距离</strong>：k-means</li>
+<li><strong>曼哈顿距离</strong>：</li>
+<li><strong>切比雪夫距离</strong>：</li>
+<li>闵可夫斯基距离</li>
+<li>标准化欧氏距离</li>
+<li>马氏距离</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=夹角余弦&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2255493039%22%7D">夹角余弦</a></li>
+<li><strong>汉明距离</strong>：simhash</li>
+<li><strong>杰卡德距离&amp;杰卡德相似系数</strong>:
+<strong>杰卡德相似系数是衡量两个集合的相似度一种指标。</strong></li>
+<li>相关系数&amp;相关距离</li>
+<li>信息熵</li>
 </ul>
-<h4><span id="12-平均绝对误差-mae">1.2 <strong>平均绝对误差 MAE</strong></span></h4>
-<h5><span id="121-基本形式与原理">1.2.1 <strong>基本形式与原理</strong></span></h5>
-<p><strong>平均绝对误差 Mean Absolute Error (MAE)
-是另一类常用的损失函数, 也称为 L1 Loss</strong>。其基本形式如下 <span class="math display">\[
-J_{M A E}=\frac{1}{N} \sum_{i=1}^N\left|y_i-\hat{y_i}\right|
-\]</span> 同样的我们可以对这个损失函数进行可视化如下图, MAE
-损失的最小值为 0 (当预测等于真实值时），最大值为
-无穷大。可以看到随着预测与真实值绝对误差 <span class="math inline">\(|y-\hat{y}|\)</span> 的增加, MAE
-损失呈线性增长。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232148454.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h5><span id="122-背后的假设">1.2.2 背后的假设</span></h5>
-<p>同样的我们可以在一定的假设下通过最大化似然得到 MAE 损失的形式,
-假设模型预测与真实值之间的误差服 从拉普拉斯分布 Laplace distribution
-<span class="math inline">\((\mu=0, b=1)\)</span>, 则给定一个 <span class="math inline">\(x_i\)</span> 模型输出真实值 <span class="math inline">\(y_i\)</span> 的概率为 <span class="math display">\[
-p\left(y_i \mid x_i\right)=\frac{1}{2} \exp
-\left(-\left|y_i-\hat{y_i}\right|\right)
-\]</span> 与上面推导 MSE 时类似, 我们可以得到的负对数似然实际上就是 MAE
-损失的形式 <span class="math display">\[
-\begin{gathered}
-L(x, y)=\prod_{i=1}^N \frac{1}{2} \exp
-\left(-\left|y_i-\hat{y}_i\right|\right) \\
-L L(x, y)=N \ln \frac{1}{2}-\sum_{i=1}^N\left|y_i-\hat{y}_i\right| \\
-N L L(x, y)=\sum_{i=1}^N\left|y_i-\hat{y}_i\right|
-\end{gathered}
-\]</span></p>
-<h4><span id="13-mae-与-mse-区别">1.3 MAE 与 MSE 区别</span></h4>
-<p>MAE 和 MSE 作为损失函数的主要区别是：<strong>MSE 损失相比 MAE
-通常可以更快地收敛，但 MAE 损失对于 outlier
-更加健壮</strong>，即更加不易受到 outlier 影响。</p>
+<h3><span id="二-推荐算法评价指标">二、推荐算法评价指标</span></h3>
 <ul>
-<li><p><strong>MSE 通常比 MAE
-可以更快地收敛</strong>。当使用梯度下降算法时, MSE 损失的梯度为 <span class="math inline">\(-\hat{y}_i\)</span>, 而 MAE 损失的梯度为 <span class="math inline">\(\pm 1\)</span> , 即 MSE 的梯度的 scale
-会随误差大小变化, 而 MAE 的梯度的 scale 则一直保持为 1 , 即便在绝对误 差
-<span class="math inline">\(\left|y_i-\hat{y}_i\right|\)</span>
-很小的时候 MAE 的梯度 scale 也同样为 1 ,
-这实际上是非常不利于模型的训练的。当然你可以通
-过在训练过程中动态调整学习率缓解这个问题, 但是总的来说,
-损失函数梯度之间的差异导致了 MSE 在大部 分时候比 MAE
-收敛地更快。这个也是 MSE 更为流行的原因。</p></li>
-<li><p><strong>MAE 对于异常值（outlier） 更加
-robust</strong>。我们可以从两个角度来理解这一点：</p>
-<ul>
-<li><p>第一个角度是直观地理解，下图是 MAE 和 MSE
-损失画到同一张图里面，由于MAE 损失与绝对误差之间是线性关系，MSE
-损失与误差是平方关系，当误差非常大的时候，MSE 损失会远远大于 MAE
-损失。<strong>因此当数据中出现一个误差非常大的 outlier 时，MSE
-会产生一个非常大的损失，对模型的训练会产生较大的影响</strong>。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151110.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure></li>
-<li><p>第二个角度是从两个损失函数的假设出发，MSE
-假设了误差服从高斯分布，MAE
-假设了误差服从拉普拉斯分布。拉普拉斯分布本身对于 outlier 更加
-robust。参考下图（来源：<a href="https://link.zhihu.com/?target=https%3A//www.cs.ubc.ca/~murphyk/MLbook/">Machine
-Learning: A Probabilistic Perspective</a> 2.4.3 The Laplace distribution
-Figure 2.8），当右图右侧出现了 outliers
-时，拉普拉斯分布相比高斯分布受到的影响要小很多。因此以拉普拉斯分布为假设的
-MAE 对 outlier 比高斯分布为假设的 MSE 更加
-robust。<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151431.jpg" alt="img" style="zoom: 67%;"></p></li>
-</ul></li>
+<li>推荐算法评价指标 - 一干正事就犯困的文章 - 知乎
+https://zhuanlan.zhihu.com/p/359528909</li>
 </ul>
-<h4><span id="14-huber-loss">1.4 Huber Loss</span></h4>
-<blockquote>
+<h4><span id="21-ap">2.1 AP</span></h4>
+<p><code>AP</code> 衡量的是训练好的模型在每个类别上的好坏；</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232155563.jpg" alt="img" style="zoom: 67%;"></p>
+<p><strong>AP总结了一个精确召回曲线，作为在每个阈值处获得的精度的加权平均值,
+并且与以前的阈值相比, 召回率的增 加用作权重</strong>: <span class="math display">\[
+A P=\sum_n\left(R_n-R_{(n-1))} P_n)\right.
+\]</span> 其中和分别是第 <span class="math inline">\(\mathrm{n}\)</span>
+个阈值 1 时的精度和召回率。此实现末进行揷值,
+并且与使用梯形规则计算精确调用曲线下的面
+积有所不同，后者使用线性揷值并且可能过于乐观。</p>
+<h4><span id="22-map">2.2 MAP</span></h4>
+<p><strong>MAP (Mean Average Precision)
+常用于排序任务，MAP的计算涉及另外两个指标：Precision和Recall</strong></p>
 <ul>
-<li>在误差接近 0 时使用 MSE，使损失函数可导并且梯度更加稳定</li>
-<li>在误差较大时使用 MAE 可以降低 outlier 的影响，使训练对 outlier
-更加健壮。</li>
+<li><strong>Precision和Precision@k</strong>,
+推荐算法中的精度precision计算如下：</li>
 </ul>
-</blockquote>
-<p>上文我们分别介绍了 MSE 和 MAE 损失以及各自的优缺点, MSE
-损失收玫快但容易受 outlier 影响, MAE 对 outlier 更加健壮但是收玫慢,
-Huber LosS 则是一种将 MSE 与 MAE 结合起来, 取两者优点的损失函数,
-也被称作 Smooth Mean Absolute Error Loss 。其原理很简单, 就是在误差接近
-0 时使用 MSE, 误差较大时使用 MAE, 公 式为 <span class="math display">\[
-J_{\text {huber }}=\frac{1}{N} \sum_{i=1}^N
-\mathbb{I}_{\left|y_i-\hat{y_i}\right| \leq \delta}
-\frac{\left(y_i-\hat{y_i}\right)^2}{2}+\mathbb{I}_{\left|y_i-\hat{y}_i\right|&gt;\delta}\left(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
-\delta^2\right)
-\]</span> 上式中 <span class="math inline">\(\delta\)</span> 是 Huber
-Loss 的一个超参数, <span class="math inline">\(\delta\)</span> 的值是
-MSE 和 MAE 两个损失连接的位置。上式等号右边第一项是 MSE 的部分, 第二项是
-MAE 部分, 在 MAE 的部分公式为 <span class="math inline">\(\delta\left|y_i-\hat{y_i}\right|-\frac{1}{2}
-\delta^2\)</span> 是为了保证误差 <span class="math inline">\(|y-\hat{y}|= \pm \delta\)</span> 时 MAE 和 MSE
-的取值一致，进而保证 Huber Loss 损失连续可导。</p>
-<p>下图是 <span class="math inline">\(\delta=1.0\)</span> 时的 Huber
-Loss, 可以看到在 <span class="math inline">\([-\delta, \delta]\)</span>
-的区间内实际上就是 MSE 损失, 在 <span class="math inline">\((-\infty,
-\delta)\)</span> 和 <span class="math inline">\((\delta,
-\infty)\)</span> 区 间内为 MAE损失。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151667.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="15-分位数损失-quantile-loss">1.5 分位数损失 Quantile Loss</span></h4>
-<blockquote>
-<p><strong>MAE
-中分别用不同的系数控制高估和低估的损失，进而实现分位数回归</strong></p>
-</blockquote>
-<p><strong>分位数回归 Quantile Regression
-是一类在实际应用中非常有用的回归算法</strong>，通常的回归算法是拟合目标值的期望或者中位数，而分位数回归可以通过给定不同的分位点，<strong>拟合目标值的不同分位数</strong>。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232151641.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>分位数回归是通过使用分位数损失 Quantile Loss 来实现这一点的,
-分位数损失形式如下, 式中的 r 分位数系数</strong>。 <span class="math display">\[
-J_{\text {quant }}=\frac{1}{N} \sum_{i=1}^N \mathbb{I}_{\hat{y}_i \geq
-y_i}(1-r)\left|y_i-\hat{y_i}\right|+\mathbb{I}_{\hat{y}_i&lt;y_i}
-r\left|y_i-\hat{y_i}\right|
-\]</span> 我们如何理解这个损失函数呢? 这个损失函数是一个分段的函数, 将
-<span class="math inline">\(\hat{y}_i \geq y_i \quad\)</span> (高估) 和
-<span class="math inline">\(\hat{y}_i&lt;y_i \quad\)</span> (低估) 两种
-情况分开来, 并分别给予不同的系数。当 <span class="math inline">\(r&gt;0.5\)</span> 时,
-低估的损失要比高估的损失更大, 反过来当 <span class="math inline">\(r&lt;0.5\)</span> 时, 高估的损失比低估的损失大;
-分位数损失实现了<strong>分别用不同的系数控制高估和低估的损失,
-进而实现分位数回归</strong>。 特别地, 当 <span class="math inline">\(r=0.5\)</span> 时, 分位数损失退化为 MAE 损失,
-从这里可以看出 MAE 损失实际上是分位数损失的一个特 例 一 中位数回归。</p>
-<p>下图是取不同的分位点 <span class="math inline">\(0.2 、 0.5 、
-0.6\)</span> 得到的三个不同的分位损失函数的可视化，可以看到 0.2 和 0.6
-在高估和低 估两种情况下损失是不同的, 而 0.5 实际上就是 MAE。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232152365.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="16-平均绝对百分误差-mape">1.6 平均绝对百分误差 MAPE</span></h4>
-<p>虽然平均绝对误差能够获得一个评价值,
-但是你并不知道这个值代表模型拟合是优还是劣, 只有通过对比才能达到
-效果。当需要以相对的观点来衡量误差时, 则使用MAPE。
-平均绝对百分误差（Mean Absolute Percentage Error, MAPE）是对 MAE
-的一种改进, 考虑了绝对误差相对 真实值的比例。 -
-优点：考虑了预测值与真实值的误差。考虑了误差与真实值之间的比例。 <span class="math display">\[
-M A P E=\frac{100}{m}
-\sum_{i=1}^m\left|\frac{y_i-f\left(x_i\right)}{y_i}\right|
-\]</span> 在某些场景下, 如房价从 <span class="math inline">\(5
-K\)</span> 到 <span class="math inline">\(50 K\)</span> 之间, <span class="math inline">\(5 K\)</span> 预测成 <span class="math inline">\(10
-K\)</span> 与 <span class="math inline">\(50 K\)</span> 预测成 <span class="math inline">\(45 K\)</span> 的差别是非常大的, 而平均
-绝对百分误差考虑到了这点。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2Z6ZKRX/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2Z6ZKRX/" class="post-title-link" itemprop="url">理论基础（4）聚类评价指标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-26 12:06:37" itemprop="dateModified" datetime="2023-04-26T12:06:37+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-聚类算法评价指标">一、聚类算法评价指标</span></h3>
-<blockquote>
-<p>https://zhuanlan.zhihu.com/p/343667804</p>
-<p>十分钟掌握聚类算法的评估指标：https://juejin.cn/post/6997913127572471821</p>
-</blockquote>
-<h4><span id="前言-外部评估-内部指标">前言 【外部评估】+ 【内部指标】</span></h4>
-<p>如同之前介绍的其它算法模型一样，对于聚类来讲我们同样会通过一些评价指标来衡量聚类算法的优与劣。在聚类任务中，常见的评价指标有：<strong>纯度（Purity）</strong>、<strong>兰德系数（Rand
-Index,
-RI）</strong>、<strong>F值（F-score）</strong>和<strong>调整兰德系数（Adjusted
-Rand
-Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文中出现得最多的评价方法。下面，我们就来对这些算法一一进行介绍。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232157697.jpg" alt="img" style="zoom: 67%;"></p>
-<p>好的聚类算法，一般要求类簇具有：</p>
-<ul>
-<li><strong>簇内 (intra-cluster) 相似度高</strong></li>
-<li><strong>簇间 (inter-cluster) 相似度底</strong></li>
-</ul>
-<p>一般来说，评估聚类质量有两个标准，内部评估评价指标和外部评估指标。内部评估指标主要基于数据集的集合结构信息从紧致性、分离性、连通性和重叠度等方面对聚类划分进行评价。即基于数据聚类自身进行评估的。</p>
-<h4><span id="11聚类纯度-聚类的准确率"><strong>1.1聚类纯度</strong> -
-聚类的准确率</span></h4>
-<p><strong>在聚类结果的评估标准中,
-一种最简单最直观的方法就是计算它的聚类纯度
-(purity)</strong>，别看纯度听起来很陌生,
-但实际上和<strong>分类问题中的准确率有着异曲同工之妙</strong>。<strong>因为聚类纯度的总体思想也用聚类正确的样本数除以总的样本
-数,
-因此它也经常被称为聚类的准确率</strong>。只是对于聚类后的结果我们并不知道每个簇所对应的真实类别,
-因此需要 取每种情况下的最大值。具体的，纯度的计算公式定义如下： <span class="math display">\[
-P=(\Omega, \mathbb{C})=\frac{1}{N} \sum_k \max _j\left|\omega_k \cap
-c_j\right|
-\]</span> 其中 <span class="math inline">\(N\)</span> 表示总的样本数;
-<span class="math inline">\(\Omega=\left\{\omega_1, \omega_2, \ldots,
-\omega_K\right\}\)</span> 表示一个个聚类后的簇, 而 <span class="math inline">\(\mathbb{C}=\left\{c_{1,2}, \ldots
-c_J\right\}\)</span> 表示正确的类别; <span class="math inline">\(\omega_k\)</span> 表示聚类后第 <span class="math inline">\(k\)</span> 个簇中的所有样本, <span class="math inline">\(c_j\)</span> 表示第 <span class="math inline">\(j\)</span> 个类别中真实的样本。在这里 <span class="math inline">\(P\)</span> 的取值范围为 <span class="math inline">\([0,1]\)</span> ，越大表示 聚类效果越好。</p>
-<h4><span id="12-兰德系数与f值同簇混淆矩阵"><strong>1.2 兰德系数与F值</strong>
-[同簇混淆矩阵]</span></h4>
-<p>在介绍完了纯度这一评价指标后，我们再来看看兰德系数（Rand
-Index）和F值。虽然兰德系数听起来是一个陌生 的名词,
-但它的计算过程却也与准确率的计算过程类似。同时,
-虽然这里也有一个叫做值的指标, 并且它的计算 过程也和分类指标中的F值类似,
-但是两者却有着本质的差别。说了这么多, 那这两个指标到底该怎么算呢? 同分
-类问题中的沘淆矩阵类似，这里我们也要先定义四种情况进行计数，然后再进行指标的计算。</p>
-<p><strong>为了说明兰德系数背后的思想，我们还是以图1中的聚类结果为例进行说明（为了方便观察，我们再放一张图在这
-里):</strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232158691.jpg" alt="img" style="zoom: 67%;"></p>
-<ul>
-<li><span class="math inline">\(T P\)</span> :
-表示两个同类样本点在同一个簇（布袋）中的情况数量;</li>
-<li><span class="math inline">\(F P\)</span> :
-表示两个非同类样本点在同一个簇中的情况数量;</li>
-<li><span class="math inline">\(T N\)</span> :
-表示两个非同类样本点分别在两个簇中的情况数量;</li>
-<li><span class="math inline">\(F N\)</span> :
-表示两个同类样本点分别在两个簇中的情况数量;</li>
-</ul>
-<p>由此，我们便能得到如下所示的对<strong>混淆矩阵（Pair Confusion
-Matrix）</strong>：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232158915.png" alt="img" style="zoom:75%;"></p>
-<p>有了上面各种情况的统计值，我们就可以定义出兰德系数和F值的计算公式：
-<span class="math display">\[
-Precision =\frac{T P}{T P+F P}
-\]</span></p>
 <p><span class="math display">\[
-Recall =\frac{T P}{T P+F N}
+\text { precision }=\frac{\text { 算法结果中相关的item数量 }}{\text {
+推荐的item总数量 }}
 \]</span></p>
+<p>可以看出Precision的计算没有考虑结果列表中item的顺序，Precision@k则通过切片的方式将顺序隐含在结果
+中。Precision@k表示列表前k项的Precision, 随着k的变化,
+可以得到一系列precision值, 用 <span class="math inline">\(P(k)\)</span>
+表示。</p>
+<ul>
+<li><strong>Recall和Recall@k</strong>,
+推荐算法中的召回率recall计算如下：</li>
+</ul>
 <p><span class="math display">\[
-R I  =\frac{T P+T N}{T P+F P+F N+T N}
+\text { recall }=\frac{\text { 算法结果中相关的 } i t e m \text { 数量
+}}{\text { 所有相关的item数量 }}
 \]</span></p>
+<p>与Precision@kk相似, recall@k表示结果列表前k项的recall, 随着k的变化,
+可以得到一系列的recall值, 用 <span class="math inline">\(r(k)\)</span>
+表示。</p>
+<ul>
+<li><strong>AP@N</strong>, AP (Average Precision)
+平均精度的计算以Precision@k为基础, 可以体现出结果列表中item顺序的重要性,
+其 计算过程如下:</li>
+</ul>
 <p><span class="math display">\[
-F_\beta  =\left(1+\beta^2\right) \frac{\text { Precision } \cdot \text {
-Recall }}{\beta^2 \cdot \text { Precision }+ \text { Recall }}
+A P @ N=\frac{1}{m} \sum_{k=1}^N(P(k) \quad \text { if kth item is
+relevant })=\frac{1}{m} \sum_{k=1}^N P(k) \cdot r e l(k)
 \]</span></p>
-<p>从上面的计算公式来看, (3)(4)
-从形式上看都非常像分类问题中的准确率与F值, 但是有着本质的却别。同时, 在
-这里 <span class="math inline">\(R I\)</span> 和 <span class="math inline">\(F_\beta\)</span> 的取值范围均为 <span class="math inline">\([0,1]\)</span> ，越大表示聚类效果越好。</p>
-<h4><span id="13调整兰德系数adjusted-rand-index归一化">1.3
-调整兰德系数（Adjusted Rand index）【归一化】</span></h4>
-<p>对于随机结果，RI并不能保证分数接近零。<strong>为了实现“在聚类结果随机产生的情况下，指标应该接近零”</strong>，调整兰德系数（Adjusted
-rand index）被提出，它具有更高的区分度。</p>
-<p>其公式为： <span class="math display">\[
-\mathrm{ARI}=\frac{\mathrm{RI}-E[\mathrm{RI}]}{\max
-(\mathrm{RI})-E[\mathrm{RI}]}
-\]</span> <span class="math inline">\(A R\)</span> 取值范围为 <span class="math inline">\([-1,1]\)</span>,
-值越大意味着聚类结果与真实情况越吻合。从广义的角度来讲,
-ARI衡量的是两个数据分布 的吻合程度。</p>
-<p>优点:</p>
+<p>其中, <span class="math inline">\(\mathrm{N}\)</span> 表示要求推荐的
+<span class="math inline">\(\mathrm{N}\)</span> 个item, <span class="math inline">\(\mathrm{m}\)</span> 表示所有相关的item总数, <span class="math inline">\(r e l(k)\)</span> 表示第 <span class="math inline">\(k\)</span> 个item是否相关, 相关为 1 , 反 之为
+0</p>
+<p>AP@N的值越大，表示推荐列表中相关的item数量越多以及相关item的排名越靠前</p>
 <ul>
-<li>对任意数量的聚类中心和样本数, 随机聚类的ARI都非常接近于 0 。</li>
-<li>取值在 <span class="math inline">\([-1,1]\)</span> 之间,
-负数代表结果不好, 越接近于1越好。</li>
-<li>对簇的结构不需作出任何假设：可以用于比较聚类算法。</li>
+<li><strong>MAP@N</strong></li>
 </ul>
-<p>缺点:</p>
-<ul>
-<li>ARI 需要 ground truth classes 的相关知识, ARI需要真实标签,
-而在实践中几乎不可用, 或者需要人工 标注者
-手动分配（如在监督学习环境中）。</li>
-</ul>
-<h4><span id="14-标准化互信息nmi-normalized-mutualinformation">1.4
-<strong><font color="red"> 标准化互信息（NMI, Normalized Mutual
-Information）</font></strong></span></h4>
-<p>互信息是用来衡量两个数据分布的吻合程度。它也是一有用的信息度量，它是指两个事件集合之间的相关性。互信息越大，词条和类别的相关程度也越大。</p>
-<h4><span id="15-轮廓系数silhouette-coefficient">1.5 <strong><font color="red">
-轮廓系数（Silhouette Coefficient）</font></strong></span></h4>
-<p><strong>轮廓系数适用于实际类别信息末知的情况。</strong>对于单个样本,
-设 <span class="math inline">\(a\)</span>
-是与它同类别中其他样本的平均距离, <span class="math inline">\(b\)</span>
-是与它距离最近不同类别中样本的平均距离, 其轮廓 系数为: <span class="math display">\[
-s=\frac{b-a}{\max (a, b)}
-\]</span> 对于一个样本集合,
-它的轮廓系数是所有样本轮廓系数的平均值。轮廓系数的取值范围是 <span class="math inline">\([-1,1]\)</span>, 同类别样本距离 越相近,
-不同类别样本距离越远, 值越大。当值为负数时, 说明聚类效果很差。</p>
-<h4><span id="16calinski-harabaz指数calinski-harabaz-index">1.6
-Calinski-Harabaz指数（Calinski-Harabaz Index）</span></h4>
-<p>在真实的分群label不知道的情况下，Calinski-Harabasz可以作为评估模型的一个指标。</p>
-<p>Calinski-Harabasz指数通过<strong>计算类中各点与类中心的距离平方和来度量类内的紧密度</strong>，通过<strong>计算各类中心点与数据集中心点距离平方和来度量数据集的分离度</strong>，CH指标<strong>由分离度与紧密度的比值得到</strong>。从而，CH越大代表着类自身越紧密，类与类之间越分散，即更优的聚类结果。</p>
-<p><strong>优点</strong></p>
-<ul>
-<li>当簇的密集且分离较好时，分数更高。</li>
-<li>得分计算很快，与轮廓系数的对比，最大的优势：快！相差几百倍！毫秒级。</li>
-</ul>
-<p><strong>缺点</strong></p>
-<ul>
-<li>凸的簇的CH指数通常高于其他类型的簇。例如，通过 DBSCAN
-获得基于密度的簇；所以，不适合基于密度的聚类算法（DBSCAN）。</li>
-</ul>
-<h4><span id="17-戴维森堡丁指数dbidavies-bouldin-index">1.7 戴维森堡丁指数（DBI,
-Davies-Bouldin Index）</span></h4>
-<p><strong>DB指数是计算任意两类别的类内距离平均距离之和除以两聚类中心距离求最大值</strong>。DB越小，意味着类内距
-离越小同时类间距离越大。<strong>零是可能的最低值,
-接近零的值表示更好的分区</strong>。 <span class="math display">\[
-\begin{gathered}
-R_{i j}=\frac{s_{i}+s_{j}}{d_{i j}} \\
-D B=\frac{1}{k} \sum_{i=1}^{k} \max _{i \neq j} R_{i j}
-\end{gathered}
-\]</span> 其中, <span class="math inline">\(s_{i}\)</span>
-表示簇的每个点与该簇的质心之间的平均距离, 也称为簇直径。 <span class="math inline">\(d_{i j}\)</span> 表示聚类和的质心之间的距 离。
-算法生成的聚类结果越是朝着簇内距离最小（类内相似性最大）和笶间距离最大（类间相似性最小）变化，
-那么Davies-Bouldin指数就会越小。 <strong>缺点</strong>:</p>
-<ul>
-<li>因使用欧式距离, 所以对于环状分布聚类评测很差。</li>
-</ul>
+<p><strong>AP@N评价了算法对单个用户的性能，MAP@N则是算法对多个用户的平均值，是平均数的平均，其计算过程如下</strong>：
+<span class="math display">\[
+M A P @ N=\frac{1}{|U|} \sum_{u=1}^{|U|}(A P @ N) u=\frac{1}{|U|} \sum
+u=1^{|U|}\left(\frac{1}{m} \sum_{k=1}^N P_u(k) \cdot r e l_u(k)\right)
+\]</span></p>
 
       
     </div>
@@ -1617,6 +1656,254 @@ function）来代替目标函数</strong>，<strong>而这个代理函数就可�
 <li>华为开源的HEBO：<a href="https://link.zhihu.com/?target=https%3A//github.com/huawei-noah/HEBO">https://github.com/huawei-noah/HEBO</a></li>
 <li><strong>Hyperopt</strong>：<a href="https://link.zhihu.com/?target=http%3A//hyperopt.github.io/hyperopt/">http://hyperopt.github.io/hype</a></li>
 </ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2Z6ZKRX/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2Z6ZKRX/" class="post-title-link" itemprop="url">理论基础（4）聚类评价指标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 14:08:32" itemprop="dateCreated datePublished" datetime="2022-03-24T14:08:32+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-26 12:06:37" itemprop="dateModified" datetime="2023-04-26T12:06:37+08:00">2023-04-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">理论基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3><span id="一-聚类算法评价指标">一、聚类算法评价指标</span></h3>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/343667804</p>
+<p>十分钟掌握聚类算法的评估指标：https://juejin.cn/post/6997913127572471821</p>
+</blockquote>
+<h4><span id="前言-外部评估-内部指标">前言 【外部评估】+ 【内部指标】</span></h4>
+<p>如同之前介绍的其它算法模型一样，对于聚类来讲我们同样会通过一些评价指标来衡量聚类算法的优与劣。在聚类任务中，常见的评价指标有：<strong>纯度（Purity）</strong>、<strong>兰德系数（Rand
+Index,
+RI）</strong>、<strong>F值（F-score）</strong>和<strong>调整兰德系数（Adjusted
+Rand
+Index,ARI）</strong>。同时，这四种评价指标也是聚类相关论文中出现得最多的评价方法。下面，我们就来对这些算法一一进行介绍。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232157697.jpg" alt="img" style="zoom: 67%;"></p>
+<p>好的聚类算法，一般要求类簇具有：</p>
+<ul>
+<li><strong>簇内 (intra-cluster) 相似度高</strong></li>
+<li><strong>簇间 (inter-cluster) 相似度底</strong></li>
+</ul>
+<p>一般来说，评估聚类质量有两个标准，内部评估评价指标和外部评估指标。内部评估指标主要基于数据集的集合结构信息从紧致性、分离性、连通性和重叠度等方面对聚类划分进行评价。即基于数据聚类自身进行评估的。</p>
+<h4><span id="11聚类纯度-聚类的准确率"><strong>1.1聚类纯度</strong> -
+聚类的准确率</span></h4>
+<p><strong>在聚类结果的评估标准中,
+一种最简单最直观的方法就是计算它的聚类纯度
+(purity)</strong>，别看纯度听起来很陌生,
+但实际上和<strong>分类问题中的准确率有着异曲同工之妙</strong>。<strong>因为聚类纯度的总体思想也用聚类正确的样本数除以总的样本
+数,
+因此它也经常被称为聚类的准确率</strong>。只是对于聚类后的结果我们并不知道每个簇所对应的真实类别,
+因此需要 取每种情况下的最大值。具体的，纯度的计算公式定义如下： <span class="math display">\[
+P=(\Omega, \mathbb{C})=\frac{1}{N} \sum_k \max _j\left|\omega_k \cap
+c_j\right|
+\]</span> 其中 <span class="math inline">\(N\)</span> 表示总的样本数;
+<span class="math inline">\(\Omega=\left\{\omega_1, \omega_2, \ldots,
+\omega_K\right\}\)</span> 表示一个个聚类后的簇, 而 <span class="math inline">\(\mathbb{C}=\left\{c_{1,2}, \ldots
+c_J\right\}\)</span> 表示正确的类别; <span class="math inline">\(\omega_k\)</span> 表示聚类后第 <span class="math inline">\(k\)</span> 个簇中的所有样本, <span class="math inline">\(c_j\)</span> 表示第 <span class="math inline">\(j\)</span> 个类别中真实的样本。在这里 <span class="math inline">\(P\)</span> 的取值范围为 <span class="math inline">\([0,1]\)</span> ，越大表示 聚类效果越好。</p>
+<h4><span id="12-兰德系数与f值同簇混淆矩阵"><strong>1.2 兰德系数与F值</strong>
+[同簇混淆矩阵]</span></h4>
+<p>在介绍完了纯度这一评价指标后，我们再来看看兰德系数（Rand
+Index）和F值。虽然兰德系数听起来是一个陌生 的名词,
+但它的计算过程却也与准确率的计算过程类似。同时,
+虽然这里也有一个叫做值的指标, 并且它的计算 过程也和分类指标中的F值类似,
+但是两者却有着本质的差别。说了这么多, 那这两个指标到底该怎么算呢? 同分
+类问题中的沘淆矩阵类似，这里我们也要先定义四种情况进行计数，然后再进行指标的计算。</p>
+<p><strong>为了说明兰德系数背后的思想，我们还是以图1中的聚类结果为例进行说明（为了方便观察，我们再放一张图在这
+里):</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232158691.jpg" alt="img" style="zoom: 67%;"></p>
+<ul>
+<li><span class="math inline">\(T P\)</span> :
+表示两个同类样本点在同一个簇（布袋）中的情况数量;</li>
+<li><span class="math inline">\(F P\)</span> :
+表示两个非同类样本点在同一个簇中的情况数量;</li>
+<li><span class="math inline">\(T N\)</span> :
+表示两个非同类样本点分别在两个簇中的情况数量;</li>
+<li><span class="math inline">\(F N\)</span> :
+表示两个同类样本点分别在两个簇中的情况数量;</li>
+</ul>
+<p>由此，我们便能得到如下所示的对<strong>混淆矩阵（Pair Confusion
+Matrix）</strong>：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304232158915.png" alt="img" style="zoom:75%;"></p>
+<p>有了上面各种情况的统计值，我们就可以定义出兰德系数和F值的计算公式：
+<span class="math display">\[
+Precision =\frac{T P}{T P+F P}
+\]</span></p>
+<p><span class="math display">\[
+Recall =\frac{T P}{T P+F N}
+\]</span></p>
+<p><span class="math display">\[
+R I  =\frac{T P+T N}{T P+F P+F N+T N}
+\]</span></p>
+<p><span class="math display">\[
+F_\beta  =\left(1+\beta^2\right) \frac{\text { Precision } \cdot \text {
+Recall }}{\beta^2 \cdot \text { Precision }+ \text { Recall }}
+\]</span></p>
+<p>从上面的计算公式来看, (3)(4)
+从形式上看都非常像分类问题中的准确率与F值, 但是有着本质的却别。同时, 在
+这里 <span class="math inline">\(R I\)</span> 和 <span class="math inline">\(F_\beta\)</span> 的取值范围均为 <span class="math inline">\([0,1]\)</span> ，越大表示聚类效果越好。</p>
+<h4><span id="13调整兰德系数adjusted-rand-index归一化">1.3
+调整兰德系数（Adjusted Rand index）【归一化】</span></h4>
+<p>对于随机结果，RI并不能保证分数接近零。<strong>为了实现“在聚类结果随机产生的情况下，指标应该接近零”</strong>，调整兰德系数（Adjusted
+rand index）被提出，它具有更高的区分度。</p>
+<p>其公式为： <span class="math display">\[
+\mathrm{ARI}=\frac{\mathrm{RI}-E[\mathrm{RI}]}{\max
+(\mathrm{RI})-E[\mathrm{RI}]}
+\]</span> <span class="math inline">\(A R\)</span> 取值范围为 <span class="math inline">\([-1,1]\)</span>,
+值越大意味着聚类结果与真实情况越吻合。从广义的角度来讲,
+ARI衡量的是两个数据分布 的吻合程度。</p>
+<p>优点:</p>
+<ul>
+<li>对任意数量的聚类中心和样本数, 随机聚类的ARI都非常接近于 0 。</li>
+<li>取值在 <span class="math inline">\([-1,1]\)</span> 之间,
+负数代表结果不好, 越接近于1越好。</li>
+<li>对簇的结构不需作出任何假设：可以用于比较聚类算法。</li>
+</ul>
+<p>缺点:</p>
+<ul>
+<li>ARI 需要 ground truth classes 的相关知识, ARI需要真实标签,
+而在实践中几乎不可用, 或者需要人工 标注者
+手动分配（如在监督学习环境中）。</li>
+</ul>
+<h4><span id="14-标准化互信息nmi-normalized-mutualinformation">1.4
+<strong><font color="red"> 标准化互信息（NMI, Normalized Mutual
+Information）</font></strong></span></h4>
+<p>互信息是用来衡量两个数据分布的吻合程度。它也是一有用的信息度量，它是指两个事件集合之间的相关性。互信息越大，词条和类别的相关程度也越大。</p>
+<h4><span id="15-轮廓系数silhouette-coefficient">1.5 <strong><font color="red">
+轮廓系数（Silhouette Coefficient）</font></strong></span></h4>
+<p><strong>轮廓系数适用于实际类别信息末知的情况。</strong>对于单个样本,
+设 <span class="math inline">\(a\)</span>
+是与它同类别中其他样本的平均距离, <span class="math inline">\(b\)</span>
+是与它距离最近不同类别中样本的平均距离, 其轮廓 系数为: <span class="math display">\[
+s=\frac{b-a}{\max (a, b)}
+\]</span> 对于一个样本集合,
+它的轮廓系数是所有样本轮廓系数的平均值。轮廓系数的取值范围是 <span class="math inline">\([-1,1]\)</span>, 同类别样本距离 越相近,
+不同类别样本距离越远, 值越大。当值为负数时, 说明聚类效果很差。</p>
+<h4><span id="16calinski-harabaz指数calinski-harabaz-index">1.6
+Calinski-Harabaz指数（Calinski-Harabaz Index）</span></h4>
+<p>在真实的分群label不知道的情况下，Calinski-Harabasz可以作为评估模型的一个指标。</p>
+<p>Calinski-Harabasz指数通过<strong>计算类中各点与类中心的距离平方和来度量类内的紧密度</strong>，通过<strong>计算各类中心点与数据集中心点距离平方和来度量数据集的分离度</strong>，CH指标<strong>由分离度与紧密度的比值得到</strong>。从而，CH越大代表着类自身越紧密，类与类之间越分散，即更优的聚类结果。</p>
+<p><strong>优点</strong></p>
+<ul>
+<li>当簇的密集且分离较好时，分数更高。</li>
+<li>得分计算很快，与轮廓系数的对比，最大的优势：快！相差几百倍！毫秒级。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>凸的簇的CH指数通常高于其他类型的簇。例如，通过 DBSCAN
+获得基于密度的簇；所以，不适合基于密度的聚类算法（DBSCAN）。</li>
+</ul>
+<h4><span id="17-戴维森堡丁指数dbidavies-bouldin-index">1.7 戴维森堡丁指数（DBI,
+Davies-Bouldin Index）</span></h4>
+<p><strong>DB指数是计算任意两类别的类内距离平均距离之和除以两聚类中心距离求最大值</strong>。DB越小，意味着类内距
+离越小同时类间距离越大。<strong>零是可能的最低值,
+接近零的值表示更好的分区</strong>。 <span class="math display">\[
+\begin{gathered}
+R_{i j}=\frac{s_{i}+s_{j}}{d_{i j}} \\
+D B=\frac{1}{k} \sum_{i=1}^{k} \max _{i \neq j} R_{i j}
+\end{gathered}
+\]</span> 其中, <span class="math inline">\(s_{i}\)</span>
+表示簇的每个点与该簇的质心之间的平均距离, 也称为簇直径。 <span class="math inline">\(d_{i j}\)</span> 表示聚类和的质心之间的距 离。
+算法生成的聚类结果越是朝着簇内距离最小（类内相似性最大）和笶间距离最大（类间相似性最小）变化，
+那么Davies-Bouldin指数就会越小。 <strong>缺点</strong>:</p>
+<ul>
+<li>因使用欧式距离, 所以对于环状分布聚类评测很差。</li>
+</ul>
 
       
     </div>
@@ -2920,350 +3207,6 @@ T F-I D F=T F \cdot I D F
 <p>https://thiagomarzagao.com/2015/12/08/saving-TfidfVectorizer-without-pickles/</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scipy.sparse <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">from</span> idfs <span class="keyword">import</span> idfs <span class="comment"># numpy array with our pre-computed idfs</span></span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer</span><br><span class="line"></span><br><span class="line"><span class="comment"># subclass TfidfVectorizer</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyVectorizer</span>(<span class="title class_ inherited__">TfidfVectorizer</span>):</span><br><span class="line">    <span class="comment"># plug our pre-computed IDFs</span></span><br><span class="line">    TfidfVectorizer.idf_ = idfs</span><br><span class="line"></span><br><span class="line"><span class="comment"># instantiate vectorizer</span></span><br><span class="line">vectorizer = MyVectorizer(lowercase = <span class="literal">False</span>,</span><br><span class="line">                          min_df = <span class="number">2</span>,</span><br><span class="line">                          norm = <span class="string">&#x27;l2&#x27;</span>,</span><br><span class="line">                          smooth_idf = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># plug _tfidf._idf_diag</span></span><br><span class="line">vectorizer._tfidf._idf_diag = sp.spdiags(idfs,</span><br><span class="line">                                         diags = <span class="number">0</span>,</span><br><span class="line">                                         m = <span class="built_in">len</span>(idfs),</span><br><span class="line">                                         n = <span class="built_in">len</span>(idfs))</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/1FJMY6C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/1FJMY6C/" class="post-title-link" itemprop="url">贝叶斯分类器（4）EM算法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-16 17:16:27" itemprop="dateCreated datePublished" datetime="2022-03-16T17:16:27+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-22 16:32:53" itemprop="dateModified" datetime="2023-04-22T16:32:53+08:00">2023-04-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">贝叶斯分类器</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.7k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>14 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="em期望最大-概率模型">EM——期望最大 [概率模型]</span></h2>
-<p><strong>EM 算法通过引入隐含变量，使用
-MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM
-算法首先会固定其中的第一个参数，然后使用 MLE
-计算第二个变量值；接着通过固定第二个变量，再使用 MLE
-估测第一个变量值，依次迭代，直至收敛到局部最优解。</strong></p>
-<p><strong><font color="red"> EM 算法，全称 Expectation Maximization
-Algorithm。期望最大算法是一种迭代算法，用于含有隐变量（Hidden
-Variable）的概率参数模型的最大似然估计或极大后验概率估计。</font></strong></p>
-<p>本文思路大致如下：先简要介绍其思想，然后举两个例子帮助大家理解，有了感性的认识后再进行严格的数学公式推导。</p>
-<h3><span id="1-思想">1. 思想</span></h3>
-<p>EM 算法的核心思想非常简单，分为两步：<strong>Expection-Step</strong>
-和 <strong>Maximization-Step</strong>。<strong>E-Step
-主要通过观察数据和现有模型来估计参数</strong>，然后用这个估计的参数值来计算似然函数的期望值；而
-M-Step
-是寻找似然函数最大化时对应的参数。由于算法会保证在每次迭代之后<strong>似然函数都会增加</strong>，所以函数最终会收敛。</p>
-<p><font color="red"> <span class="math inline">\(E M\)</span>
-算法一句话总结就是: <span class="math inline">\(E\)</span> 步固定 <span class="math inline">\(\theta\)</span> 优化 <span class="math inline">\(Q, M\)</span> 步固定 <span class="math inline">\(Q\)</span> 优化 <span class="math inline">\(\theta\)</span> 。</font></p>
-<h3><span id="2-例子">2 例子</span></h3>
-<h4><span id="21-例子-a">2.1 例子 A</span></h4>
-<p>假设有两枚硬币 <span class="math inline">\(\mathrm{A}\)</span> 和
-<span class="math inline">\(B\)</span>,
-他们的随机抛郑的结果如下图所示:</p>
-<p><img src="https://pic4.zhimg.com/80/v2-4e19d89b47e21cf284644b0576e9af0f_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>我们很容易估计出两枚硬币抛出正面的概率： <span class="math display">\[
-\begin{aligned}
-&amp; \theta_A=24 / 30=0.8 \\
-&amp; \theta_B=9 / 20=0.45
-\end{aligned}
-\]</span> 现在我们加入隐变量, 抺去每轮投郑的硬币标记:</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221558453.jpg" alt="img" style="zoom:50%;"></p>
-<p>碰到这种情况, 我们该如何估计 <span class="math inline">\(\theta_A\)</span> 和 <span class="math inline">\(\theta_B\)</span> 的值?</p>
-<p>我们多了一个隐变量 <span class="math inline">\(Z=\left(z_1, z_2, z_3,
-z_4, z_5\right)\)</span>, 代表每一轮所使用的硬币,
-我们需要知道每一轮抛郑所使用的硬币这样才能估计 <span class="math inline">\(\theta_A\)</span> 和 <span class="math inline">\(\theta_B\)</span> 的值, 但是估计隐变量 <span class="math inline">\(\mathrm{Z}\)</span> 我们又需要知道 <span class="math inline">\(\theta_A\)</span> 和 <span class="math inline">\(\theta_B\)</span> 的值,
-才能用极大似然估计法去估计出 Z。这就陷入了一个鸡生蛋和蛋生鸡的问题。</p>
-<p>其解决方法就是先随机初始化 <span class="math inline">\(\theta_A\)</span> 和 <span class="math inline">\(\theta_B\)</span>, 然后用去估计 <span class="math inline">\(Z\)</span>, 然后基于 <span class="math inline">\(Z\)</span> 按照最大似然概率去估计新的 <span class="math inline">\(\theta_A\)</span> 和 <span class="math inline">\(\theta_B\)</span> , 循环至收敛。</p>
-<h5><span id="212-计算"><strong>2.1.2 计算</strong></span></h5>
-<p>随机初始化 <span class="math inline">\(\theta_A=0.6\)</span> 和 <span class="math inline">\(\theta_B=0.5\)</span></p>
-<p>对于第一轮来说, 如果是硬币 <span class="math inline">\(A\)</span>,
-得出的 5 正 5 反的概率为: <span class="math inline">\(0.6^5 *
-0.4^5\)</span>; 如果是硬币 <span class="math inline">\(B\)</span>,
-得出的 5 正 5 反的概率为: <span class="math inline">\(0.5^5 *
-0.5^5\)</span> 。我们可以算出使用是硬币 <span class="math inline">\(A\)</span> 和硬币 <span class="math inline">\(B\)</span> 的概率 分别为: <span class="math display">\[
-\begin{aligned}
-&amp; P_A=\frac{0.6^5 * 0.4^5}{\left(0.6^5 * 0.4^5\right)+\left(0.5^5 *
-0.5^5\right)}=0.45 \\
-&amp; P_B=\frac{0.5^5 * 0.5^5}{\left(0.6^5 * 0.4^5\right)+\left(0.5^5 *
-0.5^5\right)}=0.55
-\end{aligned}
-\]</span> <img src="https://pic4.zhimg.com/80/v2-b325de65a5bcac196fc0939f346410d7_1440w.jpg" alt="img"></p>
-<p>从期望的角度来看, 对于第一轮抛郑, 使用硬币 <span class="math inline">\(A\)</span> 的概率是 0.45 , 使用硬币 <span class="math inline">\(B\)</span> 的概率是 0.55。同理其他轮。这一
-步我们实际上是估计出了 Z 的概率分布，这部就是 E-Step。</p>
-<p>结合硬币 <span class="math inline">\(A\)</span> 的概率和上一张结果,
-我们利用期望可以求出硬币 <span class="math inline">\(A\)</span> 和硬币
-<span class="math inline">\(B\)</span> 的贡献。以第二轮硬币 <span class="math inline">\(A\)</span> 为例子, 计算方式为: <span class="math display">\[
-\begin{aligned}
-&amp; H: 0.80 * 9=7.2 \\
-&amp; T: 0.80 * 1=0.8
-\end{aligned}
-\]</span> 于是我们可以得到：</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-9b6e8c50c0761c6ac19909c26e0a71d4_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>然后用极大似然估计来估计新的 <span class="math inline">\(\theta_A\)</span> 和 <span class="math inline">\(\theta_B\)</span> 。 <span class="math display">\[
-\begin{aligned}
-\theta_A &amp; =\frac{21.3}{21.3+8.6}=0.71 \\
-\theta_B &amp; =\frac{11.7}{11.7+8.4}=0.58
-\end{aligned}
-\]</span></p>
-<p>这步就对应了
-M-Step，重新估计出了参数值。如此反复迭代，我们就可以算出最终的参数值。</p>
-<p>上述讲解对应下图：</p>
-<p><img src="https://pic3.zhimg.com/v2-6cac968d6500cbca58fc90347c288466_r.jpg" alt="preview" style="zoom:50%;"></p>
-<h4><span id="22-例子-b">2.2 例子 B</span></h4>
-<p>如果说例子 A 需要计算你可能没那么直观, 那就举更一个简单的例子:</p>
-<p>现在一个班里有 50 个男生和 50
-个女生，且男女生分开。我们假定男生的身高服从正态分布： <span class="math inline">\(N\left(\mu_1, \sigma_1^2\right)\)</span> ,
-女生的身高则服从另一个正态分布： <span class="math inline">\(N\left(\mu_2, \sigma_2^2\right)\)</span>
-。这时候我们可以用 极大似然法 (MLE) , 分别通过这 50 个男生和 50
-个女生的样本来估计这两个正态分布的参数。</p>
-<p>但现在我们让情况复杂一点, 就是这 50 个男生和 50
-个女生混在一起了。我们拥有 100 个人的身高数据, 却不知 道这 100
-个人每一个是男生还是女生。</p>
-<p>这时候情况就有点箩尬, 因为通常来说,
-我们只有知道了精确的男女身高的正态分布参数我们才能知道每一个人更
-有可能是男生还是女生。但从另一方面去考量,
-我们只有知道了每个人是男生还是女生才能尽可能准确地估计男女
-各自身高的正态分布的参数。</p>
-<p>这个时候有人就想到我们必须从某一点开始,
-并用迭代的办法去解决这个问题：<strong>我们先设定男生身高和女生身高分
-布的几个参数（初始值）, 然后根据这些参数去判断每一个样本
-(人）是男生还是女生, 之后根据标注后的样本再
-反过来重新估计参数。之后再多次重复这个过程，直至稳定。这个算法也就是 EM
-算法。</strong></p>
-<h3><span id="3-推导">3. 推导</span></h3>
-<p>给定数据集, 假设样本间相互独立, 我们想要拟合模型 <span class="math inline">\(p(x ; \theta)\)</span>
-到数据的参数。根据分布我们可以 得到如下似然函数: <span class="math display">\[
-\begin{aligned}
-L(\theta) &amp; =\sum_{i=1}^n \log p\left(x_i ; \theta\right) \\
-&amp; =\sum_{i=1}^n \log \sum_z p\left(x_i, z ; \theta\right)
-\end{aligned}
-\]</span></p>
-<p>第一步是<strong>对极大似然函数取对数</strong>，第二步是对每个样本的每个可能的类别
-z 求<strong>联合概率分布之和</strong>。如果这个 z
-是已知的数，那么使用极大似然法会很容易。但如果 z 是隐变量，我们就需要用
-EM
-算法来求。<strong>事实上，隐变量估计问题也可以通过梯度下降等优化算法，但事实由于求和项将随着隐变量的数目以指数级上升，会给梯度计算带来麻烦；而
-EM 算法则可看作一种非梯度优化方法。</strong></p>
-<h4><span id="31-求解含有隐变量的概率模型">3.1 求解含有隐变量的概率模型</span></h4>
-<p>为了求解含有隐变量 <span class="math inline">\(z\)</span> 的概率模型
-<span class="math inline">\(\hat{\theta}=\underset{\theta}{\arg \max }
-\sum_{i=1}^m \log \sum_{z^{(i)}} p\left(x^{(i)}, z^{(i)} ;
-\theta\right)\)</span> 需要一些特殊的技巧, 通过引入隐变量<span class="math inline">\(z^{(i)}\)</span> 的概率分布为 <span class="math inline">\(Q_i\left(z^{(i)}\right)\)</span>, 因为 <span class="math inline">\(\log (x)\)</span>
-是凹函数故结合凹函数形式下的詹森不等式进行放缩处理 <span class="math display">\[
-\begin{aligned}
-\sum_{i=1}^m \log \sum_{z^{(i)}} p\left(x^{(i)}, z^{(i)} ; \theta\right)
-&amp; =\sum_{i=1}^m \log \sum_{z^{(i)}} Q_i\left(z^{(i)}\right)
-\frac{p\left(x^{(i)}, z^{(i)} ; \theta\right)}{Q_i\left(z^{(i)}\right)}
-\\
-&amp; =\sum_{i=1}^m \log \mathbb{E}\left(\frac{p\left(x^{(i)}, z^{(i)} ;
-\theta\right)}{Q_i\left(z^{(i)}\right)}\right) \\
-&amp; \left.\geq \sum_{i=1}^m \mathbb{E}\left[\log \frac{p\left(x^{(i)},
-z^{(i)} ; \theta\right)}{Q_i\left(z^{(i)}\right)}\right)\right] \\
-&amp; =\sum_{i=1}^m \sum_{z^{(i)}} Q_i\left(z^{(i)}\right) \log
-\frac{p\left(x^{(i)}, z^{(i)} ; \theta\right)}{Q_i\left(z^{(i)}\right)}
-\end{aligned}
-\]</span> 其中由概率分布的充要条件 <span class="math inline">\(\sum_{z^{(i)}} Q_i\left(z^{(i)}\right)=1 、
-Q_i\left(z^{(i)}\right) \geq 0\)</span> 可看成下述关于 <span class="math inline">\(z\)</span> 函数分布列的形式:</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221618376.jpg" alt="img" style="zoom:50%;"></p>
-<p>这个过程可以看作是对 <span class="math inline">\(\mathcal{L}(\theta)\)</span> 求了下界, 假设 <span class="math inline">\(\theta\)</span> 已经给定那么 <span class="math inline">\(\mathcal{L}(\theta)\)</span> 的值就取决于 <span class="math inline">\(Q_i\left(z^{(i)}\right)\)</span> 和 <span class="math inline">\(p\left(x^{(i)}, z^{(i)}\right)\)</span> 了, 因
-此可以通过调整这两个概率使下界不断上升, 以逼近 <span class="math inline">\(\mathcal{L}(\theta)\)</span> 的真实值,
-当不等式变成等式时说明调整后的概率能够 等价于 <span class="math inline">\(\mathcal{L}(\theta)\)</span>
-，所以必须找到使得等式成立的条件, 即寻找 <span class="math display">\[
-\left.\mathbb{E}\left[\log \frac{p\left(x^{(i)}, z^{(i)} ;
-\theta\right)}{Q_i\left(z^{(i)}\right)}\right)\right]=\log
-\mathbb{E}\left[\frac{p\left(x^{(i)}, z^{(i)} ;
-\theta\right)}{Q_i\left(z^{(i)}\right)}\right]
-\]</span> 由期望得性质可知当 <span class="math display">\[
-\frac{p\left(x^{(i)}, z^{(i)} ;
-\theta\right)}{Q_i\left(z^{(i)}\right)}=C, \quad C \in \mathbb{R}
-\quad(*)
-\]</span> 等式成立，对上述等式进行变形处理可得 <span class="math display">\[
-\begin{aligned}
-&amp; p\left(x^{(i)}, z^{(i)} ; \theta\right)=C Q_i\left(z^{(i)}\right)
-\\
-&amp; \Leftrightarrow \sum_{z^{(i)}} p\left(x^{(i)}, z^{(i)} ;
-\theta\right)=C \sum_{z^{(i)}} Q_i\left(z^{(i)}\right)=C \\
-&amp; \Leftrightarrow \sum_{z^{(i)}} p\left(x^{(i)}, z^{(i)} ;
-\theta\right)=C
-\end{aligned}
-\]</span> 把 <span class="math inline">\((* *)\)</span> 式带入 <span class="math inline">\((*)\)</span> 化简可知 <span class="math display">\[
-\begin{aligned}
-Q_i\left(z^{(i)}\right) &amp; =\frac{p\left(x^{(i)}, z^{(i)} ;
-\theta\right)}{\sum_{z^{(i)}} p\left(x^{(i)}, z^{(i)} ; \theta\right)}
-\\
-&amp; =\frac{p\left(x^{(i)}, z^{(i)} ; \theta\right)}{p\left(x^{(i)} ;
-\theta\right)} \\
-&amp; =p\left(z^{(i)} \mid x^{(i)} ; \theta\right)
-\end{aligned}
-\]</span> 至此, 可以推出在固定参数 <span class="math inline">\(\theta\)</span> 后, <span class="math inline">\(Q_i\left(z^{(i)}\right)\)</span>
-的计算公式就是后验概率, 解决了 <span class="math inline">\(Q_i\left(z^{(i)}\right)\)</span>
-如何选择得问题。这一步 称为 <span class="math inline">\(E\)</span> 步,
-建立 <span class="math inline">\(\mathcal{L}(\theta)\)</span> 得下界;
-接下来得 <span class="math inline">\(M\)</span> 步, 就是在给定 <span class="math inline">\(Q_i\left(z^{(i)}\right)\)</span> 后, 调整 <span class="math inline">\(\theta\)</span> 去极大化 <span class="math inline">\(\mathcal{L}(\theta)\)</span> 的下界即 <span class="math display">\[
-\begin{aligned}
-&amp; \underset{\theta}{\arg \max } \sum_{i=1}^m \log p\left(x^{(i)} ;
-\theta\right) \\
-&amp; \Leftrightarrow \underset{\theta}{\arg \max } \sum_{i=1}^m
-\sum_{z^{(i)}} Q_i\left(z^{(i)}\right) \log \frac{p\left(x^{(i)},
-z^{(i)} ; \theta\right)}{Q_i\left(z^{(i)}\right)} \\
-&amp; \Leftrightarrow \underset{\theta}{\arg \max } \sum_{i=1}^m
-\sum_{z^{(i)}} Q_i\left(z^{(i)}\right)\left[\log p\left(x^{(i)}, z^{(i)}
-; \theta\right)-\log Q_i\left(z^{(i)}\right)\right] \\
-&amp; \Leftrightarrow \underset{\theta}{\arg \max } \sum_{i=1}^m
-\sum_{z^{(i)}} Q_i\left(z^{(i)}\right) \log p\left(x^{(i)}, z^{(i)} ;
-\theta\right)
-\end{aligned}
-\]</span> 因此EM算法的迭代形式为：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221619542.jpg" alt="img" style="zoom:50%;"></p>
-<p><img src="https://pic3.zhimg.com/80/v2-2f7fc5ca144d2f85f14d46e88055dd86_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>这张图的意思就是: 首先我们固定 <span class="math inline">\(\theta\)</span>, 调整 <span class="math inline">\(Q(z)\)</span> 使下界 <span class="math inline">\(J(z, Q)\)</span> 上升至与 <span class="math inline">\(L(\theta)\)</span> 在此点 <span class="math inline">\(\theta\)</span> 处相等 (绿色曲线到 蓝色曲线) ,
-然后固定 <span class="math inline">\(Q(z)\)</span>, 调整 <span class="math inline">\(\theta\)</span> 使下界 <span class="math inline">\(J(z, Q)\)</span> 达到最大值 <span class="math inline">\(\left(\theta_t\right.\)</span> 到 <span class="math inline">\(\left.\theta_{t+1}\right)\)</span> ，然后再固定
-<span class="math inline">\(\theta\)</span>, 调整 <span class="math inline">\(Q(z)\)</span> , 一直到收敛到似然函数 <span class="math inline">\(L(\theta)\)</span> 的最大值处的 <span class="math inline">\(\theta\)</span> 。</p>
-<p><strong><font color="red"> EM 算法通过引入隐含变量，使用
-MLE（极大似然估计）进行迭代求解参数。通常引入隐含变量后会有两个参数，EM
-算法首先会固定其中的第一个参数，然后使用 MLE
-计算第二个变量值；接着通过固定第二个变量，再使用 MLE
-估测第一个变量值，依次迭代，直至收敛到局部最优解。</font></strong></p>
-<h4><span id="32-em算法的收敛性">3.2 EM算法的收敛性</span></h4>
-<p>不妨假设 <span class="math inline">\(\theta^{(k)}\)</span> 和 <span class="math inline">\(\theta^{(k+1)}\)</span> 是EM算法第 <span class="math inline">\(k\)</span> 次迭代和第 <span class="math inline">\(k+1\)</span> 次迭代的结果, 要确保 <span class="math inline">\(E M\)</span> 算法收敛那么等价于证明 <span class="math inline">\(\mathcal{L}\left(\theta^{(k)}\right) \leq
-\mathcal{L}\left(\theta^{(k+1)}\right)\)</span>
-也就是说极大似然估计单调增加,
-那么算法最终会迭代到极大似然估计的最大值。在选定 <span class="math inline">\(\theta^{(k)}\)</span> 后可以得到 <span class="math inline">\(E\)</span> 步 <span class="math inline">\(Q_i^{(k)}\left(z^{(i)}\right)=p\left(z^{(i)} \mid
-x^{(i)} ; \theta^{(k)}\right)\)</span>, 这一步保证了在给定 <span class="math inline">\(\theta^{(k)}\)</span> 时, 詹森不等式中的等式成立即
-<span class="math inline">\(\mathcal{L}\left(\theta^{(k)}\right)=\sum_{i=1}^m
-\sum_{z^{(i)}} Q_i^{(k)}\left(z^{(i)}\right) \log \frac{p\left(x^{(i)},
-z^{(i)} ; \theta^{(k)}\right)}{Q_i\left(z^{(i)}\right)}\)</span></p>
-<p>然后再进行 <span class="math inline">\(M\)</span> 步, 固定 <span class="math inline">\(Q_i^{(k)}\left(z^{(i)}\right)\)</span> 并将 <span class="math inline">\(\theta^{(k)}\)</span> 视作变量, 对上式 <span class="math inline">\(\mathcal{L}\left(\theta^{(k)}\right)\)</span>
-求导后得到 <span class="math inline">\(\theta^{(k+1)}\)</span>
-因此有如下式子成立 <span class="math display">\[
-\begin{aligned}
-\mathcal{L}\left(\theta^{(k)}\right) &amp; =\sum_{i=1}^m \sum_{z^{(i)}}
-Q_i^{(k)}\left(z^{(i)}\right) \log \frac{p\left(x^{(i)}, z^{(i)} ;
-\theta^{(k)}\right)}{Q_i\left(z^{(i)}\right)} \\
-&amp; \leq \sum_{i=1}^m \sum_{z^{(i)}} Q_i^{(k)}\left(z^{(i)}\right)
-\log \frac{p\left(x^{(i)}, z^{(i)} ;
-\theta^{(k)}\right)}{Q_i\left(z^{(i)}\right)} \\
-&amp; \leq \mathcal{L}\left(\theta^{(k+1)}\right)
-\end{aligned}
-\]</span> 首先 (a) 式是前面 <span class="math inline">\(E\)</span>
-步所保证詹森不等式中的等式成立的条件, (a) 到 (b) 是 <span class="math inline">\(M\)</span> 步的定义, (b) 到 (c) 对任意 参数都成立,
-而其等式的条件是固定 <span class="math inline">\(\theta\)</span>
-并调整好 <span class="math inline">\(Q\)</span> 时成立, <span class="math inline">\((b)\)</span> 到 <span class="math inline">\((c)\)</span> 只是固定 <span class="math inline">\(Q\)</span> 调整 <span class="math inline">\(\theta\)</span>, 在得到 <span class="math inline">\(\theta^{(k+1)}\)</span> 时, 只是最大化 <span class="math inline">\(\mathcal{L}\left(\theta^{(k)}\right)\)</span>,
-也就是 <span class="math inline">\(\mathcal{L}\left(\theta^{(k+1)}\right)\)</span>
-的一个下界而没有使等式成立。</p>
-<h3><span id="4-另一种理解">4. 另一种理解</span></h3>
-<p>坐标上升法（Coordinate ascent）：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221621244.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>途中直线为迭代优化路径，因为每次只优化一个变量，所以可以看到它没走一步都是平行与坐标轴的。</p>
-<p>EM 算法类似于坐标上升法，E 步：固定参数，优化 Q；M 步：固定
-Q，优化参数。交替将极值推向最大。</p>
-<h3><span id="5-应用">5. 应用</span></h3>
-<p>EM 的应用有很多，比如、混合高斯模型、聚类、HMM 等等。其中 <strong>EM
-在 K-means 中的用处</strong>，我将在介绍 K-means 中的给出。</p>
-<h3><span id="参考文献">参考文献</span></h3>
-<ol type="1">
-<li><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27976634">怎么通俗易懂地解释 EM
-算法并且举个例子?</a></p></li>
-<li><p><a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/zouxy09/article/details/8537620">从最大似然到
-EM 算法浅解</a></p></li>
-<li><h5><span id="em算法"></span></h5></li>
-</ol>
 
       
     </div>
