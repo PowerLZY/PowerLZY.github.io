@@ -144,7 +144,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、C4.5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 划分标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 剪枝策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3.1 预剪枝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3.2 后剪枝【悲观剪枝方法】  </span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 缺点</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、C4.5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 划分标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 剪枝策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3.1 预剪枝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3.2
+后剪枝【悲观剪枝方法】 http:&#x2F;&#x2F;gitlinux.net&#x2F;2019-06-04-C45&#x2F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 缺点</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -301,33 +302,39 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2><span id="一-c45">一、C4.5</span></h2>
-<p>C4.5 算法最大的特点是克服了 ID3 对特征数目的偏重这一缺点，引入信息增益率来作为分类标准。</p>
+<p>C4.5 算法最大的特点是克服了 ID3
+对特征数目的偏重这一缺点，引入信息增益率来作为分类标准。</p>
 <p>C4.5 相对于 ID3 的缺点对应有以下改进方式：</p>
 <ul>
 <li>引入<strong>悲观剪枝策略进行后剪枝</strong>；</li>
 <li>引入<strong>信息增益率</strong>作为划分标准；</li>
-<li><strong>将连续特征离散化</strong>，假设 n 个样本的连续特征 A 有 m 个取值，C4.5 将其排序并取相邻两样本值的平均数共 m-1 个划分点，分别计算以该划分点作为二元分类点时的信息增益，并选择信息增益最大的点作为该连续特征的二元离散分类点；</li>
+<li><strong>将连续特征离散化</strong>，假设 n 个样本的连续特征 A 有 m
+个取值，C4.5 将其排序并取相邻两样本值的平均数共 m-1
+个划分点，分别计算以该划分点作为二元分类点时的信息增益，并选择信息增益最大的点作为该连续特征的二元离散分类点；</li>
 <li>对于<strong>缺失值的处理</strong>可以分为两个子问题：</li>
 <li>问题一：在特征值缺失的情况下进行划分特征的选择？（即如何计算特征的信息增益率）
 <ul>
-<li>C4.5 的做法是：对于具有缺失值特征，用没有缺失的样本子集所占比重来折算；</li>
-</ul>
-</li>
+<li>C4.5
+的做法是：对于具有缺失值特征，用没有缺失的样本子集所占比重来折算；</li>
+</ul></li>
 <li>问题二：选定该划分特征，对于缺失该特征值的样本如何处理？（即到底把这个样本划分到哪个结点里）
 <ul>
-<li>C4.5 的做法是：将样本同时划分到所有子节点，不过要调整样本的权重值，其实也就是以不同概率划分到不同节点中。</li>
-</ul>
-</li>
+<li>C4.5
+的做法是：将样本同时划分到所有子节点，不过要调整样本的权重值，其实也就是以不同概率划分到不同节点中。</li>
+</ul></li>
 </ul>
 <h3><span id="12-划分标准">1.2 划分标准</span></h3>
 <p>利用信息增益率可以克服信息增益的缺点，其公式为:</p>
-<p>$$<br>
-\operatorname{Gain}<em>{\text {ratio }}(D, A) =\frac{\operatorname{Gain}(D, A)}{H</em>{A}(D)}     \<br>
-$$</p>
-<p>$$<br>
-H_{A}(D)=-\sum_{i=1}^{n}   \frac{\left|D_{i}\right|}{|D|} \log <em>{2} \frac{\left|D</em>{i}\right|}{|D|}<br>
-$$</p>
-<p>信息增益率对可取值较少的特征有所偏好（分母越小，整体越大），因此 C4.5 并不是直接用增益率最大的特征进行划分，而是使用一个<strong>启发式方法</strong>：先从候选划分特征中找到信息增益高于平均值的特征，再从中选择增益率最高的。</p>
+<p><span class="math display">\[
+\operatorname{Gain}_{\text {ratio }}(D, A) =\frac{\operatorname{Gain}(D,
+A)}{H_{A}(D)}     \\
+\]</span></p>
+<p><span class="math display">\[
+H_{A}(D)=-\sum_{i=1}^{n}   \frac{\left|D_{i}\right|}{|D|} \log _{2}
+\frac{\left|D_{i}\right|}{|D|}
+\]</span></p>
+<p>信息增益率对可取值较少的特征有所偏好（分母越小，整体越大），因此 C4.5
+并不是直接用增益率最大的特征进行划分，而是使用一个<strong>启发式方法</strong>：先从候选划分特征中找到信息增益高于平均值的特征，再从中选择增益率最高的。</p>
 <h3><span id="13-剪枝策略">1.3 剪枝策略</span></h3>
 <p>为什么要剪枝：<strong>过拟合的树在泛化能力的表现非常差。</strong></p>
 <p><strong>预剪枝和悲观剪枝</strong></p>
@@ -339,17 +346,22 @@ $$</p>
 <li>节点划分前准确率比划分后准确率高。</li>
 </ul>
 <p>预剪枝不仅可以降低过拟合的风险而且还可以减少训练时间，但另一方面它是基于“贪心”策略，会带来欠拟合风险。</p>
-<h4><span id="132-后剪枝悲观剪枝方法-httpgitlinuxnet2019-06-04-c45"><strong>1.3.2 后剪枝</strong>【悲观剪枝方法】  </span></h4>
+<h4><span id="132后剪枝悲观剪枝方法-httpgitlinuxnet2019-06-04-c45"><strong>1.3.2
+后剪枝</strong>【悲观剪枝方法】 http://gitlinux.net/2019-06-04-C45/</span></h4>
 <p>在已经生成的决策树上进行剪枝，从而得到简化版的剪枝决策树。</p>
-<p>C4.5 采用的<strong>悲观剪枝方法</strong>，用递归的方式从低往上针对每一个非叶子节点，评估用一个最佳叶子节点去代替这课子树是否有益。如果剪枝后与剪枝前相比其错误率是保持或者下降，则这棵子树就可以被替换掉。<strong>C4.5 通过训练数据集上的错误分类数量来估算未知样本上的错误率</strong>。</p>
+<p>C4.5
+采用的<strong>悲观剪枝方法</strong>，用递归的方式从低往上针对每一个非叶子节点，评估用一个最佳叶子节点去代替这课子树是否有益。如果剪枝后与剪枝前相比其错误率是保持或者下降，则这棵子树就可以被替换掉。<strong>C4.5
+通过训练数据集上的错误分类数量来估算未知样本上的错误率</strong>。</p>
 <p>后剪枝决策树的欠拟合风险很小，泛化性能往往优于预剪枝决策树。但同时其训练时间会大的多。</p>
 <h3><span id="14-缺点">1.4 缺点</span></h3>
 <ul>
 <li><strong>剪枝策略</strong>可以再优化；</li>
 <li>C4.5 用的是<strong>多叉树</strong>，用二叉树效率更高；</li>
 <li>C4.5 只能用于<strong>分类</strong>；</li>
-<li>C4.5 使用的熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>；</li>
-<li>C4.5 在构造树的过程中，<strong>对数值属性值需要按照其大小进行排序</strong>，从中选择一个分割点，所以只适合于能够驻留于内存的数据集，当训练集大得无法在内存容纳时，程序无法运行。</li>
+<li>C4.5
+使用的熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>；</li>
+<li>C4.5
+在构造树的过程中，<strong>对数值属性值需要按照其大小进行排序</strong>，从中选择一个分割点，所以只适合于能够驻留于内存的数据集，当训练集大得无法在内存容纳时，程序无法运行。</li>
 </ul>
 
     </div>

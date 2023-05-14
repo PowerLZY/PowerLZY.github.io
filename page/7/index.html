@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -288,14 +288,22 @@
     <div class="post-body" itemprop="articleBody">
           <h2><span id="node2vec">Node2Vec</span></h2>
 <blockquote>
-<p>【Graph Embedding】node2vec：算法原理，实现和应用 - 浅梦的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56542707">https://zhuanlan.zhihu.com/p/56542707</a></p>
+<p>【Graph Embedding】node2vec：算法原理，实现和应用 - 浅梦的文章 - 知乎
+https://zhuanlan.zhihu.com/p/56542707</p>
 </blockquote>
-<p><strong>DeepWalk的思路非常直接，就是结合随机游走和Skip-gram模型</strong>。尽管DeepWalk利用完全随机的游走，得到了<strong>相对小的游走时的时空复杂度，==但是这种游走的策略显然没有考虑到图中节点间的连接&quot;强度&quot;，同时也无法很好的考虑到图中节点的结构等价性(structural equivalence)和同质性(homophily)，生成的游走序列完全&quot;听天由命&quot;==</strong>。</p>
+<p><strong>DeepWalk的思路非常直接，就是结合随机游走和Skip-gram模型</strong>。尽管DeepWalk利用完全随机的游走，得到了<strong>相对小的游走时的时空复杂度，==但是这种游走的策略显然没有考虑到图中节点间的连接"强度"，同时也无法很好的考虑到图中节点的结构等价性(structural
+equivalence)和同质性(homophily)，生成的游走序列完全"听天由命"==</strong>。</p>
 <p>Node2Vec[2]是一篇16年文章，它修改了DeepWalk中的游走策略，<strong>使其能够更灵活的捕捉图中节点的结构等价性和同质性。</strong></p>
 <h3><span id="21-overview-of-the-model">2.1 Overview of the Model</span></h3>
 <p><strong>二阶随机游走（二阶马尔科夫）</strong></p>
-<p><img src="image-20230311144430446.png" alt="image-20230311144430446"></p>
-<p><img src="image-20230311144607426.png" alt="image-20230311144607426"></p>
+<figure>
+<img src="image-20230311144430446.png" alt="image-20230311144430446">
+<figcaption aria-hidden="true">image-20230311144430446</figcaption>
+</figure>
+<figure>
+<img src="image-20230311144607426.png" alt="image-20230311144607426">
+<figcaption aria-hidden="true">image-20230311144607426</figcaption>
+</figure>
 <p>具体来说，如上图，我们可以说节点s1和节点u具有<strong>同质性</strong>，因为它们都属于图中同一个community/cluster；我们也会说节点u和节点s6具有<strong>结构等价性</strong>，因为它们在网络中扮演的角色十分类似，都是簇的中心。</p>
 <p>Node2Vec的作者们宣称：</p>
 <ul>
@@ -303,15 +311,22 @@
 <li>若随机游走倾向于DFS，那么生成的序列会探索图中更大的区域，使得模型有机会捕捉到节点间的结构相似性。</li>
 </ul>
 <p>以上陈述中，BFS能更好的捕捉同质性应该是比较直观的，毕竟它只会在起点附近震荡，也就意味着它能确保与起点近邻的节点均能习得近似的表达。但是DFS只是捕捉节点间结构等价性的必要条件而非充分条件。如果没有DFS，模型可能根本无法跳出起点的簇中，那么节点的结构等价性的捕捉也无从谈起。<strong>但是如果只是DFS，那么我们只能知道这两个距离很远的节点有某种依赖性，但我们无从得知这是怎样的依赖性，比如，它们都是簇的中心吗？还是它们都是各个簇的成员而已？</strong></p>
-<p>**因此作者们提出了一个biased 2nd order random walk，其引入了两个额外的参数p和q，以在游走中控制和融合BFS与DFS。**这个游走被称作二阶随机游走的原因是：游走的下一步不仅取决于当前的节点，也取决于当前节点的上一步的节点。这和二阶马科夫假设是类似的。</p>
-<img src="v2-8fae060cc9e639aa51b5034a57a9ccd3_720w.jpg" alt="img" style="zoom:50%;">
+<p><strong>因此作者们提出了一个biased 2nd order random
+walk，其引入了两个额外的参数p和q，以在游走中控制和融合BFS与DFS。</strong>这个游走被称作二阶随机游走的原因是：游走的下一步不仅取决于当前的节点，也取决于当前节点的上一步的节点。这和二阶马科夫假设是类似的。</p>
+<p><img src="v2-8fae060cc9e639aa51b5034a57a9ccd3_720w.jpg" alt="img" style="zoom:50%;"></p>
 <p>具体来说，上图为游走的一个例子。其中，节点v是当前节点，节点t是游走的上一步的节点，而我们现在要决定节点v的下一步x是哪一个节点。此时的游走概率由α决定，其公式为：</p>
-<p><img src="image-20220918150418927-3484660.png" alt="image-20220918150418927"></p>
+<figure>
+<img src="image-20220918150418927-3484660.png" alt="image-20220918150418927">
+<figcaption aria-hidden="true">image-20220918150418927</figcaption>
+</figure>
 <ul>
-<li>其中dtx指节点x与节点t之间的距离。有了α后，游走的（未经归一化的）转移概率可计算为$π_{vx}=α_{pq}(t,x)⋅w_{vx}$，其中$w_{vx}$是节点v与节点x之间的权重。</li>
-<li>直观来说，若p越大，越不容易返回上一步游走到的节点，这能鼓励模型游走的更远，若p越小，则更容易返回上一步节点，使得模型倾向于在起点周围进行探索；若q越大，游走会更倾向于在上一步节点t的周围进行探索，若q越小，游走会更倾向于探索距离上一步节点t更远的节点。在p和q之间trade off，可以控制随机游走的倾向性，从而达到更好的效果。特别的，当p=q=1时，Node2Vec等价于DeepWalk。</li>
+<li>其中dtx指节点x与节点t之间的距离。有了α后，游走的（未经归一化的）转移概率可计算为<span class="math inline">\(π_{vx}=α_{pq}(t,x)⋅w_{vx}\)</span>，其中<span class="math inline">\(w_{vx}\)</span>是节点v与节点x之间的权重。</li>
+<li>直观来说，若p越大，越不容易返回上一步游走到的节点，这能鼓励模型游走的更远，若p越小，则更容易返回上一步节点，使得模型倾向于在起点周围进行探索；若q越大，游走会更倾向于在上一步节点t的周围进行探索，若q越小，游走会更倾向于探索距离上一步节点t更远的节点。在p和q之间trade
+off，可以控制随机游走的倾向性，从而达到更好的效果。特别的，当p=q=1时，Node2Vec等价于DeepWalk。</li>
 </ul>
-<p>**Node2Vec中提出的随机游走，若结合Alias Sampling策略，在额外引入O(2|E|)的时空复杂度后，也可以在O(1)内完成一步游走的采样，因此整个游走的复杂度是 $O(lk|V|+2|E|)$。**基本上这就是Node2Vec这篇文章的核心了，后续同DeepWalk一样基于采样得到的序列训练Skip-gram模型即可。</p>
+<p><strong>Node2Vec中提出的随机游走，若结合Alias
+Sampling策略，在额外引入O(2|E|)的时空复杂度后，也可以在O(1)内完成一步游走的采样，因此整个游走的复杂度是
+<span class="math inline">\(O(lk|V|+2|E|)\)</span>。</strong>基本上这就是Node2Vec这篇文章的核心了，后续同DeepWalk一样基于采样得到的序列训练Skip-gram模型即可。</p>
 <h3><span id="22-alias-sampling">2.2 Alias Sampling</span></h3>
 <h2><span id="4-summary">4. Summary</span></h2>
 <p>DeepWalk和Node2Vec的思路都非常简单直接，也能取得可观的效果。它们与那些矩阵分解算法在同一时期被提出，但由于基于随机游走的算法有着更好的可扩展性，并且也能更好的泛化到新节点上，DeepWalk和Node2Vec远远比GraRep、HOPE这些模型流行的多。</p>
@@ -324,12 +339,16 @@
 <p>该类模型的局限性有：</p>
 <ul>
 <li>随机游走的代价事实上是极大的</li>
-<li>Embedding lookup矩阵后直接跟损失函数，模型表达能力有限、节点间无参数共享</li>
+<li>Embedding
+lookup矩阵后直接跟损失函数，模型表达能力有限、节点间无参数共享</li>
 <li><strong>无法对k阶邻居进行区分，只能知道两两节点是否在同一个窗口中出现过，这样事实上丢失了图中部分拓扑信息，可能导致模型效果受限</strong>;</li>
 <li>无法直接利用节点的特征</li>
 <li>Transductive</li>
 </ul>
-<p><img src="image-20230311111120651.png" alt="image-20230311111120651"></p>
+<figure>
+<img src="image-20230311111120651.png" alt="image-20230311111120651">
+<figcaption aria-hidden="true">image-20230311111120651</figcaption>
+</figure>
 
       
     </div>
@@ -423,7 +442,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.1k</span>
+      <span>5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -443,9 +462,11 @@
     <div class="post-body" itemprop="articleBody">
           <h2><span id="graphsage图算法在网络黑产挖掘中的思考">GraphSAGE图算法在网络黑产挖掘中的思考</span></h2>
 <blockquote>
-<p><font color="blue"> Harry 高级研究员-DataFunTalk <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/sZ7VQz26c5mrWAsnMKx8Hw">https://mp.weixin.qq.com/s/sZ7VQz26c5mrWAsnMKx8Hw</a></font></p>
-<p><font color="blue"> <strong>graphSAGE-pytorch</strong>：<a target="_blank" rel="noopener" href="https://github.com/twjiang/graphSAGE-pytorch/tree/master/src">https://github.com/twjiang/graphSAGE-pytorch/tree/master/src</a></font></p>
-<p>**导读：**虚拟网络中存在部分黑产用户，这部分用户通过违法犯罪等不正当的方式去谋取利益。作为恶意内容生产的源头，管控相关黑产用户可以保障各业务健康平稳运行。<strong>当前工业界与学术界的许多组织通常采用树形模型、社区划分等方式挖掘黑产用户，但树形模型、社区划分的方式存在一定短板，为了更好地挖掘黑产用户，我们通过图表征学习与聚类相结合的方式进行挖掘</strong>。本文将为大家介绍图算法在网络黑产挖掘中的思考与应用，主要介绍：</p>
+<p><font color="blue"> Harry 高级研究员-DataFunTalk
+https://mp.weixin.qq.com/s/sZ7VQz26c5mrWAsnMKx8Hw</font></p>
+<p><font color="blue">
+<strong>graphSAGE-pytorch</strong>：https://github.com/twjiang/graphSAGE-pytorch/tree/master/src</font></p>
+<p><strong>导读：</strong>虚拟网络中存在部分黑产用户，这部分用户通过违法犯罪等不正当的方式去谋取利益。作为恶意内容生产的源头，管控相关黑产用户可以保障各业务健康平稳运行。<strong>当前工业界与学术界的许多组织通常采用树形模型、社区划分等方式挖掘黑产用户，但树形模型、社区划分的方式存在一定短板，为了更好地挖掘黑产用户，我们通过图表征学习与聚类相结合的方式进行挖掘</strong>。本文将为大家介绍图算法在网络黑产挖掘中的思考与应用，主要介绍：</p>
 <ul>
 <li>图算法设计的背景及目标</li>
 <li>图算法GraphSAGE落地及优化</li>
@@ -462,17 +483,20 @@
 <li>可以防范于未然，通过账号层面的关联提前圈定可疑账号，在其进行违法犯罪行为之前对账号进行相应的处理以及管控。</li>
 </ul>
 <p><strong>具体通过什么方式挖掘黑产账号？</strong></p>
-<p>首先，简单介绍下在推荐场景中应用。比如广告推荐，通常上，广告商会给予平台方用户的用户标签，用户存在用户标签之后，平台方则会将相关类别的用户找出，然后将广告推送给对应的用户；另一种方式是广告方提供种子包给平台方，平台方会找到相似的用户，然后将广告推送给相关的用户，常见的应用场景有Facebook look like、Google similar audiences。</p>
+<p>首先，简单介绍下在推荐场景中应用。比如广告推荐，通常上，广告商会给予平台方用户的用户标签，用户存在用户标签之后，平台方则会将相关类别的用户找出，然后将广告推送给对应的用户；另一种方式是广告方提供种子包给平台方，平台方会找到相似的用户，然后将广告推送给相关的用户，常见的应用场景有Facebook
+look like、Google similar audiences。</p>
 <h4><span id="11-应用场景">1.1 应用场景</span></h4>
 <p><strong>在黑产场景中与推荐场景中的应用类似，主要分为两个任务场景：</strong></p>
 <ul>
 <li>找出目标恶意类别用户。比如需要找出散播招嫖信息的用户，则给定该类用户招嫖的标签，类似于一个用户定性的问题；</li>
 <li>黑产种子用户扩散，即利用历史的黑产用户进行用户扩散以及用户召回，可以通过染色扩散以及相似用户检索等方式完成。</li>
 </ul>
-<p><strong><font color="red"> 针对恶意用户定性的传统方法，通常采用树形模型，比如说XGboost、GBDT等</font></strong>。这类算法短板显而易见，其<strong>缺乏对用户之间的关联进行考虑</strong>；另外一种<strong>用户召回方式为用户社区划分（相似用户召回），其中比较常用的社区划分算法有FastUnfolding、Copra等</strong>。这类算法的缺陷也相当明显，其由于原本社区规模小，所以最终召回的人数也少。且会存在多个种子用户在同一个社区的情况，<strong>难以召回大量可疑用户</strong>。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533000.jpeg" alt="图片" style="zoom:50%;">
-<p><strong><font color="red"> 通过图表征学习与聚类相结合的方式进行召回</font></strong>。<strong>通过图表征学习将图结构的节点属性以及结构特征映射到一个节点低维空间，由此产生一个节点特征，然后再去进行下游的任务，如用户定性即节点分类等</strong>。其中，图表征学习的关键点在于在进行低维的映射当中需要保留原始图的结构和节点属性信息。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533575.jpeg" alt="图片" style="zoom:50%;">
+<p><strong><font color="red">
+针对恶意用户定性的传统方法，通常采用树形模型，比如说XGboost、GBDT等</font></strong>。这类算法短板显而易见，其<strong>缺乏对用户之间的关联进行考虑</strong>；另外一种<strong>用户召回方式为用户社区划分（相似用户召回），其中比较常用的社区划分算法有FastUnfolding、Copra等</strong>。这类算法的缺陷也相当明显，其由于原本社区规模小，所以最终召回的人数也少。且会存在多个种子用户在同一个社区的情况，<strong>难以召回大量可疑用户</strong>。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533000.jpeg" alt="图片" style="zoom:50%;"></p>
+<p><strong><font color="red">
+通过图表征学习与聚类相结合的方式进行召回</font></strong>。<strong>通过图表征学习将图结构的节点属性以及结构特征映射到一个节点低维空间，由此产生一个节点特征，然后再去进行下游的任务，如用户定性即节点分类等</strong>。其中，图表征学习的关键点在于在进行低维的映射当中需要保留原始图的结构和节点属性信息。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533575.jpeg" alt="图片" style="zoom:50%;"></p>
 <h4><span id="12-图算法设计">1.2 图算法设计</span></h4>
 <ul>
 <li>算法的覆盖率和精准度；</li>
@@ -482,13 +506,15 @@
 <p>由于业务场景更多为动态网络，当新增节点时，如果模型支持增量特征，则不需要重复训练模型，可以极大的减少开发的流程，节省机器学习的资源，缩短任务完成的时间。</p>
 <h3><span id="二-图算法graphsage落地及优化">二、图算法GraphSAGE落地及优化</span></h3>
 <h4><span id="21-graphsage核心思想">2.1 GraphSAGE核心思想</span></h4>
-<p><strong><font color="red"> GraphSAGE核心思想主要为两点：邻居抽样；特征聚合。</font></strong></p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533811.jpeg" alt="图片" style="zoom:50%;">
-<p><strong>GraphSAGE的聚合过程实际是节点自身的属性特征和其抽样的邻居节点特征分别做一次线性变换，然后将两者concat在一起，再进行一次线性变换得到目标节点的embedding特征</strong>。最后利用得到的目标节点的embedding特征进行下游的任务，训练的方式的可以采用无监督的方式，如<strong>NCE Loss</strong>。</p>
+<p><strong><font color="red">
+GraphSAGE核心思想主要为两点：邻居抽样；特征聚合。</font></strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533811.jpeg" alt="图片" style="zoom:50%;"></p>
+<p><strong>GraphSAGE的聚合过程实际是节点自身的属性特征和其抽样的邻居节点特征分别做一次线性变换，然后将两者concat在一起，再进行一次线性变换得到目标节点的embedding特征</strong>。最后利用得到的目标节点的embedding特征进行下游的任务，训练的方式的可以采用无监督的方式，如<strong>NCE
+Loss</strong>。</p>
 <h4><span id="22-graphsage的优点">2.2 <strong>GraphSAGE的优点</strong></span></h4>
-<p><strong>GraphSAGE通过邻居抽样的方式解决了GCN内存爆炸的问题</strong>，同时可以将**==直推式学习转化为归纳式学习==<strong>，</strong>==避免了节点的embedding特征每一次都需要重新训练的情况，支持了增量特征==**。为什么通过邻居随机抽样就可以使得直推式的模型变为支持增量特征的归纳式模型呢？</p>
+<p><strong>GraphSAGE通过邻居抽样的方式解决了GCN内存爆炸的问题</strong>，同时可以将<strong>==直推式学习转化为归纳式学习==</strong>，<strong>==避免了节点的embedding特征每一次都需要重新训练的情况，支持了增量特征==</strong>。为什么通过邻居随机抽样就可以使得直推式的模型变为支持增量特征的归纳式模型呢？</p>
 <p>在原始的GraphSAGE模型（直推式模型）当中，节点标签皆仅对应一种局部结构、一种embedding特征。在GraphSAGE引入邻居随机抽样之后，节点标签则变为对应多种局部结构、多种embedding特征，这样可以防止模型在训练过程过拟合，增强模型的泛化能力，则可以支持增量特征。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533971.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533971.jpeg" alt="图片" style="zoom:50%;"></p>
 <h4><span id="23-graphsage的缺点">2.3 <strong>GraphSAGE的缺点</strong></span></h4>
 <ul>
 <li><strong>原GraphSAGE无法处理加权图，仅能够邻居节点等权聚合</strong>；</li>
@@ -500,44 +526,52 @@
 <p>为解决上述GraphSAGE存在的缺点，对GraphSAGE进行优化。</p>
 <h5><span id="聚合优化">聚合优化:</span></h5>
 <p>解决等权聚合的问题。相对于直接将邻居节点进行聚合，将边权重进行归一化之后，点的邻居节点的特征进行点燃，最后再进行特征融合。这样做的好处主要有两点：边权重越大的邻居，对目标节点影响越大；节点边权重归一化在预处理阶段完成，几再与目标节乎不影响算法速度。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533699.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533699.jpeg" alt="图片" style="zoom:50%;"></p>
 <h5><span id="剪枝优化">剪枝优化:</span></h5>
 <p>解决embedding特征不稳定的问题。<strong>在训练的过程希望通过引入随机过程防止模型出现过拟合的现象</strong>，<strong>但是在模型的推理过程式是想要去掉这样一个随机过程</strong>。直接对原始网络进行剪枝操作，仅保留每个节点权重最大的K条边，在模型进行推理的时候，会将目标节点所有的K个邻居节点的特征都聚合到目标节点上，聚合方式同样为加权的方式。<strong>这样做的好处主要有两个点：在网络结构不变的情况下，保证同节点embedding特征相同；在保证算法精度的前提下，大幅度降低图的稠密程度，降低内存开销。</strong></p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533517.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533517.jpeg" alt="图片" style="zoom:50%;"></p>
 <h5><span id="采样优化">==采样优化:==</span></h5>
 <p><strong>解决局部信息丢失以及训练过平滑的问题</strong>。主要通过<strong>DGL的抽样方式代替原有的抽样方式</strong>，具体的做法为：提前将每一个节点的属性特征与它所有的邻居节点的属性特征的均值进行concat，这样可以使得每一个节点初始状态下已经包含了周围一些邻居节点的一些信息，通过这种方式，在采样相同节点的前提下，可以获得更多的局部信息。<strong>一般情况下，GCN模型采用两层网络模型，当增加至第三层的时候则将存在内存爆炸的问题</strong>；当增加至第四层时，则将出现过平滑的问题，将导致特征分布去重，这样则导致节点没有区分性。而采用DGL采样，通过采样两层GCN模型而实际上采样了三层，而且不会出现过平滑问题。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533122.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533122.jpeg" alt="图片" style="zoom:50%;"></p>
 <h4><span id="25-效果评估"><strong>2.5 效果评估</strong></span></h4>
 <p>效果评估的指标主要有两个：<strong>聚类（社区）准确率；召回恶意率</strong>。相对于原有的fastunfolding以及<strong>node2vec</strong>从聚类准确率、召回恶意率、平均社区规模、运行时间作一个横向对比：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533948.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533948.jpeg" alt="图片" style="zoom:50%;"></p>
 <h4><span id="三-孤立点amp异质性">三、<strong>孤立点&amp;异质性</strong></span></h4>
-<h4><span id="31-黑产挖掘场景中的孤立点的解决思路"><strong>3.1 黑产挖掘场景中的孤立点的解决思路</strong></span></h4>
-<p><strong>黑产用户在被处理后，通常会快速地申请新的账号或使用备用账号，因为在对黑产的挖掘过程中就不可避免地会出现孤立点</strong>，类似在推荐算法中的冷启动问题。以node2vec算法为例，算法通常会通过游走去构造训练的节点段，那么如果孤立节点没有连边的话，节点是无法出现在训练集当中。<strong><font color="red"> 为了解决该问题，引入一个解决推荐系统冷启动的算法——EGES</font></strong>，将每一个节点的属性特征映射到一个embedding特征，然后将每一个属性的embedding特征置于注意力层进行处理，比如将N个随机特征通过注意力加权，可以获得最终的一个节点层面的embedding特征，新增的节点将不再依赖于关系网络以及用户的一些交互行为，新增的节点可以通过自身的属性特征就直接获得我们的embedding特征，不需要考虑用户关系从而解决孤立点的问题。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533883.jpeg" alt="图片" style="zoom:50%;">
+<h4><span id="31黑产挖掘场景中的孤立点的解决思路"><strong>3.1
+黑产挖掘场景中的孤立点的解决思路</strong></span></h4>
+<p><strong>黑产用户在被处理后，通常会快速地申请新的账号或使用备用账号，因为在对黑产的挖掘过程中就不可避免地会出现孤立点</strong>，类似在推荐算法中的冷启动问题。以node2vec算法为例，算法通常会通过游走去构造训练的节点段，那么如果孤立节点没有连边的话，节点是无法出现在训练集当中。<strong><font color="red">
+为了解决该问题，引入一个解决推荐系统冷启动的算法——EGES</font></strong>，将每一个节点的属性特征映射到一个embedding特征，然后将每一个属性的embedding特征置于注意力层进行处理，比如将N个随机特征通过注意力加权，可以获得最终的一个节点层面的embedding特征，新增的节点将不再依赖于关系网络以及用户的一些交互行为，新增的节点可以通过自身的属性特征就直接获得我们的embedding特征，不需要考虑用户关系从而解决孤立点的问题。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533883.jpeg" alt="图片" style="zoom:50%;"></p>
 <p>在具体落地过程中，提出了GraphSAGE-EGES算法，实际上是综合了两种算法的优势，GraphSAGE的节点本身的初始特征将其替换成了EGES增强之后的属性特征，通过此类方式，最终的算法框架如下图所示：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533345.jpeg" alt="图片" style="zoom:50%;">
-<h4><span id="32-黑产网络中异质性的解决思路"><strong>3.2 黑产网络中异质性的解决思路</strong></span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533345.jpeg" alt="图片" style="zoom:50%;"></p>
+<h4><span id="32黑产网络中异质性的解决思路"><strong>3.2
+黑产网络中异质性的解决思路</strong></span></h4>
 <p>在正常的网络结构当中，一个用户的一阶邻居基本上都是同一类的用户，比如说在学术引用当中，一篇数据挖掘的论文，引用其的论文也多是与数据挖掘相关的。这一类的网络称之为同质性网络。<strong>但在黑产的关系网络当中，图的异质性就非常高了，黑产用户不仅仅与黑产用户相关，其也可以与正常用户建立关系，这种特殊的网络结构就会存在一些弊端</strong>，以下图异质性网络为例，圈住的正常节点的一阶邻居节点一半为恶意账号，算法进行预测、聚类时，该节点很多概率会被判定为恶意账号。圈住的恶意节点的一阶邻居3个皆为正常账号，算法进行预测、聚类时，该节点则大概率被判定为正常节点，导致算法的精度下降。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533084.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533084.jpeg" alt="图片" style="zoom:50%;"></p>
 <p>为了解决上述问题，需要去考虑网络的结构是否合理。为了构建合理的网络结构，需要将恶意账号与正常账号之间存在的联系剔除掉，并将恶意账号之间的联系进行一定的增强。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533269.jpeg" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533269.jpeg" alt="图片" style="zoom:50%;"></p>
 <p>当网络结构合理时，算法进行预测、聚类时会更加准确，因此引入图结构学习的概念，尝试用LDS算法解决这类问题。</p>
 <p>LDS算法的思想：在训练GCN模型的参数的同时对网络的结构进行调整，在最初的时候给予一个网络结构（邻接矩阵），先固定GCN的模型，然后训练邻接矩阵，通过几轮迭代之后再固定邻接矩阵，再训练GCN模型，通过几轮迭代之后，可以得出一个合理的网络结构。</p>
-<p>**总的来说，这个算法实际上就是一个极大似然估计以及伯努利分布的问题。在LDS算法学习邻接矩阵的时候实际就是学习两个点的邻边是否应该存在，实际上为一个0-1分布。**最终通过网络结构以及节点的标签去预估在当前数据标签的情况下，更应该得到什么样的一个网络结构，以上即为该算法的核心思想。</p>
+<p><strong>总的来说，这个算法实际上就是一个极大似然估计以及伯努利分布的问题。在LDS算法学习邻接矩阵的时候实际就是学习两个点的邻边是否应该存在，实际上为一个0-1分布。</strong>最终通过网络结构以及节点的标签去预估在当前数据标签的情况下，更应该得到什么样的一个网络结构，以上即为该算法的核心思想。</p>
 <p>实际上，在许多业务场景当中会存在许多不合理的图结构，甚者在某些业务场景中不存在关系信息，这样的话，在最初达不到完整网络的情况时，通常会使用KNN的方式对网络进行初始化，然后再去学习一个更加合理的网络结构，最终达到一个更好节点预测、聚类的目的。</p>
-<p><strong><font color="red"> 实际上，在许多业务场景当中会存在许多不合理的图结构，甚者在某些业务场景中不存在关系信息，这样的话，在最初达不到完整网络的情况时，通常会使用KNN的方式对网络进行初始化，然后再去学习一个更加合理的网络结构，最终达到一个更好节点预测、聚类的目的。</font></strong></p>
+<p><strong><font color="red">
+实际上，在许多业务场景当中会存在许多不合理的图结构，甚者在某些业务场景中不存在关系信息，这样的话，在最初达不到完整网络的情况时，通常会使用KNN的方式对网络进行初始化，然后再去学习一个更加合理的网络结构，最终达到一个更好节点预测、聚类的目的。</font></strong></p>
 <h3><span id="四-总结思考">四、<strong>总结思考</strong></span></h3>
 <p>下面分享几点在算法落地以及算法选择中的一些工作总结与思考：</p>
 <ul>
-<li><strong><font color="red"> 针对图算法这块，特征工程和图的构建方式是非常重要的</font></strong>。如果图的结构不合理的话，即使算法模型再强大、特征工程处理得再好，算法训练出的结果也不是最终理想的效果；</li>
-<li><strong><font color="red"> 多数业务场景的区分度是不一样的，不存在一个普适的算法可以解决所有业务场景存在的问题</font></strong>，如上述的FastUnfolding、node2vec在某些特定的业务场景下效果可以比GraphSAGE的效果更好，所以在面临具体问题的时候，需要结合场景作算法选择以及优化；</li>
+<li><strong><font color="red">
+针对图算法这块，特征工程和图的构建方式是非常重要的</font></strong>。如果图的结构不合理的话，即使算法模型再强大、特征工程处理得再好，算法训练出的结果也不是最终理想的效果；</li>
+<li><strong><font color="red">
+多数业务场景的区分度是不一样的，不存在一个普适的算法可以解决所有业务场景存在的问题</font></strong>，如上述的FastUnfolding、node2vec在某些特定的业务场景下效果可以比GraphSAGE的效果更好，所以在面临具体问题的时候，需要结合场景作算法选择以及优化；</li>
 <li><strong>在工业界落地的算法通常比较直接、明了，这样的算法往往效果更好</strong>。</li>
 </ul>
 <h3><span id="五-graphsage应用">五、GraphSAGE应用</span></h3>
 <p>本例中的训练，评测和可视化的完整代码在下面的git仓库中</p>
 <p><a href="https://link.zhihu.com/?target=https%3A//github.com/shenweichen/GraphNeuralNetwork">shenweichen/GraphNeuralNetworkgithub.com/shenweichen/GraphNeuralNetwor</a></p>
-<p><strong>这里我们使用引文网络数据集Cora进行测试，Cora数据集包含2708个顶点, 5429条边,每个顶点包含1433个特征，共有7个类别。</strong></p>
-<p>按照论文的设置，从<strong>每个类别中选取20个共140个顶点作为训练</strong>，<strong>500个顶点作为验证集合</strong>，<strong>1000个顶点作为测试集</strong>。 <strong>采样时第1层采样10个邻居，第2层采样25个邻居。</strong></p>
+<p><strong>这里我们使用引文网络数据集Cora进行测试，Cora数据集包含2708个顶点,
+5429条边,每个顶点包含1433个特征，共有7个类别。</strong></p>
+<p>按照论文的设置，从<strong>每个类别中选取20个共140个顶点作为训练</strong>，<strong>500个顶点作为验证集合</strong>，<strong>1000个顶点作为测试集</strong>。
+<strong>采样时第1层采样10个邻居，第2层采样25个邻居。</strong></p>
 <ul>
 <li>节点分类任务结果</li>
 </ul>
@@ -545,7 +579,7 @@
 <ul>
 <li>节点向量可视化</li>
 </ul>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533940.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191533940.jpg" alt="img" style="zoom:50%;"></p>
 
       
     </div>
@@ -639,7 +673,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
+      <span>2.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -663,7 +697,7 @@
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/369534469">图异常簇检测：<em>FRAUDAR</em></a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/528366101">京东图计算团队：一文读懂电商广告作弊与反作弊</a></p>
 <p><strong>图异常检测系列文章：</strong></p>
-<ol>
+<ol type="1">
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/348278101">图异常点检测：OddBall</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/348713075">图异常簇检测：LOCKINFER</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/369534469">图异常簇检测：FRAUDAR</a></li>
@@ -673,50 +707,57 @@
 <p>可以说电商的发展，滋生并带火了一个由出资店铺、刷单中介、各级代理、刷手、空包物流组成的刷单产业。</p>
 <h3><span id="一-黑产与反欺诈">一、黑产与反欺诈</span></h3>
 <h4><span id="关系网络与二部图"><strong>关系网络与二部图</strong></span></h4>
-<p><strong>不同于对个体自身特征的分析，网络提供了对多个对象的关系之间另一种看问题的视角</strong>。把对象看做结点，把交互看成边，对象间的发生的各种关联自然会构成一张关系网络。<strong>从图论的角度出发，根据结点属性的不同可以把网络分为同构图和异构图</strong>。同构图是由同一种结点组成的关系网络，如家庭亲属关系、社交好友关系、论文间的引用关系等。历史上对于同构图的网络表示有很多研究，早在十九世纪就形成了几何拓扑学这一数学分支。在现代的同构关系研究中也逐步提出了基于网页链接的谷歌PageRank网页评级、基于结点关系紧密度的Louvian社区发现等重要算法。<strong>不过异构图在生活中的表现更为广泛，异构图是由不同属性的结点组成的关系网络，如由买方卖方以及中介组成的交易网络、由大V和其关注者组成的关注网络、由手机号\地址\证件号\IP地址组成的复杂关系网络等。<strong>二部图（也叫二分图）是异构网络的一种，它由两类结点组成，并且同类结点之间通常没有关联。前述的刷单欺诈，即是以</strong>出资店铺</strong>和<strong>刷手</strong>这两类结点组成的<strong>交易关系二部图</strong>。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191534576.jpg" alt="img" style="zoom: 67%;">
+<p><strong>不同于对个体自身特征的分析，网络提供了对多个对象的关系之间另一种看问题的视角</strong>。把对象看做结点，把交互看成边，对象间的发生的各种关联自然会构成一张关系网络。<strong>从图论的角度出发，根据结点属性的不同可以把网络分为同构图和异构图</strong>。同构图是由同一种结点组成的关系网络，如家庭亲属关系、社交好友关系、论文间的引用关系等。历史上对于同构图的网络表示有很多研究，早在十九世纪就形成了几何拓扑学这一数学分支。在现代的同构关系研究中也逐步提出了基于网页链接的谷歌PageRank网页评级、基于结点关系紧密度的Louvian社区发现等重要算法。<strong>不过异构图在生活中的表现更为广泛，异构图是由不同属性的结点组成的关系网络，如由买方卖方以及中介组成的交易网络、由大V和其关注者组成的关注网络、由手机号。</strong>二部图（也叫二分图）是异构网络的一种，它由两类结点组成，并且同类结点之间通常没有关联。前述的刷单欺诈，即是以<strong>出资店铺</strong>和<strong>刷手</strong>这两类结点组成的<strong>交易关系二部图</strong>。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191534576.jpg" alt="img" style="zoom: 67%;"></p>
 <h4><span id="二部图下的欺诈"><strong>二部图下的欺诈</strong></span></h4>
-<p>两类结点组成的欺诈场景还可以举出很多例子，如电商场景下<strong>用户对商户的薅羊毛、刷好评</strong>，如<strong>社交场景下水军账号的虚假关注、转发</strong>，又如<strong>消金场景下用户与商户勾结对平台的消费贷套现欺诈</strong>。<strong><font color="red"> 这些行为都会使两类结点之间出现异常的连接分布，从整体网络看来其呈现出了一张致密的双边连接子图，且该子图内的结点与图外结点联系相对较少</font></strong>。我们把这种大量的、同步的非正常关联行为模式称之为Lockstep，即在本不应出现聚集行为的二部图自然关系网络中，出现了双边聚集性行为。</p>
-<p>只要能把欺诈行为总结成一种模式，自然可以将其分离出来。但是欺诈者往往会对自己做出某种伪装以使自己看起来有向好的一面，意图绕过风控系统。如在刷单欺诈场景下，<strong>为了尽量贴近真实用户的购买习惯，刷单平台会对刷手提出一系列要求</strong>，比如要求货比三家、要求最低浏览时长、要求滚动浏览高度及停留时间、要求对于正常热销商品做一定购买等，这些行为都会导致风控经验指标和模型特征的部分失效。在二部图交易网络中，对于正常热销商品的购买体现为刷手为自己增加了一些优异的边连接，使自己看起来更像一个正常的消费者结点。**<font color="red"> 我们需要一种能从这种复杂关系网络中对抗伪装、抽丝剥茧的提取出异常致密子图的算法。</font>**接下来对症下药引入Fraudar。<strong>Fraudar算法来源于2016年的KDD会议，并获得了当年的最佳论文奖。</strong></p>
-<h3><span id="二-fraudar算法介绍-无监督异常簇检测">二、<strong>Fraudar算法介绍</strong>- 无监督异常簇检测</span></h3>
+<p>两类结点组成的欺诈场景还可以举出很多例子，如电商场景下<strong>用户对商户的薅羊毛、刷好评</strong>，如<strong>社交场景下水军账号的虚假关注、转发</strong>，又如<strong>消金场景下用户与商户勾结对平台的消费贷套现欺诈</strong>。<strong><font color="red">
+这些行为都会使两类结点之间出现异常的连接分布，从整体网络看来其呈现出了一张致密的双边连接子图，且该子图内的结点与图外结点联系相对较少</font></strong>。我们把这种大量的、同步的非正常关联行为模式称之为Lockstep，即在本不应出现聚集行为的二部图自然关系网络中，出现了双边聚集性行为。</p>
+<p>只要能把欺诈行为总结成一种模式，自然可以将其分离出来。但是欺诈者往往会对自己做出某种伪装以使自己看起来有向好的一面，意图绕过风控系统。如在刷单欺诈场景下，<strong>为了尽量贴近真实用户的购买习惯，刷单平台会对刷手提出一系列要求</strong>，比如要求货比三家、要求最低浏览时长、要求滚动浏览高度及停留时间、要求对于正常热销商品做一定购买等，这些行为都会导致风控经验指标和模型特征的部分失效。在二部图交易网络中，对于正常热销商品的购买体现为刷手为自己增加了一些优异的边连接，使自己看起来更像一个正常的消费者结点。<strong><font color="red">
+我们需要一种能从这种复杂关系网络中对抗伪装、抽丝剥茧的提取出异常致密子图的算法。</font></strong>接下来对症下药引入Fraudar。<strong>Fraudar算法来源于2016年的KDD会议，并获得了当年的最佳论文奖。</strong></p>
+<h3><span id="二-fraudar算法介绍-无监督异常簇检测">二、<strong>Fraudar算法介绍</strong>-
+无监督异常簇检测</span></h3>
 <blockquote>
-<p><a href="https://link.zhihu.com/?target=https%3A//dl.acm.org/doi/pdf/10.1145/2939672.2939747">FRAUDAR: Bounding Graph Fraud in the Face of Camouflagedl.acm.org/doi/pdf/10.1145/2939672.2939747</a></p>
+<p><a href="https://link.zhihu.com/?target=https%3A//dl.acm.org/doi/pdf/10.1145/2939672.2939747">FRAUDAR:
+Bounding Graph Fraud in the Face of
+Camouflagedl.acm.org/doi/pdf/10.1145/2939672.2939747</a></p>
 </blockquote>
 <p><strong>简单来说，Fraudar定义了一个可以表达结点平均可疑度的全局度量G(·)</strong>，在逐步贪心移除可疑度最小结点的迭代过程中，使G(·)达到最大的留存结点组成了可疑度最高的致密子图。接下来我们稍微细化一下算法过程，以刷单交易场景为例（定义二部图结点集合S=[A,B]，其中A、B分别代表消费者和店铺的结点集合），看Fraudar是如何从交易网络剥离出刷手和其出资店铺的。</p>
-<p>网络水军、刷量刷单等行为在互联网中屡见不鲜，如何检测网络中的该类行为，即**异常簇，**是值得研究的问题。<strong>本文介绍一种图异常簇检测方案-FRAUDAR，该方法在具有14.7亿条边的Twitter社交网络中成功检测出了一系列刷量账户。</strong></p>
+<p>网络水军、刷量刷单等行为在互联网中屡见不鲜，如何检测网络中的该类行为，即<strong>异常簇，</strong>是值得研究的问题。<strong>本文介绍一种图异常簇检测方案-FRAUDAR，该方法在具有14.7亿条边的Twitter社交网络中成功检测出了一系列刷量账户。</strong></p>
 <h4><span id="21-论文贡献"><strong>2.1 论文贡献</strong></span></h4>
-<ol>
+<ol type="1">
 <li>提出了一组满足公理的指标，且兼具多种优点。</li>
 <li>提出了一个可证明的界限，即某个欺诈账户可以在图中有多少欺诈行为而不被抓获，即使是在伪装的情况下。接着通过新的优化改进了该界限，使其能够更好地区分真实数据中的欺诈行为和正常行为。</li>
 <li>该算法在超大规模的Twitter网络中被证明了是有效的且能够在<strong>接近线性时间复杂度</strong>内完成任务。</li>
 </ol>
 <h4><span id="22-欺诈行为的特点">2.2 欺诈行为的特点</span></h4>
-<p>网络中存在不少水军刷量刷单的现象，该类欺诈行为在社交网络中尤其显著，其中&quot;刷量者&quot;可称为<strong>follower</strong>，&quot;刷单目标&quot;可以称为**followee。**下图展示了Twitter中的“僵尸粉”购买服务案例：左图红色和蓝色颜色的柱子分别代表了正常用户和欺诈用户，用户所属的两个柱子中左柱子表示followee的数量，右柱子表示follower的数量；右图展示了某个刷量账号，其个人简介中表示“只要你follow他那么他就会follow你”。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191534862.jpg" alt="img" style="zoom:50%;">
-<p>欺诈行为在网络的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22369534469%22%7D">邻接矩阵</a>视角下具有显著特征，某些“聪明”的刷量分子为了逃避检测往往会采取伪装（camouflage）来让自己看起来更像普通用户。下图从左到右分别展示了邻接矩阵中的随机伪装者、偏置伪装者和被劫持账户参与刷量行为。</p>
+<p>网络中存在不少水军刷量刷单的现象，该类欺诈行为在社交网络中尤其显著，其中"刷量者"可称为<strong>follower</strong>，"刷单目标"可以称为<strong>followee。</strong>下图展示了Twitter中的“僵尸粉”购买服务案例：左图红色和蓝色颜色的柱子分别代表了正常用户和欺诈用户，用户所属的两个柱子中左柱子表示followee的数量，右柱子表示follower的数量；右图展示了某个刷量账号，其个人简介中表示“只要你follow他那么他就会follow你”。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191534862.jpg" alt="img" style="zoom:50%;"></p>
+<p>欺诈行为在网络的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=邻接矩阵&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22369534469%22%7D">邻接矩阵</a>视角下具有显著特征，某些“聪明”的刷量分子为了逃避检测往往会采取伪装（camouflage）来让自己看起来更像普通用户。下图从左到右分别展示了邻接矩阵中的随机伪装者、偏置伪装者和被劫持账户参与刷量行为。</p>
 <h4><span id="23-fraudar算法">2.3 FRAUDAR算法</span></h4>
 <p>FRAUDAR算法基于二部图表示，即网络中存在两种类型的节点Users和Objects。文中假设可能存在一个或多个User受到相关某个实体的控制，进而与Objects的某个子集交互而产生连边。算法所需的符号表示如下：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191535249.jpg" alt="img" style="zoom:50%;">
-<p>算法的目标是找到一个 $S$, 并使得 $S$ 构成子图的嫌疑指标 $g(S)$ 最大。</p>
-<p>子图内节点嫌疑度，即密集度指标 (density metrics) 可描述为： $g(S)=\frac{f(S)}{|S|}$</p>
-<p>子图总嫌疑度 (total suspiciousness) 可描述为:<br>
-$$<br>
-\begin{aligned} f(S) &amp; =f_\nu(S)+f_{\varepsilon}(S) \ &amp; =\sum_{i \in S} a_i+\sum_{i, j \in S \wedge(i, j) \in \varepsilon} c_{i j}\end{aligned}<br>
-$$<br>
-其中, $a_i$ 和 $c_{i j}$ 都是大于 0 的常数, $a_i$ 即某个节点 $i$ 的嫌疑度, 而 $c_{i j}=\frac{1}{\log \left(d_j+c\right)}$ 可即边 $(i, j)$ 的嫌疑度, $d_j$ 表示Object $j$ 的度, $c$ 是一个较小的常量。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191535249.jpg" alt="img" style="zoom:50%;"></p>
+<p>算法的目标是找到一个 <span class="math inline">\(S\)</span>, 并使得
+<span class="math inline">\(S\)</span> 构成子图的嫌疑指标 <span class="math inline">\(g(S)\)</span> 最大。</p>
+<p>子图内节点嫌疑度，即密集度指标 (density metrics) 可描述为： <span class="math inline">\(g(S)=\frac{f(S)}{|S|}\)</span></p>
+<p>子图总嫌疑度 (total suspiciousness) 可描述为: <span class="math display">\[
+\begin{aligned} f(S) &amp; =f_\nu(S)+f_{\varepsilon}(S) \\ &amp;
+=\sum_{i \in S} a_i+\sum_{i, j \in S \wedge(i, j) \in \varepsilon} c_{i
+j}\end{aligned}
+\]</span> 其中, <span class="math inline">\(a_i\)</span> 和 <span class="math inline">\(c_{i j}\)</span> 都是大于 0 的常数, <span class="math inline">\(a_i\)</span> 即某个节点 <span class="math inline">\(i\)</span> 的嫌疑度, 而 <span class="math inline">\(c_{i j}=\frac{1}{\log \left(d_j+c\right)}\)</span>
+可即边 <span class="math inline">\((i, j)\)</span> 的嫌疑度, <span class="math inline">\(d_j\)</span> 表示Object <span class="math inline">\(j\)</span> 的度, <span class="math inline">\(c\)</span> 是一个较小的常量。</p>
 <p><strong>由此，FRAUDAR算法可描述为如下过程</strong>：</p>
-<ol>
+<ol type="1">
 <li>将优先级最高的节点移出二部图</li>
 <li>更新与移出节点相关的节点可疑度</li>
 <li>反复执行步骤1和步骤2，直至所有节点都被移出</li>
 <li>最后比较各轮迭代中节点的可疑度，找到最大可疑度对应的子图</li>
 </ol>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191535525.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191535525.jpg" alt="img" style="zoom:50%;"></p>
 <p>算法中有如下两点值得注意：</p>
-<p><strong>1. 如何构造<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E4%BC%98%E5%85%88%E6%A0%91&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22369534469%22%7D">优先树</a></strong></p>
+<p><strong>1. 如何构造<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=优先树&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22369534469%22%7D">优先树</a></strong></p>
 <p>优先树本质上是一个小顶堆，其叶子节点为二部图中的Users或Objects，排序规则依赖于节点的嫌疑度。由此，根结点将记录全局嫌疑度最小的节点，将根节点从二部图中移出使得新子图中的节点具有最大的平均嫌疑度。</p>
 <p><strong>2. 如何更新可疑度</strong></p>
-<p>删除网络中的节点导致<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E4%BA%8C%E9%83%A8%E5%9B%BE&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22369534469%22%7D">二部图</a>结构被改变，因此每轮迭代后都需要在保持边可疑度不变的前提下，更新与被删除节点相关的节点可疑度，即相关节点减去被删节点的嫌疑度。</p>
+<p>删除网络中的节点导致<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=二部图&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22369534469%22%7D">二部图</a>结构被改变，因此每轮迭代后都需要在保持边可疑度不变的前提下，更新与被删除节点相关的节点可疑度，即相关节点减去被删节点的嫌疑度。</p>
 
       
     </div>
@@ -824,50 +865,67 @@ $$<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="阿里安全-icdm-2022大规模电商图上的风险商品检测赛">【阿里安全 × ICDM 2022】大规模电商图上的风险商品检测赛</span></h2>
+          <h2><span id="阿里安全-icdm-2022大规模电商图上的风险商品检测赛">【阿里安全 ×
+ICDM 2022】大规模电商图上的风险商品检测赛</span></h2>
 <blockquote>
 <ul>
-<li>
-<p><strong>比赛链接</strong>：<a href="Https://tianchi.aliyun.com/competition/entrance/531976/introduction">Https://tianchi.aliyun.com/competition/entrance/531976/introduction</a></p>
-</li>
-<li>
-<p>ICDM 2022: Risk Commodities Detection on Large-Scale E-Commence Graphs：<a target="_blank" rel="noopener" href="https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution">https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution</a></p>
-</li>
-<li>
-<p>ICDM2022大规模电商图上的风险商品检测比赛（第六名）：<a target="_blank" rel="noopener" href="https://github.com/JaySaligia/SGHQS">https://github.com/JaySaligia/SGHQS</a></p>
-</li>
-<li>
-<p><strong>ICDM 2022 : 大规模电商图上的风险商品检测 – top1方案分享+代码</strong>：<a target="_blank" rel="noopener" href="https://github.com/fmc123653/Competition/tree/main/ICDMCup2022-top1">https://github.com/fmc123653/Competition/tree/main/ICDMCup2022-top1</a></p>
-</li>
-<li>
-<p><strong><font color="blue">ICDM2022_competition_3rd_place_solution</font></strong>：<a target="_blank" rel="noopener" href="https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution">https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution</a></p>
-</li>
-<li>
-<p><strong>【论文笔记】KGAT：融合知识图谱的 CKG 表示 + 图注意力机制的推荐系统</strong>：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/364002920">https://zhuanlan.zhihu.com/p/364002920</a></p>
-</li>
+<li><p><strong>比赛链接</strong>：Https://tianchi.aliyun.com/competition/entrance/531976/introduction</p></li>
+<li><p>ICDM 2022: Risk Commodities Detection on Large-Scale E-Commence
+Graphs：https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution</p></li>
+<li><p>ICDM2022大规模电商图上的风险商品检测比赛（第六名）：https://github.com/JaySaligia/SGHQS</p></li>
+<li><p><strong>ICDM 2022 : 大规模电商图上的风险商品检测 --
+top1方案分享+代码</strong>：https://github.com/fmc123653/Competition/tree/main/ICDMCup2022-top1</p></li>
+<li><p><strong><font color="blue">ICDM2022_competition_3rd_place_solution</font></strong>：https://github.com/EdisonLeeeee/ICDM2022_competition_3rd_place_solution</p></li>
+<li><p><strong>【论文笔记】KGAT：融合知识图谱的 CKG 表示 +
+图注意力机制的推荐系统</strong>：https://zhuanlan.zhihu.com/p/364002920</p></li>
 </ul>
 </blockquote>
 <h3><span id="一-黑灰产vs风控系统">一、<strong>黑灰产VS风控系统</strong></span></h3>
 <p>近年来，图计算尤其是图神经网络等技术获得了快速的发展以及广泛的应用。</p>
 <p>在电商平台上的风险商品检测场景中，<strong>黑灰产和风控系统</strong>之间存在着<strong>激烈的对抗</strong>，黑灰产为了躲避平台管控，会蓄意掩饰风险信息，通过引入场景中存在的图数据，可以缓解因黑灰产对抗带来的检测效果下降。</p>
-<p>在实际应用中，图算法的效果往往和图结构的质量紧密相关，由于风险商品检测场景中对抗的存在，<strong>恶意用户会通过伪造设备、伪造地址等方式，伪造较为“干净”的关联关系</strong>。<strong><font color="red"> 如何能够在这种存在着大量噪声的图结构数据中充分挖掘风险信息，是一个十分有挑战性的问题，另外该场景中还存在着黑白样本严重不均衡、图结构规模巨大且异构等多种挑战</font></strong>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305061917408.png" alt="img"></p>
+<p>在实际应用中，图算法的效果往往和图结构的质量紧密相关，由于风险商品检测场景中对抗的存在，<strong>恶意用户会通过伪造设备、伪造地址等方式，伪造较为“干净”的关联关系</strong>。<strong><font color="red">
+如何能够在这种存在着大量噪声的图结构数据中充分挖掘风险信息，是一个十分有挑战性的问题，另外该场景中还存在着黑白样本严重不均衡、图结构规模巨大且异构等多种挑战</font></strong>。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305061917408.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h3><span id="二-赛题背景">二、赛题背景</span></h3>
 <p>在电商平台上，商品是最主要的内容之一。风险商品检测旨在识别平台上存在的假货商品、违禁商品等，对维护平台内容信息健康、保护消费者权益起着至关重要的作用。</p>
 <p>风险商品检测和其他风控领域一样，<strong>面临风险的对抗和变异</strong>，如对商品风险内容的刻意隐藏等，而使用平台广泛存在的各类图关系数据可以提供更多证据，提升黑灰产的攻击成本。</p>
 <p>本次比赛提供了<strong>阿里巴巴平台来源于真实场景的风险商品检测数据</strong>，需要参赛者利用大规模的异构图结构以及比例不均衡的黑白样本，利用图算法，检测出风险商品。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039050.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039050.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <h3><span id="三-结题思路">三、结题思路</span></h3>
 <h4><span id="31-deepfm模型">3.1 DeepFM模型</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039128.jpg" alt="img"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182039128.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p><strong><font color="red"> 低阶和高阶特征选择</font></strong></p>
 <h4><span id="32-序列模型">3.2 序列模型</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040137.jpg" alt="img"></p>
-<p><img src="https://pic3.zhimg.com/v2-1e23798979f03dd7369306c91df35042_b.jpg" alt="img"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182040137.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic3.zhimg.com/v2-1e23798979f03dd7369306c91df35042_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="33-图模型">3.3 图模型</span></h4>
-<p><img src="https://pic4.zhimg.com/v2-526f68f85c8b9d6116039bf2b98f3403_b.jpg" alt="img"></p>
-<p><img src="https://pic4.zhimg.com/v2-9eadc122d63374a77d5090b3f62a8ff3_b.jpg" alt="img"></p>
-<p><img src="https://pic4.zhimg.com/v2-4602cba212d520cb5babfde5865856a7_b.jpg" alt="img"></p>
+<figure>
+<img src="https://pic4.zhimg.com/v2-526f68f85c8b9d6116039bf2b98f3403_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic4.zhimg.com/v2-9eadc122d63374a77d5090b3f62a8ff3_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic4.zhimg.com/v2-4602cba212d520cb5babfde5865856a7_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 
       
     </div>
@@ -961,7 +1019,7 @@ $$<br>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>312</span>
+      <span>310</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -979,10 +1037,14 @@ $$<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="slips-a-machine-learning-based-free-software-network-intrusion-prevention-system">Slips: A Machine-Learning Based, Free-Software, Network Intrusion Prevention System</span></h2>
+          <h2><span id="slipsa-machine-learning-based-free-software-network-intrusion-preventionsystem">Slips:
+A Machine-Learning Based, Free-Software, Network Intrusion Prevention
+System</span></h2>
 <blockquote>
-<p>2021 BlackHat Europe Arsenal, Slips: A Machine-Learning Based, Free-Software, Network Intrusion Prevention System [<a target="_blank" rel="noopener" href="https://mega.nz/file/EAIjWA5D#DoYhJknH1hpbqfS2ayVLwA7ewNT50jFQb7S3dVAKPko">slides</a>] [<a target="_blank" rel="noopener" href="https://www.blackhat.com/eu-21/arsenal/schedule/#slips-a-machine-learning-based-free-software-network-intrusion-prevention-system-25116">web</a>]</p>
-<p><strong>开源项目</strong>：<a target="_blank" rel="noopener" href="https://github.com/stratosphereips/StratosphereLinuxIPS">https://github.com/stratosphereips/StratosphereLinuxIPS</a></p>
+<p>2021 BlackHat Europe Arsenal, Slips: A Machine-Learning Based,
+Free-Software, Network Intrusion Prevention System [<a target="_blank" rel="noopener" href="https://mega.nz/file/EAIjWA5D#DoYhJknH1hpbqfS2ayVLwA7ewNT50jFQb7S3dVAKPko">slides</a>]
+[<a target="_blank" rel="noopener" href="https://www.blackhat.com/eu-21/arsenal/schedule/#slips-a-machine-learning-based-free-software-network-intrusion-prevention-system-25116">web</a>]</p>
+<p><strong>开源项目</strong>：https://github.com/stratosphereips/StratosphereLinuxIPS</p>
 </blockquote>
 <h3><span id="一-简介">一、简介</span></h3>
 <p><strong>Slips是一个自由软件行为Python入侵预防系统（IDS/IPS），它使用机器学习来检测网络流量中的恶意行为。</strong></p>
@@ -1090,9 +1152,10 @@ $$<br>
     
     <div class="post-body" itemprop="articleBody">
           <h2><span id="matplotlib画图">matplotlib画图</span></h2>
-<p><a target="_blank" rel="noopener" href="https://matplotlib.org/">https://matplotlib.org/</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/109245779">https://zhuanlan.zhihu.com/p/109245779</a></p>
-<p>简洁优雅的Matplotlib可视化 | 绘制论文曲线图：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81336415">https://zhuanlan.zhihu.com/p/81336415</a></p>
+<p>https://matplotlib.org/</p>
+<p>https://zhuanlan.zhihu.com/p/109245779</p>
+<p>简洁优雅的Matplotlib可视化 |
+绘制论文曲线图：https://zhuanlan.zhihu.com/p/81336415</p>
 <ul>
 <li>训练的loss可视化</li>
 </ul>
@@ -1208,17 +1271,16 @@ $$<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="为什么dropout-可以解决过拟合？-【共享隐藏单元的bagging集成模型】"><a class="header-anchor" href="#为什么dropout-可以解决过拟合？-【共享隐藏单元的bagging集成模型】">¶</a>为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</h4>
+          <h4 id="为什么dropout-可以解决过拟合-共享隐藏单元的bagging集成模型">为什么dropout
+可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</h4>
 <ul>
-<li>
-<p><strong>集成取平均的作用：</strong> 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。</p>
-</li>
-<li>
-<p><strong>减少神经元之间复杂的共适应关系：</strong>  因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况 。<strong>从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。</strong></p>
-</li>
-<li>
-<p>**Dropout纯粹作为一种高效近似Bagging的方法。<strong>然而,有比这更进一步的Dropout观点。</strong><font color="red"> Dropout不仅仅是训练一个Bagging的集成模型,并且是共享隐藏单元的集成模型。</font>**这意味着无论其他隐藏单元是否在模型中,每个隐藏单元必须都能够表现良好。</p>
-</li>
+<li><p><strong>集成取平均的作用：</strong>
+整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。</p></li>
+<li><p><strong>减少神经元之间复杂的共适应关系：</strong>
+因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况
+。<strong>从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。</strong></p></li>
+<li><p><strong>Dropout纯粹作为一种高效近似Bagging的方法。</strong>然而,有比这更进一步的Dropout观点。<strong><font color="red">
+Dropout不仅仅是训练一个Bagging的集成模型,并且是共享隐藏单元的集成模型。</font></strong>这意味着无论其他隐藏单元是否在模型中,每个隐藏单元必须都能够表现良好。</p></li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -1316,7 +1378,7 @@ $$<br>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>550</span>
+      <span>563</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1335,22 +1397,40 @@ $$<br>
     
     <div class="post-body" itemprop="articleBody">
           <h3><span id="一-特征交叉-从lr到deepfm">一、特征交叉-从LR到DeepFM</span></h3>
-<p><strong>提到LR-&gt;FM-&gt;FFM-&gt;Wide &amp; Deep-&gt;DeepFM这一发展，必然离不开点击率CTR(click-through rate)和转化率CVR(conversion rate)。</strong></p>
-<p>这里再补充一下从MF到FM，矩阵分解MF(Matrix Factorization)基本原理：</p>
-<img src="https://pic4.zhimg.com/v2-bc8928c25ddfd4e6baefccaac8218bcb_b.jpg" alt="img" style="zoom:50%;">
-<img src="https://pic2.zhimg.com/v2-1600655df8413c5c12c0eb9fe0275461_b.jpg" alt="img" style="zoom:50%;">
+<p><strong>提到LR-&gt;FM-&gt;FFM-&gt;Wide &amp;
+Deep-&gt;DeepFM这一发展，必然离不开点击率CTR(click-through
+rate)和转化率CVR(conversion rate)。</strong></p>
+<p>这里再补充一下从MF到FM，矩阵分解MF(Matrix
+Factorization)基本原理：</p>
+<p><img src="https://pic4.zhimg.com/v2-bc8928c25ddfd4e6baefccaac8218bcb_b.jpg" alt="img" style="zoom:50%;"></p>
+<p><img src="https://pic2.zhimg.com/v2-1600655df8413c5c12c0eb9fe0275461_b.jpg" alt="img" style="zoom:50%;"></p>
 <p>主要是将用户-物品矩阵分解为用户矩阵(实质为用户的embedding矩阵)和物品矩阵(实质为物品的embedding矩阵)，有了<strong>用户表征向量</strong>和<strong>物品表征向量</strong>我们就可以计算任意用户和物品之间的联系。</p>
 <h4><span id="11-lr-gtfm">1.1 LR-&gt;FM</span></h4>
 <p><strong>线性模型：</strong></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>从公式中我们就可以看出，线性模型中默认假设特征之间是相互独立的，但是在现实中基本不可能存在，因此线性模型会丢失很多组合信息。</p>
 <p><strong>多项式模型：</strong></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7Bw_%7Bij%7Dx_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]"></p>
-<p>多项式模型中增加了特征的组合信息，但是又引入了新的问题，参数爆炸，复杂度太高，在实际推荐中特征可能是上万甚至更高维，单单二阶的特征交叉就是 <img src="https://www.zhihu.com/equation?tex=n%5E%7B2%7D" alt="[公式]"> ，更不用说更高阶特征交叉。此外，在CTR任务中，特征是特别稀疏的（如图2），进行特征交叉以后也都是0，这将导致模型训练不能充分。</p>
-<p><img src="https://pic4.zhimg.com/v2-9e67de04a67911ec78c8166da0e62153_b.jpg" alt="img"></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7B%3Cv_%7Bi%7D%2C+v_%7Bj%7D%3Ex_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7Bw_%7Bij%7Dx_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>多项式模型中增加了特征的组合信息，但是又引入了新的问题，参数爆炸，复杂度太高，在实际推荐中特征可能是上万甚至更高维，单单二阶的特征交叉就是
+<img src="https://www.zhihu.com/equation?tex=n%5E%7B2%7D" alt="[公式]">
+，更不用说更高阶特征交叉。此外，在CTR任务中，特征是特别稀疏的（如图2），进行特征交叉以后也都是0，这将导致模型训练不能充分。</p>
+<figure>
+<img src="https://pic4.zhimg.com/v2-9e67de04a67911ec78c8166da0e62153_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7B%3Cv_%7Bi%7D%2C+v_%7Bj%7D%3Ex_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><strong>FM主要的优化有两个方面：</strong></p>
-<p>（1）<strong>将复杂度从 <img src="https://www.zhihu.com/equation?tex=n%5E2" alt="[公式]"> 降到了 <img src="https://www.zhihu.com/equation?tex=kn" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%5Cleft%28+k+%5Cll+n+%5Cright%29" alt="[公式]"></strong> ；</p>
+<p>（1）<strong>将复杂度从 <img src="https://www.zhihu.com/equation?tex=n%5E2" alt="[公式]"> 降到了
+<img src="https://www.zhihu.com/equation?tex=kn" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%5Cleft%28+k+%5Cll+n+%5Cright%29" alt="[公式]"></strong> ；</p>
 <p>（2）可以在稀疏数据中学习到组合特征，甚至是那些数据中没有观测值的组合特征。</p>
 
       
@@ -1461,11 +1541,14 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
           <h3><span id="一-deepfm">一、DeepFM</span></h3>
 <blockquote>
-<p>吃透论文——推荐算法不可不看的DeepFM模型 - 梁唐的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343343016">https://zhuanlan.zhihu.com/p/343343016</a></p>
+<p>吃透论文——推荐算法不可不看的DeepFM模型 - 梁唐的文章 - 知乎
+https://zhuanlan.zhihu.com/p/343343016</p>
 </blockquote>
-<p><strong>DeepFM: A Factorization-Machine based Neural Network for CTR Prediction，翻译过来就是DeepFM：一个基于深度神经网络的FM模型。<strong>这篇paper的作者来自</strong>哈工大和华为</strong>，不得不说在人工智能领域的很多论文都是国产的，作为从业者还是非常欣喜能看到这点的。</p>
+<p><strong>DeepFM: A Factorization-Machine based Neural Network for CTR
+Prediction，翻译过来就是DeepFM：一个基于深度神经网络的FM模型。</strong>这篇paper的作者来自<strong>哈工大和华为</strong>，不得不说在人工智能领域的很多论文都是国产的，作为从业者还是非常欣喜能看到这点的。</p>
 <h4><span id="11-简介">1.1 简介</span></h4>
-<p>对推荐场景来说，CTR是最关键的指标，除了广告系统会按照CTR x bid来进行排序之外，推荐系统一般都会<strong>严格地按照预估的CTR进行排序</strong>。所以这其中的关键问题就是准确地预估CTR。</p>
+<p>对推荐场景来说，CTR是最关键的指标，除了广告系统会按照CTR x
+bid来进行排序之外，推荐系统一般都会<strong>严格地按照预估的CTR进行排序</strong>。所以这其中的关键问题就是准确地预估CTR。</p>
 <p>常规的推荐系统当中的特征分为四个部分：</p>
 <ul>
 <li><strong>用户特征</strong>：关于用户的一些信息。比如是男是女，是否是高收入群体，是否是高消费群体，成为平台的用户多久了，偏好平台当中什么类目的商品等等。</li>
@@ -1476,57 +1559,82 @@ $$<br>
 <p>显然用户是否会点击某一个item是由以上这四个部分的信息共同作用的，也就是说<strong>商品的特征和用户的特征之间是存在逻辑上的关联的</strong>，我们一般称为特征的交叉。</p>
 <p>这些交叉信息往往是隐式的，也就是我们不能直接描述和形容出来的。<strong>人的喜好是很复杂的，我们很难用固定的规则去描述</strong>。所以这就需要模型能有这样的能力去学习这些特征之间的潜在联系，对这些潜在交叉信息把握越好的模型，一般也都拥有越好的效果。</p>
 <blockquote>
-<p>比如我们分析了主流的app store市场之后发现，在饭点的时候，用户经常会下载外卖类的app，这说明了app的类别和时间之间存在交叉关系。再比如我们发现年轻的男生往往喜欢设计类游戏，这说明了app的类别与用户的性别之间也存在交叉关系。像是这样的交叉信息还有很多，从Wide &amp; Deep模型的经验当中我们可以学到考虑低维和高维交叉特征之后，模型的效果会更好。</p>
+<p>比如我们分析了主流的app
+store市场之后发现，在饭点的时候，用户经常会下载外卖类的app，这说明了app的类别和时间之间存在交叉关系。再比如我们发现年轻的男生往往喜欢设计类游戏，这说明了app的类别与用户的性别之间也存在交叉关系。像是这样的交叉信息还有很多，从Wide
+&amp;
+Deep模型的经验当中我们可以学到考虑低维和高维交叉特征之后，模型的效果会更好。</p>
 </blockquote>
 <h4><span id="12-算法">1.2 算法</span></h4>
-<p>训练集当中一共有 $n$ 条样本, 每一条样本可以写成 $(\chi, y)$ 。其中的 $\chi$ 是一个 $m$ 个field组成的向量, 包含了用户和 item组成的特征。 $y \in{0,1}, y=0$ 表示用户没有点击，相反， $y=1$ 表示用户点击。</p>
-<ul>
-<li>类别特征：比如性别、地理位置、收入情况等等。</li>
-<li>连续性特征, 比如平均花费、平均停留时间等等</li>
-</ul>
-<p>类别特征 (categorical feature) 一般被表示成一个one-hot之后的向量, 而一个连续特征, 一般就是表示它自 己, 当然也可以离散化成one-hot向量。我们把这些特征全部处理完之后, 整个向量会转化成 得x向量变得非常稀疏。所以我们要做的就是在这样特征比较稀疏的样本上简历一个CTR预测模型。</p>
+<p>训练集当中一共有 <span class="math inline">\(n\)</span> 条样本,
+每一条样本可以写成 <span class="math inline">\((\chi, y)\)</span>
+。其中的 <span class="math inline">\(\chi\)</span> 是一个 <span class="math inline">\(m\)</span> 个field组成的向量, 包含了用户和
+item组成的特征。 <span class="math inline">\(y \in\{0,1\}, y=0\)</span>
+表示用户没有点击，相反， <span class="math inline">\(y=1\)</span>
+表示用户点击。 - 类别特征：比如性别、地理位置、收入情况等等。 -
+连续性特征, 比如平均花费、平均停留时间等等</p>
+<p>类别特征 (categorical feature) 一般被表示成一个one-hot之后的向量,
+而一个连续特征, 一般就是表示它自 己,
+当然也可以离散化成one-hot向量。我们把这些特征全部处理完之后,
+整个向量会转化成
+得x向量变得非常稀疏。所以我们要做的就是在这样特征比较稀疏的样本上简历一个CTR预测模型。</p>
 <h4><span id="13-deepfm">1.3 <strong>DeepFM</strong></span></h4>
 <p>我们希望能够设计模型能够更好地学习低维和高维特征之间的交互，基于这点，我们在深度模型的基础上结合了FM，推出了DeepFM模型。它的整体结构如下图：</p>
-<img src="https://pic1.zhimg.com/v2-85cdb2c1ca2716a0b7ec9581e78fb714_b.jpg" alt="img" style="zoom: 67%;">
-<p>这张图看起来可能会有点乱，我们可以先忽略一些局部的细节，先从整体上把握。这个模型可以分成两个部分，分别是<strong>FM部分以及Deep部分</strong>。这两个部分的输入是一样的，并没有像Wide &amp; Deep模型那样做区分。</p>
+<p><img src="https://pic1.zhimg.com/v2-85cdb2c1ca2716a0b7ec9581e78fb714_b.jpg" alt="img" style="zoom: 67%;"></p>
+<p>这张图看起来可能会有点乱，我们可以先忽略一些局部的细节，先从整体上把握。这个模型可以分成两个部分，分别是<strong>FM部分以及Deep部分</strong>。这两个部分的输入是一样的，并没有像Wide
+&amp; Deep模型那样做区分。</p>
 <ul>
 <li>神经网络也就是Deep的部分用来训练这些特征的一维的关联以及联系</li>
 <li>FM模型会通过隐藏向量V的形式来计算特征之间的二维交叉的信息。最后一维和二维的信息汇总到一起，进入sigmoid层，获得最终的结果。</li>
 </ul>
 <p>用公式来表达的话，大概是这样：</p>
-<p>$$<br>
-\hat{y}=\operatorname{sigmoid}\left(y_{F M}+y_{D N N}\right)<br>
-$$</p>
+<p><span class="math display">\[
+\hat{y}=\operatorname{sigmoid}\left(y_{F M}+y_{D N N}\right)
+\]</span></p>
 <h4><span id="14-fm部分">1.4 <strong>FM部分</strong></span></h4>
-<img src="/Users/apple/Library/Application Support/typora-user-images/image-20220708115209319.png" alt="image-20220708115209319" style="zoom: 33%;">
-<p>FM部分其实就是因子分解机, 我们在之前的文章当中曾经专门剖析过。FM会考虑所有特征之间两两交叉的情况, 相当于人为对左右特征做了交叉。但是由于 $n$ 个特征交叉的组合是 $n^2$ 这个量级, 所以FM设计了一种新的方案, 对 于每一个特征i训练一个向量 $V_i$, 当i和 $\mathrm{j}$ 两个特征交叉的时候, <strong>通过 $V_i \cdot V_j$ 来计算两个特征交叉之后的权重</strong>。这样 大大降低了计算的复杂度。<br>
-这当中涉及一些公式的推导和计算, 我们在之前的文章当中已经详细推导过了, 这里就不多㥿述了。最终我们可以 得到这部分的公式:<br>
-$$<br>
-y_{F M}=&lt;w, x&gt;+\sum_{i=1}^d \sum_{j=i+1}^d&lt;V_i, V_j&gt;x_i \cdot x_j<br>
-$$</p>
+<p><img src="/Users/apple/Library/Application Support/typora-user-images/image-20220708115209319.png" alt="image-20220708115209319" style="zoom: 33%;"></p>
+<p>FM部分其实就是因子分解机,
+我们在之前的文章当中曾经专门剖析过。FM会考虑所有特征之间两两交叉的情况,
+相当于人为对左右特征做了交叉。但是由于 <span class="math inline">\(n\)</span> 个特征交叉的组合是 <span class="math inline">\(n^2\)</span> 这个量级, 所以FM设计了一种新的方案,
+对 于每一个特征i训练一个向量 <span class="math inline">\(V_i\)</span>,
+当i和 <span class="math inline">\(\mathrm{j}\)</span>
+两个特征交叉的时候, <strong>通过 <span class="math inline">\(V_i \cdot
+V_j\)</span> 来计算两个特征交叉之后的权重</strong>。这样
+大大降低了计算的复杂度。 这当中涉及一些公式的推导和计算,
+我们在之前的文章当中已经详细推导过了, 这里就不多㥿述了。最终我们可以
+得到这部分的公式: <span class="math display">\[
+y_{F M}=&lt;w, x&gt;+\sum_{i=1}^d \sum_{j=i+1}^d&lt;V_i, V_j&gt;x_i
+\cdot x_j
+\]</span></p>
 <h4><span id="15-deep部分">1.5 <strong>Deep部分</strong></span></h4>
 <p>Deep部分就是经典的<strong>前馈网络</strong>，用来学习特征之间的高维交叉。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261530821.jpg" alt="img" style="zoom: 67%;">
-<p>图3展示的就是模型当中Deep这个部分，从图中我们可以看到，<strong>所有的特征都会被转化成embedding向量</strong>作为Deep部分的输入（<strong><font color="red"> 每个01向量对应自己的嵌入层，不同向量的嵌入过程相互独立</font></strong>）。CTR预估的模型和图片以及音频处理的模型有一个很大的不同，就是它的维度会更大，并且特征会非常稀疏，还伴有类别连续、混合、聚合的特点。在这种情况下，使用embedding向量来把原始特征当中的信息压缩到低维的向量就是一种比较好的做法了，这样模型的泛化能力会更强，要比全是01组成的multi-hot输入好得多。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261530723.png" alt="image-20220708115609161" style="zoom: 33%;">
-<p>这张图展示了这个部分局部的结构，我们可以看到所有特征转成的embedding向量拥有相同的维度k。并且和FM模型当中的维度也是一样的，并且这个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=embedding&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22343343016%22%7D">embedding</a>的初始化也是<strong>借用FM当中的二维矩阵V来实现的</strong>。我们都知道V是一个d x k的二维矩阵，而模型原始输入是一个d维的01向量，那么和V相乘了之后，自然就转化成了d x k的embedding了。</p>
-<p>这里要注意的一点是，在一些其他DNN做CTR预估的论文当中，会使用预训练的FM模型来进行Deep部分的向量初始化。但这里的做法略有不同，它不是使用训练好的FM来进行<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%88%9D%E5%A7%8B%E5%8C%96&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22343343016%22%7D">初始化</a>，而是和FM模型的部分共享同样的V。这样做会有两个非常重要的好处：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261530821.jpg" alt="img" style="zoom: 67%;"></p>
+<p>图3展示的就是模型当中Deep这个部分，从图中我们可以看到，<strong>所有的特征都会被转化成embedding向量</strong>作为Deep部分的输入（<strong><font color="red">
+每个01向量对应自己的嵌入层，不同向量的嵌入过程相互独立</font></strong>）。CTR预估的模型和图片以及音频处理的模型有一个很大的不同，就是它的维度会更大，并且特征会非常稀疏，还伴有类别连续、混合、聚合的特点。在这种情况下，使用embedding向量来把原始特征当中的信息压缩到低维的向量就是一种比较好的做法了，这样模型的泛化能力会更强，要比全是01组成的multi-hot输入好得多。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261530723.png" alt="image-20220708115609161" style="zoom: 33%;"></p>
+<p>这张图展示了这个部分局部的结构，我们可以看到所有特征转成的embedding向量拥有相同的维度k。并且和FM模型当中的维度也是一样的，并且这个<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=embedding&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22343343016%22%7D">embedding</a>的初始化也是<strong>借用FM当中的二维矩阵V来实现的</strong>。我们都知道V是一个d
+x
+k的二维矩阵，而模型原始输入是一个d维的01向量，那么和V相乘了之后，自然就转化成了d
+x k的embedding了。</p>
+<p>这里要注意的一点是，在一些其他DNN做CTR预估的论文当中，会使用预训练的FM模型来进行Deep部分的向量初始化。但这里的做法略有不同，它不是使用训练好的FM来进行<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=初始化&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22343343016%22%7D">初始化</a>，而是和FM模型的部分共享同样的V。这样做会有两个非常重要的好处：</p>
 <ul>
 <li>它可以同时学习到低维以及高维的特征交叉信息，预训练的FM来进行向量初始化得到的embedding当中可能只包含了二维交叉的信息。</li>
 <li>这样可以避免像是Wide &amp; Deep那样多余的特征工程。</li>
 </ul>
 <blockquote>
-<h5><span id="数据选择"><strong>数据选择</strong></span></h5>
-<p>我们选择了两份数据用来评估DeepFM与其他模型的性能，一份是Criteo数据集，其中包含了4500w用户的点击数据，由13个连续型特征以及26个类别特征组成。我们把90%做成训练数据，10%做成测试数据。第二份数据是公司内部（华为）的数据，由连续7天用户在华为app store游戏中心的点击数据组成训练数据（约10亿条），1天的数据作为测试数据。</p>
-<h5><span id="评估指标"><strong>评估指标</strong></span></h5>
-<p>我们主要评估模型的指标有两个，一个是AUC另一个是Logloss（<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E4%BA%A4%E5%8F%89%E7%86%B5&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22343343016%22%7D">交叉熵</a>）。从这个评估指标上来看是比较中肯的，没有像有一些paper当中自己定义一种新的评估指标。</p>
+<p>##### <strong>数据选择</strong></p>
+<p>我们选择了两份数据用来评估DeepFM与其他模型的性能，一份是Criteo数据集，其中包含了4500w用户的点击数据，由13个连续型特征以及26个类别特征组成。我们把90%做成训练数据，10%做成测试数据。第二份数据是公司内部（华为）的数据，由连续7天用户在华为app
+store游戏中心的点击数据组成训练数据（约10亿条），1天的数据作为测试数据。</p>
+<p>##### <strong>评估指标</strong></p>
+<p>我们主要评估模型的指标有两个，一个是AUC另一个是Logloss（<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=交叉熵&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22343343016%22%7D">交叉熵</a>）。从这个评估指标上来看是比较中肯的，没有像有一些paper当中自己定义一种新的评估指标。</p>
 </blockquote>
 <h3><span id="deepfm-qampa">DeepFM Q&amp;A</span></h3>
 <h5><span id="deepfm对连续特征的处理">DeepFM对连续特征的处理?</span></h5>
-<p>deepfm原文提到，连续变量可以直接作为单个值输入，或者离散化作为一个向量输入。那么目前可获取的包 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=deepctr&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22414694288%22%7D">deepctr</a>中的deepfm是怎样处理的？</p>
+<p>deepfm原文提到，连续变量可以直接作为单个值输入，或者离散化作为一个向量输入。那么目前可获取的包
+<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=deepctr&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22414694288%22%7D">deepctr</a>中的deepfm是怎样处理的？</p>
 <p>这里直接看源码，红色方框：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261530780.jpg" alt="img" style="zoom:50%;">
-<p><strong>可以看到连续特征（dense_value） 直接作为DNN的输入，不参与FM的输入。我们也可以连续变量离散化后，同时作为DNN和FM的输入，这样连续变量也和类别变量有二阶特征交互，或许可以带来更多的信息，增强模型表达。</strong></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261530780.jpg" alt="img" style="zoom:50%;"></p>
+<p><strong>可以看到连续特征（dense_value）
+直接作为DNN的输入，不参与FM的输入。我们也可以连续变量离散化后，同时作为DNN和FM的输入，这样连续变量也和类别变量有二阶特征交互，或许可以带来更多的信息，增强模型表达。</strong></p>
 
       
     </div>
@@ -1638,34 +1746,44 @@ $$</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="forecasting-malware-capabilities-from-cyber-attack-memory-images">Forecasting Malware Capabilities From Cyber Attack Memory Images</span></h2>
+          <h2><span id="forecastingmalware-capabilities-from-cyber-attack-memory-images">Forecasting
+Malware Capabilities From Cyber Attack Memory Images</span></h2>
 <blockquote>
 <ul>
-<li>项目：<a target="_blank" rel="noopener" href="https://www.usenix.org/conference/usenixsecurity21/presentation/alrawi-forecasting">https://www.usenix.org/conference/usenixsecurity21/presentation/alrawi-forecasting</a></li>
-<li>文章：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1907.07352">https://arxiv.org/abs/1907.07352</a></li>
+<li>项目：https://www.usenix.org/conference/usenixsecurity21/presentation/alrawi-forecasting</li>
+<li>文章：https://arxiv.org/abs/1907.07352</li>
 </ul>
 </blockquote>
 <h3><span id="摘要">摘要</span></h3>
-<p>正在进行的网络攻击的补救依赖于及时的恶意软件分析，其目的是发现尚未执行的恶意功能。不幸的是，这需要在不同工具之间重复切换上下文，并且会给分析员带来很高的认知负荷，从而减慢调查速度，并给攻击者带来优势。<strong>我们提出了Forecast，这是一种事后检测技术，可使事件响应者自动预测恶意软件的执行能力。预测基于概率模型，该模型允许预测发现能力，并根据其相对执行可能性（即预测）对每个能力进行权衡</strong>。**<font color="red"> Forecast利用当前攻击的执行上下文（来自恶意软件的内存映像）来指导恶意软件代码的符号分析。</font>**我们进行了广泛的评估，有6727个真实世界的恶意软件和旨在颠覆预测的未来主义攻击，显示了预测恶意软件能力的准确性和鲁棒性。</p>
+<p>正在进行的网络攻击的补救依赖于及时的恶意软件分析，其目的是发现尚未执行的恶意功能。不幸的是，这需要在不同工具之间重复切换上下文，并且会给分析员带来很高的认知负荷，从而减慢调查速度，并给攻击者带来优势。<strong>我们提出了Forecast，这是一种事后检测技术，可使事件响应者自动预测恶意软件的执行能力。预测基于概率模型，该模型允许预测发现能力，并根据其相对执行可能性（即预测）对每个能力进行权衡</strong>。<strong><font color="red">
+Forecast利用当前攻击的执行上下文（来自恶意软件的内存映像）来指导恶意软件代码的符号分析。</font></strong>我们进行了广泛的评估，有6727个真实世界的恶意软件和旨在颠覆预测的未来主义攻击，显示了预测恶意软件能力的准确性和鲁棒性。</p>
 <blockquote>
-<p>Forecast is based on a probabilistic model that allows Forecast to discover capabilities and also weigh each capability according to its relative likelihood of execution</p>
+<p>Forecast is based on a probabilistic model that allows Forecast to
+discover capabilities and also weigh each capability according to its
+relative likelihood of execution</p>
 </blockquote>
 <h3><span id="一-说明">一、说明</span></h3>
 <p>网络攻击响应需要对抗阶段性恶意软件功能（即尚未执行的恶意功能），以防止进一步的损害[1]、[2]。不幸的是，检测后预测恶意软件功能仍然是手动的、繁琐的和容易出错的。目前，分析师必须重复执行多个分类步骤。例如，分析员通常会将二进制文件加载到静态反汇编程序中，并执行内存取证，以组合静态和动态工件。这一艰苦的过程需要在二进制分析和取证工具之间进行上下文切换。因此，它给分析员带来了很高的认知负荷，减慢了调查速度，给攻击者带来了优势。</p>
 <p><strong>为了自动化事件响应，符号执行很有可能用于恶意软件代码探测，但缺少先前的攻击执行状态，而这种状态在事后可能无法重新实现（例如，来自C&amp;C活动的具体输入）</strong>。特定于环境的条件（如预期的C&amp;C命令）限制了动态和协同技术（如[3]–[14]）预测无法访问的能力。此外，这些技术依赖于剖析独立恶意软件二进制文件或在沙箱中运行它。然而，已知恶意软件会删除其二进制文件或将自身锁定为仅在受感染的计算机上运行（硬件锁定）。<strong>更糟糕的是，研究人员发现，无文件恶意软件事件（即，仅驻留在内存中）继续增加[1]、[15]、[16]</strong>。</p>
 <p>有权访问正确的执行上下文对于引导恶意软件显示其功能是必要的。恶意软件在内部收集来自特定环境源的输入，例如注册表、网络和环境变量，以便做出行为决策【11】、【17】、【18】。因此，恶意软件的理想和实用输入公式可以根据内存中的该内部执行状态进行调整，其中包含已收集的输入工件。<strong>事实证明，在检测到恶意进程后，反病毒和IDS已经收集了该进程的内存映像。恶意软件内存映像包含被调查的特定攻击实例特有的这种内部具体执行状态。</strong></p>
-<p>**<font color="red"> 在我们的研究过程中，我们注意到，如果我们可以在内存图像中设置代码和数据页的动画，并根据捕获的快照执行向前的代码探索，那么我们就可以重用这些早期的具体执行数据来推断恶意软件的下一步。</font><strong>此外，通过分析这些具体输入如何在代码探索期间诱导路径，我们可以根据恶意软件捕获的执行状态预测哪些路径更有可能执行功能。基于这一思想，</strong><font color="red"> 我们提出用通过内存图像取证获得的具体执行状态对恶意软件的预阶段路径进行符号探索。</font>**通过这一点，我们克服了分析员之前必须进行的艰苦而繁重的认知过程。</p>
-<p>**我们介绍了Forecast，这是一种后检测技术，使事件响应者能够从捕获的内存图像中预测可能的功能。Forecast根据发现的每个功能的执行概率（即预测）对其进行排序，以使分析师能够确定其修复工作流的优先级。**为了计算这种概率，Forecast会衡量每条路径对具体数据的相对使用情况。这种方法基于内存映像执行状态的具体程度（或DC）的形式化模型。Forecast从内存映像中的最后一个指令指针（IP）值开始，通过象征性地执行每条指令的CPU语义来探索每条路径。在此探索过程中，预测建模符号和具体数据的混合如何影响路径生成和选择。基于这种混合，沿路径计算每个状态的“具体性”分数，以得出每个发现能力的预测百分比。DC（s）还通过动态调整循环边界、处理符号控制流和修剪路径来优化符号分析，以减少路径爆炸。</p>
-<p>为了自动识别每个功能，我们开发了几个模块化的功能分析插件：<strong>代码注入、文件过滤、滴管、持久性、键和屏幕监视、反分析和C&amp;C URL连接</strong>。每个插件根据API序列、它们的参数以及它们的输入和输出约束如何连接每个API来定义一个给定的功能。Forecast插件是可移植的，可以很容易地扩展以捕获基于目标系统API的其他功能。值得注意的是，Forecast的分析只需要一个法医记忆图像，允许它对无文件恶意软件工作，使其非常适合事件响应。</p>
-<p>我们使用涵盖274个家族的6727个真实恶意软件（包括打包和解包）的内存图像评估Forecast。与人工专家手动生成的报告相比，Forecast可提供准确的能力预测。此外，我们还表明，Forecast对旨在颠覆Forecast的未来主义攻击具有鲁棒性。我们表明，预测的检测后预测是由早期的具体输入准确诱导的。我们将预测与S2E【6】、angr【22】和Triton【23】进行了经验比较，发现预测在识别能力和减少路径爆炸方面优于它们。预测可在线访问：<a target="_blank" rel="noopener" href="https://cyfi.ece.gatech.edu/">https://cyfi.ece.gatech.edu/</a>.</p>
+<p><strong><font color="red">
+在我们的研究过程中，我们注意到，如果我们可以在内存图像中设置代码和数据页的动画，并根据捕获的快照执行向前的代码探索，那么我们就可以重用这些早期的具体执行数据来推断恶意软件的下一步。</font></strong>此外，通过分析这些具体输入如何在代码探索期间诱导路径，我们可以根据恶意软件捕获的执行状态预测哪些路径更有可能执行功能。基于这一思想，<strong><font color="red">
+我们提出用通过内存图像取证获得的具体执行状态对恶意软件的预阶段路径进行符号探索。</font></strong>通过这一点，我们克服了分析员之前必须进行的艰苦而繁重的认知过程。</p>
+<p><strong>我们介绍了Forecast，这是一种后检测技术，使事件响应者能够从捕获的内存图像中预测可能的功能。Forecast根据发现的每个功能的执行概率（即预测）对其进行排序，以使分析师能够确定其修复工作流的优先级。</strong>为了计算这种概率，Forecast会衡量每条路径对具体数据的相对使用情况。这种方法基于内存映像执行状态的具体程度（或DC）的形式化模型。Forecast从内存映像中的最后一个指令指针（IP）值开始，通过象征性地执行每条指令的CPU语义来探索每条路径。在此探索过程中，预测建模符号和具体数据的混合如何影响路径生成和选择。基于这种混合，沿路径计算每个状态的“具体性”分数，以得出每个发现能力的预测百分比。DC（s）还通过动态调整循环边界、处理符号控制流和修剪路径来优化符号分析，以减少路径爆炸。</p>
+<p>为了自动识别每个功能，我们开发了几个模块化的功能分析插件：<strong>代码注入、文件过滤、滴管、持久性、键和屏幕监视、反分析和C&amp;C
+URL连接</strong>。每个插件根据API序列、它们的参数以及它们的输入和输出约束如何连接每个API来定义一个给定的功能。Forecast插件是可移植的，可以很容易地扩展以捕获基于目标系统API的其他功能。值得注意的是，Forecast的分析只需要一个法医记忆图像，允许它对无文件恶意软件工作，使其非常适合事件响应。</p>
+<p>我们使用涵盖274个家族的6727个真实恶意软件（包括打包和解包）的内存图像评估Forecast。与人工专家手动生成的报告相比，Forecast可提供准确的能力预测。此外，我们还表明，Forecast对旨在颠覆Forecast的未来主义攻击具有鲁棒性。我们表明，预测的检测后预测是由早期的具体输入准确诱导的。我们将预测与S2E【6】、angr【22】和Triton【23】进行了经验比较，发现预测在识别能力和减少路径爆炸方面优于它们。预测可在线访问：https://cyfi.ece.gatech.edu/.</p>
 <blockquote>
-<p>“S2E: A platform for in-vivo multi-path analysis of software systems,” 2011</p>
-<p>“SoK: (State of) The Art of War: Offensive Techniques in Binary Analysis,” 2016</p>
+<p>“S2E: A platform for in-vivo multi-path analysis of software
+systems,” 2011</p>
+<p>“SoK: (State of) The Art of War: Offensive Techniques in Binary
+Analysis,” 2016</p>
 <p>“Triton: A Dynamic Symbolic Execution Framework” 2015</p>
 </blockquote>
 <h3><span id="二-概述">二、概述</span></h3>
 <p>本节介绍了结合<strong>记忆图像取证和符号分析技术</strong>的挑战和好处。以<strong>DarkHotel事件</strong>[2]为例，我们将展示事件响应者如何利用预测加快调查并补救网络攻击。</p>
-<p>**<font color="red"> 运行示例：DarkHotel APT。</font>**DarkHotel是一种APT，通过矛式网络钓鱼攻击C&amp;C服务器【2】。感染后，DarkHotel会从受害者的文件系统中删除其二进制文件，与C&amp;C服务器通信，将线程注入Windows资源管理器，并最终过滤侦察数据。当IDS检测到受感染主机上的异常活动时，终端主机代理会捕获可疑进程内存（即DarkHotel内存），终止其执行，并生成通知。<strong>此时，事件响应者必须从不同的可用取证来源（网络日志、事件日志、内存快照等）快速了解DarkHotel的能力，以防止进一步的损坏。</strong></p>
+<p><strong><font color="red"> 运行示例：DarkHotel
+APT。</font></strong>DarkHotel是一种APT，通过矛式网络钓鱼攻击C&amp;C服务器【2】。感染后，DarkHotel会从受害者的文件系统中删除其二进制文件，与C&amp;C服务器通信，将线程注入Windows资源管理器，并最终过滤侦察数据。当IDS检测到受感染主机上的异常活动时，终端主机代理会捕获可疑进程内存（即DarkHotel内存），终止其执行，并生成通知。<strong>此时，事件响应者必须从不同的可用取证来源（网络日志、事件日志、内存快照等）快速了解DarkHotel的能力，以防止进一步的损坏。</strong></p>
 <p>动态技术【11】–【14】可能需要一个激活的C&amp;C以诱使恶意软件二进制文件显示其功能，然而该C&amp;C可能已被取下。由于DarkHotel只驻留在内存中，这些通过在沙盒中运行恶意软件而起作用的技术无法应用。</p>
 <ul>
 <li><strong>只有内存图像，分析员可以使用取证工具，如Volatility</strong>【24】，来“切割”内存图像代码和数据页。基于提取的代码页，符号分析可以模拟恶意软件的执行，以探索所有潜在的路径。</li>
@@ -1674,13 +1792,27 @@ $$</p>
 <p><strong>理想情况下，分析员可以手动将这些代码片段投影到符号分析中，并从数据页中获取具体值，以告诉哪一个代码分支会导致某个功能</strong>。然而，这种用提取的内存工件“缝合”代码的来回过程涉及符号执行和取证工具之间的上下文切换。这给分析员带来了很高的认知负担。<strong>分析员还必须处理路径爆炸、API调用模拟[4]、[22]、[25]–[27]和具体化API参数（例如攻击者的URL）等挑战，这些挑战可能无法在内存映像中静态访问</strong>。最后，分析师必须沿每条路径手动检查API，以推断高级功能。</p>
 <h4><span id="21混合事件响应">2.1混合事件响应</span></h4>
 <p>事件响应者依靠内存取证来识别内存图像中的攻击瑕疵。然而，仅仅是基于签名的记忆取证，由于高漏报率，会遗漏重要的数据结构【21】。另一方面，符号执行可以正向探索代码，但会遇到路径爆炸等问题[22]。为了解决这些限制，Forecast通过反馈循环将符号执行和内存取证结合起来，以解决这两种技术的缺点。</p>
-<p><strong>上下文感知记忆取证</strong>。符号分析提供代码探索上下文，以准确识别内存取证遗漏的数据构件。例如，DarkHotel内存图像的传统法医解析遗漏了C&amp;C URL字符串，因为它们通过自定义编码方案进行了混淆。然而，对引用这些字节作为参数的指令（如strncpy API）进行的后续符号分析允许Forecast正确识别和利用内存映像中的这些数据瑕疵。此外，有针对性的恶意软件可能会采用旨在颠覆预测的策略，使用反取证和反符号分析，这是我们在设计和评估中仔细考虑的。</p>
+<p><strong>上下文感知记忆取证</strong>。符号分析提供代码探索上下文，以准确识别内存取证遗漏的数据构件。例如，DarkHotel内存图像的传统法医解析遗漏了C&amp;C
+URL字符串，因为它们通过自定义编码方案进行了混淆。然而，对引用这些字节作为参数的指令（如strncpy
+API）进行的后续符号分析允许Forecast正确识别和利用内存映像中的这些数据瑕疵。此外，有针对性的恶意软件可能会采用旨在颠覆预测的策略，使用反取证和反符号分析，这是我们在设计和评估中仔细考虑的。</p>
 <p>内存图像取证提供了具体的输入，可以帮助符号分析执行地址具体化、控制流解析和循环边界。此外，内存取证可以识别内存中加载的库地址，从而允许Forecast执行库函数模拟。</p>
 <p>路径概率。给定一个内存映像，目标是利用可用的具体数据来探索潜在的代码路径，并预测沿途的功能。通过分析具体内存图像数据是如何产生不同路径的，Forecast可以得出一条路径相对于其他路径达到某种能力的概率。Forecast基于建模具体和符号数据操作如何影响路径生成和选择来计算此概率。Forecast还利用此概率度量作为一种启发式方法来修剪具有最少具体数据的路径。</p>
-<h4><span id="22-incident-response-with-forecast">2.2 Incident Response with Forecast</span></h4>
-<p><strong>Forecast可识别来自自动管道中恶意软件内存映像的功能</strong>。为了证明这一点，我们模拟了DarkHotel的攻击和内存捕获，其中包括使用DarkHotel的网络签名设置IDS并执行高级持久性威胁（APT）。检测完成后，IDS向终端host agent发出信号，以捕获DarkHotel进程内存。然后，我们输入该内存图像进行预测以进行分析。在459秒内，<strong><font color="red"> Forecast显示了DarkHotel的功能：C&amp;C通信（<a target="_blank" rel="noopener" href="http://xn--mse-4l3e.vmmnat.com">即mse.vmmnat.com</a>）、文件过滤（即主机信息）和代码注入（即注入Windows Explorer）。</font></strong></p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550504.png" alt="image-20220624145017568"></p>
-<p>处理法医记忆图像有六个阶段，如图1所示。1 Forecast以取证方式解析内存映像，并通过将最后一个CPU和内存状态加载到符号环境中进行分析来重建先前的执行上下文。在分析内存映像时，Forecast检查加载的库，以识别导出的函数名和地址。接下来，2 Forecast继续探索可能的路径，利用内存映像中可用的具体数据来具体化路径约束。3预测模型和权重每个路径如何由具体数据归纳，并为每个生成的路径分配概率。4 Forecast然后使用此概率作为权重来调整循环边界并修剪错误路径，从而允许Forecast缩小诱导能力相关路径的范围。5 Forecast将已识别的API与功能分析插件库相匹配，以向分析师报告功能。最后，6 Forecast确定了三种能力，并从路径概率中得出了它们的预测百分比，分别为31%、15%和54%。</p>
+<h4><span id="22-incident-response-withforecast">2.2 Incident Response with
+Forecast</span></h4>
+<p><strong>Forecast可识别来自自动管道中恶意软件内存映像的功能</strong>。为了证明这一点，我们模拟了DarkHotel的攻击和内存捕获，其中包括使用DarkHotel的网络签名设置IDS并执行高级持久性威胁（APT）。检测完成后，IDS向终端host
+agent发出信号，以捕获DarkHotel进程内存。然后，我们输入该内存图像进行预测以进行分析。在459秒内，<strong><font color="red">
+Forecast显示了DarkHotel的功能：C&amp;C通信（即mse.vmmnat.com）、文件过滤（即主机信息）和代码注入（即注入Windows
+Explorer）。</font></strong></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550504.png" alt="image-20220624145017568">
+<figcaption aria-hidden="true">image-20220624145017568</figcaption>
+</figure>
+<p>处理法医记忆图像有六个阶段，如图1所示。1
+Forecast以取证方式解析内存映像，并通过将最后一个CPU和内存状态加载到符号环境中进行分析来重建先前的执行上下文。在分析内存映像时，Forecast检查加载的库，以识别导出的函数名和地址。接下来，2
+Forecast继续探索可能的路径，利用内存映像中可用的具体数据来具体化路径约束。3预测模型和权重每个路径如何由具体数据归纳，并为每个生成的路径分配概率。4
+Forecast然后使用此概率作为权重来调整循环边界并修剪错误路径，从而允许Forecast缩小诱导能力相关路径的范围。5
+Forecast将已识别的API与功能分析插件库相匹配，以向分析师报告功能。最后，6
+Forecast确定了三种能力，并从路径概率中得出了它们的预测百分比，分别为31%、15%和54%。</p>
 
       
     </div>

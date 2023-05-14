@@ -141,7 +141,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">PU Learning在风控中的应用（理论篇）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">一、风控业务背景</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">PU
+Learning在风控中的应用（理论篇）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">一、风控业务背景</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,7 +163,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -279,14 +280,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -297,15 +298,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pu-learning在风控中的应用理论篇">PU Learning在风控中的应用（理论篇）</span></h2>
+        <h2><span id="pulearning在风控中的应用理论篇">PU
+Learning在风控中的应用（理论篇）</span></h2>
 <h4><span id="一-风控业务背景">一、风控业务背景</span></h4>
 <p>在实际分类场景中，我们经常会遇到类似这样的问题：<strong>只有已标记的正样本，以及未标记的样本</strong>。比如金融风控场景，只有部分用户被标记为欺诈用户，剩下的大量用户未被标记。虽然这其中大多数信用良好，但仍有少量可能为欺诈用户。</p>
 <p>为了方便操作，我们可以将未标记的样本都作为负样本进行训练，但存在几个缺陷：</p>
-<ol>
+<ol type="1">
 <li>正负样本极度不平衡，负样本数量远远超过正样本，效果很差。</li>
 <li>某些关键样本会干扰分类器的最优分隔面的选择，尤其是SVM。</li>
 </ol>
-<p>如何辨别未标记样本中的正负样本，提升模型准确度，就成为一个值得思考的问题。PU Learning就是解决这种场景的一种学习方法。</p>
+<p>如何辨别未标记样本中的正负样本，提升模型准确度，就成为一个值得思考的问题。PU
+Learning就是解决这种场景的一种学习方法。</p>
 <p>本文尝试回答以下几个问题：</p>
 <ul>
 <li>我们如何将从PU数据中学习的问题形式化？</li>
@@ -316,26 +319,47 @@
 <li>PU数据何时以及为什么出现在实际应用中？</li>
 <li>PU学习与机器学习的其他领域有什么关系？</li>
 </ul>
-<p><strong>数学符号含义速查</strong>：<br>
-$x$ ：某样例的特征向量, $x \in \boldsymbol{x}$</p>
-<p>$y$ : 某样例的标签变量, $y \in \boldsymbol{y}={0,1}$</p>
-<p>$(\boldsymbol{x}, \boldsymbol{y})$ : 某样本二元组</p>
-<p>$s$ : 某样例是否被标注的指示变量, $s \in s={0,1}$</p>
-<p>$\alpha$ ：先验类别（Class Prior)， $\alpha=\operatorname{Pr}(y=1)$ ，指正类别先验比例</p>
-<p>$c$ : 标签频率（Label Frequency)， $c=\operatorname{Pr}(s=1 \mid y=1)$, 指L集合占总体P集的比例<br>
-$e$ : 倾向评分函数 (Propensity Score) , $e(x)=\operatorname{Pr}(s=1 \mid y=1, x)$</p>
-<p>$f(x)$ : 总体样本的概率密度分布函数, $\quad f(x)=\operatorname{Pr}(x \mid y \in{0,1})$</p>
-<p>$f_{+}(x)$ : 正样本的概率密度分布函数, $\quad f_{+}(x)=\operatorname{Pr}(x \mid y=1)$</p>
-<p>$f_{-}(x)$ : 负样本的概率密度分布函数, $\quad f_{-}(x)=\operatorname{Pr}(x \mid y=0)$</p>
-<p>$f_l(x)$ : 有标签 (labeled) 样本的概率密度分布函数, $\quad f_l(x)=\operatorname{Pr}(x \mid s=1) \subset f_{+}(x)$</p>
-<p>$f_u(x)$ : 无标签 (unlabeled) 样本的概率密度分布函数， $\quad f_u(x)=\operatorname{Pr}(x \mid s=0)$</p>
-<p>$\hat{\theta}$ : 对参数 $\theta$ 的估计值</p>
-<p>$P:$ 正样本集, Positive, 已标注的正样本</p>
-<p>$N$ : 负样本集, Negative, 实际末知</p>
-<p>$L$ : 有标签样本集, Labeled, 只有正样本</p>
-<p>$U$ : 无标签样本集, Unlabeled, 包括末知的正负样本</p>
-<p>$P U:$ 正样本和无标签样本组成的集合</p>
-<p>$R N$ : 可靠的负样本</p>
+<p><strong>数学符号含义速查</strong>： <span class="math inline">\(x\)</span> ：某样例的特征向量, <span class="math inline">\(x \in \boldsymbol{x}\)</span></p>
+<p><span class="math inline">\(y\)</span> : 某样例的标签变量, <span class="math inline">\(y \in \boldsymbol{y}=\{0,1\}\)</span></p>
+<p><span class="math inline">\((\boldsymbol{x}, \boldsymbol{y})\)</span>
+: 某样本二元组</p>
+<p><span class="math inline">\(s\)</span> : 某样例是否被标注的指示变量,
+<span class="math inline">\(s \in s=\{0,1\}\)</span></p>
+<p><span class="math inline">\(\alpha\)</span> ：先验类别（Class
+Prior)， <span class="math inline">\(\alpha=\operatorname{Pr}(y=1)\)</span>
+，指正类别先验比例</p>
+<p><span class="math inline">\(c\)</span> : 标签频率（Label Frequency)，
+<span class="math inline">\(c=\operatorname{Pr}(s=1 \mid y=1)\)</span>,
+指L集合占总体P集的比例 <span class="math inline">\(e\)</span> :
+倾向评分函数 (Propensity Score) , <span class="math inline">\(e(x)=\operatorname{Pr}(s=1 \mid y=1,
+x)\)</span></p>
+<p><span class="math inline">\(f(x)\)</span> :
+总体样本的概率密度分布函数, <span class="math inline">\(\quad
+f(x)=\operatorname{Pr}(x \mid y \in\{0,1\})\)</span></p>
+<p><span class="math inline">\(f_{+}(x)\)</span> :
+正样本的概率密度分布函数, <span class="math inline">\(\quad
+f_{+}(x)=\operatorname{Pr}(x \mid y=1)\)</span></p>
+<p><span class="math inline">\(f_{-}(x)\)</span> :
+负样本的概率密度分布函数, <span class="math inline">\(\quad
+f_{-}(x)=\operatorname{Pr}(x \mid y=0)\)</span></p>
+<p><span class="math inline">\(f_l(x)\)</span> : 有标签 (labeled)
+样本的概率密度分布函数, <span class="math inline">\(\quad
+f_l(x)=\operatorname{Pr}(x \mid s=1) \subset f_{+}(x)\)</span></p>
+<p><span class="math inline">\(f_u(x)\)</span> : 无标签 (unlabeled)
+样本的概率密度分布函数， <span class="math inline">\(\quad
+f_u(x)=\operatorname{Pr}(x \mid s=0)\)</span></p>
+<p><span class="math inline">\(\hat{\theta}\)</span> : 对参数 <span class="math inline">\(\theta\)</span> 的估计值</p>
+<p><span class="math inline">\(P:\)</span> 正样本集, Positive,
+已标注的正样本</p>
+<p><span class="math inline">\(N\)</span> : 负样本集, Negative,
+实际末知</p>
+<p><span class="math inline">\(L\)</span> : 有标签样本集, Labeled,
+只有正样本</p>
+<p><span class="math inline">\(U\)</span> : 无标签样本集, Unlabeled,
+包括末知的正负样本</p>
+<p><span class="math inline">\(P U:\)</span>
+正样本和无标签样本组成的集合</p>
+<p><span class="math inline">\(R N\)</span> : 可靠的负样本</p>
 
     </div>
 

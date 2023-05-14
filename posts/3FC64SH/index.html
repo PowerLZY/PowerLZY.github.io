@@ -162,7 +162,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -306,26 +306,36 @@
 <p>本文是一个面向安全学术圈和工业界同行的介绍性和探讨性议题，议题的前半部分会介绍一些工业实践中被证明有效的落地实践，后半部分更多地是希望抛砖引玉，通过抽象和定义最新的问题，吸引更多学术研究员的关注和合作。</p>
 <h4><span id="2-目前可以做到哪些">2、目前可以做到哪些</span></h4>
 <p>第一部分，本次演讲从目前工业界中智能算法的一些落地实践情况切入说起，总结目前智能安全从概念到落地的应用情况，主要目的是希望阐述，有哪些问题是已经得到解决，或者部分解决的，包括:</p>
-<ol>
+<ol type="1">
 <li><strong>在海量、富类型的样本集支持下，现有的深度学习和机器学习框架已经可以很好的实现有监督学习和预测的目标</strong>，复杂模型结构层面的调整对最终结果的提升非常有限，更多的瓶颈是在如何发现更多的打标数据上，即<strong>样本集概率空间覆盖度问题</strong>。</li>
 <li><strong>文本内容检测</strong>是现在落地应用最多的场景之一(例如<strong>WAF</strong>、<strong>Webshell检测</strong>、<strong>二进制病毒检测</strong>、<strong>网页敏感内容检测</strong>、<strong>明码流量检测</strong>等)，<strong>传统的NLP和图形领域的特征工程和建模方法可以较好发挥作用</strong>。</li>
 <li>针对<strong>简单场景问题</strong>(例如<strong>暴力破解攻击检测</strong>、<strong>异地登录检测</strong>、<strong>真实入侵证据发现</strong>)，<strong>简单统计</strong>和<strong>假设检验</strong>可以发挥较好作用。</li>
 <li><strong>时序建模</strong>和<strong>时序异常检测算法</strong>在<strong>ddos、cc、定点API接口爆破检测</strong>上可以发挥较好效果，但受限于安全领域中存在较多的突然性、偶然性事件，时序周期性假设常常无法成立，这点极大限制了时序异常检测算法在安全领域内的应用。</li>
 <li><strong>相似性匹配算法</strong>(例如<strong>simhash、ssdeep、kmeans</strong>)目前的主要落地场景主要是，扩展原有规则模型的泛化能力。纯粹无监督的相似性聚类由于缺乏可解释性，目前更多用于辅助专家决策。</li>
 </ol>
-<p>总结来说，当前工业界和学术界智能算法的应用可以综合概括为，“<strong>基于历史经验样本下的的拟合学习</strong>”，即”<strong>基于知识的对抗</strong>“，机器学习在其中充当的角色更多地是一种记忆学习，缺点是难以提供更多的泛化检测和0day发现能力。</p>
+<p>总结来说，当前工业界和学术界智能算法的应用可以综合概括为，"<strong>基于历史经验样本下的的拟合学习</strong>"，即”<strong>基于知识的对抗</strong>“，机器学习在其中充当的角色更多地是一种记忆学习，缺点是难以提供更多的泛化检测和0day发现能力。</p>
 <h4><span id="3-还未解决的难题">3、还未解决的难题</span></h4>
 <p>第二部分，笔者希望将我们在企业一线工作的经历进行总结和抽象，将目前智能安全中的一些未解决问题，用学术课题的方式明确地定义出来，将智能安全中的问题转化为学术研究课题，目标是争取更广大的国内科研高效和机构的研究力量，将更多的研究重点投入在实际的问题上，避免对历史老问题的重复研究和建设，包括:</p>
-<ol>
-<li><strong>安全风险定量评估函数建模</strong>: 以恶意样本检测为例，恶意样本检测0day发现能力(对未知的未知发现能力)本质上是一个搜索优化问题，如何对每一个样本的威胁性(值越大表示恶意性越大，0或负值表示是正常样本)进行定量的定义和分析，是问题的关键。<strong>定义了明确的量化损失函数，恶意样本的检测就会从有监督学习问题转化为搜索优化问题。</strong></li>
-<li><strong>基于威胁性定量评估损失函数下的随机搜索问题</strong>: 在基于对各个场景建立了明确的损失函数(例如某个ttp的风险分值、某个http payload的恶意分值、某个文本文件的恶意分值)之后。接下来的工作就是结合安全问题的特点，开发针对性的优化搜索算法，例如<strong>蒙特卡洛搜索</strong>、<strong>随机梯度下降搜索</strong>。</li>
-<li>非完整观测下的复杂事件动态推理过程: 入侵检测是安全攻防领域一个很重要的问题，这个问题本质上是一个<strong>复杂事件马尔科夫推理过程</strong>，各种日志采集点代表了可观测量，但实际情况是，我们永远不可能获得一个安全事件的完整观测视角(受限于日志采集的种类和完整性)。所以安全研究员要解决的问题是，<strong>如果在不完整观测的条件下，进行贝叶斯信念网络的建模，并基于该信念网络进行复杂事件推理</strong>。</li>
-<li><strong>模型衰减对抗问题</strong>: 类似于自然界所有物理都在朝着熵增的方向演进，安全攻防中的所有模型都存在”性能衰退“的问题，在开发测试阶段完美适配了当前问题场景的模型在上线运行一段时间后，面临误报和漏报的风险会不断提高。</li>
-<li>针对攻击入侵链路回溯的有向无环图推理问题: 入侵回溯场景中面对的主要问题有如下几不同事件节点之间的因果依赖推导: 因为攻击在逻辑上是存在逻辑先后关系的多条路径(攻击事件链路)的合并: 一台机器可能不只遭到一次和一个攻击者的攻击异构节点的融合: 一次成功的入侵回溯包括对已知告警节点的因果串联，以及融合其他可以提供更多线索证据的日志节点这两项工作子图融合: 从不同的日志视角可能获得多条攻击链路，入侵回溯师需要能够识别出其中的底层联系，将多条攻击链路合成到一个大的攻击视角中，为后续的决策提供更丰富的攻击者和攻击面信息。</li>
+<ol type="1">
+<li><strong>安全风险定量评估函数建模</strong>:
+以恶意样本检测为例，恶意样本检测0day发现能力(对未知的未知发现能力)本质上是一个搜索优化问题，如何对每一个样本的威胁性(值越大表示恶意性越大，0或负值表示是正常样本)进行定量的定义和分析，是问题的关键。<strong>定义了明确的量化损失函数，恶意样本的检测就会从有监督学习问题转化为搜索优化问题。</strong></li>
+<li><strong>基于威胁性定量评估损失函数下的随机搜索问题</strong>:
+在基于对各个场景建立了明确的损失函数(例如某个ttp的风险分值、某个http
+payload的恶意分值、某个文本文件的恶意分值)之后。接下来的工作就是结合安全问题的特点，开发针对性的优化搜索算法，例如<strong>蒙特卡洛搜索</strong>、<strong>随机梯度下降搜索</strong>。</li>
+<li>非完整观测下的复杂事件动态推理过程:
+入侵检测是安全攻防领域一个很重要的问题，这个问题本质上是一个<strong>复杂事件马尔科夫推理过程</strong>，各种日志采集点代表了可观测量，但实际情况是，我们永远不可能获得一个安全事件的完整观测视角(受限于日志采集的种类和完整性)。所以安全研究员要解决的问题是，<strong>如果在不完整观测的条件下，进行贝叶斯信念网络的建模，并基于该信念网络进行复杂事件推理</strong>。</li>
+<li><strong>模型衰减对抗问题</strong>:
+类似于自然界所有物理都在朝着熵增的方向演进，安全攻防中的所有模型都存在”性能衰退“的问题，在开发测试阶段完美适配了当前问题场景的模型在上线运行一段时间后，面临误报和漏报的风险会不断提高。</li>
+<li>针对攻击入侵链路回溯的有向无环图推理问题:
+入侵回溯场景中面对的主要问题有如下几不同事件节点之间的因果依赖推导:
+因为攻击在逻辑上是存在逻辑先后关系的多条路径(攻击事件链路)的合并:
+一台机器可能不只遭到一次和一个攻击者的攻击异构节点的融合:
+一次成功的入侵回溯包括对已知告警节点的因果串联，以及融合其他可以提供更多线索证据的日志节点这两项工作子图融合:
+从不同的日志视角可能获得多条攻击链路，入侵回溯师需要能够识别出其中的底层联系，将多条攻击链路合成到一个大的攻击视角中，为后续的决策提供更丰富的攻击者和攻击面信息。</li>
 </ol>
 <h4><span id="4-我们目前在尝试的项目">4、我们目前在尝试的项目</span></h4>
 <p>第三部分，笔者会介绍一些目前我们公司团队在进行的课题研究方向，包括，</p>
-<ol>
+<ol type="1">
 <li>通过LSTM自动生成webshell黑样本</li>
 <li>基于<strong>GAN网络绕过</strong>现有深度学习AV检测模型</li>
 <li>基于<strong>遗传优化算法</strong>的的自动化0day样本生成</li>
@@ -335,15 +345,21 @@
 <h4><span id="5-历史外部演讲">5、历史外部演讲</span></h4>
 <ul>
 <li>《云环境自动化入侵溯源实战》, KCon 2019 [<a href="http://link.zhihu.com/?target=https%3A//static.cdxy.me/201908-%E4%BA%91%E7%8E%AF%E5%A2%83%E8%87%AA%E5%8A%A8%E5%8C%96%E5%85%A5%E4%BE%B5%E6%BA%AF%E6%BA%90%E5%AE%9E%E6%88%98-KCon.pdf">slides]</a></li>
-<li>“Hunting zero-days for millions of websites on Alibaba Cloud”, XCon 2019 [<a href="http://link.zhihu.com/?target=https%3A//static.cdxy.me/XCON-2019-EN.pdf">slides]</a></li>
-<li>“Webshell Detection via Attention-Based Opcode Sequence Classification”, Artificial Intelligence for Business Security Workshop (AIBS @ IJCAI-19). Macao, CN. 10-12 Aug 2019. [<a href="http://link.zhihu.com/?target=https%3A//static.cdxy.me/AIBS_2019_paper_3.pdf">paper]</a></li>
-<li>“Enhance Security Awareness with Data Mining”, BlueHat Shanghai 2019</li>
-<li>[<a href="http://link.zhihu.com/?target=https%3A//www.butian.net/datacon">DataCon 2019]</a> 1st place solution of malicious DNS traffic &amp; DGA analysis. [<a href="http://link.zhihu.com/?target=https%3A//www.cdxy.me/%3Fp%3D806">writeup]</a></li>
+<li>"Hunting zero-days for millions of websites on Alibaba Cloud", XCon
+2019 [<a href="http://link.zhihu.com/?target=https%3A//static.cdxy.me/XCON-2019-EN.pdf">slides]</a></li>
+<li>"Webshell Detection via Attention-Based Opcode Sequence
+Classification", Artificial Intelligence for Business Security Workshop
+(AIBS @ IJCAI-19). Macao, CN. 10-12 Aug 2019. [<a href="http://link.zhihu.com/?target=https%3A//static.cdxy.me/AIBS_2019_paper_3.pdf">paper]</a></li>
+<li>"Enhance Security Awareness with Data Mining", BlueHat Shanghai
+2019</li>
+<li>[<a href="http://link.zhihu.com/?target=https%3A//www.butian.net/datacon">DataCon
+2019]</a> 1st place solution of malicious DNS traffic &amp; DGA
+analysis. [<a href="http://link.zhihu.com/?target=https%3A//www.cdxy.me/%3Fp%3D806">writeup]</a></li>
 <li>《企业安全数据分析思考与实践》, FreeBuf公开课 [<a href="http://link.zhihu.com/?target=http%3A//static.cdxy.me/data-knowledge-action_cdxy.pdf">slides]</a></li>
 <li>《从数据视角探索安全威胁》, 先知白帽大会2018 [<a href="http://link.zhihu.com/?target=https%3A//xzfile.aliyuncs.com/upload/zcon/2018/10_%E4%BB%8E%E6%95%B0%E6%8D%AE%E8%A7%86%E8%A7%92%E6%8E%A2%E7%B4%A2%E5%AE%89%E5%85%A8%E5%A8%81%E8%83%81_cdxy.pdf">slides]</a></li>
 </ul>
 <h2><span id="企业安全数据分析实践与思考">企业安全数据分析实践与思考</span></h2>
-<p><a target="_blank" rel="noopener" href="https://live.freebuf.com/detail/c5e504cf96a4e1826a609553bf6054f9">https://live.freebuf.com/detail/c5e504cf96a4e1826a609553bf6054f9</a></p>
+<p>https://live.freebuf.com/detail/c5e504cf96a4e1826a609553bf6054f9</p>
 
     </div>
 

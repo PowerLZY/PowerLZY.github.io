@@ -162,7 +162,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -279,7 +279,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>645</span>
+      <span>640</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -299,11 +299,17 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="pytorch-学习笔记-模型应用">[PyTorch 学习笔记] 模型应用</span></h2>
 <ul>
-<li>Neural Network Malware Binary Classification：<a target="_blank" rel="noopener" href="https://github.com/jaketae/deep-malware-detection">https://github.com/jaketae/deep-malware-detection</a></li>
+<li>Neural Network Malware Binary
+Classification：https://github.com/jaketae/deep-malware-detection</li>
 </ul>
-<p>下面的代码是使用 Generator 来生成人脸图像，Generator 已经训练好保存在 pkl 文件中，只需要加载参数即可。<strong>由于模型是在多 GPU 的机器上训练的，因此加载参数后需要使用<code>remove_module()</code>函数来修改<code>state_dict</code>中的<code>key</code>。</strong></p>
+<p>下面的代码是使用 Generator 来生成人脸图像，Generator 已经训练好保存在
+pkl 文件中，只需要加载参数即可。<strong>由于模型是在多 GPU
+的机器上训练的，因此加载参数后需要使用<code>remove_module()</code>函数来修改<code>state_dict</code>中的<code>key</code>。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 多 GPU 的机器上训练模型参数修改</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">remove_module</span>(<span class="params">state_dict_g</span>):</span><br><span class="line">    <span class="comment"># remove module.</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict</span><br><span class="line"></span><br><span class="line">    new_state_dict = OrderedDict()</span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> state_dict_g.items():</span><br><span class="line">        namekey = k[<span class="number">7</span>:] <span class="keyword">if</span> k.startswith(<span class="string">&#x27;module.&#x27;</span>) <span class="keyword">else</span> k</span><br><span class="line">        new_state_dict[namekey] = v</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> new_state_dict</span><br></pre></td></tr></table></figure>
-<p><strong>在 GAN 的训练模式中</strong>，Generator 接收随机数得到输出值，目标是让输出值的分布与训练数据的分布接近，但是这里**==不是使用人为定义的损失函数来计算输出值与训练数据分布之间的差异，而是使用 Discriminator 来计算这个差异==**。需要注意的是这个差异不是单个数字上的差异，而是分布上的差异。</p>
+<p><strong>在 GAN 的训练模式中</strong>，Generator
+接收随机数得到输出值，目标是让输出值的分布与训练数据的分布接近，但是这里<strong>==不是使用人为定义的损失函数来计算输出值与训练数据分布之间的差异，而是使用
+Discriminator
+来计算这个差异==</strong>。需要注意的是这个差异不是单个数字上的差异，而是分布上的差异。</p>
 
     </div>
 
@@ -334,13 +340,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/1R22EKT/" rel="prev" title="Pytorch（15）模型Finetune">
-                  <i class="fa fa-chevron-left"></i> Pytorch（15）模型Finetune
+                <a href="/posts/3ACJRH6/" rel="prev" title="Pytorch（17）模型应用">
+                  <i class="fa fa-chevron-left"></i> Pytorch（17）模型应用
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/2DF1D1/" rel="next" title="Pytorch（14）模型保存与加载">
-                  Pytorch（14）模型保存与加载 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/1R22EKT/" rel="next" title="Pytorch（15）模型Finetune">
+                  Pytorch（15）模型Finetune <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

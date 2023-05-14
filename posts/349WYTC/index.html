@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 **本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）">
+    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:type" content="article">
 <meta property="og:title" content="支持向量机（2）软间隔对偶性">
 <meta property="og:url" content="https://powerlzy.github.io/posts/349WYTC/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 **本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）">
+<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
 <meta property="og:image" content="https://s2.loli.net/2023/04/17/zDNf9QWoTs2JxVp.jpg">
@@ -171,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -288,7 +288,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.1k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -306,87 +306,127 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+        <p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
 <span id="more"></span>
 <h3><span id="一-软间隔线性svm">一、软间隔线性SVM</span></h3>
 <p>在实际应用中，完全线性可分的样本是很少的，如果遇到了不能够完全线性可分的样本，我们应该怎么办？比如下面这个：</p>
-<img src="https://s2.loli.net/2023/04/17/zDNf9QWoTs2JxVp.jpg" alt="img" style="zoom: 33%;">
+<p><img src="https://s2.loli.net/2023/04/17/zDNf9QWoTs2JxVp.jpg" alt="img" style="zoom: 33%;"></p>
 <p>于是我们就有了软间隔，相比于硬间隔的苛刻条件，我们允许个别样本点出现在间隔带里面，比如：</p>
-<img src="https://s2.loli.net/2023/04/17/ha4zMrmIS9Z7jnW.jpg" alt="img" style="zoom: 33%;">
-<p>我们允许部分样本点不满足约束条件:<br>
-$$<br>
-1-y_i\left(w^T x_i+b\right) \leq 0<br>
-$$<br>
-为了度量这个间隔软到何种程度, 我们为每个样本引入一个松弛变量 $\xi_i$, 令 $\xi_i \geq 0$, 且 $1-y_i\left(w^T x_i+b\right)-\xi_i \leq 0$ 。对应如下图所示:</p>
-<img src="https://s2.loli.net/2023/04/17/GlPvqnUM7FDeTyX.jpg" alt="img" style="zoom: 33%;">
+<p><img src="https://s2.loli.net/2023/04/17/ha4zMrmIS9Z7jnW.jpg" alt="img" style="zoom: 33%;"></p>
+<p>我们允许部分样本点不满足约束条件: <span class="math display">\[
+1-y_i\left(w^T x_i+b\right) \leq 0
+\]</span> 为了度量这个间隔软到何种程度, 我们为每个样本引入一个松弛变量
+<span class="math inline">\(\xi_i\)</span>, 令 <span class="math inline">\(\xi_i \geq 0\)</span>, 且 <span class="math inline">\(1-y_i\left(w^T x_i+b\right)-\xi_i \leq 0\)</span>
+。对应如下图所示:</p>
+<p><img src="https://s2.loli.net/2023/04/17/GlPvqnUM7FDeTyX.jpg" alt="img" style="zoom: 33%;"></p>
 <p><strong>这边要注意一个问题，在间隔内的那部分样本点是不是支持向量？</strong></p>
-<p>我们可以由求参数 w 的那个式子可看出，只要$\lambda &gt; 0$的点都能够影响我们的超平面，因此都是支持向量。</p>
-<p><strong>硬间隔线性SVM的基本型：</strong>【凸二次规划问题， 具有全局最小值】<br>
-$$<br>
-\begin{array}{ll}<br>
-\min <em>{w, b} &amp; \frac{1}{2} w^{\top} w \<br>
-\text { s.t. } &amp; y</em>{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad i=1,2, \ldots, m<br>
-\end{array}<br>
-$$<br>
-约束中要求所有的样本都满足 $y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1$, 也就是让所有的样本都满足 $y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right)&gt;0$。<br>
-现在我们想对<strong>该约束进行一点放松</strong>, 我们希望在优化间隔的同时, 允许分类错误的样本出现, 但这类样本应尽可能少:<br>
-$$<br>
-\begin{array}{ll}<br>
-\min <em>{w, b} &amp; \frac{1}{2} w^{\top} w+C \sum</em>{i=1}^{m} \mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(w^{\top} \phi\left(x_{i}\right)+b\right)\right) \<br>
-\text { s.t. } &amp; y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1, \quad \text { 若 } y_{i}=\operatorname{sign}\left(w^{\top} \phi\left(x_{i}\right)+b\right) .<br>
-\end{array}<br>
-$$<br>
-其中, 优化目标的第一项 $\frac{1}{2} w^{\top} w$ 源自硬间隔核化 SVM 的基本型, 即优化间隔。优化目标的第二项 中的 $\mathbb{I}(\cdot)$ 是指示函数, 函数的参数通常是一个条件, 如果条件为真（True）, 则指示函数值为 1 ; 如果条件为假 (False), 则指示函数值为 0 。<br>
-$\sum_{i=1}^{m} \mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(w^{\top} \phi\left(x_{i}\right)+b\right)\right)$ 的含义是统计训练集 $D$ 中所有<strong>预测错误的样本总数</strong>。因此, 公式 162 的目标函数是同时优化间隔和最小化训练集预测错误的样本总数, <strong>$C$ 是个可调节的超参数, 用于权衡优化间隔和出现少量分类错误的样本这两个目标。</strong></p>
-<p>但是, 由于<strong>指示函数 $I(\cdot)$ 不是连续函数, 更不是凸函数, 使得优化问题不再是二次规划问题</strong>, 求解起来十分困难, 所以我们需要对其进行简化。另外<strong>指示函数没有区分预测错误的不同程度</strong>,因此, 我们<strong>引入松他变量</strong> (Slack Variable) $\xi_{i} \in \mathbb{R}$, 用于<strong>度量训练集 $D$ 中第 $i$ 个样本违背约束的程度</strong>。当第 $i$ 个样本<strong>违背约束的程度</strong>越大, 松弛变量 $\xi_{i}$ 的值越大<br>
-$$<br>
-\xi_{i}:= \begin{cases}0 &amp; \text { 若 } y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1 ; \ 1-y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) &amp; \text { 否则. }\end{cases}<br>
-$$<br>
-基于以上定义, 松弛变量 $\xi_{i}$ 的取值有以下四种情况, 如图 27 所示, 注意图 27 只是示意图, 用于理 解概念, 不表示用图中数据训练得到的分类边界一定是这样:</p>
-<ul>
-<li>当 $\xi_{i}=0$ 时, 训练集 $D$ 中第 $i$ 个样本分类正确 $h\left(x_{i}\right)=y_{i}$, 且满足大间隔约束 $y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right) \geq 1$;</li>
-<li>当 $0&lt;\xi_{i}&lt;1$ 时, 训练集 $D$ 中第 $i$ 个样本分类正确 $h\left(x_{i}\right)=y_{i}$, 但是不满足大间隔约束;</li>
-<li>当 $\xi_{i}=1$ 时, 训练集 $D$ 中第 $i$ 个样本恰好位于划分超平面 $w^{\top} \phi\left(x_{i}\right)+b=0$ 上, 且不满足大间 隔约束;</li>
-<li>当 $\xi&gt;0$ 时, 训练集 $D$ 中第 $i$ 个样本分类错误 $h\left(x_{i}\right) \neq y_{i}$, 且不满足大间隔约束。</li>
-</ul>
-<img src="https://s2.loli.net/2023/04/17/LPukQfqKiBNToV5.png" alt="image-20220409230106609" style="zoom:50%;">
+<p>我们可以由求参数 w 的那个式子可看出，只要<span class="math inline">\(\lambda &gt;
+0\)</span>的点都能够影响我们的超平面，因此都是支持向量。</p>
+<p><strong>硬间隔线性SVM的基本型：</strong>【凸二次规划问题，
+具有全局最小值】 <span class="math display">\[
+\begin{array}{ll}
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w \\
+\text { s.t. } &amp; y_{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad
+i=1,2, \ldots, m
+\end{array}
+\]</span> 约束中要求所有的样本都满足 <span class="math inline">\(y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) \geq 1\)</span>,
+也就是让所有的样本都满足 <span class="math inline">\(y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right)&gt;0\)</span>。
+现在我们想对<strong>该约束进行一点放松</strong>,
+我们希望在优化间隔的同时, 允许分类错误的样本出现, 但这类样本应尽可能少:
+<span class="math display">\[
+\begin{array}{ll}
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w+C \sum_{i=1}^{m}
+\mathbb{I}\left(y_{i} \neq \operatorname{sign}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right)\right) \\
+\text { s.t. } &amp; y_{i}\left(w^{\top} \phi\left(x_{i}\right)+b\right)
+\geq 1, \quad \text { 若 } y_{i}=\operatorname{sign}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) .
+\end{array}
+\]</span> 其中, 优化目标的第一项 <span class="math inline">\(\frac{1}{2}
+w^{\top} w\)</span> 源自硬间隔核化 SVM 的基本型,
+即优化间隔。优化目标的第二项 中的 <span class="math inline">\(\mathbb{I}(\cdot)\)</span> 是指示函数,
+函数的参数通常是一个条件, 如果条件为真（True）, 则指示函数值为 1 ;
+如果条件为假 (False), 则指示函数值为 0 。 <span class="math inline">\(\sum_{i=1}^{m} \mathbb{I}\left(y_{i} \neq
+\operatorname{sign}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right)\right)\)</span> 的含义是统计训练集 <span class="math inline">\(D\)</span>
+中所有<strong>预测错误的样本总数</strong>。因此, 公式 162
+的目标函数是同时优化间隔和最小化训练集预测错误的样本总数, <strong><span class="math inline">\(C\)</span> 是个可调节的超参数,
+用于权衡优化间隔和出现少量分类错误的样本这两个目标。</strong></p>
+<p>但是, 由于<strong>指示函数 <span class="math inline">\(I(\cdot)\)</span> 不是连续函数, 更不是凸函数,
+使得优化问题不再是二次规划问题</strong>, 求解起来十分困难,
+所以我们需要对其进行简化。另外<strong>指示函数没有区分预测错误的不同程度</strong>,因此,
+我们<strong>引入松他变量</strong> (Slack Variable) <span class="math inline">\(\xi_{i} \in \mathbb{R}\)</span>,
+用于<strong>度量训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本违背约束的程度</strong>。当第
+<span class="math inline">\(i\)</span>
+个样本<strong>违背约束的程度</strong>越大, 松弛变量 <span class="math inline">\(\xi_{i}\)</span> 的值越大 <span class="math display">\[
+\xi_{i}:= \begin{cases}0 &amp; \text { 若 } y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) \geq 1 ; \\ 1-y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) &amp; \text { 否则. }\end{cases}
+\]</span> 基于以上定义, 松弛变量 <span class="math inline">\(\xi_{i}\)</span> 的取值有以下四种情况, 如图 27
+所示, 注意图 27 只是示意图, 用于理 解概念,
+不表示用图中数据训练得到的分类边界一定是这样: - 当 <span class="math inline">\(\xi_{i}=0\)</span> 时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本分类正确 <span class="math inline">\(h\left(x_{i}\right)=y_{i}\)</span>,
+且满足大间隔约束 <span class="math inline">\(y_{i}\left(w^{\top}
+\phi\left(x_{i}\right)+b\right) \geq 1\)</span>; - 当 <span class="math inline">\(0&lt;\xi_{i}&lt;1\)</span> 时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本分类正确 <span class="math inline">\(h\left(x_{i}\right)=y_{i}\)</span>,
+但是不满足大间隔约束; - 当 <span class="math inline">\(\xi_{i}=1\)</span> 时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本恰好位于划分超平面 <span class="math inline">\(w^{\top} \phi\left(x_{i}\right)+b=0\)</span> 上,
+且不满足大间 隔约束; - 当 <span class="math inline">\(\xi&gt;0\)</span>
+时, 训练集 <span class="math inline">\(D\)</span> 中第 <span class="math inline">\(i\)</span> 个样本分类错误 <span class="math inline">\(h\left(x_{i}\right) \neq y_{i}\)</span>,
+且不满足大间隔约束。</p>
+<p><img src="https://s2.loli.net/2023/04/17/LPukQfqKiBNToV5.png" alt="image-20220409230106609" style="zoom:50%;"></p>
 <h5><span id="软间隔核化svm基本型合页损失函数"><strong>软间隔核化SVM基本型：</strong>（<strong>合页损失函数</strong>）：</span></h5>
-<p>$$<br>
-\begin{array}{ll}<br>
-\min <em>{\boldsymbol{w}, b, \boldsymbol{\xi}} &amp; \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+C \sum</em>{i=1}^m \xi_i \<br>
-\text { s.t. } &amp; y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right) \geq 1-\xi_i, \quad i=1,2, \ldots, m \<br>
-&amp; \xi_i \geq 0, \quad i=1,2, \ldots, m . \<br>
-&amp; \xi_i=\max \left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right), 0\right) .<br>
-\end{array}<br>
-$$<br>
-变为:<br>
-$$<br>
-\begin{aligned}<br>
-&amp; \min <em>{\boldsymbol{w}, b, \boldsymbol{\xi}} \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+C \sum</em>{i=1}^m \xi_i \<br>
-= &amp; \min <em>{\boldsymbol{w}, b} \frac{1}{2} \boldsymbol{w}^{\top} \boldsymbol{w}+C \sum</em>{i=1}^m \max \left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right), 0\right) \<br>
-= &amp; \min <em>{\boldsymbol{w}, b} C \sum</em>{i=1}^m \max \left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right), 0\right)+\frac{1}{2}|\boldsymbol{w}|^2 .<br>
-\end{aligned}<br>
-$$<br>
-令 $\lambda:=\frac{1}{m C}:$ 合页损失<br>
-$$<br>
-\min <em>{\boldsymbol{w}, b} \frac{1}{m} \sum</em>{i=1}^m \max \left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b, 0\right)+\frac{\lambda}{2}|\boldsymbol{w}|^2\right.<br>
-$$<br>
-<strong>回顾：对数几率回归:</strong><br>
-$$<br>
-\min <em>{\boldsymbol{w}, b} \frac{1}{m} \sum</em>{i=1}^m \log \left(1+\exp \left(-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{x}<em>i+b\right)\right)\right)+\frac{\lambda}{2}|\boldsymbol{w}|^2 .<br>
-$$<br>
-<strong>软间隔核化SVM对偶性： 软间隔的对偶性是在硬间隔的对偶性对拉格朗日参数添加一个上界。</strong><br>
-$$<br>
-\begin{array}{ll}<br>
-\min <em>{\boldsymbol{\alpha}} &amp; \frac{1}{2} \sum</em>{i=1}^m \sum</em>{j=1}^m \alpha_i \alpha_j y_i y_j \kappa\left(\boldsymbol{x}<em>i, \boldsymbol{x}<em>j\right)-\sum</em>{i=1}^m \alpha_i \<br>
-\text { s. t. } &amp; 0 \leq \alpha_i \leq C, \quad i=1,2, \ldots, m, \<br>
-&amp; \sum</em>{i=1}^m \alpha_i y_i=0 .<br>
-\end{array}<br>
-$$</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+\min _{\boldsymbol{w}, b, \boldsymbol{\xi}} &amp; \frac{1}{2}
+\boldsymbol{w}^{\top} \boldsymbol{w}+C \sum_{i=1}^m \xi_i \\
+\text { s.t. } &amp; y_i\left(\boldsymbol{w}^{\top}
+\boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right) \geq 1-\xi_i,
+\quad i=1,2, \ldots, m \\
+&amp; \xi_i \geq 0, \quad i=1,2, \ldots, m . \\
+&amp; \xi_i=\max \left(1-y_i\left(\boldsymbol{w}^{\top}
+\boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right), 0\right) .
+\end{array}
+\]</span> 变为: <span class="math display">\[
+\begin{aligned}
+&amp; \min _{\boldsymbol{w}, b, \boldsymbol{\xi}} \frac{1}{2}
+\boldsymbol{w}^{\top} \boldsymbol{w}+C \sum_{i=1}^m \xi_i \\
+= &amp; \min _{\boldsymbol{w}, b} \frac{1}{2} \boldsymbol{w}^{\top}
+\boldsymbol{w}+C \sum_{i=1}^m \max
+\left(1-y_i\left(\boldsymbol{w}^{\top}
+\boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right), 0\right) \\
+= &amp; \min _{\boldsymbol{w}, b} C \sum_{i=1}^m \max
+\left(1-y_i\left(\boldsymbol{w}^{\top}
+\boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b\right),
+0\right)+\frac{1}{2}\|\boldsymbol{w}\|^2 .
+\end{aligned}
+\]</span> 令 <span class="math inline">\(\lambda:=\frac{1}{m
+C}:\)</span> 合页损失 <span class="math display">\[
+\min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \max
+\left(1-y_i\left(\boldsymbol{w}^{\top}
+\boldsymbol{\phi}\left(\boldsymbol{x}_i\right)+b,
+0\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2\right.
+\]</span> <strong>回顾：对数几率回归:</strong> <span class="math display">\[
+\min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \log \left(1+\exp
+\left(-y_i\left(\boldsymbol{w}^{\top}
+\boldsymbol{x}_i+b\right)\right)\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2
+.
+\]</span> <strong>软间隔核化SVM对偶性：
+软间隔的对偶性是在硬间隔的对偶性对拉格朗日参数添加一个上界。</strong>
+<span class="math display">\[
+\begin{array}{ll}
+\min _{\boldsymbol{\alpha}} &amp; \frac{1}{2} \sum_{i=1}^m \sum_{j=1}^m
+\alpha_i \alpha_j y_i y_j \kappa\left(\boldsymbol{x}_i,
+\boldsymbol{x}_j\right)-\sum_{i=1}^m \alpha_i \\
+\text { s. t. } &amp; 0 \leq \alpha_i \leq C, \quad i=1,2, \ldots, m, \\
+&amp; \sum_{i=1}^m \alpha_i y_i=0 .
+\end{array}
+\]</span></p>
 
     </div>
 

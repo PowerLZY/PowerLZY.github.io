@@ -162,7 +162,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -299,21 +299,31 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="推荐算法">推荐算法</span></h2>
 <blockquote>
-<p>百度飞浆，推荐系统：<a target="_blank" rel="noopener" href="https://paddlepedia.readthedocs.io/en/latest/tutorials/recommendation_system/recommender_system.html#id2">https://paddlepedia.readthedocs.io/en/latest/tutorials/recommendation_system/recommender_system.html#id2</a></p>
-<p><strong>为什么LR可以用来做CTR预估？</strong> - AI牛的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/23652394/answer/2352984912">https://www.zhihu.com/question/23652394/answer/2352984912</a></p>
-<p><strong>推荐系统中常用的embedding方法</strong> - 十三的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/476673607">https://zhuanlan.zhihu.com/p/476673607</a></p>
+<p>百度飞浆，推荐系统：https://paddlepedia.readthedocs.io/en/latest/tutorials/recommendation_system/recommender_system.html#id2</p>
+<p><strong>为什么LR可以用来做CTR预估？</strong> - AI牛的回答 - 知乎
+https://www.zhihu.com/question/23652394/answer/2352984912</p>
+<p><strong>推荐系统中常用的embedding方法</strong> - 十三的文章 - 知乎
+https://zhuanlan.zhihu.com/p/476673607</p>
 </blockquote>
 <h3><span id="一-背景介绍">一、背景介绍</span></h3>
 <h4><span id="11-推荐系统的产生">1.1 推荐系统的产生</span></h4>
-<p>在网络技术不断发展和电子商务规模不断扩大的背景下，商品数量和种类快速增长，用户需要花费大量时间才能找到自己想买的商品，这就是信息超载问题。为了解决这个难题，个性化推荐系统（Recommender System）应运而生。</p>
-<p><strong>个性化推荐系统是信息过滤系统（Information Filtering System）的子集</strong>，它可以用在很多领域，如电影、音乐、电商和 Feed 流推荐等。个性化推荐系统通过分析、挖掘用户行为，发现用户的个性化需求与兴趣特点，将用户可能感兴趣的信息或商品推荐给用户。与搜索引擎不同，个性化推荐系统不需要用户准确地描述出自己的需求，而是根据用户的历史行为进行建模，主动提供满足用户兴趣和需求的信息。</p>
+<p>在网络技术不断发展和电子商务规模不断扩大的背景下，商品数量和种类快速增长，用户需要花费大量时间才能找到自己想买的商品，这就是信息超载问题。为了解决这个难题，个性化推荐系统（Recommender
+System）应运而生。</p>
+<p><strong>个性化推荐系统是信息过滤系统（Information Filtering
+System）的子集</strong>，它可以用在很多领域，如电影、音乐、电商和 Feed
+流推荐等。个性化推荐系统通过分析、挖掘用户行为，发现用户的个性化需求与兴趣特点，将用户可能感兴趣的信息或商品推荐给用户。与搜索引擎不同，个性化推荐系统不需要用户准确地描述出自己的需求，而是根据用户的历史行为进行建模，主动提供满足用户兴趣和需求的信息。</p>
 <p>1994年明尼苏达大学推出的GroupLens系统一般被认为是个性化推荐系统成为一个相对独立的研究方向的标志。该系统首次提出了基于协同过滤来完成推荐任务的思想，此后，基于该模型的协同过滤推荐引领了个性化推荐系统十几年的发展方向。</p>
 <h4><span id="12-推荐系统的方法">1.2 推荐系统的方法</span></h4>
 <p>传统的个性化推荐系统方法主要有：</p>
 <ul>
-<li><strong>协同过滤推荐</strong>（Collaborative Filtering Recommendation）：该方法是应用最广泛的技术之一，需要收集和分析用户的历史行为、活动和偏好。它通常可以分为两个子类：基于用户 （User-Based）的推荐和基于物品（Item-Based）的推荐。该方法的一个关键优势是它不依赖于机器去分析物品的内容特征，因此它无需理解物品本身也能够准确地推荐诸如电影之类的复杂物品；缺点是对于没有任何行为的新用户存在冷启动的问题，同时也存在用户与商品之间的交互数据不够多造成的稀疏问题。值得一提的是，社交网络或地理位置等上下文信息都可以结合到协同过滤中去。</li>
-<li><strong>基于内容过滤推荐</strong>（Content-based Filtering Recommendation）：该方法利用商品的内容描述，抽象出有意义的特征，通过计算用户的兴趣和商品描述之间的相似度，来给用户做推荐。优点是简单直接，不需要依据其他用户对商品的评价，而是通过商品属性进行商品相似度度量，从而推荐给用户所感兴趣商品的相似商品；缺点是对于没有任何行为的新用户同样存在冷启动的问题。</li>
-<li>**组合推荐（**Hybrid Recommendation）：运用不同的输入和技术共同进行推荐，以弥补各自推荐技术的缺点。 近些年来，深度学习在很多领域都取得了巨大的成功。学术界和工业界都在尝试将深度学习应用于个性化推荐系统领域中。深度学习具有优秀的自动提取特征的能力，能够学习多层次的抽象特征表示，并对异质或跨域的内容信息进行学习，可以一定程度上处理个性化推荐系统冷启动问题</li>
+<li><strong>协同过滤推荐</strong>（Collaborative Filtering
+Recommendation）：该方法是应用最广泛的技术之一，需要收集和分析用户的历史行为、活动和偏好。它通常可以分为两个子类：基于用户
+（User-Based）的推荐和基于物品（Item-Based）的推荐。该方法的一个关键优势是它不依赖于机器去分析物品的内容特征，因此它无需理解物品本身也能够准确地推荐诸如电影之类的复杂物品；缺点是对于没有任何行为的新用户存在冷启动的问题，同时也存在用户与商品之间的交互数据不够多造成的稀疏问题。值得一提的是，社交网络或地理位置等上下文信息都可以结合到协同过滤中去。</li>
+<li><strong>基于内容过滤推荐</strong>（Content-based Filtering
+Recommendation）：该方法利用商品的内容描述，抽象出有意义的特征，通过计算用户的兴趣和商品描述之间的相似度，来给用户做推荐。优点是简单直接，不需要依据其他用户对商品的评价，而是通过商品属性进行商品相似度度量，从而推荐给用户所感兴趣商品的相似商品；缺点是对于没有任何行为的新用户同样存在冷启动的问题。</li>
+<li><strong>组合推荐（</strong>Hybrid
+Recommendation）：运用不同的输入和技术共同进行推荐，以弥补各自推荐技术的缺点。
+近些年来，深度学习在很多领域都取得了巨大的成功。学术界和工业界都在尝试将深度学习应用于个性化推荐系统领域中。深度学习具有优秀的自动提取特征的能力，能够学习多层次的抽象特征表示，并对异质或跨域的内容信息进行学习，可以一定程度上处理个性化推荐系统冷启动问题</li>
 </ul>
 
     </div>

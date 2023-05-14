@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -268,7 +268,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>8.9k</span>
+      <span>9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -292,31 +292,38 @@
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/252845718">求是汪在路上：抽样对Lift和KS指标的影响</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/161009991">求是汪在路上：客户级通用信用评分模型架构设计</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90214329">求是汪在路上：大数据信贷风控模型架构</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90251922">求是汪在路上：<strong><font color="red"> 风控模型开发流程标准化</font></strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90251922">求是汪在路上：<strong><font color="red">
+风控模型开发流程标准化</font></strong></a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/92691256">求是汪在路上：风控模型上线部署流程</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350616539">求是汪在路上：如何量化样本偏差对信贷风控模型的影响</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110982479">求是汪在路上：<strong><font color="red"> 样本权重对逻辑回归评分卡的影响探讨</font></strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110982479">求是汪在路上：<strong><font color="red">
+样本权重对逻辑回归评分卡的影响探讨</font></strong></a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85976154">求是汪在路上：利用样本分群提升风控模型性能</a></p>
 </blockquote>
 <h2><span id="一-风控模型开发流程标准化">一、风控模型开发流程标准化</span></h2>
 <h3><span id="风控业务背景"><strong>风控业务背景</strong></span></h3>
-<p>在大型风控建模项目中，模型开发阶段实际上只占其中很小的一部分，我们常把大量精力投入在数据准备、特征工程、模型设计等阶段。同时，开发阶段所用方法重复性相对较高。如果将其模块化封装，可大大提高建模效率。Don‘t repeat yourself！</p>
-<p><img src="https://pic2.zhimg.com/80/v2-ca4ae4880f0369cdfd03bfa3b97cba81_1440w.jpg" alt="img"></p>
+<p>在大型风控建模项目中，模型开发阶段实际上只占其中很小的一部分，我们常把大量精力投入在数据准备、特征工程、模型设计等阶段。同时，开发阶段所用方法重复性相对较高。如果将其模块化封装，可大大提高建模效率。Don‘t
+repeat yourself！</p>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-ca4ae4880f0369cdfd03bfa3b97cba81_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>本文主要内容在于：</p>
-<ol>
+<ol type="1">
 <li>理论角度，系统阐述了风控模型开发流程，以及相应的理论依据。</li>
 <li>实践角度，整理了目前一些开源工具包，可供大家自行选择使用。</li>
 </ol>
-<h3><span id="11-风控模型开发流程标准化的意义"><strong>1.1 风控模型开发流程标准化的意义</strong></span></h3>
+<h3><span id="11风控模型开发流程标准化的意义"><strong>1.1
+风控模型开发流程标准化的意义</strong></span></h3>
 <p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90214329">大数据信贷风控模型架构</a>》一文中，我们系统探讨了大数据风控模型架构的优缺点。从该架构出发，基于历次大型模型开发项目实践，我们往往会发现存在以下问题：</p>
-<ol>
+<ol type="1">
 <li>各建模同学的工程能力存在差异，无法保证所有人都有代码优化及debug的能力。</li>
 <li>整个流程不规范统一，某些同学不清楚基础指标函数的底层逻辑，出现问题难以定位。</li>
 <li>浪费大量时间用于协调沟通，尤其是过程文档记录参差不齐，无法复现。</li>
 <li><strong>建模脚本可能存在多个版本，模型版本管理困难</strong>。</li>
 </ol>
 <p>风控模型开发流程标准化的意义在于：</p>
-<ol>
+<ol type="1">
 <li>提高建模效率：可批量快速生产模型，保证项目按期完成，同时让建模同学更有精力关注模型优化分析等复杂工作。</li>
 <li>理解计算逻辑：帮助团队更为深刻理解各类评估指标背后的业务含义，便于调试优化。</li>
 <li><strong>统一建模流程</strong>：约定命名方式。保证在分工协作的情况下，模型开发文档更容易整合汇总，便于Review。</li>
@@ -324,11 +331,14 @@
 </ol>
 <p>由于经常需要跨时间窗来分析变量，我们约定以下名词：</p>
 <ul>
-<li><strong>样本集</strong>：训练集（In the Sample，INS）、验证集（Out of Sample，OOS）、测试集（Out of Time，OOT）</li>
+<li><strong>样本集</strong>：训练集（In the Sample，INS）、验证集（Out
+of Sample，OOS）、测试集（Out of Time，OOT）</li>
 <li><strong>自然月</strong>：由于风控领域中样本相对较少，一般按月粒度来观察。对于某段时间内的样本，我们也称为cohort或vintage。通俗而言，就是一个批次（batch）。</li>
 </ul>
-<h3><span id="12-功能模块-探索性数据分析"><strong>1.2 功能模块 - 探索性数据分析</strong></span></h3>
-<p><strong>探索性数据分析（Exploratory Data Analysis，EDA）用于初步检验数据质量，因此需要计算各类数据特征指标。</strong></p>
+<h3><span id="12-功能模块-探索性数据分析"><strong>1.2 功能模块 -
+探索性数据分析</strong></span></h3>
+<p><strong>探索性数据分析（Exploratory Data
+Analysis，EDA）用于初步检验数据质量，因此需要计算各类数据特征指标。</strong></p>
 <blockquote>
 <ul>
 <li>探索数据分布（Exploratory Data Distribution，EDD）</li>
@@ -338,7 +348,8 @@
 <li>其他数据质量检查（Quality Check）</li>
 </ul>
 </blockquote>
-<h4><span id="121-探索数据分布exploratory-data-distributionedd">1.2.1 探索数据分布（Exploratory Data Distribution，EDD）</span></h4>
+<h4><span id="121探索数据分布exploratory-data-distributionedd">1.2.1
+探索数据分布（Exploratory Data Distribution，EDD）</span></h4>
 <p><strong>功能</strong>：按自然月/样本集维度，统计变量的数据分布。</p>
 <p><strong>指标</strong>：</p>
 <ul>
@@ -346,121 +357,162 @@
 <li>离散型变量，包括：取值及出现次数(cnt)、占比(ratio)。</li>
 </ul>
 <p><strong>示例</strong>：连续变量数据分布（月维度)、离散变量数据分布</p>
-<p><img src="https://pic3.zhimg.com/80/v2-8f7ad96d18789094dab9090cf551a81e_1440w.jpg" alt="img"></p>
-<p><img src="https://pic4.zhimg.com/80/v2-0b97ea436eb6156939e74bf5126ae3d3_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-8f7ad96d18789094dab9090cf551a81e_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-0b97ea436eb6156939e74bf5126ae3d3_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li><strong>业务含义</strong>：基于“<strong>历史与未来样本分布相同</strong>”的建模假设，我们才能基于历史数据拟合X和Y之间的关系来预测未来。因此，在变量分布上，首先需要保证这一点。</li>
 </ul>
-<p>从图1中，我们可以观察分位数的变化差异。例如，变量 <img src="https://www.zhihu.com/equation?tex=x_2" alt="[公式]"> 在2018年1月时最大值异常，其余月份均正常。此时，我们就需要检查：数据源是否存在问题？变量回溯过程是否出错？</p>
-<h4><span id="122-缺失率missing-rate">1.2.2 <strong>缺失率（Missing Rate）</strong></span></h4>
+<p>从图1中，我们可以观察分位数的变化差异。例如，变量 <img src="https://www.zhihu.com/equation?tex=x_2" alt="[公式]">
+在2018年1月时最大值异常，其余月份均正常。此时，我们就需要检查：数据源是否存在问题？变量回溯过程是否出错？</p>
+<h4><span id="122-缺失率missingrate">1.2.2 <strong>缺失率（Missing
+Rate）</strong></span></h4>
 <p>功能：<strong>按自然月/样本集维度，统计变量的缺失率。</strong></p>
 <p>指标：缺失率 = 未覆盖样本数 / 总样本数 × 100%</p>
-<p><img src="https://pic2.zhimg.com/80/v2-32d1ec1106b1e58cfcd2ecfe7b0040b5_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-32d1ec1106b1e58cfcd2ecfe7b0040b5_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>业务：</p>
 <ul>
 <li>用于分析数据源的缺失率，以及未来的采集率趋势。如果缺失率持续升高，我们就认为这块数据不可用。</li>
 <li>造成缺失的原因多种多样，可分为随机缺失和非随机缺失。例如，如果是用户自填信息，用户主观不愿意填写而导致数据缺失，属于非随机缺失。</li>
 </ul>
-<h4><span id="123-重复值duplicate-value">1.2.3 <strong>重复值（Duplicate Value）</strong></span></h4>
+<h4><span id="123-重复值duplicatevalue">1.2.3 <strong>重复值（Duplicate
+Value）</strong></span></h4>
 <p>功能：检验建模样本中是否有重复数据。</p>
 <p>指标：按样本ID分组后，统计行数</p>
-<p><img src="https://pic1.zhimg.com/80/v2-2c3cd4f809b68e130f4d6edba31058b8_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-2c3cd4f809b68e130f4d6edba31058b8_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>业务：观察相同订单的特征变量取值是否一致。取值相同，只需简单去重；否则，说明生成逻辑有误，需检查SQL逻辑。</p>
-<h4><span id="124-单一值unique-value">1.2.4  <strong>单一值（Unique Value）</strong></span></h4>
+<h4><span id="124-单一值uniquevalue">1.2.4 <strong>单一值（Unique
+Value）</strong></span></h4>
 <p>功能：统计变量中某一固定值的占比。</p>
 <p>指标：变量每个取值的出现次数。</p>
 <p>示例：变量中0的取值占到70%.</p>
 <p><strong>业务：如果变量取值中某一固定值占比很高，那么该变量区别度往往很低。通常，单一值比例超过90%以上，建议删除该变量。</strong></p>
-<h4><span id="125-其他数据质量检查qc"><strong>1.2.5 其他数据质量检查（QC）</strong></span></h4>
+<h4><span id="125其他数据质量检查qc"><strong>1.2.5
+其他数据质量检查（QC）</strong></span></h4>
 <p>变量取值本身具有某些业务含义，我们需要结合业务来检验，并记录归档。例如：</p>
 <ul>
 <li>特殊值归档说明：例如-9999999是代表缺失，还是其他含义，需给出描述说明。</li>
 <li>0的业务逻辑确认：真实值为0？数据缺失？默认填充值？</li>
 </ul>
-<h3><span id="13-功能模块-特征选择">1.3 <strong>功能模块 - 特征选择</strong></span></h3>
-<p>根据RFM特征体系，我们可以构造成千上万个特征变量（参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85440355">风控特征—时间滑窗统计特征体系</a>》）。但是，这些变量并不都满足我们的要求，<strong><font color="red"> 我们需要剔除不符合要求的变量，从输入上保证风控系统的鲁棒性。</font></strong></p>
+<h3><span id="13-功能模块-特征选择">1.3 <strong>功能模块 -
+特征选择</strong></span></h3>
+<p>根据RFM特征体系，我们可以构造成千上万个特征变量（参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85440355">风控特征—时间滑窗统计特征体系</a>》）。但是，这些变量并不都满足我们的要求，<strong><font color="red">
+我们需要剔除不符合要求的变量，从输入上保证风控系统的鲁棒性。</font></strong></p>
 <p>变量筛选（selection）是一个比较复杂的精细活，需要考虑很多因素，比如：<strong>预测能力、相关性、稳定性、合规性、业务可解释性</strong>等等。考虑不同维度，我们会依据一系列指标进行变量筛选。</p>
 <p>从广义上，可分为业务指标和技术指标两大类。</p>
 <h4><span id="131-业务指标包括">1.3.1 <strong>业务指标</strong>包括：</span></h4>
-<ol>
+<ol type="1">
 <li><strong>合规性(compliant)</strong>：用以加工变量的数据源是否符合国家法律法规？是否涉及用户隐私数据？例如，如果某块爬虫数据被监管，那么相关变量的区分度再好，我们也只能弃用。而在国外，种族、性别、宗教等变量被禁止用于信贷风控中，这会存在歧视性。</li>
 <li><strong>可得性(available)</strong>：数据未来是否能继续采集？这就涉及产品流程设计、用户授权协议、合规需求、模型应用环节等诸多方面。例如，如果产品业务流程改动而导致某个埋点下线，那么相关埋点行为变量只能弃用。又比如，如果需要做额度授信模型，那么只能利用在额度阶段能采集到的实时数据，这就需要提前确认数据采集逻辑。</li>
 <li><strong>稳定性(stable)</strong>：一方面，数据源采集稳定是变量稳定性的基本前提。例如，外部数据常会因为政策性、技术性等原因导致接入不稳定，这就需要做好数据缓存，或者模型降级机制。另一方面，变量取值分布变化是导致不稳定的直接原因。我们将会采取一些技术指标展开分析，下文将会介绍。</li>
-<li><strong>可解释性(interpretable)</strong>：需要符合业务可解释性。如果变量的业务逻辑不清晰，那么我们宁可弃之。同时，这也是保证模型可解释性（参数 + 变量）的前提。</li>
+<li><strong>可解释性(interpretable)</strong>：需要符合业务可解释性。如果变量的业务逻辑不清晰，那么我们宁可弃之。同时，这也是保证模型可解释性（参数
++ 变量）的前提。</li>
 <li><strong>逻辑性(logical)</strong>：也就是因果逻辑，特征变量是因，风控决策是果。如果某个变量是风控系统决策给出的，那么我们就不能入模。例如，用户历史申贷订单的利率是基于上一次风控系统决策的结果，如果将“用户历史申贷订单的利率”作为变量，那么在实际使用时就会有问题。</li>
 <li><strong>可实时上线</strong>：模型最终目的是为了上线使用。如果实时变量不支持加工，那么对应的离线变量就只能弃之。例如，某个离线变量在统计时限定观察期为180天，但线上只支持观察期为90天，那么就不可用。对于不熟悉线上变量加工逻辑的新手，往往容易踩坑而导致返工。</li>
 </ol>
 <h4><span id="132-技术指标包括">1.3.2 <strong>技术指标</strong>包括：</span></h4>
 <blockquote>
-<p>基于缺失率（Missing Rate）<br>
-基于变异系数（Coefficient of Variation，CV）<br>
-基于稳定性（Population Stability Index，PSI）<br>
-基于信息量（Information Value，IV）<br>
-基于RF/XGBoost特征重要性（Feature Importance）<br>
-变量聚类（Variable Cluster，VarClus）<br>
-基于线性相关性（Linear Correlation）<br>
-基于多重共线性（Multicollinearity）<br>
-基于逐步回归（stepwise)<br>
-基于P-Vaule显著性检验</p>
+<p>基于缺失率（Missing Rate） 基于变异系数（Coefficient of
+Variation，CV） 基于稳定性（Population Stability Index，PSI）
+基于信息量（Information Value，IV） 基于RF/XGBoost特征重要性（Feature
+Importance） 变量聚类（Variable Cluster，VarClus）
+基于线性相关性（Linear Correlation） 基于多重共线性（Multicollinearity）
+基于逐步回归（stepwise) 基于P-Vaule显著性检验</p>
 </blockquote>
 <ul>
 <li><strong>基于缺失率（Missing Rate）</strong></li>
 </ul>
-<p>**业务：**变量缺失率越高，可利用价值越低。缺失率变化不稳定的变量，尤其是缺失率趋势在升高，代表未来数据源采集率下降，不建议采用。数据源是特征变量的基础，数据源不稳定，直接导致模型稳定性变差。</p>
+<p><strong>业务：</strong>变量缺失率越高，可利用价值越低。缺失率变化不稳定的变量，尤其是缺失率趋势在升高，代表未来数据源采集率下降，不建议采用。数据源是特征变量的基础，数据源不稳定，直接导致模型稳定性变差。</p>
 <h5><span id="功能">功能：</span></h5>
 <blockquote>
-<p>step 1. 按自然月/样本集维度，统计变量缺失率，并计算缺失率的均值、标准差。<br>
-step 2. 根据实际场景，设置阈值（如50%、70%、90%）进行筛选。</p>
+<p>step 1.
+按自然月/样本集维度，统计变量缺失率，并计算缺失率的均值、标准差。 step
+2. 根据实际场景，设置阈值（如50%、70%、90%）进行筛选。</p>
 </blockquote>
-<p><img src="https://pic4.zhimg.com/80/v2-d432f6c6916a4e94b698d325ce9d32b7_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-d432f6c6916a4e94b698d325ce9d32b7_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li><strong>基于变异系数（Coefficient of Variation，CV）</strong></li>
 </ul>
 <p><strong>业务</strong>：变异系数越小，代表波动越小，稳定性越好。缺点在于CV没有统一的经验标准。</p>
 <p><strong>功能</strong>：</p>
 <blockquote>
-<p>step 1. 基于数据分布EDD，选择某个指标（如均值mean）计算变异系数CV，用来衡量变量分布的稳定性。<br>
+<p>step 1.
+基于数据分布EDD，选择某个指标（如均值mean）计算变异系数CV，用来衡量变量分布的稳定性。
 step 2. 设置阈值进行筛选。</p>
 </blockquote>
-<p><strong>指标</strong>：变异系数 C·V =（ 标准偏差 SD / 平均值Mean ）× 100%</p>
+<p><strong>指标</strong>：变异系数 C·V =（ 标准偏差 SD / 平均值Mean ）×
+100%</p>
 <ul>
 <li><strong>基于稳定性（Population Stability Index，PSI）</strong></li>
 </ul>
 <p><strong>业务</strong>：需分申请层、放款层，分别评估变量稳定性。通常会选择0.1作为阈值，只要任意一个不满足稳定性要求就弃用。PSI无法反映很多细节原因，比如分布是右偏还是左偏。此时需要从EDD上进行分析。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-330e33c4f93c5abef39854964f780d5a_1440w.png" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-330e33c4f93c5abef39854964f780d5a_1440w.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p><strong>功能</strong>：</p>
 <blockquote>
-<p>step 1. 以训练集（INS）分布为期望分布，计算变量的群体稳定性指标PSI。<br>
+<p>step 1. 以训练集（INS）分布为期望分布，计算变量的群体稳定性指标PSI。
 step 2. 根据PSI的经验阈值进行筛选。</p>
 </blockquote>
 <p><strong>指标</strong>： <img src="https://www.zhihu.com/equation?tex=psi+%3D+%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%7B%28A_i+-+E_i%29%7D+%2A+ln%28A_i+%2F+E_i%29" alt="[公式]"></p>
-<p>上式含义为：PSI = SUM( (实际占比 - 预期占比）* ln(实际占比 / 预期占比) );预期占比是指训练集上每个分箱里的样本占比，实际占比是待比较样本集的每个分箱里的样本占比。可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79682292">群体稳定性指标(PSI)深入理解应用</a>》。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-c9cb1ae5f72f2f6c5dfcb54486f23182_1440w.jpg" alt="img"></p>
+<p>上式含义为：PSI = SUM( (实际占比 - 预期占比）* ln(实际占比 /
+预期占比)
+);预期占比是指训练集上每个分箱里的样本占比，实际占比是待比较样本集的每个分箱里的样本占比。可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79682292">群体稳定性指标(PSI)深入理解应用</a>》。</p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-c9cb1ae5f72f2f6c5dfcb54486f23182_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li>==<strong>基于信息量（Information Value，IV）</strong>==</li>
 </ul>
 <p><strong>业务</strong>：<strong>用以评估变量的预测能力</strong>。通常情况下，IV越高，预测能力越强。但IV过高时，我们就要怀疑是否发生信息泄漏（leakage）问题，也就是在自变量X中引入了Y的信息。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-1833a40731ac61e55a38bbd928dc7636_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-1833a40731ac61e55a38bbd928dc7636_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p><strong>功能</strong>：</p>
 <blockquote>
-<p>step 1. 按自然月/样本集维度，统计变量的IV。<br>
-step 2. 根据IV的经验阈值来筛选。</p>
+<p>step 1. 按自然月/样本集维度，统计变量的IV。 step 2.
+根据IV的经验阈值来筛选。</p>
 </blockquote>
-<p><strong>指标</strong>：IV。可参考**《<strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80134853">WOE与IV指标的深入理解应用</a></strong>》**</p>
-<p><img src="https://www.zhihu.com/equation?tex=IV+%3D++%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28%5Cfrac%7BBad_i%7D%7BBad_T%7D++-+%5Cfrac%7BGood_i%7D%7BGood_T%7D%29+%2A+WOE_i+%5C%5C++++%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D+%28%5Cfrac%7BBad_i%7D%7BBad_T%7D++-+%5Cfrac%7BGood_i%7D%7BGood_T%7D%29+%2Aln%28%5Cfrac%7BBad_i%7D%7BBad_T%7D++%2F+%5Cfrac%7BGood_i%7D%7BGood_T%7D%29+%5C%5C+" alt="[公式]"></p>
-<p><img src="https://pic3.zhimg.com/80/v2-2097685ef366bb9df0f6b8944c416aba_1440w.png" alt="img"></p>
+<p><strong>指标</strong>：IV。可参考<strong>《</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80134853">WOE与IV指标的深入理解应用</a><strong>》</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=IV+%3D++%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28%5Cfrac%7BBad_i%7D%7BBad_T%7D++-+%5Cfrac%7BGood_i%7D%7BGood_T%7D%29+%2A+WOE_i+%5C%5C++++%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D+%28%5Cfrac%7BBad_i%7D%7BBad_T%7D++-+%5Cfrac%7BGood_i%7D%7BGood_T%7D%29+%2Aln%28%5Cfrac%7BBad_i%7D%7BBad_T%7D++%2F+%5Cfrac%7BGood_i%7D%7BGood_T%7D%29+%5C%5C+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-2097685ef366bb9df0f6b8944c416aba_1440w.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li>==<strong>基于RF/XGBoost特征重要性</strong>==</li>
 </ul>
 <p><strong>业务</strong>：在特征变量特别多的时候，可用于快速筛选特征。从机器学习可解释性角度而言，特征重要性只具有全局可解释性，无法对单个case给出解释。</p>
 <p><strong>功能</strong>：</p>
 <blockquote>
-<p>step 1. 根据树模型训练后给出的特征重要性，一般选择累积重要性Top 95%的变量。<br>
-step 2. 为降低一次训练所导致的随机性影响，可综合多次结果来筛选。</p>
+<p>step 1. 根据树模型训练后给出的特征重要性，一般选择累积重要性Top
+95%的变量。 step 2.
+为降低一次训练所导致的随机性影响，可综合多次结果来筛选。</p>
 </blockquote>
-<p>指标：特征重要性。XGBoost实现中Booster类get_score方法输出特征重要性，其中 importance_type参数支持三种特征重要性的计算方法：</p>
+<p>指标：特征重要性。XGBoost实现中Booster类get_score方法输出特征重要性，其中
+importance_type参数支持三种特征重要性的计算方法：</p>
 <blockquote>
-<ol>
+<ol type="1">
 <li><strong>weight（默认值）：使用特征在所有树中作为划分属性的次数。</strong></li>
 <li><strong>gain：使用特征在作为划分属性时，OBj的平均降低量。</strong></li>
 <li><strong>cover：使用特征在作为划分属性时对样本的覆盖度。</strong></li>
@@ -469,97 +521,123 @@ step 2. 为降低一次训练所导致的随机性影响，可综合多次结果
 <p><strong>RF中计算特征重要度的主要思想：影响力分析</strong>。如果某个输入变量产生扰动，导致模型系统输出性能（利用袋外数据OOB的准确率来评估）产生明显影响，那么说明输入变量对系统具有较大的影响力，特征重要度比较高。</p>
 <p>执行步骤为：</p>
 <blockquote>
-<p>step 1. 基准性能：对每一颗决策树，选择相应的袋外数据计算误差，记为 <img src="https://www.zhihu.com/equation?tex=err_%7BOOB1%7D" alt="[公式]"> ；<br>
-step 2. 输入扰动：随机对袋外数据所有样本的特征加入噪声干扰(如白噪声)，再次计算袋外数据误差，记为 <img src="https://www.zhihu.com/equation?tex=err_%7BOOB2%7D" alt="[公式]"> ；<br>
-step 3. 重要度计算： <img src="https://www.zhihu.com/equation?tex=+%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28err_%7BOOB2%7D-err_%7BOOB1%7D%29%7D%7BN%7D" alt="[公式]"> ，N为随机森林中决策树的棵数。</p>
+<p>step 1. 基准性能：对每一颗决策树，选择相应的袋外数据计算误差，记为
+<img src="https://www.zhihu.com/equation?tex=err_%7BOOB1%7D" alt="[公式]"> ； step 2.
+输入扰动：随机对袋外数据所有样本的特征加入噪声干扰(如白噪声)，再次计算袋外数据误差，记为
+<img src="https://www.zhihu.com/equation?tex=err_%7BOOB2%7D" alt="[公式]"> ； step 3. 重要度计算： <img src="https://www.zhihu.com/equation?tex=+%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28err_%7BOOB2%7D-err_%7BOOB1%7D%29%7D%7BN%7D" alt="[公式]"> ，N为随机森林中决策树的棵数。</p>
 </blockquote>
-<p><img src="https://pic4.zhimg.com/80/v2-7457883119e561b64bae7ef3d49340ff_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-7457883119e561b64bae7ef3d49340ff_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li><strong>变量聚类（Variable Cluster，VarClus）</strong></li>
 </ul>
 <p><strong>业务</strong>：在SAS中对应Proc VarClus方法。</p>
 <p><strong>功能</strong>：</p>
 <blockquote>
-<p>step 1. 列聚类，将所有变量进行层次聚类。<br>
-step 2. 根据聚类结果，剔除IV相对较低的变量。</p>
+<p>step 1. 列聚类，将所有变量进行层次聚类。 step 2.
+根据聚类结果，剔除IV相对较低的变量。</p>
 </blockquote>
 <p><strong>指标</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> FeatureAgglomeration</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line">    </span><br><span class="line">X_Scale = preprocessing.StandardScaler().fit_transform(input_df[var_list])</span><br><span class="line">ward = FeatureAgglomeration(n_clusters=n_clusters, linkage=<span class="string">&#x27;ward&#x27;</span>)</span><br><span class="line">ward.fit(X_Scale)</span><br><span class="line">clusters = <span class="built_in">list</span>(ward.labels_)</span><br></pre></td></tr></table></figure>
-<p><img src="https://pic3.zhimg.com/80/v2-f93b791196087e503a2da4b12a26b84a_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-f93b791196087e503a2da4b12a26b84a_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li><strong>基于线性相关性（Linear Correlation）</strong></li>
 </ul>
-<p><strong>业务</strong>：逻辑回归作为一种线性模型，其基础假设是：自变量 <img src="https://www.zhihu.com/equation?tex=%28X_1%EF%BC%8CX_2%29" alt="[公式]"> 之间应相互独立。当两变量间的相关系数大于阈值时（一般阈值设为0.6)，剔除IV值较低的变量。</p>
+<p><strong>业务</strong>：逻辑回归作为一种线性模型，其基础假设是：自变量
+<img src="https://www.zhihu.com/equation?tex=%28X_1%EF%BC%8CX_2%29" alt="[公式]">
+之间应相互独立。当两变量间的相关系数大于阈值时（一般阈值设为0.6)，剔除IV值较低的变量。</p>
 <p><strong>功能</strong>：</p>
 <blockquote>
-<p>step 1. 计算变量的线性相关性。<br>
-step 2. <strong>相关性较高的多个变量里，保留IV较高的变量。</strong></p>
+<p>step 1. 计算变量的线性相关性。 step 2.
+<strong>相关性较高的多个变量里，保留IV较高的变量。</strong></p>
 </blockquote>
-<p><strong>指标</strong>：<strong>皮尔逊相关系数（Pearson Correlation Coefficient）</strong>，系数的取值为<img src="https://www.zhihu.com/equation?tex=%5B-1.0%2C1.0%5D" alt="[公式]">，两变量相关系数越接近0，说明线性相关性越弱；越接近1或-1，说明线性相关性越强。</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Crho_%7BX%2CY%7D%3D%5Cfrac%7Bcov%28X%2CY%29%7D%7B%5Csigma_X%5Csigma_Y%7D%5C%5C%3D%5Cfrac%7BE%28%28X-%5Cbar+X%29%28Y-%5Cbar+Y%29%29%7D%7B%5Csqrt%7B%5Csum%5Climits_%7Bi%3D1%7D%5En%28X_i-%5Cbar+X%29%5E2%7D+%5Csqrt%7B+%5Csum%5Climits_%7Bi%3D1%7D%5En%28Y_i-%5Cbar+Y%29%5E2%7D%7D+%5C%5C%3D+%5Cfrac%7BE%28XY%29-E%28X%29%28Y%29%7D%7B%5Csqrt%7BE%28X%5E2%29-E%5E2%28X%29%7D%5Csqrt%7BE%28Y%5E2%29-E%5E2%28Y%29%7D%7D+%5C%5C" alt="[公式]"></p>
-<p><img src="https://pic4.zhimg.com/80/v2-17f049f47e262d45614a016289def3eb_1440w.jpg" alt="img"></p>
+<p><strong>指标</strong>：<strong>皮尔逊相关系数（Pearson Correlation
+Coefficient）</strong>，系数的取值为<img src="https://www.zhihu.com/equation?tex=%5B-1.0%2C1.0%5D" alt="[公式]">，两变量相关系数越接近0，说明线性相关性越弱；越接近1或-1，说明线性相关性越强。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Crho_%7BX%2CY%7D%3D%5Cfrac%7Bcov%28X%2CY%29%7D%7B%5Csigma_X%5Csigma_Y%7D%5C%5C%3D%5Cfrac%7BE%28%28X-%5Cbar+X%29%28Y-%5Cbar+Y%29%29%7D%7B%5Csqrt%7B%5Csum%5Climits_%7Bi%3D1%7D%5En%28X_i-%5Cbar+X%29%5E2%7D+%5Csqrt%7B+%5Csum%5Climits_%7Bi%3D1%7D%5En%28Y_i-%5Cbar+Y%29%5E2%7D%7D+%5C%5C%3D+%5Cfrac%7BE%28XY%29-E%28X%29%28Y%29%7D%7B%5Csqrt%7BE%28X%5E2%29-E%5E2%28X%29%7D%5Csqrt%7BE%28Y%5E2%29-E%5E2%28Y%29%7D%7D+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-17f049f47e262d45614a016289def3eb_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
 <li><strong>基于多重共线性（Multicollinearity）</strong></li>
 </ul>
 <p>对于自变量<img src="https://www.zhihu.com/equation?tex=X_1%2C+X_2%2C+%5Ccdots+%2C+X_n" alt="[公式]">，如果存在不全为0的系数<img src="https://www.zhihu.com/equation?tex=c_1%2Cc_2%2C+%5Ccdots%2C+c_n" alt="[公式]">，使得以下线性等式近似成立:</p>
-<p><img src="https://www.zhihu.com/equation?tex=c_1X_1+%2B+c_2X_2+%2B+%5Ccdots+%2B+c_nX_n+%5Capprox+0%5C%5C" alt="[公式]"></p>
-<p>换言之，对于 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 个变量，其中 <img src="https://www.zhihu.com/equation?tex=1" alt="[公式]"> 个可以由剩下的 <img src="https://www.zhihu.com/equation?tex=N-1" alt="[公式]"> 个变量线性表示。此时，我们就称自变量<img src="https://www.zhihu.com/equation?tex=X_1%2C+X_2%2C+%5Ccdots+%2C+X_n" alt="[公式]">具有较强的多重共线性。</p>
-<p><strong><font color="red"> 当出现多重共线性时，变量之间的联动关系会导致估计标准差偏大，置信区间变宽。这就会产生一个常见的现象，LR中变量系数出现正负号不一致。</font></strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=c_1X_1+%2B+c_2X_2+%2B+%5Ccdots+%2B+c_nX_n+%5Capprox+0%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>换言之，对于 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 个变量，其中 <img src="https://www.zhihu.com/equation?tex=1" alt="[公式]">
+个可以由剩下的 <img src="https://www.zhihu.com/equation?tex=N-1" alt="[公式]"> 个变量线性表示。此时，我们就称自变量<img src="https://www.zhihu.com/equation?tex=X_1%2C+X_2%2C+%5Ccdots+%2C+X_n" alt="[公式]">具有较强的多重共线性。</p>
+<p><strong><font color="red">
+当出现多重共线性时，变量之间的联动关系会导致估计标准差偏大，置信区间变宽。这就会产生一个常见的现象，LR中变量系数出现正负号不一致。</font></strong></p>
 <p>业务：VIF取值的业务含义为：</p>
 <blockquote>
-<p>若VIF &lt; 3，说明基本不存在多重共线性问题<br>
-若VIF &gt; 10，说明问题比较严重。</p>
+<p>若VIF &lt; 3，说明基本不存在多重共线性问题 若VIF &gt;
+10，说明问题比较严重。</p>
 </blockquote>
 <p>功能：</p>
 <blockquote>
-<p>step 1. <strong>计算变量的方差膨胀因子（Variance Inflation Factor，VIF），适用于线性模型。</strong><br>
-step 2. 根据阈值剔除VIF较高的变量。</p>
+<p>step 1. <strong>计算变量的方差膨胀因子（Variance Inflation
+Factor，VIF），适用于线性模型。</strong> step 2.
+根据阈值剔除VIF较高的变量。</p>
 </blockquote>
 <p>指标：通常用VIF衡量一个变量和其他变量的多重共线性。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from statsmodels.stats.outliers_influence import variance_inflation_factor</span><br></pre></td></tr></table></figure>
 <p>示例：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-6b5e626a0af1ae9f595f25fb8fb9b10b_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-6b5e626a0af1ae9f595f25fb8fb9b10b_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <ul>
-<li>
-<p><strong>基于逐步回归（stepwise)</strong></p>
+<li><p><strong>基于逐步回归（stepwise)</strong></p>
 <ul>
-<li>
-<p>前向选择（forward selection）：逐步加入变量，计算指标进行评估，若不合格则不加入，直到评估完所有变量。</p>
-</li>
-<li>
-<p>后向选择（backward selection）：初始时加入所有变量，根据指标逐渐剔除不合格的变量。</p>
-</li>
-<li>
-<p>逐步选择（stepwise）：将向前选择和向后选择的结合，逐步放入最优的变量、移除最差的变量。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>基于P-Vaule显著性检验</strong></p>
-</li>
+<li><p>前向选择（forward
+selection）：逐步加入变量，计算指标进行评估，若不合格则不加入，直到评估完所有变量。</p></li>
+<li><p>后向选择（backward
+selection）：初始时加入所有变量，根据指标逐渐剔除不合格的变量。</p></li>
+<li><p>逐步选择（stepwise）：将向前选择和向后选择的结合，逐步放入最优的变量、移除最差的变量。</p></li>
+</ul></li>
+<li><p><strong>基于P-Vaule显著性检验</strong></p></li>
 </ul>
 <p>业务：根据逻辑回归参数估计表，剔除P值大于0.05的变量。</p>
 <p>功能：</p>
 <blockquote>
-<p>step 1. 用于检验自变量X与因变量Y之间的相关性。<br>
-step 2. 剔除P值大于0.05的变量。</p>
+<p>step 1. 用于检验自变量X与因变量Y之间的相关性。 step 2.
+剔除P值大于0.05的变量。</p>
 </blockquote>
 <p>指标：P-Vaule。在变量相关分析中，对相关系数进行假设检验时：</p>
 <blockquote>
-<p>原假设H0：自变量与因变量之间线性无关。<br>
+<p>原假设H0：自变量与因变量之间线性无关。
 备择假设H1：自变量与因变量之间线性相关。</p>
 </blockquote>
 <p>或许不太恰当，但通常当P值大于0.05时，接受原假设，否则拒绝原假设。因此，我们需要剔除P值大于0.05的变量。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-e08616047f86d2e6011528e45df62eb9_1440w.jpg" alt="img"></p>
-<h3><span id="14-功能模块-模型训练">1.4 <strong>功能模块 - 模型训练</strong></span></h3>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-e08616047f86d2e6011528e45df62eb9_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3><span id="14-功能模块-模型训练">1.4 <strong>功能模块 -
+模型训练</strong></span></h3>
 <p>该模块主要包括<strong>变量变换（如分箱）</strong>、<strong>样本准备（包括样本赋权、拒绝推断等）</strong>、<strong>模型参数估计</strong>、<strong>模型分数校准</strong>、<strong>模型文件保存</strong>等功能。</p>
-<h4><span id="141-woe转换weight-of-evidence">1.4.1 <strong>WOE转换（Weight of Evidence）</strong></span></h4>
+<h4><span id="141-woe转换weight-ofevidence">1.4.1 <strong>WOE转换（Weight of
+Evidence）</strong></span></h4>
 <p><strong>业务：训练集上的WOE曲线需满足单调性，并且经过跨时间窗验证WOE变换逻辑同样满足单调性。如果不满足，那就需要再次调整。</strong></p>
 <p><strong>功能：在评分卡模型中用于变量WOE变换，支持等频、等距、自定义间距等分箱操作。</strong></p>
-<p>原理：可参考**《<strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80134853">WOE与IV指标的深入理解应用</a></strong>》**</p>
+<p>原理：可参考<strong>《</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80134853">WOE与IV指标的深入理解应用</a><strong>》</strong></p>
 <p>示例：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-3f95842ee9ac7568cfd1147552471481_1440w.jpg" alt="img"></p>
-<h4><span id="142-样本权重sample-weight">1.4.2 <strong>样本权重（Sample Weight）</strong></span></h4>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-3f95842ee9ac7568cfd1147552471481_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="142-样本权重sampleweight">1.4.2 <strong>样本权重（Sample
+Weight）</strong></span></h4>
 <p><strong>功能：给建模样本赋予权重列，以逼近总体样本。</strong></p>
 <p><strong>原理：建模本质在于从历史样本中学习未来样本的数理统计规律。</strong></p>
 <h4><span id="不同的样本权重主要有几个目的"><strong>不同的样本权重主要有几个目的：</strong></span></h4>
@@ -578,23 +656,27 @@ step 2. 剔除P值大于0.05的变量。</p>
 <li>借鉴Adaboost思想，对误判样本提高权重</li>
 <li>过采样、欠采样、SMOTE等</li>
 </ul>
-<h4><span id="拒绝演绎reject-inference"><strong>拒绝演绎（Reject Inference）</strong></span></h4>
+<h4><span id="拒绝演绎rejectinference"><strong>拒绝演绎（Reject
+Inference）</strong></span></h4>
 <p>功能：样本偏差将会导致模型估计过于乐观。通过推断拒绝样本的贷后表现，加入建模样本，可降低放贷建模样本与申请作用样本之间的偏差。</p>
 <p>原理：参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/88624987">风控建模中的样本偏差与拒绝推断</a>》</p>
-<h4><span id="参数估计parameter-estimation"><strong>参数估计（Parameter Estimation）</strong></span></h4>
+<h4><span id="参数估计parameterestimation"><strong>参数估计（Parameter
+Estimation）</strong></span></h4>
 <p><strong>功能：支持机器学习模型（如随机森林、GBDT、XGBoost、LightGBM等）调参、评分卡模型逐步回归（stepwise）。</strong></p>
-<p>原理：LR采用最大似然估计进行参数估计。而机器学习模型的超参数较多，通常需要借助网格搜索（grid search）、贝叶斯调参等技术，降低对人工经验的依赖。</p>
+<p>原理：LR采用最大似然估计进行参数估计。而机器学习模型的超参数较多，通常需要借助网格搜索（grid
+search）、贝叶斯调参等技术，降低对人工经验的依赖。</p>
 <h4><span id="分数校准calibration"><strong>分数校准（Calibration）</strong></span></h4>
 <p>功能：其一，一致性校准，将模型预测概率校准到真实概率。其二，尺度变换，将风险概率转换为平时所见的整数分数。</p>
 <p>原理：参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/82670834">信用评分卡模型分数校准</a>》</p>
 <h4><span id="模型保存save-model"><strong>模型保存（Save Model）</strong></span></h4>
 <p>功能：将模型（参数+结构）保存为pkl和pmml文件，用以最终上线部署。注意需要给不同版本的模型赋予易于辨识、含义清晰的命名。一般建议至少包含以下内容：</p>
 <blockquote>
-<p>命名 = 生成日期+责任人+业务线+应用环节+版本号<br>
+<p>命名 = 生成日期+责任人+业务线+应用环节+版本号
 例如：20190101_小王_有钱花_额度授信_V1.pmml</p>
 </blockquote>
 <p>原理：参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/92691256">风控模型上线部署流程</a>》</p>
-<h3><span id="15-功能模块-模型评估">1.5 <strong>功能模块 - 模型评估</strong></span></h3>
+<h3><span id="15-功能模块-模型评估">1.5 <strong>功能模块 -
+模型评估</strong></span></h3>
 <p>在实际业务实践中，我们对风控模型的衡量维度主要包括以下几个方面：</p>
 <blockquote>
 <ul>
@@ -610,43 +692,59 @@ step 2. 剔除P值大于0.05的变量。</p>
 <li>虽然模型是基于放贷订单训练，但最终应用在申请层。</li>
 <li>申请层和放贷层客群存在差异。</li>
 </ul>
-<p>当PSI曲线的趋势一直在上升时，我们就要分析原因，消除不稳定因素。排查方向可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/86559671">特征稳定性指标(CSI)深入理解应用</a>》中的Part 4。</p>
+<p>当PSI曲线的趋势一直在上升时，我们就要分析原因，消除不稳定因素。排查方向可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/86559671">特征稳定性指标(CSI)深入理解应用</a>》中的Part
+4。</p>
 <p>指标：PSI。可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79682292">群体稳定性指标(PSI)深入理解应用</a>》</p>
 <p>示例：</p>
 <p><img src="https://pic2.zhimg.com/80/v2-ed926c29a728c4e8f42b881af25c319d_1440w.png" alt="img">模型分数PSI计算结果表（申请+放贷）</p>
-<p><img src="https://pic1.zhimg.com/80/v2-b5e5d64f96906eeaa78e8ac6ebf80098_1440w.jpg" alt="img"></p>
-<h4><span id="152-区分度discrimination">1.5.2 <strong>区分度（Discrimination）</strong></span></h4>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-b5e5d64f96906eeaa78e8ac6ebf80098_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="152区分度discrimination">1.5.2
+<strong>区分度（Discrimination）</strong></span></h4>
 <p>业务：KS指标是风控建模同学最为追求的指标之一。通常情况下，KS越大，模型性能越好。但更需要分析KS不佳的原因，可结合ROC曲线进行辅助分析。</p>
-<p>指标：Gini、AUC、KS。可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79934510">区分度评估指标(KS)深入理解应用</a>》<br>
+<p>指标：Gini、AUC、KS。可参考《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79934510">区分度评估指标(KS)深入理解应用</a>》
 <img src="https://pic2.zhimg.com/80/v2-952042e2835b7a3b4458d3fd763b6e15_1440w.png" alt="img"></p>
-<p><img src="https://pic3.zhimg.com/80/v2-649ad86e09b8f5fc09dc224a6a1fb6ea_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-649ad86e09b8f5fc09dc224a6a1fb6ea_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="153-排序性ranking">1.5.3 <strong>排序性（Ranking）</strong></span></h4>
 <p><strong>业务</strong>：大部分模型在最终应用时只是利用到排序性，其主要是为了观察曲线的斜率。如图21所示的模型，排序性非常好，前5个分箱就能抓住大约77%的坏客户。</p>
-<p><strong>指标：按自然月/样本集维度，统计包含bad_rate、lift、odds等指标的Gain Table。</strong></p>
+<p><strong>指标：按自然月/样本集维度，统计包含bad_rate、lift、odds等指标的Gain
+Table。</strong></p>
 <blockquote>
-<p><strong>lift = 召回样本的bad rate / 全部样本的bad rate</strong><br>
+<p><strong>lift = 召回样本的bad rate / 全部样本的bad rate</strong>
 <strong>odds = bads / good</strong></p>
 </blockquote>
 <p>示例：模型分数Gain-Table</p>
-<p><img src="https://pic4.zhimg.com/80/v2-169d5023b834416495810435e8c9b11b_1440w.jpg" alt="img"></p>
-<h4><span id="154-拟合度goodness-of-fit">1.5.4 <strong>拟合度（Goodness of Fit）</strong></span></h4>
-<p><strong>业务</strong>：我们以训练集为基准，将模型分数划分成10个(或20个)分箱后，查看每个分箱里的reject rate等指标是否一致。理论上，如果按每个Vintage绘制多条曲线，这些曲线会几乎重合，也就是围绕在训练集附近波动。此时，我们就可以相信模型在每一档的坏账估计比较准确。</p>
-<p>指标：按自然月/样本集，评估每个分箱里lift、reject rate、bad rate的点估计</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-169d5023b834416495810435e8c9b11b_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="154-拟合度goodness-offit">1.5.4 <strong>拟合度（Goodness of
+Fit）</strong></span></h4>
+<p><strong>业务</strong>：我们以训练集为基准，将模型分数划分成10个(或20个)分箱后，查看每个分箱里的reject
+rate等指标是否一致。理论上，如果按每个Vintage绘制多条曲线，这些曲线会几乎重合，也就是围绕在训练集附近波动。此时，我们就可以相信模型在每一档的坏账估计比较准确。</p>
+<p>指标：按自然月/样本集，评估每个分箱里lift、reject rate、bad
+rate的点估计</p>
 <p>示例：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-32f4f004276a03f1adb5046d4ea40d91_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-32f4f004276a03f1adb5046d4ea40d91_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h3><span id="16-开源的风控建模工具包简介">1.6 开源的风控建模工具包简介</span></h3>
 <p>前文主要介绍一些理论，接下来介绍目前一些开源的风控建模工具包。</p>
 <blockquote>
-<p>feature-selector<br>
-scorecardpy<br>
-toad</p>
+<p>feature-selector scorecardpy toad</p>
 </blockquote>
 <h4><span id="161-feature-selector">1.6.1 <strong>feature-selector</strong></span></h4>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/WillKoehrsen/feature-selector">https://github.com/WillKoehrsen/feature-selector</a></li>
+<li>https://github.com/WillKoehrsen/feature-selector</li>
 </ul>
 <p><strong>主要功能：包括缺失率、单一值、相关性、特征重要性等。</strong></p>
-<ol>
+<ol type="1">
 <li>Missing Values</li>
 <li>Single Unique Values</li>
 <li>Collinear Features</li>
@@ -655,22 +753,23 @@ toad</p>
 </ol>
 <h4><span id="162-scorecardpy">1.6.2 <strong>scorecardpy</strong></span></h4>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/shichenxie/scorecardpy">https://github.com/shichenxie/scorecardpy</a></li>
+<li>https://github.com/shichenxie/scorecardpy</li>
 </ul>
 <p><strong>主要功能：包括数据集划分、变量筛选、WOE分箱变换、评分卡尺度变换、模型性能评估。</strong></p>
-<ol>
+<ol type="1">
 <li>data partition (split_df)</li>
 <li>variable selection (iv, var_filter)</li>
-<li>weight of evidence (woe) binning (woebin, woebin_plot, woebin_adj, woebin_ply)</li>
+<li>weight of evidence (woe) binning (woebin, woebin_plot, woebin_adj,
+woebin_ply)</li>
 <li>scorecard scaling (scorecard, scorecard_ply)</li>
 <li>performance evaluation (perf_eva, perf_psi)</li>
 </ol>
-<h4><span id="163-toad">1.6.3  <strong>toad</strong></span></h4>
+<h4><span id="163-toad">1.6.3 <strong>toad</strong></span></h4>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://toad.readthedocs.io/en/stable/tutorial_chinese.html">https://toad.readthedocs.io/en/stable/tutorial_chinese.html</a></li>
+<li>https://toad.readthedocs.io/en/stable/tutorial_chinese.html</li>
 </ul>
 <p><strong>主要功能：包括数据分析处理、特征筛选、模型筛选、模型评估、评分卡尺度变换等。</strong></p>
-<ol>
+<ol type="1">
 <li>data handling</li>
 <li>feature selection and WOE binning</li>
 <li>model selection</li>
@@ -766,7 +865,7 @@ toad</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
+      <span>3.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -790,109 +889,155 @@ toad</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/252845718">抽样对Lift和KS指标的影响</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/161009991">客户级通用信用评分模型架构设计</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90214329">大数据信贷风控模型架构</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90251922"><strong><font color="red"> 风控模型开发流程标准化</font></strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90251922"><strong><font color="red">
+风控模型开发流程标准化</font></strong></a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/92691256">风控模型上线部署流程</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350616539">如何量化样本偏差对信贷风控模型的影响</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110982479"><strong><font color="red"> 样本权重对逻辑回归评分卡的影响探讨</font></strong></a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85976154"><strong><font color="red"> 利用样本分群提升风控模型性能</font></strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110982479"><strong><font color="red">
+样本权重对逻辑回归评分卡的影响探讨</font></strong></a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85976154"><strong><font color="red">
+利用样本分群提升风控模型性能</font></strong></a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/252845718">抽样对Lift和KS指标的影响</a></p>
 </blockquote>
 <h3><span id="风控业务背景"><strong>风控业务背景</strong></span></h3>
 <p>在测试外部三方数据时，数据服务商只允许我们抛出有限一定量样本（例如5w、10w、20w）来匹配三方数据。这就要求我们对样本抽样。在对外部数据建模测算后，我们如何将结果还原到原始样本上评估呢？针对这种常见场景，本文将探索抽样对lift指标和KS指标的影响。</p>
 <h3><span id="一-样本抽样方法">一、样本抽样方法</span></h3>
 <p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/104872477">外部数据风控建模评估分析</a>》中，我们介绍过外部数据的一些基本知识，其测算流程大致如图1所示。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-df9f69bec553a3a250bfe6e381c5f116_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-df9f69bec553a3a250bfe6e381c5f116_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>在测算外部数据前，第一步非常重要，样本是我们一切分析的载体。<strong>由于三方数据服务商一般只能提供有限的测试量（比如10w）</strong>，那么我们只能从业务样本中进行抽样。那么可以采取哪些抽样方法呢？一般有以下几种：</p>
-<h4><span id="11-简单随机抽样保持内部真实好坏比例">1.1 <strong>简单随机抽样，保持内部真实好坏比例。</strong></span></h4>
+<h4><span id="11简单随机抽样保持内部真实好坏比例">1.1
+<strong>简单随机抽样，保持内部真实好坏比例。</strong></span></h4>
 <ul>
-<li>好处：建模时可以直接评估模型效果，而不需要考虑**==bad rate==**失真。</li>
+<li>好处：建模时可以直接评估模型效果，而不需要考虑<strong>==bad
+rate==</strong>失真。</li>
 <li>坏处：好坏样本严重不均衡，坏样本总是极少量的，我们可能需要逐月评估单变量和模型KS，以此观察区分度的稳定性。<strong>此时，坏样本较少，导致结果失去统计意义，波动较大</strong></li>
 </ul>
-<p><img src="https://pic1.zhimg.com/80/v2-0a9b3fd0245488edde868b0e3da6fb6c_1440w.jpg" alt="img"></p>
-<h4><span id="12-好坏分层抽样好样本n1抽样坏样本11抽样">1.2 <strong><font color="red"> 好坏分层抽样，好样本N:1抽样，坏样本1:1抽样。</font></strong></span></h4>
-<p>比如，<strong>假设内部bad rate是5%</strong>，也就是好坏比例约为20:1，那么从20个好样本中随机抽1个，坏样本则全部保留。<strong>由此，我们在评估真实bad rate捕捉率时，也可以按此权重进行还原。即，1个好样本代表20个原始好样本。</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-ab77a0e880b5a0c4436af3162be4802e_1440w.jpg" alt="img"></p>
-<h4><span id="13-按资质对客群分层再分层随机抽样">1.3 <strong>按资质对客群分层，再分层随机抽样。</strong></span></h4>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-0a9b3fd0245488edde868b0e3da6fb6c_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="12好坏分层抽样好样本n1抽样坏样本11抽样">1.2
+<strong><font color="red">
+好坏分层抽样，好样本N:1抽样，坏样本1:1抽样。</font></strong></span></h4>
+<p>比如，<strong>假设内部bad
+rate是5%</strong>，也就是好坏比例约为20:1，那么从20个好样本中随机抽1个，坏样本则全部保留。<strong>由此，我们在评估真实bad
+rate捕捉率时，也可以按此权重进行还原。即，1个好样本代表20个原始好样本。</strong></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-ab77a0e880b5a0c4436af3162be4802e_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="13按资质对客群分层再分层随机抽样">1.3
+<strong>按资质对客群分层，再分层随机抽样。</strong></span></h4>
 <p>具体操作方法为：</p>
-<ol>
+<ol type="1">
 <li>以某段时间窗的样本训练一个排序模型，例如风险模型（PD），或过退模型（AR）。</li>
 <li>对这个时间窗外待抽样的样本进行排序，将人群分为若干个分层。</li>
 <li>分层抽样，每组中相同比例。</li>
 </ol>
 <p>这样就可以用来建立适应不同客群的信用分。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-d7b8e0930bde34c4703d2794e6d76c87_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-d7b8e0930bde34c4703d2794e6d76c87_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>这三种方案里，我们最常采用方案二。因此，本文以该方案为例进行探讨。</p>
 <h3><span id="二-lift和ks指标介绍"><strong>二、Lift和KS指标介绍</strong></span></h3>
-<p>Lift, 名称为提升度, 其含义为：经过某种排序后圈出来的坏人浓度, 相对于随机抽样的坏人浓度的提升, 即:<br>
-$$<br>
-L i f t=\frac{cover-bad-rate}{total-bad-rate}<br>
-$$<br>
-举例说明, 如图5所示, 现在有 50 个人, 其中 5 个坏人, 那么整体坏人占比为 $10 %$ 。我们将其随机分为 5 组, 每组 10 人，则理想情况下，每组中有 1 个坏人。</p>
-<p>现在我们拥有一个排序模型, 对这 50 个人排序后, 我们笑选出分数最低的 10 个人, 也就是第一组, 此时能抓住 2 个 坏人, 坏人浓度为 $20 %$ 。那么 lift $=20 % / 10 %=2$ 。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-79b9b1a9ce8a45b1cd3fb70d69da0b63_1440w.jpg" alt="img"></p>
+<p>Lift, 名称为提升度, 其含义为：经过某种排序后圈出来的坏人浓度,
+相对于随机抽样的坏人浓度的提升, 即: <span class="math display">\[
+L i f t=\frac{cover-bad-rate}{total-bad-rate}
+\]</span> 举例说明, 如图5所示, 现在有 50 个人, 其中 5 个坏人,
+那么整体坏人占比为 <span class="math inline">\(10 \%\)</span>
+。我们将其随机分为 5 组, 每组 10 人，则理想情况下，每组中有 1
+个坏人。</p>
+<p>现在我们拥有一个排序模型, 对这 50 个人排序后, 我们笑选出分数最低的 10
+个人, 也就是第一组, 此时能抓住 2 个 坏人, 坏人浓度为 <span class="math inline">\(20 \%\)</span> 。那么 lift <span class="math inline">\(=20 \% / 10 \%=2\)</span> 。</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-79b9b1a9ce8a45b1cd3fb70d69da0b63_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p><strong>在反欺诈场景中，我们常会用到Lift这个指标来判断规则的有效性</strong>。在测试外部数据时，我们会发现有些变量的区分度虽然很低，或者查得率很低，但是其查得人群的坏人捕捉率却很高。这对我们如何进行规则发现也是一个启发。</p>
 <p>KS指标的含义详见：《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79934510">区分度评估指标(KS)深入理解应用</a>》</p>
 <h3><span id="三-抽样对lift指标的影响">三、抽样对Lift指标的影响</span></h3>
 <p>现在我们有这样一个场景，在抽样样本上我们制定一个阈值cutoff，高于这个阈值则通过(PS)，低于这个阈值则拒绝(RJ)。在抽样样本上，我们测算拒绝部分的坏人lift，那么在原始样本上，相应的lift是多少呢？</p>
-<p><img src="https://pic1.zhimg.com/80/v2-8fe85db67a0419fc8e0877a85e254cb4_1440w.jpg" alt="img"></p>
-<p>我们按照lift的定义来推导所带来的影响。<br>
-$$<br>
-\begin{aligned}<br>
-&amp; L i f t=\frac{B a d_{r j} / R J}{\left(B a d_{r j}+B a d_{p s}\right) /(R J+P S)} \<br>
-&amp; =\frac{B a d_{r j}}{R J} \times \frac{R J+P S}{B a d_{r j}+B a d_{p s}} \<br>
-&amp; =\frac{B a d_{r j}}{\operatorname{Bad}<em>{r j}+\operatorname{Bad}</em>{p s}} \times \frac{R J+P S}{R J} \<br>
-&amp; =\frac{B a d_{r j}}{B a d_{r j}+B a d_{p s}} \times\left(1+\frac{P S}{R J}\right) \<br>
-&amp;<br>
-\end{aligned}<br>
-$$<br>
-其中:</p>
-<ul>
-<li>$B a d_{r j}$ : 拒绝部分的真实坏样本数</li>
-<li>$\operatorname{Good}_{r j}$ : 拒绝部分的真实好样本数</li>
-<li>$B_{p s}$ ：通过部分的真实坏样本数</li>
-<li>$\operatorname{Good}_{p s}$ : 通过部分的真实好样本数</li>
-</ul>
-<p>由于全部保留 $B a d$ 样本, 同时采用相同的cutoff, 那么 $B a d_{r j}$ 和 $B a d_{p s}$ 在抽样前后保持不变。同时, 不可能有 完美的模型, 因此无论是 $R J$ 还是 $P S$ 中都有好坏样本，即:<br>
-$$<br>
-\begin{aligned}<br>
-&amp; R J=B_{a d_{r j}}+\operatorname{Good}<em>{r j} \<br>
-&amp; P S=\operatorname{Bad}</em>{p s}+\operatorname{Good}<em>{p s}<br>
-\end{aligned}<br>
-$$<br>
-由于简单随机抽样, 假设抽样比例为 rate，那么:<br>
-$$<br>
-\text { Good }</em>{\text {sample }}=\text { Good }<em>{\text {origin }} \times \text { rate }<br>
-$$<br>
-同时，在相同的cutoff下，也就是相同的标准下，抽样和原始样本中的好样本比例应该相同，即：<br>
-$$<br>
-\begin{aligned}<br>
-&amp; \text { Good }</em>{r j _} _ \text {sample }=\text { Good }<em>{r j _} _ \text {origin } \times \text { rate } \<br>
-&amp; \text { Good }</em>{p s _} \text {sample }=\text { Good }<em>{p s _} _ \text {origin } \times \text { rate } \<br>
-&amp;<br>
-\end{aligned}在抽样样本上：<br>
-$$<br>
-在抽样样本上:<br>
-$$<br>
-\begin{aligned}<br>
-&amp; L i f t</em>{s a m p l e}=\frac{B a d_{r j}}{B a d_{r j}+B a d_{p s}} \times\left(1+\frac{P S_s}{R J_s}\right) \<br>
-&amp; =\frac{B a d_{r j}}{B a d_{r j}+B a d_{p s}} \times\left(1+\frac{B a d_{p s}+\operatorname{Good}<em>{p s}}{B a d</em>{r j}+\operatorname{Good}<em>{r j}}\right)<br>
-\end{aligned}<br>
-$$<br>
-在原始样本上:<br>
-$$<br>
-\begin{aligned}<br>
-&amp; =\frac{B a d</em>{r j}}{\operatorname{Bad}<em>{r j}+\text { Bad }</em>{p s}} \times\left(1+\frac{\text { Bad }<em>{p s}+\text { Good }</em>{p s} / \text { rate }}{\operatorname{Bad}<em>{r j}+\text { Good }</em>{r j} / \text { rate }}\right) \<br>
-&amp; =\frac{B a d_{r j}}{\operatorname{Bad}<em>{r j}+\operatorname{Bad}</em>{p s}} \times\left(1+\frac{\text { rate } \times \operatorname{Bad}<em>{p s}+\operatorname{Good}</em>{p s}}{\text { rate } \times \operatorname{Bad}<em>{r j}+\operatorname{Good}</em>{r j}}\right) \<br>
-&amp;<br>
-\end{aligned}<br>
-$$<br>
-**<font color="red"> 对比公式（6）和 （7），我们发现，原始样本上的lift完全可以通过抽样分布上的值进行计算。我们再以实验佐证理论，发现几乎是一样的。</font>**造成些许差异的原因可能是样本量。</p>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-8fe85db67a0419fc8e0877a85e254cb4_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>我们按照lift的定义来推导所带来的影响。 <span class="math display">\[
+\begin{aligned}
+&amp; L i f t=\frac{B a d_{r j} / R J}{\left(B a d_{r j}+B a d_{p
+s}\right) /(R J+P S)} \\
+&amp; =\frac{B a d_{r j}}{R J} \times \frac{R J+P S}{B a d_{r j}+B a
+d_{p s}} \\
+&amp; =\frac{B a d_{r j}}{\operatorname{Bad}_{r j}+\operatorname{Bad}_{p
+s}} \times \frac{R J+P S}{R J} \\
+&amp; =\frac{B a d_{r j}}{B a d_{r j}+B a d_{p s}} \times\left(1+\frac{P
+S}{R J}\right) \\
+&amp;
+\end{aligned}
+\]</span> 其中: - <span class="math inline">\(B a d_{r j}\)</span> :
+拒绝部分的真实坏样本数 - <span class="math inline">\(\operatorname{Good}_{r j}\)</span> :
+拒绝部分的真实好样本数 - <span class="math inline">\(B_{p s}\)</span>
+：通过部分的真实坏样本数 - <span class="math inline">\(\operatorname{Good}_{p s}\)</span> :
+通过部分的真实好样本数</p>
+<p>由于全部保留 <span class="math inline">\(B a d\)</span> 样本,
+同时采用相同的cutoff, 那么 <span class="math inline">\(B a d_{r
+j}\)</span> 和 <span class="math inline">\(B a d_{p s}\)</span>
+在抽样前后保持不变。同时, 不可能有 完美的模型, 因此无论是 <span class="math inline">\(R J\)</span> 还是 <span class="math inline">\(P
+S\)</span> 中都有好坏样本，即: <span class="math display">\[
+\begin{aligned}
+&amp; R J=B_{a d_{r j}}+\operatorname{Good}_{r j} \\
+&amp; P S=\operatorname{Bad}_{p s}+\operatorname{Good}_{p s}
+\end{aligned}
+\]</span> 由于简单随机抽样, 假设抽样比例为 rate，那么: <span class="math display">\[
+\text { Good }_{\text {sample }}=\text { Good }_{\text {origin }} \times
+\text { rate }
+\]</span>
+同时，在相同的cutoff下，也就是相同的标准下，抽样和原始样本中的好样本比例应该相同，即：
+<span class="math display">\[
+\begin{aligned}
+&amp; \text { Good }_{r j \_} \_ \text {sample }=\text { Good }_{r j \_}
+\_ \text {origin } \times \text { rate } \\
+&amp; \text { Good }_{p s \_} \text {sample }=\text { Good }_{p s \_} \_
+\text {origin } \times \text { rate } \\
+&amp;
+\end{aligned}在抽样样本上：
+\]</span> 在抽样样本上: <span class="math display">\[
+\begin{aligned}
+&amp; L i f t_{s a m p l e}=\frac{B a d_{r j}}{B a d_{r j}+B a d_{p s}}
+\times\left(1+\frac{P S_s}{R J_s}\right) \\
+&amp; =\frac{B a d_{r j}}{B a d_{r j}+B a d_{p s}} \times\left(1+\frac{B
+a d_{p s}+\operatorname{Good}_{p s}}{B a d_{r j}+\operatorname{Good}_{r
+j}}\right)
+\end{aligned}
+\]</span> 在原始样本上: <span class="math display">\[
+\begin{aligned}
+&amp; =\frac{B a d_{r j}}{\operatorname{Bad}_{r j}+\text { Bad }_{p s}}
+\times\left(1+\frac{\text { Bad }_{p s}+\text { Good }_{p s} / \text {
+rate }}{\operatorname{Bad}_{r j}+\text { Good }_{r j} / \text { rate
+}}\right) \\
+&amp; =\frac{B a d_{r j}}{\operatorname{Bad}_{r j}+\operatorname{Bad}_{p
+s}} \times\left(1+\frac{\text { rate } \times \operatorname{Bad}_{p
+s}+\operatorname{Good}_{p s}}{\text { rate } \times
+\operatorname{Bad}_{r j}+\operatorname{Good}_{r j}}\right) \\
+&amp;
+\end{aligned}
+\]</span> <strong><font color="red"> 对比公式（6）和
+（7），我们发现，原始样本上的lift完全可以通过抽样分布上的值进行计算。我们再以实验佐证理论，发现几乎是一样的。</font></strong>造成些许差异的原因可能是样本量。</p>
 <h3><span id="四-抽样对ks指标的影响">四、抽样对KS指标的影响</span></h3>
 <p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79934510">区分度评估指标(KS)深入理解应用</a>》中，我们认识了KS的计算原理。那么对于随机抽样而言，好人分布和坏人分布是相互独立的，那么在计算累积好样本分布和累积坏样本分布时，理论上KS不应该发生变化。</p>
 <p><strong>数据胜于雄辩。首先对好样本5:1抽样，坏样本则保持1:1不变</strong>，由此组成新样本集。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-b6e2797c944acffa0209c745afcbc03e_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-b6e2797c944acffa0209c745afcbc03e_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>接下来，我们对比抽样前后的KS差异，如图8所示。结果并无明显区别。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-6cad55ad53f392de06b951e151f87f6d_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-6cad55ad53f392de06b951e151f87f6d_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>因此，结论为：<strong>分层抽样不会改变KS</strong>，抽样样本与原始样本上计算的KS相同。在实践中，我们可能因为坏样本过少等原因会影响一些差异，但整体无明显差异。</p>
 <h3><span id="五-总结">五、<strong>总结</strong></span></h3>
 <p>在匹配外部数据后，我们在抽样样本上会进行一些测算，同时希望能还原在真实原始样本上的结果。针对一些模型指标（Lift、KS）的在抽样前后变化情况，结论为：</p>
@@ -1005,12 +1150,16 @@ $$<br>
 <p><strong>哈希表（散列表），是能够通过给定的关键字的值直接访问到具体对应的值的一个数据结构</strong>。也就是说，把关键字映射到一个表中的位置来直接访问记录，以加快访问速度。</p>
 <ul>
 <li>关键字，也称之为<strong>键</strong>，或者是Key，这就是我们哈希函数计算的依据</li>
-<li><strong>记录</strong>，也称之为<strong>值</strong>，，也称之为<em><strong>哈希值</strong></em>，或者是<em><strong>Value</strong></em>，也就是我们通过key然后经过哈希函数运算之后得到的结果，存储这个记录，即存放哈希函数得到的结果的数组称之为 <em><strong>哈希表</strong></em> 或者是 <em><strong>散列表</strong></em></li>
+<li><strong>记录</strong>，也称之为<strong>值</strong>，，也称之为<strong><em>哈希值</em></strong>，或者是<strong><em>Value</em></strong>，也就是我们通过key然后经过哈希函数运算之后得到的结果，存储这个记录，即存放哈希函数得到的结果的数组称之为
+<strong><em>哈希表</em></strong> 或者是
+<strong><em>散列表</em></strong></li>
 </ul>
-<h4><span id="12-哈希表的问题碰撞clollision">1.2 <strong>哈希表的问题——碰撞Clollision</strong></span></h4>
-<p>其中有个特殊情况，就是通过不同的 Key，可能访问到同一个地址，这种现象叫作碰撞（Collision）。</p>
+<h4><span id="12哈希表的问题碰撞clollision">1.2
+<strong>哈希表的问题——碰撞Clollision</strong></span></h4>
+<p>其中有个特殊情况，就是通过不同的
+Key，可能访问到同一个地址，这种现象叫作碰撞（Collision）。</p>
 <p>如果“键-值对”在加入哈希表的时候产生了冲突，就必须找另外一个地方来存放它，冲突太多会降低数据插入和搜索的效率，因此希望能找到一个不容易产生冲突的函数，即构造一个地址分布比较均匀的哈希函数。</p>
-<p>一个好的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%A3%E5%88%97%E8%A1%A8&amp;spm=1001.2101.3001.7020">散列表</a>设计，除了需要选择一个性能较好的哈希函数，否则冲突是无法避免的，所以通常还需要有一个好的冲突处理方式，目前，这个哈希函数比较常用的实现方法比较多，通常需要考虑几个因素：关键字的长度、哈希表的大小、关键字的分布情况、记录的查找频率，等等。常见的一些哈希函数有：</p>
+<p>一个好的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=散列表&amp;spm=1001.2101.3001.7020">散列表</a>设计，除了需要选择一个性能较好的哈希函数，否则冲突是无法避免的，所以通常还需要有一个好的冲突处理方式，目前，这个哈希函数比较常用的实现方法比较多，通常需要考虑几个因素：关键字的长度、哈希表的大小、关键字的分布情况、记录的查找频率，等等。常见的一些哈希函数有：</p>
 <ul>
 <li>直接寻址法</li>
 <li>数字分析法</li>
@@ -1025,20 +1174,28 @@ $$<br>
 <li>链地址法</li>
 <li>建立一个公共溢出区</li>
 </ul>
-<h4><span id="13-什么是可哈希hashable">1.3 <strong>什么是可哈希(hashable)？</strong></span></h4>
+<h4><span id="13什么是可哈希hashable">1.3
+<strong>什么是可哈希(hashable)？</strong></span></h4>
 <p><strong>不可变的数据结构(数字类型（int，float，bool）、字符串str、元组tuple、自定义类的对象)。</strong></p>
-<p><strong>不可哈希的数据类型，即可变的数据结构 (字典dict，列表list，集合set)</strong></p>
+<p><strong>不可哈希的数据类型，即可变的数据结构
+(字典dict，列表list，集合set)</strong></p>
 <blockquote>
-<p>An object is hashable if it has a hash value which never changes during its lifetime (it needs a <strong>hash</strong>() method), and can be compared to other objects (it needs an <strong>eq</strong>()or <strong>cmp</strong>() method). Hashable objects which compare equal must have the same hash value.</p>
+<p>An object is hashable if it has a hash value which never changes
+during its lifetime (it needs a <strong>hash</strong>() method), and can
+be compared to other objects (it needs an <strong>eq</strong>()or
+<strong>cmp</strong>() method). Hashable objects which compare equal
+must have the same hash value.</p>
 </blockquote>
 <p>如果一个对象是可哈希的,那么在它的<strong>生存期内必须不可变</strong>(而且该对象需要一个哈希函数),而且<strong>可以和其他对象比较</strong>(需要比较方法).比较值相同的对象一定有相同的哈希值，即一个对象必须要包含有以下几个魔术方法：</p>
 <ul>
-<li>_<em>eq</em>_():用于比较两个对象是否相等</li>
-<li>__ cmp__() : 用于比较两个对象的大小关系，它与__eq__只要有一个就可以了</li>
-<li>_<em>hash</em>_()：实际上就是哈希函数（散列函数），返回经过运算得到的哈希值</li>
+<li>__eq__():用于比较两个对象是否相等</li>
+<li>__ cmp__() :
+用于比较两个对象的大小关系，它与__eq__只要有一个就可以了</li>
+<li>__hash__()：实际上就是哈希函数（散列函数），返回经过运算得到的哈希值</li>
 </ul>
 <h3><span id="二-dict">二、dict</span></h3>
-<p>CPython 的字典实现为可调整大小的哈希表。与 B-树相比，这在大多数情况下为查找（目前最常见的操作）提供了更好的性能，并且实现更简单。</p>
+<p>CPython 的字典实现为可调整大小的哈希表。与
+B-树相比，这在大多数情况下为查找（目前最常见的操作）提供了更好的性能，并且实现更简单。</p>
 
       
     </div>
@@ -1128,14 +1285,14 @@ $$<br>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -1146,15 +1303,17 @@ $$<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="pu-learning在风控中的应用理论篇">PU Learning在风控中的应用（理论篇）</span></h2>
+          <h2><span id="pulearning在风控中的应用理论篇">PU
+Learning在风控中的应用（理论篇）</span></h2>
 <h4><span id="一-风控业务背景">一、风控业务背景</span></h4>
 <p>在实际分类场景中，我们经常会遇到类似这样的问题：<strong>只有已标记的正样本，以及未标记的样本</strong>。比如金融风控场景，只有部分用户被标记为欺诈用户，剩下的大量用户未被标记。虽然这其中大多数信用良好，但仍有少量可能为欺诈用户。</p>
 <p>为了方便操作，我们可以将未标记的样本都作为负样本进行训练，但存在几个缺陷：</p>
-<ol>
+<ol type="1">
 <li>正负样本极度不平衡，负样本数量远远超过正样本，效果很差。</li>
 <li>某些关键样本会干扰分类器的最优分隔面的选择，尤其是SVM。</li>
 </ol>
-<p>如何辨别未标记样本中的正负样本，提升模型准确度，就成为一个值得思考的问题。PU Learning就是解决这种场景的一种学习方法。</p>
+<p>如何辨别未标记样本中的正负样本，提升模型准确度，就成为一个值得思考的问题。PU
+Learning就是解决这种场景的一种学习方法。</p>
 <p>本文尝试回答以下几个问题：</p>
 <ul>
 <li>我们如何将从PU数据中学习的问题形式化？</li>
@@ -1165,26 +1324,47 @@ $$<br>
 <li>PU数据何时以及为什么出现在实际应用中？</li>
 <li>PU学习与机器学习的其他领域有什么关系？</li>
 </ul>
-<p><strong>数学符号含义速查</strong>：<br>
-$x$ ：某样例的特征向量, $x \in \boldsymbol{x}$</p>
-<p>$y$ : 某样例的标签变量, $y \in \boldsymbol{y}={0,1}$</p>
-<p>$(\boldsymbol{x}, \boldsymbol{y})$ : 某样本二元组</p>
-<p>$s$ : 某样例是否被标注的指示变量, $s \in s={0,1}$</p>
-<p>$\alpha$ ：先验类别（Class Prior)， $\alpha=\operatorname{Pr}(y=1)$ ，指正类别先验比例</p>
-<p>$c$ : 标签频率（Label Frequency)， $c=\operatorname{Pr}(s=1 \mid y=1)$, 指L集合占总体P集的比例<br>
-$e$ : 倾向评分函数 (Propensity Score) , $e(x)=\operatorname{Pr}(s=1 \mid y=1, x)$</p>
-<p>$f(x)$ : 总体样本的概率密度分布函数, $\quad f(x)=\operatorname{Pr}(x \mid y \in{0,1})$</p>
-<p>$f_{+}(x)$ : 正样本的概率密度分布函数, $\quad f_{+}(x)=\operatorname{Pr}(x \mid y=1)$</p>
-<p>$f_{-}(x)$ : 负样本的概率密度分布函数, $\quad f_{-}(x)=\operatorname{Pr}(x \mid y=0)$</p>
-<p>$f_l(x)$ : 有标签 (labeled) 样本的概率密度分布函数, $\quad f_l(x)=\operatorname{Pr}(x \mid s=1) \subset f_{+}(x)$</p>
-<p>$f_u(x)$ : 无标签 (unlabeled) 样本的概率密度分布函数， $\quad f_u(x)=\operatorname{Pr}(x \mid s=0)$</p>
-<p>$\hat{\theta}$ : 对参数 $\theta$ 的估计值</p>
-<p>$P:$ 正样本集, Positive, 已标注的正样本</p>
-<p>$N$ : 负样本集, Negative, 实际末知</p>
-<p>$L$ : 有标签样本集, Labeled, 只有正样本</p>
-<p>$U$ : 无标签样本集, Unlabeled, 包括末知的正负样本</p>
-<p>$P U:$ 正样本和无标签样本组成的集合</p>
-<p>$R N$ : 可靠的负样本</p>
+<p><strong>数学符号含义速查</strong>： <span class="math inline">\(x\)</span> ：某样例的特征向量, <span class="math inline">\(x \in \boldsymbol{x}\)</span></p>
+<p><span class="math inline">\(y\)</span> : 某样例的标签变量, <span class="math inline">\(y \in \boldsymbol{y}=\{0,1\}\)</span></p>
+<p><span class="math inline">\((\boldsymbol{x}, \boldsymbol{y})\)</span>
+: 某样本二元组</p>
+<p><span class="math inline">\(s\)</span> : 某样例是否被标注的指示变量,
+<span class="math inline">\(s \in s=\{0,1\}\)</span></p>
+<p><span class="math inline">\(\alpha\)</span> ：先验类别（Class
+Prior)， <span class="math inline">\(\alpha=\operatorname{Pr}(y=1)\)</span>
+，指正类别先验比例</p>
+<p><span class="math inline">\(c\)</span> : 标签频率（Label Frequency)，
+<span class="math inline">\(c=\operatorname{Pr}(s=1 \mid y=1)\)</span>,
+指L集合占总体P集的比例 <span class="math inline">\(e\)</span> :
+倾向评分函数 (Propensity Score) , <span class="math inline">\(e(x)=\operatorname{Pr}(s=1 \mid y=1,
+x)\)</span></p>
+<p><span class="math inline">\(f(x)\)</span> :
+总体样本的概率密度分布函数, <span class="math inline">\(\quad
+f(x)=\operatorname{Pr}(x \mid y \in\{0,1\})\)</span></p>
+<p><span class="math inline">\(f_{+}(x)\)</span> :
+正样本的概率密度分布函数, <span class="math inline">\(\quad
+f_{+}(x)=\operatorname{Pr}(x \mid y=1)\)</span></p>
+<p><span class="math inline">\(f_{-}(x)\)</span> :
+负样本的概率密度分布函数, <span class="math inline">\(\quad
+f_{-}(x)=\operatorname{Pr}(x \mid y=0)\)</span></p>
+<p><span class="math inline">\(f_l(x)\)</span> : 有标签 (labeled)
+样本的概率密度分布函数, <span class="math inline">\(\quad
+f_l(x)=\operatorname{Pr}(x \mid s=1) \subset f_{+}(x)\)</span></p>
+<p><span class="math inline">\(f_u(x)\)</span> : 无标签 (unlabeled)
+样本的概率密度分布函数， <span class="math inline">\(\quad
+f_u(x)=\operatorname{Pr}(x \mid s=0)\)</span></p>
+<p><span class="math inline">\(\hat{\theta}\)</span> : 对参数 <span class="math inline">\(\theta\)</span> 的估计值</p>
+<p><span class="math inline">\(P:\)</span> 正样本集, Positive,
+已标注的正样本</p>
+<p><span class="math inline">\(N\)</span> : 负样本集, Negative,
+实际末知</p>
+<p><span class="math inline">\(L\)</span> : 有标签样本集, Labeled,
+只有正样本</p>
+<p><span class="math inline">\(U\)</span> : 无标签样本集, Unlabeled,
+包括末知的正负样本</p>
+<p><span class="math inline">\(P U:\)</span>
+正样本和无标签样本组成的集合</p>
+<p><span class="math inline">\(R N\)</span> : 可靠的负样本</p>
 
       
     </div>
@@ -1274,7 +1454,7 @@ $e$ : 倾向评分函数 (Propensity Score) , $e(x)=\operatorname{Pr}(s=1 \mid y
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
+      <span>3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1294,148 +1474,232 @@ $e$ : 倾向评分函数 (Propensity Score) , $e(x)=\operatorname{Pr}(s=1 \mid y
     <div class="post-body" itemprop="articleBody">
           <h2><span id="评分卡基础逻辑回归算法理解">评分卡基础—逻辑回归算法理解</span></h2>
 <h4><span id="风控业务背景"><strong>风控业务背景</strong></span></h4>
-<p>逻辑回归（Logistic Regression，LR）是建立信贷金融评分卡的重要模型，其具有形式简单、易于解释、鲁棒性强等优点。然而，很多建模同学并不是很清楚其原理。本文尝试对逻辑回归基础加以分析理解。</p>
+<p>逻辑回归（Logistic
+Regression，LR）是建立信贷金融评分卡的重要模型，其具有形式简单、易于解释、鲁棒性强等优点。然而，很多建模同学并不是很清楚其原理。本文尝试对逻辑回归基础加以分析理解。</p>
 <blockquote>
-<p>目录<br>
-Part 1. 从线性回归到逻辑回归<br>
-Part 2. 为什么采用sigmoid函数<br>
-Part 3. 利用极大似然估计法估计参数<br>
-Part 4. 最优化问题求解之梯度下降法<br>
-Part 5. 正则项的作用和种类<br>
-Part 6. 总结<br>
-致谢<br>
-版权声明<br>
-参考资料</p>
+<p>目录 Part 1. 从线性回归到逻辑回归 Part 2. 为什么采用sigmoid函数 Part
+3. 利用极大似然估计法估计参数 Part 4. 最优化问题求解之梯度下降法 Part 5.
+正则项的作用和种类 Part 6. 总结 致谢 版权声明 参考资料</p>
 </blockquote>
 <h3><span id="一-从线性回归到逻辑回归">一、从线性回归到逻辑回归</span></h3>
 <p>线性模型是指对各种属性进行<strong>线性加权</strong>组合的函数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb+%7Bx%7D%29+%3D+w_%7B1%7Dx_%7B1%7D+%2B+w_%7B2%7Dx_%7B2%7D+%2B+...+%2B+w_%7Bn%7D+x_%7Bn%7D+%2B+b+%5C%5C+%3D+%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b++%5Ctag%7B1%7D" alt="[公式]"></p>
-<p>这一过程将信息进行整合；不同的权重(weight)反映了自变量对因变量不同的贡献程度 。线性回归（Liner Regression）具有广泛应用，例如：预测房价、天气等等。</p>
-<p><strong><font color="red"> 但在实际应用中，很多人会忽略线性回归的几大假设：</font></strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb+%7Bx%7D%29+%3D+w_%7B1%7Dx_%7B1%7D+%2B+w_%7B2%7Dx_%7B2%7D+%2B+...+%2B+w_%7Bn%7D+x_%7Bn%7D+%2B+b+%5C%5C+%3D+%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b++%5Ctag%7B1%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>这一过程将信息进行整合；不同的权重(weight)反映了自变量对因变量不同的贡献程度
+。线性回归（Liner
+Regression）具有广泛应用，例如：预测房价、天气等等。</p>
+<p><strong><font color="red">
+但在实际应用中，很多人会忽略线性回归的几大假设：</font></strong></p>
 <ul>
 <li><strong>零均值假设</strong>：随机误差项均值为0。</li>
 <li><strong>同方差假设</strong>：随机误差项方差相同。若满足这一特性，称模型具有<strong>同方差性</strong></li>
-<li><strong>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]"> 服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"></strong></li>
+<li><strong>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]">
+服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"></strong></li>
 <li><strong>无自相关假设</strong>：若不满足这一特性，称模型具有<strong>自相关性</strong>（Autocorrelation）。</li>
-<li>…</li>
+<li>...</li>
 </ul>
-<p>显然，线性回归的输出结果 <img src="https://www.zhihu.com/equation?tex=f%28%5Ctextbf%7Bx%7D%29+%5Cin+%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 。那如果要做分类呢？我们就考虑将线性回归的输出与分类任务的真实标签 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">联系起来，即再找一个映射函数。</p>
+<p>显然，线性回归的输出结果 <img src="https://www.zhihu.com/equation?tex=f%28%5Ctextbf%7Bx%7D%29+%5Cin+%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]">
+。那如果要做分类呢？我们就考虑将线性回归的输出与分类任务的真实标签 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">联系起来，即再找一个映射函数。</p>
 <p>我们采用一个 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数（也叫对数几率）：</p>
-<p><img src="https://www.zhihu.com/equation?tex=+f%28z%29+%3D+%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D++%5Ctag%7B2%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=+f%28z%29+%3D+%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D++%5Ctag%7B2%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>其函数图像如图2所示，直观感受其优美的姿态，对称、平滑，且输出 <img src="https://www.zhihu.com/equation?tex=+f%28z%29+%5Cin+%280%2C1%29" alt="[公式]"> .</p>
-<img src="https://pic2.zhimg.com/80/v2-4b114919fe629cb80abcdfd949e73869_1440w.jpg" alt="img" style="zoom:33%;">
+<p><img src="https://pic2.zhimg.com/80/v2-4b114919fe629cb80abcdfd949e73869_1440w.jpg" alt="img" style="zoom:33%;"></p>
 <p>我们尝试把 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数模块拼接到线性回归的输出后面，如图3所示。</p>
-<img src="https://pic4.zhimg.com/80/v2-d48c12be1ae99fd3008ea54e242be983_1440w.jpg" alt="img" style="zoom:50%;">
-<p>把图3用公式表达，也就是在 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数内嵌套一个线性回归：</p>
-<p><img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb%7Bx%7D%29%3D+%5Cfrac%7B1%7D%7B1+%2B+e%5E-%7B%28%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%29%7D%7D+%5Ctag%7B3%7D" alt="[公式]"></p>
+<p><img src="https://pic4.zhimg.com/80/v2-d48c12be1ae99fd3008ea54e242be983_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>把图3用公式表达，也就是在 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
+函数内嵌套一个线性回归：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb%7Bx%7D%29%3D+%5Cfrac%7B1%7D%7B1+%2B+e%5E-%7B%28%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%29%7D%7D+%5Ctag%7B3%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>我们再将其变换得到逻辑回归的另一种常见形式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=+ln+%5Cfrac%7Bp%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D%7B1%E2%88%92p%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D+%3D+%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D+%5Ctag%7B4%7D" alt="[公式]"></p>
-<p>为什么要这样做呢？这是因为右边就是线性回归，而左边则引入了 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> (几率) 的概念，即<strong>事件发生概率相对于不发生概率的比值。</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=+ln+%5Cfrac%7Bp%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D%7B1%E2%88%92p%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D+%3D+%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D+%5Ctag%7B4%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>为什么要这样做呢？这是因为右边就是线性回归，而左边则引入了 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> (几率)
+的概念，即<strong>事件发生概率相对于不发生概率的比值。</strong></p>
 <p>显然可以得到正负样例的概率表达式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%28y%3D1%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7Be%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5C%5C+p%28y%3D0%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7B1%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5Ctag%7B5%7D+" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%28y%3D1%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7Be%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5C%5C+p%28y%3D0%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7B1%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5Ctag%7B5%7D+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <h3><span id="二-为什么采用sigmoid函数">二、为什么采用sigmoid函数</span></h3>
 <blockquote>
 <p>根本原因：</p>
 <p>函数优点：</p>
 </blockquote>
-<p>至此，你可能会有疑问：为什么这里就直接选择了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数？如果只是为了将输出结果从 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 映射到 <img src="https://www.zhihu.com/equation?tex=%280%2C+1%29" alt="[公式]"> ，完全可以选择其他函数，比如单位阶跃函数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%28y%3D1+%7C+x%29%3D%5Cbegin%7Bcases%7D+0%2C%26+z%5Clt+0+%5C%5C+0.5%2C%26+z+%3D+0%5C%5C+1%2C%26+z%5Cgt+0%5C+%5Cend%7Bcases%7D+%2C%5Cquad+z%3Dw%5ET+x%2Bb++%5Ctag%7B6%7D" alt="[公式]"></p>
-<p>若预测值 <img src="https://www.zhihu.com/equation?tex=z+%3E0" alt="[公式]"> 则判为正例， <img src="https://www.zhihu.com/equation?tex=z+%3C+0" alt="[公式]"> 则判为负例， <img src="https://www.zhihu.com/equation?tex=z+%3D+0" alt="[公式]"> 则可任意判别。你可能会说，这个阶跃函数不可微，也无法像<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数那样输出概率。这就冒出两个问题：</p>
-<ol>
+<p>至此，你可能会有疑问：为什么这里就直接选择了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
+函数？如果只是为了将输出结果从 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 映射到 <img src="https://www.zhihu.com/equation?tex=%280%2C+1%29" alt="[公式]">
+，完全可以选择其他函数，比如单位阶跃函数：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%28y%3D1+%7C+x%29%3D%5Cbegin%7Bcases%7D+0%2C%26+z%5Clt+0+%5C%5C+0.5%2C%26+z+%3D+0%5C%5C+1%2C%26+z%5Cgt+0%5C+%5Cend%7Bcases%7D+%2C%5Cquad+z%3Dw%5ET+x%2Bb++%5Ctag%7B6%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>若预测值 <img src="https://www.zhihu.com/equation?tex=z+%3E0" alt="[公式]"> 则判为正例， <img src="https://www.zhihu.com/equation?tex=z+%3C+0" alt="[公式]">
+则判为负例， <img src="https://www.zhihu.com/equation?tex=z+%3D+0" alt="[公式]">
+则可任意判别。你可能会说，这个阶跃函数不可微，也无法像<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
+函数那样输出概率。这就冒出两个问题：</p>
+<ol type="1">
 <li><strong>为什么这个映射函数一定要求可微？</strong></li>
 <li><strong>为什么 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数输出值可以代表概率？</strong></li>
 </ol>
-<p>首先，我们先分析 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数的基本性质：</p>
-<ol>
+<p>首先，我们先分析 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
+函数的基本性质：</p>
+<ol type="1">
 <li>定义域：<img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"></li>
 <li>值域：<img src="https://www.zhihu.com/equation?tex=%280%2C1%29" alt="[公式]"></li>
 <li>函数在定义域内为连续和光滑函数</li>
 <li>处处可导，导数为 <img src="https://www.zhihu.com/equation?tex=f%E2%80%B2%28x%29%3Df%28x%29%281%E2%88%92f%28x%29%29" alt="[公式]"> ，以下是推导过程：</li>
 </ol>
-<p><img src="https://www.zhihu.com/equation?tex=f%27%28x%29%3D%5B%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%5D%27+%3D%5Cfrac%7B1%27%C2%B7%281%2Be%5E%7B-x%7D%29-1%C2%B7%281%2Be%5E%7B-x%7D%29%27%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D+%5C%5C+%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D-%5Cfrac%7B1%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D++%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D+%281-%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%29+%5C%5C+%3Df%28x%29%5B1-f%28x%29%5D+%5Ctag%7B7%7D" alt="[公式]"></p>
-<p>可以看到，<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数确实具有很多优点，但这仍不是我们选择它的<strong>根本原因</strong>。这是因为，我们仍可以找到一些与之类似性质的函数。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=f%27%28x%29%3D%5B%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%5D%27+%3D%5Cfrac%7B1%27%C2%B7%281%2Be%5E%7B-x%7D%29-1%C2%B7%281%2Be%5E%7B-x%7D%29%27%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D+%5C%5C+%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D-%5Cfrac%7B1%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D++%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D+%281-%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%29+%5C%5C+%3Df%28x%29%5B1-f%28x%29%5D+%5Ctag%7B7%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>可以看到，<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
+函数确实具有很多优点，但这仍不是我们选择它的<strong>根本原因</strong>。这是因为，我们仍可以找到一些与之类似性质的函数。</p>
 <h4><span id="根本原因">根本原因：</span></h4>
-<p>由于逻辑回归本质上属于线性模型，我们尝试<strong>从广义线性模型（Generalized Linear Model，GLM）角度入手解释</strong>。前文提到，<strong>线性回归存在诸多假设，实际应用中往往无法满足</strong>。这就会有以下问题：</p>
+<p>由于逻辑回归本质上属于线性模型，我们尝试<strong>从广义线性模型（Generalized
+Linear
+Model，GLM）角度入手解释</strong>。前文提到，<strong>线性回归存在诸多假设，实际应用中往往无法满足</strong>。这就会有以下问题：</p>
 <ul>
-<li><img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的取值范围 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 与某些场景矛盾。例如，要求 <img src="https://www.zhihu.com/equation?tex=y+%5Cin+%280%2C%5Cinfty%29" alt="[公式]"> 。假设一个线性回归模型预测当温度下降10摄氏度，沙滩上的游客将减少1000人。那么，如果当前20摄氏度时，沙滩上只有50人，按此模型预测，当温度为10摄氏度时，沙滩上便有-950人。这显然不符合常理，因为人数不能为负数。</li>
-<li>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]"> 服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"> ，且要求方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]"> 是常数。但有时，均值 <img src="https://www.zhihu.com/equation?tex=%5Cmu" alt="[公式]"> 越大，我们越预测不准确（方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]"> 越大）。</li>
+<li><img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">
+的取值范围 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 与某些场景矛盾。例如，要求 <img src="https://www.zhihu.com/equation?tex=y+%5Cin+%280%2C%5Cinfty%29" alt="[公式]">
+。假设一个线性回归模型预测当温度下降10摄氏度，沙滩上的游客将减少1000人。那么，如果当前20摄氏度时，沙滩上只有50人，按此模型预测，当温度为10摄氏度时，沙滩上便有-950人。这显然不符合常理，因为人数不能为负数。</li>
+<li>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]"> 服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"> ，且要求方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]">
+是常数。但有时，均值 <img src="https://www.zhihu.com/equation?tex=%5Cmu" alt="[公式]"> 越大，我们越预测不准确（方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]">
+越大）。</li>
 </ul>
 <p><strong>为了解决这些局限性，后人发展了GLM，用以提高线性模型的普适性。</strong></p>
 <blockquote>
-<p>GLM允许因变量 $y$ 的分布<strong>并不一定要服从正态分布</strong>，而可以服从其它分布。</p>
+<p>GLM允许因变量 <span class="math inline">\(y\)</span>
+的分布<strong>并不一定要服从正态分布</strong>，而可以服从其它分布。</p>
 </blockquote>
 <p><strong>广义线性模型GLM由三要素组成, 即：</strong></p>
 <ul>
-<li>
-<p><strong>概率分布</strong> (Probability distribution) : 指因变量 $y$ 的分布假设, 来自指数分布族。</p>
-</li>
-<li>
-<p><strong>线性预测</strong> (Linear predictor) : 自变量的线性组合, 即 $\eta=\boldsymbol{X} \boldsymbol{\beta}$</p>
-</li>
-<li>
-<p><strong>链接函数</strong> (Link function) : 通过均值 $\mu$ 来链接前两者, 即 $E(Y)=\mu=g^{-1}(\eta)$<br>
+<li><p><strong>概率分布</strong> (Probability distribution) : 指因变量
+<span class="math inline">\(y\)</span> 的分布假设,
+来自指数分布族。</p></li>
+<li><p><strong>线性预测</strong> (Linear predictor) : 自变量的线性组合,
+即 <span class="math inline">\(\eta=\boldsymbol{X}
+\boldsymbol{\beta}\)</span></p></li>
+<li><p><strong>链接函数</strong> (Link function) : 通过均值 <span class="math inline">\(\mu\)</span> 来链接前两者, 即 <span class="math inline">\(E(Y)=\mu=g^{-1}(\eta)\)</span>
 <img src="/Users/apple/Library/Application Support/typora-user-images/image-20220708133222814.png" alt="image-20220708133222814" style="zoom:50%;"></p>
-<p><strong>首先分析概率分布。对于只有单个参数 $\theta$ 的指数分布族的通用形式为:</strong><br>
-$$<br>
-f(x \mid \theta)=h(x) \exp (\eta(\theta) \cdot T(x)-A(\theta))<br>
-$$<br>
-其中, $h(x)$ 和 $T(x)$ 只是关于自变量 $x$ 的函数； $\eta(\theta)$ 和 $A(\theta)$ 只是关于末知参数 $\theta$ 的函数。 不同的线性模型具有不同的分布假设。比如：</p>
-</li>
-<li>
-<p><strong><font color="red"> 线性回归假设 $y$ 的残差 $\varepsilon$ 服从正态分布 $N\left(\mu, \sigma^{2}\right)$</font></strong></p>
-</li>
-<li>
-<p><strong><font color="red"> 逻辑回归假设 $y$ 服从伯努利分布 (Bernoulli)</font></strong></p>
-</li>
+<p><strong>首先分析概率分布。对于只有单个参数 <span class="math inline">\(\theta\)</span> 的指数分布族的通用形式为:</strong>
+<span class="math display">\[
+f(x \mid \theta)=h(x) \exp (\eta(\theta) \cdot T(x)-A(\theta))
+\]</span> 其中, <span class="math inline">\(h(x)\)</span> 和 <span class="math inline">\(T(x)\)</span> 只是关于自变量 <span class="math inline">\(x\)</span> 的函数； <span class="math inline">\(\eta(\theta)\)</span> 和 <span class="math inline">\(A(\theta)\)</span> 只是关于末知参数 <span class="math inline">\(\theta\)</span> 的函数。
+不同的线性模型具有不同的分布假设。比如：</p></li>
+<li><p><strong><font color="red"> 线性回归假设 <span class="math inline">\(y\)</span> 的残差 <span class="math inline">\(\varepsilon\)</span> 服从正态分布 <span class="math inline">\(N\left(\mu,
+\sigma^{2}\right)\)</span></font></strong></p></li>
+<li><p><strong><font color="red"> 逻辑回归假设 <span class="math inline">\(y\)</span> 服从伯努利分布
+(Bernoulli)</font></strong></p></li>
 </ul>
 <p>接下来，我们尝试：</p>
-<ol>
-<li>将逻辑回归因变量 $y$ 变换到式 <img src="https://www.zhihu.com/equation?tex=%288%29" alt="[公式]"> 的形式，确定以上几个函数，验证其属于指数分布族。</li>
+<ol type="1">
+<li>将逻辑回归因变量 <span class="math inline">\(y\)</span> 变换到式
+<img src="https://www.zhihu.com/equation?tex=%288%29" alt="[公式]">
+的形式，确定以上几个函数，验证其属于指数分布族。</li>
 <li>求解出逻辑回归对应的链接函数。注意，此时我们<strong>还没有认可sigmoid函数</strong>。⚠️</li>
 </ol>
-<p><strong>由于逻辑回归假设 $y$ 服从伯努利分布（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Bernoulli%2Bdistribution">Bernoulli</a>），即：</strong></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Beqnarray%2A%7D++%26%26+f%28x%7Cp%29+%3D+p%5Ex+%281-p%29%5E%7B1-x%7D+%5C%5C++%26%26+%3D++%5Cexp%28x%2Alnp+%2B+%281-x%29%2Aln%281-p%29%29+%5C%5C+%26%26+%3D%5Cexp%28ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%2A+x+%2B+ln%281-p%29%29+%5C%5C++%26%26%3D%5Cexp%28%CE%B7%2Ax+%2B+ln%281%2Be%5E%CE%B7%29%29+%5C%5C+%26%26+Let%3A+%CE%B7%3Dln%28%5Cfrac%7Bp%7D%7B1-p%7D%29++%5Cend%7Beqnarray%2A%7D+%5Ctag%7B9%7D+" alt="[公式]"></p>
+<p><strong>由于逻辑回归假设 <span class="math inline">\(y\)</span>
+服从伯努利分布（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Bernoulli%2Bdistribution">Bernoulli</a>），即：</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Beqnarray%2A%7D++%26%26+f%28x%7Cp%29+%3D+p%5Ex+%281-p%29%5E%7B1-x%7D+%5C%5C++%26%26+%3D++%5Cexp%28x%2Alnp+%2B+%281-x%29%2Aln%281-p%29%29+%5C%5C+%26%26+%3D%5Cexp%28ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%2A+x+%2B+ln%281-p%29%29+%5C%5C++%26%26%3D%5Cexp%28%CE%B7%2Ax+%2B+ln%281%2Be%5E%CE%B7%29%29+%5C%5C+%26%26+Let%3A+%CE%B7%3Dln%28%5Cfrac%7Bp%7D%7B1-p%7D%29++%5Cend%7Beqnarray%2A%7D+%5Ctag%7B9%7D+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>对比式 <img src="https://www.zhihu.com/equation?tex=%288%29" alt="[公式]"> 指数函数族的通用形式，我们发现：</p>
 <ul>
-<li><img src="https://www.zhihu.com/equation?tex=h%28x%29+%3D+1%EF%BC%8CT%28x%29%3Dx" alt="[公式]"></li>
-<li><img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29%2C+A%28p%29+%3D+-ln%281%2Be%5E%CE%B7%29" alt="[公式]"></li>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=h%28x%29+%3D+1%EF%BC%8CT%28x%29%3Dx" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29%2C+A%28p%29+%3D+-ln%281%2Be%5E%CE%B7%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
 </ul>
-<p><strong>这说明伯努利分布也是指数分布族（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Exponential%2Bfamily">exponential family</a>）的成员。按GLM的第二要素定义：</strong></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ceta+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5C%5C+%5CRightarrow+ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5Ctag%7B10%7D" alt="[公式]"></p>
-<p>我们再计算 <img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29" alt="[公式]"> 的反函数，就得到了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=f%28x%29+%3D+%5Cfrac%7B1%7D%7B1%2B+e%5E%7B-x%7D%7D+%5Ctag%7B11%7D" alt="[公式]"></p>
+<p><strong>这说明伯努利分布也是指数分布族（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Exponential%2Bfamily">exponential
+family</a>）的成员。按GLM的第二要素定义：</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ceta+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5C%5C+%5CRightarrow+ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5Ctag%7B10%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>我们再计算 <img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29" alt="[公式]"> 的反函数，就得到了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
+函数：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=f%28x%29+%3D+%5Cfrac%7B1%7D%7B1%2B+e%5E%7B-x%7D%7D+%5Ctag%7B11%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>按类似方法，我们可以推导出各分布函数及其链接函数，如图5所示。</p>
-<img src="https://pic1.zhimg.com/80/v2-ffe75b45239773e6245b00b78c65d908_1440w.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://pic1.zhimg.com/80/v2-ffe75b45239773e6245b00b78c65d908_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p><strong>从广义线性模型角度，我们确实推导出 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">函数与逻辑回归之间密不可分的联系。但是，sigmoid函数输出值为什么可以代表概率？</strong></p>
-<p><strong><font color="red"> 上文提到，逻辑回归中因变量 $y$ 服从伯努利分布，而伯努利分布的参数 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]"> 的含义就是样例属于 <img src="https://www.zhihu.com/equation?tex=y+%3D+1" alt="[公式]"> 的概率。</font></strong></p>
+<p><strong><font color="red"> 上文提到，逻辑回归中因变量 <span class="math inline">\(y\)</span> 服从伯努利分布，而伯努利分布的参数 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]">
+的含义就是样例属于 <img src="https://www.zhihu.com/equation?tex=y+%3D+1" alt="[公式]"> 的概率。</font></strong></p>
 <h3><span id="三-利用极大似然估计法估计参数">三、利用极大似然估计法估计参数</span></h3>
 <p>在模型参数估计问题上，两大主流学派持有不同观点：</p>
 <ul>
-<li><strong>频率主义学派（Frequentist）：</strong> <strong>认为参数虽然未知，但却是客观存在的固定值</strong>。因此，可通过优化似然函数等准则估计参数值。</li>
-<li>**贝叶斯学派（Bayesian）： ** <strong>认为参数是未观察到的随机变量，其本身也可有分布</strong>。因此，可假定参数服从一个先验分布，再基于观察到的数据来计算参数的后验分布。</li>
+<li><strong>频率主义学派（Frequentist）：</strong>
+<strong>认为参数虽然未知，但却是客观存在的固定值</strong>。因此，可通过优化似然函数等准则估计参数值。</li>
+<li><strong>贝叶斯学派（Bayesian）： </strong>
+<strong>认为参数是未观察到的随机变量，其本身也可有分布</strong>。因此，可假定参数服从一个先验分布，再基于观察到的数据来计算参数的后验分布。</li>
 </ul>
-<p><strong>极大似然估计法（Maximum Likelihood Estimation，MLE）属于频率主义学派方法，其蕴含的朴素思想在于：</strong></p>
-<p>我们已经确定了一个模型种类 <img src="https://www.zhihu.com/equation?tex=h_%7B%5Ctheta%7D%28x%7C%5Ctheta%29" alt="[公式]"> ，但还不清楚其真实参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 。既然目前观察样本已经出现，那么就<strong>由果溯因</strong>，估计出一组参数 <img src="https://www.zhihu.com/equation?tex=%5Chat+%7B%5Ctheta%7D" alt="[公式]"> ，使得出现目前结果的可能性<strong>最大</strong>（优化目标)，如图6所示。</p>
+<p><strong>极大似然估计法（Maximum Likelihood
+Estimation，MLE）属于频率主义学派方法，其蕴含的朴素思想在于：</strong></p>
+<p>我们已经确定了一个模型种类 <img src="https://www.zhihu.com/equation?tex=h_%7B%5Ctheta%7D%28x%7C%5Ctheta%29" alt="[公式]"> ，但还不清楚其真实参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
+。既然目前观察样本已经出现，那么就<strong>由果溯因</strong>，估计出一组参数
+<img src="https://www.zhihu.com/equation?tex=%5Chat+%7B%5Ctheta%7D" alt="[公式]">
+，使得出现目前结果的可能性<strong>最大</strong>（优化目标)，如图6所示。</p>
 <p>由于一组样本中的所有样例是一个整体，因此我们<strong>将各样例的概率相乘</strong>（排列组合中的乘法原理）来得到我们的目标函数。</p>
-<p><img src="https://pic1.zhimg.com/80/v2-13bed4bb32c44c57bdde2cc772a34184_1440w.jpg" alt="img"></p>
-<p>我们把第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 个样例的类别属于 <img src="https://www.zhihu.com/equation?tex=y%3D1" alt="[公式]"> 的概率记为： <img src="https://www.zhihu.com/equation?tex=P%28y%3D1%7C+%5Cpmb%7Bx%7D_i%29+%3D+p%28+%5Cpmb%7Bx%7D_i%7C+%5Cpmb%7Bw%7D+%29" alt="[公式]"> .</p>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-13bed4bb32c44c57bdde2cc772a34184_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>我们把第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 个样例的类别属于 <img src="https://www.zhihu.com/equation?tex=y%3D1" alt="[公式]">
+的概率记为： <img src="https://www.zhihu.com/equation?tex=P%28y%3D1%7C+%5Cpmb%7Bx%7D_i%29+%3D+p%28+%5Cpmb%7Bx%7D_i%7C+%5Cpmb%7Bw%7D+%29" alt="[公式]"> .</p>
 <p>现在，我们有观测样本 <img src="https://www.zhihu.com/equation?tex=+D%3D%5C%7B%28+%5Cpmb%7Bx%7D_1%2C+y_%7B1%7D%29%2C+%28+%5Cpmb%7Bx%7D_2%2C+y_%7B2%7D%29%2C...%2C%28+%5Cpmb%7Bx%7D_m%2C+y_%7Bm%7D%29%5C%7D%2C+%5Cpmb+x_%7Bi%7D+%5Cin+R%5En" alt="[公式]"> ，那么似然函数为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=L%28%5Cpmb%7Bw%7D%29%3D+%5Cprod_%7Bi%3D1%7D%5E%7Bm%7Dp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29++%3D+%5Cprod_%7Bi%3D1%7D%5Em+%5Bp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D++%5Ctag%7B12%7D" alt="[公式]"></p>
-<p>其中，样例 <img src="https://www.zhihu.com/equation?tex=+%5Cpmb%7Bx%7D_i" alt="[公式]"> 具有标签 <img src="https://www.zhihu.com/equation?tex=y_%7Bi%7D+%5Cin+%5C%7B0%2C1%5C%7D" alt="[公式]"> 。右边为什么要写成这种形式呢？主要原因在于这是<strong>伯努利分布的常见形式</strong>。按正负样例分析，可以帮助你理解这个形式：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=L%28%5Cpmb%7Bw%7D%29%3D+%5Cprod_%7Bi%3D1%7D%5E%7Bm%7Dp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29++%3D+%5Cprod_%7Bi%3D1%7D%5Em+%5Bp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D++%5Ctag%7B12%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中，样例 <img src="https://www.zhihu.com/equation?tex=+%5Cpmb%7Bx%7D_i" alt="[公式]"> 具有标签 <img src="https://www.zhihu.com/equation?tex=y_%7Bi%7D+%5Cin+%5C%7B0%2C1%5C%7D" alt="[公式]">
+。右边为什么要写成这种形式呢？主要原因在于这是<strong>伯努利分布的常见形式</strong>。按正负样例分析，可以帮助你理解这个形式：</p>
 <ul>
 <li><img src="https://www.zhihu.com/equation?tex=y_i+%3D+1" alt="[公式]"> 时，<img src="https://www.zhihu.com/equation?tex=%5Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D+%3D+p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5E%7B1%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B0%7D+%3D+p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29" alt="[公式]"></li>
 <li><img src="https://www.zhihu.com/equation?tex=y_i+%3D+0" alt="[公式]"> 时，<img src="https://www.zhihu.com/equation?tex=%5Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D+%3D+p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5E%7B0%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1%7D+%3D+1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29" alt="[公式]"></li>
 </ul>
-<p>为便于求解，将连乘 <img src="https://www.zhihu.com/equation?tex=%5Cprod" alt="[公式]"> 转为 <img src="https://www.zhihu.com/equation?tex=%5Csum" alt="[公式]"> ，我们对等式 <img src="https://www.zhihu.com/equation?tex=%2812%29" alt="[公式]"> 两边同取对数 <img src="https://www.zhihu.com/equation?tex=ln" alt="[公式]"> ，写成对数似然函数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+L%28%5Cpmb%7Bw%7D%29%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dlnp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_%7Bi%7D%29ln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dln%5Cfrac%7Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%7B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%2Bln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D++%5C%5C++%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D_i+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5En%28w_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5Cend%7Baligned%7D+%5Ctag%7B13%7D" alt="[公式]"></p>
+<p>为便于求解，将连乘 <img src="https://www.zhihu.com/equation?tex=%5Cprod" alt="[公式]"> 转为
+<img src="https://www.zhihu.com/equation?tex=%5Csum" alt="[公式]">
+，我们对等式 <img src="https://www.zhihu.com/equation?tex=%2812%29" alt="[公式]"> 两边同取对数 <img src="https://www.zhihu.com/equation?tex=ln" alt="[公式]">
+，写成对数似然函数：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+L%28%5Cpmb%7Bw%7D%29%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dlnp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_%7Bi%7D%29ln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dln%5Cfrac%7Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%7B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%2Bln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D++%5C%5C++%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D_i+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5En%28w_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5Cend%7Baligned%7D+%5Ctag%7B13%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>我们的优化目标是：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmax+L%28%5Cpmb%7Bw%7D%29+%5C%5C+%5CLeftrightarrow+%5Cmax+J%28%5Cpmb%7Bw%7D%29+%3D++%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5C%5C+%5CLeftrightarrow++%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-+%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5Ctag%7B14%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmax+L%28%5Cpmb%7Bw%7D%29+%5C%5C+%5CLeftrightarrow+%5Cmax+J%28%5Cpmb%7Bw%7D%29+%3D++%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5C%5C+%5CLeftrightarrow++%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-+%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5Ctag%7B14%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>认真考虑后，我们发现并没有其他<strong>约束项。</strong>(事实上，这里将蕴含正则项的思想)</p>
 <h3><span id="四-最优化问题求解之梯度下降法">四、最优化问题求解之梯度下降法</span></h3>
 <p>回到式 <img src="https://www.zhihu.com/equation?tex=%2814%29" alt="[公式]"> 这个问题中：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D+-+ln%281%2B%5Cexp%28%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29%5D+%5Ctag%7B17%7D" alt="[公式]"></p>
-<p>我们不断重复这一过程：达到某个点 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]"> 后，继续计算下一个点 <img src="https://www.zhihu.com/equation?tex=%7Bk%2B1%7D" alt="[公式]"> ：</p>
-<p><img src="https://www.zhihu.com/equation?tex=+w%5E%7Bk%2B1%7D_i+%3Dw%5Ek_i-%5Clambda++%5Cfrac%7B%5Cpartial+J%28%5Ctextbf%7Bw%7D%29%7D+%7B%5Cpartial+w_i%7D+%5Ctag%7B18%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D+-+ln%281%2B%5Cexp%28%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29%5D+%5Ctag%7B17%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>我们不断重复这一过程：达到某个点 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">
+后，继续计算下一个点 <img src="https://www.zhihu.com/equation?tex=%7Bk%2B1%7D" alt="[公式]">
+：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=+w%5E%7Bk%2B1%7D_i+%3Dw%5Ek_i-%5Clambda++%5Cfrac%7B%5Cpartial+J%28%5Ctextbf%7Bw%7D%29%7D+%7B%5Cpartial+w_i%7D+%5Ctag%7B18%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>那么，这个迭代过程何时才能停止呢？一般满足以下任意条件即可：</p>
 <ul>
 <li>达到迭代次数上限： <img src="https://www.zhihu.com/equation?tex=k+%3D+k_%7Bmax%7D" alt="[公式]"></li>
@@ -1550,8 +1814,8 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
           <h2><span id="业务风控常用算法归纳">业务风控常用算法归纳</span></h2>
 <blockquote>
-<p><strong>风控碎碎念</strong>：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1483570023214510080">https://www.zhihu.com/column/c_1483570023214510080</a></p>
-<p><strong>求是汪在路上</strong>：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1156982447794233344">https://www.zhihu.com/column/c_1156982447794233344</a></p>
+<p><strong>风控碎碎念</strong>：https://www.zhihu.com/column/c_1483570023214510080</p>
+<p><strong>求是汪在路上</strong>：https://www.zhihu.com/column/c_1156982447794233344</p>
 </blockquote>
 <h4><span id="前言">前言</span></h4>
 <p>本篇文章在这里主要是做一个综述性的文章简单介绍一下，做一个归纳性质的文章：<strong>风控最核心的算法，按我的理解可以分解为以下几类</strong></p>
@@ -1564,12 +1828,14 @@ $$<br>
 </ul>
 <h3><span id="一-风控算法场景">一、风控算法场景</span></h3>
 <h4><span id="11-用于用户风险评级的算法">1.1 用于用户风险评级的算法</span></h4>
-<p>这里不考虑<strong>冷启动阶段</strong>所涉及的一些专家规则和头脑风暴，一般评级往往存在于项目运行了一段时间，有了比较可靠的数据积累之后，这时候往往需要我们更精确的根据场景进行用户的划分，最为人熟知的便是信贷中常用的信用分的那一套东西，这一块的知识，我常常是看这个博主 <strong>求是汪在路上</strong>；这一块的算法或者说这一类的算法，这位大佬讲的已经十分清楚了，有兴趣的可以翻出来看看；</p>
-<p>**<font color="red"> 这一类的算法，主要是以有监督为准，难点主要集中在，正负样本不平衡，正负样本的选择，样本的观察期，表现期，观察点等的选择。</font>**一般涉及到的算法，主要以lr，xgb为主，那么在实际使用中，xgb和lightGBM因为其效果出色，特征工程的东西往往比较简单，往往在使用中用的更多一些。</p>
+<p>这里不考虑<strong>冷启动阶段</strong>所涉及的一些专家规则和头脑风暴，一般评级往往存在于项目运行了一段时间，有了比较可靠的数据积累之后，这时候往往需要我们更精确的根据场景进行用户的划分，最为人熟知的便是信贷中常用的信用分的那一套东西，这一块的知识，我常常是看这个博主
+<strong>求是汪在路上</strong>；这一块的算法或者说这一类的算法，这位大佬讲的已经十分清楚了，有兴趣的可以翻出来看看；</p>
+<p><strong><font color="red">
+这一类的算法，主要是以有监督为准，难点主要集中在，正负样本不平衡，正负样本的选择，样本的观察期，表现期，观察点等的选择。</font></strong>一般涉及到的算法，主要以lr，xgb为主，那么在实际使用中，xgb和lightGBM因为其效果出色，特征工程的东西往往比较简单，往往在使用中用的更多一些。</p>
 <p>这一类场景，往往目标相对明确，用途相对明确，做起来，工作量主要集中在特征工程上，一般来说特征工程做好了，这一类模型都可以做出还可以的效果；</p>
 <h4><span id="12-用于社区挖掘的算法">1.2 用于社区挖掘的算法</span></h4>
 <p><strong>社区挖掘，其实和聚类有点点像，也有点像推荐中的基于用户相似的推荐</strong>，本质就是将有关系，有联系的各类用户放到一起，用以达到用户分群的目的，这一块写的比较好的文章，我推荐：</p>
-<ol>
+<ol type="1">
 <li>怎么去找边与边之间的关联：</li>
 </ol>
 <ul>
@@ -1586,7 +1852,8 @@ $$<br>
 <h4><span id="13-异常值相关的发现算法">1.3 异常值相关的发现算法</span></h4>
 <p>异常值算法，其实和不平衡数据集(pu-learning)的解决方法类似，因为对于风控来讲，风控本身针对的用户在平台或者在用户群中，占比就非常非常低，部分场景可能连千分之一，万分之一都不到，对于大数据集来讲，本身就算是一种<strong>异常值</strong>了，所以往往异常值发现的算法，在实际使用当中，往往会有意想不到的好效果；</p>
 <p>说到异常值发现，日常的监控可能是一个方面，比如同比环比，比例异常，用户群占比异常等；除此之外还有一些，xgbod，iforest的半监督或者单分类的模型可以用于此类场景，这类场景，推荐可以参考：</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/368352445">xiaobo Xie：异常检测用于不平衡数据的二分类</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/368352445">xiaobo
+Xie：异常检测用于不平衡数据的二分类</a></p>
 <p>我个人觉得这是一类对于风控来讲非常好的思考方式，就<strong>是当我们很难刻画黑用户的特征的时候，我们能尽可能好的描述好白用户的特征</strong>，我们一样可以解决问题，这一类问题的模型解决也往往是朝着这个思路来做的；</p>
 <h4><span id="14-行为序列相关的算法">1.4 行为序列相关的算法</span></h4>
 <p>行为序列作为风控行为挖掘的重要组成部分，在部分场景往往有着意想不到的作用，举个例子，电商场景，正常人从搜索到下单，<strong>往往有着复杂的序列，至少大部分用户会有复杂的序列</strong>，而黑灰产往往会点击某些固定的链接直接进入商详，或者搜索固定的词进入商品，下单购买一气呵成，而如果一个非营销类商品大多数聚集着这样的序列，可能往往就存在一些问题，如果这个问题深入探讨下去，便是行为序列的挖掘；</p>
@@ -1703,6 +1970,7 @@ $$<br>
     
     <div class="post-body" itemprop="articleBody">
           
+
       
     </div>
 
@@ -1804,6 +2072,7 @@ $$<br>
     
     <div class="post-body" itemprop="articleBody">
           
+
       
     </div>
 
@@ -1910,7 +2179,10 @@ $$<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Metapath2vec是Yuxiao Dong等于2017年提出的一种用于异构信息网络（Heterogeneous Information Network, HIN）的顶点嵌入方法。metapath2vec使用基于meta-path的random walks来构建每个顶点的异构邻域，然后用Skip-Gram模型来完成顶点的嵌入。在metapath2vec的基础上，作者还提出了metapath2vec++来同时实现异构网络中的结构和语义关联的建模。</p>
+          <p>Metapath2vec是Yuxiao
+Dong等于2017年提出的一种用于异构信息网络（Heterogeneous Information
+Network, HIN）的顶点嵌入方法。metapath2vec使用基于meta-path的random
+walks来构建每个顶点的异构邻域，然后用Skip-Gram模型来完成顶点的嵌入。在metapath2vec的基础上，作者还提出了metapath2vec++来同时实现异构网络中的结构和语义关联的建模。</p>
 
       
     </div>
@@ -2020,27 +2292,39 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
           <h2><span id="graphsage">GraphSAGE</span></h2>
 <blockquote>
-<p>GraphSAGE：我寻思GCN也没我牛逼 - 蝈蝈的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74242097">https://zhuanlan.zhihu.com/p/74242097</a></p>
-<p>【Graph Neural Network】GraphSAGE: 算法原理，实现和应用 - 浅梦的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79637787">https://zhuanlan.zhihu.com/p/79637787</a></p>
-<p><strong>阿里开源的graphlearn</strong>：<a target="_blank" rel="noopener" href="https://graph-learn.readthedocs.io/zh_CN/latest/">https://graph-learn.readthedocs.io/zh_CN/latest/</a></p>
-<p><a href="../../AI%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8/%E9%A3%8E%E6%8E%A7%E7%AE%97%E6%B3%95/%E9%A3%8E%E6%8E%A7%E5%8F%8D%E6%AC%BA%E8%AF%88%EF%BC%882%EF%BC%89GraphSAGE%E7%AE%97%E6%B3%95%E5%9C%A8%E7%BD%91%E7%BB%9C%E9%BB%91%E4%BA%A7%E6%8C%96%E6%8E%98%E4%B8%AD%E7%9A%84%E6%80%9D%E8%80%83.md">风控反欺诈（2）GraphSAGE算法在网络黑产挖掘中的思考.md</a></p>
-<p><strong>graphSAGE-pytorch</strong>：<a target="_blank" rel="noopener" href="https://github.com/twjiang/graphSAGE-pytorch">https://github.com/twjiang/graphSAGE-pytorch</a></p>
+<p>GraphSAGE：我寻思GCN也没我牛逼 - 蝈蝈的文章 - 知乎
+https://zhuanlan.zhihu.com/p/74242097</p>
+<p>【Graph Neural Network】GraphSAGE: 算法原理，实现和应用 - 浅梦的文章
+- 知乎 https://zhuanlan.zhihu.com/p/79637787</p>
+<p><strong>阿里开源的graphlearn</strong>：https://graph-learn.readthedocs.io/zh_CN/latest/</p>
+<p><a href="../../AI算法应用/风控算法/风控反欺诈（2）GraphSAGE算法在网络黑产挖掘中的思考.md">风控反欺诈（2）GraphSAGE算法在网络黑产挖掘中的思考.md</a></p>
+<p><strong>graphSAGE-pytorch</strong>：https://github.com/twjiang/graphSAGE-pytorch</p>
 </blockquote>
-<p>众所周知，2017年ICLR出产的GCN现在是多么地热门，仿佛自己就是图神经网络的名片。然而，在GCN的风头中，很多人忽略了GCN本身的巨大局限——Transductive Learning——<strong>没法快速表示新节点</strong>，这限制了它在生产环境中应用。同年NIPS来了一篇使用Inductive Learning的GraphSAGE，解决了这个问题。今天，让我们来一起琢磨琢磨这个GraphSAGE是个什么玩意儿。</p>
+<p>众所周知，2017年ICLR出产的GCN现在是多么地热门，仿佛自己就是图神经网络的名片。然而，在GCN的风头中，很多人忽略了GCN本身的巨大局限——Transductive
+Learning——<strong>没法快速表示新节点</strong>，这限制了它在生产环境中应用。同年NIPS来了一篇使用Inductive
+Learning的GraphSAGE，解决了这个问题。今天，让我们来一起琢磨琢磨这个GraphSAGE是个什么玩意儿。</p>
 <h3><span id="一-回顾gcn及其问题">一、回顾GCN及其问题</span></h3>
-<p>对GCN不熟悉的盆友，可以看看我的上一篇文章：<br>
-<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/71200936">蝈蝈：何时能懂你的心——图卷积神经网络（GCN）</a></p>
+<p>对GCN不熟悉的盆友，可以看看我的上一篇文章： <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/71200936">蝈蝈：何时能懂你的心——图卷积神经网络（GCN）</a></p>
 <ul>
-<li><strong>GCN的基本思想：</strong>  把一个节点在图中的高纬度邻接信息降维到一个低维的向量表示。</li>
-<li><strong>GCN的优点：</strong>  可以捕捉graph的全局信息，从而很好地表示node的特征。</li>
-<li><strong>GCN的缺点：</strong>  Transductive learning的方式，需要把所有节点都参与训练才能得到node embedding，无法快速得到新node的embedding。</li>
+<li><strong>GCN的基本思想：</strong>
+把一个节点在图中的高纬度邻接信息降维到一个低维的向量表示。</li>
+<li><strong>GCN的优点：</strong>
+可以捕捉graph的全局信息，从而很好地表示node的特征。</li>
+<li><strong>GCN的缺点：</strong> Transductive
+learning的方式，需要把所有节点都参与训练才能得到node
+embedding，无法快速得到新node的embedding。</li>
 </ul>
 <h3><span id="二-graphsage">二、GraphSAGE</span></h3>
-<blockquote></blockquote>
-<p>既然<strong>新增的节点，一定会改变原有节点的表示</strong>，那么我们<strong>干嘛一定要得到每个节点的一个固定的表示呢？<strong>我们何不直接</strong>学习一种节点的表示方法</strong>。这样不管graph怎么改变，都可以很容易地得到新的表示。</p>
+<blockquote>
+
+</blockquote>
+<p>既然<strong>新增的节点，一定会改变原有节点的表示</strong>，那么我们<strong>干嘛一定要得到每个节点的一个固定的表示呢？</strong>我们何不直接<strong>学习一种节点的表示方法</strong>。这样不管graph怎么改变，都可以很容易地得到新的表示。</p>
 <h4><span id="基本思想"><strong>基本思想：</strong></span></h4>
-<p>去学习一个节点的信息是怎么通过其邻居节点的特征聚合而来的。  学习到了这样的“<strong>聚合函数</strong>”，而我们本身就已知各个节点的特征和邻居关系，我们就可以很方便地得到一个新节点的表示了。</p>
-<p>GCN等transductive的方法，学到的是每个节点的一个唯一确定的embedding；  而<strong>GraphSAGE方法学到的node embedding，是根据node的邻居关系的变化而变化的，也就是说，即使是旧的node，如果建立了一些新的link，那么其对应的embedding也会变化，而且也很方便地学到。</strong></p>
+<p>去学习一个节点的信息是怎么通过其邻居节点的特征聚合而来的。
+学习到了这样的“<strong>聚合函数</strong>”，而我们本身就已知各个节点的特征和邻居关系，我们就可以很方便地得到一个新节点的表示了。</p>
+<p>GCN等transductive的方法，学到的是每个节点的一个唯一确定的embedding；
+而<strong>GraphSAGE方法学到的node
+embedding，是根据node的邻居关系的变化而变化的，也就是说，即使是旧的node，如果建立了一些新的link，那么其对应的embedding也会变化，而且也很方便地学到。</strong></p>
 
       
     </div>

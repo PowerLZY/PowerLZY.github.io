@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="¶决策树——ID3、C4.5、CART 决策树是一个非常常见并且优秀的机器学习算法，它易于理解、可解释性强，其可作为分类算法，也可用于回归模型。    算法 ID3（分类） C4.5（分类） CART（分类和回归）     思想 奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3 算法的核心思想就是以信息增益来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策">
+    <meta name="description" content="决策树——ID3、C4.5、CART 决策树是一个非常常见并且优秀的机器学习算法，它易于理解、可解释性强，其可作为分类算法，也可用于回归模型。          算法 ID3（分类） C4.5（分类） CART（分类和回归）     思想 奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3 算法的核心思想就是以信息增益来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历">
 <meta property="og:type" content="article">
 <meta property="og:title" content="决策树（4）总结">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1WP1250/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="¶决策树——ID3、C4.5、CART 决策树是一个非常常见并且优秀的机器学习算法，它易于理解、可解释性强，其可作为分类算法，也可用于回归模型。    算法 ID3（分类） C4.5（分类） CART（分类和回归）     思想 奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3 算法的核心思想就是以信息增益来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策">
+<meta property="og:description" content="决策树——ID3、C4.5、CART 决策树是一个非常常见并且优秀的机器学习算法，它易于理解、可解释性强，其可作为分类算法，也可用于回归模型。          算法 ID3（分类） C4.5（分类） CART（分类和回归）     思想 奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3 算法的核心思想就是以信息增益来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://powerlzy.github.io/posts/1WP1250/image-20220321203204744.png">
 <meta property="article:published_time" content="2022-02-25T09:29:37.718Z">
@@ -146,7 +146,9 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">决策树——ID3、C4.5、CART</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、决策树Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 介绍决策树ID2、C4.5、CART, 3种决策树及其区别和适应场景？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 决策树处理连续值的方法?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 决策树处理缺失值的方式？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 决策树如何剪枝？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 决策树特征选择？特征重要性判断？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6 SVM、LR、决策树的对比？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7 多重共线性问题</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">决策树——ID3、C4.5、CART</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、决策树Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1
+介绍决策树ID2、C4.5、CART, 3种决策树及其区别和适应场景？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 决策树处理连续值的方法?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 决策树处理缺失值的方式？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 决策树如何剪枝？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5
+决策树特征选择？特征重要性判断？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6 SVM、LR、决策树的对比？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7 多重共线性问题</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -284,14 +286,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.7k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -305,8 +307,14 @@
         <h2><span id="决策树id3-c45-cart">决策树——ID3、C4.5、CART</span></h2>
 <p><strong>决策树</strong>是一个非常常见并且优秀的机器学习算法，它易于理解、可解释性强，其可作为分类算法，也可用于回归模型。</p>
 <table>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>算法</th>
 <th>ID3（分类）</th>
 <th>C4.5（分类）</th>
@@ -314,82 +322,119 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>思想</td>
-<td>奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3 算法的核心思想就是以<strong>信息增益</strong>来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间。</td>
-<td>C4.5 算法最大的特点是<strong>克服了 ID3 对特征数目的偏重</strong>这一缺点，引入<strong>信息增益率</strong>来作为分类标准。</td>
-<td>CART 算法的二分法可以<strong>简化决策树的规模</strong>，提高生成决策树的效率。CART 包含的基本过程有<strong>分裂</strong>，<strong>剪枝</strong>和<strong>树选择</strong>。</td>
+<td>奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3
+算法的核心思想就是以<strong>信息增益</strong>来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间。</td>
+<td>C4.5 算法最大的特点是<strong>克服了 ID3
+对特征数目的偏重</strong>这一缺点，引入<strong>信息增益率</strong>来作为分类标准。</td>
+<td>CART
+算法的二分法可以<strong>简化决策树的规模</strong>，提高生成决策树的效率。CART
+包含的基本过程有<strong>分裂</strong>，<strong>剪枝</strong>和<strong>树选择</strong>。</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>划分标准</strong></td>
-<td><strong>信息增益</strong>  =  类别熵 - 特征类别熵                                <strong>类别熵</strong>：$H(D)=-\sum_{k=1}^{K} \frac{\left</td>
-<td>C_{k}\right</td>
-<td>}{</td>
+<td><strong>信息增益</strong> = 类别熵 - 特征类别熵
+<strong>类别熵</strong>：<span class="math inline">\(H(D)=-\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|} \log _{2}
+\frac{\left|C_{k}\right|}{|D|}\)</span>
+<strong>特征类别熵</strong>：<span class="math inline">\(H(D \mid
+A)=\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|}
+H\left(D_{i}\right)\)</span></td>
+<td>先从候选划分特征中找到信息增益高于平均值的特征，再从中选择<strong>增益率</strong>最高的。</td>
+<td><strong>Gini
+系数</strong>作为变量的<strong>不纯度量</strong>，<strong>减少了大量的对数运算</strong>；<span class="math inline">\(G i n i(D)=\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right)\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>剪枝策略</td>
 <td><strong>无</strong></td>
 <td><strong>悲观剪枝策略</strong></td>
 <td>基于<strong>代价复杂度剪枝</strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td>数据差异</td>
 <td><strong>离散</strong>数据且<strong>缺失值</strong>敏感</td>
 <td><strong>离散</strong>、<strong>连续特征离散化</strong>；【排序+离散化】</td>
 <td><strong>连续型、离散型</strong></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>连续值处理</strong></td>
 <td>无</td>
 <td><strong>排序</strong>并取相邻两样本值的<strong>平均数</strong>。</td>
-<td><strong>排序</strong>并取相邻两样本值的<strong>平均数</strong>。<strong>CART 分类树</strong>【<strong>基尼系数</strong>】。<strong>回归树</strong>【<strong>和方差度量</strong>】。</td>
+<td><strong>排序</strong>并取相邻两样本值的<strong>平均数</strong>。<strong>CART
+分类树</strong>【<strong>基尼系数</strong>】。<strong>回归树</strong>【<strong>和方差度量</strong>】。</td>
 </tr>
-<tr>
+<tr class="even">
 <td>缺失值处理</td>
 <td><strong>无</strong></td>
 <td>1、有缺失值特征，用没有缺失的样本子集所占比重来折算；2、将样本同时划分到所有子节点</td>
 <td><strong>代理测试</strong>来估计缺失值</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>类别不平衡</td>
 <td><strong>无</strong></td>
 <td><strong>无</strong></td>
 <td><strong>先验机制</strong>：其作用相当于对数据自动重加权，对类别进行均衡。</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>缺点</strong></td>
-<td>1、ID3 没有剪枝策略，容易过拟合；2、信息增益准则对可取值<strong>数目较多的特征有所偏好</strong>，类似“编号”的特征其信息增益接近于 1； 3、只能用于处理离散分布的特征； 没有考虑缺失值。</td>
+<td>1、ID3
+没有剪枝策略，容易过拟合；2、信息增益准则对可取值<strong>数目较多的特征有所偏好</strong>，类似“编号”的特征其信息增益接近于
+1； 3、只能用于处理离散分布的特征； 没有考虑缺失值。</td>
 <td>1、<strong>多叉树</strong>。2、<strong>只能用于分类</strong>。3、熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>。4、驻留于内存的数据集。</td>
 <td>熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>。</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>**划分标准的差异：**ID3 使用信息增益偏向特征值多的特征，C4.5 使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART 使用基尼指数克服 C4.5 需要求 log 的巨大计算量，偏向于特征值较多的特征。</li>
-<li>**使用场景的差异：**ID3 和 C4.5 都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5 是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
-<li>**样本数据的差异：**ID3 只能处理离散数据且缺失值敏感，C4.5 和 CART 可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议 C4.5、大样本建议 CART。C4.5 处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART 本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
-<li>**样本特征的差异：**ID3 和 C4.5 层级之间只使用一次特征，CART 可多次重复使用特征；</li>
-<li><strong>剪枝策略的差异：<strong>ID3 没有剪枝策略，C4.5 是通过</strong>悲观剪枝策略</strong>来修正树的准确性，而 CART 是通过<strong>代价复杂度</strong>剪枝。</li>
+<li><strong>划分标准的差异：</strong>ID3
+使用信息增益偏向特征值多的特征，C4.5
+使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART
+使用基尼指数克服 C4.5 需要求 log
+的巨大计算量，偏向于特征值较多的特征。</li>
+<li><strong>使用场景的差异：</strong>ID3 和 C4.5
+都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5
+是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
+<li><strong>样本数据的差异：</strong>ID3
+只能处理离散数据且缺失值敏感，C4.5 和 CART
+可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议
+C4.5、大样本建议 CART。C4.5
+处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART
+本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
+<li><strong>样本特征的差异：</strong>ID3 和 C4.5
+层级之间只使用一次特征，CART 可多次重复使用特征；</li>
+<li><strong>剪枝策略的差异：</strong>ID3 没有剪枝策略，C4.5
+是通过<strong>悲观剪枝策略</strong>来修正树的准确性，而 CART
+是通过<strong>代价复杂度</strong>剪枝。</li>
 </ul>
 <span id="more"></span>
 <h2><span id="一-决策树qampa">一、决策树Q&amp;A</span></h2>
-<h4><span id="11-介绍决策树id2-c45-cart-3种决策树及其区别和适应场景">1.1 介绍决策树ID2、C4.5、CART, 3种决策树及其区别和适应场景？</span></h4>
+<h4><span id="11介绍决策树id2-c45-cart-3种决策树及其区别和适应场景">1.1
+介绍决策树ID2、C4.5、CART, 3种决策树及其区别和适应场景？</span></h4>
 <h4><span id="12-决策树处理连续值的方法">1.2 决策树处理连续值的方法?</span></h4>
-<p><strong>ID3 只能离散型</strong>。<strong>C4.5 将连续特征离散化</strong>，假设 n 个样本的连续特征 A 有 m 个取值，<strong>C4.5 将其排序并取相邻两样本值的平均数共 m-1 个划分点</strong>，分别计算以该划分点作为二元分类点时的信息增益，并选择信息增益最大的点作为该连续特征的二元离散分类点；</p>
+<p><strong>ID3 只能离散型</strong>。<strong>C4.5
+将连续特征离散化</strong>，假设 n 个样本的连续特征 A 有 m
+个取值，<strong>C4.5 将其排序并取相邻两样本值的平均数共 m-1
+个划分点</strong>，分别计算以该划分点作为二元分类点时的信息增益，并选择信息增益最大的点作为该连续特征的二元离散分类点；</p>
 <p><strong>CART分类树：离散化+基尼指数，</strong></p>
-<p><strong>CART回归树：均方差之和度量方式</strong><br>
-$$<br>
-\min _{a, s}\left[\min <em>{c_1} \sum</em>{x_i \in D_1}\left(y_i-c_1\right)^2+\min <em>{c_2} \sum</em>{x_i \in D_2}\left(y_i-c_2\right)^2\right]<br>
-$$</p>
+<p><strong>CART回归树：均方差之和度量方式</strong> <span class="math display">\[
+\min _{a, s}\left[\min _{c_1} \sum_{x_i \in
+D_1}\left(y_i-c_1\right)^2+\min _{c_2} \sum_{x_i \in
+D_2}\left(y_i-c_2\right)^2\right]
+\]</span></p>
 <h4><span id="13-决策树处理缺失值的方式">1.3 决策树处理缺失值的方式？</span></h4>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/84519568">ID3、c4.5、cart、rf到底是如何处理缺失值的？</a></p>
 </blockquote>
-<h5><span id="131-在特征值缺失的情况下进行划分特征的选择">1.3.1 <strong>在特征值缺失的情况下进行划分特征的选择？</strong></span></h5>
+<h5><span id="131在特征值缺失的情况下进行划分特征的选择">1.3.1
+<strong>在特征值缺失的情况下进行划分特征的选择？</strong></span></h5>
 <p><strong>ID3</strong> 没有缺失值处理；</p>
 <p><strong>C4.5</strong>：对于具有缺失值特征，用没有缺失的<strong>样本子集所占比重来折算</strong>；</p>
-<p><strong>CART</strong>：<strong>初期</strong>：分裂特征评估时只能使用在该特征上没有缺失值的那部分数据**；后续**：CART 算法使用了一种惩罚机制来抑制提升值，从而反映出缺失值的影响。</p>
-<h5><span id="132-选定该划分特征对于缺失该特征值的样本如何处理">1.3.2 <strong>选定该划分特征，对于缺失该特征值的样本如何处理？</strong></span></h5>
+<p><strong>CART</strong>：<strong>初期</strong>：分裂特征评估时只能使用在该特征上没有缺失值的那部分数据<strong>；后续</strong>：CART
+算法使用了一种惩罚机制来抑制提升值，从而反映出缺失值的影响。</p>
+<h5><span id="132选定该划分特征对于缺失该特征值的样本如何处理">1.3.2
+<strong>选定该划分特征，对于缺失该特征值的样本如何处理？</strong></span></h5>
 <p><strong>ID3</strong> 没有缺失值处理；</p>
 <p><strong>C4.5</strong>：<strong>将样本同时划分到所有子节点</strong>，不过要调整样本的权重值，其实也就是以不同概率划分到不同节点中。</p>
 <p><strong>CART</strong>：sklearn中的cart的实现是没有对缺失值做任何处理的，也就是说sklearn的cart无法处理存在缺失值的特征。</p>
@@ -400,33 +445,31 @@ $$</p>
 <li>深度</li>
 <li>节点样本数</li>
 <li>对测试集准确率的提升过小</li>
-</ul>
-</li>
+</ul></li>
 <li><strong>后剪枝</strong>：生成一颗完全生长的二叉树，从低向上剪枝，将子树删除用叶子节点代替。【类别：多数投票】常见的剪枝方法：错误率降低剪枝（REP）、<strong>悲观剪枝（PEP）、代价复杂度剪枝（CCP）</strong>、最小误差剪枝（MEP）等。</li>
 </ul>
 <p><strong>代价复杂度剪枝（CCP）【CART树】</strong></p>
-<p>从完整子树 $T0$ 开始， 通过在 $Ti$ 子树序列中裁剪真实误差最小【考虑叶子节点的个数】的子树，得到 $Ti+1$。</p>
-<p><img src="image-20220321203204744.png" alt="image-20220321203204744" style="zoom: 25%;">【剪枝之后的误差 - 剪枝前的误差 / 叶子节点数 - 1】</p>
+<p>从完整子树 <span class="math inline">\(T0\)</span> 开始， 通过在
+<span class="math inline">\(Ti\)</span>
+子树序列中裁剪真实误差最小【考虑叶子节点的个数】的子树，得到 <span class="math inline">\(Ti+1\)</span>。</p>
+<p><img src="image-20220321203204744.png" alt="image-20220321203204744" style="zoom: 25%;">【剪枝之后的误差
+- 剪枝前的误差 / 叶子节点数 - 1】</p>
 <p>每次误差增加率最小的节点，得到一系列的子树，从中选择效果最好的【独立剪枝数据集】和【K折交叉验证】</p>
-<h4><span id="15-决策树特征选择特征重要性判断">1.5 决策树特征选择？特征重要性判断？</span></h4>
+<h4><span id="15决策树特征选择特征重要性判断">1.5
+决策树特征选择？特征重要性判断？</span></h4>
 <p><strong>XGBoost</strong>：</p>
 <ul>
-<li>
-<p>该特征在所有树中被用作分割样本的特征的总次数。</p>
-</li>
-<li>
-<p>该特征在其出现过的所有树中产生的平均增益。</p>
-</li>
-<li>
-<p>该特征在其出现过的所有树中的平均覆盖范围。</p>
+<li><p>该特征在所有树中被用作分割样本的特征的总次数。</p></li>
+<li><p>该特征在其出现过的所有树中产生的平均增益。</p></li>
+<li><p>该特征在其出现过的所有树中的平均覆盖范围。</p>
 <blockquote>
 <p>注意：覆盖范围这里指的是一个特征用作分割点后，其影响的样本数量，即有多少样本经过该特征分割到两个子节点。</p>
-</blockquote>
-</li>
+</blockquote></li>
 </ul>
 <h4><span id="16-svm-lr-决策树的对比">1.6 SVM、LR、决策树的对比？</span></h4>
 <blockquote>
-<p>逻辑回归，决策树，支持向量机 选择方案: <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1435642">https://cloud.tencent.com/developer/article/1435642</a></p>
+<p>逻辑回归，决策树，支持向量机 选择方案:
+https://cloud.tencent.com/developer/article/1435642</p>
 <p>广义线性模型？</p>
 <p>sigmod、softmax</p>
 <p>为什么逻辑回归的连续值也需要离散化？</p>
@@ -434,8 +477,14 @@ $$</p>
 <p>交叉熵和KL散度（相对熵）和GAN的损失函数的区别？</p>
 </blockquote>
 <table>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 31%">
+<col style="width: 31%">
+<col style="width: 31%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>算法</th>
 <th>LR 逻辑回归</th>
 <th>SVM</th>
@@ -443,76 +492,90 @@ $$</p>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>场景</td>
-<td>逻辑回归 = 线性回归 + Sigmoid 函数（非线形）【分类问题】【参数模型】【统计方法】</td>
+<td>逻辑回归 = 线性回归 + Sigmoid
+函数（非线形）【分类问题】【参数模型】【统计方法】</td>
 <td>【分类问题】【几何方法】【非参数模型】</td>
 <td>【分类问题】【回归问题】【非参数模型】</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>思想</strong></td>
-<td><strong>思路：<strong>先拟合决策边界(不局限于线性，还可以是多项式)，再建立这个边界与分类的概率联系，从而得到了二分类情况下的概率。<strong>细节</strong>：通过</strong>非线性映射减小了离分类平面较远的点的权重</strong>，相对提升了与分类最相关的数据点的权重；</td>
-<td><strong>思想</strong>：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</td>
+<td><strong>思路：</strong>先拟合决策边界(不局限于线性，还可以是多项式)，再建立这个边界与分类的概率联系，从而得到了二分类情况下的概率。<strong>细节</strong>：通过<strong>非线性映射减小了离分类平面较远的点的权重</strong>，相对提升了与分类最相关的数据点的权重；</td>
+<td><strong>思想</strong>：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</td>
 <td><strong>思想</strong>：用启发算法来度量特征选择，选择特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间。</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>关键样本</strong></td>
 <td><strong>所有样本</strong>（通过非线性映射，大大减小了离分类平面较远的点的权重）</td>
 <td><strong>支持向量</strong>（超平面到距离最近的不同标记样本集合）</td>
 <td>所有样本【非缺失特征值】</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>目标函数</strong></td>
-<td>$y=\frac{1}{1+e<sup>{-\left(w</sup>{T} x+b\right)}}$ 【极大似然函数】</td>
-<td>$\min \frac{1}{2}|w|^2$</td>
-<td><strong>Gini 系数</strong>作为变量的<strong>不纯度量</strong>，<strong>减少了大量的对数运算</strong>；$G i n i(D)=\sum_{k=1}^{K} \frac{\left</td>
+<td><span class="math inline">\(y=\frac{1}{1+e^{-\left(w^{T}
+x+b\right)}}\)</span> 【极大似然函数】</td>
+<td><span class="math inline">\(\min \frac{1}{2}\|w\|^2\)</span></td>
+<td><strong>Gini
+系数</strong>作为变量的<strong>不纯度量</strong>，<strong>减少了大量的对数运算</strong>；<span class="math inline">\(G i n i(D)=\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right)\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>损失函数</strong></td>
 <td><font color="red"> 【交叉熵损失】</font></td>
-<td><strong><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/47746939">HingeLoss</a></strong>【合页损失函数】$\sum_{i=1}^N\left[1-y_i\left(w \cdot x_i+b\right)\right]_{+}+\left.\lambda</td>
+<td><strong><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/47746939">HingeLoss</a></strong>【合页损失函数】<span class="math inline">\(\sum_{i=1}^N\left[1-y_i\left(w \cdot
+x_i+b\right)\right]_{+}+\left.\lambda||w\right|^2\)</span><span class="math inline">\([z]_{+}=\left\{\begin{array}{l}z, z&gt;0 \\ 0 . z
+\leq 0\end{array}\right.\)</span></td>
 <td></td>
 </tr>
-<tr>
+<tr class="even">
 <td>决策面</td>
 <td>线性可分</td>
 <td></td>
 <td>非线性</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>连续值处理</td>
 <td>离散化</td>
 <td></td>
 <td>离线化</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>输出</strong></td>
 <td>类别的概率</td>
 <td>类别</td>
 <td>类别、回归</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>过拟合</strong></td>
 <td><strong>正则化</strong></td>
 <td>\</td>
 <td>预剪枝和后剪枝</td>
 </tr>
-<tr>
+<tr class="even">
 <td>优势</td>
-<td><strong>本质其实是为了模型参数服从某一分布</strong>；1、对观测样本的概率值输出 2、实现简单高效3、<strong>多重共线性的问题可以通过L2正则化来应对</strong>。 4、大量的工业界解决方案5、支持online learning</td>
-<td>1、可以处理<strong>高维特征</strong> 2、使用<strong>核函数</strong>轻松应对非线的性特征空间 3、分类面不依赖于所有数据4、关重要的<strong>关键样本</strong></td>
-<td>1、直观的决策过程 2、能够处理非线性特征 3、考虑了<strong>特征相关性</strong></td>
+<td><strong>本质其实是为了模型参数服从某一分布</strong>；1、对观测样本的概率值输出
+2、实现简单高效3、<strong>多重共线性的问题可以通过L2正则化来应对</strong>。
+4、大量的工业界解决方案5、支持online learning</td>
+<td>1、可以处理<strong>高维特征</strong>
+2、使用<strong>核函数</strong>轻松应对非线的性特征空间
+3、分类面不依赖于所有数据4、关重要的<strong>关键样本</strong></td>
+<td>1、直观的决策过程 2、能够处理非线性特征
+3、考虑了<strong>特征相关性</strong></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>劣势</td>
-<td>1、特征空间太大时表现不太好 2、对于大量的分类变量无能为力 3、对于非线性特征需要做特征变换 4、依赖所有的样本数据</td>
-<td>1、<strong>对于大量的观测样本，效率会很低</strong> 2、找到一个“合适”的核函数还是很tricky的</td>
+<td>1、特征空间太大时表现不太好 2、对于大量的分类变量无能为力
+3、对于非线性特征需要做特征变换 4、依赖所有的样本数据</td>
+<td>1、<strong>对于大量的观测样本，效率会很低</strong>
+2、找到一个“合适”的核函数还是很tricky的</td>
 <td>1、极易过拟合 2、无法输出score，只能给出直接的分类结果</td>
 </tr>
 </tbody>
 </table>
 <h4><span id="17-多重共线性问题">1.7 <strong><a target="_blank" rel="noopener" href="https://blog.csdn.net/Alphonse_Huang/article/details/114278377">多重共线性问题</a></strong></span></h4>
-<p>多重共线性问题就是指一个解释变量的变化引起另一个解释变量地变化。多重共<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%BA%BF%E6%80%A7&amp;spm=1001.2101.3001.7020">线性</a>是使用线性回归算法时经常要面对的一个问题。在其他算法中，例如决策树或者朴素贝叶斯，前者的建模过程时逐渐递进，每次都只有一个变量参与，这种机制含有抗多重共线性干扰的功能；后者假设变量之间是相互独立的。但对于回归算法来说，都要同时考虑多个预测因子，因此多重共线性不可避免。</p>
+<p>多重共线性问题就是指一个解释变量的变化引起另一个解释变量地变化。多重共<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=线性&amp;spm=1001.2101.3001.7020">线性</a>是使用线性回归算法时经常要面对的一个问题。在其他算法中，例如决策树或者朴素贝叶斯，前者的建模过程时逐渐递进，每次都只有一个变量参与，这种机制含有抗多重共线性干扰的功能；后者假设变量之间是相互独立的。但对于回归算法来说，都要同时考虑多个预测因子，因此多重共线性不可避免。</p>
 <ul>
 <li>PCA等降维方法。因为在原始特征空间中变量之间相关性大，很容易想到通过降低维度的形式来去除这种共线性。</li>
 <li>正则化。使用<strong>岭回归（L2</strong>）或者lasso回归（L1）或者elasticnet回归（L1+L2）</li>

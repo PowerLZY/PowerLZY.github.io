@@ -167,7 +167,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -284,7 +284,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.6k</span>
+      <span>3.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -304,68 +304,123 @@
     <div class="post-body" itemprop="articleBody">
         <h3><span id="一-t-sne-高维数据可视化">一、t-SNE 高维数据可视化</span></h3>
 <blockquote>
-<p>高维数据可视化之t-SNE算法🌈:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/57937096">https://zhuanlan.zhihu.com/p/57937096</a></p>
+<p>高维数据可视化之t-SNE算法🌈:https://zhuanlan.zhihu.com/p/57937096</p>
 </blockquote>
-<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens van der Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
+<p><strong>T-SNE算法是用于可视化的算法中效果最好的算法之一</strong>，相信大家也对T-SNE算法略有耳闻，本文参考T-SNE作者<strong>Laurens
+van der
+Maaten</strong>给出的源代码自己实现T-SNE算法代码，以此来加深对T-SNE的理解。先简单介绍一下T-SNE算法，T-SNE将数据点变换映射到概率分布上。</p>
 <h4><span id="11-t-sne数据算法的目的">1.1 t-SNE数据算法的目的</span></h4>
 <p><strong>主要是将数据从高维数据转到低维数据，并在低维空间里也保持其在高维空间里所携带的信息（比如高维空间里有的清晰的分布特征，转到低维度时也依然存在）。</strong></p>
-<p><strong><font color="red"> t-SNE将欧氏距离距离转换为条件概率，来表达点与点之间的相似度，再优化两个分布之间的距离-KL散度，从而保证点与点之间的分布概率不变。</font></strong></p>
+<p><strong><font color="red">
+t-SNE将欧氏距离距离转换为条件概率，来表达点与点之间的相似度，再优化两个分布之间的距离-KL散度，从而保证点与点之间的分布概率不变。</font></strong></p>
 <h4><span id="12-sne原理">1.2 SNE原理</span></h4>
-<p>$S N E$ 是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>, 主要包括下面两个步骤:</p>
-<ol>
-<li>通过在高维空间中构建数据点之间的概率分布 $P$, 使得相似的数据点有更高的概率被选择, 而 不相似的数据点有较低的概率被选择;</li>
-<li>然后在低维空间里重构这些点的概率分布 $Q$, 使得这两个概率分布尽可能相似。</li>
-</ol>
-<p>令输入空间是 $X \in \mathbb{R}^{n}$, 输出空间为 $Y \in \mathbb{R}^{t}(t \ll n)$ 。不妨假设含有 $m$ 个样本数据 $\left{x^{(1)}, x^{(2)}, \cdots, x^{(m)}\right}$, 其中 $x^{(i)} \in X$, 降维后的数据为 $\left{y^{(1)}, y^{(2)}, \cdots, y^{(m)}\right}, y^{(i)} \in Y$ 。 $S N E$ 是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>, 即首先是计算条件概 率 $p_{j \mid i}$, 其正比于 $x^{(i)}$ 和 $x^{(j)}$ 之间的相似度, $p_{j \mid i}$ 的计算公式为:<br>
-$$<br>
-p_{j \mid i}=\frac{\exp \left(-\frac{\left|x<sup>{(i)}-x</sup>{(j)}\right|^{2}}{2 \sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp \left(-\frac{\left|x<sup>{(i)}-x</sup>{(k)}\right|^{2}}{2 \sigma_{i}^{2}}\right)}<br>
-$$<br>
-在这里引入了一个参数 $\sigma_{i}$, 对于不同的数据点 $x^{(i)}$ 取值亦不相同, 因为我们关注的是不同数据 点两两之间的相似度, 故可设置 $p_{i \mid i}=0$ 。对于低维度下的数据点 $y^{(i)}$, 通过条件概率 $q_{j \mid i}$ 来 刻画 $y^{(i)}$ 与 $y^{(j)}$ 之间的相似度, $q_{j \mid i}$ 的计算公式为:<br>
-$$<br>
-q_{j \mid i}=\frac{\exp \left(-\left|y<sup>{(i)}-y</sup>{(j)}\right|^{2}\right)}{\sum_{k \neq i} \exp \left(-\left|y<sup>{(i)}-y</sup>{(k)}\right|^{2}\right)}<br>
-$$<br>
-同理, 设置 $q_{i \mid i}=0$ 。<br>
-如果降维的效果比较好, 局部特征保留完整, 那么有 $p_{i \mid j}=q_{i \mid j}$ 成立, 因此通过优化两个分布之 间的 <strong>$K L$ 散度构造出的损失函数为</strong>:<br>
-$$<br>
-C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} | Q_{i}\right)=\sum_{i} \sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}<br>
-$$<br>
-这里的 $P_{i}$ 表示在给定高维数据点 $x^{(i)}$ 时, 其他所有数据点的条件概率分布; $Q_{i}$ 则表示在给定 低维数据点 $y^{(i)}$ 时, 其他所有数据点的条件概率分布。从损失函数可以看出, 当 $p_{j \mid i}$ 较大 $q_{j \mid i}$ 较小时, 惩罚较高; 而 $p_{j \mid i}$ 较小 $q_{j \mid i}$ 较大时, 惩罚较低。换句话说就是高维空间中两个数据点距 离较近时, 若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之, 高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近, 将得到一个很低的惩罚值。也就是说, <strong>$S N E$ 的 损失函数更关注于局部特征, 而忽视了全局结构</strong>。</p>
+<p><span class="math inline">\(S N E\)</span>
+是<strong>通过仿射变换将数据点映射到相应概率分布上</strong>,
+主要包括下面两个步骤: 1. 通过在高维空间中构建数据点之间的概率分布 <span class="math inline">\(P\)</span>, 使得相似的数据点有更高的概率被选择, 而
+不相似的数据点有较低的概率被选择; 2.
+然后在低维空间里重构这些点的概率分布 <span class="math inline">\(Q\)</span>, 使得这两个概率分布尽可能相似。</p>
+<p>令输入空间是 <span class="math inline">\(X \in
+\mathbb{R}^{n}\)</span>, 输出空间为 <span class="math inline">\(Y \in
+\mathbb{R}^{t}(t \ll n)\)</span> 。不妨假设含有 <span class="math inline">\(m\)</span> 个样本数据 <span class="math inline">\(\left\{x^{(1)}, x^{(2)}, \cdots,
+x^{(m)}\right\}\)</span>, 其中 <span class="math inline">\(x^{(i)} \in
+X\)</span>, 降维后的数据为 <span class="math inline">\(\left\{y^{(1)},
+y^{(2)}, \cdots, y^{(m)}\right\}, y^{(i)} \in Y\)</span> 。 <span class="math inline">\(S N E\)</span>
+是<strong>先将欧几里得距离转化为条件概率来表达点与点之间的相似度</strong>,
+即首先是计算条件概 率 <span class="math inline">\(p_{j \mid i}\)</span>,
+其正比于 <span class="math inline">\(x^{(i)}\)</span> 和 <span class="math inline">\(x^{(j)}\)</span> 之间的相似度, <span class="math inline">\(p_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+p_{j \mid i}=\frac{\exp
+\left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}{\sum_{k \neq i} \exp
+\left(-\frac{\left\|x^{(i)}-x^{(k)}\right\|^{2}}{2
+\sigma_{i}^{2}}\right)}
+\]</span> 在这里引入了一个参数 <span class="math inline">\(\sigma_{i}\)</span>, 对于不同的数据点 <span class="math inline">\(x^{(i)}\)</span> 取值亦不相同,
+因为我们关注的是不同数据 点两两之间的相似度, 故可设置 <span class="math inline">\(p_{i \mid i}=0\)</span> 。对于低维度下的数据点
+<span class="math inline">\(y^{(i)}\)</span>, 通过条件概率 <span class="math inline">\(q_{j \mid i}\)</span> 来 刻画 <span class="math inline">\(y^{(i)}\)</span> 与 <span class="math inline">\(y^{(j)}\)</span> 之间的相似度, <span class="math inline">\(q_{j \mid i}\)</span> 的计算公式为: <span class="math display">\[
+q_{j \mid i}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^{2}\right)}{\sum_{k \neq i} \exp
+\left(-\left\|y^{(i)}-y^{(k)}\right\|^{2}\right)}
+\]</span> 同理, 设置 <span class="math inline">\(q_{i \mid i}=0\)</span>
+。 如果降维的效果比较好, 局部特征保留完整, 那么有 <span class="math inline">\(p_{i \mid j}=q_{i \mid j}\)</span> 成立,
+因此通过优化两个分布之 间的 <strong><span class="math inline">\(K
+L\)</span> 散度构造出的损失函数为</strong>: <span class="math display">\[
+C\left(y^{(i)}\right)=\sum_{i} K L\left(P_{i} \| Q_{i}\right)=\sum_{i}
+\sum_{j} p_{j \mid i} \log \frac{p_{j \mid i}}{q_{j \mid i}}
+\]</span> 这里的 <span class="math inline">\(P_{i}\)</span>
+表示在给定高维数据点 <span class="math inline">\(x^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布; <span class="math inline">\(Q_{i}\)</span>
+则表示在给定 低维数据点 <span class="math inline">\(y^{(i)}\)</span> 时,
+其他所有数据点的条件概率分布。从损失函数可以看出, 当 <span class="math inline">\(p_{j \mid i}\)</span> 较大 <span class="math inline">\(q_{j \mid i}\)</span> 较小时, 惩罚较高; 而 <span class="math inline">\(p_{j \mid i}\)</span> 较小 <span class="math inline">\(q_{j \mid i}\)</span> 较大时,
+惩罚较低。换句话说就是高维空间中两个数据点距 离较近时,
+若映射到低维空间后距离较远, 那么将得到一个很高的惩罚; 反之,
+高维空间中两个数 据点距离较远时, 若映射到低维空间距离较近,
+将得到一个很低的惩罚值。也就是说, <strong><span class="math inline">\(S
+N E\)</span> 的 损失函数更关注于局部特征,
+而忽视了全局结构</strong>。</p>
 <h4><span id="13-目标函数求解">1.3 目标函数求解</span></h4>
 <h4><span id="14-对称性-sne">1.4 对称性-SNE</span></h4>
-<p><strong>优化 $K L(P | Q)$ 的一种替换思路是使用联合概率分布来替换条件概率分布</strong>, 即 $P$ 是高维空间里数据点的联合概 率分布, $Q$ 是低维空间里数据点的联合概率分布，此时的损失函数为:<br>
-$$<br>
-C\left(y^{(i)}\right)=K L(P | Q)=\sum_i \sum_j p_{i j} \log \frac{p_{i j}}{q_{i j}}<br>
-$$<br>
-同样的 $p_{i i}=q_{i i}=0$ ，这种改进下的 $S N E$ 称为对称 $S N E$ ，因为它的先验假设为对 $\forall i$ 有 $p_{i j}=p_{j i}, q_{i j}=q_{j i}$ 成立，故概率分布可以改写成:<br>
-$$<br>
-p_{i j}=\frac{\exp \left(-\frac{\left|x<sup>{(i)}-x</sup>{(j)}\right|^2}{2 \sigma^2}\right)}{\sum_{k \neq l} \exp \left(-\frac{\left|x<sup>{(k)}-x</sup>{(l)}\right|^2}{2 \sigma^2}\right)} \quad q_{i j}=\frac{\exp \left(-\left|y<sup>{(i)}-y</sup>{(j)}\right|^2\right)}{\sum_{k \neq l} \exp \left(-\left|y<sup>{(k)}-y</sup>{(l)}\right|^2\right)}<br>
-$$<br>
-这种改进方法使得表达式简洁很多, 但是容易受到异常点数据的影响, 为了解决这个问题通过对联合概率分布定义修正为： $p_{i j}=\frac{p_{j \mid i}+p_{i \mid j}}{2}$, 这保证了 $\sum_j p_{i j}&gt;\frac{1}{2 m}$ ，使得每个点对于损失函数都会有贡献。对称 $S N E$ 最大的 优点是简化了梯度计算, 梯度公式改写为:<br>
-$$<br>
-\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4 \sum_j\left(p_{i j}-q_{i j}\right)\left(y<sup>{(i)}-y</sup>{(j)}\right)<br>
-$$<br>
-研究表明, 对称 $S N E$ 和 $S N E$ 的效果差不多, 有时甚至更好一点。</p>
+<p><strong>优化 <span class="math inline">\(K L(P \| Q)\)</span>
+的一种替换思路是使用联合概率分布来替换条件概率分布</strong>, 即 <span class="math inline">\(P\)</span> 是高维空间里数据点的联合概 率分布,
+<span class="math inline">\(Q\)</span>
+是低维空间里数据点的联合概率分布，此时的损失函数为: <span class="math display">\[
+C\left(y^{(i)}\right)=K L(P \| Q)=\sum_i \sum_j p_{i j} \log \frac{p_{i
+j}}{q_{i j}}
+\]</span> 同样的 <span class="math inline">\(p_{i i}=q_{i i}=0\)</span>
+，这种改进下的 <span class="math inline">\(S N E\)</span> 称为对称 <span class="math inline">\(S N E\)</span> ，因为它的先验假设为对 <span class="math inline">\(\forall i\)</span> 有 <span class="math inline">\(p_{i j}=p_{j i}, q_{i j}=q_{j i}\)</span>
+成立，故概率分布可以改写成: <span class="math display">\[
+p_{i j}=\frac{\exp \left(-\frac{\left\|x^{(i)}-x^{(j)}\right\|^2}{2
+\sigma^2}\right)}{\sum_{k \neq l} \exp
+\left(-\frac{\left\|x^{(k)}-x^{(l)}\right\|^2}{2 \sigma^2}\right)} \quad
+q_{i j}=\frac{\exp
+\left(-\left\|y^{(i)}-y^{(j)}\right\|^2\right)}{\sum_{k \neq l} \exp
+\left(-\left\|y^{(k)}-y^{(l)}\right\|^2\right)}
+\]</span> 这种改进方法使得表达式简洁很多, 但是容易受到异常点数据的影响,
+为了解决这个问题通过对联合概率分布定义修正为： <span class="math inline">\(p_{i j}=\frac{p_{j \mid i}+p_{i \mid
+j}}{2}\)</span>, 这保证了 <span class="math inline">\(\sum_j p_{i
+j}&gt;\frac{1}{2 m}\)</span> ，使得每个点对于损失函数都会有贡献。对称
+<span class="math inline">\(S N E\)</span> 最大的 优点是简化了梯度计算,
+梯度公式改写为: <span class="math display">\[
+\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4
+\sum_j\left(p_{i j}-q_{i j}\right)\left(y^{(i)}-y^{(j)}\right)
+\]</span> 研究表明, 对称 <span class="math inline">\(S N E\)</span> 和
+<span class="math inline">\(S N E\)</span> 的效果差不多,
+有时甚至更好一点。</p>
 <h4><span id="15-t-sne">1.5 t-SNE</span></h4>
-<p>$t-S N E$ 在对称 $S N E$ 的改进是, 首先通过在高维空间中使用高斯分布将距离转换为概率分布，然后<strong>在低维空间 中，使用更加偏重长尾分布的方式来将距离转换为概率分布，使得高维度空间中的中低等距离在映射后能够有一个 较大的距离</strong>。</p>
-<img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img" style="zoom: 33%;">
-<p>从图中可以看到，在没有异常点时, $t$ 分布与高斯分布的拟合结果基本一致。而在第二张图中, 出现了部分异常点, 由于高斯分布的尾部较低, 对异常点比较敏感, 为了照顾这些异常点, 高斯分布的拟合结果偏离了大多数样本所在位置, 方差也较大。<strong>相比之下, $t$ 分布的尾部较高, 对异常点不敏感, 保证了其鲁棒性, 因此拟合结果更为合理, 较好的捕获了数据的全局特征。</strong></p>
-<p>使用 $t$ 分布替换高斯分布之后 $q_{i j}$ 的变化如下:<br>
-$$<br>
-q_{i j}=\frac{\left(1+\left|y<sup>{(i)}-y</sup>{(j)}\right|<sup>2\right)</sup>{-1}}{\sum_{k \neq l}\left(1+\left|y<sup>{(i)}-y</sup>{(j)}\right|<sup>2\right)</sup>{-1}}<br>
-$$<br>
-此外，随着自由度的逐渐增大, $t$ 分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多, 优 化后的梯度公式如下:<br>
-$$<br>
-\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4 \sum_j\left(p_{i j}-q_{i j}\right)\left(y<sup>{(i)}-y</sup>{(j)}\right)\left(1+\left|y<sup>{(i)}-y</sup>{(j)}\right|<sup>2\right)</sup>{-1}<br>
-$$<br>
-总的来说, $t-S N E$ 的梯度更新具有以下两个优势：</p>
+<p><span class="math inline">\(t-S N E\)</span> 在对称 <span class="math inline">\(S N E\)</span> 的改进是,
+首先通过在高维空间中使用高斯分布将距离转换为概率分布，然后<strong>在低维空间
+中，使用更加偏重长尾分布的方式来将距离转换为概率分布，使得高维度空间中的中低等距离在映射后能够有一个
+较大的距离</strong>。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-928a3ada308128f26b719d510a728fbb_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p>从图中可以看到，在没有异常点时, <span class="math inline">\(t\)</span>
+分布与高斯分布的拟合结果基本一致。而在第二张图中, 出现了部分异常点,
+由于高斯分布的尾部较低, 对异常点比较敏感, 为了照顾这些异常点,
+高斯分布的拟合结果偏离了大多数样本所在位置,
+方差也较大。<strong>相比之下, <span class="math inline">\(t\)</span>
+分布的尾部较高, 对异常点不敏感, 保证了其鲁棒性, 因此拟合结果更为合理,
+较好的捕获了数据的全局特征。</strong></p>
+<p>使用 <span class="math inline">\(t\)</span> 分布替换高斯分布之后
+<span class="math inline">\(q_{i j}\)</span> 的变化如下: <span class="math display">\[
+q_{i
+j}=\frac{\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}{\sum_{k
+\neq l}\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}}
+\]</span> 此外，随着自由度的逐渐增大, <span class="math inline">\(t\)</span>
+分布的密度函数逐渐接近标准正态分布，因此在计算梯度方面会简单很多, 优
+化后的梯度公式如下: <span class="math display">\[
+\frac{\partial C\left(y^{(i)}\right)}{\partial y^{(i)}}=4
+\sum_j\left(p_{i j}-q_{i
+j}\right)\left(y^{(i)}-y^{(j)}\right)\left(1+\left\|y^{(i)}-y^{(j)}\right\|^2\right)^{-1}
+\]</span> 总的来说, <span class="math inline">\(t-S N E\)</span>
+的梯度更新具有以下两个优势： -
+<strong>对于低维空间中不相似的数据点，用一个较小的距离会产生较大的梯度让这些数据点排斥开来;</strong>
+-
+<strong>这种排斥又不会无限大，因此避免了不相似的数据点距离太远。</strong></p>
+<h5><span id="t-s-n-e-算法其实就是在-s-n-e-算法的基础上增加了两个改进"><span class="math inline">\(t-S N E\)</span> 算法其实就是在 <span class="math inline">\(S N E\)</span> 算法的基础上增加了两个改进:</span></h5>
 <ul>
-<li><strong>对于低维空间中不相似的数据点，用一个较小的距离会产生较大的梯度让这些数据点排斥开来;</strong></li>
-<li><strong>这种排斥又不会无限大，因此避免了不相似的数据点距离太远。</strong></li>
-</ul>
-<h5><span id="t-s-n-e-算法其实就是在-s-n-e-算法的基础上增加了两个改进">$t-S N E$ 算法其实就是在 $S N E$ 算法的基础上增加了两个改进:</span></h5>
-<ul>
-<li>把 $S N E$ 修正为对称 $S N E$ ，提高了计算效率, 效果稍有提升;</li>
-<li>在低维空间中采用了 $t$ 分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题, 优化 了 $S N E$ 过于关注局部特征而忽略全局特征的问题。</li>
+<li>把 <span class="math inline">\(S N E\)</span> 修正为对称 <span class="math inline">\(S N E\)</span> ，提高了计算效率,
+效果稍有提升;</li>
+<li>在低维空间中采用了 <span class="math inline">\(t\)</span>
+分布替换原来的高斯分布，解决了高维空间映射到低维空间所产生的拥挤问题,
+优化 了 <span class="math inline">\(S N E\)</span>
+过于关注局部特征而忽略全局特征的问题。</li>
 </ul>
 
     </div>

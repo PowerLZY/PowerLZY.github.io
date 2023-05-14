@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、Word2Vec    nlp中的词向量对比：word2vec&#x2F;glove&#x2F;fastText&#x2F;elmo&#x2F;GPT&#x2F;bert：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;56382372   Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;58290018   Free will：Word2Vec   [NLP] 秒">
+    <meta name="description" content="一、Word2Vec   nlp中的词向量对比：word2vec&#x2F;glove&#x2F;fastText&#x2F;elmo&#x2F;GPT&#x2F;bert：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;56382372 Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;58290018 Free will：Word2Vec [NLP] 秒懂词向量Wor">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习-NLP（2）Word2vec*">
 <meta property="og:url" content="https://powerlzy.github.io/posts/3BVGDDE/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、Word2Vec    nlp中的词向量对比：word2vec&#x2F;glove&#x2F;fastText&#x2F;elmo&#x2F;GPT&#x2F;bert：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;56382372   Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;58290018   Free will：Word2Vec   [NLP] 秒">
+<meta property="og:description" content="一、Word2Vec   nlp中的词向量对比：word2vec&#x2F;glove&#x2F;fastText&#x2F;elmo&#x2F;GPT&#x2F;bert：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;56382372 Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;58290018 Free will：Word2Vec [NLP] 秒懂词向量Wor">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic4.zhimg.com/v2-27f3e577618f84c0026968d273d823ef_b.jpg">
 <meta property="og:image" content="https://pic2.zhimg.com/v2-42ef75691c18a03cfda4fa85a8409e19_b.jpg">
@@ -193,7 +193,10 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、Word2Vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 介绍CBOW</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">前向传播过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Skip-gram模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">前向传播过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">损失函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、Word2Vec 优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;2.1 Hierarchical Softmax&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> WordVec 极大化化目标函数使用的算法是是随机梯度上升法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Negative Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;问题来了，如何选择10个negative sample呢？&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、Word2vec Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1 Word2Vec与LDA的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 Word2Vec存在的问题是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2  OOD of word2vec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.4 项目中的word2vec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.5 Tf-Idf、Word2Vec和BERT 比较</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Bert比之Word2Vec,有哪些进步呢？</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、Word2Vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 介绍CBOW</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">前向传播过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 Skip-gram模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">前向传播过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">损失函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、Word2Vec 优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;2.1 Hierarchical Softmax&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
+WordVec
+极大化化目标函数使用的算法是是随机梯度上升法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Negative Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;问题来了，如何选择10个negative
+sample呢？&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、Word2vec Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1 Word2Vec与LDA的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 Word2Vec存在的问题是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 OOD of word2vec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.4 项目中的word2vec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.5 Tf-Idf、Word2Vec和BERT 比较</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Bert比之Word2Vec,有哪些进步呢？</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -214,7 +217,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -331,7 +334,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.8k</span>
+      <span>7.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -352,33 +355,23 @@
         <h2><span id="一-word2vec">一、Word2Vec</span></h2>
 <blockquote>
 <ul>
-<li>
-<p><strong>nlp中的词向量对比：word2vec/glove/fastText/elmo/GPT/bert</strong>：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56382372">https://zhuanlan.zhihu.com/p/56382372</a></p>
-</li>
-<li>
-<p>Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58290018">https://zhuanlan.zhihu.com/p/58290018</a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2018/02/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%B3%BB%E5%88%97%EF%BC%882%EF%BC%89%EF%BC%9AWord2Vec/">Free will：Word2Vec</a></p>
-</li>
-<li>
-<p>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26306795">NLP] 秒懂词向量<em>Word2vec</em>的本质</a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61635013"><em>Word2Vec</em>详解</a></p>
-</li>
-<li>
-<p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53425736"><em>word2vec</em>详解（CBOW，skip-gram，负采样，分层Softmax）</a></strong></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/89637281">快速入门词嵌入之<em>word2vec</em></a></p>
-</li>
+<li><p><strong>nlp中的词向量对比：word2vec/glove/fastText/elmo/GPT/bert</strong>：https://zhuanlan.zhihu.com/p/56382372</p></li>
+<li><p>Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎
+https://zhuanlan.zhihu.com/p/58290018</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2018/02/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%B3%BB%E5%88%97%EF%BC%882%EF%BC%89%EF%BC%9AWord2Vec/">Free
+will：Word2Vec</a></p></li>
+<li><p>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26306795">NLP]
+秒懂词向量<em>Word2vec</em>的本质</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61635013"><em>Word2Vec</em>详解</a></p></li>
+<li><p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53425736"><em>word2vec</em>详解（CBOW，skip-gram，负采样，分层Softmax）</a></strong></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/89637281">快速入门词嵌入之<em>word2vec</em></a></p></li>
 </ul>
-<p><strong>word2vec 相比之前的 Word Embedding 方法好在什么地方？</strong></p>
+<p><strong>word2vec 相比之前的 Word Embedding
+方法好在什么地方？</strong></p>
 <ul>
 <li><strong>极快的训练速度</strong>。以前的语言模型优化的目标是MLE，只能说词向量是其副产品。Mikolov应该是第一个提出抛弃MLE（和困惑度）指标，就是要学习一个好的词嵌入。如果不追求MLE，模型就可以大幅简化，去除隐藏层。再利用HSoftmax以及负采样的加速方法，可以使得训练在小时级别完成。而原来的语言模型可能需要几周时间。</li>
 <li><strong>一个很酷炫的man-woman=king-queen的示例</strong>。这个示例使得人们发现词嵌入还可以这么玩，并促使词嵌入学习成为了一个研究方向，而不再仅仅是神经网络中的一些参数。</li>
-<li>**word2vec里有大量的tricks，比如噪声分布如何选？如何采样？如何负采样？**等等。这些tricks虽然摆不上台面，但是对于得到一个好的词向量至关重要。</li>
+<li><strong>word2vec里有大量的tricks，比如噪声分布如何选？如何采样？如何负采样？</strong>等等。这些tricks虽然摆不上台面，但是对于得到一个好的词向量至关重要。</li>
 </ul>
 </blockquote>
 <p>谷歌2013年提出的Word2Vec是目前最常用的词嵌入模型之一。Word2Vec实际是一种<strong>浅层的神经网络模型</strong>，它有两种网络结构，分别是<strong>连续词袋</strong>（CBOW）和<strong>跳字</strong>(Skip-Gram)模型。</p>
@@ -386,186 +379,271 @@
 <p>CBOW适合于数据集较小的情况，而Skip-Gram在大型语料中表现更好</p>
 </blockquote>
 <h3><span id="11-介绍cbow">1.1 介绍CBOW</span></h3>
-<p>CBOW，全称Continuous Bag-of-Word，中文叫做连续词袋模型：<strong>以上下文来预测当前词</strong> $w_t$ 。CBOW模型的目的是预测 $P(w_t| w_{t-k}, \cdots, w_{t-1}, w_{t+1}, \cdots, w_{t+k}) $</p>
-<p><img src="https://pic4.zhimg.com/v2-27f3e577618f84c0026968d273d823ef_b.jpg" alt="img"></p>
+<p>CBOW，全称Continuous
+Bag-of-Word，中文叫做连续词袋模型：<strong>以上下文来预测当前词</strong>
+<span class="math inline">\(w_t\)</span> 。CBOW模型的目的是预测 $P(w_t|
+w_{t-k}, , w_{t-1}, w_{t+1}, , w_{t+k}) $</p>
+<figure>
+<img src="https://pic4.zhimg.com/v2-27f3e577618f84c0026968d273d823ef_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="前向传播过程">前向传播过程</span></h4>
 <ul>
-<li>
-<p><strong>输入层</strong>: 输入C个单词$x$： $x_{1k}, \cdots, x_{Ck} $，并且每个 $x$ 都是用 <strong>One-hot</strong> 编码表示，每一个 $x$ 的维度为 V（词表长度）。</p>
-</li>
-<li>
-<p><strong>输入层到隐层</strong></p>
+<li><p><strong>输入层</strong>: 输入C个单词<span class="math inline">\(x\)</span>： $x_{1k}, , x_{Ck} $，并且每个 <span class="math inline">\(x\)</span> 都是用 <strong>One-hot</strong>
+编码表示，每一个 <span class="math inline">\(x\)</span> 的维度为
+V（词表长度）。</p></li>
+<li><p><strong>输入层到隐层</strong></p>
 <ul>
-<li>首先，共享矩阵为 $W_{V \times N}$ ，<strong>V表示词表长度</strong>，W的每一行表示的就是一个N维的向量（训练结束后，W的每一行就表示一个词的词向量）。</li>
-<li>然后，我们把所有<strong>输入的词转$x$化为对应词向量</strong>，然后<strong>取平均值</strong>，这样我们就得到了隐层输出值 ( 注意，隐层中无激活函数，也就是说这里是线性组合)。 其中，隐层输出 $h$ 是一个N维的向量 。</li>
+<li>首先，共享矩阵为 <span class="math inline">\(W_{V \times N}\)</span>
+，<strong>V表示词表长度</strong>，W的每一行表示的就是一个N维的向量（训练结束后，W的每一行就表示一个词的词向量）。</li>
+<li>然后，我们把所有<strong>输入的词转<span class="math inline">\(x\)</span>化为对应词向量</strong>，然后<strong>取平均值</strong>，这样我们就得到了隐层输出值
+( 注意，隐层中无激活函数，也就是说这里是线性组合)。 其中，隐层输出 <span class="math inline">\(h\)</span> 是一个N维的向量 。</li>
 </ul>
-<p>$$<br>
-h = \frac{1}{C} W^T(x_1 + x_2 + \cdots + x_c)<br>
-$$</p>
-</li>
-<li>
-<p><strong>隐层到输出层</strong>：隐层的输出为N维向量 $h$ ， 隐层到输出层的权重矩阵为  $W’_{N \times V}$ 。然后，通过矩阵运算我们得到一个 $V \times 1 $ 维向量<br>
-$$<br>
-u = W’^{T} * h<br>
-$$</p>
-</li>
+<p><span class="math display">\[
+  h = \frac{1}{C} W^T(x_1 + x_2 + \cdots + x_c)
+  \]</span></p></li>
+<li><p><strong>隐层到输出层</strong>：隐层的输出为N维向量 <span class="math inline">\(h\)</span> ， 隐层到输出层的权重矩阵为 <span class="math inline">\(W&#39;_{N \times V}\)</span>
+。然后，通过矩阵运算我们得到一个 $V $ 维向量 <span class="math display">\[
+  u = W&#39;^{T} * h
+  \]</span></p></li>
 </ul>
-<p>其中，向量 $u$  的第 $i$  行表示词汇表中第 $i$  个词的可能性，然后我们的目的就是取可能性最高的那个词。<strong>因此，在最后的输出层是一个softmax 层获取分数最高的词</strong>，那么就有我们的最终输出：<br>
-$$<br>
-P(w_j| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})}<br>
-$$</p>
+<p>其中，向量 <span class="math inline">\(u\)</span> 的第 <span class="math inline">\(i\)</span> 行表示词汇表中第 <span class="math inline">\(i\)</span>
+个词的可能性，然后我们的目的就是取可能性最高的那个词。<strong>因此，在最后的输出层是一个softmax
+层获取分数最高的词</strong>，那么就有我们的最终输出： <span class="math display">\[
+P(w_j| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})}
+\]</span></p>
 <h4><span id="损失函数">损失函数</span></h4>
-<p>我们假定 $j^*$ 是真实单词在词汇表中的下标，那么根据极大似然法，则目标函数定义如下：<br>
-$$<br>
-E = -log , p(W_O |W_I) = -log , \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})} =  log  \sum_{k \in V} exp(u_{k})  -u_j<br>
-$$</p>
+<p>我们假定 <span class="math inline">\(j^*\)</span>
+是真实单词在词汇表中的下标，那么根据极大似然法，则目标函数定义如下：
+<span class="math display">\[
+E = -log \, p(W_O |W_I) = -log \, \frac{exp({u_j})}{\sum_{k \in V}
+exp({u_k})} =  log  \sum_{k \in V} exp(u_{k})  -u_j
+\]</span></p>
 <h3><span id="12-skip-gram模型">1.2 Skip-gram模型</span></h3>
-<p>Skip-Gram的基本思想是：<strong>通过当前词 $w_t$ 预测其上下文 $w_{t-i}, \cdots , w_{t+i}$</strong> ，模型如下图所示：</p>
-<p><img src="https://pic2.zhimg.com/v2-42ef75691c18a03cfda4fa85a8409e19_b.jpg" alt="img"></p>
+<p>Skip-Gram的基本思想是：<strong>通过当前词 <span class="math inline">\(w_t\)</span> 预测其上下文 <span class="math inline">\(w_{t-i}, \cdots , w_{t+i}\)</span></strong>
+，模型如下图所示：</p>
+<figure>
+<img src="https://pic2.zhimg.com/v2-42ef75691c18a03cfda4fa85a8409e19_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="前向传播过程">前向传播过程</span></h4>
 <ul>
-<li>
-<p><strong>输入层</strong>：   输入的是一个单词，其表示形式为 <strong>One-hot</strong> ，我们将其表示为V维向量 $x_k$ ，其中 $V$ 为词表大小。然后，通过词向量矩阵 $W_{V \times N}$ 我们得到一个N维向量<br>
-$$<br>
-h = W^T * x_k = v^{T}_{w_I}<br>
-$$</p>
-</li>
-<li>
-<p><strong>隐层</strong>： 而隐层中没有激活函数，也就是说输入=输出，因此隐藏的输出也是 $h$ 。</p>
-</li>
-<li>
-<p><strong>隐层到输出层</strong>：</p>
+<li><p><strong>输入层</strong>： 输入的是一个单词，其表示形式为
+<strong>One-hot</strong> ，我们将其表示为V维向量 <span class="math inline">\(x_k\)</span> ，其中 <span class="math inline">\(V\)</span> 为词表大小。然后，通过词向量矩阵 <span class="math inline">\(W_{V \times N}\)</span> 我们得到一个N维向量 <span class="math display">\[
+  h = W^T * x_k = v^{T}_{w_I}
+  \]</span></p></li>
+<li><p><strong>隐层</strong>：
+而隐层中没有激活函数，也就是说输入=输出，因此隐藏的输出也是 <span class="math inline">\(h\)</span> 。</p></li>
+<li><p><strong>隐层到输出层</strong>：</p>
 <ul>
-<li>
-<p><strong>首先</strong>，因为要输出C个单词，因此我们此时的输出有C个分布： <strong>$y_1, \cdots y_C $，且每个分布都是独立的</strong>，我们需要单独计算， 其中 $y_i$  表示窗口的第 $i$  个单词的分布。 【<strong>独立性假设</strong>】</p>
-</li>
-<li>
-<p><strong>其次</strong>， 因为矩阵 $W’<em>{N \times V}$ 是共享的，因此我们得到的 $V \times 1$ 维向量 $u$ 其实是相同的，也就是有 $u</em>{c,j} = u_j$ ，这里 $u$ 的每一行同 CBOW 中一样，表示的也是评分。</p>
-</li>
-<li>
-<p><strong>最后</strong>，每个分布都经过一个 softmax 层，不同于 CBOW，我们此处产生的是第 $i$ 个单词的分布（共有C个单词），如下：</p>
-</li>
+<li><p><strong>首先</strong>，因为要输出C个单词，因此我们此时的输出有C个分布：
+<strong>$y_1, y_C $，且每个分布都是独立的</strong>，我们需要单独计算，
+其中 <span class="math inline">\(y_i\)</span> 表示窗口的第 <span class="math inline">\(i\)</span> 个单词的分布。
+【<strong>独立性假设</strong>】</p></li>
+<li><p><strong>其次</strong>， 因为矩阵 <span class="math inline">\(W&#39;_{N \times V}\)</span>
+是共享的，因此我们得到的 <span class="math inline">\(V \times 1\)</span>
+维向量 <span class="math inline">\(u\)</span> 其实是相同的，也就是有
+<span class="math inline">\(u_{c,j} = u_j\)</span> ，这里 <span class="math inline">\(u\)</span> 的每一行同 CBOW
+中一样，表示的也是评分。</p></li>
+<li><p><strong>最后</strong>，每个分布都经过一个 softmax 层，不同于
+CBOW，我们此处产生的是第 <span class="math inline">\(i\)</span>
+个单词的分布（共有C个单词），如下：</p></li>
 </ul>
-<p>$$<br>
-P(w_{i,j}| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})}<br>
-$$</p>
-</li>
+<p><span class="math display">\[
+  P(w_{i,j}| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V}
+exp({u_k})}
+  \]</span></p></li>
 </ul>
 <h4><span id="损失函数">损失函数</span></h4>
-<p>假设 $j^<em>$ 是真实单词在词汇表中的下标，那么根据<strong>极大似然法</strong>，则目标函数定义如下：<br>
-$$<br>
-\begin{split} E &amp;= - log , p(w_1, w_2, \cdots, w_C | w_I)   \ &amp;= - log \prod_{c=1}^C P(w_c|w_i) \ &amp;= - log  \prod_{c=1}^{C} \frac{exp(u_{c, j})}{\sum_{k=1}^{V} exp(u_{c,k}) } \ &amp;= - \sum_{c=1}^C u_{j^</em><em>c} + C \cdot log \sum</em>{k=1}^{V} exp(u_k) \end{split}<br>
-$$</p>
+<p>假设 <span class="math inline">\(j^*\)</span>
+是真实单词在词汇表中的下标，那么根据<strong>极大似然法</strong>，则目标函数定义如下：
+<span class="math display">\[
+\begin{split} E &amp;= - log \, p(w_1, w_2, \cdots, w_C | w_I)   \\
+&amp;= - log \prod_{c=1}^C P(w_c|w_i) \\ &amp;= - log  \prod_{c=1}^{C}
+\frac{exp(u_{c, j})}{\sum_{k=1}^{V} exp(u_{c,k}) } \\ &amp;= -
+\sum_{c=1}^C u_{j^*_c} + C \cdot log \sum_{k=1}^{V} exp(u_k) \end{split}
+\]</span></p>
 <h2><span id="二-word2vec-优化">二、Word2Vec 优化</span></h2>
 <p>以上我们讨论的模型（二元模型，CBOW和skip-gram）都是他们的原始形式，没有加入任何优化技巧。对于这些模型，每个单词存在两类向量表达：<strong>输入向量</strong><img src="https://www.zhihu.com/equation?tex=v_%7Bw%7D%5E%7B%7D" alt="[公式]">，<strong>输出向量</strong><img src="https://www.zhihu.com/equation?tex=v_%7Bw%7D%5E%7B%27%7D" alt="[公式]">（这也是为什么word2vec的名称由来：1个单词对应2个向量表示)。学习得到输入向量比较简单；但<strong>要学习输出向量是很困难</strong>的。</p>
 <h3><span id="21-hierarchical-softmax">==2.1 Hierarchical Softmax==</span></h3>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56139075">https://zhuanlan.zhihu.com/p/56139075</a></p>
+<p>https://zhuanlan.zhihu.com/p/56139075</p>
 </blockquote>
-<p>Hierarchical Softmax对原模型的改进主要有两点，第一点是从输入层到隐藏层的映射，没有采用原先的与矩阵W相乘然后相加求平均的方法，而是<strong>直接对所有输入的词向量求和</strong>。假设输入的词向量为（0，1，0，0）和（0,0,0,1），那么隐藏层的向量为（0,1,0,1）。</p>
-<p><strong>Hierarchical Softmax</strong>的第二点改进是采用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2261635013%22%7D">哈夫曼树</a>来替换了原先的从隐藏层到输出层的矩阵W’。<strong>哈夫曼树的叶节点个数为词汇表的单词个数V</strong>，一个叶节点代表一个单词，而从根节点到该叶节点的路径确定了这个单词最终输出的词向量。</p>
-<img src="https://pic4.zhimg.com/v2-3db7e66f36db0a9e6e6bc2f348dece47_b.jpg" alt="img" style="zoom:50%;">
-<p><strong>具体来说，这棵哈夫曼树除了根结点以外的所有非叶节点中都含有一个由参数θ确定的sigmoid函数，不同节点中的θ不一样</strong>。训练时==<strong>隐藏层的向量</strong>==与这个**==sigmoid函数==**进行运算，根据结果进行分类，若分类为负类则沿左子树向下传递，编码为0；若分类为正类则沿右子树向下传递，编码为1。</p>
-<p><strong>每个叶子节点代表语料库中的一个词</strong>，<strong>于是每个词语都可以被01唯一的编码，并且其编码序列对应一个事件序列，于是我们可以计算条件概率 <img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"></strong> 。</p>
+<p>Hierarchical
+Softmax对原模型的改进主要有两点，第一点是从输入层到隐藏层的映射，没有采用原先的与矩阵W相乘然后相加求平均的方法，而是<strong>直接对所有输入的词向量求和</strong>。假设输入的词向量为（0，1，0，0）和（0,0,0,1），那么隐藏层的向量为（0,1,0,1）。</p>
+<p><strong>Hierarchical Softmax</strong>的第二点改进是采用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=哈夫曼树&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2261635013%22%7D">哈夫曼树</a>来替换了原先的从隐藏层到输出层的矩阵W’。<strong>哈夫曼树的叶节点个数为词汇表的单词个数V</strong>，一个叶节点代表一个单词，而从根节点到该叶节点的路径确定了这个单词最终输出的词向量。</p>
+<p><img src="https://pic4.zhimg.com/v2-3db7e66f36db0a9e6e6bc2f348dece47_b.jpg" alt="img" style="zoom:50%;"></p>
+<p><strong>具体来说，这棵哈夫曼树除了根结点以外的所有非叶节点中都含有一个由参数θ确定的sigmoid函数，不同节点中的θ不一样</strong>。训练时==<strong>隐藏层的向量</strong>==与这个<strong>==sigmoid函数==</strong>进行运算，根据结果进行分类，若分类为负类则沿左子树向下传递，编码为0；若分类为正类则沿右子树向下传递，编码为1。</p>
+<p><strong>每个叶子节点代表语料库中的一个词</strong>，<strong>于是每个词语都可以被01唯一的编码，并且其编码序列对应一个事件序列，于是我们可以计算条件概率
+<img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"></strong> 。</p>
 <p><strong>在开始计算之前，还是得引入一些符号：</strong></p>
-<ol>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> :从根结点出发到达w对应叶子结点的路径</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D" alt="[公式]"> :路径中包含结点的个数</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=p_%7B1%7D%5E%7Bw%7D%2C+p_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+p_%7Bl%5E%7Bw%7D%7D%5E%7Bw%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> 中的各个节点</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=d_%7B2%7D%5E%7Bw%7D%2C+d_%7B3%7D%5E%7Bw%7D%2C+%5Ccdots%2C+d_%7Bl+w%7D%5E%7Bw%7D+%5Cin%5C%7B0%2C1%5C%7D" alt="[公式]"> :词w的编码， <img src="https://www.zhihu.com/equation?tex=d_%7Bj%7D%5E%7Bw%7D" alt="[公式]"> 表示路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> 第j个节点对应的编码（根节点无编码）</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7B1%7D%5E%7Bw%7D%2C+%5Ctheta_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+%5Ctheta_%7Bl%5E%7Bw%7D-1%7D%5E%7Bw%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7Bm%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> 中非叶节点对应的<strong>参数向量</strong></p>
-</li>
+<ol type="1">
+<li><p><img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> :从根结点出发到达w对应叶子结点的路径</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D" alt="[公式]"> :路径中包含结点的个数</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=p_%7B1%7D%5E%7Bw%7D%2C+p_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+p_%7Bl%5E%7Bw%7D%7D%5E%7Bw%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]">
+中的各个节点</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=d_%7B2%7D%5E%7Bw%7D%2C+d_%7B3%7D%5E%7Bw%7D%2C+%5Ccdots%2C+d_%7Bl+w%7D%5E%7Bw%7D+%5Cin%5C%7B0%2C1%5C%7D" alt="[公式]"> :词w的编码， <img src="https://www.zhihu.com/equation?tex=d_%7Bj%7D%5E%7Bw%7D" alt="[公式]"> 表示路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]">
+第j个节点对应的编码（根节点无编码）</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7B1%7D%5E%7Bw%7D%2C+%5Ctheta_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+%5Ctheta_%7Bl%5E%7Bw%7D-1%7D%5E%7Bw%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7Bm%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]">
+中非叶节点对应的<strong>参数向量</strong></p></li>
 </ol>
 <p>于是可以给出w的条件概率：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29%3D%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29" alt="[公式]"></p>
-<p><strong>这是个简单明了的式子，从根节点到叶节点经过了 <img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D-1" alt="[公式]"> 个节点，编码从下标2开始（根节点无编码），对应的参数向量下标从1开始（根节点为1)。</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29%3D%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>这是个简单明了的式子，从根节点到叶节点经过了 <img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D-1" alt="[公式]">
+个节点，编码从下标2开始（根节点无编码），对应的参数向量下标从1开始（根节点为1)。</strong></p>
 <p>其中，每一项是一个<strong>逻辑斯谛回归</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%7B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D0%7D+%5C%5C+%7B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D1%7D%5Cend%7Barray%7D%5Cright." alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%7B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D0%7D+%5C%5C+%7B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D1%7D%5Cend%7Barray%7D%5Cright." alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>考虑到d只有0和1两种取值，我们可以用指数形式方便地将其写到一起：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd%5E%7Bw%7D%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd%5E%7Bw%7D%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><strong>我们的目标函数取对数似然</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>将 <img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"> 代入上式，有:</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd_%7Bj%7D%5E%7Bw%7D%7D%5Cright%5C%7D" alt="[公式]"></p>
-<p><img src="https://www.zhihu.com/equation?tex=%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd_%7Bj%7D%5E%7Bw%7D%7D%5Cright%5C%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>这也很直白，连乘的对数换成求和。不过还是有点长，我们把每一项简记为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28w%2C+j%29%3D%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D" alt="[公式]"></p>
-<h4><span id="wordvec-极大化化目标函数使用的算法是是随机梯度上升法"><strong><font color="red"> <em>WordVec</em> 极大化化目标函数使用的算法是是随机梯度上升法</font></strong></span></h4>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28w%2C+j%29%3D%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<h4><span id="wordvec极大化化目标函数使用的算法是是随机梯度上升法"><strong><font color="red">
+<em>WordVec</em>
+极大化化目标函数使用的算法是是随机梯度上升法</font></strong></span></h4>
 <p>每一项有两个参数，一个是每个节点的参数向量 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> ，另一个是输出层的输入 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> ，我们分别对其求偏导数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%3D%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%3D%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>因为sigmoid函数的导数有个很棒的形式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Csigma%5E%7B%5Cprime%7D%28x%29%3D%5Csigma%28x%29%5B1-%5Csigma%28x%29%5D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Csigma%5E%7B%5Cprime%7D%28x%29%3D%5Csigma%28x%29%5B1-%5Csigma%28x%29%5D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>于是代入上上式得到：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D-d_%7Bj%7D%5E%7Bw%7D+%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D-d_%7Bj%7D%5E%7Bw%7D+%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><strong>合并同类项得到：</strong></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>于是 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]">的更新表达式就得到了：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D+%3A%3D%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%2B%5Ceta%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]"></p>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Ceta" alt="[公式]"> 是学习率，通常取0-1之间的一个值。学习率越大训练速度越快，但目标函数容易在局部区域来回抖动。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D+%3A%3D%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%2B%5Ceta%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Ceta" alt="[公式]">
+是学习率，通常取0-1之间的一个值。学习率越大训练速度越快，但目标函数容易在局部区域来回抖动。</p>
 <p><strong>再来 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的偏导数</strong>，注意到 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28w%2C+j%29%3D%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D" alt="[公式]"> 中 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> 是对称的，所有直接将 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> 的偏导数中的 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> 替换为 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> ，得到关于 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的偏导数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%3D%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"></p>
-<p><strong>不过 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 是上下文的词向量的和，不是上下文单个词的词向量。怎么把这个更新量应用到单个词的词向量上去呢？word2vec采取的是直接将 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的更新量整个应用到每个单词的词向量上去</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29+%3A%3D%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29%2B%5Ceta+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%2C+%5Cquad+%5Cwidetilde%7Bw%7D+%5Cin+%5Ctext+%7B+Context+%7D%28w%29" alt="[公式]"></p>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29" alt="[公式]"> 代表上下文中某一个单词的词向量。我认为应该也可以将其平均后更新到每个词向量上去，无非是学习率的不同，欢迎指正。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%3D%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>不过 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]">
+是上下文的词向量的和，不是上下文单个词的词向量。怎么把这个更新量应用到单个词的词向量上去呢？word2vec采取的是直接将
+<img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的更新量整个应用到每个单词的词向量上去</strong>：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29+%3A%3D%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29%2B%5Ceta+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%2C+%5Cquad+%5Cwidetilde%7Bw%7D+%5Cin+%5Ctext+%7B+Context+%7D%28w%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29" alt="[公式]">
+代表上下文中某一个单词的词向量。我认为应该也可以将其平均后更新到每个词向量上去，无非是学习率的不同，欢迎指正。</p>
 <h3><span id="22-negative-sampling">2.2 Negative Sampling</span></h3>
 <blockquote>
-<p>Negative Sampling - 素轻的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56106590">https://zhuanlan.zhihu.com/p/56106590</a></p>
+<p>Negative Sampling - 素轻的文章 - 知乎
+https://zhuanlan.zhihu.com/p/56106590</p>
 </blockquote>
 <blockquote>
 <p><strong>为了解决数量太过庞大的输出向量的更新问题，我们就不更新全部向量，而只更新他们的一个样本</strong>。</p>
-<p>训练神经网络 意味着输入一个训练样本调整weight，让它预测这个训练样本更准。换句话说，每个训练样本将会影响网络中所有的weight。<strong>Negative sampling 解决了这个问题，每次我们就修改了其中一小部分weight，而不是全部。</strong></p>
+<p>训练神经网络
+意味着输入一个训练样本调整weight，让它预测这个训练样本更准。换句话说，每个训练样本将会影响网络中所有的weight。<strong>Negative
+sampling
+解决了这个问题，每次我们就修改了其中一小部分weight，而不是全部。</strong></p>
 </blockquote>
 <p><strong>负采样是另一种用来提高Word2Vec效率的方法</strong>，它是基于这样的观察：训练一个神经网络意味着使用一个训练样本就要稍微调整一下神经网络中所有的权重，这样才能够确保预测训练样本更加精确，如果能设计一种方法每次只更新一部分权重，那么计算复杂度将大大降低。</p>
-<p>如果 vocabulary 大小为10000时， 当输入样本 ( “fox”, “quick”) 到神经网络时， <strong>“ fox” 经过 one-hot 编码，在输出层我们期望对应 “quick” 单词的那个神经元结点输出 1，其余 9999 个都应该输出 0</strong>。在这里，这9999个我们期望输出为0的神经元结点所对应的单词我们为 negative word.   negative sampling 的想法也很直接 ，<strong>将随机选择一小部分的 negative words，比如选 10个 negative words 来更新对应的权重参数。</strong></p>
-<p><strong>假设原来模型每次运行都需要300×10,000(其实没有减少数量，但是运行过程中，减少了需要载入的数量。) 现在只要300×(1+10)减少了好多。</strong></p>
-<h4><span id="问题来了如何选择10个negative-sample呢">==问题来了，如何选择10个negative sample呢？==</span></h4>
-<p><strong>negative sample也是根据他们出现概率来选的，而这个概率又和他们出现的频率有关。更常出现的词，更容易被选为negative sample。</strong></p>
+<p>如果 vocabulary 大小为10000时， 当输入样本 ( "fox", "quick")
+到神经网络时， <strong>“ fox” 经过 one-hot 编码，在输出层我们期望对应
+“quick” 单词的那个神经元结点输出 1，其余 9999 个都应该输出
+0</strong>。在这里，这9999个我们期望输出为0的神经元结点所对应的单词我们为
+negative word. negative sampling 的想法也很直接
+，<strong>将随机选择一小部分的 negative words，比如选 10个 negative
+words 来更新对应的权重参数。</strong></p>
+<p><strong>假设原来模型每次运行都需要300×10,000(其实没有减少数量，但是运行过程中，减少了需要载入的数量。)
+现在只要300×(1+10)减少了好多。</strong></p>
+<h4><span id="问题来了如何选择10个negativesample呢">==问题来了，如何选择10个negative
+sample呢？==</span></h4>
+<p><strong>negative
+sample也是根据他们出现概率来选的，而这个概率又和他们出现的频率有关。更常出现的词，更容易被选为negative
+sample。</strong></p>
 <p>这个概率用一个公式表示，每个词给了一个和它频率相关的权重。这个概率公式为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=P%28w_i%29+%3D+%5Cfrac%7Bf%28w_i%29%5E%7B0.75%7D+%7D%7B+%5Csum_%7Bj%3D0%7D%5E%7Bn%7D%28f%28w_j%29%5E%7B0.75%7D%7D%29" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=P%28w_i%29+%3D+%5Cfrac%7Bf%28w_i%29%5E%7B0.75%7D+%7D%7B+%5Csum_%7Bj%3D0%7D%5E%7Bn%7D%28f%28w_j%29%5E%7B0.75%7D%7D%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>在paper中说0.75这个超参是试出来的，这个函数performance比其他函数好。</p>
-<p>**<font color="red"> 负采样算法实际上就是一个带权采样过程，负例的选择机制是和单词词频联系起来的。</font>**具体做法是以 <code>N+1</code> 个点对区间 <code>[0,1]</code> 做非等距切分，并引入的一个在区间 <code>[0,1]</code> 上的 <code>M</code> 等距切分，其中 <code>M &gt;&gt; N。</code>源码中取 M = 10^8。然后对两个切分做投影，得到映射关系：采样时，每次生成一个 [1, M-1] 之间的整数 i，则 Table(i) 就对应一个样本；当采样到正例时，跳过（<strong>拒绝采样</strong>）。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-36547a4cd05365292830ad4b22ba4c93_1440w.png" alt="img"></p>
-<p><img src="https://pic3.zhimg.com/80/v2-a788595cc2611b0bfdac9e039a2e82fe_1440w.png" alt="img"></p>
-<p><img src="https://pic1.zhimg.com/80/v2-cfe67c913af37a9435f3331139abeab8_1440w.jpg" alt="img"></p>
+<p><strong><font color="red">
+负采样算法实际上就是一个带权采样过程，负例的选择机制是和单词词频联系起来的。</font></strong>具体做法是以
+<code>N+1</code> 个点对区间 <code>[0,1]</code>
+做非等距切分，并引入的一个在区间 <code>[0,1]</code> 上的 <code>M</code>
+等距切分，其中 <code>M &gt;&gt; N。</code>源码中取 M =
+10^8。然后对两个切分做投影，得到映射关系：采样时，每次生成一个 [1, M-1]
+之间的整数 i，则 Table(i)
+就对应一个样本；当采样到正例时，跳过（<strong>拒绝采样</strong>）。</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-36547a4cd05365292830ad4b22ba4c93_1440w.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-a788595cc2611b0bfdac9e039a2e82fe_1440w.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-cfe67c913af37a9435f3331139abeab8_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h2><span id="三-word2vec-qampa">三、Word2vec Q&amp;A</span></h2>
 <h3><span id="31-word2vec与lda的区别">3.1 Word2Vec与LDA的区别</span></h3>
-<ol>
-<li>
-<p>LDA是利用文档中<strong>单词的共现关系</strong>来对单词按<strong>主题聚类</strong>，也可以理解为对“<strong>文档-单词</strong>”矩阵进行<strong>分解</strong>，得到“<strong>文档-主题</strong>”和“<strong>主题-单词</strong>”两个<strong>概率分布</strong>。</p>
-</li>
-<li>
-<p>Word2Vec是利用<strong>上下文-单词</strong>“矩阵进行学习，其中上下文由周围的几个单词组成，由此得到的词向量表示更多地融入了上下文共现的特征。也就是说，如果两个单词所对应的word2vec向量相似度较高，那么它们很可能经常在同样的上下文中出现。</p>
-</li>
-<li>
-<p>LDA模型是一种基于<strong>概率图模型</strong>的<strong>生成式模型</strong>，其似然函数可以写成若干条件概率连乘的形式，其中包括需要推测的隐含变量（即主题）；</p>
-</li>
-<li>
-<p>而Word2Vec模型一般表达为<strong>神经网络</strong>的形式，似然函数定义在网络的输出之上，需要通过学习网络的权重以得到单词的稠密向量表示。</p>
-</li>
+<ol type="1">
+<li><p>LDA是利用文档中<strong>单词的共现关系</strong>来对单词按<strong>主题聚类</strong>，也可以理解为对“<strong>文档-单词</strong>”矩阵进行<strong>分解</strong>，得到“<strong>文档-主题</strong>”和“<strong>主题-单词</strong>”两个<strong>概率分布</strong>。</p></li>
+<li><p>Word2Vec是利用<strong>上下文-单词</strong>“矩阵进行学习，其中上下文由周围的几个单词组成，由此得到的词向量表示更多地融入了上下文共现的特征。也就是说，如果两个单词所对应的word2vec向量相似度较高，那么它们很可能经常在同样的上下文中出现。</p></li>
+<li><p>LDA模型是一种基于<strong>概率图模型</strong>的<strong>生成式模型</strong>，其似然函数可以写成若干条件概率连乘的形式，其中包括需要推测的隐含变量（即主题）；</p></li>
+<li><p>而Word2Vec模型一般表达为<strong>神经网络</strong>的形式，似然函数定义在网络的输出之上，需要通过学习网络的权重以得到单词的稠密向量表示。</p></li>
 </ol>
 <h3><span id="32-word2vec存在的问题是什么">3.2 Word2Vec存在的问题是什么？</span></h3>
 <ul>
-<li>对每个local context window单独训练，没有利用包 含在global co-currence矩阵中的统计信息。</li>
+<li>对每个local context window单独训练，没有利用包 含在global
+co-currence矩阵中的统计信息。</li>
 <li>对多义词无法很好的表示和处理，因为使用了唯一的词向量</li>
 </ul>
-<h3><span id="32-ood-of-word2vec">3.2  OOD of word2vec</span></h3>
+<h3><span id="32-ood-of-word2vec">3.2 OOD of word2vec</span></h3>
 <p>其它单词认定其为Unknow，编号为0</p>
 <h3><span id="34-项目中的word2vec">3.4 项目中的word2vec</span></h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">feature_asm2vec</span>(<span class="params">data_type, inter_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Feature engineering for asm2vec feature.&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> data_type == <span class="string">&quot;train&quot;</span>:</span><br><span class="line">        <span class="comment"># TODO : 模型空判断</span></span><br><span class="line">        <span class="comment"># Train a Word2vec model by mixing traing set and test set</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;------------------------ 训练asm2vec模型 ------------------------&quot;</span>)</span><br><span class="line">        sentences = PathLineSentences(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/semantic/&quot;</span>)</span><br><span class="line">        model = Word2Vec(sentences=sentences, vector_size=<span class="number">1024</span>, window=<span class="number">5</span>, min_count=<span class="number">5</span>, workers=<span class="number">5</span>)</span><br><span class="line">        model.wv.save_word2vec_format(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/models/asm2vec.bin&quot;</span>, binary=<span class="literal">True</span>, sort_attr=<span class="string">&#x27;count&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Load the trained Word2vec model</span></span><br><span class="line">    model_wv = KeyedVectors.load_word2vec_format(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/models/asm2vec.bin&quot;</span>, binary=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------------------------ 生成asm2vec特征 ------------------------&quot;</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/<span class="subst">&#123;data_type&#125;</span>_filename.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        filename = fp.read().split()</span><br><span class="line">    <span class="comment"># Feature engineering for generating string vector features</span></span><br><span class="line">    obj = StringVector()</span><br><span class="line">    arr = np.zeros((<span class="built_in">len</span>(filename), obj.dim))</span><br><span class="line">    <span class="keyword">with</span> tqdm(total=<span class="built_in">len</span>(filename), ncols=<span class="number">80</span>, desc=obj.name) <span class="keyword">as</span> pbar:</span><br><span class="line">        <span class="keyword">for</span> i, file <span class="keyword">in</span> <span class="built_in">enumerate</span>(filename):</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/semantic/<span class="subst">&#123;file&#125;</span>.txt&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                stringz = f.read().decode(<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line">            lines = <span class="string">&#x27; &#x27;</span>.join(stringz.split(<span class="string">&#x27;\n&#x27;</span>))</span><br><span class="line">            raw_words = <span class="built_in">list</span>(<span class="built_in">set</span>(lines.split()))</span><br><span class="line">            arr[i, :] = obj.feature_vector((model_wv, raw_words))</span><br><span class="line">            pbar.update(<span class="number">1</span>)</span><br><span class="line">    arr[np.isnan(arr)] = <span class="number">0</span></span><br><span class="line">    np.save(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/feature/<span class="subst">&#123;data_type&#125;</span>_semantic.npy&quot;</span>, arr)</span><br></pre></td></tr></table></figure>
 <h3><span id="35-tf-idf-word2vec和bert-比较">3.5 Tf-Idf、Word2Vec和BERT 比较</span></h3>
 <blockquote>
-<p>从算法本质来说 word2vec 一旦训练好了是**没法处理未登录词（OOV）**的，一般的做法是给OOV一个默认的向量，下面是一个类的封装（仅列出核心部分）</p>
+<p>从算法本质来说 word2vec
+一旦训练好了是<strong>没法处理未登录词（OOV）</strong>的，一般的做法是给OOV一个默认的向量，下面是一个类的封装（仅列出核心部分）</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.leiphone.com/category/yanxishe/TbZAzc3CJAMs815p.html">https://www.leiphone.com/category/yanxishe/TbZAzc3CJAMs815p.html</a></p>
+<p>https://www.leiphone.com/category/yanxishe/TbZAzc3CJAMs815p.html</p>
 <ul>
 <li><strong>词袋法</strong>：用scikit-learn进行特征工程、特征选择以及机器学习，测试和评估，用lime解释。</li>
 <li><strong>词嵌入法</strong>：用gensim拟合Word2Vec，用tensorflow/keras进行特征工程和深度学习，测试和评估，用Attention机制解释。</li>
@@ -573,19 +651,19 @@ $$</p>
 </ul>
 <h4><span id="概要">概要</span></h4>
 <p>在本文中，我将使用NLP和Python来解释3种不同的文本多分类策略：老式的词袋法（tf-ldf），著名的词嵌入法（Word2Vec）和最先进的语言模型（BERT）。</p>
-<p><img src="https://static.leiphone.com/uploads/new/images/20200930/5f73ddf75200f.png?imageView2/2/w/740" alt="NLP之文本分类：「Tf-Idf、Word2Vec和BERT」三种模型比较"></p>
+<figure>
+<img src="https://static.leiphone.com/uploads/new/images/20200930/5f73ddf75200f.png?imageView2/2/w/740" alt="NLP之文本分类：「Tf-Idf、Word2Vec和BERT」三种模型比较">
+<figcaption aria-hidden="true">NLP之文本分类：「Tf-Idf、Word2Vec和BERT」三种模型比较</figcaption>
+</figure>
 <p>NLP（自然语言处理）是人工智能的一个领域，它研究计算机和人类语言之间的交互作用，特别是如何通过计算机编程来处理和分析大量的自然语言数据。NLP常用于文本数据的分类。文本分类是指根据文本数据内容对其进行分类的问题。</p>
 <p>我们有多种技术从原始文本数据中提取信息，并用它来训练分类模型。本教程比较了传统的<strong>词袋法</strong>（与简单的机器学习算法一起使用）、流行的<strong>词嵌入模型</strong>（与深度学习神经网络一起使用）和最先进的语言模型（和基于<strong>attention</strong>的<strong>transformers</strong>模型中的<strong>迁移学习</strong>一起使用），语言模型彻底改变了NLP的格局。</p>
 <p>我将介绍一些有用的Python代码，这些代码可以轻松地应用在其他类似的案例中（仅需复制、粘贴、运行），并对代码逐行添加注释，以便你能复现这个例子（下面是全部代码的链接）。</p>
 <p><strong>词袋法</strong>：文件越多，词汇表越大，因此特征矩阵将是一个巨大的稀疏矩阵。</p>
 <h4><span id="bert比之word2vec有哪些进步呢">Bert比之Word2Vec,有哪些进步呢？</span></h4>
 <ul>
-<li>
-<p><strong>静态到动态：一词多义问题</strong></p>
-</li>
-<li>
-<p><strong>词的多层特性</strong>：一个好的语言表示出了建模一词多义现象以外，还需要能够体现词的复杂特性，包括语法 (syntax)、语义 (semantics) 等。</p>
-</li>
+<li><p><strong>静态到动态：一词多义问题</strong></p></li>
+<li><p><strong>词的多层特性</strong>：一个好的语言表示出了建模一词多义现象以外，还需要能够体现词的复杂特性，包括语法
+(syntax)、语义 (semantics) 等。</p></li>
 </ul>
 
     </div>

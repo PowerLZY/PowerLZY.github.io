@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="¶一、FP-growth ¶前言——Apriori算法的缺陷 虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：  需要多次扫描数据集：Apriori算法中间有许多步骤都需要对某一个大集合（比如 $D, L_k$ ） 进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。 可能会产生庞大的候选集：由于第 $k$ 迭代的连接过程仍然需要进行 $\left(\begin{ar">
+    <meta name="description" content="一、FP-growth 前言——Apriori算法的缺陷 虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：  需要多次扫描数据集：Apriori算法中间有许多步骤都需要对某一个大集合（比如 \(D, L_k\) ） 进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。 可能会产生庞大的候选集：由于第 \(k\) 迭代的连接过程仍然需要进行 \(\left(\begin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关联规则（3）FP-growth">
 <meta property="og:url" content="https://powerlzy.github.io/posts/806NJ2/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="¶一、FP-growth ¶前言——Apriori算法的缺陷 虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：  需要多次扫描数据集：Apriori算法中间有许多步骤都需要对某一个大集合（比如 $D, L_k$ ） 进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。 可能会产生庞大的候选集：由于第 $k$ 迭代的连接过程仍然需要进行 $\left(\begin{ar">
+<meta property="og:description" content="一、FP-growth 前言——Apriori算法的缺陷 虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：  需要多次扫描数据集：Apriori算法中间有许多步骤都需要对某一个大集合（比如 \(D, L_k\) ） 进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。 可能会产生庞大的候选集：由于第 \(k\) 迭代的连接过程仍然需要进行 \(\left(\begin">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641823.png">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641579.png">
@@ -172,7 +172,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -305,93 +305,105 @@
 <h4><span id="前言apriori算法的缺陷">前言——Apriori算法的缺陷</span></h4>
 <p>虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：</p>
 <ul>
-<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如 $D, L_k$ ） 进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
-<li><strong>可能会产生庞大的候选集</strong>：由于第 $k$ 迭代的连接过程仍然需要进行 $\left(\begin{array}{c}\left|L_k\right| /\ 2\end{array}\right)$ 次比较操作, 所以Apriori算法中途产生的候选集的数量依然巨大。</li>
+<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如
+<span class="math inline">\(D, L_k\)</span> ）
+进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
+<li><strong>可能会产生庞大的候选集</strong>：由于第 <span class="math inline">\(k\)</span> 迭代的连接过程仍然需要进行 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| /\
+2\end{array}\right)\)</span> 次比较操作,
+所以Apriori算法中途产生的候选集的数量依然巨大。</li>
 </ul>
-<p><font color="red">所以为什么一定要产生候选集？是否可以不通过产生候选集的方式来完成频繁模式挖掘呢？频繁模式增长(frequent pattern growth， 简称FP-growth)就是一种该方向的尝试。</font>【原始事务数据转换为树状数据结构，减少扫描事务的成本】</p>
+<p><font color="red">所以为什么一定要产生候选集？是否可以不通过产生候选集的方式来完成频繁模式挖掘呢？频繁模式增长(frequent
+pattern growth，
+简称FP-growth)就是一种该方向的尝试。</font>【原始事务数据转换为树状数据结构，减少扫描事务的成本】</p>
 <span id="more"></span>
 <h4><span id="11-算法流程">1.1 算法流程</span></h4>
 <p><strong>FP-growth主要采用一种分治的策略来解决该问题，我们可以用几个步骤来描述一下这种分治策略的大概步骤。</strong></p>
-<ol>
-<li>压缩数据集来表征每一个项，这个步骤一般是通过建立<strong>频繁模式树</strong>(frequent pattern tree，简称FP-tree)来实现的（其实就是字典树，很明显这是一种无损压缩方式）</li>
-<li><strong>统计每一个项在原数据集中出现的次数，并根据预先设定的support count去除低频项</strong>，然后根据出现次数对剩余项进行升序排序；从第一位项开始扫描频繁模式树的叶子节点，通过回溯得到每一个项对应的条件模式基(Condition Pattern Base，实则为叶子节点对应的路径集合)</li>
-<li>根据条件模式基构建出条件频繁项集树(Conditional FP-tree，步骤和第一步完全一样，也就是根据条件模式基构建出一颗字典树)</li>
+<ol type="1">
+<li>压缩数据集来表征每一个项，这个步骤一般是通过建立<strong>频繁模式树</strong>(frequent
+pattern
+tree，简称FP-tree)来实现的（其实就是字典树，很明显这是一种无损压缩方式）</li>
+<li><strong>统计每一个项在原数据集中出现的次数，并根据预先设定的support
+count去除低频项</strong>，然后根据出现次数对剩余项进行升序排序；从第一位项开始扫描频繁模式树的叶子节点，通过回溯得到每一个项对应的条件模式基(Condition
+Pattern Base，实则为叶子节点对应的路径集合)</li>
+<li>根据条件模式基构建出条件频繁项集树(Conditional
+FP-tree，步骤和第一步完全一样，也就是根据条件模式基构建出一颗字典树)</li>
 <li>根据条件FP-tree和support count得到最终的频繁项集</li>
 </ol>
 <p>事务集如下：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>TID</th>
 <th>itemset list</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>T100</td>
 <td>I1, I2, I5</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T200</td>
 <td>I2, I4</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T300</td>
 <td>I2, I3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T400</td>
 <td>I1, I2, I4</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T500</td>
 <td>I1, I3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T600</td>
 <td>I2, I3</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T700</td>
 <td>I1, I3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T800</td>
 <td>I1, I2, I3, I5</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T900</td>
 <td>I1, I2, I3</td>
 </tr>
 </tbody>
 </table>
 <h5><span id="1建立模式频繁树">（1）建立模式频繁树</span></h5>
-<p>我们首先需要建立一颗模式频繁树，做法很简单，也就是直接建立一颗字典树。在建立之前，我们需要先对每一个项进行统计，并去除出现次数小于support count的项，然后排序。对于上表，这么做后的结果如下：</p>
+<p>我们首先需要建立一颗模式频繁树，做法很简单，也就是直接建立一颗字典树。在建立之前，我们需要先对每一个项进行统计，并去除出现次数小于support
+count的项，然后排序。对于上表，这么做后的结果如下：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>item</th>
 <th>count</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>I2</td>
 <td>7</td>
 </tr>
-<tr>
+<tr class="even">
 <td>I1</td>
 <td>6</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>I3</td>
 <td>6</td>
 </tr>
-<tr>
+<tr class="even">
 <td>I4</td>
 <td>2</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>I5</td>
 <td>2</td>
 </tr>
@@ -401,78 +413,79 @@
 <p>然后我们需要对保留下来的项压缩成一个字典树，为了保证这颗字典树尽可能小，我们需要对事务集中的每一个项集进行排序，结果如下：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>TID</th>
 <th>itemset list</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>T100</td>
 <td>I2, I1, I5</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T200</td>
 <td>I2, I4</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T300</td>
 <td>I2, I3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T400</td>
 <td>I2, I1, I4</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T500</td>
 <td>I1, I3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T600</td>
 <td>I2, I3</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T700</td>
 <td>I1, I3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>T800</td>
 <td>I2, I1, I3, I5</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>T900</td>
 <td>I2, I1, I3</td>
 </tr>
 </tbody>
 </table>
-<p><strong>字典树的根节点设为null，然后我们可以开始从第一条数据开始建立字典树</strong>，需要说明的是，这颗字典树的每个节点还需要维护一个count，这个count的含义是当前该节点被“经过”了多少次。下面的图中，<strong>每个结点被我标注为Ik : n的样子，代表当前节点名为Ik，count为n。</strong></p>
+<p><strong>字典树的根节点设为null，然后我们可以开始从第一条数据开始建立字典树</strong>，需要说明的是，这颗字典树的每个节点还需要维护一个count，这个count的含义是当前该节点被“经过”了多少次。下面的图中，<strong>每个结点被我标注为Ik
+: n的样子，代表当前节点名为Ik，count为n。</strong></p>
 <p>我们先加入T100：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641823.png" style="zoom: 50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641823.png" style="zoom: 50%;"></p>
 <p>然后加入T200：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641579.png" alt="img" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271641579.png" alt="img" style="zoom:50%;"></p>
 <p>在频繁模式树建立完后，我们需要按照第一步中获取的表的顺序来遍历每一个项，由于我们之前获取的表中频数最小的项是I5，所以我们接下来先获取I5的条件模式基。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271644036.png" alt="image-20230427164444928" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271644036.png" alt="image-20230427164444928" style="zoom:50%;"></p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>item</th>
 <th>conditional pattern base</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>I5</td>
 <td>{I2, I1 : 1}, {I2, I1, I3 : 1}</td>
 </tr>
-<tr>
+<tr class="even">
 <td>I4</td>
 <td>{I2, I1 : 1}, {I2 : 1}</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>I3</td>
 <td>{I2, I1 : 2}, {I2 : 2}, {I1 : 2}</td>
 </tr>
-<tr>
+<tr class="even">
 <td>I1</td>
 <td>{I2 : 4}</td>
 </tr>
@@ -483,36 +496,53 @@
 </blockquote>
 <p>而fp-growth算法中的分治思想就体现在下面。可以看到，每个项对应的条件模式基本质就是一个项集，所以它们可以看成一个新的事务集。因此，原问题的总事务集就转换成了每个item对应的子事务集，而我们最终的频繁项集分别从每一个item对应的子事务集中产生，问题就被各个item分而治之了。</p>
 <h5><span id="3从条件模式基中获取频繁项集">（3）从条件模式基中获取频繁项集</span></h5>
-<p>我们之前使用了字典树来压缩表征原事务集，那么对于我们的子事务集，我们也完全可以采用相同的步骤。不过需要注意，<strong>建立子事务集的频繁模式树之前，需要进行统计和基于support count的项的裁剪。比如对于I5的子事务集（也就是条件模式基），我们需要先统计，得到{I2 : 2, I1 : 2, I3 : 1}。由于我们的support count为2，所以我们需要去除count只为1的I3</strong>，然后排序得到I2, I1，剩下的事务集重构为{I2, I1 : 1}, {I2, I1 : 1}，很明显这两个前缀可以合并为{I2, I1 : 2}，然后我们画出这个裁剪后的子事务集的频繁模式树：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271648837.png" alt="img" style="zoom: 67%;">
-<p>然后找出这棵频繁模式树的所有路径，可以看到上面的这棵频繁模式树只有一条路径，然后我们找出这条路径上节点所有可能的组合，也就是{I2, I1}, {I2}, {I1}，这也就是{I2, I1}的幂集。然后对于每一个组合类型，我们再加上I5，于是就得到了这条路径上得到的频繁项集：{I2, I1, I5},  {I2, I5},  {I1, I5}。所有路径上的频繁项集合并起来就是I5对应的频繁项集。</p>
-<p>我们再举一个例子，就举I3吧。首先统计项得到 {I2 : 4, I1 : 4}都大于2，不需要裁剪，排序后得到的子事务集不变，还是{I2, I1 : 2}, {I2 : 2}, {I1 : 2}，构建该子数据集的频繁模式树：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271649435.png" alt="img" style="zoom: 67%;">
-<p>然后找出FP-tree的所有路径：{I2, I1}和{I1}。对于路径{I2, I1}在，找出所有的组合{I2, I1}, {I2}和{I1}，加上I3得到{I2, I1, I3}, {I2, I3}, {I1, I3}；对于路径{I1}，找出所有的组合{I1}，加上I3得到{I1, I3}。</p>
-<p>遍历完所有路径后，将得到的频繁项集集合取并集，得到{I2, I1, I3}, {I2, I3}, {I1, I3}。所以I3对应的频繁项集就是{I2, I1, I3}, {I2, I3}, {I1, I3}。</p>
+<p>我们之前使用了字典树来压缩表征原事务集，那么对于我们的子事务集，我们也完全可以采用相同的步骤。不过需要注意，<strong>建立子事务集的频繁模式树之前，需要进行统计和基于support
+count的项的裁剪。比如对于I5的子事务集（也就是条件模式基），我们需要先统计，得到{I2
+: 2, I1 : 2, I3 : 1}。由于我们的support
+count为2，所以我们需要去除count只为1的I3</strong>，然后排序得到I2,
+I1，剩下的事务集重构为{I2, I1 : 1}, {I2, I1 :
+1}，很明显这两个前缀可以合并为{I2, I1 :
+2}，然后我们画出这个裁剪后的子事务集的频繁模式树：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271648837.png" alt="img" style="zoom: 67%;"></p>
+<p>然后找出这棵频繁模式树的所有路径，可以看到上面的这棵频繁模式树只有一条路径，然后我们找出这条路径上节点所有可能的组合，也就是{I2,
+I1}, {I2}, {I1}，这也就是{I2,
+I1}的幂集。然后对于每一个组合类型，我们再加上I5，于是就得到了这条路径上得到的频繁项集：{I2,
+I1, I5}, {I2, I5}, {I1,
+I5}。所有路径上的频繁项集合并起来就是I5对应的频繁项集。</p>
+<p>我们再举一个例子，就举I3吧。首先统计项得到 {I2 : 4, I1 :
+4}都大于2，不需要裁剪，排序后得到的子事务集不变，还是{I2, I1 : 2}, {I2 :
+2}, {I1 : 2}，构建该子数据集的频繁模式树：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271649435.png" alt="img" style="zoom: 67%;"></p>
+<p>然后找出FP-tree的所有路径：{I2, I1}和{I1}。对于路径{I2,
+I1}在，找出所有的组合{I2, I1}, {I2}和{I1}，加上I3得到{I2, I1, I3}, {I2,
+I3}, {I1, I3}；对于路径{I1}，找出所有的组合{I1}，加上I3得到{I1,
+I3}。</p>
+<p>遍历完所有路径后，将得到的频繁项集集合取并集，得到{I2, I1, I3}, {I2,
+I3}, {I1, I3}。所以I3对应的频繁项集就是{I2, I1, I3}, {I2, I3}, {I1,
+I3}。</p>
 <h5><span id="4整合每个项的频繁项集就是答案啦">（4）整合每个项的频繁项集，就是答案啦</span></h5>
 <p>其余的两个项也是同样的操作过程，最终的每个项对应的频繁项集如下表所示：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>item</th>
 <th>frequent itemsets</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>I5</td>
 <td>{I2, I1, I5}, {I2, I5}, {I1, I5}</td>
 </tr>
-<tr>
+<tr class="even">
 <td>I4</td>
 <td>{I2, I4}</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>I3</td>
 <td>{I2, I3}, {I1, I3}, {I2, I1}</td>
 </tr>
-<tr>
+<tr class="even">
 <td>I1</td>
 <td>{I2, I1}</td>
 </tr>
@@ -523,8 +553,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.ml.fpm <span class="keyword">import</span> FPGrowth</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">&quot;reduceByKey&quot;</span>).getOrCreate()</span><br><span class="line"><span class="comment"># 创建DataFrame</span></span><br><span class="line">data = spark.createDataFrame([</span><br><span class="line">    (<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>]),</span><br><span class="line">    (<span class="number">2</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>]),</span><br><span class="line">    (<span class="number">3</span>, [<span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">], [<span class="string">&quot;id&quot;</span>, <span class="string">&quot;items&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化FPGrowth模型</span></span><br><span class="line">fp = FPGrowth(itemsCol=<span class="string">&quot;items&quot;</span>, minSupport=<span class="number">0.5</span>, minConfidence=<span class="number">0.6</span>)</span><br><span class="line"><span class="comment"># 训练FPGrowth模型</span></span><br><span class="line">model = fp.fit(data)</span><br><span class="line"><span class="comment"># 展示频繁项集</span></span><br><span class="line">model.freqItemsets.show()</span><br></pre></td></tr></table></figure>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li>数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/411594391">https://zhuanlan.zhihu.com/p/411594391</a></li>
-<li><code>pyspark.ml.fpm.``FPGrowth</code>:<a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.fpm.FPGrowth.html">https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.fpm.FPGrowth.html</a></li>
+<li>数据挖掘随笔（二）FP-growth算法——一种用于频繁模式挖掘的模式增长方式(Python实现)：https://zhuanlan.zhihu.com/p/411594391</li>
+<li><code>pyspark.ml.fpm.``FPGrowth</code>:https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.fpm.FPGrowth.html</li>
 </ul>
 
     </div>
@@ -562,8 +592,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/1E0CW4H/" rel="prev" title="关联规则（1）概述">
-                  <i class="fa fa-chevron-left"></i> 关联规则（1）概述
+                <a href="/posts/3BJBSQZ/" rel="prev" title="关联规则（2）Apriori">
+                  <i class="fa fa-chevron-left"></i> 关联规则（2）Apriori
                 </a>
             </div>
             <div class="post-nav-item">

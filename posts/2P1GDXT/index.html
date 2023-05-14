@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 **本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）">
+    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:type" content="article">
 <meta property="og:title" content="支持向量机（1）硬间隔对偶性">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2P1GDXT/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 **本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）">
+<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
 <meta property="og:image" content="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg">
@@ -152,7 +152,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、支持向量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 线性可分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 最大间隔超平面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 支持向量 【距离超平面最近的点】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 SVM 最优化问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、硬间隔线性SVM对偶型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 数学原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 SVM优化方法</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、支持向量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 线性可分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 最大间隔超平面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 支持向量
+【距离超平面最近的点】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 SVM 最优化问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、硬间隔线性SVM对偶型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 数学原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 SVM优化方法</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -173,7 +174,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -290,7 +291,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.4k</span>
+      <span>6.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -308,221 +309,272 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+        <p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
 <span id="more"></span>
 <h3><span id="一-支持向量">一、支持向量</span></h3>
 <blockquote>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/52168498">https://zhuanlan.zhihu.com/p/52168498</a></li>
+<li>https://zhuanlan.zhihu.com/p/52168498</li>
 </ul>
-<p>【机器学习】支持向量机 SVM（非常详细）:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77750026">https://zhuanlan.zhihu.com/p/77750026</a></p>
+<p>【机器学习】支持向量机
+SVM（非常详细）:https://zhuanlan.zhihu.com/p/77750026</p>
 <p><strong>KKT条件</strong>：<strong>判断不等式约束问题是否为最优解的必要条件</strong></p>
 </blockquote>
 <h4><span id="11-线性可分">1.1 线性可分</span></h4>
 <p>首先我们先来了解下什么是线性可分。</p>
-<img src="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg" alt="img" style="zoom: 33%;">
-<p>在二维空间上, 两类点被一条直线完全分开叫做线性可分。严格的数学定义是:<br>
-$D_0$ 和 $D_1$ 是 $\mathrm{n}$ 维欧氏空间中的两个点集。如果存在 $\mathrm{n}$ 维向量 $\mathrm{w}$ 和实数 $\mathrm{b}$, 使得所有属于 $D_0$ 的点 $x_i$ 都有 $w x_i+b&gt;0$ ， 而对于所有属于 $D_1$ 的点 $x_j$ 则有 $w x_j+b&lt;0$ ， 则我们称 $D_0$ 和 $D_1$ 线性可分。</p>
+<p><img src="https://s2.loli.net/2023/04/17/ycmF6werxUvYLh5.jpg" alt="img" style="zoom: 33%;"></p>
+<p>在二维空间上, 两类点被一条直线完全分开叫做线性可分。严格的数学定义是:
+<span class="math inline">\(D_0\)</span> 和 <span class="math inline">\(D_1\)</span> 是 <span class="math inline">\(\mathrm{n}\)</span>
+维欧氏空间中的两个点集。如果存在 <span class="math inline">\(\mathrm{n}\)</span> 维向量 <span class="math inline">\(\mathrm{w}\)</span> 和实数 <span class="math inline">\(\mathrm{b}\)</span>, 使得所有属于 <span class="math inline">\(D_0\)</span> 的点 <span class="math inline">\(x_i\)</span> 都有 <span class="math inline">\(w
+x_i+b&gt;0\)</span> ， 而对于所有属于 <span class="math inline">\(D_1\)</span> 的点 <span class="math inline">\(x_j\)</span> 则有 <span class="math inline">\(w
+x_j+b&lt;0\)</span> ， 则我们称 <span class="math inline">\(D_0\)</span>
+和 <span class="math inline">\(D_1\)</span> 线性可分。</p>
 <h4><span id="12-最大间隔超平面">1.2 最大间隔超平面</span></h4>
-<p>从二维扩展到多维空间中时, 将 $D_0$ 和 $D_1$ 完全正确地划分开的 $w x+b=0$ 就成了一个超平面。<br>
-为了使这个超平面更具鲁棒性, 我们会去找最佳超平面, 以最大间隔把两类样本分开的超平面, 也称之为最大 间隔超平面。</p>
+<p>从二维扩展到多维空间中时, 将 <span class="math inline">\(D_0\)</span>
+和 <span class="math inline">\(D_1\)</span> 完全正确地划分开的 <span class="math inline">\(w x+b=0\)</span> 就成了一个超平面。
+为了使这个超平面更具鲁棒性, 我们会去找最佳超平面,
+以最大间隔把两类样本分开的超平面, 也称之为最大 间隔超平面。</p>
 <ul>
 <li>两类样本分别分割在该超平面的两侧；</li>
 <li><strong>两侧距离超平面最近的样本点到超平面的距离被最大化了。</strong>【附近点】</li>
 </ul>
-<h4><span id="13-支持向量-距离超平面最近的点">1.3 支持向量 【距离超平面最近的点】</span></h4>
-<img src="https://s2.loli.net/2023/04/17/HDlAed2wZf8cXi1.jpg" alt="img" style="zoom: 33%;">
+<h4><span id="13-支持向量距离超平面最近的点">1.3 支持向量
+【距离超平面最近的点】</span></h4>
+<p><img src="https://s2.loli.net/2023/04/17/HDlAed2wZf8cXi1.jpg" alt="img" style="zoom: 33%;"></p>
 <p>样本中距离超平面最近的一些点，这些点叫做支持向量。</p>
 <h4><span id="14-svm-最优化问题">1.4 SVM 最优化问题</span></h4>
-<p><strong>SVM 想要的就是找到各类样本点到超平面的距离最远, 也就是找到最大间隔超平面</strong>。任意超平面可以用下面这个 线性方程来描述：<br>
-$$<br>
-w^T x+b=0<br>
-$$<br>
-二维空间点 $(x, y)$ 到直线 $A x+B y+C=0$ 的距离公式是:<br>
-$$<br>
-\frac{|A x+B y+C|}{\sqrt{A<sup>2+B</sup>2}}<br>
-$$<br>
-扩展到 $\mathbf{n}$ 维空间后, 点 $x=\left(x_1, x_2 \ldots x_n\right)$ 到直线 $w^T x+b=0$ 的距离为:<br>
-$$<br>
-\frac{\left|w^T x+b\right|}{|w|}<br>
-$$<br>
-其中 $|w|=\sqrt{w_1^2+\ldots w_n^2}$ 。<br>
-如图所示，根据支持向量的定义我们知道, 支持向量到超平面的距离为 $d$ ，其他点到超平面的距离大于 $d$ 。</p>
-<img src="https://s2.loli.net/2023/04/17/2yZRMfWemFcoX75.jpg" alt="img" style="zoom: 33%;">
-<p>于是我们有这样的一个公式：<br>
-$$<br>
-\left{\begin{array}{l}<br>
-\frac{w^T x+b}{|w|} \geq d \quad y=1 \<br>
-\frac{w^T x+b}{|w|} \leq-d \quad y=-1<br>
-\end{array}\right.<br>
-$$<br>
-将两个方程合并, 我们可以简写为:<br>
-$$<br>
-y\left(w^T x+b\right) \geq 1<br>
-$$<br>
-至此我们就可以得到最大间隔超平面的上下两个超平面：</p>
-<img src="https://s2.loli.net/2023/04/17/aZbmfK4zWsSjyo2.png" alt="image-20220409203050568" style="zoom:50%;">
-<p><strong>间隔</strong>：<strong>训练集中离划分超平面最近的样本到划分超平面距离的两倍</strong>。有了间隔的定义，划分超平面“离正负样本都比较远”这一目标可以等价描述为正负样本里划分超平面的距离尽可能远。即<strong>让离划分超平面最近的样本到划分超平面距离尽可能远</strong>。优化目标：<br>
-$$<br>
-\begin{aligned}<br>
-\max _{w, b} \gamma &amp;=\max _{w, b}\left(2 \min <em>{i} \frac{1}{|w|}\left|w^{\top} x</em>{i}+b\right|\right) \<br>
-&amp;=\max _{w, b} \min <em>{i} \frac{2}{|w|}\left|w^{\top} x</em>{i}+b\right|<br>
-\end{aligned}<br>
-$$<br>
-<strong>简化过程</strong>：</p>
+<p><strong>SVM 想要的就是找到各类样本点到超平面的距离最远,
+也就是找到最大间隔超平面</strong>。任意超平面可以用下面这个
+线性方程来描述： <span class="math display">\[
+w^T x+b=0
+\]</span> 二维空间点 <span class="math inline">\((x, y)\)</span> 到直线
+<span class="math inline">\(A x+B y+C=0\)</span> 的距离公式是: <span class="math display">\[
+\frac{|A x+B y+C|}{\sqrt{A^2+B^2}}
+\]</span> 扩展到 <span class="math inline">\(\mathbf{n}\)</span>
+维空间后, 点 <span class="math inline">\(x=\left(x_1, x_2 \ldots
+x_n\right)\)</span> 到直线 <span class="math inline">\(w^T
+x+b=0\)</span> 的距离为: <span class="math display">\[
+\frac{\left|w^T x+b\right|}{\|w\|}
+\]</span> 其中 <span class="math inline">\(\|w\|=\sqrt{w_1^2+\ldots
+w_n^2}\)</span> 。 如图所示，根据支持向量的定义我们知道,
+支持向量到超平面的距离为 <span class="math inline">\(d\)</span>
+，其他点到超平面的距离大于 <span class="math inline">\(d\)</span> 。</p>
+<p><img src="https://s2.loli.net/2023/04/17/2yZRMfWemFcoX75.jpg" alt="img" style="zoom: 33%;"></p>
+<p>于是我们有这样的一个公式： <span class="math display">\[
+\left\{\begin{array}{l}
+\frac{w^T x+b}{\|w\|} \geq d \quad y=1 \\
+\frac{w^T x+b}{\|w\|} \leq-d \quad y=-1
+\end{array}\right.
+\]</span> 将两个方程合并, 我们可以简写为: <span class="math display">\[
+y\left(w^T x+b\right) \geq 1
+\]</span> 至此我们就可以得到最大间隔超平面的上下两个超平面：</p>
+<p><img src="https://s2.loli.net/2023/04/17/aZbmfK4zWsSjyo2.png" alt="image-20220409203050568" style="zoom:50%;"></p>
+<p><strong>间隔</strong>：<strong>训练集中离划分超平面最近的样本到划分超平面距离的两倍</strong>。有了间隔的定义，划分超平面“离正负样本都比较远”这一目标可以等价描述为正负样本里划分超平面的距离尽可能远。即<strong>让离划分超平面最近的样本到划分超平面距离尽可能远</strong>。优化目标：
+<span class="math display">\[
+\begin{aligned}
+\max _{w, b} \gamma &amp;=\max _{w, b}\left(2 \min _{i}
+\frac{1}{\|w\|}\left|w^{\top} x_{i}+b\right|\right) \\
+&amp;=\max _{w, b} \min _{i} \frac{2}{\|w\|}\left|w^{\top}
+x_{i}+b\right|
+\end{aligned}
+\]</span> <strong>简化过程</strong>：</p>
 <ul>
-<li>
-<p><strong>缩放</strong>：为了简化优化问题, 我们可以通过调整 $(w, b)$ 使得：<br>
-$$<br>
-\min <em>{i}\left|w^{\top} x</em>{i}+b\right|=1 .<br>
-$$</p>
-</li>
-<li>
-<p><strong>标签替换绝对值</strong>：<br>
-$$<br>
-s.t. \min <em>{i} y</em>{i}\left(w^{\top} x_{i}+b\right)=1<br>
-$$</p>
-</li>
-<li>
-<p><strong>简化约束条件</strong>【<strong>反正法</strong>】</p>
-</li>
+<li><p><strong>缩放</strong>：为了简化优化问题, 我们可以通过调整 <span class="math inline">\((w, b)\)</span> 使得： <span class="math display">\[
+\min _{i}\left|w^{\top} x_{i}+b\right|=1 .
+\]</span></p></li>
+<li><p><strong>标签替换绝对值</strong>： <span class="math display">\[
+s.t. \min _{i} y_{i}\left(w^{\top} x_{i}+b\right)=1
+\]</span></p></li>
+<li><p><strong>简化约束条件</strong>【<strong>反正法</strong>】</p></li>
 </ul>
-<h5><span id="硬间隔线性svm的基本型"><strong><font color="red"> 硬间隔线性SVM的基本型：</font></strong></span></h5>
-<p>$$<br>
-\begin{array}{ll}<br>
-\min <em>{w, b} &amp; \frac{1}{2} w^{\top} w \<br>
-\text { s.t. } &amp; y</em>{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad i=1,2, \ldots, m<br>
-\end{array}<br>
-$$</p>
-<img src="https://s2.loli.net/2023/04/17/l4WjzV7smKBoe8f.png" alt="image-20220423163130805" style="zoom:50%;">
-<p><strong>二次规划是指目标函数是二次函数，约束是线性不等式约束的一类优化问题</strong> + 凸函数</p>
+<h5><span id="硬间隔线性svm的基本型"><strong><font color="red">
+硬间隔线性SVM的基本型：</font></strong></span></h5>
+<p><span class="math display">\[
+\begin{array}{ll}
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w \\
+\text { s.t. } &amp; y_{i}\left(w^{\top} x_{i}+b\right) \geq 1, \quad
+i=1,2, \ldots, m
+\end{array}
+\]</span></p>
+<p><img src="https://s2.loli.net/2023/04/17/l4WjzV7smKBoe8f.png" alt="image-20220423163130805" style="zoom:50%;"></p>
+<p><strong>二次规划是指目标函数是二次函数，约束是线性不等式约束的一类优化问题</strong>
++ 凸函数</p>
 <h3><span id="二-硬间隔线性svm对偶型">二、硬间隔线性SVM对偶型</span></h3>
 <h4><span id="21-数学原理">2.1 数学原理</span></h4>
-<p><strong>本科高等数学学的拉格朗日程数法是等式约束优化问题</strong>:<br>
-$$<br>
-\begin{gathered}<br>
-\min f\left(x_1, x_2, \ldots, x_n\right) \<br>
-\text { s.t. } \quad h_k\left(x_1, x_2, \ldots, x_n\right)=0 \quad k=1,2, \ldots, l<br>
-\end{gathered}<br>
-$$<br>
-我们令 $L(x, \lambda)=f(x)+\sum_{k=1}^l \lambda_k h_k(x)$, 函数 $L(x, y)$ 称为 Lagrange 函数, 参数 $\lambda$ 称为 Lagrange 乘子没有非负 要求。<br>
-利用必要条件找到可能的极值点:<br>
-$$<br>
-\begin{cases}\frac{\partial L}{\partial x_i}=0 &amp; i=1,2, \ldots, n \ \frac{\partial L}{\partial \lambda_k}=0 &amp; k=1,2, \ldots, l\end{cases}<br>
-$$<br>
-具体是否为极值点需根据问题本身的具体情况检验。这个方程组称为等式约束的极值必要条件。等式约束下的 Lagrange 乘数法引入了 $l$ 个 Lagrange 乘子, 我们将 $x_i$ 与 $\lambda_k$ 一视同仁, 把 $\lambda_k$ 也看作优化变 量, 共有 $(n+l)$ 个优化变量。</p>
+<p><strong>本科高等数学学的拉格朗日程数法是等式约束优化问题</strong>:
+<span class="math display">\[
+\begin{gathered}
+\min f\left(x_1, x_2, \ldots, x_n\right) \\
+\text { s.t. } \quad h_k\left(x_1, x_2, \ldots, x_n\right)=0 \quad
+k=1,2, \ldots, l
+\end{gathered}
+\]</span> 我们令 <span class="math inline">\(L(x,
+\lambda)=f(x)+\sum_{k=1}^l \lambda_k h_k(x)\)</span>, 函数 <span class="math inline">\(L(x, y)\)</span> 称为 Lagrange 函数, 参数 <span class="math inline">\(\lambda\)</span> 称为 Lagrange 乘子没有非负 要求。
+利用必要条件找到可能的极值点: <span class="math display">\[
+\begin{cases}\frac{\partial L}{\partial x_i}=0 &amp; i=1,2, \ldots, n \\
+\frac{\partial L}{\partial \lambda_k}=0 &amp; k=1,2, \ldots,
+l\end{cases}
+\]</span>
+具体是否为极值点需根据问题本身的具体情况检验。这个方程组称为等式约束的极值必要条件。等式约束下的
+Lagrange 乘数法引入了 <span class="math inline">\(l\)</span> 个 Lagrange
+乘子, 我们将 <span class="math inline">\(x_i\)</span> 与 <span class="math inline">\(\lambda_k\)</span> 一视同仁, 把 <span class="math inline">\(\lambda_k\)</span> 也看作优化变 量, 共有 <span class="math inline">\((n+l)\)</span> 个优化变量。</p>
 <h5><span id="1写成约束优化问题的基本型">（1）写成约束优化问题的基本型</span></h5>
-<p>$$<br>
-\begin{array}{ll}<br>
-\min <em>{w, b} &amp; \frac{1}{2} w^{\top} w \<br>
-\text { s.t. } &amp; 1-y</em>{i}\left(w^{\top} x_{i}+b\right) \leq 0, \quad i=1,2, \ldots, m<br>
-\end{array}<br>
-$$</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+\min _{w, b} &amp; \frac{1}{2} w^{\top} w \\
+\text { s.t. } &amp; 1-y_{i}\left(w^{\top} x_{i}+b\right) \leq 0, \quad
+i=1,2, \ldots, m
+\end{array}
+\]</span></p>
 <h5><span id="2-构建基本型的拉格朗日函数">（2） 构建基本型的拉格朗日函数</span></h5>
-<p>$$<br>
-\mathcal{L}(w, b, \alpha):=\frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)<br>
-$$</p>
+<p><span class="math display">\[
+\mathcal{L}(w, b, \alpha):=\frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)
+\]</span></p>
 <h5><span id="3交换min-max顺序">（3）交换min, max顺序</span></h5>
 <blockquote>
-<p><strong>解得最优解 $u^{\star}$ 。这样两层优化问题将变为一层最大化（max）问题, 问题难度大大降低, 称为对偶问题 (Dual Problem) :</strong>【<strong>对偶问题是原问题的下界</strong>】</p>
+<p><strong>解得最优解 <span class="math inline">\(u^{\star}\)</span>
+。这样两层优化问题将变为一层最大化（max）问题, 问题难度大大降低,
+称为对偶问题 (Dual Problem)
+:</strong>【<strong>对偶问题是原问题的下界</strong>】</p>
 <ul>
-<li>
-<p>$$<br>
-\max _{\alpha}, \beta \min _{u} \mathcal{L}(u, \alpha, \beta) \leq \min _{u} \max _{\alpha}, \beta \mathcal{L}(u, \alpha, \beta)<br>
-$$</p>
-</li>
-<li>
-<p>硬间隔线性SVM满足<strong>Slater条件</strong>， <strong>因此原问题和对偶问题等价</strong></p>
-</li>
+<li><p><span class="math display">\[
+\max _{\alpha}, \beta \min _{u} \mathcal{L}(u, \alpha, \beta) \leq \min
+_{u} \max _{\alpha}, \beta \mathcal{L}(u, \alpha, \beta)
+\]</span></p></li>
+<li><p>硬间隔线性SVM满足<strong>Slater条件</strong>，
+<strong>因此原问题和对偶问题等价</strong></p></li>
 </ul>
 </blockquote>
-<p>$$<br>
-\begin{array}{cl}<br>
-\max <em>{\alpha} \min <em>{w, b} &amp; \frac{1}{2} w^{\top} w+\sum</em>{i=1}^{m} \alpha</em>{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right) \<br>
-\text { s.t. } &amp; \alpha_{i} \geq 0, \quad i=1,2, \ldots, m .<br>
-\end{array}<br>
-$$</p>
-<p>首先计算 $w$ 的最优值, 令 $\frac{\partial \mathcal{L}}{\partial w}=\mathbf{0}$<br>
-$$<br>
-\begin{aligned}<br>
-\frac{\partial \mathcal{L}}{\partial w} &amp;=\frac{\partial}{\partial w}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \<br>
-&amp;=w+\sum_{i=1}^{m} \alpha_{i}\left(-y_{i} x_{i}\right) \<br>
-&amp;=w-\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i} \<br>
-&amp;=\mathbf{0}<br>
-\end{aligned}<br>
-$$</p>
-<p>可以解得最优值$w$<br>
-$$<br>
-w<sup>{\star}=\sum_{i=1}</sup>{m} \alpha_{i} y_{i} x_{i}<br>
-$$<br>
-然后计算 $b$ 的最优值, 令 $\frac{\partial \mathcal{L}}{\partial b}=0$<br>
-$$<br>
-\begin{aligned}<br>
-\frac{\partial \mathcal{L}}{\partial b} &amp;=\frac{\partial}{\partial b}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m} \alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \<br>
-&amp;=\sum_{i=1}^{m} \alpha_{i}\left(-y_{i}\right) \<br>
-&amp;=-\sum_{i=1}^{m} \alpha_{i} y_{i} \<br>
-&amp;=0<br>
-\end{aligned}<br>
-$$<br>
-可以得到一个等式 $b^{\star}$<br>
-$$<br>
-\sum_{i=1}^{m} \alpha_{i} y_{i}=0<br>
-$$<br>
-注意到这里并没有给出最优值 $b^{\star}$ 应该是多少, 而是一个等式, 该等式是一个约束项, 而最优值通过后面的 <strong>KKT 条件</strong>的互补松弛可以计算得到。</p>
-<h5><span id="硬性间隔线性svm的对偶型"><strong><font color="red"> 硬性间隔线性SVM的对偶型：</font></strong></span></h5>
-<p>$$<br>
-\begin{array}{ll}<br>
-\min <em>{\alpha} &amp; \frac{1}{2} \sum</em>{i=1}^{m} \sum_{j=1}^{m} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^{\top} x_{j}-\sum_{i=1}^{m} \alpha_{i} \<br>
-\text { s.t. } &amp; \alpha_{i} \geq 0, \quad i=1,2, \ldots, m \<br>
-&amp; \sum_{i=1}^{m} \alpha_{i} y_{i}=0<br>
-\end{array}<br>
-$$</p>
+<p><span class="math display">\[
+\begin{array}{cl}
+\max _{\alpha} \min _{w, b} &amp; \frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right) \\
+\text { s.t. } &amp; \alpha_{i} \geq 0, \quad i=1,2, \ldots, m .
+\end{array}
+\]</span></p>
+<p>首先计算 <span class="math inline">\(w\)</span> 的最优值, 令 <span class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+w}=\mathbf{0}\)</span> <span class="math display">\[
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial w} &amp;=\frac{\partial}{\partial
+w}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \\
+&amp;=w+\sum_{i=1}^{m} \alpha_{i}\left(-y_{i} x_{i}\right) \\
+&amp;=w-\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i} \\
+&amp;=\mathbf{0}
+\end{aligned}
+\]</span></p>
+<p>可以解得最优值<span class="math inline">\(w\)</span> <span class="math display">\[
+w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i}
+\]</span> 然后计算 <span class="math inline">\(b\)</span> 的最优值, 令
+<span class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}=0\)</span> <span class="math display">\[
+\begin{aligned}
+\frac{\partial \mathcal{L}}{\partial b} &amp;=\frac{\partial}{\partial
+b}\left(\frac{1}{2} w^{\top} w+\sum_{i=1}^{m}
+\alpha_{i}\left(1-y_{i}\left(w^{\top} x_{i}+b\right)\right)\right) \\
+&amp;=\sum_{i=1}^{m} \alpha_{i}\left(-y_{i}\right) \\
+&amp;=-\sum_{i=1}^{m} \alpha_{i} y_{i} \\
+&amp;=0
+\end{aligned}
+\]</span> 可以得到一个等式 <span class="math inline">\(b^{\star}\)</span> <span class="math display">\[
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0
+\]</span> 注意到这里并没有给出最优值 <span class="math inline">\(b^{\star}\)</span> 应该是多少, 而是一个等式,
+该等式是一个约束项, 而最优值通过后面的 <strong>KKT
+条件</strong>的互补松弛可以计算得到。</p>
+<h5><span id="硬性间隔线性svm的对偶型"><strong><font color="red">
+硬性间隔线性SVM的对偶型：</font></strong></span></h5>
+<p><span class="math display">\[
+\begin{array}{ll}
+\min _{\alpha} &amp; \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m}
+\alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^{\top} x_{j}-\sum_{i=1}^{m}
+\alpha_{i} \\
+\text { s.t. } &amp; \alpha_{i} \geq 0, \quad i=1,2, \ldots, m \\
+&amp; \sum_{i=1}^{m} \alpha_{i} y_{i}=0
+\end{array}
+\]</span></p>
 <h5><span id="4利用kkt条件得到主问题的最优解">（4）利用KKT条件得到主问题的最优解</span></h5>
-<p><strong>KKT 条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
-<p>线性支持向量机的 <strong>KKT 条件</strong>:</p>
+<p><strong>KKT
+条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
+<p>线性支持向量机的 <strong>KKT 条件</strong>: -
+<strong>主问题可行</strong>: <span class="math inline">\(g_{i}\left(u^{\star}\right)=1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right) \leq 0\)</span> ； -
+<strong>对偶问题可行</strong>: <span class="math inline">\(\alpha_{i}^{\star} \geq 0\)</span>; -
+<strong>主变量最优</strong>: <span class="math inline">\(w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i},
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0\)</span>; - <font color="red">
+<strong>互补松弛</strong>: <span class="math inline">\(\alpha_{i}^{\star}
+g_{i}\left(u^{\star}\right)=\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right)\right)=0\)</span> ；</font></p>
+<p><strong>根据 KKT 条件中的 <span class="math inline">\(\alpha_{i}^{\star} \geq 0\)</span>, 我们可以根据
+<span class="math inline">\(\alpha_{i}^{\star}\)</span> 的取值将训练集
+<span class="math inline">\(D\)</span> 中所有的样本分成两类</strong>, 如
+图 17 所示。</p>
 <ul>
-<li><strong>主问题可行</strong>: $g_{i}\left(u<sup>{\star}\right)=1-y_{i}\left(w</sup>{\star \top} x_{i}+b^{\star}\right) \leq 0$ ；</li>
-<li><strong>对偶问题可行</strong>: $\alpha_{i}^{\star} \geq 0$;</li>
-<li><strong>主变量最优</strong>: $w<sup>{\star}=\sum_{i=1}</sup>{m} \alpha_{i} y_{i} x_{i}, \sum_{i=1}^{m} \alpha_{i} y_{i}=0$;</li>
-<li><font color="red"> <strong>互补松弛</strong>: $\alpha_{i}^{\star} g_{i}\left(u<sup>{\star}\right)=\alpha_{i}</sup>{\star}\left(1-y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)\right)=0$ ；</font></li>
+<li>如果 <span class="math inline">\(\alpha_{i}^{\star}&gt;0\)</span>,
+<strong>对应的样本称为支持向量 (Support Vector)</strong>, 根据 <span class="math inline">\(\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right)\right)=0\)</span> , 那么一定有 <span class="math inline">\(y_{i}\left(w^{\star \top}
+x_{i}+b^{\star}\right)=1\)</span>, 该样本是距离划分超平面最近的样本,
+位于最大间隔边界 （见第 <span class="math inline">\(2.3\)</span>
+节）;</li>
+<li>如果 <span class="math inline">\(\alpha_{i}^{\star}=0\)</span>,
+对应的样本不是非支持向量, 那么有 <span class="math inline">\(y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)
+\geq 1\)</span>, 该样本不一定是距离 划分超平面最近的样本,
+<strong>位于最大间隔边界或之外</strong>。</li>
 </ul>
-<p><strong>根据 KKT 条件中的 $\alpha_{i}^{\star} \geq 0$, 我们可以根据 $\alpha_{i}^{\star}$ 的取值将训练集 $D$ 中所有的样本分成两类</strong>, 如 图 17 所示。</p>
-<ul>
-<li>如果 $\alpha_{i}^{\star}&gt;0$, <strong>对应的样本称为支持向量 (Support Vector)</strong>, 根据 $\alpha_{i}<sup>{\star}\left(1-y_{i}\left(w</sup>{\star \top} x_{i}+b^{\star}\right)\right)=0$ , 那么一定有 $y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)=1$, 该样本是距离划分超平面最近的样本, 位于最大间隔边界 （见第 $2.3$ 节）;</li>
-<li>如果 $\alpha_{i}^{\star}=0$, 对应的样本不是非支持向量, 那么有 $y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right) \geq 1$, 该样本不一定是距离 划分超平面最近的样本, <strong>位于最大间隔边界或之外</strong>。</li>
-</ul>
-<img src="https://s2.loli.net/2023/04/17/Gkx9AygPfvXmheq.png" alt="image-20220409212350705" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/Gkx9AygPfvXmheq.png" alt="image-20220409212350705" style="zoom:50%;"></p>
 <p><strong>结论</strong>：</p>
 <ul>
-<li><strong><font color="red"> 参数 w， b 仅由支持向量决定，与训练集的其他样本无关；</font></strong></li>
-<li><strong><font color="red"> 对偶性是非参数模型，预测阶段不仅需要$\alpha_{i}$参数，还支持向量；</font></strong></li>
+<li><strong><font color="red"> 参数 w， b
+仅由支持向量决定，与训练集的其他样本无关；</font></strong></li>
+<li><strong><font color="red"> 对偶性是非参数模型，预测阶段不仅需要<span class="math inline">\(\alpha_{i}\)</span>参数，还支持向量；</font></strong></li>
 </ul>
-<p>$$<br>
-\begin{aligned}<br>
-&amp;h(x):=\operatorname{sign}\left(w^{\star \top} x+b^{\star}\right) \quad \text { （硬间隔线性 SVM 的基本型的假设函数） }\<br>
-&amp;=\operatorname{sign}\left(\sum_{i \in S V} \alpha_{i}^{\star} y_{i} x_{i}^{\top} x+b^{\star}\right) \text {.(硬间隔线性 SVM 的对偶型的假设函数） }<br>
-\end{aligned}<br>
-$$</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;h(x):=\operatorname{sign}\left(w^{\star \top} x+b^{\star}\right)
+\quad \text { （硬间隔线性 SVM 的基本型的假设函数） }\\
+&amp;=\operatorname{sign}\left(\sum_{i \in S V} \alpha_{i}^{\star} y_{i}
+x_{i}^{\top} x+b^{\star}\right) \text {.(硬间隔线性 SVM
+的对偶型的假设函数） }
+\end{aligned}
+\]</span></p>
 <h4><span id="22-svm优化方法">2.2 SVM优化方法</span></h4>
 <p>SMO算法求解</p>
-<p>我们可以看出来这是一个二次规划问题, 问题规模正比于训练样本数, 我们常用 SMO(Sequential Minimal Optimization) 算法求解。</p>
-<p><font color="red"> SMO(Sequential Minimal Optimization), 序列最小优化算法【基于坐标下降算法】, 其核心思想非常简单: 每次只优化一个参数, 其他参数先固定住, 仅求当前这个优化参数的极值。我们来看一下 SMO 算法在 SVM 中的 应用。</font></p>
-<p>我们刚说了 SMO 算法每次只优化一个参数, 但我们的优化目标有约束条件: $\sum_{i=1}^n \lambda_i y_i=0$, 没法一次只变动一个 参数。所以我们选择了一次选择两个参数。具体步骤为：</p>
-<ol>
-<li>选择两个需要更新的参数 $\lambda_i$ 和 $\lambda_j$, 固定其他参数。于是我们有以下约束:<br>
-这样约束就变成了:</li>
+<p>我们可以看出来这是一个二次规划问题, 问题规模正比于训练样本数,
+我们常用 SMO(Sequential Minimal Optimization) 算法求解。</p>
+<p><font color="red"> SMO(Sequential Minimal Optimization),
+序列最小优化算法【基于坐标下降算法】, 其核心思想非常简单:
+每次只优化一个参数, 其他参数先固定住,
+仅求当前这个优化参数的极值。我们来看一下 SMO 算法在 SVM 中的
+应用。</font></p>
+<p>我们刚说了 SMO 算法每次只优化一个参数, 但我们的优化目标有约束条件:
+<span class="math inline">\(\sum_{i=1}^n \lambda_i y_i=0\)</span>,
+没法一次只变动一个
+参数。所以我们选择了一次选择两个参数。具体步骤为：</p>
+<ol type="1">
+<li>选择两个需要更新的参数 <span class="math inline">\(\lambda_i\)</span> 和 <span class="math inline">\(\lambda_j\)</span>,
+固定其他参数。于是我们有以下约束: 这样约束就变成了:</li>
 </ol>
-<p>$$<br>
-\lambda_i y_i+\lambda_j y_j=c \quad \lambda_i \geq 0, \lambda_j \geq 0<br>
-$$</p>
-<p>其中 $c=-\sum_{k \neq i, j} \lambda_k y_k$, 由此可以得出 $\lambda_j=\frac{c-\lambda_i y_i}{y_j}$ ，也就是说我们可以用 $\lambda_i$ 的表达式代替 $\lambda_j$ 。这样就相当 于把目标问题转化成了仅有一个约束条件的最优化问题, 仅有的约束是 $\lambda_i \geq 0$ 。</p>
-<ol start="2">
-<li>对于仅有一个约束条件的最优化问题, 我们完全可以在 $\lambda_i$ 上对优化目标求偏导, 令导数为零, 从而求出变量 值 $\lambda_{i_{\text {new }}}$ ，然后根据 $\lambda_{\text {inew }}$ 求出 $\lambda_{j_{\text {new }}}$ 。</li>
-<li>多次迭代直至收敛。通过 SMO 求得最优解 $\lambda^*$ 。</li>
+<p><span class="math display">\[
+\lambda_i y_i+\lambda_j y_j=c \quad \lambda_i \geq 0, \lambda_j \geq 0
+\]</span></p>
+<p>其中 <span class="math inline">\(c=-\sum_{k \neq i, j} \lambda_k
+y_k\)</span>, 由此可以得出 <span class="math inline">\(\lambda_j=\frac{c-\lambda_i y_i}{y_j}\)</span>
+，也就是说我们可以用 <span class="math inline">\(\lambda_i\)</span>
+的表达式代替 <span class="math inline">\(\lambda_j\)</span> 。这样就相当
+于把目标问题转化成了仅有一个约束条件的最优化问题, 仅有的约束是 <span class="math inline">\(\lambda_i \geq 0\)</span> 。</p>
+<ol start="2" type="1">
+<li>对于仅有一个约束条件的最优化问题, 我们完全可以在 <span class="math inline">\(\lambda_i\)</span> 上对优化目标求偏导, 令导数为零,
+从而求出变量 值 <span class="math inline">\(\lambda_{i_{\text {new
+}}}\)</span> ，然后根据 <span class="math inline">\(\lambda_{\text {inew
+}}\)</span> 求出 <span class="math inline">\(\lambda_{j_{\text {new
+}}}\)</span> 。</li>
+<li>多次迭代直至收敛。通过 SMO 求得最优解 <span class="math inline">\(\lambda^*\)</span> 。</li>
 </ol>
 
     </div>

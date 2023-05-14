@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、正则化 L1和L2   本质其实是为了模型参数服从某一分布； 正则化之所以能够降低过拟合的原因在于，正则化是结构风险最小化的一种策略实现；  为什么希望参数具有稀疏性？ 相当于对模型进行了一次特征选择，只留下比较重要的特征，提高模型的泛化能力；  ** 正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能">
+    <meta name="description" content="一、正则化 L1和L2   本质其实是为了模型参数服从某一分布； 正则化之所以能够降低过拟合的原因在于，正则化是结构风险最小化的一种策略实现；  为什么希望参数具有稀疏性？ 相当于对模型进行了一次特征选择，只留下比较重要的特征，提高模型的泛化能力；   正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线性模型（3）正则化">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2N1XDRQ/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、正则化 L1和L2   本质其实是为了模型参数服从某一分布； 正则化之所以能够降低过拟合的原因在于，正则化是结构风险最小化的一种策略实现；  为什么希望参数具有稀疏性？ 相当于对模型进行了一次特征选择，只留下比较重要的特征，提高模型的泛化能力；  ** 正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能">
+<meta property="og:description" content="一、正则化 L1和L2   本质其实是为了模型参数服从某一分布； 正则化之所以能够降低过拟合的原因在于，正则化是结构风险最小化的一种策略实现；  为什么希望参数具有稀疏性？ 相当于对模型进行了一次特征选择，只留下比较重要的特征，提高模型的泛化能力；   正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-efc752bd6d1ce09dbf2e18b9766570eb_1440w.jpg">
@@ -146,7 +146,11 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、正则化 L1和L2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 L1 正则化 【零均值拉普拉斯分布】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 L2 正则化【零均值正态分布】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 L1 和 L2 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.4 L1正则化使得模型参数具有稀疏性的原理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 简单总结</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、正则化
+L1和L2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 L1 正则化
+【零均值拉普拉斯分布】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 L2
+正则化【零均值正态分布】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 L1 和 L2 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.4
+L1正则化使得模型参数具有稀疏性的原理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 简单总结</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,7 +171,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -284,14 +288,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4k</span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -302,7 +306,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h3><span id="一-正则化-l1和l2"><strong><font color="red">一、正则化 L1和L2</font></strong></span></h3>
+        <h3><span id="一-正则化l1和l2"><strong><font color="red">一、正则化
+L1和L2</font></strong></span></h3>
 <blockquote>
 <ul>
 <li><strong>本质其实是为了模型参数服从某一分布</strong>；</li>
@@ -311,106 +316,178 @@
 <p><strong>为什么希望参数具有稀疏性？</strong></p>
 <p>相当于对模型进行了一次特征选择，只留下比较重要的特征，提高模型的泛化能力；</p>
 </blockquote>
-<p>**<font color="red"> 正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用简单的模型，可以有效提高泛化预测精度。</font>**如果模型过于复杂，变量值稍微有点变动，就会引起预测精度问题。正则化之所以有效，就是因为其降低了特征的权重，使得模型更为简单。</p>
-<p>正则化一般会采用 L1 范式或者 L2 范式, 其形式分别为 $\Phi(w)=|x|_1$ 和 $\Phi(w)=|x|_2 。$</p>
-<img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;">
-<h4><span id="11-l1-正则化-零均值拉普拉斯分布">1.1 <strong>L1 正则化</strong> 【零均值拉普拉斯分布】</span></h4>
-<p><strong>LASSO 回归, 相当于为模型添加了这样一个先验知识</strong>： $\mathbf{w}$ 服从<strong>零均值拉普拉斯分布</strong>。首先看看拉普拉斯分布长什 么样子:<br>
-$$<br>
-f(w \mid \mu, b)=\frac{1}{2 b} \exp \left(-\frac{|w-\mu|}{b}\right)<br>
-$$<br>
-由于引入了先验知识, 所以似然函数这样写:<br>
-$$<br>
-\begin{aligned}<br>
-L(w) &amp; =P(y \mid w, x) P(w) \<br>
-&amp; =\prod_{i=1}^N p\left(x_i\right)<sup>{y_i}\left(1-p\left(x_i\right)\right)</sup>{1-y_i} \prod_{j=1}^d \frac{1}{2 b} \exp \left(-\frac{\left|w_j\right|}{b}\right)<br>
-\end{aligned}<br>
-$$<br>
-取 $\log$ 再取负，得到目标函数:<br>
-$$<br>
--\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln \left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 b^2} \sum_j\left|w_j\right|<br>
-$$<br>
-等价于原始损失函数的后面加上了 L1 正则, 因此 L1 正则的本质其实是为模型增加了“模型参数服从零均值拉普拉 斯分布&quot;这一先验知识。</p>
-<h4><span id="12-l2-正则化零均值正态分布"><strong>1.2 L2 正则化</strong>【零均值正态分布】</span></h4>
-<p>Ridge 回归, 相当于为模型添加了这样一个先验知识： $w$ 服从<strong>零均值正态分布</strong>。<br>
-首先看看正态分布长什么样子:<br>
-$$<br>
-f(w \mid \mu, \sigma)=\frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{(w-\mu)^2}{2 \sigma^2}\right)<br>
-$$<br>
-由于引入了先验知识, 所以似然函数这样写:<br>
-$$<br>
-\begin{aligned}<br>
-L(w) &amp; =P(y \mid w, x) P(w) \<br>
-&amp; =\prod_{i=1}^N p\left(x_i\right)<sup>{y_i}\left(1-p\left(x_i\right)\right)</sup>{1-y_i} \prod_{j=1}^d \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w_j^2}{2 \sigma^2}\right) \<br>
-&amp; =\prod_{i=1}^N p\left(x_i\right)<sup>{y_i}\left(1-p\left(x_i\right)\right)</sup>{1-y_i} \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w^T w}{2 \sigma^2}\right)<br>
-\end{aligned}<br>
-$$<br>
-取 In 再取负，得到目标函数:<br>
-$$<br>
--\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln \left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 \sigma^2} w^T w<br>
-$$<br>
-等价于原始的损失函数后面加上了 $L 2$ 正则, 因此 $L 2$ 正则的本质其实是为模型增加了““<strong>模型参数服从零均值正态分 布</strong>&quot;这一先验知识。</p>
+<p><strong><font color="red">
+正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用简单的模型，可以有效提高泛化预测精度。</font></strong>如果模型过于复杂，变量值稍微有点变动，就会引起预测精度问题。正则化之所以有效，就是因为其降低了特征的权重，使得模型更为简单。</p>
+<p>正则化一般会采用 L1 范式或者 L2 范式, 其形式分别为 <span class="math inline">\(\Phi(w)=\|x\|_1\)</span> 和 <span class="math inline">\(\Phi(w)=\|x\|_2 。\)</span></p>
+<p><img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="11-l1-正则化零均值拉普拉斯分布">1.1 <strong>L1 正则化</strong>
+【零均值拉普拉斯分布】</span></h4>
+<p><strong>LASSO 回归, 相当于为模型添加了这样一个先验知识</strong>：
+<span class="math inline">\(\mathbf{w}\)</span>
+服从<strong>零均值拉普拉斯分布</strong>。首先看看拉普拉斯分布长什
+么样子: <span class="math display">\[
+f(w \mid \mu, b)=\frac{1}{2 b} \exp \left(-\frac{|w-\mu|}{b}\right)
+\]</span> 由于引入了先验知识, 所以似然函数这样写: <span class="math display">\[
+\begin{aligned}
+L(w) &amp; =P(y \mid w, x) P(w) \\
+&amp; =\prod_{i=1}^N
+p\left(x_i\right)^{y_i}\left(1-p\left(x_i\right)\right)^{1-y_i}
+\prod_{j=1}^d \frac{1}{2 b} \exp
+\left(-\frac{\left|w_j\right|}{b}\right)
+\end{aligned}
+\]</span> 取 <span class="math inline">\(\log\)</span>
+再取负，得到目标函数: <span class="math display">\[
+-\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln
+\left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 b^2}
+\sum_j\left|w_j\right|
+\]</span> 等价于原始损失函数的后面加上了 L1 正则, 因此 L1
+正则的本质其实是为模型增加了“模型参数服从零均值拉普拉
+斯分布"这一先验知识。</p>
+<h4><span id="12-l2正则化零均值正态分布"><strong>1.2 L2
+正则化</strong>【零均值正态分布】</span></h4>
+<p>Ridge 回归, 相当于为模型添加了这样一个先验知识： <span class="math inline">\(w\)</span> 服从<strong>零均值正态分布</strong>。
+首先看看正态分布长什么样子: <span class="math display">\[
+f(w \mid \mu, \sigma)=\frac{1}{\sqrt{2 \pi} \sigma} \exp
+\left(-\frac{(w-\mu)^2}{2 \sigma^2}\right)
+\]</span> 由于引入了先验知识, 所以似然函数这样写: <span class="math display">\[
+\begin{aligned}
+L(w) &amp; =P(y \mid w, x) P(w) \\
+&amp; =\prod_{i=1}^N
+p\left(x_i\right)^{y_i}\left(1-p\left(x_i\right)\right)^{1-y_i}
+\prod_{j=1}^d \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w_j^2}{2
+\sigma^2}\right) \\
+&amp; =\prod_{i=1}^N
+p\left(x_i\right)^{y_i}\left(1-p\left(x_i\right)\right)^{1-y_i}
+\frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w^T w}{2
+\sigma^2}\right)
+\end{aligned}
+\]</span> 取 In 再取负，得到目标函数: <span class="math display">\[
+-\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln
+\left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 \sigma^2} w^T w
+\]</span> 等价于原始的损失函数后面加上了 <span class="math inline">\(L
+2\)</span> 正则, 因此 <span class="math inline">\(L 2\)</span>
+正则的本质其实是为模型增加了““<strong>模型参数服从零均值正态分
+布</strong>"这一先验知识。</p>
 <h4><span id="13-l1-和-l2-的区别">1.3 L1 和 L2 的区别</span></h4>
 <blockquote>
 <ul>
-<li><strong><font color="red"> 解空间约束条件 ： KKT条件【互斥松弛条件 + 约束条件大于0】</font></strong></li>
-<li><strong><font color="red"> 函数叠加：（0点成为最值的可能）导数为0的可能性</font></strong></li>
+<li><strong><font color="red"> 解空间约束条件 ： KKT条件【互斥松弛条件 +
+约束条件大于0】</font></strong></li>
+<li><strong><font color="red">
+函数叠加：（0点成为最值的可能）导数为0的可能性</font></strong></li>
 <li><strong><font color="red"> 贝叶斯先验：分布图像</font></strong></li>
 </ul>
 </blockquote>
-<p><strong>L1 正则化</strong>增加了所有权重 w 参数的绝对值之和<strong>逼迫更多 w 为零</strong>，也就是变稀疏（ L2 因为其导数也趋 0, 奔向零的速度不如 L1 给力了）。对<strong>稀疏规则趋之若鹜</strong>的一个关键原因在于它能<strong>实现特征的自动选择</strong>。L1 正则化的引入就是为了完成特征自动选择的光荣使命，它会学习地去掉这些无用的特征，也就是把这些特征对应的权重置为 0。</p>
-<p><strong>L2 正则化</strong>中增加所有权重 w 参数的平方之和，逼迫所有 <strong>w 尽可能趋向零但不为零</strong>（L2 的导数趋于零）。因为在未加入 L2 正则化发生过拟合时，拟合函数需要顾忌每一个点，最终形成的拟合函数波动很大，在某些很小的区间里，函数值的变化很剧烈，也就是某些 w 值非常大。为此，L2 正则化的加入就惩罚了权重变大的趋势。</p>
-<h4><span id="14-l1正则化使得模型参数具有稀疏性的原理"><strong><font color="red"> 1.4 L1正则化使得模型参数具有稀疏性的原理？</font></strong></span></h4>
-<h5><span id="1-解空间约束条件-kkt条件互斥松弛条件-约束条件大于0">(1) 解空间约束条件 ： KKT条件【互斥松弛条件 + 约束条件大于0】</span></h5>
-<p><strong>KKT 条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
+<p><strong>L1 正则化</strong>增加了所有权重 w
+参数的绝对值之和<strong>逼迫更多 w 为零</strong>，也就是变稀疏（ L2
+因为其导数也趋 0, 奔向零的速度不如 L1
+给力了）。对<strong>稀疏规则趋之若鹜</strong>的一个关键原因在于它能<strong>实现特征的自动选择</strong>。L1
+正则化的引入就是为了完成特征自动选择的光荣使命，它会学习地去掉这些无用的特征，也就是把这些特征对应的权重置为
+0。</p>
+<p><strong>L2 正则化</strong>中增加所有权重 w 参数的平方之和，逼迫所有
+<strong>w 尽可能趋向零但不为零</strong>（L2 的导数趋于零）。因为在未加入
+L2
+正则化发生过拟合时，拟合函数需要顾忌每一个点，最终形成的拟合函数波动很大，在某些很小的区间里，函数值的变化很剧烈，也就是某些
+w 值非常大。为此，L2 正则化的加入就惩罚了权重变大的趋势。</p>
+<h4><span id="14l1正则化使得模型参数具有稀疏性的原理"><strong><font color="red"> 1.4
+L1正则化使得模型参数具有稀疏性的原理？</font></strong></span></h4>
+<h5><span id="1解空间约束条件-kkt条件互斥松弛条件-约束条件大于0">(1)
+解空间约束条件 ： KKT条件【互斥松弛条件 + 约束条件大于0】</span></h5>
+<p><strong>KKT
+条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
 <blockquote>
 <p><strong>参考线性支持向量机的 KKT 条件:</strong></p>
 <ul>
-<li><strong>主问题可行</strong>: $g_{i}\left(u<sup>{\star}\right)=1-y_{i}\left(w</sup>{\star \top} x_{i}+b^{\star}\right) \leq 0$ ；</li>
-<li><strong><font color="red"> 对偶问题可行: $\alpha_{i}^{\star} \geq 0$</font></strong>;</li>
-<li><strong>主变量最优</strong>: $w<sup>{\star}=\sum_{i=1}</sup>{m} \alpha_{i} y_{i} x_{i}, \sum_{i=1}^{m} \alpha_{i} y_{i}=0$;</li>
-<li><strong><font color="red"> 互补松弛: $\alpha_{i}^{\star} g_{i}\left(u<sup>{\star}\right)=\alpha_{i}</sup>{\star}\left(1-y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)\right)=0$ ；</font></strong></li>
+<li><strong>主问题可行</strong>: <span class="math inline">\(g_{i}\left(u^{\star}\right)=1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right) \leq 0\)</span> ；</li>
+<li><strong><font color="red"> 对偶问题可行: <span class="math inline">\(\alpha_{i}^{\star} \geq
+0\)</span></font></strong>;</li>
+<li><strong>主变量最优</strong>: <span class="math inline">\(w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i},
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0\)</span>;</li>
+<li><strong><font color="red"> 互补松弛: <span class="math inline">\(\alpha_{i}^{\star}
+g_{i}\left(u^{\star}\right)=\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right)\right)=0\)</span> ；</font></strong></li>
 </ul>
 </blockquote>
-<p><strong>原函数曲线等高线（同颜色曲线上，每一组$w_1,w_2$带入后值都相同)</strong>：</p>
-<img src="https://pic4.zhimg.com/80/v2-efc752bd6d1ce09dbf2e18b9766570eb_1440w.jpg" alt="img" style="zoom:50%;">
-<p>当加入 L1 正则化的时候, 我们先画出 $\left|w_1\right|+\left|w_2\right|=F$ 的图像, 也就是一个菱形, 代表这些曲线上的点算出来的 要使得这个菱形越小越好 ( $F$ 越小越好)。那么还和原来一样的话, 过中心紫色圈圈的那个菱形明显很大, 因此我 们要取到一个恰好的值。那么如何求值呢?</p>
-<ol>
-<li>以同一条原曲线目标等高线来说, 现在以最外圈的红色等高线为例, 我们看到, 对于红色曲线上的每个点都可 做一个菱形, 根据上图可知, 当这个菱形与某条等高线相切（仅有一个交点）的时候, 这个菱形最小, 上图相 割对比较大的两个菱形对应的 L1 范数更大。用公式说这个时候能使得在相同的 $\frac{1}{N} \sum_{i=1}<sup>N\left(y_i-w</sup>T x_i\right)^2$, 由于 相切的时候的 $C|| w |_1$ 小, 即 $\left|w_1\right|+\left|w_2\right|$ 所以能够使得 $\frac{1}{N} \sum i=1<sup>N\left(y_i-w</sup>T x_i\right)^2+C|| w |_1$ 更小;</li>
-<li>有了第一条的说明我们可以看出, 最终加入 $L 1$ 范数得到的解一定是某个菱形和某条原函数等高线的切点。现 在有个比较重要的结论来了, <font color="red"> 我们经过观察可以看到, 几乎对于很多原函数等高曲线, 和某个菱形相交的时 候及其容易相交在坐标轴 (比如上图) , 也就是说最终的结果, 解的某些维度及其容易是 0, 比如上图最终解 是 $w=(0, x)$ ，这也就是我们所说的 L1 更容易得到稀疏解（解向量中 0 比较多)的原因;</font></li>
-<li>当加入 $L 2$ 正则化的时候, 分析和 $L 1$ 正则化是类似的, 也就是说我们仅仅是从菱形变成了圆形而已, 同样还 是求原曲线和圆形的切点作为最终解。<strong>当然与 $L 1$ 范数比, 我们这样求的 $L 2$ 范数的从图上来看, 不容易交在 坐标轴上, 但是仍然比较靠近坐标轴。因此这也就是我们老说的, L2 范数能让解比较小 (靠近 0), 但是比 较平滑（不等于 0)。</strong></li>
+<p><strong>原函数曲线等高线（同颜色曲线上，每一组<span class="math inline">\(w_1,w_2\)</span>带入后值都相同)</strong>：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-efc752bd6d1ce09dbf2e18b9766570eb_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>当加入 L1 正则化的时候, 我们先画出 <span class="math inline">\(\left|w_1\right|+\left|w_2\right|=F\)</span>
+的图像, 也就是一个菱形, 代表这些曲线上的点算出来的
+要使得这个菱形越小越好 ( <span class="math inline">\(F\)</span>
+越小越好)。那么还和原来一样的话, 过中心紫色圈圈的那个菱形明显很大,
+因此我 们要取到一个恰好的值。那么如何求值呢?</p>
+<ol type="1">
+<li>以同一条原曲线目标等高线来说, 现在以最外圈的红色等高线为例,
+我们看到, 对于红色曲线上的每个点都可 做一个菱形, 根据上图可知,
+当这个菱形与某条等高线相切（仅有一个交点）的时候, 这个菱形最小, 上图相
+割对比较大的两个菱形对应的 L1 范数更大。用公式说这个时候能使得在相同的
+<span class="math inline">\(\frac{1}{N} \sum_{i=1}^N\left(y_i-w^T
+x_i\right)^2\)</span>, 由于 相切的时候的 <span class="math inline">\(C||
+w \|_1\)</span> 小, 即 <span class="math inline">\(\left|w_1\right|+\left|w_2\right|\)</span>
+所以能够使得 <span class="math inline">\(\frac{1}{N} \sum
+i=1^N\left(y_i-w^T x_i\right)^2+C|| w \|_1\)</span> 更小;</li>
+<li>有了第一条的说明我们可以看出, 最终加入 <span class="math inline">\(L
+1\)</span> 范数得到的解一定是某个菱形和某条原函数等高线的切点。现
+在有个比较重要的结论来了, <font color="red"> 我们经过观察可以看到,
+几乎对于很多原函数等高曲线, 和某个菱形相交的时 候及其容易相交在坐标轴
+(比如上图) , 也就是说最终的结果, 解的某些维度及其容易是 0,
+比如上图最终解 是 <span class="math inline">\(w=(0, x)\)</span>
+，这也就是我们所说的 L1 更容易得到稀疏解（解向量中 0
+比较多)的原因;</font></li>
+<li>当加入 <span class="math inline">\(L 2\)</span> 正则化的时候, 分析和
+<span class="math inline">\(L 1\)</span> 正则化是类似的,
+也就是说我们仅仅是从菱形变成了圆形而已, 同样还
+是求原曲线和圆形的切点作为最终解。<strong>当然与 <span class="math inline">\(L 1\)</span> 范数比, 我们这样求的 <span class="math inline">\(L 2\)</span> 范数的从图上来看, 不容易交在
+坐标轴上, 但是仍然比较靠近坐标轴。因此这也就是我们老说的, L2
+范数能让解比较小 (靠近 0), 但是比 较平滑（不等于 0)。</strong></li>
 </ol>
-<h5><span id="2-函数叠加0点成为最值的可能导数为0的可能性">(2) 函数叠加：（0点成为最值的可能)导数为0的可能性</span></h5>
-<p>我们接下来从更严谨的方式来证明, 简而言之就是假设现在我们是一维的情况下 $h(w)=f(w)+C|w|$, 其中 $h(w)$ 是目标函数, $f(w)$ 是没加 $\mathrm{L} 1$ 正则化项前的目标函数, $C|w|$ 是 $\mathrm{L}$ 正则项, 要使得 0 点成为最值可能的点, <strong>虽然在 0 点不可导, 但是我们只需要让 0 点左右的导数异号, 即 $h_l^{\prime}(0) h_r<sup>{\prime}(0)=\left(f</sup>{\prime}(0)+C\right)\left(f^{\prime}(0)-C\right)&lt;0$ 即可也就 是 $C&gt;\left|f^{\prime}(0)\right|$ 的情况下, 0 点都是可能的最值点</strong>。相反, L2正则项在原点处的导数是0, 只要原目标函数在原点 处导数不为 0 , 那么最小值点就不会在原点, 所以 $L 2$ 只有减小w最对值的作用, 对解空间的稀疏性没有贡献。</p>
+<h5><span id="2函数叠加0点成为最值的可能导数为0的可能性">(2)
+函数叠加：（0点成为最值的可能)导数为0的可能性</span></h5>
+<p>我们接下来从更严谨的方式来证明,
+简而言之就是假设现在我们是一维的情况下 <span class="math inline">\(h(w)=f(w)+C|w|\)</span>, 其中 <span class="math inline">\(h(w)\)</span> 是目标函数, <span class="math inline">\(f(w)\)</span> 是没加 <span class="math inline">\(\mathrm{L} 1\)</span> 正则化项前的目标函数, <span class="math inline">\(C|w|\)</span> 是 <span class="math inline">\(\mathrm{L}\)</span> 正则项, 要使得 0
+点成为最值可能的点, <strong>虽然在 0 点不可导, 但是我们只需要让 0
+点左右的导数异号, 即 <span class="math inline">\(h_l^{\prime}(0)
+h_r^{\prime}(0)=\left(f^{\prime}(0)+C\right)\left(f^{\prime}(0)-C\right)&lt;0\)</span>
+即可也就 是 <span class="math inline">\(C&gt;\left|f^{\prime}(0)\right|\)</span> 的情况下,
+0 点都是可能的最值点</strong>。相反, L2正则项在原点处的导数是0,
+只要原目标函数在原点 处导数不为 0 , 那么最小值点就不会在原点, 所以 <span class="math inline">\(L 2\)</span> 只有减小w最对值的作用,
+对解空间的稀疏性没有贡献。</p>
 <h5><span id="3-贝叶斯先验分布图像">(3) 贝叶斯先验：分布图像</span></h5>
-<img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p><strong>从贝叶斯加入先验分布的角度解释，L1正则化相当于对模型参数引入拉普拉斯先验，L2正则化相当于与引入了高斯先验。高斯分布在0点是平滑的，拉普拉斯在0点处是一个尖峰。</strong></p>
 <h4><span id="15-简单总结">1.5 <strong>简单总结</strong></span></h4>
 <table>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 59%">
+<col style="width: 27%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>正则化</th>
 <th>L1 正则化</th>
 <th>L2 正则化</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>服从分布</td>
 <td>零均值拉普拉斯分布</td>
 <td>零均值正态分布</td>
 </tr>
-<tr>
+<tr class="even">
 <td>损失函数变化</td>
-<td>$\frac{1}{2 b^2} \sum_j\left</td>
-<td>w_j\right</td>
+<td><span class="math inline">\(\frac{1}{2 b^2} \sum_j\left
+|w_j\right|\)</span></td>
+<td><span class="math inline">\(\frac{1}{2 \sigma^2} w^T w\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>模型参数w效果</td>
-<td>逼迫更多 w 为零，【稀疏解】<strong><font color="red"> （解空间约束条件、函数叠加、贝叶斯先验）</font></strong></td>
+<td>逼迫更多 w 为零，【稀疏解】<strong><font color="red">
+（解空间约束条件、函数叠加、贝叶斯先验）</font></strong></td>
 <td>趋向零但不为零【平滑】</td>
 </tr>
-<tr>
+<tr class="even">
 <td>作用</td>
 <td>【特征选择】【降低模型复杂度】</td>
 <td>【降低模型复杂度】</td>
@@ -455,8 +532,8 @@ $$<br>
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/1J1QH0W/" rel="next" title="线性模型（2）逻辑回归">
-                  线性模型（2）逻辑回归 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/3TFM6N7/" rel="next" title="线性模型（1）线性回归">
+                  线性模型（1）线性回归 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

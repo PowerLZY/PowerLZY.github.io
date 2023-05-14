@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 **本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）">
+    <meta name="description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:type" content="article">
 <meta property="og:title" content="支持向量机（4）支持向量回归 &amp; 多分类">
 <meta property="og:url" content="https://powerlzy.github.io/posts/3MCYRQP/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 **本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）">
+<meta property="og:description" content="SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。 本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。为了对数据中的噪声有一定的容忍能力。以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。 几何意义：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）； 间隔">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg">
 <meta property="og:image" content="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png">
@@ -169,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -286,7 +286,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -304,31 +304,37 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+        <p><strong><font color="red"> SVM
+是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p><strong>本质：SVM
+想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
 <span id="more"></span>
 <h3><span id="一-支持向量回归-svr">一、支持向量回归 SVR</span></h3>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ch18328071580/article/details/94168411">https://blog.csdn.net/ch18328071580/article/details/94168411</a></p>
+<p>https://blog.csdn.net/ch18328071580/article/details/94168411</p>
 <p><strong>支持向量在隔代之外</strong></p>
 </blockquote>
 <h4><span id="11-svr与一般线性回归的区别">1.1 SVR与一般线性回归的区别</span></h4>
 <table>
+<colgroup>
+<col style="width: 65%">
+<col style="width: 34%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>SVR</th>
 <th>线性回归</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>数据在间隔带内则不计算损失，<strong>当且仅当f(x)与y之间的差距的绝对值大于ϵ才计算损失</strong></td>
 <td>只要f(x)与y不相等时，就计算损失</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>通过最大化间隔带的宽度与最小化总损失</strong>来优化模型</td>
 <td>通过梯度下降之后求均值来优化模型</td>
 </tr>
@@ -336,39 +342,44 @@
 </table>
 <p><strong>岭回归：</strong><img src="https://s2.loli.net/2023/04/17/tHg4BJuNZzcX7Yd.png" alt="image-20220401144206172" style="zoom:50%;"></p>
 <h5><span id="支持向量回归我们假设fx与y之间最多有一定的偏差大于偏差才计数损失">支持向量回归：我们假设f(x)与y之间最多有一定的偏差，大于偏差才计数损失</span></h5>
-<p>$$<br>
-\min <em>{w, b} \frac{1}{2}|w|^{2}+C \sum</em>{i=1}^{m} l_{\epsilon}\left(f\left(x_{i}\right), y_{i}\right)<br>
-$$<br>
-其中C为正则化常数, $l_{\epsilon}$ 是图中所示的 $\epsilon$-不敏感损失 ( $\epsilon$-insensitive loss)函数:<br>
-$$<br>
-l_{\epsilon}(\mathrm{z})= \begin{cases}0, &amp; \text { if }|z| \leq \epsilon \ |z|-\epsilon, &amp; \text { otherwise }\end{cases}<br>
-$$<br>
-引入松弛变量 $\xi_{i}$ 和 $\left(\xi_{i}\right)$, 可将式重写为:<br>
-$$<br>
-\begin{array}{ll}<br>
-\min <em>{w, b, \xi</em>{i}, \xi_{i}} &amp; \frac{1}{2}|w|^{2}+C \sum_{i=1}^{m}\left(\xi_{i}, \widehat{\xi}<em>{i}\right) \<br>
-\text { s.t. } &amp; f\left(x</em>{i}\right)-y_{i} \leq \epsilon+\xi_{i} \<br>
-&amp; y_{i}-f\left(x_{i}\right) \leq \epsilon+\widehat{\xi}<em>{i} \<br>
-&amp; \xi</em>{i} \geq 0, \hat{\xi}<em>{i} \geq 0, i=1,2, \ldots m<br>
-\end{array}<br>
-$$<br>
-引入拉格朗日乘子 $\mu</em>{i}$,</p>
-<p>$L(w, b, \alpha, \hat{\alpha}, \xi, \hat{\xi}, \mu, \hat{\mu})$<br>
-$=\frac{1}{2}|w|^{2}+C \sum_{i=1}<sup>{m}\left(\xi_{i}+\widehat{\xi}_{i}\right)-\sum_{i=1}</sup>{m} \xi_{i} \mu_{i}-\sum_{i=1}^{m} \widehat{\xi}<em>{i} \widehat{\mu</em>{i}}$<br>
-$+\sum_{i=1}^{m} \alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)+\sum_{i=1}^{m} \widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)$</p>
-<p>再令 $L(w, b, a, \hat{a}, \xi, \hat{\xi}, \mu, \mu)$ 对 $w, b, \xi_{i}, \hat{\xi}<em>{i}$ 的偏导为零可得:<br>
-$$<br>
-w=\sum</em>{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}<br>
-$$<br>
-上述过程中需满足KKT条件, 即要求:<br>
-$$<br>
-\left{\begin{array}{c}<br>
-\alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)=0 \<br>
-\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}<em>{i}\right)=0 \<br>
-\alpha</em>{i} \widehat{\alpha_{i}}=0, \xi_{i} \widehat{\xi}<em>{i}=0 \<br>
-\left(C-\alpha</em>{i}\right) \xi_{i}=0,\left(C-\widehat{\alpha_{i}}\right) \widehat{\xi}_{i}=0 .<br>
-\end{array}\right.<br>
-$$</p>
+<p><span class="math display">\[
+\min _{w, b} \frac{1}{2}\|w\|^{2}+C \sum_{i=1}^{m}
+l_{\epsilon}\left(f\left(x_{i}\right), y_{i}\right)
+\]</span> 其中C为正则化常数, <span class="math inline">\(l_{\epsilon}\)</span> 是图中所示的 <span class="math inline">\(\epsilon\)</span>-不敏感损失 ( <span class="math inline">\(\epsilon\)</span>-insensitive loss)函数: <span class="math display">\[
+l_{\epsilon}(\mathrm{z})= \begin{cases}0, &amp; \text { if }|z| \leq
+\epsilon \\ |z|-\epsilon, &amp; \text { otherwise }\end{cases}
+\]</span> 引入松弛变量 <span class="math inline">\(\xi_{i}\)</span> 和
+<span class="math inline">\(\left(\xi_{i}\right)\)</span>, 可将式重写为:
+<span class="math display">\[
+\begin{array}{ll}
+\min _{w, b, \xi_{i}, \xi_{i}} &amp; \frac{1}{2}\|w\|^{2}+C
+\sum_{i=1}^{m}\left(\xi_{i}, \widehat{\xi}_{i}\right) \\
+\text { s.t. } &amp; f\left(x_{i}\right)-y_{i} \leq \epsilon+\xi_{i} \\
+&amp; y_{i}-f\left(x_{i}\right) \leq \epsilon+\widehat{\xi}_{i} \\
+&amp; \xi_{i} \geq 0, \hat{\xi}_{i} \geq 0, i=1,2, \ldots m
+\end{array}
+\]</span> 引入拉格朗日乘子 <span class="math inline">\(\mu_{i}\)</span>,</p>
+<p><span class="math inline">\(L(w, b, \alpha, \hat{\alpha}, \xi,
+\hat{\xi}, \mu, \hat{\mu})\)</span> <span class="math inline">\(=\frac{1}{2}\|w\|^{2}+C
+\sum_{i=1}^{m}\left(\xi_{i}+\widehat{\xi}_{i}\right)-\sum_{i=1}^{m}
+\xi_{i} \mu_{i}-\sum_{i=1}^{m} \widehat{\xi}_{i}
+\widehat{\mu_{i}}\)</span> <span class="math inline">\(+\sum_{i=1}^{m}
+\alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)+\sum_{i=1}^{m}
+\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)\)</span></p>
+<p>再令 <span class="math inline">\(L(w, b, a, \hat{a}, \xi, \hat{\xi},
+\mu, \mu)\)</span> 对 <span class="math inline">\(w, b, \xi_{i},
+\hat{\xi}_{i}\)</span> 的偏导为零可得: <span class="math display">\[
+w=\sum_{i=1}^{m}\left(\widehat{\alpha_{i}}-\alpha_{i}\right) x_{i}
+\]</span> 上述过程中需满足KKT条件, 即要求: <span class="math display">\[
+\left\{\begin{array}{c}
+\alpha_{i}\left(f\left(x_{i}\right)-y_{i}-\epsilon-\xi_{i}\right)=0 \\
+\widehat{\alpha_{i}}\left(y_{i}-f\left(x_{i}\right)-\epsilon-\widehat{\xi}_{i}\right)=0
+\\
+\alpha_{i} \widehat{\alpha_{i}}=0, \xi_{i} \widehat{\xi}_{i}=0 \\
+\left(C-\alpha_{i}\right) \xi_{i}=0,\left(C-\widehat{\alpha_{i}}\right)
+\widehat{\xi}_{i}=0 .
+\end{array}\right.
+\]</span></p>
 <h3><span id="二-多分类-svm">二、多分类 SVM</span></h3>
 <h4><span id="21-多分类问题">2.1 多分类问题</span></h4>
 <ul>
@@ -376,29 +387,34 @@ $$</p>
 <ul>
 <li><strong>one vs one 拆解</strong>：K(K-1)/2 个分类器。</li>
 <li><strong>one vs Rest 拆解</strong>：K个分类器</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<img src="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png" alt="image-20220401192909167" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/OJqX539ByWxSDVN.png" alt="image-20220401192909167" style="zoom:50%;"></p>
 <h4><span id="22-多分类线性svm">2.2 多分类线性SVM</span></h4>
 <ul>
-<li><strong>层次支持向量机</strong></li>
+<li><p><strong>层次支持向量机</strong></p></li>
+<li><p><strong>回顾二分类</strong></p></li>
 </ul>
-<ul>
-<li><strong>回顾二分类</strong></li>
-</ul>
-<p>$$<br>
-\begin{aligned}<br>
-&amp; \min <em>{\boldsymbol{w}, b} \frac{1}{m} \sum</em>{i=1}^m \max \left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b, 0\right)+\frac{\lambda}{2}|\boldsymbol{w}|^2\right. \<br>
-= &amp; \min <em>{\boldsymbol{w}, b} \frac{1}{m} \sum</em>{i=1}^m \max \left(1-y_i s\left(\boldsymbol{x}_i\right), 0\right)+\frac{\lambda}{2}|\boldsymbol{w}|^2 .<br>
-\end{aligned}<br>
-$$</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \max
+\left(1-y_i\left(\boldsymbol{w}^{\top} \boldsymbol{x}_i+b,
+0\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2\right. \\
+= &amp; \min _{\boldsymbol{w}, b} \frac{1}{m} \sum_{i=1}^m \max
+\left(1-y_i s\left(\boldsymbol{x}_i\right),
+0\right)+\frac{\lambda}{2}\|\boldsymbol{w}\|^2 .
+\end{aligned}
+\]</span></p>
 <ul>
 <li><strong>多分类线性SVM</strong></li>
 </ul>
-<p>$$<br>
-\min <em>{\boldsymbol{W}, \boldsymbol{b}} \frac{1}{m} \sum</em>{i=1}^m \sum_{k=1}^K \mathbb{I}\left(k \neq y_i\right) \cdot \max \left(1-s\left(\boldsymbol{x}<em>i\right)</em>{y_i}+s\left(\boldsymbol{x}_i\right)<em>k, 0\right)+\frac{\lambda}{2} \sum</em>{k=1}<sup>K\left|\boldsymbol{w}_k\right|</sup>2,<br>
-$$</p>
+<p><span class="math display">\[
+\min _{\boldsymbol{W}, \boldsymbol{b}} \frac{1}{m} \sum_{i=1}^m
+\sum_{k=1}^K \mathbb{I}\left(k \neq y_i\right) \cdot \max
+\left(1-s\left(\boldsymbol{x}_i\right)_{y_i}+s\left(\boldsymbol{x}_i\right)_k,
+0\right)+\frac{\lambda}{2}
+\sum_{k=1}^K\left\|\boldsymbol{w}_k\right\|^2,
+\]</span></p>
 
     </div>
 

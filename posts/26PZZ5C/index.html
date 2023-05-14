@@ -155,7 +155,10 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 池化层、线性层和激活函数层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、池化层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 nn.MaxPool2d() 最大池化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 nn.AvgPool2d() 平均池化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 nn.MaxUnpool2d() 最大值反池化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、 线性层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、激活函数层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 nn.Sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 nn.tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3 nn.ReLU(修正线性单元)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.LeakyReLU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.PReLU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.RReLU</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记]
+池化层、线性层和激活函数层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、池化层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 nn.MaxPool2d() 最大池化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 nn.AvgPool2d() 平均池化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 nn.MaxUnpool2d()
+最大值反池化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、 线性层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、激活函数层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.1 nn.Sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.2 nn.tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">3.3
+nn.ReLU(修正线性单元)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.LeakyReLU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.PReLU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.RReLU</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -176,7 +179,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -311,36 +314,48 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pytorch-学习笔记-池化层-线性层和激活函数层">[PyTorch 学习笔记] 池化层、线性层和激活函数层</span></h2>
+        <h2><span id="pytorch-学习笔记池化层-线性层和激活函数层">[PyTorch 学习笔记]
+池化层、线性层和激活函数层</span></h2>
 <h3><span id="一-池化层"><strong>一、池化层</strong></span></h3>
-<p><strong>池化的作用则体现在降采样：保留显著特征、降低特征维度，增大 kernel 的感受野</strong>。 另外一点值得注意：pooling 也可以提供一些<strong>旋转不变性</strong>。 池化层可对提取到的特征信息进行降维，一方面使特征图变小，简化网络计算复杂度并在一定程度上避免过拟合的出现；一方面进行<strong>特征压缩</strong>，提取<strong>主要特征</strong>。</p>
+<p><strong>池化的作用则体现在降采样：保留显著特征、降低特征维度，增大
+kernel 的感受野</strong>。 另外一点值得注意：pooling
+也可以提供一些<strong>旋转不变性</strong>。
+池化层可对提取到的特征信息进行降维，一方面使特征图变小，简化网络计算复杂度并在一定程度上避免过拟合的出现；一方面进行<strong>特征压缩</strong>，提取<strong>主要特征</strong>。</p>
 <h4><span id="11-nnmaxpool2d-最大池化">1.1 nn.MaxPool2d() 最大池化</span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nn.MaxPool2d(kernel_size, stride=<span class="literal">None</span>, padding=<span class="number">0</span>, dilation=<span class="number">1</span>, return_indices=<span class="literal">False</span>, ceil_mode=<span class="literal">False</span>)</span><br><span class="line">maxpool_layer = nn.MaxPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>)) </span><br><span class="line"><span class="comment"># input:(i, o, size) weights:(o, i , h, w)</span></span><br></pre></td></tr></table></figure>
 <p>这个函数的功能是进行 2 维的最大池化，主要参数如下：</p>
 <ul>
 <li><strong>kernel_size</strong>：池化核尺寸</li>
 <li><strong>stride</strong>：步长，通常与 kernel_size 一致</li>
-<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把 padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
-<li>dilation：池化间隔大小，默认为 1。常用于图像分割任务中，主要是为了提升感受野</li>
+<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把
+padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
+<li>dilation：池化间隔大小，默认为
+1。常用于图像分割任务中，主要是为了提升感受野</li>
 <li>ceil_mode：默认为 False，尺寸向下取整。为 True 时，尺寸向上取整</li>
-<li>return_indices：为 True 时，返回最大池化所使用的像素的索引，这些记录的索引通常在反最大池化时使用，把小的特征图反池化到大的特征图时，每一个像素放在哪个位置。</li>
+<li>return_indices：为 True
+时，返回最大池化所使用的像素的索引，这些记录的索引通常在反最大池化时使用，把小的特征图反池化到大的特征图时，每一个像素放在哪个位置。</li>
 </ul>
-<h5><span id="下图-a-表示反池化b-表示上采样-表示反卷积">下图 (a) 表示反池化，(b) 表示上采样，© 表示反卷积。</span></h5>
-<img src="https://pic2.zhimg.com/80/v2-cfb9340c4d4b0406d61271ffce30ff6d_1440w.jpg" alt="img" style="zoom:50%;">
+<h5><span id="下图-a表示反池化b-表示上采样c-表示反卷积">下图 (a)
+表示反池化，(b) 表示上采样，(c) 表示反卷积。</span></h5>
+<p><img src="https://pic2.zhimg.com/80/v2-cfb9340c4d4b0406d61271ffce30ff6d_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <h3><span id="12-nnavgpool2d-平均池化">1.2 nn.AvgPool2d() 平均池化</span></h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.AvgPool2d(kernel_size, stride=<span class="literal">None</span>, padding=<span class="number">0</span>, ceil_mode=<span class="literal">False</span>, count_include_pad=<span class="literal">True</span>, divisor_override=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
 <p>这个函数的功能是进行 2 维的平均池化，主要参数如下：</p>
 <ul>
 <li><strong>kernel_size</strong>：池化核尺寸</li>
 <li><strong>stride</strong>：步长，通常与 kernel_size 一致</li>
-<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把 padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
-<li>dilation：池化间隔大小，默认为 1。常用于图像分割任务中，主要是为了提升感受野</li>
+<li><strong>padding</strong>：填充宽度，主要是为了调整输出的特征图大小，一般把
+padding 设置合适的值后，保持输入和输出的图像尺寸不变。</li>
+<li>dilation：池化间隔大小，默认为
+1。常用于图像分割任务中，主要是为了提升感受野</li>
 <li>ceil_mode：默认为 False，尺寸向下取整。为 True 时，尺寸向上取整</li>
 <li>count_include_pad：在计算平均值时，是否把填充值考虑在内计算</li>
-<li>divisor_override：除法因子。在计算平均值时，分子是像素值的总和，分母默认是像素值的个数。如果设置了 divisor_override，把分母改为 divisor_override。</li>
+<li>divisor_override：除法因子。在计算平均值时，分子是像素值的总和，分母默认是像素值的个数。如果设置了
+divisor_override，把分母改为 divisor_override。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">img_tensor = torch.ones((<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>))</span><br><span class="line">avgpool_layer = nn.AvgPool2d((<span class="number">2</span>, <span class="number">2</span>), stride=(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line">img_pool = avgpool_layer(img_tensor)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;raw_img:\n&#123;&#125;\npooling_img:\n&#123;&#125;&quot;</span>.<span class="built_in">format</span>(img_tensor, img_pool))</span><br></pre></td></tr></table></figure>
-<h4><span id="13-nnmaxunpool2d-最大值反池化">1.3 nn.MaxUnpool2d() 最大值反池化</span></h4>
+<h4><span id="13-nnmaxunpool2d最大值反池化">1.3 nn.MaxUnpool2d()
+最大值反池化</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nn.MaxUnpool2d(kernel_size, stride=None, padding=0)</span><br></pre></td></tr></table></figure>
 <p>功能是对二维信号（图像）进行最大值反池化，主要参数如下：</p>
 <ul>
@@ -355,69 +370,49 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tensor([[1., 2., 3.]]) torch.Size([1, 3])</span><br><span class="line">tensor([[1., 1., 1.],</span><br><span class="line">        [2., 2., 2.],</span><br><span class="line">        [3., 3., 3.],</span><br><span class="line">        [4., 4., 4.]]) torch.Size([4, 3])</span><br><span class="line">tensor([[ 6.5000, 12.5000, 18.5000, 24.5000]], grad_fn=&lt;AddmmBackward&gt;) torch.Size([1, 4])</span><br></pre></td></tr></table></figure>
 <h3><span id="三-激活函数层">三、<strong>激活函数层</strong></span></h3>
 <p>假设第一个隐藏层为：<img src="https://www.zhihu.com/equation?tex=H_%7B1%7D%3DX+%5Ctimes+W_%7B1%7D" alt="[公式]">，第二个隐藏层为：<img src="https://www.zhihu.com/equation?tex=H_%7B2%7D%3DH_%7B1%7D+%5Ctimes+W_%7B2%7D" alt="[公式]">，输出层为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Ctext+%7B+Out+%7D+%5Cboldsymbol%7Bp%7D+%5Cboldsymbol%7Bu%7D+%5Cboldsymbol%7Bt%7D+%26%3D%5Cboldsymbol%7BH%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D+%5C%5C+%26%3D%5Cboldsymbol%7BH%7D_%7B1%7D+%2A+%5Cboldsymbol%7BW%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D+%5C%5C+%26%3D%5Cboldsymbol%7BX%7D+%2A+%28%5Cboldsymbol%7BW%7D_%7B1%7D+%2A%5Cboldsymbol%7BW%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D%29+%5C%5C+%26%3D%5Cboldsymbol%7BX%7D+%2A+%7BW%7D+%5Cend%7Baligned%7D++%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Ctext+%7B+Out+%7D+%5Cboldsymbol%7Bp%7D+%5Cboldsymbol%7Bu%7D+%5Cboldsymbol%7Bt%7D+%26%3D%5Cboldsymbol%7BH%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D+%5C%5C+%26%3D%5Cboldsymbol%7BH%7D_%7B1%7D+%2A+%5Cboldsymbol%7BW%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D+%5C%5C+%26%3D%5Cboldsymbol%7BX%7D+%2A+%28%5Cboldsymbol%7BW%7D_%7B1%7D+%2A%5Cboldsymbol%7BW%7D_%7B2%7D+%2A+%5Cboldsymbol%7BW%7D_%7B3%7D%29+%5C%5C+%26%3D%5Cboldsymbol%7BX%7D+%2A+%7BW%7D+%5Cend%7Baligned%7D++%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><strong>如果没有非线性变换，由于矩阵乘法的结合性，多个线性层的组合等价于一个线性层。激活函数对特征进行非线性变换，赋予了多层神经网络具有深度的意义。下面介绍一些激活函数层。</strong></p>
 <h4><span id="31-nnsigmoid">3.1 <strong>nn.Sigmoid</strong></span></h4>
 <ul>
-<li>
-<p><strong>计算公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"></p>
-</li>
-<li>
-<p><strong>梯度公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3Dy+%2A%281-y%29" alt="[公式]"></p>
-</li>
-<li>
-<p><strong>特性</strong>：</p>
-</li>
-<li>
-<ul>
+<li><p><strong>计算公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"></p></li>
+<li><p><strong>梯度公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3Dy+%2A%281-y%29" alt="[公式]"></p></li>
+<li><p><strong>特性</strong>：</p></li>
+<li><ul>
 <li>输出值在(0,1)，符合<strong>概率</strong></li>
 <li>导数范围是 [0, 0.25]，容易导致<strong>梯度消失</strong></li>
 <li><strong>输出为非 0 均值，破坏数据分布</strong></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<img src="https://pic2.zhimg.com/80/v2-92f08b1ea82087c553dfec9c18d1b3a9_1440w.jpg" alt="img" style="zoom: 33%;">
+<p><img src="https://pic2.zhimg.com/80/v2-92f08b1ea82087c553dfec9c18d1b3a9_1440w.jpg" alt="img" style="zoom: 33%;"></p>
 <h4><span id="32-nntanh">3.2 <strong>nn.tanh</strong></span></h4>
 <ul>
-<li>
-<p><strong>计算公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%3D%5Cfrac%7B%5Csin+x%7D%7B%5Ccos+x%7D%3D%5Cfrac%7Be%5E%7Bx%7D-e%5E%7B-x%7D%7D%7Be%5E%7B-%7D%2Be%5E%7B-x%7D%7D%3D%5Cfrac%7B2%7D%7B1%2Be%5E%7B-2+x%7D%7D%2B1" alt="[公式]"></p>
-</li>
-<li>
-<p><strong>梯度公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3D1-y%5E%7B2%7D" alt="[公式]"></p>
-</li>
-<li>
-<p><strong>特性</strong>：</p>
-</li>
-<li>
-<ul>
+<li><p><strong>计算公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%3D%5Cfrac%7B%5Csin+x%7D%7B%5Ccos+x%7D%3D%5Cfrac%7Be%5E%7Bx%7D-e%5E%7B-x%7D%7D%7Be%5E%7B-%7D%2Be%5E%7B-x%7D%7D%3D%5Cfrac%7B2%7D%7B1%2Be%5E%7B-2+x%7D%7D%2B1" alt="[公式]"></p></li>
+<li><p><strong>梯度公式</strong>：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3D1-y%5E%7B2%7D" alt="[公式]"></p></li>
+<li><p><strong>特性</strong>：</p></li>
+<li><ul>
 <li>输出值在(-1, 1)，数据符合 0 均值</li>
 <li>导数范围是 (0,1)，容易导致梯度消失</li>
+</ul></li>
+<li><p><img src="https://pic3.zhimg.com/80/v2-1187e5593fcd1c9b3f4deaeeb45d1a0e_1440w.jpg" alt="img" style="zoom: 33%;"></p></li>
 </ul>
-</li>
-<li>
-<img src="https://pic3.zhimg.com/80/v2-1187e5593fcd1c9b3f4deaeeb45d1a0e_1440w.jpg" alt="img" style="zoom: 33%;">
-</li>
-</ul>
-<h4><span id="33-nnrelu修正线性单元">3.3 <strong>nn.ReLU(修正线性单元)</strong></span></h4>
+<h4><span id="33nnrelu修正线性单元">3.3
+<strong>nn.ReLU(修正线性单元)</strong></span></h4>
 <ul>
-<li>
-<p>计算公式：<img src="https://www.zhihu.com/equation?tex=y%3Dmax%280%2C+x%29" alt="[公式]"></p>
-</li>
-<li>
-<p>梯度公式：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D1%2C+%26+x%3E0+%5C%5C+u+n+d+%5Ctext+%7B+ef+ined%2C+%7D+%26+x%3D0+%5C%5C+0%2C+%26+x%3C0%5Cend%7Barray%7D%5Cright." alt="[公式]"></p>
-</li>
-<li>
-<p>特性：</p>
-</li>
-<li>
-<ul>
-<li>输出值均为正数，负半轴的导数为 0，容易导致<strong>死神经元</strong></li>
+<li><p>计算公式：<img src="https://www.zhihu.com/equation?tex=y%3Dmax%280%2C+x%29" alt="[公式]"></p></li>
+<li><p>梯度公式：<img src="https://www.zhihu.com/equation?tex=y%5E%7B%5Cprime%7D%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D1%2C+%26+x%3E0+%5C%5C+u+n+d+%5Ctext+%7B+ef+ined%2C+%7D+%26+x%3D0+%5C%5C+0%2C+%26+x%3C0%5Cend%7Barray%7D%5Cright." alt="[公式]"></p></li>
+<li><p>特性：</p></li>
+<li><ul>
+<li>输出值均为正数，负半轴的导数为
+0，容易导致<strong>死神经元</strong></li>
 <li>导数是 1，缓解梯度消失，但容易引发梯度爆炸</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<img src="https://pic3.zhimg.com/80/v2-aa6efbe0e0fd4900cb60d9df516986ca_1440w.jpg" alt="img" style="zoom: 33%;">
-<p><strong>针对 RuLU 会导致==死神经元==的缺点，出现了下面 3 种改进的激活函数。</strong></p>
+<p><img src="https://pic3.zhimg.com/80/v2-aa6efbe0e0fd4900cb60d9df516986ca_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p><strong>针对 RuLU 会导致==死神经元==的缺点，出现了下面 3
+种改进的激活函数。</strong></p>
 <h4><span id="nnleakyrelu"><strong>nn.LeakyReLU</strong></span></h4>
 <ul>
 <li>有一个参数<code>negative_slope</code>：设置负半轴斜率</li>
@@ -427,7 +422,8 @@
 <li>有一个参数<code>init</code>：设置初始斜率，这个斜率是可学习的</li>
 </ul>
 <h4><span id="nnrrelu"><strong>nn.RReLU</strong></span></h4>
-<p>R 是 random 的意思，负半轴每次斜率都是随机取 [lower, upper] 之间的一个数</p>
+<p>R 是 random 的意思，负半轴每次斜率都是随机取 [lower, upper]
+之间的一个数</p>
 <ul>
 <li>lower：均匀分布下限</li>
 <li>upper：均匀分布上限</li>
