@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="总结：  SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。 Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。 Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。 Adam利用梯度的一阶矩估计和二阶矩估计动态调整每">
+    <meta name="description" content="¶总结：  SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。 Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。 Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。 Adam利用梯度的一阶矩估计和二阶矩估计动态调整">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理论基础（3）优化算法">
 <meta property="og:url" content="https://powerlzy.github.io/posts/30588BP/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="总结：  SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。 Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。 Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。 Adam利用梯度的一阶矩估计和二阶矩估计动态调整每">
+<meta property="og:description" content="¶总结：  SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。 Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。 Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。 Adam利用梯度的一阶矩估计和二阶矩估计动态调整">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301638833.gif">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301638673.gif">
@@ -148,11 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">引言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、常见的优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Gradient Descent
-框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Vanilla SGD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 Momentum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4
-Adagrad 【二阶动量 改变学习率】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5
-RMSprop 【定制之前梯度的重要性】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.6 Adam
-【RMS prop + momentum】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">引言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、常见的优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Gradient Descent 框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Vanilla SGD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 Momentum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 Adagrad 【二阶动量 改变学习率】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 RMSprop 【定制之前梯度的重要性】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.6 Adam 【RMS prop + momentum】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></div>
         </div>
         <!--/noindex-->
 
@@ -167,13 +163,13 @@ RMSprop 【定制之前梯度的重要性】</span></a></li><li class="nav-item 
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -317,124 +313,95 @@ RMSprop 【定制之前梯度的重要性】</span></a></li><li class="nav-item 
 </ul>
 <h4><span id="引言"><strong>引言</strong></span></h4>
 <p><strong>最优化问题</strong>是计算数学中最为重要的研究方向之一。而在深度学习领域，优化算法的选择也是一个模型的重中之重。即使在数据集和模型架构完全相同的情况下，采用不同的优化算法，也很可能导致截然不同的训练效果。</p>
-<p>梯度下降是目前神经网络中使用最为广泛的优化算法之一。为了弥补朴素梯度下降的种种缺陷，研究者们发明了一系列变种算法，从最初的
-SGD (随机梯度下降) 逐步演进到
-NAdam。<strong>然而，许多学术界最为前沿的文章中，都并没有一味使用
-Adam/NAdam 等公认“好用”的自适应算法，很多甚至还选择了最为初级的 SGD 或者
-SGD with Momentum 等</strong>。</p>
+<p>梯度下降是目前神经网络中使用最为广泛的优化算法之一。为了弥补朴素梯度下降的种种缺陷，研究者们发明了一系列变种算法，从最初的 SGD (随机梯度下降) 逐步演进到 NAdam。<strong>然而，许多学术界最为前沿的文章中，都并没有一味使用 Adam/NAdam 等公认“好用”的自适应算法，很多甚至还选择了最为初级的 SGD 或者 SGD with Momentum 等</strong>。</p>
 <span id="more"></span>
 <h3><span id="一-常见的优化算法">一、常见的优化算法</span></h3>
-<h4><span id="11-gradient-descent框架"><strong>1.1 Gradient Descent</strong>
-框架</span></h4>
-<p><font color="red">梯度下降是指,在给定待优化的模型参数 <span class="math inline">\(\theta \in \mathbb{R}^d\)</span> 和目标函数 <span class="math inline">\(J(\theta)\)</span> 后, 算法通过沿梯度 <span class="math inline">\(\nabla_\theta J(\theta)\)</span> 的相反方向更新
-<span class="math inline">\(\theta\)</span> 来最小化 <span class="math inline">\(J(\theta)\)</span> 。</font>学习率 <span class="math inline">\(\eta\)</span>
-决定了每一时刻的更新步长。对于每一个时刻 <span class="math inline">\(t\)</span>, 我们可以用下述步骤描述梯
-度下降的流程：</p>
-<ol type="1">
-<li>计算目标函数关于参数的梯度 <span class="math display">\[
-g_t=\nabla_\theta J(\theta)
-\]</span> <strong>(2) 根据历史梯度计算一阶和二阶动量</strong> <span class="math display">\[
-\begin{aligned}
-&amp; m_t=\phi\left(g_1, g_2, \cdots, g_t\right) \\
-&amp; v_t=\psi\left(g_1, g_2, \cdots, g_t\right)
-\end{aligned}
-\]</span></li>
-<li>更新模型参数 <span class="math display">\[
-\theta_{t+1}=\theta_t-\frac{1}{\sqrt{v_t+\epsilon}} m_t
-\]</span> 其中, <span class="math inline">\(\epsilon\)</span>
-为平滑项，防止分母为零，通常取 1e-8。</li>
-</ol>
+<h4><span id="11-gradient-descent-框架"><strong>1.1 Gradient Descent</strong> 框架</span></h4>
+<p><font color="red">梯度下降是指,在给定待优化的模型参数 $\theta \in \mathbb{R}^d$ 和目标函数 $J(\theta)$ 后, 算法通过沿梯度 $\nabla_\theta J(\theta)$ 的相反方向更新 $\theta$ 来最小化 $J(\theta)$ 。</font>学习率 $\eta$ 决定了每一时刻的更新步长。对于每一个时刻 $t$, 我们可以用下述步骤描述梯 度下降的流程：</p>
+<p>(1) 计算目标函数关于参数的梯度<br>
+$$<br>
+g_t=\nabla_\theta J(\theta)<br>
+$$<br>
+<strong>(2) 根据历史梯度计算一阶和二阶动量</strong><br>
+$$<br>
+\begin{aligned}<br>
+&amp; m_t=\phi\left(g_1, g_2, \cdots, g_t\right) \<br>
+&amp; v_t=\psi\left(g_1, g_2, \cdots, g_t\right)<br>
+\end{aligned}<br>
+$$<br>
+(3) 更新模型参数<br>
+$$<br>
+\theta_{t+1}=\theta_t-\frac{1}{\sqrt{v_t+\epsilon}} m_t<br>
+$$<br>
+其中, $\epsilon$ 为平滑项，防止分母为零，通常取 1e-8。</p>
 <h4><span id="12-vanilla-sgd">1.2 Vanilla SGD</span></h4>
-<p><strong>朴素 SGD (Stochastic Gradient Descent)
-最为简单，没有动量的概念</strong>，即 <span class="math display">\[
-m_t=\eta g_t
-\]</span></p>
-<p><span class="math display">\[
-v_t=I^2
-\]</span></p>
-<p><span class="math display">\[
-\epsilon=0
-\]</span></p>
-<p>这时，更新步骤就是最简单的 <span class="math display">\[
-\theta_{i+1}=\theta_t-\eta g_t
-\]</span> <strong>SGD 的缺点在于收玫速度慢,
-可能在鞍点处震荡</strong>。并且, 如何合理的选择学习率是 SGD
-的一大难点。</p>
+<p><strong>朴素 SGD (Stochastic Gradient Descent) 最为简单，没有动量的概念</strong>，即<br>
+$$<br>
+m_t=\eta g_t<br>
+$$</p>
+<p>$$<br>
+v_t=I^2<br>
+$$</p>
+<p>$$<br>
+\epsilon=0<br>
+$$</p>
+<p>这时，更新步骤就是最简单的<br>
+$$<br>
+\theta_{i+1}=\theta_t-\eta g_t<br>
+$$<br>
+<strong>SGD 的缺点在于收玫速度慢, 可能在鞍点处震荡</strong>。并且, 如何合理的选择学习率是 SGD 的一大难点。</p>
 <h4><span id="13-momentum"><font color="red">1.3 Momentum</font></span></h4>
-<p>SGD 在遇到沟壑时容易陷入震荡。为此，可以为其引入动量 Momentum，加速
-SGD 在正确方向的下降并抑制震荡。</p>
-<p><span class="math display">\[
-m_t=\gamma m_{t-1}+\eta g_t
-\]</span> SGD-M 在原步长之上，增加了与上一时刻步长相关的 <span class="math inline">\(\gamma m_{t-1} ， \gamma\)</span> 通常取 0.9
-左右。<strong><font color="red">这意味着参数更新方向不仅由当前的梯度决定，也与此前累积的下降方向有关。这使得参数中那些梯度方向变化不大的维度可以加速更新，并减少梯度方向变化较大的维度上的更新幅度</font>。由此产生了加速收敛和减小震荡的效果。</strong>从图中可以看出，引入动量有效的加速了梯度下降收敛过程。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301638833.gif" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301638673.gif" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="14adagrad-二阶动量-改变学习率"><font color="red">1.4
-Adagrad</font> 【二阶动量 改变学习率】</span></h4>
-<p>SGD、SGD-M 和 NAG 均是以相同的学习率去更新 <span class="math inline">\(\theta\)</span>
-的各个分量。<strong>而深度学习模型中往往涉及大量的参数,
-不同参数的更新频率往往有所区别</strong>。对于更新不频繁的参数（典型例子：更新
-word embedding 中的低频词）， 我们希望单次步长更大, 多学习一些知识;
-对于更新频繁的参数, 我们则希望步长较小, 使得学习到的参数更稳定,
-不至于被单个样本影响太多。</p>
-<p>Adagrad算法即可达到此效果。其引入了二阶动量: <span class="math display">\[
-v_t=\operatorname{diag}\left(\sum_{i=1}^t g_{i, 1}^2, \sum_{i=1}^t g_{i,
-2}^2, \cdots, \sum_{i=1}^t g_{i, d}^2\right)
-\]</span> 其中, <span class="math inline">\(v_t \in \mathbb{R}^{d \times
-d}\)</span> 是对角矩阵, 其元素 <span class="math inline">\(v_{t, i
-i}\)</span> 为参数第 <span class="math inline">\(i\)</span>
-维从初始时刻到时刻 <span class="math inline">\(t\)</span>
-的梯度平方和。</p>
-<p>此时, 可以这样理解: 学习率等效为 <span class="math inline">\(\eta /
-\sqrt{v_t+\epsilon}\)</span> 。对于此前频繁更新过的参数,
-其二阶动量的对应分量较大,
-学习率就较小。这一方法在稀疏数据的场景下表现很好。</p>
-<h4><span id="15rmsprop-定制之前梯度的重要性"><font color="red">1.5
-RMSprop</font> 【定制之前梯度的重要性】</span></h4>
-<p>在 Adagrad 中, <span class="math inline">\(v_t\)</span> 是单调递增的,
-使得学习率逐渐递减至 0 , 可能导致训练过程提前结束。为了改进这一缺点,
-<strong>可以考虑在计算二阶动量时不累积全部历史梯度,
-而只关注最近某一时间窗口内的下降梯度</strong>。根据此思想有
-了RMSprop。记 <span class="math inline">\(g_t \odot g_t\)</span> 为
-<span class="math inline">\(g_t^2\)</span> ，有 <span class="math display">\[
-v_t=\gamma v_{t-1}+(1-\gamma) \cdot
-\operatorname{diag}\left(g_t^2\right)
-\]</span> 其二阶动量采用指数移动平均公式计算,
-这样即可避免二阶动量持续累积的问题。和 SGD-M 中的参数类似, <span class="math inline">\(\gamma\)</span> 通常取 0.9 左右。</p>
-<h4><span id="16-adamrms-prop-momentum"><strong><font color="red"> 1.6 Adam
-【RMS prop + momentum】</font></strong></span></h4>
-<p><strong>Adam可以认为是 RMSprop 和 Momentum 的结合</strong>。和
-RMSprop 对二阶动量使用指数移动平均类似, Adam
-中对一阶动量也是用指数移动平均计算。 <span class="math display">\[
-\begin{gathered}
-m_t=\eta\left[\beta_1 m_{t-1}+\left(1-\beta_1\right) g_t\right] \\
-v_t=\beta_2 v_{t-1}+\left(1-\beta_2\right) \cdot
-\operatorname{diag}\left(g_t^2\right)
-\end{gathered}
-\]</span> 其中, 初值 <span class="math display">\[
-\begin{aligned}
-&amp; m_0=0 \\
-&amp; v_0=0
-\end{aligned}
-\]</span> 注意到, 在迭代初始阶段, <span class="math inline">\(m_t\)</span> 和 <span class="math inline">\(v_t\)</span> 有一个向初值的偏移（过多的偏向了 0)
-。因此, 可以对一阶和二阶动量做偏置校正 (bias correction), <span class="math display">\[
-\begin{aligned}
-&amp; \hat{m}_t=\frac{m_t}{1-\beta_1^t} \\
-&amp; \hat{v}_t=\frac{v_t}{1-\beta_2^t}
-\end{aligned}
-\]</span> 再进行更新, <span class="math display">\[
-\theta_{t+1}=\theta_t-\frac{1}{\sqrt{\hat{v}_t}+\epsilon} \hat{m}_t
-\]</span> 可以保证迭代较为平稳。</p>
+<p>SGD 在遇到沟壑时容易陷入震荡。为此，可以为其引入动量 Momentum，加速 SGD 在正确方向的下降并抑制震荡。</p>
+<p>$$<br>
+m_t=\gamma m_{t-1}+\eta g_t<br>
+$$<br>
+SGD-M 在原步长之上，增加了与上一时刻步长相关的 $\gamma m_{t-1} ， \gamma$ 通常取 0.9 左右。**<font color="red">这意味着参数更新方向不仅由当前的梯度决定，也与此前累积的下降方向有关。这使得参数中那些梯度方向变化不大的维度可以加速更新，并减少梯度方向变化较大的维度上的更新幅度</font>。由此产生了加速收敛和减小震荡的效果。**从图中可以看出，引入动量有效的加速了梯度下降收敛过程。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301638833.gif" alt="img"></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301638673.gif" alt="img"></p>
+<h4><span id="14-adagrad-二阶动量-改变学习率"><font color="red">1.4 Adagrad</font> 【二阶动量 改变学习率】</span></h4>
+<p>SGD、SGD-M 和 NAG 均是以相同的学习率去更新 $\theta$ 的各个分量。<strong>而深度学习模型中往往涉及大量的参数, 不同参数的更新频率往往有所区别</strong>。对于更新不频繁的参数（典型例子：更新 word embedding 中的低频词）， 我们希望单次步长更大, 多学习一些知识; 对于更新频繁的参数, 我们则希望步长较小, 使得学习到的参数更稳定, 不至于被单个样本影响太多。</p>
+<p>Adagrad算法即可达到此效果。其引入了二阶动量:<br>
+$$<br>
+v_t=\operatorname{diag}\left(\sum_{i=1}^t g_{i, 1}^2, \sum_{i=1}^t g_{i, 2}^2, \cdots, \sum_{i=1}^t g_{i, d}^2\right)<br>
+$$<br>
+其中, $v_t \in \mathbb{R}^{d \times d}$ 是对角矩阵, 其元素 $v_{t, i i}$ 为参数第 $i$ 维从初始时刻到时刻 $t$ 的梯度平方和。</p>
+<p>此时, 可以这样理解: 学习率等效为 $\eta / \sqrt{v_t+\epsilon}$ 。对于此前频繁更新过的参数, 其二阶动量的对应分量较大, 学习率就较小。这一方法在稀疏数据的场景下表现很好。</p>
+<h4><span id="15-rmsprop-定制之前梯度的重要性"><font color="red">1.5 RMSprop</font> 【定制之前梯度的重要性】</span></h4>
+<p>在 Adagrad 中, $v_t$ 是单调递增的, 使得学习率逐渐递减至 0 , 可能导致训练过程提前结束。为了改进这一缺点, <strong>可以考虑在计算二阶动量时不累积全部历史梯度, 而只关注最近某一时间窗口内的下降梯度</strong>。根据此思想有 了RMSprop。记 $g_t \odot g_t$ 为 $g_t^2$ ，有<br>
+$$<br>
+v_t=\gamma v_{t-1}+(1-\gamma) \cdot \operatorname{diag}\left(g_t^2\right)<br>
+$$<br>
+其二阶动量采用指数移动平均公式计算, 这样即可避免二阶动量持续累积的问题。和 SGD-M 中的参数类似, $\gamma$ 通常取 0.9 左右。</p>
+<h4><span id="16-adam-rms-prop-momentum"><strong><font color="red"> 1.6 Adam 【RMS prop + momentum】</font></strong></span></h4>
+<p><strong>Adam可以认为是 RMSprop 和 Momentum 的结合</strong>。和 RMSprop 对二阶动量使用指数移动平均类似, Adam 中对一阶动量也是用指数移动平均计算。<br>
+$$<br>
+\begin{gathered}<br>
+m_t=\eta\left[\beta_1 m_{t-1}+\left(1-\beta_1\right) g_t\right] \<br>
+v_t=\beta_2 v_{t-1}+\left(1-\beta_2\right) \cdot \operatorname{diag}\left(g_t^2\right)<br>
+\end{gathered}<br>
+$$<br>
+其中, 初值<br>
+$$<br>
+\begin{aligned}<br>
+&amp; m_0=0 \<br>
+&amp; v_0=0<br>
+\end{aligned}<br>
+$$<br>
+注意到, 在迭代初始阶段, $m_t$ 和 $v_t$ 有一个向初值的偏移（过多的偏向了 0) 。因此, 可以对一阶和二阶动量做偏置校正 (bias correction),<br>
+$$<br>
+\begin{aligned}<br>
+&amp; \hat{m}_t=\frac{m_t}{1-\beta_1^t} \<br>
+&amp; \hat{v}<em>t=\frac{v_t}{1-\beta_2^t}<br>
+\end{aligned}<br>
+$$<br>
+再进行更新,<br>
+$$<br>
+\theta</em>{t+1}=\theta_t-\frac{1}{\sqrt{\hat{v}_t}+\epsilon} \hat{m}_t<br>
+$$<br>
+可以保证迭代较为平稳。</p>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li>从 SGD 到 Adam ——
-深度学习优化算法概览(一)：https://zhuanlan.zhihu.com/p/32626442</li>
+<li>从 SGD 到 Adam —— 深度学习优化算法概览(一)：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32626442">https://zhuanlan.zhihu.com/p/32626442</a></li>
 </ul>
 
     </div>

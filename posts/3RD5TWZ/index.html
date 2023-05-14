@@ -159,13 +159,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -301,10 +301,9 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3><span id="一-random-forestbagging">一 、Random Forest（Bagging）</span></h3>
-<p><strong>Random Forest（随机森林），用随机的方式建立一个森林。RF
-算法由很多决策树组成，每一棵决策树之间没有关联。建立完森林后，当有新样本进入时，每棵决策树都会分别进行判断，然后基于投票法给出分类结果。</strong></p>
+<p><strong>Random Forest（随机森林），用随机的方式建立一个森林。RF 算法由很多决策树组成，每一棵决策树之间没有关联。建立完森林后，当有新样本进入时，每棵决策树都会分别进行判断，然后基于投票法给出分类结果。</strong></p>
 <p>对于分类问题，其输出的类别是由个别树输出的众数所决定的。在回归问题中，把每一棵决策树的输出进行平均得到最终的回归结果。</p>
-<ol type="1">
+<ol>
 <li>随机森林具有<strong>防止过拟合能力</strong>，精度比大多数单个算法要好；</li>
 <li>随机森林分类器可以<strong>处理缺失值</strong>；</li>
 <li><strong>于有袋外数据(OOB)，可以在模型生成过程中取得真实误差的无偏估计，且不损失训练数据量在训练过程中，能够检测到feature间的互相影响，且可以得出feature的重要性，具有一定参考意义；</strong></li>
@@ -312,52 +311,48 @@
 <li>具有一定的特征选择能力。</li>
 </ol>
 <h4><span id="11-思想">1.1 思想</span></h4>
-<p><strong>Random Forest (随机森林）是 Bagging 的扩展变体,
-它在以决策树为基学习器构建 Bagging 集成的基础上, 进
-一步在决策树的训练过程中引入了随机特征选择，因此可以概括 RF
-包括四个部分</strong>：</p>
+<p><strong>Random Forest (随机森林）是 Bagging 的扩展变体, 它在以决策树为基学习器构建 Bagging 集成的基础上, 进 一步在决策树的训练过程中引入了随机特征选择，因此可以概括 RF 包括四个部分</strong>：</p>
 <ul>
-<li><strong>样本随机</strong>：假设训练数据集共有 <span class="math inline">\(M\)</span> 个对象的数据,
-从样本数据中采取有放回（Boostrap) 随机抽取 <span class="math inline">\(N\)</span> 个 样本 (因为是有放回抽取,
-有些数据可能被选中多次, 有些数据可能不被选上), 每一次取出的样本不完全相
-同，这些样本组成了决策树的训练数据集；</li>
-<li><strong>特征随机</strong>：假设每个样本数据都有 <span class="math inline">\(K\)</span> 个特征, 从所有特征中随机地选取 <span class="math inline">\(k(k&lt;=K)\)</span> 个特征, 选择最佳分割
-属性作为节点建立CART决策树, 决策树成长期间 <span class="math inline">\(k\)</span>
-的大小始终不变（<strong>在Python中构造随机森林模型的时
-候，默认取特征的个数 <span class="math inline">\(k\)</span> 是 <span class="math inline">\(K\)</span> 的平方根, 即 <span class="math inline">\(\sqrt{K}\)</span></strong> );</li>
-<li>重复前面的步骤, 建立 <span class="math inline">\(m\)</span>
-棵CART树, 这些树都要完全的成长且不被修剪, 这些树形成了森林;</li>
-<li>根据这些树的预测结果进行投票,
-决定样本的最后预测类别。（针对回归模型, 是根据这些决策树模型的平均
-值来获取最终的结果)</li>
+<li><strong>样本随机</strong>：假设训练数据集共有 $M$ 个对象的数据, 从样本数据中采取有放回（Boostrap) 随机抽取 $N$ 个 样本 (因为是有放回抽取, 有些数据可能被选中多次, 有些数据可能不被选上), 每一次取出的样本不完全相 同，这些样本组成了决策树的训练数据集；</li>
+<li><strong>特征随机</strong>：假设每个样本数据都有 $K$ 个特征, 从所有特征中随机地选取 $k(k&lt;=K)$ 个特征, 选择最佳分割 属性作为节点建立CART决策树, 决策树成长期间 $k$ 的大小始终不变（<strong>在Python中构造随机森林模型的时 候，默认取特征的个数 $k$ 是 $K$ 的平方根, 即 $\sqrt{K}$</strong> );</li>
+<li>重复前面的步骤, 建立 $m$ 棵CART树, 这些树都要完全的成长且不被修剪, 这些树形成了森林;</li>
+<li>根据这些树的预测结果进行投票, 决定样本的最后预测类别。（针对回归模型, 是根据这些决策树模型的平均 值来获取最终的结果)</li>
 </ul>
-<p>随机选择样本和 Bagging 相同，采用的是 Bootstrap
-自助采样法；<strong>随机选择特征是指在每个节点在分裂过程中都是随机选择特征的</strong>（区别与每棵树随机选择一批特征）。</p>
+<p>随机选择样本和 Bagging 相同，采用的是 Bootstrap 自助采样法；<strong>随机选择特征是指在每个节点在分裂过程中都是随机选择特征的</strong>（区别与每棵树随机选择一批特征）。</p>
 <blockquote>
 <p>这种随机性导致随机森林的偏差会有稍微的增加（相比于单棵不随机树），但是由于随机森林的“平均”特性，会使得它的方差减小，而且方差的减小补偿了偏差的增大，因此总体而言是更好的模型。</p>
 </blockquote>
 <p>随机采样由于引入了两种采样方法保证了随机性，所以每棵树都是最大可能的进行生长就算不剪枝也不会出现过拟合。</p>
 <h4><span id="12-处理缺失值的方法">1.2 处理缺失值的方法</span></h4>
 <ul>
-<li>方法一（na.roughfix）简单粗暴，对于训练集,同一个class下的数据，如果是<strong>分类变量(categorical
-var)缺失，用众数补上</strong>，如果是<strong>连续型变量(numerical
-var)缺失，用中位数补</strong>。</li>
-<li>方法二（rfImpute）这个方法计算量大，至于比方法一好坏？不好判断。先用na.roughfix补上缺失值，然后构建森林并计算proximity
-matrix，再回头看缺失值，如果是分类变量，则用没有缺失的观测实例的proximity中的权重进行投票。如果是连续型变量，则用<strong>proximity矩阵进行加权平均的方法补缺失值</strong>。然后迭代4-6次，这个补缺失值的思想和KNN有些类似。</li>
+<li>方法一（na.roughfix）简单粗暴，对于训练集,同一个class下的数据，如果是<strong>分类变量(categorical var)缺失，用众数补上</strong>，如果是<strong>连续型变量(numerical var)缺失，用中位数补</strong>。</li>
+<li>方法二（rfImpute）这个方法计算量大，至于比方法一好坏？不好判断。先用na.roughfix补上缺失值，然后构建森林并计算proximity matrix，再回头看缺失值，如果是分类变量，则用没有缺失的观测实例的proximity中的权重进行投票。如果是连续型变量，则用<strong>proximity矩阵进行加权平均的方法补缺失值</strong>。然后迭代4-6次，这个补缺失值的思想和KNN有些类似。</li>
 </ul>
 <h4><span id="13-优缺点">1.3 优缺点</span></h4>
 <h5><span id="优点"><strong>优点</strong>：</span></h5>
-<ol type="1">
-<li><p><strong>模型准确率高</strong>：随机森林既可以处理分类问题，也可以处理回归问题，即使存在部分数据缺失的情况，随机森林也能保持很高的分类精度。</p></li>
-<li><p><strong>能够处理数量庞大的高维度的特征</strong>，且不需要进行降维（因为特征子集是随机选择的）；</p></li>
-<li><p><strong>易于并行化</strong>，在大数据集上有很大的优势；</p></li>
-<li><p><strong>可解释性</strong>：可以生成树状结构，判断各个特征的重要性；</p>
+<ol>
+<li>
+<p><strong>模型准确率高</strong>：随机森林既可以处理分类问题，也可以处理回归问题，即使存在部分数据缺失的情况，随机森林也能保持很高的分类精度。</p>
+</li>
+<li>
+<p><strong>能够处理数量庞大的高维度的特征</strong>，且不需要进行降维（因为特征子集是随机选择的）；</p>
+</li>
+<li>
+<p><strong>易于并行化</strong>，在大数据集上有很大的优势；</p>
+</li>
+<li>
+<p><strong>可解释性</strong>：可以生成树状结构，判断各个特征的重要性；</p>
 <blockquote>
 <p>在sklearn中，随机森林<strong>基于每棵树分裂时的GINI指数下降量</strong>来判断各个特征的重要性。但是这种方法存在一个问题：当特征是连续的时候或者是类别很多的离散特征时，该方法会将这些特征的重要性增加。</p>
 <p>解决方法：对特征编码，使得特征的取值数量相近。</p>
-</blockquote></li>
-<li><p><strong>对异常值、缺失值不敏感；</strong></p></li>
-<li><p><strong>随机森林有袋外数据（OOB），因此不需要单独划分交叉验证集</strong>。</p></li>
+</blockquote>
+</li>
+<li>
+<p><strong>对异常值、缺失值不敏感；</strong></p>
+</li>
+<li>
+<p><strong>随机森林有袋外数据（OOB），因此不需要单独划分交叉验证集</strong>。</p>
+</li>
 </ol>
 <h5><span id="缺点">缺点：</span></h5>
 <ul>
@@ -371,8 +366,7 @@ matrix，再回头看缺失值，如果是分类变量，则用没有缺失的�
 <ul>
 <li><strong>决策树可以较方便地将样本权重整合到训练过程中，而不需要通过过采样来调整样本权重。</strong></li>
 <li>树的表达能力和泛化能力，<strong>方便调节</strong>（可以通过树的层数来调节）</li>
-<li>样本的扰动对决策树的影响较大，<strong><font color="red">
-因此不同子样本集合生成的决策树基分类器随机性较大。这样的不稳定的分类器更适合作为基分类器。</font></strong>此外树节点分类时随机选择一个特征子集，从中找出最优分裂属性，很好地引入了随机性。</li>
+<li>样本的扰动对决策树的影响较大，**<font color="red"> 因此不同子样本集合生成的决策树基分类器随机性较大。这样的不稳定的分类器更适合作为基分类器。</font>**此外树节点分类时随机选择一个特征子集，从中找出最优分裂属性，很好地引入了随机性。</li>
 </ul>
 <h5><span id="可以将随机森林的基分类器由决策树替换成线性分类器或k-nn吗">可以将随机森林的基分类器，由决策树替换成线性分类器或K-NN吗？</span></h5>
 <p>Bagging主要好处是集成后的方差，比基分类器小。bagging采用的基分类，最好是本身对样本分布较为敏感。而线性分类器和K-NN都是较为稳定的分类器（参数模型？）甚至<strong>可能因为采样，而导致他们再训练中更难收敛，从而增大了集成分类器的偏差。</strong></p>

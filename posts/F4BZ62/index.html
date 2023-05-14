@@ -144,9 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Gradient Boosting
-Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 GBDT 与 Adaboost 的对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">相同：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不同：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.4
-GBDT算法用于分类问题</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Gradient Boosting Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 GBDT 与 Adaboost 的对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">相同：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不同：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.4 GBDT算法用于分类问题</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -161,13 +159,13 @@ GBDT算法用于分类问题</span></a></li></ol></li></ol></div>
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -284,7 +282,7 @@ GBDT算法用于分类问题</span></a></li></ol></li></ol></div>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.3k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -302,174 +300,123 @@ GBDT算法用于分类问题</span></a></li></ol></li></ol></div>
     
     
     <div class="post-body" itemprop="articleBody">
-        <h3><span id="一-gradient-boostingdecision-tree">一、Gradient Boosting
-Decision Tree</span></h3>
+        <h3><span id="一-gradient-boosting-decision-tree">一、Gradient Boosting Decision Tree</span></h3>
 <blockquote>
-<p>https://www.cnblogs.com/modifyrong/p/7744987.html</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/modifyrong/p/7744987.html">https://www.cnblogs.com/modifyrong/p/7744987.html</a></p>
 </blockquote>
-<p><strong>GBDT（Gradient Boosting Decision
-Tree）是一种迭代的决策树算法，该算法由多棵决策树组成，从名字中我们可以看出来它是属于
-Boosting 策略。GBDT 是被公认的泛化能力较强的算法。</strong></p>
+<p><strong>GBDT（Gradient Boosting Decision Tree）是一种迭代的决策树算法，该算法由多棵决策树组成，从名字中我们可以看出来它是属于 Boosting 策略。GBDT 是被公认的泛化能力较强的算法。</strong></p>
 <h4><span id="11-思想">1.1 思想</span></h4>
-<p><strong>GBDT是boosting算法的一种，按照boosting的思想，在GBDT算法的每一步，用一棵决策树去拟合当前学习器的残差，获得一个新的弱学习器。将这每一步的决策树组合起来，就得到了一个强学习器</strong>。GBDT
-由三个概念组成：Regression Decision Tree（即 DT）、Gradient Boosting（即
-GB），和 Shrinkage（一个重要演变）</p>
-<h5><span id="111-回归树regressiondecision-tree">1.1.1 回归树（Regression
-Decision Tree）</span></h5>
-<p>如果认为 GBDT
-由很多分类树那就大错特错了（虽然调整后也可以分类）。对于分类树而言，其值加减无意义（如性别），而对于回归树而言，其值加减才是有意义的（如说年龄）。GBDT
-的核心在于累加所有树的结果作为最终结果，所以 GBDT
-中的树都是<strong>回归树</strong>，不是分类树，这一点相当重要。</p>
-<p><strong><font color="red">
-回归树在分枝时会穷举每一个特征的每个阈值以找到最好的分割点，衡量标准是最小化均方误差。</font></strong></p>
-<h5><span id="112-梯度迭代gradientboosting"><strong>1.1.2 梯度迭代（Gradient
-Boosting）</strong></span></h5>
-<p>上面说到 GBDT 的核心在于累加所有树的结果作为最终结果，GBDT
-的每一棵树都是以之前树得到的<strong>残差【负梯度】</strong>来更新目标值，这样每一棵树的<strong>值加起来</strong>即为
-GBDT 的预测值。</p>
-<p>模型的预测值可以表示为： <span class="math display">\[
-F_{k}(x)=\sum_{i=1}^{k} f_{i}(x)
-\]</span> <span class="math inline">\(f_i(x)\)</span>
-为基模型与其权重的乘积, 模型的训练目标是使预测值 <span class="math inline">\(F_k(x)\)</span> 逼近真实值 <span class="math inline">\(\mathrm{y}\)</span>,
-也就是说要让每个基模型的预测值逼近各自要预测的部分真实值。贪心的解决手段：每次只训练一个基模型。那么,
-现在改写整体模型为迭代式: <span class="math display">\[
-F_{k}(x)=F_{k-1}(x)+f_{k}(x)
-\]</span>
-其实很简单，其<strong>残差其实是最小均方损失函数关于预测值的反向梯度(划重点)</strong>：<strong>用负梯度的解作为样本新的真实值</strong>。基于残差
-GBDT 容易对异常值敏感。 <span class="math display">\[
--\frac{\partial\left(\frac{1}{2}\left(y-F_{k}(x)\right)^{2}\right)}{\partial
-F_{k}(x)}=y-F_{k}(x)
-\]</span> 很明显后续的模型会对第 4
-个值关注过多，这不是一种好的现象，所以一般回归类的损失函数会用<strong>绝对损失或者
-Huber 损失函数</strong>来代替平方损失函数。 <span class="math display">\[
-L(y, F)=|y-F|
-\]</span></p>
-<p><span class="math display">\[
-L(y, F)= \begin{cases}\frac{1}{2}(y-F)^{2} &amp; |y-F| \leq \delta \\
-\delta(|y-F|-\delta / 2) &amp; |y-F|&gt;\delta\end{cases}
-\]</span></p>
-<p>GBDT 的 Boosting 不同于 Adaboost 的 Boosting，<strong>GBDT
-的每一步残差计算其实变相地增大了被分错样本的权重，而对与分对样本的权重趋于
-0</strong>，这样后面的树就能专注于那些被分错的样本。</p>
+<p><strong>GBDT是boosting算法的一种，按照boosting的思想，在GBDT算法的每一步，用一棵决策树去拟合当前学习器的残差，获得一个新的弱学习器。将这每一步的决策树组合起来，就得到了一个强学习器</strong>。GBDT 由三个概念组成：Regression Decision Tree（即 DT）、Gradient Boosting（即 GB），和 Shrinkage（一个重要演变）</p>
+<h5><span id="111-回归树regression-decision-tree">1.1.1 回归树（Regression Decision Tree）</span></h5>
+<p>如果认为 GBDT 由很多分类树那就大错特错了（虽然调整后也可以分类）。对于分类树而言，其值加减无意义（如性别），而对于回归树而言，其值加减才是有意义的（如说年龄）。GBDT 的核心在于累加所有树的结果作为最终结果，所以 GBDT 中的树都是<strong>回归树</strong>，不是分类树，这一点相当重要。</p>
+<p><strong><font color="red"> 回归树在分枝时会穷举每一个特征的每个阈值以找到最好的分割点，衡量标准是最小化均方误差。</font></strong></p>
+<h5><span id="112-梯度迭代gradient-boosting"><strong>1.1.2 梯度迭代（Gradient Boosting）</strong></span></h5>
+<p>上面说到 GBDT 的核心在于累加所有树的结果作为最终结果，GBDT 的每一棵树都是以之前树得到的<strong>残差【负梯度】<strong>来更新目标值，这样每一棵树的</strong>值加起来</strong>即为 GBDT 的预测值。</p>
+<p>模型的预测值可以表示为：<br>
+$$<br>
+F_{k}(x)=\sum_{i=1}^{k} f_{i}(x)<br>
+$$<br>
+$f_i(x)$ 为基模型与其权重的乘积, 模型的训练目标是使预测值 $F_k(x)$ 逼近真实值 $\mathrm{y}$, 也就是说要让每个基模型的预测值逼近各自要预测的部分真实值。贪心的解决手段：每次只训练一个基模型。那么, 现在改写整体模型为迭代式:<br>
+$$<br>
+F_{k}(x)=F_{k-1}(x)+f_{k}(x)<br>
+$$<br>
+其实很简单，其<strong>残差其实是最小均方损失函数关于预测值的反向梯度(划重点)</strong>：<strong>用负梯度的解作为样本新的真实值</strong>。基于残差 GBDT 容易对异常值敏感。<br>
+$$<br>
+-\frac{\partial\left(\frac{1}{2}\left(y-F_{k}(x)\right)^{2}\right)}{\partial F_{k}(x)}=y-F_{k}(x)<br>
+$$<br>
+很明显后续的模型会对第 4 个值关注过多，这不是一种好的现象，所以一般回归类的损失函数会用<strong>绝对损失或者 Huber 损失函数</strong>来代替平方损失函数。<br>
+$$<br>
+L(y, F)=|y-F|<br>
+$$</p>
+<p>$$<br>
+L(y, F)= \begin{cases}\frac{1}{2}(y-F)^{2} &amp; |y-F| \leq \delta \ \delta(|y-F|-\delta / 2) &amp; |y-F|&gt;\delta\end{cases}<br>
+$$</p>
+<p>GBDT 的 Boosting 不同于 Adaboost 的 Boosting，<strong>GBDT 的每一步残差计算其实变相地增大了被分错样本的权重，而对与分对样本的权重趋于 0</strong>，这样后面的树就能专注于那些被分错的样本。</p>
 <blockquote>
-<p><strong><font color="red">
-最后补充一点拟合残差的问题，无论损失函数是什么形式，每个决策树拟合的都是负梯度。只有当损失函数是均方损失时，负梯度刚好是残差</font></strong>，也就是说<strong>拟合残差只是针对均方损失的特例</strong>，并不能说GBDT的迭代的过程是拟合残差。</p>
+<p><strong><font color="red"> 最后补充一点拟合残差的问题，无论损失函数是什么形式，每个决策树拟合的都是负梯度。只有当损失函数是均方损失时，负梯度刚好是残差</font></strong>，也就是说<strong>拟合残差只是针对均方损失的特例</strong>，并不能说GBDT的迭代的过程是拟合残差。</p>
 </blockquote>
-<h5><span id="113缩减shrinkage添加权重-基数增大"><strong>1.1.3
-缩减（Shrinkage）</strong>添加权重、基数增大</span></h5>
+<h5><span id="113-缩减shrinkage添加权重-基数增大">**1.1.3 缩减（Shrinkage）**添加权重、基数增大</span></h5>
 <blockquote>
-<p><strong><font color="red">
-gbdt中的步长和参数中的学习率作用是什么？详细讲一讲？</font></strong></p>
+<p><strong><font color="red"> gbdt中的步长和参数中的学习率作用是什么？详细讲一讲？</font></strong></p>
 <ul>
 <li>参数中的学习率用于梯度下降</li>
 </ul>
 </blockquote>
-<p>Shrinkage
-的思想认为，每走一小步逐渐逼近结果的效果要比每次迈一大步很快逼近结果的方式更容易避免过拟合。即它并不是完全信任每一棵残差树。</p>
-<p>Shrinkage
-不直接用残差修复误差，而是只修复一点点，把大步切成小步。<strong>本质上
-Shrinkage 为每棵树设置了一个 weight，累加时要乘以这个 weight，当 weight
-降低时，基模型数会配合增大</strong>。</p>
+<p>Shrinkage 的思想认为，每走一小步逐渐逼近结果的效果要比每次迈一大步很快逼近结果的方式更容易避免过拟合。即它并不是完全信任每一棵残差树。</p>
+<p>Shrinkage 不直接用残差修复误差，而是只修复一点点，把大步切成小步。<strong>本质上 Shrinkage 为每棵树设置了一个 weight，累加时要乘以这个 weight，当 weight 降低时，基模型数会配合增大</strong>。</p>
 <h4><span id="12-优缺点">1.2 优缺点</span></h4>
 <h5><span id="优点"><strong>优点</strong></span></h5>
-<ol type="1">
+<ol>
 <li>可以自动进行特征组合，拟合非线性数据；在稠密数据集上泛化能力和表达能力很好。</li>
 <li>可以灵活处理各种类型的数据，不需要对数据预处理和归一化。</li>
 <li>预测可以并行，计算数据很快。</li>
 </ol>
 <h5><span id="缺点"><strong>缺点</strong></span></h5>
-<ol type="1">
+<ol>
 <li>对异常点敏感。</li>
 </ol>
 <h4><span id="13-gbdt-与-adaboost-的对比">1.3 GBDT 与 Adaboost 的对比</span></h4>
 <h4><span id="相同"><strong>相同：</strong></span></h4>
-<ol type="1">
+<ol>
 <li>都是 Boosting 家族成员，使用弱分类器；</li>
 <li>都使用前向分布算法；</li>
 </ol>
 <h4><span id="不同"><strong>不同：</strong></span></h4>
-<ol type="1">
-<li><strong>迭代思路不同</strong>：Adaboost
-是通过提升错分数据点的权重来弥补模型的不足（利用错分样本），而 GBDT
-是通过算梯度来弥补模型的不足（利用残差）；</li>
-<li><strong>损失函数不同</strong>：AdaBoost
-采用的是<strong>指数损失</strong>，GBDT
-使用的是<strong>绝对损失</strong>或者 <strong>Huber
-损失函数</strong>；</li>
+<ol>
+<li><strong>迭代思路不同</strong>：Adaboost 是通过提升错分数据点的权重来弥补模型的不足（利用错分样本），而 GBDT 是通过算梯度来弥补模型的不足（利用残差）；</li>
+<li><strong>损失函数不同</strong>：AdaBoost 采用的是<strong>指数损失</strong>，GBDT 使用的是<strong>绝对损失</strong>或者 <strong>Huber 损失函数</strong>；</li>
 </ol>
-<h4><span id="14gbdt算法用于分类问题"><strong><font color="red"> 1.4
-GBDT算法用于分类问题</font></strong></span></h4>
+<h4><span id="14-gbdt算法用于分类问题"><strong><font color="red"> 1.4 GBDT算法用于分类问题</font></strong></span></h4>
 <blockquote>
-<p>https://zhuanlan.zhihu.com/p/46445201</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/46445201">https://zhuanlan.zhihu.com/p/46445201</a></p>
 </blockquote>
 <p>将GBDT应用于回归问题，相对来说比较容易理解。因为<strong>回归问题的损失函数一般为平方差损失函数</strong>，这时的残差，恰好等于预测值与实际值之间的差值。每次拿一棵决策树去拟合这个差值，使得残差越来越小，这个过程还是比较intuitive的。</p>
-<p><strong><font color="red">
-将GBDT用于分类问题，类似于逻辑回归、FM模型用于分类问题，其实是在用一个线性模型或者包含交叉项的非
-线性模型, 去拟合所谓的对数几率 <span class="math inline">\(\ln
-\frac{p}{1-p}\)</span> 。</font></strong>而GBDT也是一样,
-只是用一系列的梯度提升树去拟合这个对数几 率,
-实际上最终得到的是一系列CART回归树。其分类模型可以表达为： <span class="math display">\[
-P(y=1 \mid x)=\frac{1}{1+e^{-\sum_{m=0}^M h_m(x)}}
-\]</span> 其中 <span class="math inline">\(h_m(x)\)</span>
-就是学习到的决策树。清楚了这一点之后, 我们便可以参考逻辑回归, 单样本
-<span class="math inline">\(\left(x_i, y_i\right)\)</span> 的损失函数可
-以表达为<strong>交叉熵</strong>： <span class="math display">\[
-\operatorname{loss}\left(x_i, y_i\right)=-y_i \log
-\hat{y_i}-\left(1-y_i\right) \log \left(1-\hat{y_i}\right)
-\]</span> 假设第 <span class="math inline">\(\mathrm{K}\)</span>
-步迭代之后当前学习器为 <span class="math inline">\(F(x)=\sum_{m=0}^k
-h_m(x)\)</span>, 将 <span class="math inline">\(\hat{y}_i\)</span>
-的表达式带入之后, 可将损失函数写为: <span class="math display">\[
-\operatorname{loss}\left(x_i, y_i \mid F(x)\right)=y_i \log
-\left(1+e^{-F\left(x_i\right)}\right)+\left(1-y_i\right)\left[F\left(x_i\right)+\log
-\left(1+e^{-F\left(x_i\right)}\right)\right]
-\]</span> <strong>可以求得损失函数相对于当前学习器的负梯度为</strong>：
-<span class="math display">\[
--\left.\frac{\partial l o s s}{\partial F(x)}\right|_{x_i,
-y_i}=y_i-\frac{1}{1+e^{-F\left(x_i\right)}}=y_i-\hat{y_i}
-\]</span> 可以看到, 同回归问题很类似, 下一棵决策树的训练样本为: <span class="math inline">\(\left\{x_i,
-y_i-\hat{y}_i\right\}_{i=1}^n\)</span>, 其所需要拟合的残差为真实标签
-与预测概率之差。于是便有下面GBDT应用于二分类的算法：</p>
+<p><strong><font color="red"> 将GBDT用于分类问题，类似于逻辑回归、FM模型用于分类问题，其实是在用一个线性模型或者包含交叉项的非 线性模型, 去拟合所谓的对数几率 $\ln \frac{p}{1-p}$ 。</font><strong>而GBDT也是一样, 只是用一系列的梯度提升树去拟合这个对数几 率, 实际上最终得到的是一系列CART回归树。其分类模型可以表达为：<br>
+$$<br>
+P(y=1 \mid x)=\frac{1}{1+e<sup>{-\sum_{m=0}</sup>M h_m(x)}}<br>
+$$<br>
+其中 $h_m(x)$ 就是学习到的决策树。清楚了这一点之后, 我们便可以参考逻辑回归, 单样本 $\left(x_i, y_i\right)$ 的损失函数可 以表达为</strong>交叉熵</strong>：<br>
+$$<br>
+\operatorname{loss}\left(x_i, y_i\right)=-y_i \log \hat{y_i}-\left(1-y_i\right) \log \left(1-\hat{y_i}\right)<br>
+$$<br>
+假设第 $\mathrm{K}$ 步迭代之后当前学习器为 $F(x)=\sum_{m=0}^k h_m(x)$, 将 $\hat{y}<em>i$ 的表达式带入之后, 可将损失函数写为:<br>
+$$<br>
+\operatorname{loss}\left(x_i, y_i \mid F(x)\right)=y_i \log \left(1+e^{-F\left(x_i\right)}\right)+\left(1-y_i\right)\left[F\left(x_i\right)+\log \left(1+e^{-F\left(x_i\right)}\right)\right]<br>
+$$<br>
+<strong>可以求得损失函数相对于当前学习器的负梯度为</strong>：<br>
+$$<br>
+-\left.\frac{\partial l o s s}{\partial F(x)}\right|</em>{x_i, y_i}=y_i-\frac{1}{1+e^{-F\left(x_i\right)}}=y_i-\hat{y_i}<br>
+$$<br>
+可以看到, 同回归问题很类似, 下一棵决策树的训练样本为: $\left{x_i, y_i-\hat{y}<em>i\right}</em>{i=1}^n$, 其所需要拟合的残差为真实标签 与预测概率之差。于是便有下面GBDT应用于二分类的算法：</p>
 <ul>
-<li><span class="math inline">\(F_0(x)=h_0(x)=\log
-\frac{p_1}{1-p_1}\)</span>, 其中 <span class="math inline">\(p_1\)</span> 是训练样本中 <span class="math inline">\(\mathrm{y}=1\)</span> 的比例,
-利用先验信息来初始化学习器</li>
-<li>For <span class="math inline">\(m=1,2, \ldots, M\)</span> :
+<li>$F_0(x)=h_0(x)=\log \frac{p_1}{1-p_1}$, 其中 $p_1$ 是训练样本中 $\mathrm{y}=1$ 的比例, 利用先验信息来初始化学习器</li>
+<li>For $m=1,2, \ldots, M$ :
 <ul>
-<li>计算 <span class="math inline">\(g_i=\hat{y}_i-y_i\)</span>,
-并使用训练集 <span class="math inline">\(\left\{\left(x_i,-g_i\right)\right\}_{i=1}^n\)</span>
-<strong>训练一棵回归树</strong> <span class="math inline">\(t_m(x)\)</span>, 其中 <span class="math inline">\(\hat{y}_i=\frac{1}{1+e^{-F_{m-1}(x)}}\)</span></li>
-<li>通过一维最小化损失函数找到树的最优权重: <span class="math inline">\(\quad
-\rho_m=\underset{\rho}{\operatorname{argmin}} \sum_i l o s s\left(x_i,
-y_i \mid F_{m-1}(x)+\rho t_m(x)\right)\)</span></li>
-</ul></li>
-<li><strong>考虑shrinkage,</strong> 可得这一轮迭代之后的学习器 <span class="math inline">\(F_m(x)=F_{m-1}(x)+\alpha \rho_m t_m(x),
-\alpha\)</span> 为学习率</li>
-<li>得到最终学习器为： <span class="math inline">\(F_M(x)\)</span></li>
+<li>计算 $g_i=\hat{y}<em>i-y_i$, 并使用训练集 $\left{\left(x_i,-g_i\right)\right}</em>{i=1}^n$ <strong>训练一棵回归树</strong> $t_m(x)$, 其中 $\hat{y}<em>i=\frac{1}{1+e^{-F</em>{m-1}(x)}}$</li>
+<li>通过一维最小化损失函数找到树的最优权重: $\quad \rho_m=\underset{\rho}{\operatorname{argmin}} \sum_i l o s s\left(x_i, y_i \mid F_{m-1}(x)+\rho t_m(x)\right)$</li>
 </ul>
-<p>以上就是将GBDT应用于二分类问题的算法流程。类似地, 对于多分类问题,
-则需要考虑以下softmax模型： <span class="math display">\[
-\begin{array}{r}
-P(y=1 \mid x)=\frac{e^{F_1(x)}}{\sum_{i=1}^k e^{F_i(x)}} \\
-P(y=2 \mid x)=\frac{e^{F_2(x)}}{\sum_{i=1}^k e^{F_i(x)}} \\
-\ldots \cdots \\
-P(y=k \mid x)=\frac{e^{F_k(x)}}{\sum_{i=1}^k e^{F_i(x)}}
-\end{array}
-\]</span> <strong>其中 <span class="math inline">\(F_1 ... F_k\)</span>
-是 <span class="math inline">\(k\)</span> 个不同的tree
-ensemble。每一轮的训练实际上是训练了 <span class="math inline">\(k\)</span> 棵树去拟合softmax的每一个分支
-模型的负梯度</strong>【one-hot中的一维】。softmax模型的单样本损失函数为:
-<span class="math display">\[
-\text { loss }=-\sum_{i=1}^k y_i \log P\left(y_i \mid
-x\right)=-\sum_{i=1}^k y_i \log \frac{e^{F_i(x)}}{\sum_{j=1}^k
-e^{F_j(x)}}
-\]</span> 这里的 <span class="math inline">\(y_i(i=1 \ldots k)\)</span>
-是样本label在 <span class="math inline">\(\mathbf{k}\)</span>
-个类别上作one-hot编码之后的取值, 只有一维为 1 , 其余都是 <span class="math inline">\(\mathbf{0}\)</span> 。由以上表 达式不难推导: <span class="math display">\[
--\frac{\partial l o s s}{\partial
-F_q}=y_q-\frac{e^{F_q(x)}}{\sum_{j=1}^k e^{F_j(x)}}=y_q-\hat{y_q}
-\]</span> 可见, 这k棵树同样是拟合了样本的真实标签与预测概率之差,
-与二分类的过程非常类似。</p>
+</li>
+<li><strong>考虑shrinkage,</strong> 可得这一轮迭代之后的学习器 $F_m(x)=F_{m-1}(x)+\alpha \rho_m t_m(x), \alpha$ 为学习率</li>
+<li>得到最终学习器为： $F_M(x)$</li>
+</ul>
+<p>以上就是将GBDT应用于二分类问题的算法流程。类似地, 对于多分类问题, 则需要考虑以下softmax模型：<br>
+$$<br>
+\begin{array}{r}<br>
+P(y=1 \mid x)=\frac{e<sup>{F_1(x)}}{\sum_{i=1}</sup>k e^{F_i(x)}} \<br>
+P(y=2 \mid x)=\frac{e<sup>{F_2(x)}}{\sum_{i=1}</sup>k e^{F_i(x)}} \<br>
+\ldots \cdots \<br>
+P(y=k \mid x)=\frac{e<sup>{F_k(x)}}{\sum_{i=1}</sup>k e^{F_i(x)}}<br>
+\end{array}<br>
+$$<br>
+<strong>其中 $F_1 … F_k$ 是 $k$ 个不同的tree ensemble。每一轮的训练实际上是训练了 $k$ 棵树去拟合softmax的每一个分支 模型的负梯度</strong>【one-hot中的一维】。softmax模型的单样本损失函数为:<br>
+$$<br>
+\text { loss }=-\sum_{i=1}^k y_i \log P\left(y_i \mid x\right)=-\sum_{i=1}^k y_i \log \frac{e<sup>{F_i(x)}}{\sum_{j=1}</sup>k e^{F_j(x)}}<br>
+$$<br>
+这里的 $y_i(i=1 \ldots k)$ 是样本label在 $\mathbf{k}$ 个类别上作one-hot编码之后的取值, 只有一维为 1 , 其余都是 $\mathbf{0}$ 。由以上表 达式不难推导:<br>
+$$<br>
+-\frac{\partial l o s s}{\partial F_q}=y_q-\frac{e<sup>{F_q(x)}}{\sum_{j=1}</sup>k e^{F_j(x)}}=y_q-\hat{y_q}<br>
+$$<br>
+可见, 这k棵树同样是拟合了样本的真实标签与预测概率之差, 与二分类的过程非常类似。</p>
 
     </div>
 

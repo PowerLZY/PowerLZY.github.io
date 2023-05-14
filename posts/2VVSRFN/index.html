@@ -183,8 +183,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 权值初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、梯度消失与梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、Xavier 方法与 Kaiming
-方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 Xavier 方法 sigmod、tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 Kaiming 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 常用初始化方法</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 权值初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、梯度消失与梯度爆炸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、Xavier 方法与 Kaiming 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 Xavier 方法 sigmod、tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">nn.init.calculate_gain()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 Kaiming 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 常用初始化方法</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -199,13 +198,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -341,44 +340,23 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2><span id="pytorch-学习笔记-权值初始化">[PyTorch 学习笔记] 权值初始化</span></h2>
-<p><strong>在搭建好网络模型之后，一个重要的步骤就是对网络模型中的权值进行初始化</strong>。<strong>==适当的权值初始化可以加快模型的收敛，而不恰当的权值初始化可能引发梯度消失或者梯度爆炸，最终导致模型无法收敛==</strong>。下面分
-3
-部分介绍。第一部分介绍不恰当的权值初始化是如何引发梯度消失与梯度爆炸的，第二部分介绍常用的
-Xavier 方法与 Kaiming 方法，第三部分介绍 PyTorch 中的 10
-种初始化方法。</p>
+<p><strong>在搭建好网络模型之后，一个重要的步骤就是对网络模型中的权值进行初始化</strong>。<strong>==适当的权值初始化可以加快模型的收敛，而不恰当的权值初始化可能引发梯度消失或者梯度爆炸，最终导致模型无法收敛==</strong>。下面分 3 部分介绍。第一部分介绍不恰当的权值初始化是如何引发梯度消失与梯度爆炸的，第二部分介绍常用的 Xavier 方法与 Kaiming 方法，第三部分介绍 PyTorch 中的 10 种初始化方法。</p>
 <h3><span id="一-梯度消失与梯度爆炸">一、<strong>梯度消失与梯度爆炸</strong></span></h3>
 <p>考虑一个 3 层的全连接网络。</p>
 <p><img src="https://www.zhihu.com/equation?tex=H_%7B1%7D%3DX+%5Ctimes+W_%7B1%7D" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=H_%7B2%7D%3DH_%7B1%7D+%5Ctimes+W_%7B2%7D" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=Out%3DH_%7B2%7D+%5Ctimes+W_%7B3%7D" alt="[公式]"></p>
-<p><img src="https://pic3.zhimg.com/80/v2-bd64028adc3d3efd6e7df4ebdfc5b51a_1440w.jpg" alt="img" style="zoom:33%;"></p>
+<img src="https://pic3.zhimg.com/80/v2-bd64028adc3d3efd6e7df4ebdfc5b51a_1440w.jpg" alt="img" style="zoom:33%;">
 <p>其中第 2 层的权重梯度如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D+%26%3D%5Cfrac%7B%5Cpartial+%5Cmathrm%7BLoss%7D%7D%7B%5Cpartial+%5Cmathrm%7BW%7D_%7B2%7D%7D%3D%5Cfrac%7B%5Cpartial+%5Cmathrm%7BLoss%7D%7D%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D+%2A+%5Cfrac%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D%7B%5Cpartial+%5Cmathrm%7BH%7D_%7B2%7D%7D+%2A+%5Cfrac%7B%5Cpartial+%5Cmathrm%7BH%7D_%7B2%7D%7D%7B%5Cpartial+%5Cmathrm%7Bw%7D_%7B2%7D%7D+%5C%5C+%26%3D%5Cfrac%7B%5Cpartial+%5Cmathrm%7BLoss%7D%7D%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D+%2A+%5Cfrac%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D%7B%5Cpartial+%5Cmathrm%7BH%7D_%7B2%7D%7D+%2A+%5Cmathrm%7BH%7D_%7B1%7D+%5Cend%7Baligned%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>所以 <img src="https://www.zhihu.com/equation?tex=%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D" alt="[公式]"> 依赖于前一层的输出 <img src="https://www.zhihu.com/equation?tex=H_%7B1%7D" alt="[公式]">。如果
-<img src="https://www.zhihu.com/equation?tex=H_%7B1%7D" alt="[公式]">
-趋近于零，那么 <img src="https://www.zhihu.com/equation?tex=%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D" alt="[公式]"> 也<strong>接近于 0，造成梯度消失</strong>。如果 <img src="https://www.zhihu.com/equation?tex=H_%7B1%7D" alt="[公式]">
-趋近于无穷大，那么 <img src="https://www.zhihu.com/equation?tex=%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D" alt="[公式]">
-也接近于<strong>无穷大，造成梯度爆炸</strong>。要避免梯度爆炸或者梯度消失，就要严格控制网络层输出的数值范围。</p>
-<p>下面构建 100
-层全连接网络，先不使用非线性激活函数，每层的权重初始化为服从 <img src="https://www.zhihu.com/equation?tex=N%280%2C1%29" alt="[公式]">
-的正态分布，输出数据使用随机初始化的数据。</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D+%26%3D%5Cfrac%7B%5Cpartial+%5Cmathrm%7BLoss%7D%7D%7B%5Cpartial+%5Cmathrm%7BW%7D_%7B2%7D%7D%3D%5Cfrac%7B%5Cpartial+%5Cmathrm%7BLoss%7D%7D%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D+%2A+%5Cfrac%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D%7B%5Cpartial+%5Cmathrm%7BH%7D_%7B2%7D%7D+%2A+%5Cfrac%7B%5Cpartial+%5Cmathrm%7BH%7D_%7B2%7D%7D%7B%5Cpartial+%5Cmathrm%7Bw%7D_%7B2%7D%7D+%5C%5C+%26%3D%5Cfrac%7B%5Cpartial+%5Cmathrm%7BLoss%7D%7D%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D+%2A+%5Cfrac%7B%5Cpartial+%5Cmathrm%7Bout%7D%7D%7B%5Cpartial+%5Cmathrm%7BH%7D_%7B2%7D%7D+%2A+%5Cmathrm%7BH%7D_%7B1%7D+%5Cend%7Baligned%7D" alt="[公式]"></p>
+<p>所以 <img src="https://www.zhihu.com/equation?tex=%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D" alt="[公式]"> 依赖于前一层的输出 <img src="https://www.zhihu.com/equation?tex=H_%7B1%7D" alt="[公式]">。如果 <img src="https://www.zhihu.com/equation?tex=H_%7B1%7D" alt="[公式]"> 趋近于零，那么 <img src="https://www.zhihu.com/equation?tex=%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D" alt="[公式]"> 也<strong>接近于 0，造成梯度消失</strong>。如果 <img src="https://www.zhihu.com/equation?tex=H_%7B1%7D" alt="[公式]"> 趋近于无穷大，那么 <img src="https://www.zhihu.com/equation?tex=%5CDelta+%5Cmathrm%7BW%7D_%7B2%7D" alt="[公式]"> 也接近于<strong>无穷大，造成梯度爆炸</strong>。要避免梯度爆炸或者梯度消失，就要严格控制网络层输出的数值范围。</p>
+<p>下面构建 100 层全连接网络，先不使用非线性激活函数，每层的权重初始化为服从 <img src="https://www.zhihu.com/equation?tex=N%280%2C1%29" alt="[公式]"> 的正态分布，输出数据使用随机初始化的数据。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> common_tools <span class="keyword">import</span> set_seed</span><br><span class="line"></span><br><span class="line">set_seed(<span class="number">1</span>)  <span class="comment"># 设置随机种子</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MLP</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, neural_num, layers</span>):</span><br><span class="line">        <span class="built_in">super</span>(MLP, self).__init__()</span><br><span class="line">        self.linears = nn.ModuleList([nn.Linear(neural_num, neural_num, bias=<span class="literal">False</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(layers)])</span><br><span class="line">        self.neural_num = neural_num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">   </span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">forward_new</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">for</span> (i, linear) <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.linears):</span><br><span class="line">            x = linear(x)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;layer:&#123;&#125;, std:&#123;&#125;&quot;</span>.<span class="built_in">format</span>(i, x.std()))</span><br><span class="line">            <span class="keyword">if</span> torch.isnan(x.std()):</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;output is nan in &#123;&#125; layers&quot;</span>.<span class="built_in">format</span>(i))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">initialize</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="comment"># 判断这一层是否为线性层，如果为线性层则初始化权值</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(m, nn.Linear):</span><br><span class="line">                nn.init.normal_(m.weight.data)    <span class="comment"># normal: mean=0, std=1</span></span><br><span class="line"></span><br><span class="line">layer_nums = <span class="number">100</span></span><br><span class="line">neural_nums = <span class="number">256</span></span><br><span class="line">batch_size = <span class="number">16</span></span><br><span class="line"></span><br><span class="line">net = MLP(neural_nums, layer_nums)</span><br><span class="line">net.initialize()</span><br><span class="line"></span><br><span class="line">inputs = torch.randn((batch_size, neural_nums))  <span class="comment"># normal: mean=0, std=1</span></span><br><span class="line">output = net(inputs)</span><br><span class="line"><span class="built_in">print</span>(output)</span><br></pre></td></tr></table></figure>
 <p>输出为：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tensor([[nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        ...,</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan],</span><br><span class="line">        [nan, nan, nan,  ..., nan, nan, nan]], grad_fn=&lt;MmBackward&gt;)</span><br></pre></td></tr></table></figure>
-<p>也就是<strong>==数据太大(梯度爆炸)或者太小(梯度消失)==</strong>了。接下来我们在<code>forward()</code>函数中判断每一次前向传播的输出的标准差是否为
-nan，如果是 nan 则停止前向传播。</p>
+<p>也就是**==数据太大(梯度爆炸)或者太小(梯度消失)==**了。接下来我们在<code>forward()</code>函数中判断每一次前向传播的输出的标准差是否为 nan，如果是 nan 则停止前向传播。</p>
 <p>以输入层第一个神经元为例：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D_%7B11%7D%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D+X_%7Bi%7D+%5Ctimes+W_%7B1+i%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中输入 X 和权值 W 都是服从 <img src="https://www.zhihu.com/equation?tex=N%280%2C1%29" alt="[公式]">
-的正态分布，所以这个神经元的方差为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathbf%7BD%7D%5Cleft%28%5Cmathrm%7BH%7D_%7B11%7D%5Cright%29+%26%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D+%5Cboldsymbol%7BD%7D%5Cleft%28X_%7Bi%7D%5Cright%29+%2A+%5Cboldsymbol%7BD%7D%5Cleft%28W_%7B1+i%7D%5Cright%29+%5C%5C+%26%3Dn+%2A%281+%2A+1%29+%5C%5C+%26%3Dn+%5Cend%7Baligned%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BH%7D_%7B11%7D%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D+X_%7Bi%7D+%5Ctimes+W_%7B1+i%7D" alt="[公式]"></p>
+<p>其中输入 X 和权值 W 都是服从 <img src="https://www.zhihu.com/equation?tex=N%280%2C1%29" alt="[公式]"> 的正态分布，所以这个神经元的方差为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathbf%7BD%7D%5Cleft%28%5Cmathrm%7BH%7D_%7B11%7D%5Cright%29+%26%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D+%5Cboldsymbol%7BD%7D%5Cleft%28X_%7Bi%7D%5Cright%29+%2A+%5Cboldsymbol%7BD%7D%5Cleft%28W_%7B1+i%7D%5Cright%29+%5C%5C+%26%3Dn+%2A%281+%2A+1%29+%5C%5C+%26%3Dn+%5Cend%7Baligned%7D" alt="[公式]"></p>
 <blockquote>
 <ul>
 <li><img src="https://www.zhihu.com/equation?tex=E%28X+%5Ctimes+Y%29%3DE%28X%29+%5Ctimes+E%28Y%29" alt="[公式]">：两个相互独立的随机变量的乘积的期望等于它们的期望的乘积</li>
@@ -386,31 +364,15 @@ nan，如果是 nan 则停止前向传播。</p>
 <li><img src="https://www.zhihu.com/equation?tex=D%28X%2BY%29%3DD%28X%29%2BD%28Y%29" alt="[公式]">：两个相互独立的随机变量之和的方差等于它们的方差的和</li>
 </ul>
 <p>可以推导出两个随机变量的乘积的方差如下：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=D%28X+%5Ctimes+Y%29%3DE%5B%28XY%29%5E%7B2%7D%5D+-+%5BE%28XY%29%5D%5E%7B2%7D%3DD%28X%29+%5Ctimes+D%28Y%29+%2B+D%28X%29+%5Ctimes+%5BE%28Y%29%5D%5E%7B2%7D+%2B+D%28Y%29+%5Ctimes+%5BE%28X%29%5D%5E%7B2%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=D%28X+%5Ctimes+Y%29%3DE%5B%28XY%29%5E%7B2%7D%5D+-+%5BE%28XY%29%5D%5E%7B2%7D%3DD%28X%29+%5Ctimes+D%28Y%29+%2B+D%28X%29+%5Ctimes+%5BE%28Y%29%5D%5E%7B2%7D+%2B+D%28Y%29+%5Ctimes+%5BE%28X%29%5D%5E%7B2%7D" alt="[公式]"></p>
 <p>如果 <img src="https://www.zhihu.com/equation?tex=E%28X%29%3D0" alt="[公式]">，<img src="https://www.zhihu.com/equation?tex=E%28Y%29%3D0" alt="[公式]">，那么 <img src="https://www.zhihu.com/equation?tex=D%28X+%5Ctimes+Y%29%3DD%28X%29+%5Ctimes++D%28Y%29" alt="[公式]"></p>
 </blockquote>
-<p><strong>标准差</strong>为：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bstd%7D%5Cleft%28%5Cmathrm%7BH%7D_%7B11%7D%5Cright%29%3D%5Csqrt%7B%5Cmathbf%7BD%7D%5Cleft%28%5Cmathrm%7BH%7D_%7B11%7D%5Cright%29%7D%3D%5Csqrt%7Bn%7D" alt="[公式]">，所以每经过一个网络层，方差就会扩大 n 倍，标准差就会扩大
-<img src="https://www.zhihu.com/equation?tex=%5Csqrt%7Bn%7D" alt="[公式]"> 倍，n
-为每层神经元个数，直到超出数值表示范围。对比上面的代码可以看到，每层神经元个数为
-256，输出数据的标准差为 1，所以第一个网络层输出的标准差为 16
-左右，第二个网络层输出的标准差为 256 左右，以此类推，直到 31
-层超出数据表示范围。可以把每层神经元个数改为 400，那么每层标准差扩大 20
-倍左右。从 <img src="https://www.zhihu.com/equation?tex=D%28%5Cmathrm%7BH%7D_%7B11%7D%29%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D+D%28X_%7Bi%7D%29+%5Ctimes+D%28W_%7B1+i%7D%29" alt="[公式]">，可以看出，<strong>每一层网络输出的方差与神经元个数、输入数据的方差、权值方差有关，其中比较好改变的是权值的方差
-<img src="https://www.zhihu.com/equation?tex=D%28W%29" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=D%28W%29%3D+%5Cfrac%7B1%7D%7Bn%7D" alt="[公式]">，标准差为</strong> <img src="https://www.zhihu.com/equation?tex=std%28W%29%3D%5Csqrt%5Cfrac%7B1%7D%7Bn%7D" alt="[公式]">。</p>
+<p><strong>标准差</strong>为：<img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bstd%7D%5Cleft%28%5Cmathrm%7BH%7D_%7B11%7D%5Cright%29%3D%5Csqrt%7B%5Cmathbf%7BD%7D%5Cleft%28%5Cmathrm%7BH%7D_%7B11%7D%5Cright%29%7D%3D%5Csqrt%7Bn%7D" alt="[公式]">，所以每经过一个网络层，方差就会扩大 n 倍，标准差就会扩大 <img src="https://www.zhihu.com/equation?tex=%5Csqrt%7Bn%7D" alt="[公式]"> 倍，n 为每层神经元个数，直到超出数值表示范围。对比上面的代码可以看到，每层神经元个数为 256，输出数据的标准差为 1，所以第一个网络层输出的标准差为 16 左右，第二个网络层输出的标准差为 256 左右，以此类推，直到 31 层超出数据表示范围。可以把每层神经元个数改为 400，那么每层标准差扩大 20 倍左右。从 <img src="https://www.zhihu.com/equation?tex=D%28%5Cmathrm%7BH%7D_%7B11%7D%29%3D%5Csum_%7Bi%3D0%7D%5E%7Bn%7D+D%28X_%7Bi%7D%29+%5Ctimes+D%28W_%7B1+i%7D%29" alt="[公式]">，可以看出，<strong>每一层网络输出的方差与神经元个数、输入数据的方差、权值方差有关，其中比较好改变的是权值的方差 <img src="https://www.zhihu.com/equation?tex=D%28W%29" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=D%28W%29%3D+%5Cfrac%7B1%7D%7Bn%7D" alt="[公式]">，标准差为</strong> <img src="https://www.zhihu.com/equation?tex=std%28W%29%3D%5Csqrt%5Cfrac%7B1%7D%7Bn%7D" alt="[公式]">。</p>
 <p>因此修改权值初始化代码为<code>nn.init.normal_(m.weight.data, std=np.sqrt(1/self.neural_num))</code></p>
-<p>上述是没有使用非线性变换的实验结果，如果在<code>forward()</code>中添加非线性变换<code>tanh</code>，每一层的输出方差还是会越来越小，会导致梯度消失。因此出现了
-Xavier 初始化方法与 Kaiming 初始化方法。</p>
-<h3><span id="二-xavier-方法与-kaiming方法">二、<strong>Xavier 方法与 Kaiming
-方法</strong></span></h3>
+<p>上述是没有使用非线性变换的实验结果，如果在<code>forward()</code>中添加非线性变换<code>tanh</code>，每一层的输出方差还是会越来越小，会导致梯度消失。因此出现了 Xavier 初始化方法与 Kaiming 初始化方法。</p>
+<h3><span id="二-xavier-方法与-kaiming-方法">二、<strong>Xavier 方法与 Kaiming 方法</strong></span></h3>
 <h4><span id="21-xavier-方法-sigmod-tanh">2.1 Xavier 方法 sigmod、tanh</span></h4>
-<p>Xavier 是 2010
-年提出的，针对有非线性激活函数时的权值初始化方法，目标是保持数据的方差维持在
-1 左右，主要针对饱和激活函数如 sigmoid 和 tanh
-等。同时考虑前向传播和反向传播，需要满足两个等式：<img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7Bn%7D_%7B%5Cboldsymbol%7Bi%7D%7D+%2A+%5Cboldsymbol%7BD%7D%28%5Cboldsymbol%7BW%7D%29%3D%5Cmathbf%7B1%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7Bn%7D_%7B%5Cboldsymbol%7Bi%2B1%7D%7D+%2A+%5Cboldsymbol%7BD%7D%28%5Cboldsymbol%7BW%7D%29%3D%5Cmathbf%7B1%7D" alt="[公式]">，可得：<img src="https://www.zhihu.com/equation?tex=D%28W%29%3D%5Cfrac%7B2%7D%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D" alt="[公式]">。为了使 Xavier 方法初始化的权值服从均匀分布，假设 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]"> 服从均匀分布
-<img src="https://www.zhihu.com/equation?tex=U%5B-a%2C+a%5D" alt="[公式]">，那么方差 <img src="https://www.zhihu.com/equation?tex=D%28W%29%3D%5Cfrac%7B%28-a-a%29%5E%7B2%7D%7D%7B12%7D%3D%5Cfrac%7B%282+a%29%5E%7B2%7D%7D%7B12%7D%3D%5Cfrac%7Ba%5E%7B2%7D%7D%7B3%7D" alt="[公式]">，令 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B2%7D%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%3D%5Cfrac%7Ba%5E%7B2%7D%7D%7B3%7D" alt="[公式]">，解得：<img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7Ba%7D%3D%5Cfrac%7B%5Csqrt%7B6%7D%7D%7B%5Csqrt%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%7D" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]"> 服从分布 <img src="https://www.zhihu.com/equation?tex=U%5Cleft%5B-%5Cfrac%7B%5Csqrt%7B6%7D%7D%7B%5Csqrt%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%7D%2C+%5Cfrac%7B%5Csqrt%7B6%7D%7D%7B%5Csqrt%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%7D%5Cright%5D" alt="[公式]"></p>
+<p>Xavier 是 2010 年提出的，针对有非线性激活函数时的权值初始化方法，目标是保持数据的方差维持在 1 左右，主要针对饱和激活函数如 sigmoid 和 tanh 等。同时考虑前向传播和反向传播，需要满足两个等式：<img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7Bn%7D_%7B%5Cboldsymbol%7Bi%7D%7D+%2A+%5Cboldsymbol%7BD%7D%28%5Cboldsymbol%7BW%7D%29%3D%5Cmathbf%7B1%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7Bn%7D_%7B%5Cboldsymbol%7Bi%2B1%7D%7D+%2A+%5Cboldsymbol%7BD%7D%28%5Cboldsymbol%7BW%7D%29%3D%5Cmathbf%7B1%7D" alt="[公式]">，可得：<img src="https://www.zhihu.com/equation?tex=D%28W%29%3D%5Cfrac%7B2%7D%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D" alt="[公式]">。为了使 Xavier 方法初始化的权值服从均匀分布，假设 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]"> 服从均匀分布 <img src="https://www.zhihu.com/equation?tex=U%5B-a%2C+a%5D" alt="[公式]">，那么方差 <img src="https://www.zhihu.com/equation?tex=D%28W%29%3D%5Cfrac%7B%28-a-a%29%5E%7B2%7D%7D%7B12%7D%3D%5Cfrac%7B%282+a%29%5E%7B2%7D%7D%7B12%7D%3D%5Cfrac%7Ba%5E%7B2%7D%7D%7B3%7D" alt="[公式]">，令 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B2%7D%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%3D%5Cfrac%7Ba%5E%7B2%7D%7D%7B3%7D" alt="[公式]">，解得：<img src="https://www.zhihu.com/equation?tex=%5Cboldsymbol%7Ba%7D%3D%5Cfrac%7B%5Csqrt%7B6%7D%7D%7B%5Csqrt%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%7D" alt="[公式]">，所以 <img src="https://www.zhihu.com/equation?tex=W" alt="[公式]"> 服从分布 <img src="https://www.zhihu.com/equation?tex=U%5Cleft%5B-%5Cfrac%7B%5Csqrt%7B6%7D%7D%7B%5Csqrt%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%7D%2C+%5Cfrac%7B%5Csqrt%7B6%7D%7D%7B%5Csqrt%7Bn_%7Bi%7D%2Bn_%7Bi%2B1%7D%7D%7D%5Cright%5D" alt="[公式]"></p>
 <p>所以初始化方法改为：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = np.sqrt(6 / (self.neural_num + self.neural_num))</span><br><span class="line"># 把 a 变换到 tanh，计算增益</span><br><span class="line">tanh_gain = nn.init.calculate_gain(&#x27;tanh&#x27;)</span><br><span class="line">a *= tanh_gain</span><br><span class="line"></span><br><span class="line">nn.init.uniform_(m.weight.data, -a, a)</span><br></pre></td></tr></table></figure>
 <p>并且每一层的激活函数都使用 tanh，输出如下：</p>
@@ -419,32 +381,25 @@ Xavier 初始化方法与 Kaiming 初始化方法。</p>
 <p>PyTorch 也提供了 Xavier 初始化方法，可以直接调用：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tanh_gain = nn.init.calculate_gain(<span class="string">&#x27;tanh&#x27;</span>)</span><br><span class="line">nn.init.xavier_uniform_(m.weight.data, gain=tanh_gain)</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>#### <strong>nn.init.calculate_gain()</strong></p>
+<h4><span id="nninitcalculate_gain"><strong>nn.init.calculate_gain()</strong></span></h4>
 <p>上面的初始化方法都使用了<code>tanh_gain = nn.init.calculate_gain('tanh')</code>。</p>
-<p><code>nn.init.calculate_gain(nonlinearity,param=**None**)</code>的<strong>==主要功能是经过一个分布的方差经过激活函数后的变化尺度==</strong>，主要有两个参数：</p>
+<p><code>nn.init.calculate_gain(nonlinearity,param=**None**)</code>的**==主要功能是经过一个分布的方差经过激活函数后的变化尺度==**，主要有两个参数：</p>
 <ul>
 <li>nonlinearity：激活函数名称</li>
 <li>param：激活函数的参数，如 Leaky ReLU 的 negative_slop。</li>
 </ul>
 <p>下面是计算标准差经过激活函数的变化尺度的代码。</p>
-<p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn(<span class="number">10000</span>)</span><br><span class="line">out = torch.tanh(x)</span><br><span class="line"></span><br><span class="line">gain = x.std() / out.std()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;gain:&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(gain))</span><br><span class="line"></span><br><span class="line">tanh_gain = nn.init.calculate_gain(<span class="string">&#x27;tanh&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;tanh_gain in PyTorch:&#x27;</span>, tanh_gain)</span><br></pre></td></tr></table></figure></p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn(<span class="number">10000</span>)</span><br><span class="line">out = torch.tanh(x)</span><br><span class="line"></span><br><span class="line">gain = x.std() / out.std()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;gain:&#123;&#125;&#x27;</span>.<span class="built_in">format</span>(gain))</span><br><span class="line"></span><br><span class="line">tanh_gain = nn.init.calculate_gain(<span class="string">&#x27;tanh&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;tanh_gain in PyTorch:&#x27;</span>, tanh_gain)</span><br></pre></td></tr></table></figure>
 <p>输出如下：</p>
-<p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gain:1.5982500314712524</span><br><span class="line">tanh_gain in PyTorch: 1.6666666666666667</span><br></pre></td></tr></table></figure></p>
-<p>结果表示，原有数据分布的方差经过 tanh 之后，标准差会变小 1.6
-倍左右。</p>
+  <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gain:1.5982500314712524</span><br><span class="line">tanh_gain in PyTorch: 1.6666666666666667</span><br></pre></td></tr></table></figure>
+<p>结果表示，原有数据分布的方差经过 tanh 之后，标准差会变小 1.6 倍左右。</p>
 </blockquote>
 <h4><span id="22-kaiming-方法">2.2 Kaiming 方法</span></h4>
-<p>虽然 Xavier 方法提出了针对饱和激活函数的权值初始化方法，但是 AlexNet
-出现后，大量网络开始使用非饱和的激活函数如 ReLU 等，这时 Xavier
-方法不再适用。2015 年针对 ReLU 及其变种等激活函数提出了 Kaiming
-初始化方法。</p>
-<p>针对 ReLU，方差应该满足：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BD%7D%28W%29%3D%5Cfrac%7B2%7D%7Bn_%7Bi%7D%7D" alt="[公式]">；针对 ReLu 的变种，方差应该满足：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BD%7D%28W%29%3D%5Cfrac%7B2%7D%7Bn_%7Bi%7D%7D" alt="[公式]">，a 表示负半轴的斜率，如 PReLU 方法，标准差满足 <img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bstd%7D%28W%29%3D%5Csqrt%7B%5Cfrac%7B2%7D%7B%5Cleft%281%2Ba%5E%7B2%7D%5Cright%29+%2A+n_%7Bi%7D%7D%7D" alt="[公式]">。代码如下：<code>nn.init.normal_(m.weight.data, std=np.sqrt(2 / self.neural_num))</code>，或者使用
-PyTorch
-提供的初始化方法：<code>nn.init.kaiming_normal_(m.weight.data)</code>，同时把激活函数改为
-ReLU。</p>
+<p>虽然 Xavier 方法提出了针对饱和激活函数的权值初始化方法，但是 AlexNet 出现后，大量网络开始使用非饱和的激活函数如 ReLU 等，这时 Xavier 方法不再适用。2015 年针对 ReLU 及其变种等激活函数提出了 Kaiming 初始化方法。</p>
+<p>针对 ReLU，方差应该满足：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BD%7D%28W%29%3D%5Cfrac%7B2%7D%7Bn_%7Bi%7D%7D" alt="[公式]">；针对 ReLu 的变种，方差应该满足：<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BD%7D%28W%29%3D%5Cfrac%7B2%7D%7Bn_%7Bi%7D%7D" alt="[公式]">，a 表示负半轴的斜率，如 PReLU 方法，标准差满足 <img src="https://www.zhihu.com/equation?tex=%5Coperatorname%7Bstd%7D%28W%29%3D%5Csqrt%7B%5Cfrac%7B2%7D%7B%5Cleft%281%2Ba%5E%7B2%7D%5Cright%29+%2A+n_%7Bi%7D%7D%7D" alt="[公式]">。代码如下：<code>nn.init.normal_(m.weight.data, std=np.sqrt(2 / self.neural_num))</code>，或者使用 PyTorch 提供的初始化方法：<code>nn.init.kaiming_normal_(m.weight.data)</code>，同时把激活函数改为 ReLU。</p>
 <h4><span id="23-常用初始化方法">2.3 <strong>常用初始化方法</strong></span></h4>
 <p><strong>PyTorch 中提供了 10 中初始化方法</strong></p>
-<ol type="1">
+<ol>
 <li>Xavier 均匀分布</li>
 <li>Xavier 正态分布</li>
 <li>Kaiming 均匀分布</li>

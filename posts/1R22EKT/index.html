@@ -144,11 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 模型
-Finetune【微调】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Finetune 步骤如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不使用 Finetune</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用 Finetune，
-不冻结卷积层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用 Finetune、
-冻结卷积层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用 Finetune、设置学习率为
-0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用分组学习率、对卷积层使用较小的学习率</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] 模型 Finetune【微调】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Finetune 步骤如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">不使用 Finetune</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用 Finetune， 不冻结卷积层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用 Finetune、 冻结卷积层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用 Finetune、设置学习率为 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">使用分组学习率、对卷积层使用较小的学习率</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,13 +159,13 @@ Finetune【微调】</span></a><ol class="nav-child"><li class="nav-item nav-lev
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -293,7 +289,7 @@ Finetune【微调】</span></a><ol class="nav-child"><li class="nav-item nav-lev
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -304,68 +300,53 @@ Finetune【微调】</span></a><ol class="nav-child"><li class="nav-item nav-lev
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pytorch-学习笔记-模型finetune微调">[PyTorch 学习笔记] 模型
-Finetune【微调】</span></h2>
-<p><strong>迁移学习</strong>：把在 source domain
-任务上的学习到的模型应用到 target domain 的任务。</p>
-<p><strong>Finetune
-就是一种迁移学习的方法</strong>。比如做人脸识别，可以把 ImageNet 看作
-source domain，人脸数据集看作 target domain。通常来说 source domain 要比
-target domain 大得多。可以利用 ImageNet
-训练好的网络应用到人脸识别中。</p>
-<p>对于一个模型，通常可以分为前面的 feature extractor (卷积层)和后面的
-classifier，在 Finetune 时，通常不改变 feature extractor
-的权值，也就是冻结卷积层；并且改变最后一个全连接层的输出来适应目标任务，训练后面
-classifier 的权值，这就是 Finetune。<strong>通常 target domain
-的数据比较小，不足以训练全部参数，容易导致过拟合，因此不改变 feature
-extractor 的权值</strong>。</p>
+        <h2><span id="pytorch-学习笔记-模型-finetune微调">[PyTorch 学习笔记] 模型 Finetune【微调】</span></h2>
+<p><strong>迁移学习</strong>：把在 source domain 任务上的学习到的模型应用到 target domain 的任务。</p>
+<p><strong>Finetune 就是一种迁移学习的方法</strong>。比如做人脸识别，可以把 ImageNet 看作 source domain，人脸数据集看作 target domain。通常来说 source domain 要比 target domain 大得多。可以利用 ImageNet 训练好的网络应用到人脸识别中。</p>
+<p>对于一个模型，通常可以分为前面的 feature extractor (卷积层)和后面的 classifier，在 Finetune 时，通常不改变 feature extractor 的权值，也就是冻结卷积层；并且改变最后一个全连接层的输出来适应目标任务，训练后面 classifier 的权值，这就是 Finetune。<strong>通常 target domain 的数据比较小，不足以训练全部参数，容易导致过拟合，因此不改变 feature extractor 的权值</strong>。</p>
 <h4><span id="finetune-步骤如下">Finetune 步骤如下：</span></h4>
-<ol type="1">
-<li><p><strong>获取预训练模型的参数</strong></p></li>
-<li><p><strong>使用<code>load_state_dict()</code>把参数加载到模型中</strong></p></li>
-<li><p><strong>修改输出层</strong></p></li>
-<li><p><strong>固定 feature extractor 的参数</strong>。这部分通常有 2
-种做法：</p></li>
-<li><ul>
+<ol>
+<li>
+<p><strong>获取预训练模型的参数</strong></p>
+</li>
+<li>
+<p><strong>使用<code>load_state_dict()</code>把参数加载到模型中</strong></p>
+</li>
+<li>
+<p><strong>修改输出层</strong></p>
+</li>
+<li>
+<p><strong>固定 feature extractor 的参数</strong>。这部分通常有 2 种做法：</p>
+</li>
+<li>
+<ul>
 <li>==<strong>固定卷积层的预训练参数。可以设置<code>requires_grad=False</code>或者<code>lr=0</code></strong>==</li>
-</ul></li>
-<li><ul>
-<li><strong>可以通过<code>params_group</code>给 feature extractor
-==设置一个较小的学习率==</strong></li>
-</ul></li>
+</ul>
+</li>
+<li>
+<ul>
+<li><strong>可以通过<code>params_group</code>给 feature extractor ==设置一个较小的学习率==</strong></li>
+</ul>
+</li>
 </ol>
 <h4><span id="不使用-finetune"><strong>不使用 Finetune</strong></span></h4>
-<p>第一次我们首先不使用
-Finetune，而是从零开始训练模型，这时只需要修改全连接层即可：</p>
+<p>第一次我们首先不使用 Finetune，而是从零开始训练模型，这时只需要修改全连接层即可：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先拿到 fc 层的输入个数</span></span><br><span class="line">num_ftrs = resnet18_ft.fc.in_features</span><br><span class="line"><span class="comment"># 然后构造新的 fc 层替换原来的 fc 层</span></span><br><span class="line">resnet18_ft.fc = nn.Linear(num_ftrs, classes)</span><br></pre></td></tr></table></figure>
-<p>训练了 25 个 epoch 后的准确率为：70.59%。<strong>训练的 loss
-曲线如下：</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-5ee8d34af79f9efccef5131c24dcaee2_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<h4><span id="使用-finetune不冻结卷积层">使用 Finetune，
-<strong>不冻结卷积层</strong></span></h4>
+<p>训练了 25 个 epoch 后的准确率为：70.59%。<strong>训练的 loss 曲线如下：</strong></p>
+<img src="https://pic3.zhimg.com/80/v2-5ee8d34af79f9efccef5131c24dcaee2_1440w.jpg" alt="img" style="zoom: 67%;">
+<h4><span id="使用-finetune-不冻结卷积层">使用 Finetune， <strong>不冻结卷积层</strong></span></h4>
 <p>然后我们把下载的模型参数加载到模型中：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">path_pretrained_model = enviroments.resnet18_path</span><br><span class="line">state_dict_load = torch.load(path_pretrained_model)</span><br><span class="line">resnet18_ft.load_state_dict(state_dict_load)</span><br></pre></td></tr></table></figure>
 <p>训练了 25 个 epoch 后的准确率为：96.08%。训练的 loss 曲线如下：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-f12709c02275380983b1518935b56d21_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<h4><span id="使用-finetune-冻结卷积层">使用 Finetune、
-<strong>冻结卷积层</strong></span></h4>
-<h5><span id="设置requires_gradfalse这里先冻结所有参数然后再替换全连接层相当于冻结了卷积层的参数"><strong>设置<code>requires_grad=False</code></strong>这里先冻结所有参数，然后再替换全连接层，相当于冻结了卷积层的参数：</span></h5>
+<img src="https://pic2.zhimg.com/80/v2-f12709c02275380983b1518935b56d21_1440w.jpg" alt="img" style="zoom: 67%;">
+<h4><span id="使用-finetune-冻结卷积层">使用 Finetune、 <strong>冻结卷积层</strong></span></h4>
+<h5><span id="设置requires_gradfalse这里先冻结所有参数然后再替换全连接层相当于冻结了卷积层的参数">**设置<code>requires_grad=False</code>**这里先冻结所有参数，然后再替换全连接层，相当于冻结了卷积层的参数：</span></h5>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> resnet18_ft.parameters():</span><br><span class="line">		param.requires_grad = <span class="literal">False</span></span><br><span class="line"> 		<span class="comment"># 首先拿到 fc 层的输入个数</span></span><br><span class="line">		num_ftrs = resnet18_ft.fc.in_features</span><br><span class="line">		<span class="comment"># 然后构造新的 fc 层替换原来的 fc 层</span></span><br><span class="line">		resnet18_ft.fc = nn.Linear(num_ftrs, classes)</span><br></pre></td></tr></table></figure>
-<h4><span id="使用-finetune-设置学习率为0">使用 Finetune、<strong>设置学习率为
-0</strong></span></h4>
-<p><strong>这里把卷积层的学习率设置为
-0，需要在优化器里设置不同的学习率</strong>。首先获取全连接层参数的地址，然后使用
-filter
-过滤不属于全连接层的参数，也就是保留卷积层的参数；接着设置优化器的分组学习率，传入一个
-list，包含 2 个元素，每个元素是字典，对应 2
-个参数组。其中卷积层的学习率设置为 全连接层的 0.1 倍。</p>
+<h4><span id="使用-finetune-设置学习率为-0">使用 Finetune、<strong>设置学习率为 0</strong></span></h4>
+<p><strong>这里把卷积层的学习率设置为 0，需要在优化器里设置不同的学习率</strong>。首先获取全连接层参数的地址，然后使用 filter 过滤不属于全连接层的参数，也就是保留卷积层的参数；接着设置优化器的分组学习率，传入一个 list，包含 2 个元素，每个元素是字典，对应 2 个参数组。其中卷积层的学习率设置为 全连接层的 0.1 倍。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先获取全连接层参数的地址</span></span><br><span class="line">fc_params_id = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">id</span>, resnet18_ft.fc.parameters()))   </span><br><span class="line"><span class="comment"># 返回的是parameters的 内存地址</span></span><br><span class="line"><span class="comment"># 然后使用 filter 过滤不属于全连接层的参数，也就是保留卷积层的参数</span></span><br><span class="line">base_params = <span class="built_in">filter</span>(<span class="keyword">lambda</span> p: <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> fc_params_id, resnet18_ft.parameters())</span><br><span class="line"><span class="comment"># 设置优化器的分组学习率，传入一个 list，包含 2 个元素，每个元素是字典，对应 2 个参数组</span></span><br><span class="line">optimizer = optim.SGD([&#123;<span class="string">&#x27;params&#x27;</span>: base_params, <span class="string">&#x27;lr&#x27;</span>: <span class="number">0</span>&#125;, &#123;<span class="string">&#x27;params&#x27;</span>: resnet18_ft.fc.parameters(), <span class="string">&#x27;lr&#x27;</span>: LR&#125;], momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
 <h4><span id="使用分组学习率-对卷积层使用较小的学习率">使用分组学习率、对卷积层使用较小的学习率</span></h4>
-<p><strong>这里不冻结卷积层，而是对卷积层使用较小的学习率，对全连接层使用较大的学习率，需要在优化器里设置不同的学习率</strong>。首先获取全连接层参数的地址，然后使用
-filter
-过滤不属于全连接层的参数，也就是保留卷积层的参数；接着设置优化器的分组学习率，传入一个
-list，包含 2 个元素，每个元素是字典，对应 2
-个参数组。其中卷积层的学习率设置为 全连接层的 0.1 倍。</p>
+<p><strong>这里不冻结卷积层，而是对卷积层使用较小的学习率，对全连接层使用较大的学习率，需要在优化器里设置不同的学习率</strong>。首先获取全连接层参数的地址，然后使用 filter 过滤不属于全连接层的参数，也就是保留卷积层的参数；接着设置优化器的分组学习率，传入一个 list，包含 2 个元素，每个元素是字典，对应 2 个参数组。其中卷积层的学习率设置为 全连接层的 0.1 倍。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先获取全连接层参数的地址</span></span><br><span class="line">fc_params_id = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">id</span>, resnet18_ft.fc.parameters()))     </span><br><span class="line"><span class="comment"># 返回的是parameters的 内存地址</span></span><br><span class="line"><span class="comment"># 然后使用 filter 过滤不属于全连接层的参数，也就是保留卷积层的参数</span></span><br><span class="line">base_params = <span class="built_in">filter</span>(<span class="keyword">lambda</span> p: <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> fc_params_id, resnet18_ft.parameters())</span><br><span class="line"><span class="comment"># 设置优化器的分组学习率，传入一个 list，包含 2 个元素，每个元素是字典，对应 2 个参数组</span></span><br><span class="line">optimizer = optim.SGD([&#123;<span class="string">&#x27;params&#x27;</span>: base_params, <span class="string">&#x27;lr&#x27;</span>: LR*<span class="number">0</span>&#125;, &#123;<span class="string">&#x27;params&#x27;</span>: resnet18_ft.fc.parameters(), <span class="string">&#x27;lr&#x27;</span>: LR&#125;], momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -397,13 +378,13 @@ list，包含 2 个元素，每个元素是字典，对应 2
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/3GGS5GD/" rel="prev" title="Pytorch（16）模型GPU训练">
-                  <i class="fa fa-chevron-left"></i> Pytorch（16）模型GPU训练
+                <a href="/posts/3ACJRH6/" rel="prev" title="Pytorch（17）模型应用">
+                  <i class="fa fa-chevron-left"></i> Pytorch（17）模型应用
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/2DF1D1/" rel="next" title="Pytorch（14）模型保存与加载">
-                  Pytorch（14）模型保存与加载 <i class="fa fa-chevron-right"></i>
+                <a href="/posts/3GGS5GD/" rel="next" title="Pytorch（16）模型GPU训练">
+                  Pytorch（16）模型GPU训练 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

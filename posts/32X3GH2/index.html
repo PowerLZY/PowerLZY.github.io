@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、Seq2Seq  CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;147310766 目录：  机器翻译  传统机器翻译，SMT 神经机器翻译，NMT  Seq2seq  Seq2seq结构详解 为什么训练和预测时的Decoder不一样？ Seq2seq的损失函数 Decoding和">
+    <meta name="description" content="一、Seq2Seq  CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;147310766 目录：   机器翻译    传统机器翻译，SMT 神经机器翻译，NMT    Seq2seq    Seq2seq结构详解 为什么训练和预测时的Decoder不一样？ Seq2seq的损失函数 De">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习（7）Seq2Seq">
 <meta property="og:url" content="https://powerlzy.github.io/posts/32X3GH2/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、Seq2Seq  CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;147310766 目录：  机器翻译  传统机器翻译，SMT 神经机器翻译，NMT  Seq2seq  Seq2seq结构详解 为什么训练和预测时的Decoder不一样？ Seq2seq的损失函数 Decoding和">
+<meta property="og:description" content="一、Seq2Seq  CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 - 知乎 https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;147310766 目录：   机器翻译    传统机器翻译，SMT 神经机器翻译，NMT    Seq2seq    Seq2seq结构详解 为什么训练和预测时的Decoder不一样？ Seq2seq的损失函数 De">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130235.png">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130580.jpg">
@@ -153,9 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、Seq2Seq</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 seq2seq结构详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2
-为什么训练和预测时的Decoder不一样？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 Seq2Seq的损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 Decoding和Beam
-search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 NMT的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.6 NMT的评价</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、Seq2Seq</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 seq2seq结构详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 为什么训练和预测时的Decoder不一样？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 Seq2Seq的损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 Decoding和Beam search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 NMT的优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.6 NMT的评价</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -170,13 +168,13 @@ search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -313,82 +311,66 @@ search</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span
     <div class="post-body" itemprop="articleBody">
         <h2><span id="一-seq2seq">一、Seq2Seq</span></h2>
 <blockquote>
-<p>CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 -
-知乎 https://zhuanlan.zhihu.com/p/147310766</p>
+<p>CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq - 蝈蝈的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147310766">https://zhuanlan.zhihu.com/p/147310766</a></p>
 <p>目录：</p>
 <ul>
-<li><p>机器翻译</p></li>
-<li><ul>
+<li>
+<p>机器翻译</p>
+</li>
+<li>
+<ul>
 <li>传统机器翻译，SMT</li>
 <li>神经机器翻译，NMT</li>
-</ul></li>
-<li><p>Seq2seq</p></li>
-<li><ul>
+</ul>
+</li>
+<li>
+<p>Seq2seq</p>
+</li>
+<li>
+<ul>
 <li>Seq2seq结构详解</li>
 <li>为什么训练和预测时的Decoder不一样？</li>
 <li>Seq2seq的损失函数</li>
 <li>Decoding和Beam Search</li>
-</ul></li>
-<li><p>总结</p></li>
-<li><ul>
+</ul>
+</li>
+<li>
+<p>总结</p>
+</li>
+<li>
+<ul>
 <li>NMT的优缺点</li>
 <li>机器翻译的评价指标</li>
-</ul></li>
+</ul>
+</li>
 </ul>
 </blockquote>
 <h3><span id="11-seq2seq结构详解">1.1 <strong>seq2seq结构详解</strong></span></h3>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130235.png" alt="CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq">
-<figcaption aria-hidden="true">CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq</figcaption>
-</figure>
-<p>这张图，展示了在<strong>「训练时」</strong>，seq2seq内部的详细结构。</p>
-<p>在Encoder端，我们将source文本的词序列先经过embedding层转化成向量，然后输入到一个RNN结构（可以是普通RNN，LSTM，GRU等等）中。另外，这里的RNN也可以是多层、双向的。经过了RNN的一系列计算，最终隐层的输入，就作为源文本整体的一个表示向量，称为<strong>「context
-vector」</strong>。</p>
-<p>Decoder端的操作就稍微复杂一些了。首先，Decoder的输入是什么呢？Decoder的输入，训练和测试时是不一样的！
-<strong>「在训练时，我们使用真实的目标文本，即“标准答案”作为输入」</strong>（注意第一步使用一个特殊的<code>&lt;start&gt;</code>字符，表示句子的开头）。每一步根据当前正确的输出词、上一步的隐状态来预测下一步的输出词。</p>
-<p>下图则展示了在<strong>「预测时」</strong>，seq2seq的内部结构：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130580.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>预测时，Encoder端没什么变化，在Decoder端，由于此时没有所谓的“真实输出”或“标准答案”了，所以只能<strong>「自产自销：每一步的预测结果，都送给下一步作为输入」</strong>，直至输出<code>&lt;end&gt;</code>就结束。如果你对我之前写的笔记很熟悉的话，会发现，<strong>「这时的Decoder就是一个语言模型」</strong>。由于这个语言模型是根据context
-vector来进行文本的生成的，因此这种类型的语言模型，被称为“条件语言模型”：Conditional
-LM。正因为如此，在训练过程中，我们可以使用一些预训练好的语言模型来对Decoder的参数进行初始化，从而加快迭代过程。</p>
-<h3><span id="12为什么训练和预测时的decoder不一样"><strong>1.2
-为什么训练和预测时的Decoder不一样？</strong></span></h3>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130235.png" alt="CS224n笔记[7]:整理了12小时，只为让你20分钟搞懂Seq2seq"></p>
+<p>这张图，展示了在**「训练时」**，seq2seq内部的详细结构。</p>
+<p>在Encoder端，我们将source文本的词序列先经过embedding层转化成向量，然后输入到一个RNN结构（可以是普通RNN，LSTM，GRU等等）中。另外，这里的RNN也可以是多层、双向的。经过了RNN的一系列计算，最终隐层的输入，就作为源文本整体的一个表示向量，称为**「context vector」**。</p>
+<p>Decoder端的操作就稍微复杂一些了。首先，Decoder的输入是什么呢？Decoder的输入，训练和测试时是不一样的！ <strong>「在训练时，我们使用真实的目标文本，即“标准答案”作为输入」</strong>（注意第一步使用一个特殊的<code>&lt;start&gt;</code>字符，表示句子的开头）。每一步根据当前正确的输出词、上一步的隐状态来预测下一步的输出词。</p>
+<p>下图则展示了在**「预测时」**，seq2seq的内部结构：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130580.jpg" alt="img"></p>
+<p>预测时，Encoder端没什么变化，在Decoder端，由于此时没有所谓的“真实输出”或“标准答案”了，所以只能**「自产自销：每一步的预测结果，都送给下一步作为输入」<strong>，直至输出<code>&lt;end&gt;</code>就结束。如果你对我之前写的笔记很熟悉的话，会发现，</strong>「这时的Decoder就是一个语言模型」**。由于这个语言模型是根据context vector来进行文本的生成的，因此这种类型的语言模型，被称为“条件语言模型”：Conditional LM。正因为如此，在训练过程中，我们可以使用一些预训练好的语言模型来对Decoder的参数进行初始化，从而加快迭代过程。</p>
+<h3><span id="12-为什么训练和预测时的decoder不一样"><strong>1.2 为什么训练和预测时的Decoder不一样？</strong></span></h3>
 <p>很多人可能跟我一样，对此感到疑惑：为什么在训练的时候，不能直接使用这种语言模型的模式，使用上一步的预测来作为下一步的输入呢？</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130314.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>我们称这两种模式，根据标准答案来decode的方式为<strong>「teacher
-forcing」</strong>，而根据上一步的输出作为下一步输入的decode方式为<strong>「free
-running」</strong>。</p>
-<p>其实，free
-running的模式真的不能在训练时使用吗？——当然是可以的！从理论上没有任何的问题，又不是不能跑。但是，在实践中人们发现，这样训练太南了。因为没有任何的引导，一开始会完全是瞎预测，正所谓“一步错，步步错”，而且越错越离谱，这样会导致训练时的累积损失太大（<strong>「误差爆炸」</strong>问题，exposure
-bias），训练起来就很费劲。这个时候，如果我们能够在每一步的预测时，让老师来指导一下，即提示一下上一个词的正确答案，decoder就可以快速步入正轨，训练过程也可以更快收敛。因此大家把这种方法称为teacher
-forcing。所以，这种操作的目的就是为了使得训练过程更容易。</p>
-<p><strong>所以，更好的办法，更常用的办法，是老师只给适量的引导，学生也积极学习</strong>。即我们设置一个概率p，每一步，以概率p靠自己上一步的输入来预测，以概率1-p根据老师的提示来预测，这种方法称为<strong>「计划采样」</strong>（scheduled
-sampling）：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130613.jpg" alt="img" style="zoom: 67%;"></p>
-<p>另外有一个小细节：在seq2seq的训练过程中，decoder即使遇到了<code>&lt;end&gt;</code>标识也不会结束，因为训练的时候并不是一个生成的过程
-，我们需要等到“标准答案”都输入完才结束。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130314.jpg" alt="img"></p>
+<p>我们称这两种模式，根据标准答案来decode的方式为**「teacher forcing」<strong>，而根据上一步的输出作为下一步输入的decode方式为</strong>「free running」**。</p>
+<p>其实，free running的模式真的不能在训练时使用吗？——当然是可以的！从理论上没有任何的问题，又不是不能跑。但是，在实践中人们发现，这样训练太南了。因为没有任何的引导，一开始会完全是瞎预测，正所谓“一步错，步步错”，而且越错越离谱，这样会导致训练时的累积损失太大（**「误差爆炸」**问题，exposure bias），训练起来就很费劲。这个时候，如果我们能够在每一步的预测时，让老师来指导一下，即提示一下上一个词的正确答案，decoder就可以快速步入正轨，训练过程也可以更快收敛。因此大家把这种方法称为teacher forcing。所以，这种操作的目的就是为了使得训练过程更容易。</p>
+<p><strong>所以，更好的办法，更常用的办法，是老师只给适量的引导，学生也积极学习</strong>。即我们设置一个概率p，每一步，以概率p靠自己上一步的输入来预测，以概率1-p根据老师的提示来预测，这种方法称为**「计划采样」**（scheduled sampling）：</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130613.jpg" alt="img" style="zoom: 67%;">
+<p>另外有一个小细节：在seq2seq的训练过程中，decoder即使遇到了<code>&lt;end&gt;</code>标识也不会结束，因为训练的时候并不是一个生成的过程 ，我们需要等到“标准答案”都输入完才结束。</p>
 <h3><span id="13-seq2seq的损失函数">1.3 <strong>Seq2Seq的损失函数</strong></span></h3>
 <p>在上面的图中，我们看到<strong>decoder的每一步产生隐状态后，会通过一个projection层映射到对应的词</strong>。那怎么去计算每一步的损失呢？实际上，<strong>这个projection层，通常是一个softmax神经网络层，假设词汇量是V，则会输出一个V维度的向量，每一维代表是某个词的概率</strong>。映射的过程就是把最大概率的那个词找出来作为预测出的词。</p>
 <p>在计算损失的时候，我们使用交叉熵作为损失函数，所以我们要找出这个V维向量中，正确预测对应的词的那一维的概率大小<img src="https://www.zhihu.com/equation?tex=%5Chat%7Bp%7D" alt="[公式]">，则这一步的损失就是它的负导数<img src="https://www.zhihu.com/equation?tex=-log%28%5Chat%7Bp%7D%29" alt="[公式]">，将每一步的损失求和，即得到总体的损失函数：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7D+J%26%3D-log%28p%28%5Chat%7By_1%7D%29%29-log%28p%28%5Chat%7By_2%7D%29%29-...-log%28p%28%5Chat%7By_n%7D%29%29-log%28p%28%5BEOS%5D%29%29+%5Cnonumber+%5C%5C+%26%3D+-%5Cfrac%7B1%7D%7BT%7D%5Csum%5E%7BT%7D_%7Bi%7Dlog%28p%28%5Chat%7By_i%7D%29%29+%5Cnonumber+%5Cend%7Balign%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7D+J%26%3D-log%28p%28%5Chat%7By_1%7D%29%29-log%28p%28%5Chat%7By_2%7D%29%29-...-log%28p%28%5Chat%7By_n%7D%29%29-log%28p%28%5BEOS%5D%29%29+%5Cnonumber+%5C%5C+%26%3D+-%5Cfrac%7B1%7D%7BT%7D%5Csum%5E%7BT%7D_%7Bi%7Dlog%28p%28%5Chat%7By_i%7D%29%29+%5Cnonumber+%5Cend%7Balign%7D+%5C%5C" alt="[公式]"></p>
 <p>其中T代表Decoder有多少步，[EOS]代表‘end of sentence’这个特殊标记.</p>
-<h3><span id="14-decoding和beamsearch">1.4 <strong>Decoding和Beam
-search</strong></span></h3>
-<p>前面画的几个图展示的预测过程，其实就是最简单的decoding方式——<strong>「Greedy
-Decoding」</strong>，即每一步，都预测出概率最大的那个词，然后输入给下一步。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130276.jpg" alt="img" style="zoom:67%;"></p>
-<p>这种Greedy的方式，简单快速，但是既然叫“贪心”，肯定会有问题，那就是<strong>「每一步最优，不一定全局最优」</strong>，这种方式很可能“捡了芝麻，丢了西瓜”。</p>
-<p>改进的方法，就是使用<strong>「Beam
-Search」</strong>方法：每一步，多选几个作为候选，最后综合考虑，选出最优的组合。</p>
+<h3><span id="14-decoding和beam-search">1.4 <strong>Decoding和Beam search</strong></span></h3>
+<p>前面画的几个图展示的预测过程，其实就是最简单的decoding方式——<strong>「Greedy Decoding」</strong>，即每一步，都预测出概率最大的那个词，然后输入给下一步。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182130276.jpg" alt="img" style="zoom:67%;">
+<p>这种Greedy的方式，简单快速，但是既然叫“贪心”，肯定会有问题，那就是**「每一步最优，不一定全局最优」**，这种方式很可能“捡了芝麻，丢了西瓜”。</p>
+<p>改进的方法，就是使用**「Beam Search」**方法：每一步，多选几个作为候选，最后综合考虑，选出最优的组合。</p>
 <p>下面我们来具体看看Beam Search的操作步骤：</p>
 <ul>
 <li>首先，我们需要设定一个候选集的大小beam size=k；</li>
@@ -397,28 +379,20 @@ Search」</strong>方法：每一步，多选几个作为候选，最后综合�
 <li>不断重复上述过程，直至结束，选择“序列得分”最大的那个序列作为最终结果。</li>
 </ul>
 <p>这里的重点就在于这个“序列得分”的计算。</p>
-<p>我们使用如下的score函数来定义<strong>「序列得分」</strong>：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=score%28y_1%2C...%2Cy_t%29%3D%5Csum%5E%7Bt%7D_%7Bi%3D1%7DlogP%28y_i%7Cy_1%2Cy_2%2C...%2Cy_%7Bi-1%7D%2Cx%29+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p>我们使用如下的score函数来定义**「序列得分」**：</p>
+<p><img src="https://www.zhihu.com/equation?tex=score%28y_1%2C...%2Cy_t%29%3D%5Csum%5E%7Bt%7D_%7Bi%3D1%7DlogP%28y_i%7Cy_1%2Cy_2%2C...%2Cy_%7Bi-1%7D%2Cx%29+%5C%5C" alt="[公式]"></p>
 <p>这个score代表了当前到第t步的输出序列的一个综合得分，越高越好。其中<img src="https://www.zhihu.com/equation?tex=logP%28y_i%7Cy_1%2Cy_2%2C...%2Cy_%7Bi-1%7D%2Cx%29" alt="[公式]">类似于前面我们写的第t步的交叉熵损失的负数。所以这个score越到，就意味着到当前这一步为止，输出序列的累积损失越小。</p>
 <p>再多描述不如一张图直观，我用下图描绘一个极简的案例（只有3个词的语料，k=2）：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182131550.jpg" alt="img" style="zoom: 67%;"></p>
-<p>最后还有一个问题：由于会有多个分支，所以很有可能我们会遇到多个<code>&lt;end&gt;</code>标识，由于分支较多，如果等每一个分支都遇到<code>&lt;end&gt;</code>才停的话，可能耗时太久，因此一般我们会设定一些规则，比如已经走了T步，或者已经积累了N条已完成的句子，就终止beam
-search过程。</p>
-<p>在search结束之后，我们需要对已完成的N个序列做一个抉择，挑选出最好的那个，那不就是通过前面定义的score函数来比较吗？确实可以，但是如果直接使用score来挑选的话，会导致那些很短的句子更容易被选出。<strong>因为score函数的每一项都是负的，序列越长，score往往就越小。因此我们可以使用长度来对score函数进行细微的调整：对每个序列的得分，除以序列的长度。根据调整后的结果来选择best
-one。</strong></p>
-<p>Beam Search的使用，往往可以得到比Greedy
-Search更好的结果，道理很容易理解，高手下棋想三步，深思熟虑才能走得远。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182131550.jpg" alt="img" style="zoom: 67%;">
+<p>最后还有一个问题：由于会有多个分支，所以很有可能我们会遇到多个<code>&lt;end&gt;</code>标识，由于分支较多，如果等每一个分支都遇到<code>&lt;end&gt;</code>才停的话，可能耗时太久，因此一般我们会设定一些规则，比如已经走了T步，或者已经积累了N条已完成的句子，就终止beam search过程。</p>
+<p>在search结束之后，我们需要对已完成的N个序列做一个抉择，挑选出最好的那个，那不就是通过前面定义的score函数来比较吗？确实可以，但是如果直接使用score来挑选的话，会导致那些很短的句子更容易被选出。<strong>因为score函数的每一项都是负的，序列越长，score往往就越小。因此我们可以使用长度来对score函数进行细微的调整：对每个序列的得分，除以序列的长度。根据调整后的结果来选择best one。</strong></p>
+<p>Beam Search的使用，往往可以得到比Greedy Search更好的结果，道理很容易理解，高手下棋想三步，深思熟虑才能走得远。</p>
 <h3><span id="15-nmt的优缺点">1.5 <strong>NMT的优缺点</strong></span></h3>
 <p>NMT相比于SMT，最大的优点当然就如前面所说的——简洁。我们<strong>不需要什么人工的特征工程，不需要各种复杂的前后组件，就是一个端到端的神经网络，整个结构一起进行优化</strong>。</p>
 <p>另外，由于使用了深度学习的方法，我们可以引入很多语义特征，比如利用文本的相似度，利用文本内隐含的多层次特征，这些都是统计学方法没有的。</p>
 <p>但是，没有什么东西是绝对好或绝对差的，NMT也有其不足。它的不足也是跟深度学习的黑箱本质息息相关。<strong>NMT的解释性差，难以调试，难以控制，我们谁也不敢保证遇到一个新的文本它会翻译出什么奇怪的玩意儿，所以NMT在重要场合使用是有明显风险的。</strong></p>
 <h3><span id="16-nmt的评价">1.6 <strong>NMT的评价</strong></span></h3>
-<p>机器翻译的效果如何评价呢？——<strong>「BLEU」</strong>指标。<strong>BLEU，全称是Bilingual
-Evaluation
-Understudy，它的主要思想是基于N-gram等特征来比较人工翻译和机器翻译结果的相似程度。</strong></p>
+<p>机器翻译的效果如何评价呢？——**「BLEU」**指标。<strong>BLEU，全称是Bilingual Evaluation Understudy，它的主要思想是基于N-gram等特征来比较人工翻译和机器翻译结果的相似程度。</strong></p>
 
     </div>
 

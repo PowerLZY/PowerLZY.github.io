@@ -153,13 +153,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -235,7 +235,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-05-14 16:15:45 / 修改时间：18:47:15" itemprop="dateCreated datePublished" datetime="2023-05-14T16:15:45+08:00">2023-05-14</time>
+      <time title="创建时间：2023-05-14 16:15:45 / 修改时间：19:19:31" itemprop="dateCreated datePublished" datetime="2023-05-14T16:15:45+08:00">2023-05-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>9.2k</span>
+      <span>9.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -284,24 +284,212 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141615386.png" alt="image-20230514113324227" style="zoom: 25%;"></p>
-<p><strong>在本篇文章中我们将讨论DataDome公司<sup>[8]</sup>是如何利用<font color="red">基于流的异常值检测和
-SliceLine
-来快速安全地生成大量可用于阻止恶意流量的规则/签名。</font></strong>虽然机器学习(ML)的使用变得越来越普遍，但在安全环境中规则仍然很重要。事实上，公司已经投资了大量有效的规则引擎，能够快速评估大量规则。此外，规则通常更方便创建、操作和解释，因此在ML方法之外仍然很有价值。</p>
-<p>虽然 SliceLine 最初设计用于识别 ML
-模型表现不佳的数据子集，但它的使用可以<strong>适应以无监督方式生成大量与攻击相关的规则，即不使用标记数据</strong>。此外，利用机器人检测问题来说明如何使用
-SliceLine 即时生成大量恶意签名。</p>
-<p>该研究还将展示优化的 SliceLine Python
-开源实现，并展示如何将其用于特定但困难的机器人检测子集：<strong>分布式凭证填充攻击</strong>，<strong>攻击者利用数千个受感染的
-IP
-地址进行攻击和绕过传统的安全机制，例如速率限制策略</strong>。通过一个真实世界的例子，该研究将首先解释如何使用基于流的检测来检测此类攻击，以及该研究如何使用数据建模在服务器端信号（HTTP
-标头、TLS 指纹、IP 地址等）上应用 <strong>SliceLine</strong>
-来识别并生成与分布式攻击相关的阻止签名。<font color="red">这种方法使该研究能够在去年阻止
-59 位客户超过 2.85 亿次恶意登录尝试。</font></p>
+          <img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305141615386.png" alt="image-20230514113324227" style="zoom: 25%;">
+<p>**在本篇文章中我们将讨论DataDome公司<sup>[1]</sup>是如何利用<font color="red">基于流的异常值检测和 SliceLine 来快速安全地生成大量可用于阻止恶意流量的规则/签名。</font>**虽然机器学习(ML)的使用变得越来越普遍，但在安全环境中规则仍然很重要。事实上，公司已经投资了大量有效的规则引擎，能够快速评估大量规则。此外，规则通常更方便创建、操作和解释，因此在ML方法之外仍然很有价值。</p>
+<p>虽然 SliceLine 最初设计用于识别 ML 模型表现不佳的数据子集，但它的使用可以<strong>适应以无监督方式生成大量与攻击相关的规则，即不使用标记数据</strong>。此外，利用机器人检测问题来说明如何使用 SliceLine 即时生成大量恶意签名。</p>
+<p>该研究还将展示优化的 SliceLine Python 开源实现，并展示如何将其用于特定但困难的机器人检测子集：<strong>分布式凭证填充攻击</strong>，<strong>攻击者利用数千个受感染的 IP 地址进行攻击和绕过传统的安全机制，例如速率限制策略</strong>。通过一个真实世界的例子，该研究将首先解释如何使用基于流的检测来检测此类攻击，以及该研究如何使用数据建模在服务器端信号（HTTP 标头、TLS 指纹、IP 地址等）上应用 <strong>SliceLine</strong> 来识别并生成与分布式攻击相关的阻止签名。<font color="red">这种方法使该研究能够在去年阻止 59 位客户超过 2.85 亿次恶意登录尝试。</font></p>
 <p>最后，该研究将解释这种方法如何推广到除机器人检测之外的其他安全用例，以及如何在不同的规则引擎中使用它。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/A8WZ9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/4JR3RA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/4JR3RA/" class="post-title-link" itemprop="url">流量反作弊（8）【Draft】OWASP-API安全top 10 2023年变化解读</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-04 15:46:58" itemprop="dateCreated datePublished" datetime="2023-05-04T15:46:58+08:00">2023-05-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-14 19:28:43" itemprop="dateModified" datetime="2023-05-14T19:28:43+08:00">2023-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>20 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="todoowasp-api安全-top-10-2023变化解读"><font color="red">【TODO】OWASP
+API安全 top 10 2023变化解读</font></h2>
+<blockquote>
+<p>问题定义，【问题危害】，变化比较（变化原因），场景分析，【案例分析】,
+缓解措施</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 38%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>2019</th>
+<th>2023</th>
+<th>变化</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>API1:2019 Broken Object Level Authorization</td>
+<td>API1:2023 Broken Object Level Authorization</td>
+<td>水平越权</td>
+</tr>
+<tr class="even">
+<td>API2:2019 Broken <strong>User</strong> Authentication</td>
+<td>‍API2:2023 Broken Authentication</td>
+<td>范围从”人“的认证，扩展到了”人+机“的认证</td>
+</tr>
+<tr class="odd">
+<td><strong>API3:2019 Excessive Data Exposure</strong></td>
+<td><font color="red">API3:2023 Broken Object Property Level
+Authorization</font></td>
+<td>合并了API3（过度数据暴露）+API6（批量分配）</td>
+</tr>
+<tr class="even">
+<td>API4:2019 Lack of Resources &amp; Rate Limiting</td>
+<td>‍API4:2023 Unrestricted Resource Consumption</td>
+<td>应用层Dos，强调了后果（后端资源）</td>
+</tr>
+<tr class="odd">
+<td>API5:2019 Broken Function Level Authorization</td>
+<td>API5:2023 Broken Function Level Authorization</td>
+<td>垂直越权</td>
+</tr>
+<tr class="even">
+<td><strong>API6:2019 Mass Assignment</strong></td>
+<td>‍<font color="red">API6:2023 Server-Side Request Forgery
+(SSRF)</font></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>API7:2019 Security Misconfiguration</td>
+<td>API7:2023 Security Misconfigurations</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>API8:2019 Injection</strong></td>
+<td><font color="red">API8:2023 Lack of Protection from Automated
+Threats</font></td>
+<td>业务风控/爬虫/Bot保护</td>
+</tr>
+<tr class="odd">
+<td>API9:2019 Improper Assets Management</td>
+<td>API9:2023 Improper Inventory Management</td>
+<td>强调了”未下线的老版本API/临时调试API“风险暴露面</td>
+</tr>
+<tr class="even">
+<td><strong>API10:2019 Insufficient Logging &amp;
+Monitoring</strong></td>
+<td><font color="red">API10:2023 Unsafe Consumption of APIs</font></td>
+<td>供应链角度：开发人员信任第三方API而不继进行检验</td>
+</tr>
+</tbody>
+</table>
+<p><strong>伴随企业数字化程度的加深，API成为软件世界数据交互的“通用语言”，其数量迎来爆发式增长。同时，API的广泛应用也为运维可见性、安全性提出了新的挑战。针对API这种“易攻难守”的新兴资产的安全治理显得愈发重要。</strong></p>
+<p>OWASP为强调API安全的重要性，在2019年首次提出了API Security Top
+10。后随着安全产业实践加深，于2023年发布了API Security Top
+10（候选版）的内容更新。<strong><font color="red">该更新内容进一步强调了API攻击场景与Web攻击的差异化，突出API权限管理、资产管理、业务风控及供应链问题。</font></strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/4JR3RA/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -399,14 +587,14 @@ IP
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.3k</span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>11 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -417,12 +605,11 @@ IP
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="uncovering-large-groups-of-active-malicious-accounts-in-online-social-networks">Uncovering
-Large Groups of Active Malicious Accounts in Online Social Networks</h2>
-<h3 id="摘要">摘要</h3>
+          <h2 id="Uncovering-Large-Groups-of-Active-Malicious-Accounts-in-Online-Social-Networks"><a class="header-anchor" href="#Uncovering-Large-Groups-of-Active-Malicious-Accounts-in-Online-Social-Networks">¶</a>Uncovering Large Groups of Active Malicious Accounts in Online Social Networks</h2>
+<h3 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h3>
 <p>在线社交网络的成功吸引了攻击和利用它们的持续关注。攻击者通常控制恶意账户，包括虚假和被侵犯的真实用户账户，以发起攻击活动，例如<strong>社交垃圾邮件、恶意软件分发和在线评分扭曲</strong>。</p>
 <p>为了防御这些攻击，我们设计并实现了一个名为SynchroTrap的恶意账户检测系统。我们观察到，恶意账户通常在各种社交网络环境中执行松散同步的动作。<strong>我们的系统根据用户行动的相似性对用户账户进行聚类，揭示了表现类似、在相同时间持续一段时间的大量恶意账户群体</strong>。我们将SynchroTrap实现为在Hadoop和Giraph上的增量处理系统，以便它能够高效地处理大型在线社交网络中的海量用户活动数据。我们已经在Facebook和Instagram的五个应用程序中部署了我们的系统。在一个月内，SynchroTrap能够揭示超过两百万个恶意账户和1156个大型攻击活动。</p>
-<p><strong>关键字：</strong>恶意账号检测；大规模聚类；在线社交网络；</p>
+<p>**关键字：**恶意账号检测；大规模聚类；在线社交网络；</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2C9003N/#more" rel="contents">
@@ -530,7 +717,7 @@ Large Groups of Active Malicious Accounts in Online Social Networks</h2>
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
+      <span>10 分钟</span>
     </span>
 </div>
 
@@ -541,8 +728,7 @@ Large Groups of Active Malicious Accounts in Online Social Networks</h2>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="whats-the-of-use-cases-salt-security">What‘s the of use-cases
-Salt Security?</h3>
+          <h3 id="What‘s-the-of-use-cases-Salt-Security"><a class="header-anchor" href="#What‘s-the-of-use-cases-Salt-Security">¶</a>What‘s the of use-cases Salt Security?</h3>
 <p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041503340.svg" alt="img"></p>
           <!--noindex-->
             <div class="post-button">
@@ -662,25 +848,19 @@ Salt Security?</h3>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="salt-customer-attack-case-study-blocking-a-low-rate-per-bot-http-ddos-attack">Salt
-Customer Attack Case Study: Blocking a Low-rate-per-bot HTTP DDoS
-Attack</h3>
-<h3 id="一what-is-an-http-ddos-attack">一、What is an HTTP DDoS
-Attack?</h3>
-<p>一个HTTP
-DDoS攻击是一种恶意企图，旨在通过利用大量设备（称为僵尸网络）向网络服务或中间设备发送高速的请求，从而使其无法为合法用户提供服务。攻击者会利用这些攻击来压倒网络服务的资源，或者中间设备的资源，以阻止它们为合法用户提供服务，从而达到攻击的目的。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031153193.png" alt="img" style="zoom:50%;"></p>
-<p><strong>攻击的振幅是通过受害者网络服务接收到的总请求速率来衡量的。</strong>该速率是由僵尸网络的规模和每个僵尸程序的恶意请求速率决定的。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041511500.png" alt="img" style="zoom:50%;"></p>
-<p><strong>每个恶意请求可能看起来合法，或者至少不会与典型的Web应用程序攻击匹配</strong>。要区分恶意请求和合法请求以检测HTTP
-DDoS攻击，通常可以采取以下方法：</p>
-<ol type="1">
+          <h3 id="Salt-Customer-Attack-Case-Study-Blocking-a-Low-rate-per-bot-HTTP-DDoS-Attack"><a class="header-anchor" href="#Salt-Customer-Attack-Case-Study-Blocking-a-Low-rate-per-bot-HTTP-DDoS-Attack">¶</a>Salt Customer Attack Case Study: Blocking a Low-rate-per-bot HTTP DDoS Attack</h3>
+<h3 id="一、What-is-an-HTTP-DDoS-Attack"><a class="header-anchor" href="#一、What-is-an-HTTP-DDoS-Attack">¶</a>一、What is an HTTP DDoS Attack?</h3>
+<p>一个HTTP DDoS攻击是一种恶意企图，旨在通过利用大量设备（称为僵尸网络）向网络服务或中间设备发送高速的请求，从而使其无法为合法用户提供服务。攻击者会利用这些攻击来压倒网络服务的资源，或者中间设备的资源，以阻止它们为合法用户提供服务，从而达到攻击的目的。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305031153193.png" alt="img" style="zoom:50%;">
+<p>**攻击的振幅是通过受害者网络服务接收到的总请求速率来衡量的。**该速率是由僵尸网络的规模和每个僵尸程序的恶意请求速率决定的。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305041511500.png" alt="img" style="zoom:50%;">
+<p><strong>每个恶意请求可能看起来合法，或者至少不会与典型的Web应用程序攻击匹配</strong>。要区分恶意请求和合法请求以检测HTTP DDoS攻击，通常可以采取以下方法：</p>
+<ol>
 <li><strong>限制每个源客户端的请求数量</strong>。</li>
 <li><strong>对源客户端进行指纹识别，以区分恶意请求和合法请求</strong>。</li>
 <li>使用一些Web应用程序防火墙（WAF）中包含的预定义签名。</li>
 </ol>
-<p>这些方法可以帮助检测和缓解HTTP
-DDoS攻击，但需要注意的是，攻击者可能会采取措施绕过这些限制和检测方法。因此，还应使用其他安全措施来提高网络服务的安全性。</p>
+<p>这些方法可以帮助检测和缓解HTTP DDoS攻击，但需要注意的是，攻击者可能会采取措施绕过这些限制和检测方法。因此，还应使用其他安全措施来提高网络服务的安全性。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2KH8Z8N/#more" rel="contents">
@@ -794,17 +974,15 @@ DDoS攻击，但需要注意的是，攻击者可能会采取措施绕过这些�
     
     <div class="post-body" itemprop="articleBody">
           <p><strong>[Published 10 October 2022]</strong></p>
-<p>Web
-API流量和攻击的数量和严重程度都在增长。新方法通过特定的API安全功能补充了传统的web应用程序安全措施。安全和风险管理领导者应确定何时寻求这种额外的保护。</p>
-<h5 id="主要发现">主要发现</h5>
+<p>Web API流量和攻击的数量和严重程度都在增长。新方法通过特定的API安全功能补充了传统的web应用程序安全措施。安全和风险管理领导者应确定何时寻求这种额外的保护。</p>
+<h5 id="主要发现"><a class="header-anchor" href="#主要发现">¶</a>主要发现</h5>
 <ul>
 <li>安全领导者正在寻找额外的安全功能来保护他们的API。他们正在扩展现有的API网关（GW）、web应用程序和API保护（WAAP）解决方案，尤其是在具有高安全要求的行业垂直领域。</li>
 <li>Gartner客户在询问过程中最关心的问题包括个<strong>人数据盗窃、账户接管和自动内容抓取</strong>。</li>
-<li>API保护创新保护web
-API免受攻击、滥用、访问违规和拒绝服务（DoS）攻击。</li>
+<li>API保护创新保护web API免受攻击、滥用、访问违规和拒绝服务（DoS）攻击。</li>
 <li>API保护产品提供三种主要类型的功能-<strong>发现、姿态管理和运行时保护</strong>。</li>
 </ul>
-<h5 id="推荐">推荐</h5>
+<h5 id="推荐"><a class="header-anchor" href="#推荐">¶</a>推荐</h5>
 <p>为了保护其API，安全和风险管理领导者应：</p>
 <ul>
 <li><strong>从发现和分类您的API开始</strong>。执行威胁建模，以确定减轻风险所需的特定安全机制。</li>
@@ -920,20 +1098,14 @@ API免受攻击、滥用、访问违规和拒绝服务（DoS）攻击。</li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="一fp-growth">一、FP-growth</h3>
-<h4 id="前言apriori算法的缺陷">前言——Apriori算法的缺陷</h4>
+          <h3 id="一、FP-growth"><a class="header-anchor" href="#一、FP-growth">¶</a>一、FP-growth</h3>
+<h4 id="前言——Apriori算法的缺陷"><a class="header-anchor" href="#前言——Apriori算法的缺陷">¶</a>前言——Apriori算法的缺陷</h4>
 <p>虽然Apriori算法能够有效计算频繁项集, 但是其缺点依旧存在：</p>
 <ul>
-<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如
-<span class="math inline">\(D, L_k\)</span> ）
-进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
-<li><strong>可能会产生庞大的候选集</strong>：由于第 <span class="math inline">\(k\)</span> 迭代的连接过程仍然需要进行 <span class="math inline">\(\left(\begin{array}{c}\left|L_k\right| /\
-2\end{array}\right)\)</span> 次比较操作,
-所以Apriori算法中途产生的候选集的数量依然巨大。</li>
+<li><strong>需要多次扫描数据集</strong>：Apriori算法中间有许多步骤都需要对某一个大集合（比如 $D, L_k$ ） 进行遍历扫描，如果数据量庞大，那么遍历扫描仍然会占据大量的时间。</li>
+<li><strong>可能会产生庞大的候选集</strong>：由于第 $k$ 迭代的连接过程仍然需要进行 $\left(\begin{array}{c}\left|L_k\right| /\ 2\end{array}\right)$ 次比较操作, 所以Apriori算法中途产生的候选集的数量依然巨大。</li>
 </ul>
-<p><font color="red">所以为什么一定要产生候选集？是否可以不通过产生候选集的方式来完成频繁模式挖掘呢？频繁模式增长(frequent
-pattern growth，
-简称FP-growth)就是一种该方向的尝试。</font>【原始事务数据转换为树状数据结构，减少扫描事务的成本】</p>
+<p><font color="red">所以为什么一定要产生候选集？是否可以不通过产生候选集的方式来完成频繁模式挖掘呢？频繁模式增长(frequent pattern growth， 简称FP-growth)就是一种该方向的尝试。</font>【原始事务数据转换为树状数据结构，减少扫描事务的成本】</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/806NJ2/#more" rel="contents">
@@ -1042,7 +1214,7 @@ pattern growth，
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="一关联规则概述">一、关联规则概述</h3>
+          <h3 id="一、关联规则概述"><a class="header-anchor" href="#一、关联规则概述">¶</a>一、关联规则概述</h3>
 <p><font color="red">关联规则-策略挖掘中必不可少的算法。</font></p>
 <p>1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。</p>
           <!--noindex-->
@@ -1135,7 +1307,7 @@ pattern growth，
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.9k</span>
+      <span>4.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1153,12 +1325,18 @@ pattern growth，
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="一apriori算法">一、﻿Apriori算法</h3>
-<p>﻿Apriori算法是常用的用于挖掘出数据关联规则的算法，它用来找出数据值中频繁出现的数据集合，找出这些集合的模式有助于我们做一些决策。</p>
+          <h3 id="一、-Apriori算法"><a class="header-anchor" href="#一、-Apriori算法">¶</a>一、﻿Apriori算法</h3>
+<p>Apriori算法是常用的用于挖掘出数据关联规则的算法，它用来找出数据值中频繁出现的数据集合，找出这些集合的模式有助于我们做一些决策。</p>
 <ul>
-<li><p><strong>支持度</strong>：关联规则A-&gt;B的支持度support=P(AB)，指的是事件A和事件B同时发生的概率；</p></li>
-<li><p><strong>置信度</strong>：指的是发生事件A的基础上发生事件B的概率；</p></li>
-<li><p><strong>频繁k项集</strong>：频繁项集表示的就是在数据集中频繁出现的项集（可以是一个，也可以是多个）。如果事件A中包含k个元素，那么称这个事件A为k项集，并且事件A满足最小支持度阈值的事件称为频繁k项集；</p></li>
+<li>
+<p><strong>支持度</strong>：关联规则A-&gt;B的支持度support=P(AB)，指的是事件A和事件B同时发生的概率；</p>
+</li>
+<li>
+<p><strong>置信度</strong>：指的是发生事件A的基础上发生事件B的概率；</p>
+</li>
+<li>
+<p><strong>频繁k项集</strong>：频繁项集表示的就是在数据集中频繁出现的项集（可以是一个，也可以是多个）。如果事件A中包含k个元素，那么称这个事件A为k项集，并且事件A满足最小支持度阈值的事件称为频繁k项集；</p>
+</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -1250,7 +1428,7 @@ pattern growth，
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1277,11 +1455,10 @@ pattern growth，
 <p>不幸的是，虽然API是现代应用程序的一个重要组成部分，但它们是攻击者访问敏感信息的一个常见目标。在使用API时，了解第三方应用程序如何通过接口输送数据是至关重要的。此外，随着API日益成为一个攻击载体，API安全措施有助于安全团队评估安全风险，并有一个全面的计划来保护它们。</p>
 <p><strong>由于API是公开访问的，它们是窃取敏感信息的常见目标，包括应用逻辑、用户凭证、信用卡号码等</strong>。此外，API端点的漏洞也会被恶意行为者利用，以获得对系统或网络的未授权访问，进行其他形式的攻击，如跨站脚本和代码注入。在线网络应用安全项目<a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">（OWASP）发布了基于风险的十大漏洞建议</a>，以确保网络API的安全。这些包括:</p>
 <h4><span id="13-最常见的api安全风险">1.3 最常见的API安全风险</span></h4>
-<h5><span id="owasp-api安全-top-102032变化解读">OWASP API安全 top 10
-2032变化解读</span></h5>
+<h5><span id="owasp-api安全-top-10-2032变化解读">OWASP API安全 top 10 2032变化解读</span></h5>
 <ul>
-<li>https://github.com/OWASP/API-Security</li>
-<li>https://owasp.org/www-project-api-security/</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/OWASP/API-Security">https://github.com/OWASP/API-Security</a></li>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">https://owasp.org/www-project-api-security/</a></li>
 </ul>
 <p>在开发过程中以及每当API更新时，应解决以下API安全风险:</p>
 <ul>
@@ -1289,144 +1466,20 @@ pattern growth，
 <li><strong>破坏函数级授权</strong>。当没有实现最小权限原则(POLP)时就会出现这种情况，通常是由于过于复杂的访问控制策略造成的。它导致攻击者能够执行敏感命令或访问针对特权帐户的端点。</li>
 <li><strong>用户身份验证失败</strong>。与BOLA一样，如果身份验证过程被破坏，攻击者可以一次性甚至永久地冒充另一个用户。</li>
 <li><strong>过多的数据暴露</strong>。API对请求的响应通常返回比相关或必要的数据更多的数据。尽管数据可能不会显示给用户，但可以很容易地检查这些数据，并可能导致敏感信息的潜在暴露。</li>
-<li><strong>资产管理不当。</strong>API的开发和部署通常是快节奏的，在急于发布新的或更新的API时，经常会遗漏完整的文档。这将导致暴露的和幽灵端点，以及对旧api如何工作和需要实现的理解不足。</li>
-<li><strong>缺乏资源和速率限制。</strong>API端点通常对互联网开放，如果对请求的数量或大小没有限制，则对DoS和暴力攻击开放。</li>
+<li>**资产管理不当。**API的开发和部署通常是快节奏的，在急于发布新的或更新的API时，经常会遗漏完整的文档。这将导致暴露的和幽灵端点，以及对旧api如何工作和需要实现的理解不足。</li>
+<li>**缺乏资源和速率限制。**API端点通常对互联网开放，如果对请求的数量或大小没有限制，则对DoS和暴力攻击开放。</li>
 <li><strong>注入缺陷</strong>。如果没有正确地解析和验证请求数据，攻击者可能会发起命令或SQL注入攻击来访问它或在未经授权的情况下执行恶意命令。</li>
-<li><strong>大规模作业。</strong>软件开发框架经常证明，只需一行代码就可以将从在线表单接收到的所有数据插入到数据库或对象中，这被称为批量赋值，从而无需编写重复的表单映射代码。如果没有指定哪些数据是可接受的，就会打开各种攻击向量。</li>
+<li>**大规模作业。**软件开发框架经常证明，只需一行代码就可以将从在线表单接收到的所有数据插入到数据库或对象中，这被称为批量赋值，从而无需编写重复的表单映射代码。如果没有指定哪些数据是可接受的，就会打开各种攻击向量。</li>
 </ul>
 <h3><span id="二-技术现状">二、技术现状</span></h3>
 <h4><span id="api-安全性最佳实践">API 安全性最佳实践</span></h4>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">OWASP API
-安全项目</a></li>
-<li>API 安全性最佳实践：https://juejin.cn/post/7196653524204453947</li>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">OWASP API 安全项目</a></li>
+<li>API 安全性最佳实践：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7196653524204453947">https://juejin.cn/post/7196653524204453947</a></li>
 <li></li>
 </ul>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/231N929/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/231N929/" class="post-title-link" itemprop="url">流量反作弊（4）Salt Security-API安全最佳实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-04-26 20:13:37 / 修改时间：21:50:26" itemprop="dateCreated datePublished" datetime="2023-04-26T20:13:37+08:00">2023-04-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/" itemprop="url" rel="index"><span itemprop="name">工业落地</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%B7%A5%E4%B8%9A%E8%90%BD%E5%9C%B0/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/API%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">API安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="salt-security-api安全最佳实践">Salt Security
-API安全最佳实践</h3>
-<p><strong>在多数情况下，专门部署的API安全工具可以更容易、更自动化解决API安全问题。此类平台在整个API生命周期中支持一系列功能，并为组织的API业务逻辑提供必要的上下文以阻止攻击和数据暴露。</strong></p>
-<p>这份API安全最佳实践将帮助企业弥补API安全策略中的差距，以下是关于如何确定问题范围和活动优先顺序的一些建议：</p>
-<ul>
-<li>测试API安全性同时，还需要API运行时捕获未经过标准构建更改的API和测试工具不能发现的API。</li>
-<li>确保覆盖所有环境和软件供应链，而不仅仅是由API网关或API管理平台管理的API。</li>
-<li>如果您不采取API防护措施，可以将重点放在API运行时防护上，将其作为“止血”措施、减缓攻击者的速度并为应用程序和API团队争取时间的一种方式。</li>
-</ul>
-<p><font color="red">以下内容翻译来至：SaltSecurity
-Checklist-API_Security_Best_Practices</font></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/231N929/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 

@@ -187,13 +187,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -330,7 +330,7 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="rnn">RNN</span></h2>
 <blockquote>
-<p>史上最详细循环神经网络讲解（RNN/LSTM/GRU）:https://zhuanlan.zhihu.com/p/123211148</p>
+<p>史上最详细循环神经网络讲解（RNN/LSTM/GRU）:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/123211148">https://zhuanlan.zhihu.com/p/123211148</a></p>
 </blockquote>
 <h3><span id="一-什么是循环神经网络"><strong>一、什么是循环神经网络</strong></span></h3>
 <p><strong>RNN对具有序列特性的数据非常有效，它能挖掘数据中的时序信息以及语义信息</strong>，利用了RNN的这种能力，使深度学习模型在解决语音识别、语言模型、机器翻译以及时序分析等NLP领域的问题时有所突破。</p>
@@ -343,58 +343,33 @@
 <h3><span id="二-为什么要发明循环神经网络"><strong>二、为什么要发明循环神经网络</strong></span></h3>
 <p>我们先来看一个NLP很常见的问题，命名实体识别，举个例子，现在有两句话：</p>
 <p>第一句话：I like eating apple！（我喜欢吃苹果！）</p>
-<p>第二句话：The Apple is a great
-company！（苹果真是一家很棒的公司！）</p>
+<p>第二句话：The Apple is a great company！（苹果真是一家很棒的公司！）</p>
 <p>现在的任务是要给apple打Label，我们都知道第一个apple是一种水果，第二个apple是苹果公司，假设我们现在有大量的已经标记好的数据以供训练模型，当我们使用全连接的神经网络时，我们做法是把apple这个单词的特征向量输入到我们的模型中（如下图），在输出结果时，让我们的label里，正确的label概率最大，来训练模型，但我们的语料库中，有的apple的label是水果，有的label是公司，这将导致，模型在训练的过程中，预测的准确程度，取决于训练集中哪个label多一些，这样的模型对于我们来说完全没有作用。<strong>问题就出在了我们没有结合上下文去训练模型，而是单独的在训练apple这个单词的label，这也是全连接神经网络模型所不能做到的，于是就有了我们的循环神经网络。</strong></p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img"></p>
 <h3><span id="三-循环神经网络的结构及原理"><strong>三、循环神经网络的结构及原理：</strong></span></h3>
-<p><img src="https://pic1.zhimg.com/80/v2-8f534b5db1f3d8a5c4ccd029be4a15b4_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<img src="https://pic1.zhimg.com/80/v2-8f534b5db1f3d8a5c4ccd029be4a15b4_1440w.jpg" alt="img" style="zoom:50%;">
 <p>上图就是RNN的结构，我第一次看到这图的第一反应是，不是说好的循环神经网络么，起码得是神经网络啊，神经网络不是有很多球球么，也就是神经元，这RNN咋就这几个球球，不科学啊，看不懂啊！！！！随着慢慢的了解RNN，才发现这图看着是真的清楚，因为RNN的特殊性，如果展开画成那种很多神经元的神经网络，会很麻烦。</p>
 <p>我们先来讲解一下上面这幅图，首先不要管右边的W，只看X,U,S,V,O，这幅图就变成了，如下：</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img"></p>
 <p>不看W的话，上面那幅图展开就是全连接神经网络，其中X是一个向量，也就是某个字或词的特征向量，作为输入层，如上图也就是3维向量，U是输入层到隐藏层的参数矩阵，在上图中其维度就是3X4，S是隐藏层的向量，如上图维度就是4，V是隐藏层到输出层的参数矩阵，在上图中就是4X2，O是输出层的向量，在上图中维度为2。</p>
-<p><strong>弄懂了RNN结构的左边，那么右边这个W到底是什么啊？</strong>把上面那幅图打开之后，是这样的：
+<p>**弄懂了RNN结构的左边，那么右边这个W到底是什么啊？**把上面那幅图打开之后，是这样的：<br>
 <img src="https://pic4.zhimg.com/80/v2-8abf977157000e6dad8589ec60ed6c3f_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>等等，这又是什么？？别慌，很容易看，举个例子，有一句话是，I love
-you，那么在利用RNN做一些事情时，比如命名实体识别，上图中的 <img src="https://www.zhihu.com/equation?tex=X_%7Bt-1%7D" alt="[公式]">
-代表的就是I这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X" alt="[公式]">
-代表的是love这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X_%7Bt%2B1%7D" alt="[公式]">
-代表的是you这个单词的向量，以此类推，我们注意到，上图展开后，W一直没有变，<strong>W其实是每个时间点之间的权重矩阵</strong>，我们注意到，RNN之所以可以解决序列问题，<strong>是因为它可以记住每一时刻的信息，==每一时刻的隐藏层不仅由该时刻的输入层决定，还由上一时刻的隐藏层决定==</strong>，公式如下，其中
-<img src="https://www.zhihu.com/equation?tex=O_t" alt="[公式]">
-代表t时刻的输出, <img src="https://www.zhihu.com/equation?tex=S_t" alt="[公式]"> 代表t时刻的隐藏层的值：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-9524a28210c98ed130644eb3c3002087_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p>等等，这又是什么？？别慌，很容易看，举个例子，有一句话是，I love you，那么在利用RNN做一些事情时，比如命名实体识别，上图中的 <img src="https://www.zhihu.com/equation?tex=X_%7Bt-1%7D" alt="[公式]"> 代表的就是I这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X" alt="[公式]"> 代表的是love这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X_%7Bt%2B1%7D" alt="[公式]"> 代表的是you这个单词的向量，以此类推，我们注意到，上图展开后，W一直没有变，<strong>W其实是每个时间点之间的权重矩阵</strong>，我们注意到，RNN之所以可以解决序列问题，<strong>是因为它可以记住每一时刻的信息，==每一时刻的隐藏层不仅由该时刻的输入层决定，还由上一时刻的隐藏层决定==</strong>，公式如下，其中 <img src="https://www.zhihu.com/equation?tex=O_t" alt="[公式]"> 代表t时刻的输出, <img src="https://www.zhihu.com/equation?tex=S_t" alt="[公式]"> 代表t时刻的隐藏层的值：</p>
+<img src="https://pic4.zhimg.com/80/v2-9524a28210c98ed130644eb3c3002087_1440w.jpg" alt="img" style="zoom: 33%;">
 <p><strong>值得注意的一点是，在整个训练过程中，每一时刻所用的都是同样的W。</strong></p>
 <h4><span id="四-举个例子方便理解"><strong>四、举个例子，方便理解：</strong></span></h4>
 <p>假设现在我们已经训练好了一个RNN，如图，<strong>我们假设每个单词的特征向量是二维的，也就是输入层的维度是二维，且隐藏层也假设是二维，输出也假设是二维</strong>，所有权重的值都为1且没有偏差且所有激活函数都是线性函数，现在输入一个序列，到该模型中，我们来一步步求解出输出序列：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-09ce45f29378cb2695b3b4fcd2015047_1440w.png" alt="img" style="zoom:75%;"></p>
-<p>你可能会好奇W去哪了？<strong>W在实际的计算中，在图像中表示非常困难
-，所以我们可以想象上一时刻的隐藏层的值是被存起来，等下一时刻的隐藏层进来时，上一时刻的隐藏层的值通过与权重相乘，两者相加便得到了下一时刻真正的隐藏层</strong>，如图
-<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">
-可以看做每一时刻存下来的值，当然初始时<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">是没有存值的，因此初始值为0：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-2c3522b9d250a44cfaeddecbcd139275_1440w.jpg" alt="img" style="zoom:80%;"></p>
-<p>当我们输入第一个序列，【1,1】，如下图，其中隐藏层的值，也就是绿色神经元，是通过公式
-<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 计算得到的，因为所有权重都是1，所以也就是 <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A0%2B1%2A0%3D2" alt="[公式]">
-（我把向量X拆开计算的，由于篇幅关系，我只详细列了其中一个神经元的计算过程，希望大家可以看懂，看不懂的请留言），输出层的值4是通过公式
-<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]"> 计算得到的，也就是 <img src="https://www.zhihu.com/equation?tex=2%2A1%2B2%2A1%3D4" alt="[公式]">
-（同上，也是只举例其中一个神经元），得到输出向量【4,4】：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-c01a8a5c476aa2bd189965aa149d9e85_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>当【1,1】输入过后，我们的记忆里的 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]">
-已经不是0了，而是把这一时刻的隐藏状态放在里面，即变成了2，如图，输入下一个向量【1,1】，隐藏层的值通过公式<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 得到， <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A2%2B1%2A2%3D6" alt="[公式]"> ，输出层的值通过公式<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]">，得到 <img src="https://www.zhihu.com/equation?tex=6%2A1%2B6%2A1%3D12" alt="[公式]"> ，最终得到输出向量【12,12】：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-5170c41f0285a718b890979e125832ed_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>同理，该时刻过后 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]">
-的值变成了6，也就是输入第二个【1,1】过后所存下来的值，同理，输入第三个向量【2,2】，如图，细节过程不再描述，得到输出向量【32,32】：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-7ba6fd916892a89211b5ee6a5940d2b2_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<img src="https://pic4.zhimg.com/80/v2-09ce45f29378cb2695b3b4fcd2015047_1440w.png" alt="img" style="zoom:75%;">
+<p>你可能会好奇W去哪了？<strong>W在实际的计算中，在图像中表示非常困难 ，所以我们可以想象上一时刻的隐藏层的值是被存起来，等下一时刻的隐藏层进来时，上一时刻的隐藏层的值通过与权重相乘，两者相加便得到了下一时刻真正的隐藏层</strong>，如图 <img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]"> 可以看做每一时刻存下来的值，当然初始时<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">是没有存值的，因此初始值为0：</p>
+<img src="https://pic2.zhimg.com/80/v2-2c3522b9d250a44cfaeddecbcd139275_1440w.jpg" alt="img" style="zoom:80%;">
+<p>当我们输入第一个序列，【1,1】，如下图，其中隐藏层的值，也就是绿色神经元，是通过公式 <img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 计算得到的，因为所有权重都是1，所以也就是 <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A0%2B1%2A0%3D2" alt="[公式]"> （我把向量X拆开计算的，由于篇幅关系，我只详细列了其中一个神经元的计算过程，希望大家可以看懂，看不懂的请留言），输出层的值4是通过公式 <img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]"> 计算得到的，也就是 <img src="https://www.zhihu.com/equation?tex=2%2A1%2B2%2A1%3D4" alt="[公式]"> （同上，也是只举例其中一个神经元），得到输出向量【4,4】：</p>
+<img src="https://pic2.zhimg.com/80/v2-c01a8a5c476aa2bd189965aa149d9e85_1440w.jpg" alt="img" style="zoom:67%;">
+<p>当【1,1】输入过后，我们的记忆里的 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]"> 已经不是0了，而是把这一时刻的隐藏状态放在里面，即变成了2，如图，输入下一个向量【1,1】，隐藏层的值通过公式<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 得到， <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A2%2B1%2A2%3D6" alt="[公式]"> ，输出层的值通过公式<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]">，得到 <img src="https://www.zhihu.com/equation?tex=6%2A1%2B6%2A1%3D12" alt="[公式]"> ，最终得到输出向量【12,12】：</p>
+<img src="https://pic2.zhimg.com/80/v2-5170c41f0285a718b890979e125832ed_1440w.jpg" alt="img" style="zoom:67%;">
+<p>同理，该时刻过后 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]"> 的值变成了6，也就是输入第二个【1,1】过后所存下来的值，同理，输入第三个向量【2,2】，如图，细节过程不再描述，得到输出向量【32,32】：</p>
+<img src="https://pic3.zhimg.com/80/v2-7ba6fd916892a89211b5ee6a5940d2b2_1440w.jpg" alt="img" style="zoom:67%;">
 <p>由此，我们得到了最终的输出序列为：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-e21cfad47c16012c38d2acd9c75039d7_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://pic4.zhimg.com/80/v2-e21cfad47c16012c38d2acd9c75039d7_1440w.jpg" alt="img"></p>
 <p>至此，一个完整的RNN结构我们已经经历了一遍，我们注意到，每一时刻的输出结果都与上一时刻的输入有着非常大的关系，如果我们将输入序列换个顺序，那么我们得到的结果也将是截然不同，这就是RNN的特性，可以处理序列数据，同时对序列也很敏感。</p>
 
     </div>

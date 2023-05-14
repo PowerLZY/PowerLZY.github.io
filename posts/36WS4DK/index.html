@@ -159,13 +159,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -301,8 +301,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3><span id="一-adaboost-boosting">一、Adaboost (Boosting)</span></h3>
-<p>AdaBoost（Adaptive
-Boosting，自适应增强），其自适应在于：<strong>前一个基本分类器分错的样本会得到加强，加权后的全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到某个预定的足够小的错误率或达到预先指定的最大迭代次数。</strong></p>
+<p>AdaBoost（Adaptive Boosting，自适应增强），其自适应在于：<strong>前一个基本分类器分错的样本会得到加强，加权后的全体样本再次被用来训练下一个基本分类器。同时，在每一轮中加入一个新的弱分类器，直到达到某个预定的足够小的错误率或达到预先指定的最大迭代次数。</strong></p>
 <h4><span id="11-思想">1.1 思想</span></h4>
 <p><strong>Adaboost 迭代算法有三步：</strong></p>
 <ul>
@@ -311,70 +310,61 @@ Boosting，自适应增强），其自适应在于：<strong>前一个基本分�
 <li>将所有弱分类组合成强分类器，各个弱分类器的训练过程结束后，<strong>加大分类误差率小的弱分类器的权重，降低分类误差率大的弱分类器的权重</strong>。</li>
 </ul>
 <h4><span id="12-细节">1.2 细节</span></h4>
-<h5><span id="121-损失函数"><strong>1.2.1 损失函数 </strong></span></h5>
-<p>Adaboost
-模型是<strong>加法模型</strong>，学习算法为<strong>前向分步学习算法</strong>，损失函数为<strong>指数函数的分类问题</strong>。</p>
+<h5><span id="121-损失函数">**1.2.1 损失函数 **</span></h5>
+<p>Adaboost 模型是<strong>加法模型</strong>，学习算法为<strong>前向分步学习算法</strong>，损失函数为<strong>指数函数的分类问题</strong>。</p>
 <p><strong>加法模型</strong>：最终的强分类器是由若干个弱分类器<strong>加权平均</strong>得到的。</p>
-<p><strong>前向分布学习算法</strong>：算法是通过一轮轮的弱学习器学习，<strong>利用前一个弱学习器的结果来更新后一个弱学习器的训练集权重</strong>。第
-k 轮的强学习器为： <span class="math display">\[
-F_{k}(x)=\sum_{i=1}^{k} \alpha_{i} f_{i}(x)=F_{k-1}(x)+\alpha_{k}
-f_{k}(x)
-\]</span></p>
-<p><strong>定义损失函数为 <span class="math inline">\(\mathbf{n}\)</span>
-个样本的指数损失函数：</strong> <span class="math display">\[
-L(y, F)=\sum_{i=1}^n \exp \left(-y_i F_k\left(x_i\right)\right)
-\]</span> 利用前向分布学习算法的关系可以得到： <span class="math display">\[
-\begin{aligned}
-L(y, F) &amp; =\sum_{i=1}^m \exp
-\left[\left(-y_i\right)\left(F_{k-1}\left(x_i\right)+\alpha_k
-f_k\left(x_i\right)\right)\right] \\
-&amp; =\sum_{i=1}^m \exp \left[-y_i F_{k-1}\left(x_i\right)-y_i \alpha_k
-f_k\left(x_i\right)\right] \\
-&amp; =\sum_{i=1}^m \exp \left[-y_i F_{k-1}\left(x_i\right)\right] \exp
-\left[-y_i \alpha_k f_k\left(x_i\right)\right]
-\end{aligned}
-\]</span> <strong>因为 <span class="math inline">\(F_{k-1}(x)\)</span>
-已知, 所以令 <span class="math inline">\(w_{k, i}=\exp \left(-y_i
-F_{k-1}\left(x_i\right)\right)\)</span>
-，随着每一轮迭代而将这个式子带入损失函数, 损失函数转 化为:</strong>
-<span class="math display">\[
-L(y, F(x))=\sum_{i=1}^m w_{k, i} \exp \left[-y_i \alpha_k
-f_k\left(x_i\right)\right]
-\]</span> 我们求 <span class="math inline">\(f_k(x)\)</span> ，可以得到:
-<span class="math display">\[
-f_k(x)=\operatorname{argmin} \sum_{i=1}^m w_{k, i} I\left(y_i \neq
-f_k\left(x_i\right)\right)
-\]</span> 将 <span class="math inline">\(f_k(x)\)</span> 带入损失函数,
-并对 <span class="math inline">\(\alpha\)</span> 求导, 使其等于
-0，则就得到了: <span class="math display">\[
-\alpha_k=\frac{1}{2} \log \frac{1-e_k}{e_k}
-\]</span> 其中, <span class="math inline">\(e_k\)</span>
-即为我们前面的<strong>分类误差率</strong>。 <span class="math display">\[
-e_k=\frac{\sum_{i=1}^m w_{k i}^{\prime} I\left(y_i \neq
-f_k\left(x_i\right)\right)}{\sum_{i=1}^m w_{k i}^{\prime}}=\sum_{i=1}^m
-w_{k i} I\left(y_i \neq f_k\left(x_i\right)\right)
-\]</span> 最后看样本权重的更新。利用 <span class="math inline">\(F_k(x)=F_{k-1}(x)+\alpha_k f_k(x)\)</span> 和
-<span class="math inline">\(w_{k+1, i}=w_{k, i} e x p\left[-y_i \alpha_k
-f_k(x, i)\right]\)</span>, 即可得: <span class="math display">\[
-w_{k+1, i}=w_{k i} \exp \left[-y_i \alpha_k f_k\left(x_i\right)\right]
-\]</span> 这样就得到了样本权重更新公式。</p>
+<p><strong>前向分布学习算法</strong>：算法是通过一轮轮的弱学习器学习，<strong>利用前一个弱学习器的结果来更新后一个弱学习器的训练集权重</strong>。第 k 轮的强学习器为：<br>
+$$<br>
+F_{k}(x)=\sum_{i=1}^{k} \alpha_{i} f_{i}(x)=F_{k-1}(x)+\alpha_{k} f_{k}(x)<br>
+$$</p>
+<p><strong>定义损失函数为 $\mathbf{n}$ 个样本的指数损失函数：</strong><br>
+$$<br>
+L(y, F)=\sum_{i=1}^n \exp \left(-y_i F_k\left(x_i\right)\right)<br>
+$$<br>
+利用前向分布学习算法的关系可以得到：<br>
+$$<br>
+\begin{aligned}<br>
+L(y, F) &amp; =\sum_{i=1}^m \exp \left[\left(-y_i\right)\left(F_{k-1}\left(x_i\right)+\alpha_k f_k\left(x_i\right)\right)\right] \<br>
+&amp; =\sum_{i=1}^m \exp \left[-y_i F_{k-1}\left(x_i\right)-y_i \alpha_k f_k\left(x_i\right)\right] \<br>
+&amp; =\sum_{i=1}^m \exp \left[-y_i F_{k-1}\left(x_i\right)\right] \exp \left[-y_i \alpha_k f_k\left(x_i\right)\right]<br>
+\end{aligned}<br>
+$$<br>
+<strong>因为 $F_{k-1}(x)$ 已知, 所以令 $w_{k, i}=\exp \left(-y_i F_{k-1}\left(x_i\right)\right)$ ，随着每一轮迭代而将这个式子带入损失函数, 损失函数转 化为:</strong><br>
+$$<br>
+L(y, F(x))=\sum_{i=1}^m w_{k, i} \exp \left[-y_i \alpha_k f_k\left(x_i\right)\right]<br>
+$$<br>
+我们求 $f_k(x)$ ，可以得到:<br>
+$$<br>
+f_k(x)=\operatorname{argmin} \sum_{i=1}^m w_{k, i} I\left(y_i \neq f_k\left(x_i\right)\right)<br>
+$$<br>
+将 $f_k(x)$ 带入损失函数, 并对 $\alpha$ 求导, 使其等于 0，则就得到了:<br>
+$$<br>
+\alpha_k=\frac{1}{2} \log \frac{1-e_k}{e_k}<br>
+$$<br>
+其中, $e_k$ 即为我们前面的<strong>分类误差率</strong>。<br>
+$$<br>
+e_k=\frac{\sum_{i=1}^m w_{k i}^{\prime} I\left(y_i \neq f_k\left(x_i\right)\right)}{\sum_{i=1}^m w_{k i}<sup>{\prime}}=\sum_{i=1}</sup>m w_{k i} I\left(y_i \neq f_k\left(x_i\right)\right)<br>
+$$<br>
+最后看样本权重的更新。利用 $F_k(x)=F_{k-1}(x)+\alpha_k f_k(x)$ 和 $w_{k+1, i}=w_{k, i} e x p\left[-y_i \alpha_k f_k(x, i)\right]$, 即可得:<br>
+$$<br>
+w_{k+1, i}=w_{k i} \exp \left[-y_i \alpha_k f_k\left(x_i\right)\right]<br>
+$$<br>
+这样就得到了样本权重更新公式。</p>
 <h5><span id="122-正则化">1.2.2 正则化</span></h5>
-<p><strong>为了防止 Adaboost
-过拟合，我们通常也会加入正则化项，这个正则化项我们通常称为步长（learning
-rate)</strong> 。 对于前面的弱学习器的迭代,加上正则化项 <span class="math inline">\(\mu\)</span> 我们有: <span class="math display">\[
-F_k(x)=F_{k-1}(x)+\mu \alpha_k f_k(x)
-\]</span> <span class="math inline">\(\mu\)</span> 的取值范围为 <span class="math inline">\(0&lt;\mu \leq 1\)</span>
-。对于同样的训练集学习效果, 较小的 <span class="math inline">\(\mu\)</span> 意味着我们需要更多的弱学习器的迭代次
-数。通常我们用步长和迭代最大次数一起来决定算法的拟合效果。</p>
+<p><strong>为了防止 Adaboost 过拟合，我们通常也会加入正则化项，这个正则化项我们通常称为步长（learning rate)</strong> 。 对于前面的弱学习器的迭代,加上正则化项 $\mu$ 我们有:<br>
+$$<br>
+F_k(x)=F_{k-1}(x)+\mu \alpha_k f_k(x)<br>
+$$<br>
+$\mu$ 的取值范围为 $0&lt;\mu \leq 1$ 。对于同样的训练集学习效果, 较小的 $\mu$ 意味着我们需要更多的弱学习器的迭代次 数。通常我们用步长和迭代最大次数一起来决定算法的拟合效果。</p>
 <h4><span id="13-优缺点">1.3 优缺点</span></h4>
 <h5><span id="131-优点"><strong>1.3.1 优点</strong></span></h5>
-<ol type="1">
+<ol>
 <li>分类精度高；</li>
 <li>可以<strong>用各种回归分类模型来构建弱学习器，非常灵活</strong>；</li>
 <li>不容易发生过拟合。</li>
 </ol>
 <h5><span id="132-缺点"><strong>1.3.2 缺点</strong></span></h5>
-<ol type="1">
+<ol>
 <li>对异常点敏感，异常点会获得较高权重。</li>
 </ol>
 

@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="自编码器（AutoEncoder） 引言     当你在看论文的时候，经常会遇到编码器、解码器、自编码器（Autoencoder）这些字眼，它们到底是干什么的呢？其主要作用又是什么呢？那么本篇主要带大家了解自编码器（Autoencoder）。 一、自编码器（Autoencoder）介绍 暂且不谈神经网络、深度学习等，仅仅是自编码器的话，其原理其实很简单。自编码器可以理解为一个试图去还原其原始输入的">
+    <meta name="description" content="自编码器（AutoEncoder） 引言 当你在看论文的时候，经常会遇到编码器、解码器、自编码器（Autoencoder）这些字眼，它们到底是干什么的呢？其主要作用又是什么呢？那么本篇主要带大家了解自编码器（Autoencoder）。 一、自编码器（Autoencoder）介绍 暂且不谈神经网络、深度学习等，仅仅是自编码器的话，其原理其实很简单。自编码器可以理解为一个试图去还原其原始输入的系统。自">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习（10）AutoEncoder">
 <meta property="og:url" content="https://powerlzy.github.io/posts/21E1VBV/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="自编码器（AutoEncoder） 引言     当你在看论文的时候，经常会遇到编码器、解码器、自编码器（Autoencoder）这些字眼，它们到底是干什么的呢？其主要作用又是什么呢？那么本篇主要带大家了解自编码器（Autoencoder）。 一、自编码器（Autoencoder）介绍 暂且不谈神经网络、深度学习等，仅仅是自编码器的话，其原理其实很简单。自编码器可以理解为一个试图去还原其原始输入的">
+<meta property="og:description" content="自编码器（AutoEncoder） 引言 当你在看论文的时候，经常会遇到编码器、解码器、自编码器（Autoencoder）这些字眼，它们到底是干什么的呢？其主要作用又是什么呢？那么本篇主要带大家了解自编码器（Autoencoder）。 一、自编码器（Autoencoder）介绍 暂且不谈神经网络、深度学习等，仅仅是自编码器的话，其原理其实很简单。自编码器可以理解为一个试图去还原其原始输入的系统。自">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-f4444b7343ef311fd04f0dc0dc1db3b7_1440w.jpg">
 <meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Coverline+x">
@@ -53,7 +53,6 @@
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615194339007.png">
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615194546961.png">
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615194611806.png">
-<meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615194724455.png">
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615194856711.png">
 <meta property="og:image" content="https://powerlzy.github.io/Library/Application%20Support/typora-user-images/image-20220615195012966.png">
 <meta property="article:published_time" content="2022-05-13T11:15:40.894Z">
@@ -170,10 +169,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">自编码器（AutoEncoder）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">引言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、自编码器（Autoencoder）介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 神经网络自编码模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 神经网络自编码器三大特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 自编码器（Autoencoder）搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 几种常见编码器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、李宏毅-Auto-Encoder P1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 Self-supervised
-Learning Framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Auto-encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 De-noising Auto-encoder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、Auto-Encoder P2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1 Feature Disentangle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 Discrete Latent
-Representation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> 3.3 Anomaly
-Detection </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">那个这个异常检测有什么样的应用呢？</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">自编码器（AutoEncoder）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">引言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、自编码器（Autoencoder）介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 神经网络自编码模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 神经网络自编码器三大特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 自编码器（Autoencoder）搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 几种常见编码器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、李宏毅-Auto-Encoder P1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.1 Self-supervised Learning Framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 Auto-encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 De-noising Auto-encoder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、Auto-Encoder P2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1 Feature Disentangle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 Discrete Latent Representation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> 3.3 Anomaly Detection </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">那个这个异常检测有什么样的应用呢？</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -188,13 +184,13 @@ Detection </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a c
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">263</span>
+          <span class="site-state-item-count">264</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -331,395 +327,171 @@ Detection </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a c
     <div class="post-body" itemprop="articleBody">
         <h2><span id="自编码器autoencoder">自编码器（AutoEncoder）</span></h2>
 <h4><span id="引言">引言</span></h4>
-<p>    当你在看论文的时候，经常会遇到编码器、解码器、自编码器（Autoencoder）这些字眼，它们到底是干什么的呢？其主要作用又是什么呢？那么本篇主要带大家了解自编码器（Autoencoder）。</p>
+<p>当你在看论文的时候，经常会遇到编码器、解码器、自编码器（Autoencoder）这些字眼，它们到底是干什么的呢？其主要作用又是什么呢？那么本篇主要带大家了解自编码器（Autoencoder）。</p>
 <h3><span id="一-自编码器autoencoder介绍">一、自编码器（Autoencoder）介绍</span></h3>
 <p>暂且不谈神经网络、深度学习等，仅仅是自编码器的话，其原理其实很简单。自编码器可以理解为一个试图去还原其原始输入的系统。自编码器模型如下图所示。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-f4444b7343ef311fd04f0dc0dc1db3b7_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<p>从上图可以看出，自编码器模型主要由编码器（Encoder）和解码器（Decoder）组成，其主要目的是将输入x转换成中间变量y，然后再将y转换成
-<img src="https://www.zhihu.com/equation?tex=%5Coverline+x" alt="[公式]"> ，然后对比输入x和输出 <img src="https://www.zhihu.com/equation?tex=%5Coverline+x" alt="[公式]">
-使得他们两个无限接近。</p>
+<img src="https://pic4.zhimg.com/80/v2-f4444b7343ef311fd04f0dc0dc1db3b7_1440w.jpg" alt="img" style="zoom:67%;">
+<p>从上图可以看出，自编码器模型主要由编码器（Encoder）和解码器（Decoder）组成，其主要目的是将输入x转换成中间变量y，然后再将y转换成 <img src="https://www.zhihu.com/equation?tex=%5Coverline+x" alt="[公式]"> ，然后对比输入x和输出 <img src="https://www.zhihu.com/equation?tex=%5Coverline+x" alt="[公式]"> 使得他们两个无限接近。</p>
 <h4><span id="11-神经网络自编码模型">1.1 神经网络自编码模型</span></h4>
-<p>在深度学习中，自动编码器是一种无监督的神经网络模型，它可以学习到输入数据的隐含特征，这称为编码(coding)，同时用学习到的新特征可以重构出原始输入数据，称之为解码(decoding)。从直观上来看，自动编码器可以用于特征降维，类似主成分分析PCA，但是其相比PCA其性能更强，这是由于神经网络模型可以提取更有效的新特征。除了进行特征降维，自动编码器学习到的新特征可以送入有监督学习模型中，所以自动编码器可以起到特征提取器的作用<strong>。举个例子，我有一张清晰图片，首先我通过编码器压缩这张图片的大小（如果展现出来可能比较模型），然后在需要解码的时候将其还原成清晰的图片</strong>。具体过程如下图所示。</p>
+<p>在深度学习中，自动编码器是一种无监督的神经网络模型，它可以学习到输入数据的隐含特征，这称为编码(coding)，同时用学习到的新特征可以重构出原始输入数据，称之为解码(decoding)。从直观上来看，自动编码器可以用于特征降维，类似主成分分析PCA，但是其相比PCA其性能更强，这是由于神经网络模型可以提取更有效的新特征。除了进行特征降维，自动编码器学习到的新特征可以送入有监督学习模型中，所以自动编码器可以起到特征提取器的作用**。举个例子，我有一张清晰图片，首先我通过编码器压缩这张图片的大小（如果展现出来可能比较模型），然后在需要解码的时候将其还原成清晰的图片**。具体过程如下图所示。</p>
 <h4><span id="12-神经网络自编码器三大特点">1.2 神经网络自编码器三大特点</span></h4>
 <ul>
-<li><strong>自动编码器是数据相关</strong>的（data-specific 或
-data-dependent），这意味着自动编码器只能压缩那些与训练数据类似的数据。比如，使用人脸训练出来的自动编码器在压缩别的图片，比如树木时性能很差，因为它学习到的特征是与人脸相关的。</li>
+<li><strong>自动编码器是数据相关</strong>的（data-specific 或 data-dependent），这意味着自动编码器只能压缩那些与训练数据类似的数据。比如，使用人脸训练出来的自动编码器在压缩别的图片，比如树木时性能很差，因为它学习到的特征是与人脸相关的。</li>
 <li><strong>自动编码器是有损的</strong>，意思是解压缩的输出与原来的输入相比是退化的，MP3，JPEG等压缩算法也是如此。这与无损压缩算法不同。</li>
 <li>自动编码器是从数据样本中自动学习的，这意味着很容易对指定类的输入训练出一种特定的编码器，而不需要完成任何新工作。</li>
 </ul>
 <h4><span id="13-自编码器autoencoder搭建">1.3 自编码器（Autoencoder）搭建</span></h4>
 <p>搭建一个自动编码器需要完成下面三样工作：搭建<strong>编码器</strong>，搭建<strong>解码器</strong>，设定一个<strong>损失函数，用以衡量由于压缩而损失掉的信息</strong>。编码器和解码器一般都是参数化的方程，并关于损失函数可导，典型情况是使用神经网络。编码器和解码器的参数可以通过最小化损失函数而优化，例如<strong>SGD</strong>。举个例子：根据上面介绍，自动编码器看作由两个级联网络组成。</p>
 <ul>
-<li>第一个网络是一个编码器，负责接收输入 x，并将输入通过函数 h
-变换为信号 y：</li>
+<li>第一个网络是一个编码器，负责接收输入 x，并将输入通过函数 h 变换为信号 y：</li>
 </ul>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-b9331fbb152409c69a14c056b6d56c52_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://pic3.zhimg.com/80/v2-b9331fbb152409c69a14c056b6d56c52_1440w.jpg" alt="img"></p>
 <ul>
-<li>第二个网络将编码的信号 y 作为其输入，通过函数f得到重构的信号
-r：</li>
+<li>第二个网络将编码的信号 y 作为其输入，通过函数f得到重构的信号 r：</li>
 </ul>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-38e2787955e83ebf81b74992ac77da79_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://pic2.zhimg.com/80/v2-38e2787955e83ebf81b74992ac77da79_1440w.jpg" alt="img"></p>
 <ul>
-<li>定义误差 e 为原始输入 x 与重构信号 r
-之差，e=x–r，网络训练的目标是减少<strong>均方误差（MSE）</strong>，同
-MLP 一样，误差被反向传播回隐藏层。</li>
+<li>定义误差 e 为原始输入 x 与重构信号 r 之差，e=x–r，网络训练的目标是减少<strong>均方误差（MSE）</strong>，同 MLP 一样，误差被反向传播回隐藏层。</li>
 </ul>
 <h4><span id="14-几种常见编码器">1.4 几种常见编码器</span></h4>
-<p>自编码器（autoencoder）是神经网络的一种，经过训练后能尝试将输入复制到输出。自编码器（）autoencoder）内部有一个隐藏层
-h，可以产生编码（code）表示输入。该网络可以看作由两部分组成：一个由函数
-h = f(x) 表示的编码器和一个生成重构的解码器 r =
-g(h)。如果一个自编码器只是简单地学会将处处设置为 g(f(x)) =
-x，那么这个自编码器就没什么特别的用处。相反，<strong>我们不应该将自编码器设计成输入到输出完全相等</strong>。这通常需要向自编码器强加一些约束，使它只能近似地复制，并只能复制与训练数据相似的输入。这些约束强制模型考虑输入数据的哪些部分需要被优先复制，因此它往往能学习到数据的有用特性。</p>
+<p>自编码器（autoencoder）是神经网络的一种，经过训练后能尝试将输入复制到输出。自编码器（）autoencoder）内部有一个隐藏层 h，可以产生编码（code）表示输入。该网络可以看作由两部分组成：一个由函数 h = f(x) 表示的编码器和一个生成重构的解码器 r = g(h)。如果一个自编码器只是简单地学会将处处设置为 g(f(x)) = x，那么这个自编码器就没什么特别的用处。相反，<strong>我们不应该将自编码器设计成输入到输出完全相等</strong>。这通常需要向自编码器强加一些约束，使它只能近似地复制，并只能复制与训练数据相似的输入。这些约束强制模型考虑输入数据的哪些部分需要被优先复制，因此它往往能学习到数据的有用特性。</p>
 <ul>
-<li><strong>堆栈自动编码器</strong>
-前面讲的自编码器只是简答的含有一层，其实可以采用更深层的架构，这就是堆栈自动编码器或者深度自动编码器，本质上就是增加中间特征层数。这里我们以MNIST数据为例来说明自动编码器，建立两个隐含层的自动编码器，如下图所示：</li>
+<li><strong>堆栈自动编码器</strong> 前面讲的自编码器只是简答的含有一层，其实可以采用更深层的架构，这就是堆栈自动编码器或者深度自动编码器，本质上就是增加中间特征层数。这里我们以MNIST数据为例来说明自动编码器，建立两个隐含层的自动编码器，如下图所示：</li>
 </ul>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-e1b65e3d86fd1a8fbb56df20eeefd113_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>    对于MNIST来说，其输入是<span class="math inline">\(28*28=784\)</span>维度的特征，这里使用了两个隐含层其维度分别为300和150，可以看到是不断降低特征的维度了。得到的最终编码为150维度的特征，使用这个特征进行反向重构得到重建的特征，我们希望重建特征和原始特征尽量相同。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-e1b65e3d86fd1a8fbb56df20eeefd113_1440w.jpg" alt="img"></p>
+<p>对于MNIST来说，其输入是$28*28=784$维度的特征，这里使用了两个隐含层其维度分别为300和150，可以看到是不断降低特征的维度了。得到的最终编码为150维度的特征，使用这个特征进行反向重构得到重建的特征，我们希望重建特征和原始特征尽量相同。</p>
 <ul>
-<li><p><strong>欠完备自编码器</strong>从自编码器获得有用特征的一种方法是限制
-h的维度比 x
-小，这种编码维度小于输入维度的自编码器称为欠完备（undercomplete）自编码器。<strong>学习欠完备的表示将强制自编码器捕捉训练数据中最显著的特征</strong>。</p></li>
-<li><p><strong>正则自编码器</strong>使用的损失函数可以鼓励模型学习其他特性（除了将输入复制到输出），而不必限制使用浅层的编码器和解码器以及小的编码维数来限制模型的容量。这些特性包括稀疏表示、表示的小导数、以及对噪声或输入缺失的鲁棒性。即使模型容量大到足以学习一个无意义的恒等函数，非线性且过完备的正则自编码器仍然能够从数据中学到一些关于数据分布的有用信息。</p></li>
-<li><p><strong>去噪自编码器</strong>（denoisingautoencoder,
-DAE）是一类接受损坏数据作为输入，并训练来预测原始未被损坏数据作为输出的自编码器。</p></li>
+<li>
+<p><strong>欠完备自编码器</strong>从自编码器获得有用特征的一种方法是限制 h的维度比 x 小，这种编码维度小于输入维度的自编码器称为欠完备（undercomplete）自编码器。<strong>学习欠完备的表示将强制自编码器捕捉训练数据中最显著的特征</strong>。</p>
+</li>
+<li>
+<p><strong>正则自编码器</strong>使用的损失函数可以鼓励模型学习其他特性（除了将输入复制到输出），而不必限制使用浅层的编码器和解码器以及小的编码维数来限制模型的容量。这些特性包括稀疏表示、表示的小导数、以及对噪声或输入缺失的鲁棒性。即使模型容量大到足以学习一个无意义的恒等函数，非线性且过完备的正则自编码器仍然能够从数据中学到一些关于数据分布的有用信息。</p>
+</li>
+<li>
+<p><strong>去噪自编码器</strong>（denoisingautoencoder, DAE）是一类接受损坏数据作为输入，并训练来预测原始未被损坏数据作为输出的自编码器。</p>
+</li>
 </ul>
 <h2><span id="二-李宏毅-auto-encoder-p1">二、李宏毅-Auto-Encoder P1</span></h2>
-<h3><span id="21-self-supervisedlearning-framework"><strong>2.1 Self-supervised
-Learning Framework</strong></span></h3>
-<p>在讲 Auto-Encoder 之前,其实 Auto-Encoder 也可以算是,Self-Supervised
-Learning 的一环,所以再让我们用非常短的时间,来看一下Self-Supervised
-Learning 的 Framework。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615182816027.png" alt="image-20220615182816027" style="zoom:50%;"></p>
-<p>首先你有大量的没有标注的资料,用这些没有标注的资料,你可以去训练一个模型,你必须发明一些不需要标注资料的任务,比如说做填空题,比如说预测下一个
-Token。</p>
-<p>这个不用标注资料的学习叫做,==Self-Supervised
-Learning==,或者是也有人叫
-==Pre-Training==,那用这些不用标注资料的任务,学完一个模型以后,它本身没有什麽用,BERT
-只能做填空题,GPT
-只能够把一句话补完,但是你可以把它用在其他下游的任务里面。你可以把
-Self-Supervised Learning 的
-Model,做一点点的微微的调整,就可以用在下游的任务里面。</p>
-<p><strong><font color="red"> 在有 BERT 在有 GPT
-之前,其实有一个更古老的任务,更古老的不需要用标注资料的任务,就叫做
-Auto-Encoder,所以你也可以把 Auto-Encoder,看作是 Self-Supervised Learning
-的,一种 Pre-Train 的方法。</font></strong></p>
-<p>当然可能不是所有人都会同意这个观点,有人可能会说这个
-Auto-Encoder,不算是 Self-Supervised Learning,这个 Auto-Encoder
-很早就有了嘛,2006 年 15 年前就有了嘛,然后 Self-Supervised Learning 是,19
-年才有这个词彙嘛,所以 Auto-Encoder,不算 Self-Supervised Learning
-的一环。</p>
-<p>那这个都是见仁见智的问题,这种名词定义的问题,真的我们就不用太纠结在这个地方,从
-Self-Supervised Learning,它是不需要用 Label Data
-来训练,这个观点来看,<strong>Auto-Encoder
-我认为它可以算是,Self-Supervised Learning 的其中的一种方法,它就跟填空
-预测,接下来的 Token
-是很类似的概念,只是用的是另外不一样的想法</strong>。</p>
+<h3><span id="21-self-supervised-learning-framework"><strong>2.1 Self-supervised Learning Framework</strong></span></h3>
+<p>在讲 Auto-Encoder 之前,其实 Auto-Encoder 也可以算是,Self-Supervised Learning 的一环,所以再让我们用非常短的时间,来看一下Self-Supervised Learning 的 Framework。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615182816027.png" alt="image-20220615182816027" style="zoom:50%;">
+<p>首先你有大量的没有标注的资料,用这些没有标注的资料,你可以去训练一个模型,你必须发明一些不需要标注资料的任务,比如说做填空题,比如说预测下一个 Token。</p>
+<p>这个不用标注资料的学习叫做,==Self-Supervised Learning==,或者是也有人叫 ==Pre-Training==,那用这些不用标注资料的任务,学完一个模型以后,它本身没有什麽用,BERT 只能做填空题,GPT 只能够把一句话补完,但是你可以把它用在其他下游的任务里面。你可以把 Self-Supervised Learning 的 Model,做一点点的微微的调整,就可以用在下游的任务里面。</p>
+<p><strong><font color="red"> 在有 BERT 在有 GPT 之前,其实有一个更古老的任务,更古老的不需要用标注资料的任务,就叫做 Auto-Encoder,所以你也可以把 Auto-Encoder,看作是 Self-Supervised Learning 的,一种 Pre-Train 的方法。</font></strong></p>
+<p>当然可能不是所有人都会同意这个观点,有人可能会说这个 Auto-Encoder,不算是 Self-Supervised Learning,这个 Auto-Encoder 很早就有了嘛,2006 年 15 年前就有了嘛,然后 Self-Supervised Learning 是,19 年才有这个词彙嘛,所以 Auto-Encoder,不算 Self-Supervised Learning 的一环。</p>
+<p>那这个都是见仁见智的问题,这种名词定义的问题,真的我们就不用太纠结在这个地方,从 Self-Supervised Learning,它是不需要用 Label Data 来训练,这个观点来看,<strong>Auto-Encoder 我认为它可以算是,Self-Supervised Learning 的其中的一种方法,它就跟填空 预测,接下来的 Token 是很类似的概念,只是用的是另外不一样的想法</strong>。</p>
 <h3><span id="22-auto-encoder">2.2 Auto-encoder</span></h3>
-<p>Auto-Encoder 是怎麽运作的呢,那现在我们,因为刚才在讲 Self-Supervised
-Learning 的时候,都是用文字做例子,那现在我们换成用影像来做例子：</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615183004489.png" alt="image-20220615183004489" style="zoom:50%;"></p>
-<p>假设你有非常大量的图片,在 Auto-Encoder 里面你有两个 Network,一个叫做
-Encoder,一个叫做 Decoder,他们就是两个 Network</p>
+<p>Auto-Encoder 是怎麽运作的呢,那现在我们,因为刚才在讲 Self-Supervised Learning 的时候,都是用文字做例子,那现在我们换成用影像来做例子：</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615183004489.png" alt="image-20220615183004489" style="zoom:50%;">
+<p>假设你有非常大量的图片,在 Auto-Encoder 里面你有两个 Network,一个叫做 Encoder,一个叫做 Decoder,他们就是两个 Network</p>
 <ul>
-<li><p><strong>Encoder 把一张图片读进来,它把这张图片变成一个向量,就
-Encoder 它可能是很多层的
-CNN,把一张图片读进来,它的输出是一个向量,接下来这个向量会变成 Decoder
-的输入</strong></p></li>
-<li><p><strong>Decoder 会产生一张图片,所以 Decoder 的 Network
-的架构,可能会像是 GAN 里面的 Generator,它是 11
-个向量输出一张图片</strong></p></li>
+<li>
+<p><strong>Encoder 把一张图片读进来,它把这张图片变成一个向量,就 Encoder 它可能是很多层的 CNN,把一张图片读进来,它的输出是一个向量,接下来这个向量会变成 Decoder 的输入</strong></p>
+</li>
+<li>
+<p><strong>Decoder 会产生一张图片,所以 Decoder 的 Network 的架构,可能会像是 GAN 里面的 Generator,它是 11 个向量输出一张图片</strong></p>
+</li>
 </ul>
-<p><strong><font color="red"> 训练的目标是希望,Encoder 的输入跟 Decoder
-的输出,越接近越好，假设你把图片看作是一个很长的向量的话,我们就希望这个向量跟
-Decoder
-的输出,这个向量,这两个向量他们的距离越接近越好,也有人把这件事情叫做
-==Reconstruction==,叫做重建。</font></strong></p>
-<p>所以它是一个 <strong>Unsupervised Learning 的方法</strong>,跟
-Self-Supervised 那一系列,Pre-Training
-的做法一样,你<strong>完全不需要任何的标注资料</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615183155224.png" alt="image-20220615183155224" style="zoom: 50%;"></p>
-<p>那像这样子这个 <strong>Encoder 的输出,有时候我们叫它
-Embedding</strong>,我们在讲 BERT 的时候,也提过 Embedding
-这个词彙了,那有的人叫它 Representation,有的人叫它 Code,因为 Encoder
-是一个编码嘛,所以这个有人把这个 Vector 叫做
-Code,那其实指的都是同一件事情。</p>
-<h5><span id="怎麽把train-的-auto-encoder用在-downstream-的任务里面呢">怎麽把
-Train 的 Auto-Encoder,用在 Downstream 的任务里面呢？</span></h5>
-<p>常见的用法就是,原来的图片,你也可以把它看作是一个很长的向量,但这个<strong>向量太长了不好处理</strong>,那怎麽办呢？你把这个图片丢到
-<strong>Encoder
-以后,输出另外一个向量,这个向量你会让它比较短</strong>,比如说只有 10 维
-只有 100
-维,那你拿这个新的向量来做你接下来的任务,也就是图片不再是一个很高维度的向量,它通过
-Encoder
-的压缩以后,变成了一个低维度的向量,你再拿这个低维度的向量,来做接下来想做的事情,这就是常见的,Auto-Encoder用在
-Downstream 的任务,用在下游任务的方法。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615183309937.png" alt="image-20220615183309937" style="zoom:50%;"></p>
-<p><strong><font color="red"> 而 Encoder
-做的事情,是把本来很高维度的东西,转成低维度的东西,把高维度的东西转成低维度的东西又叫做
-==Dimension Reduction==。</font></strong></p>
-<p>Dimension Reduction 这个技术,我相信你在 Machine Learning
-相关的应用上,应该常常听到这个名词,那有关 Dimension Reduction
-的技术,它其实牵涉的非常非常地广,所以我们这边就不再细讲,因为这门课,我们只专注在深度学习相关的技术,你可以把
-Auto-Encoder 的 Encoder,当作拿来做 Dimension
-Reduction,那其他还有很多不是 Deep Learning
-Base的,不是以深度学习为基础的,Dimension Reduction的技术。<strong>比如说
-PCA 比如说 T-SNE</strong>。</p>
+<p><strong><font color="red"> 训练的目标是希望,Encoder 的输入跟 Decoder 的输出,越接近越好，假设你把图片看作是一个很长的向量的话,我们就希望这个向量跟 Decoder 的输出,这个向量,这两个向量他们的距离越接近越好,也有人把这件事情叫做 ==Reconstruction==,叫做重建。</font></strong></p>
+<p>所以它是一个 <strong>Unsupervised Learning 的方法</strong>,跟 Self-Supervised 那一系列,Pre-Training 的做法一样,你<strong>完全不需要任何的标注资料</strong>。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615183155224.png" alt="image-20220615183155224" style="zoom: 50%;">
+<p>那像这样子这个 <strong>Encoder 的输出,有时候我们叫它 Embedding</strong>,我们在讲 BERT 的时候,也提过 Embedding 这个词彙了,那有的人叫它 Representation,有的人叫它 Code,因为 Encoder 是一个编码嘛,所以这个有人把这个 Vector 叫做 Code,那其实指的都是同一件事情。</p>
+<h5><span id="怎麽把-train-的-auto-encoder用在-downstream-的任务里面呢">怎麽把 Train 的 Auto-Encoder,用在 Downstream 的任务里面呢？</span></h5>
+<p>常见的用法就是,原来的图片,你也可以把它看作是一个很长的向量,但这个<strong>向量太长了不好处理</strong>,那怎麽办呢？你把这个图片丢到 <strong>Encoder 以后,输出另外一个向量,这个向量你会让它比较短</strong>,比如说只有 10 维 只有 100 维,那你拿这个新的向量来做你接下来的任务,也就是图片不再是一个很高维度的向量,它通过 Encoder 的压缩以后,变成了一个低维度的向量,你再拿这个低维度的向量,来做接下来想做的事情,这就是常见的,Auto-Encoder用在 Downstream 的任务,用在下游任务的方法。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615183309937.png" alt="image-20220615183309937" style="zoom:50%;">
+<p><strong><font color="red"> 而 Encoder 做的事情,是把本来很高维度的东西,转成低维度的东西,把高维度的东西转成低维度的东西又叫做 ==Dimension Reduction==。</font></strong></p>
+<p>Dimension Reduction 这个技术,我相信你在 Machine Learning 相关的应用上,应该常常听到这个名词,那有关 Dimension Reduction 的技术,它其实牵涉的非常非常地广,所以我们这边就不再细讲,因为这门课,我们只专注在深度学习相关的技术,你可以把 Auto-Encoder 的 Encoder,当作拿来做 Dimension Reduction,那其他还有很多不是 Deep Learning Base的,不是以深度学习为基础的,Dimension Reduction的技术。<strong>比如说 PCA 比如说 T-SNE</strong>。</p>
 <h3><span id="24-de-noising-auto-encoder">2.4 De-noising Auto-encoder</span></h3>
-<p>那 Auto-Encoder 还有一个常见的变形,叫做 De-Noising 的
-Auto-Encoder</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615185731272.png" alt="image-20220615185731272" style="zoom:67%;"></p>
-<p>De-Noising 的 Auto-Encoder 是说,我们把原来要输进去给 Encoder
-的图片,<strong>加上一些杂讯</strong>,就自己随便找一个杂讯把它加进去,然后一样通过
-Encoder,一样再通过 Decoder,试图还原原来的图片。那我们现在还原的,不是
-Encoder 的输入,Encoder 的输入的图片是有加杂讯的,我们要还原的不是 Encoder
-的输入,我们<strong>要还原的是加入杂讯之前的结果</strong>。</p>
-<p>所以你会发现说,现在 Encoder 跟
-Decoder,除了还原原来的图片这个任务以外,它还<strong>多了一个任务</strong>,这个任务是什麽,这个任务就是,它必须要<strong>自己学会把杂讯去掉</strong>。Encoder
-看到的是没有杂讯的图片,但 Decode要还原的目标是,Encoder
-看到的是有加杂讯的图片,但 Decoder 要还原的目标是,没有加杂讯的图片,所以
-Encoder 加
-Decoder,他们合起来必须要联手能够把杂讯去掉,这样你才能够把,De-Noising 的
-Auto-Encoder 训练起来。</p>
-<p>但是如果你看今天的 BERT 的话,其实你也可以把它看作就是一个,De-Noising
-的 Auto-Encoder：</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615185813727.png" alt="image-20220615185813727" style="zoom:50%;"></p>
-<p>输入我们会加 Masking,那些 <strong>Masking 其实就是
-Noise</strong>,BERT 的模型就是 Encoder,它的输出就是 Embedding。在讲 BERT
-的技术的时候,我们就告诉你说这个输出就叫做 Embedding,接下来有一个 Linear
-的模型,就是Decoder,所以我们可以说,BERT 其实就是一个,De-Noising 的
-Auto-Encoder。</p>
+<p>那 Auto-Encoder 还有一个常见的变形,叫做 De-Noising 的 Auto-Encoder</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615185731272.png" alt="image-20220615185731272" style="zoom:67%;">
+<p>De-Noising 的 Auto-Encoder 是说,我们把原来要输进去给 Encoder 的图片,<strong>加上一些杂讯</strong>,就自己随便找一个杂讯把它加进去,然后一样通过 Encoder,一样再通过 Decoder,试图还原原来的图片。那我们现在还原的,不是 Encoder 的输入,Encoder 的输入的图片是有加杂讯的,我们要还原的不是 Encoder 的输入,我们<strong>要还原的是加入杂讯之前的结果</strong>。</p>
+<p>所以你会发现说,现在 Encoder 跟 Decoder,除了还原原来的图片这个任务以外,它还<strong>多了一个任务</strong>,这个任务是什麽,这个任务就是,它必须要<strong>自己学会把杂讯去掉</strong>。Encoder 看到的是没有杂讯的图片,但 Decode要还原的目标是,Encoder 看到的是有加杂讯的图片,但 Decoder 要还原的目标是,没有加杂讯的图片,所以 Encoder 加 Decoder,他们合起来必须要联手能够把杂讯去掉,这样你才能够把,De-Noising 的 Auto-Encoder 训练起来。</p>
+<p>但是如果你看今天的 BERT 的话,其实你也可以把它看作就是一个,De-Noising 的 Auto-Encoder：</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615185813727.png" alt="image-20220615185813727" style="zoom:50%;">
+<p>输入我们会加 Masking,那些 <strong>Masking 其实就是 Noise</strong>,BERT 的模型就是 Encoder,它的输出就是 Embedding。在讲 BERT 的技术的时候,我们就告诉你说这个输出就叫做 Embedding,接下来有一个 Linear 的模型,就是Decoder,所以我们可以说,BERT 其实就是一个,De-Noising 的 Auto-Encoder。</p>
 <h2><span id="三-auto-encoder-p2">三、Auto-Encoder P2</span></h2>
 <h3><span id="31-feature-disentangle">3.1 Feature Disentangle</span></h3>
-<p><strong><font color="red"> 除了 Aauto-Encoder,可以用来做当 strime
-的任务以外,我还想跟大家分享一下,Aauto-Encoder 其他有意思的应用：
-==Feature Disentanglement==。Disentangle
-的意思就是,把一堆本来纠缠在一起的东西把它解开。</font></strong></p>
-<h5><span id="那为什么会有disentangle-这个议题呢我们来想想看aauto-encoder它在做的事情是什么">那为什么会有
-Disentangle 这个议题呢,我们来想想看,Aauto-Encoder
-它在做的事情是什么？</span></h5>
+<p><strong><font color="red"> 除了 Aauto-Encoder,可以用来做当 strime 的任务以外,我还想跟大家分享一下,Aauto-Encoder 其他有意思的应用： ==Feature  Disentanglement==。Disentangle 的意思就是,把一堆本来纠缠在一起的东西把它解开。</font></strong></p>
+<h5><span id="那为什么会有-disentangle-这个议题呢我们来想想看aauto-encoder-它在做的事情是什么">那为什么会有 Disentangle 这个议题呢,我们来想想看,Aauto-Encoder 它在做的事情是什么？</span></h5>
 <h5><span id="auto-encoder-在做的事情是">Auto-Encoder 在做的事情是：</span></h5>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615190047133.png" alt="image-20220615190047133" style="zoom: 67%;"></p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615190047133.png" alt="image-20220615190047133" style="zoom: 67%;">
 <ul>
-<li>如果是图片的话,就是把一张图片变成一个 Code,再把 Code 呢
-变回图片,既然这个 Code 可以变回图片,代表说这个 Code
-里面啊,有很多的资讯,包含图片里面所有的资讯,举例来说,图片里面有什么样的东西啊,图片的色泽纹理啊等等</li>
-<li>Auto-Encoder
-这个概念也不是只能用在影像上,如果用在语音上,你可以把一段声音丢到 Encoder
-里面,变成向量 再丢回
-Decoder,变回原来的声音,代表这个向量包含了,语音里面所有重要的资讯,包括这句话的内容是什么,就是
-Encoder 的资讯,还有这句话是谁说的,就是 Speaker 语者的资讯</li>
-<li>那如果今天是一篇文章,丢到 Encoder 里面变成向量,这个向量通过 Decoder
-会变回原来的文章,那这个向量里面有什么,它可能包含文章里面,文句的句法的资讯,也包含了语意的资讯,但是这些资讯是全部纠缠在一个向量里面,我们并不知道一个向量的哪些维,代表了哪些资讯</li>
+<li>如果是图片的话,就是把一张图片变成一个 Code,再把 Code 呢 变回图片,既然这个 Code 可以变回图片,代表说这个 Code 里面啊,有很多的资讯,包含图片里面所有的资讯,举例来说,图片里面有什么样的东西啊,图片的色泽纹理啊等等</li>
+<li>Auto-Encoder 这个概念也不是只能用在影像上,如果用在语音上,你可以把一段声音丢到 Encoder 里面,变成向量 再丢回 Decoder,变回原来的声音,代表这个向量包含了,语音里面所有重要的资讯,包括这句话的内容是什么,就是 Encoder 的资讯,还有这句话是谁说的,就是 Speaker 语者的资讯</li>
+<li>那如果今天是一篇文章,丢到 Encoder 里面变成向量,这个向量通过 Decoder 会变回原来的文章,那这个向量里面有什么,它可能包含文章里面,文句的句法的资讯,也包含了语意的资讯,但是这些资讯是全部纠缠在一个向量里面,我们并不知道一个向量的哪些维,代表了哪些资讯</li>
 </ul>
-<p>举例来说,如果我们今天把一段声音讯号丢进
-Encoder,它会给我们一个向量,但是这个向量里面,哪些维度代表了这句话的内容,哪些维度代表这句话的语者,也就是谁说的,我们没有这样的资讯。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615190127357.png" alt="image-20220615190127357" style="zoom:67%;"></p>
-<p>而 Feature Disentangle 想要做到的事情就是,我们有没有可能想办法,在
-Train 一个 Aauto-Encoder 的时候,同时有办法知道,这个
-Representation,或又叫做 Embedding,或又叫做 Code,我们这个
-<strong><font color="red"> Embedding
-的哪些维度代表了哪些资讯呢？</font></strong></p>
-<p>这边举一个语音上的应用,这个应用叫做 Voice Conversion,Voice Conversion
-的中文叫做语者转换,所以也许你没有听过语者转换这个词彙,但是你一定看过它的应用,它就是柯南的领结变身器。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615190304137.png" alt="image-20220615190304137" style="zoom:67%;"></p>
+<p>举例来说,如果我们今天把一段声音讯号丢进 Encoder,它会给我们一个向量,但是这个向量里面,哪些维度代表了这句话的内容,哪些维度代表这句话的语者,也就是谁说的,我们没有这样的资讯。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615190127357.png" alt="image-20220615190127357" style="zoom:67%;">
+<p>而 Feature Disentangle 想要做到的事情就是,我们有没有可能想办法,在 Train 一个 Aauto-Encoder 的时候,同时有办法知道,这个 Representation,或又叫做 Embedding,或又叫做 Code,我们这个 <strong><font color="red"> Embedding 的哪些维度代表了哪些资讯呢？</font></strong></p>
+<p>这边举一个语音上的应用,这个应用叫做 Voice Conversion,Voice Conversion 的中文叫做语者转换,所以也许你没有听过语者转换这个词彙,但是你一定看过它的应用,它就是柯南的领结变身器。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615190304137.png" alt="image-20220615190304137" style="zoom:67%;">
 <p>这个在二十年前,阿笠博士就已经做得很成功了啦</p>
-<p>那只是过去,阿笠博士在做这个 Voice Conversion
-的时候啊,我们需要成对的声音讯号,也就是假设你要把 A 的声音转成 B
-的声音,你必须把 A 跟 B 都找来,叫他唸一模一样的句子。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615190330572.png" alt="image-20220615190330572" style="zoom:67%;"></p>
-<p>就 A 说好 How are you,B 也说好 How are you,A 说 Good morning,B 也说
-Good morning,他们两个各说一样的句子,说个 1000 句,接下来呢,就结束了,就是
-<strong>Supervised Learning 的问题</strong>啊,你有成对的资料,Train 一个
-Supervised 的 Model,把 A 的声音丢进去,输出就变成 B 的声音,就结束了。</p>
-<p>但是如果 A 跟 B 都需要唸一模一样的句子,念个 500 1000
-句,显然是不切实际的,举例来说,假设我想要把我的声音转成新垣结衣的声音,我得把新垣结衣找来,更退一万步说,假设我真的把新垣结衣找来,她也不会说中文啊,所以她没有办法跟我唸一模一样的句子</p>
-<p>而今天有了 Feature Disentangle
-的技术以后,也许我们期待机器可以做到,<strong>就给它 A 的声音 给它 B
-的声音,A 跟 B
-不需要唸同样的句子,甚至不需要讲同样的语言,机器也有可能学会把 A
-的声音转成 B 的声音</strong></p>
-<p>那实际上是怎么做的呢,假设我们收集到一大堆人类的声音讯号,然后拿这堆声音讯号呢,去
-Train 一个 Aauto-Encoder,同时我们又做了 Feature Disentangle
-的技术,所以我们<strong>知道在 Encoder
-的输出里面,哪些维度代表了语音的内容,哪些维度代表了语者的特徵</strong>。接下来,我们就可以<strong>把两句话,声音跟内容的部分互换</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615191019338.png" alt="image-20220615191019338" style="zoom: 67%;"></p>
-<p>举例来说,这边是我的声音,我说 How are you,丢进 Encoder
-以后,那你就可以抽出,你就知道说这个 Encoder 里面,<strong>某些维度代表 How
-are you 的内容,某些维度代表我的声音</strong>。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615191033830.png" alt="image-20220615191033830" style="zoom:67%;"></p>
-<p>今天你把这个你老婆的声音丢进
-Encoder,它就知道某一些维度,代表你老婆说的话的内容,某一些维度,代表你老婆声音的特徵,接下来我们只要<strong>把我说话的内容的部分取出来</strong>,<strong>把你老婆说话的声音特徵的部分取出来,把它拼起来</strong>,丢到
-Decoder
-里面,就可以用<strong>你老婆的声音,讲我说的话的内容</strong>。</p>
-<p>这件事情真的有可能办到吗,以下是真正的例子,听起来像是这个样子,Do you
-want to study a PhD,这个是我的声音，那把我的声音丢到 Encoder
-里面以后呢,你可以想像说在 Encoder
-里面,我们知道哪些维度代表了念博班这件事,哪些维度代表了我的声音。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615191448638.png" alt="image-20220615191448638" style="zoom: 67%;"></p>
-<p>那为了简化起见,它输出 100 维的向量,前 50 维代表内容,后 50
-维代表说话人的特徵,好 接下来这句话是你老婆说的,仕事忙しいのがな,不知道
-不太确定在说什么,就是日文啊</p>
-<p>接下来呢,就把我的声音的前 50
-维,代表内容的部分取出来,把你老婆的,把你老婆的声音丢进 Encoder 以后,后 50
-维的部分抽出来,拼起来,一样是一个 100 维的向量,丢到 Decoder
-里面,看看输出来的声音,是不是就是你老婆叫你念博班的声音,听起来像是这个样子,Do
-you want to study a PhD</p>
-<p>那其实反过来也可以啦,就是换成把日文的部分拿出来,把我的声音的特徵拿出来,一样串成一个
-100 维的向量,丢到 Decoder
-里面,它听起来就会变成这样,仕事忙しいのがな,我也不知道自己在说什么就是了</p>
-<p>所以确实用 Feature Disentangle,你有机会做到 Voice
-Conversion,那其实在影像上,在 NLP
-上,也都可以有类似的应用,所以可以想想看,Feature Disentangle
-可以做什么样的事情</p>
-<h3><span id="32-discrete-latentrepresentation">3.2 Discrete Latent
-Representation</span></h3>
-<p>下一个要跟大家讲的应用,叫做 Discrete Latent
-Representation。到目前为止我们都假设这个
-Embedding,它就是一个向量,这样就是一串数字,它是 Real
-Numbers,那它可不可以是别的东西呢？</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615191527797.png" alt="image-20220615191527797" style="zoom:67%;"></p>
+<p>那只是过去,阿笠博士在做这个 Voice Conversion 的时候啊,我们需要成对的声音讯号,也就是假设你要把 A 的声音转成 B 的声音,你必须把 A 跟 B 都找来,叫他唸一模一样的句子。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615190330572.png" alt="image-20220615190330572" style="zoom:67%;">
+<p>就 A 说好 How are you,B 也说好 How are you,A 说 Good morning,B 也说 Good morning,他们两个各说一样的句子,说个 1000 句,接下来呢,就结束了,就是 <strong>Supervised Learning 的问题</strong>啊,你有成对的资料,Train 一个 Supervised 的 Model,把 A 的声音丢进去,输出就变成 B 的声音,就结束了。</p>
+<p>但是如果 A 跟 B 都需要唸一模一样的句子,念个 500 1000 句,显然是不切实际的,举例来说,假设我想要把我的声音转成新垣结衣的声音,我得把新垣结衣找来,更退一万步说,假设我真的把新垣结衣找来,她也不会说中文啊,所以她没有办法跟我唸一模一样的句子</p>
+<p>而今天有了 Feature Disentangle 的技术以后,也许我们期待机器可以做到,<strong>就给它 A 的声音 给它 B 的声音,A 跟 B 不需要唸同样的句子,甚至不需要讲同样的语言,机器也有可能学会把 A 的声音转成 B 的声音</strong></p>
+<p>那实际上是怎么做的呢,假设我们收集到一大堆人类的声音讯号,然后拿这堆声音讯号呢,去 Train 一个 Aauto-Encoder,同时我们又做了 Feature Disentangle 的技术,所以我们<strong>知道在 Encoder 的输出里面,哪些维度代表了语音的内容,哪些维度代表了语者的特徵</strong>。接下来,我们就可以<strong>把两句话,声音跟内容的部分互换</strong>。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615191019338.png" alt="image-20220615191019338" style="zoom: 67%;">
+<p>举例来说,这边是我的声音,我说 How are you,丢进 Encoder 以后,那你就可以抽出,你就知道说这个 Encoder 里面,<strong>某些维度代表 How are you 的内容,某些维度代表我的声音</strong>。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615191033830.png" alt="image-20220615191033830" style="zoom:67%;">
+<p>今天你把这个你老婆的声音丢进 Encoder,它就知道某一些维度,代表你老婆说的话的内容,某一些维度,代表你老婆声音的特徵,接下来我们只要<strong>把我说话的内容的部分取出来</strong>,<strong>把你老婆说话的声音特徵的部分取出来,把它拼起来</strong>,丢到 Decoder 里面,就可以用<strong>你老婆的声音,讲我说的话的内容</strong>。</p>
+<p>这件事情真的有可能办到吗,以下是真正的例子,听起来像是这个样子,Do you want to study a PhD,这个是我的声音，那把我的声音丢到 Encoder 里面以后呢,你可以想像说在 Encoder 里面,我们知道哪些维度代表了念博班这件事,哪些维度代表了我的声音。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615191448638.png" alt="image-20220615191448638" style="zoom: 67%;">
+<p>那为了简化起见,它输出 100 维的向量,前 50 维代表内容,后 50 维代表说话人的特徵,好 接下来这句话是你老婆说的,仕事忙しいのがな,不知道 不太确定在说什么,就是日文啊</p>
+<p>接下来呢,就把我的声音的前 50 维,代表内容的部分取出来,把你老婆的,把你老婆的声音丢进 Encoder 以后,后 50 维的部分抽出来,拼起来,一样是一个 100 维的向量,丢到 Decoder 里面,看看输出来的声音,是不是就是你老婆叫你念博班的声音,听起来像是这个样子,Do you want to study a PhD</p>
+<p>那其实反过来也可以啦,就是换成把日文的部分拿出来,把我的声音的特徵拿出来,一样串成一个 100 维的向量,丢到 Decoder 里面,它听起来就会变成这样,仕事忙しいのがな,我也不知道自己在说什么就是了</p>
+<p>所以确实用 Feature Disentangle,你有机会做到 Voice Conversion,那其实在影像上,在 NLP 上,也都可以有类似的应用,所以可以想想看,Feature Disentangle 可以做什么样的事情</p>
+<h3><span id="32-discrete-latent-representation">3.2 Discrete Latent Representation</span></h3>
+<p>下一个要跟大家讲的应用,叫做 Discrete Latent Representation。到目前为止我们都假设这个 Embedding,它就是一个向量,这样就是一串数字,它是 Real Numbers,那它可不可以是别的东西呢？</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615191527797.png" alt="image-20220615191527797" style="zoom:67%;">
 <ul>
-<li>举例来说,它可不可以是 Binary,Binary
-的好处也许是说,每一个维度,它就代表了某种特徵的有或者是没有,举例来说,输入的这张图片,如果是女生,可能第一维就是
-1,男生第一维就是 0,如果有戴眼镜,就是第三维 1,没有戴眼镜 就是第三维是
-0,也许我们把这个向量,这个 Embedding 变成 Binary,变成只有 0 跟 1
-的数字,可以让我们再解释 Encoder 输出的时候,更为容易</li>
-<li>甚至有没有可能这个向量,强迫它一定要是 One-Hot 呢,也就只有一维是
-1,其他就是 0,如果我们强迫它是
-One-Hot,也就是每一个东西图片丢进去,你只可以有,你的 Embedding
-里面只可以有一维是 1,其他都是 0
-的话,那可以做到什么样的效果呢,也许可以做到 unSupervised
-的分类,举例来说,假设你有一大堆的,假设你想要做那个手写数字辨识,你有 0 到
-9 的图片,你把 0 到 9 的图片统统收集起来,Train 一个这样子的
-Aauto-Encoder,然后强迫中间的 Latent Representation,强迫中间的这个 Code
-啊,一定要是 One-Hot Vector,那你这个 Code 正好设个 10 维,也许每一个
-One-Hot 的 Code,所以这 10 维,就有 10 种可能的 One-Hot 的 Code,也许每一种
-One-Hot 的 Code,正好就对应到一个数字也说不定,所以今天如果用 One-Hot 的
-Vector,来当做你的 Embedding 的话,也许就可以做到完全在没有,完全没有Llabel
-Data 的情况下,让机器自动学会分类。</li>
+<li>举例来说,它可不可以是 Binary,Binary 的好处也许是说,每一个维度,它就代表了某种特徵的有或者是没有,举例来说,输入的这张图片,如果是女生,可能第一维就是 1,男生第一维就是 0,如果有戴眼镜,就是第三维 1,没有戴眼镜 就是第三维是 0,也许我们把这个向量,这个 Embedding 变成 Binary,变成只有 0 跟 1 的数字,可以让我们再解释 Encoder 输出的时候,更为容易</li>
+<li>甚至有没有可能这个向量,强迫它一定要是 One-Hot 呢,也就只有一维是 1,其他就是 0,如果我们强迫它是 One-Hot,也就是每一个东西图片丢进去,你只可以有,你的 Embedding 里面只可以有一维是 1,其他都是 0 的话,那可以做到什么样的效果呢,也许可以做到 unSupervised 的分类,举例来说,假设你有一大堆的,假设你想要做那个手写数字辨识,你有 0 到 9 的图片,你把 0 到 9 的图片统统收集起来,Train 一个这样子的 Aauto-Encoder,然后强迫中间的 Latent Representation,强迫中间的这个 Code 啊,一定要是 One-Hot Vector,那你这个 Code 正好设个 10 维,也许每一个 One-Hot 的 Code,所以这 10 维,就有 10 种可能的 One-Hot 的 Code,也许每一种 One-Hot 的 Code,正好就对应到一个数字也说不定,所以今天如果用 One-Hot 的 Vector,来当做你的 Embedding 的话,也许就可以做到完全在没有,完全没有Llabel Data 的情况下,让机器自动学会分类。</li>
 </ul>
-<p>其实还有其他,在这种啊 Discrete 的 Representation
-的这个,技术里面啊,其中最知名的就是 ==VQVAE==,Vector Quantized
-Variational Aauto-Encoder,VQVAE
-啊,是这样子运作的,就是你输入一张图片,Encoder 呢
-输出一个向量,这个向量它是一般的向量,它是 Continuous 的,但接下来你有一个
-==Codebook==。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615191635308.png" alt="image-20220615191635308" style="zoom:67%;"></p>
-<p>所谓 Codebook 的意思就是,你有一排向量,这排向量也是 Learn 出来的,你把
-Encoder
-的输出,去跟这排向量都去算个<strong>相似度</strong>,那你发现这件事情啊,其实跟
-Self-attention 有点像,上面这个 Vector 就是 Query,下面这些 Vector 就是
-Key,那接下来呢就看这些 Vector
-里面,谁的<strong>相似度最大</strong>,那你把相似度最大的那个 Vector
-拿出来。==【类似self-attention】==</p>
+<p>其实还有其他,在这种啊 Discrete 的 Representation 的这个,技术里面啊,其中最知名的就是 ==VQVAE==,Vector Quantized Variational Aauto-Encoder,VQVAE 啊,是这样子运作的,就是你输入一张图片,Encoder 呢 输出一个向量,这个向量它是一般的向量,它是 Continuous 的,但接下来你有一个 ==Codebook==。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615191635308.png" alt="image-20220615191635308" style="zoom:67%;">
+<p>所谓 Codebook 的意思就是,你有一排向量,这排向量也是 Learn 出来的,你把 Encoder 的输出,去跟这排向量都去算个<strong>相似度</strong>,那你发现这件事情啊,其实跟 Self-attention 有点像,上面这个 Vector 就是 Query,下面这些 Vector 就是 Key,那接下来呢就看这些 Vector 里面,谁的<strong>相似度最大</strong>,那你把相似度最大的那个 Vector 拿出来。==【类似self-attention】==</p>
 <p>这边就是那个,这个 Key 跟那个 Value,是等于是共用同一个 Vector。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615191720041.png" alt="image-20220615191720041" style="zoom:67%;"></p>
-<p>如果你把这整个 Process,用 Self-attention 来比喻的话,那就等于是 Key 跟
-Value 是共同的 Vector,然后把这个 Vector 呢,丢到 Decoder
-里面,然后要它输出一张图片,然后接下来 Training
-的时候,就是要让输入跟输出越接近越好</p>
-<p>这一个 Decoder,这个 Encoder,这一个
-Codebook,都是一起从资料里面被学出来的,这样做的好处就是你就可以,你就有
-Discrete 的这个 Latent Representation,也就是说这边 Decoder
-的输入,一定是这边这个 Codebook,里面的向量的其中一个,假设你 Codebook
-里面有 32 个向量,那你 Decoder 的输入,就只有 32
-种可能,你等于就是让你的这个
-Embedding,它是离散的,它没有无穷无尽的可能,它只有 32 种可能而已</p>
-<p>那其实像这样子的技术啊,如果你拿它
-把它用在语音上,你就是一段声音讯号输进来,通过 Encoder
-以后产生一个向量,接下来呢,你去计算这个相似度,把最像的那个向量拿出来丢给
-Decoder,再输出一样的声音讯号,这个时候你会发现说你的 Codebook
-啊,可能可以学到最基本的发音部位</p>
-<p>举例来说 你的,这个最基本的发音单位啊,又叫做
-==Phonetic==,那如果你不知道 Phonetic 是什么的话,你就把它想成是 KK
-音标,那你就会发现说,这个 Codebook 里面每一个
-Vector,它就对应到某一个发音,就对应到 KK 音标里面的某一个符号,这个是
-VQVAE。</p>
-<h3><span id="33-anomalydetection"><strong><font color="red"> 3.3 Anomaly
-Detection </font></strong></span></h3>
-<p>那接下来,就是我们在作业里面要使用的技术,在作业里面我们会拿
-Aauto-Encoder,来做 Anomaly 的
-Detection,那我在规划作业的时候,其实就是想要 Aauto-Encoder 出一个作业,那
-Aauto-Encoder 的技术很多,那最后我决定做 Anomaly 的
-Detection，因为这个是你在非常多的场合,都有机会应用到的一个技术。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615194339007.png" alt="image-20220615194339007" style="zoom:67%;"></p>
-<p>Anomaly 的 Detection ,假设你有一堆的训练资料,这边用 X1 到 XN
-来表示我们的训练资料,而 Anomaly
-Detection,它的中文通常翻译成异常检测。</p>
-<p><strong><font color="red">
-异常检测要做的事情就是,来了一笔新的资料,它到底跟我们之前在训练资料里面看过的资料,相不相似呢？</font></strong>也就是说你需要找出,你需要有一个异常检测的系统,这个异常检测的系统,是透过大量你已经看过的资料训练出来的。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615191720041.png" alt="image-20220615191720041" style="zoom:67%;">
+<p>如果你把这整个 Process,用 Self-attention 来比喻的话,那就等于是 Key 跟 Value 是共同的 Vector,然后把这个 Vector 呢,丢到 Decoder 里面,然后要它输出一张图片,然后接下来 Training 的时候,就是要让输入跟输出越接近越好</p>
+<p>这一个 Decoder,这个 Encoder,这一个 Codebook,都是一起从资料里面被学出来的,这样做的好处就是你就可以,你就有 Discrete 的这个 Latent Representation,也就是说这边 Decoder 的输入,一定是这边这个 Codebook,里面的向量的其中一个,假设你 Codebook 里面有 32 个向量,那你 Decoder 的输入,就只有 32 种可能,你等于就是让你的这个 Embedding,它是离散的,它没有无穷无尽的可能,它只有 32 种可能而已</p>
+<p>那其实像这样子的技术啊,如果你拿它 把它用在语音上,你就是一段声音讯号输进来,通过 Encoder 以后产生一个向量,接下来呢,你去计算这个相似度,把最像的那个向量拿出来丢给 Decoder,再输出一样的声音讯号,这个时候你会发现说你的 Codebook 啊,可能可以学到最基本的发音部位</p>
+<p>举例来说 你的,这个最基本的发音单位啊,又叫做 ==Phonetic==,那如果你不知道 Phonetic 是什么的话,你就把它想成是 KK 音标,那你就会发现说,这个 Codebook 里面每一个 Vector,它就对应到某一个发音,就对应到 KK 音标里面的某一个符号,这个是 VQVAE。</p>
+<h3><span id="33-anomaly-detection"><strong><font color="red"> 3.3 Anomaly Detection </font></strong></span></h3>
+<p>那接下来,就是我们在作业里面要使用的技术,在作业里面我们会拿 Aauto-Encoder,来做 Anomaly 的 Detection,那我在规划作业的时候,其实就是想要 Aauto-Encoder 出一个作业,那 Aauto-Encoder 的技术很多,那最后我决定做 Anomaly 的 Detection，因为这个是你在非常多的场合,都有机会应用到的一个技术。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615194339007.png" alt="image-20220615194339007" style="zoom:67%;">
+<p>Anomaly 的 Detection ,假设你有一堆的训练资料,这边用 X1 到 XN 来表示我们的训练资料,而 Anomaly Detection,它的中文通常翻译成异常检测。</p>
+<p>**<font color="red"> 异常检测要做的事情就是,来了一笔新的资料,它到底跟我们之前在训练资料里面看过的资料,相不相似呢？</font>**也就是说你需要找出,你需要有一个异常检测的系统,这个异常检测的系统,是透过大量你已经看过的资料训练出来的。</p>
 <ul>
-<li>给它一笔新的资料,如果这笔新的资料,看起来像是训练资料里面的
-Data,就说它是正常的</li>
+<li>给它一笔新的资料,如果这笔新的资料,看起来像是训练资料里面的 Data,就说它是正常的</li>
 <li>如果看起来不像是训练资料里面的 Data,就说它是异常的</li>
 </ul>
-<p>那其实 Anomaly,Anomaly
-这个词啊,有很多不同的其他的称呼,比如说有时候你会叫它
-<strong>Outlier</strong>,有时候你会叫它 Novelty,有时候你会叫它
-Exceptions,但其实指的都是同样的事情,你就是要看某一笔新的资料,它跟之前看过的资料到底相不相似,但是所谓的<strong>相似这件事啊,其实并没有非常明确的定义</strong>,它是见仁见智的,会根据你的应用情境而有所不同。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615194546961.png" alt="image-20220615194546961" style="zoom:67%;"></p>
+<p>那其实 Anomaly,Anomaly 这个词啊,有很多不同的其他的称呼,比如说有时候你会叫它 <strong>Outlier</strong>,有时候你会叫它 Novelty,有时候你会叫它 Exceptions,但其实指的都是同样的事情,你就是要看某一笔新的资料,它跟之前看过的资料到底相不相似,但是所谓的<strong>相似这件事啊,其实并没有非常明确的定义</strong>,它是见仁见智的,会根据你的应用情境而有所不同。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615194546961.png" alt="image-20220615194546961" style="zoom:67%;">
 <p>举例来说</p>
 <ul>
 <li>假设现在你的训练资料这个都是雷丘,那这个皮卡丘就算是异常的东西</li>
-<li>但是假设你的训练资料里面,你所有的动物都是皮卡丘,那雷丘就是异常的东西,所以我们并不会说,某一个东西它一定就是
-Normal,一定就是
-Anomaly,我们不会说某个东西它一定是正常或异常,它<strong>是正常或异常,取决于你的训练资料长什么样子</strong></li>
-<li>或者是说假设你的训练资料里面,通通都是宝可梦,那雷丘跟皮卡丘通通都算是正常的,而可能数码宝贝,亚古兽知道吗,这应该是亚古兽
-对不对,亚古兽算是异常的</li>
+<li>但是假设你的训练资料里面,你所有的动物都是皮卡丘,那雷丘就是异常的东西,所以我们并不会说,某一个东西它一定就是 Normal,一定就是 Anomaly,我们不会说某个东西它一定是正常或异常,它<strong>是正常或异常,取决于你的训练资料长什么样子</strong></li>
+<li>或者是说假设你的训练资料里面,通通都是宝可梦,那雷丘跟皮卡丘通通都算是正常的,而可能数码宝贝,亚古兽知道吗,这应该是亚古兽 对不对,亚古兽算是异常的</li>
 </ul>
 <h4><span id="那个这个异常检测有什么样的应用呢">那个这个异常检测有什么样的应用呢？</span></h4>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615194611806.png" alt="image-20220615194611806" style="zoom:67%;"></p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615194611806.png" alt="image-20220615194611806" style="zoom:67%;">
 <ul>
-<li>举例来说,它可以来做<strong>诈欺侦测</strong>,假设你的训练资料里面,有一大堆信用卡的交易纪录,那我们可以想像说,多数信用卡的交易都是正常的,那你拿这些正常的信用卡训练的交易纪录,来训练一个异常检测的模型,那有一笔新的交易纪录进来,你就可以让机器帮你判断说,这笔纪录算是正常的
-还是异常的,所以这种异常检测的技术,可以拿来做诈欺侦测。</li>
-<li>或者是它可以拿来做网路的这个<strong>侵入侦测</strong>,举例来说,你有很多连线的纪录资料,那你相信多数人连到你的网站的时候,他的行为都是正常的,多数人都是好人,你收集到一大堆正常的连线的纪录,那接下来有一笔新的连线进来,你可以根据过去正常的连线,训练出一个异常检测的模型,看看新的连线,它是正常的连线
-还是异常的连线,它是有攻击性的
-还是正常的连线,或者是它在医学上也可能有应用,你收集到一大堆正常细胞的资料,拿来训练一个异常检测的模型,那也许看到一个新的细胞,它可以知道这个细胞有没有突变,也许有突变,它就是一个癌细胞等等。</li>
+<li>举例来说,它可以来做<strong>诈欺侦测</strong>,假设你的训练资料里面,有一大堆信用卡的交易纪录,那我们可以想像说,多数信用卡的交易都是正常的,那你拿这些正常的信用卡训练的交易纪录,来训练一个异常检测的模型,那有一笔新的交易纪录进来,你就可以让机器帮你判断说,这笔纪录算是正常的 还是异常的,所以这种异常检测的技术,可以拿来做诈欺侦测。</li>
+<li>或者是它可以拿来做网路的这个<strong>侵入侦测</strong>,举例来说,你有很多连线的纪录资料,那你相信多数人连到你的网站的时候,他的行为都是正常的,多数人都是好人,你收集到一大堆正常的连线的纪录,那接下来有一笔新的连线进来,你可以根据过去正常的连线,训练出一个异常检测的模型,看看新的连线,它是正常的连线 还是异常的连线,它是有攻击性的 还是正常的连线,或者是它在医学上也可能有应用,你收集到一大堆正常细胞的资料,拿来训练一个异常检测的模型,那也许看到一个新的细胞,它可以知道这个细胞有没有突变,也许有突变,它就是一个癌细胞等等。</li>
 </ul>
-<p>那讲到这边有人可能会想说,Anomaly Detection
-异常检测的问题,我们能不能够把它当做<strong>二元分类</strong>的问题来看啊？</p>
-<figure>
-<img src="../../../../../Library/Application%20Support/typora-user-images/image-20220615194724455.png" alt="image-20220615194724455">
-<figcaption aria-hidden="true">image-20220615194724455</figcaption>
-</figure>
-<p>你说你要做诈欺侦测,你就收集一大堆正常的信用卡纪录,一堆诈欺的信用卡纪录,训练一个
-Binary 的
-Classifier,就结束啦,就这样子不是吗？比较<strong>难点就是你要收资料</strong>。</p>
+<p>那讲到这边有人可能会想说,Anomaly Detection 异常检测的问题,我们能不能够把它当做<strong>二元分类</strong>的问题来看啊？</p>
+<p>![image-20220615194724455](…/…/…/…/…/Library/Application Support/typora-user-images/image-20220615194724455.png)</p>
+<p>你说你要做诈欺侦测,你就收集一大堆正常的信用卡纪录,一堆诈欺的信用卡纪录,训练一个 Binary 的 Classifier,就结束啦,就这样子不是吗？比较<strong>难点就是你要收资料</strong>。</p>
 <p>这种异常检测的问题它的难点,正在就在收资料上面,通常你<strong>比较有办法收集到正常的资料,你比较不容易收集到异常的资料</strong>,你可能有一大堆信用卡交易的纪录,但是多数信用卡交易的纪录可能都是正常的,异常的资料相较于正常的资料,可能非常地少,甚至有一些异常的资料混在正常的里面,你也不太可,你可能也完全没有办法侦测出来,所以在这一种异常检测的问题里面。</p>
-<p><strong><font color="red">
-我们往往假设,我们有一大堆正常的资料,但我们几乎没有异常的资料,所以它不是一个一般的分类的问题,这种分类的问题又叫做
-==One Class
-的分类问题==。</font></strong>就是我们只有一个类别的资料,那你怎么训练一个模型,因为你想你要训练一个分类器,你得有两个类别的资料,你才能训练分类器啊,如果只有一个类别的资料,那我们可以训练什么东西,这个时候就是
-Aauto-Encoder,可以派得上用场的时候了。</p>
+<p>**<font color="red"> 我们往往假设,我们有一大堆正常的资料,但我们几乎没有异常的资料,所以它不是一个一般的分类的问题,这种分类的问题又叫做 ==One Class 的分类问题==。</font>**就是我们只有一个类别的资料,那你怎么训练一个模型,因为你想你要训练一个分类器,你得有两个类别的资料,你才能训练分类器啊,如果只有一个类别的资料,那我们可以训练什么东西,这个时候就是 Aauto-Encoder,可以派得上用场的时候了。</p>
 <p>举例来说,假设我们现在想要做一个系统,这个系统是要侦测说一张图片：</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615194856711.png" alt="image-20220615194856711" style="zoom:67%;"></p>
-<p>举例来说,它是不是真人的人脸,那你可以找到一大堆图片,它都是真正的人脸,那我们就拿这些真人的人脸,来训练一个
-Aauto-Encoder。这个是你老婆的照片,那你可以拿它来训练一个
-Aauto-Encoder,那你训练完这个 Aauto-Encoder
-以后,在测试的时候,如果进来的也是你老婆的照片,那因为在训练的时候有看过这样的照片,所以它可以顺利地被还原回来。</p>
-<p>你可以计算这一张照片通过 Encoder,再通过 Decoder
-以后,它的变化有多大,你可以去<strong>计算这个输入的照片,跟这个输出的照片,它们的差异有多大</strong>,如果差异很小,你的
-Decoder
-可以顺利地还原原来的照片,代表这样类型的照片,是在训练的时候有看过的,不过反过来说,假设有一张照片是训练的时候没有看过的。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220615195012966.png" alt="image-20220615195012966" style="zoom:67%;"></p>
-<p>她是那个凉宫春日,但是她不是真人,她是一个动画的人物,她是二次元的人物,一个二次元人物的照片,输入
-Encoder 再输出 Decoder
-以后,因为这是没有看过的东西,这是训练的时候没有看过的照片,那你的
-Decoder,就很难把它还原回来,<strong>如果你计算输入跟输出的差异,发现差异非常地大</strong>,那就代表说,现在输入给
-Encoder
-的这张照片,可能是一个异常的状况,可能是训练的时候没有看过的状况,所以你就可以<strong>看
-reconstruction 的 loss</strong>,这个 reconstruction
-的好坏,来决定说你现在在测试的时候,看到这张照片,是不是训练的时候有看过同类型的照片。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615194856711.png" alt="image-20220615194856711" style="zoom:67%;">
+<p>举例来说,它是不是真人的人脸,那你可以找到一大堆图片,它都是真正的人脸,那我们就拿这些真人的人脸,来训练一个 Aauto-Encoder。这个是你老婆的照片,那你可以拿它来训练一个 Aauto-Encoder,那你训练完这个 Aauto-Encoder 以后,在测试的时候,如果进来的也是你老婆的照片,那因为在训练的时候有看过这样的照片,所以它可以顺利地被还原回来。</p>
+<p>你可以计算这一张照片通过 Encoder,再通过 Decoder 以后,它的变化有多大,你可以去<strong>计算这个输入的照片,跟这个输出的照片,它们的差异有多大</strong>,如果差异很小,你的 Decoder 可以顺利地还原原来的照片,代表这样类型的照片,是在训练的时候有看过的,不过反过来说,假设有一张照片是训练的时候没有看过的。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220615195012966.png" alt="image-20220615195012966" style="zoom:67%;">
+<p>她是那个凉宫春日,但是她不是真人,她是一个动画的人物,她是二次元的人物,一个二次元人物的照片,输入 Encoder 再输出 Decoder 以后,因为这是没有看过的东西,这是训练的时候没有看过的照片,那你的 Decoder,就很难把它还原回来,<strong>如果你计算输入跟输出的差异,发现差异非常地大</strong>,那就代表说,现在输入给 Encoder 的这张照片,可能是一个异常的状况,可能是训练的时候没有看过的状况,所以你就可以<strong>看 reconstruction 的 loss</strong>,这个 reconstruction 的好坏,来决定说你现在在测试的时候,看到这张照片,是不是训练的时候有看过同类型的照片。</p>
 
     </div>
 
