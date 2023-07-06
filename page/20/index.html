@@ -153,7 +153,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-count">267</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +164,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-count">77</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,571 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/A5MDD8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/A5MDD8/" class="post-title-link" itemprop="url">Pytorch（1）张量操作</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-27 21:00:52" itemprop="dateCreated datePublished" datetime="2022-04-27T21:00:52+08:00">2022-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-18 21:16:14" itemprop="dateModified" datetime="2023-04-18T21:16:14+08:00">2023-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开源工具</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7/Pytorch%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">Pytorch框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="pytorch-资料">PyTorch 资料</span></h2>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/nn.html#torch.nn.BCELoss">PyTorch
+1.7.0 文档</a></p></li>
+<li><p>https://www.w3cschool.cn/pytorch/pytorch-mrni3btn.html</p></li>
+<li><p>https://handbook.pytorch.wiki/chapter1/1.1-pytorch-introduction.html</p></li>
+<li><p>LSTM细节分析理解（pytorch版）：https://zhuanlan.zhihu.com/p/79064602</p></li>
+<li><p>OLD：https://www.pytorch123.com/SixthSection/Dcgan/</p></li>
+<li><p>PyTorch 学习笔记汇总（完结撒花） - 张贤同学的文章 - 知乎
+https://zhuanlan.zhihu.com/p/265394674</p></li>
+</ul>
+<h1><span id="pytorch-学习笔记"><strong>PyTorch 学习笔记</strong></span></h1>
+<p>在线电子书：<a href="https://link.zhihu.com/?target=https%3A//pytorch.zhangxiann.com/">https://pytorch.zhangxiann.com/</a></p>
+<p>配套代码：<strong><a href="https://link.zhihu.com/?target=https%3A//github.com/zhangxiann/PyTorch_Practice">https://github.com/zhangxiann/PyTorch_Practice</a></strong></p>
+<h2><span id="一-基本概念">一、基本概念</span></h2>
+<h3><span id="11-pytorch-简介与安装">1.1 Pytorch 简介与安装</span></h3>
+<h3><span id="12-tensor-张量介绍">1.2 Tensor 张量介绍</span></h3>
+<p><img src="https://image.zhangxiann.com/20200515145801.png" alt="img" style="zoom:75%;"></p>
+<h4><span id="121-直接创建-tensor">1.2.1 直接创建 Tensor</span></h4>
+<h4><span id="torchtensor">torch.tensor()</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.tensor(data, dtype=<span class="literal">None</span>, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>, pin_memory=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>data: 数据，可以是 list，numpy</li>
+<li>dtype: 数据类型，默认与 data 的一致</li>
+<li>device: 所在设备，cuda/cpu</li>
+<li>requires_grad: 是否需要梯度</li>
+<li>pin_memory: 是否存于锁页内存</li>
+</ul>
+<h4><span id="torchfrom_numpyndarray">torch.from_numpy(ndarray)</span></h4>
+<p><strong>从 numpy 创建 tensor。利用这个方法创建的 tensor 和原来的
+ndarray 共享内存，当修改其中一个数据，另外一个也会被改动。</strong></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-3c43ca0bec07c933d07de270730e8ba2_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="122-根据数值创建-tensor">1.2.2 根据数值创建 Tensor</span></h4>
+<h4><span id="torchzeros根据-size创建全-0-张量">torch.zeros()：根据 size
+创建全 0 张量</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.zeros(*size, out=<span class="literal">None</span>, dtype=<span class="literal">None</span>, layout=torch.strided, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>size: 张量的形状</li>
+<li>out: 输出的张量，如果指定了
+out，那么<code>torch.zeros()</code>返回的张量和 out
+指向的是同一个地址</li>
+<li>layout: 内存中布局形式，有 strided，sparse_coo
+等。当是稀疏矩阵时，设置为 sparse_coo 可以减少内存占用。</li>
+<li>device: 所在设备，cuda/cpu</li>
+<li>requires_grad: 是否需要梯度</li>
+</ul>
+<h4><span id="torchfulltorchfull_like创建自定义数值的张量">torch.full()，torch.full_like()：创建自定义数值的张量</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.full(size, fill_value, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>size: 张量的形状，如 (3,3)</li>
+<li>fill_value: 张量中每一个元素的值</li>
+</ul>
+<h4><span id="torcharange创建等差的1-维张量-注意区间为start-end">torch.arange()：创建等差的
+1 维张量。注意区间为[start, end)。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.arange(start=0, end, step=1, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>start: 数列起始值</li>
+<li>end: 数列结束值，开区间，取不到结束值</li>
+<li>step: 数列公差，默认为 1</li>
+</ul>
+<h4><span id="torchlinspace创建均分的1-维张量-数值区间为-start-end">torch.linspace()：创建均分的
+1 维张量。数值区间为 [start, end]</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.linspace(start, end, steps=100, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>start: 数列起始值</li>
+<li>end: 数列结束值</li>
+<li>steps: 数列长度 (元素个数)</li>
+</ul>
+<h4><span id="123-根据概率创建-tensor">1.2.3 根据概率创建 Tensor</span></h4>
+<h4><span id="torchnormal">torch.normal()</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.normal(mean, std, *, generator=None, out=None)</span><br></pre></td></tr></table></figure>
+<p><strong>功能：生成正态分布 (高斯分布)</strong></p>
+<ul>
+<li>mean: 均值</li>
+<li>std: 标准差</li>
+</ul>
+<h3><span id="13-张量操作与线性回归">==1.3 张量操作与线性回归==</span></h3>
+<h3><span id="131-拼接cat-stack"><strong>==1.3.1 拼接==</strong>：cat、stack</span></h3>
+<h4><span id="torchcat将张量按照dim-维度进行拼接">torch.cat()：将张量按照
+dim 维度进行拼接</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.cat(tensors, dim=0, out=None)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>tensors: 张量序列 <strong>[t, t]</strong></li>
+<li>dim: 要拼接的维度</li>
+</ul>
+<h4><span id="torchstack将张量在新创建的dim-维度上进行拼接已有维度后移">torch.stack()：将张量在==新创建的
+dim 维度==上进行拼接，已有维度后移</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.stack(tensors, dim=0, out=None)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>tensors: 张量序列</li>
+<li>dim: 要拼接的维度</li>
+</ul>
+<h3><span id="132-切分chunk-split">==1.3.2 切分==：chunk、split</span></h3>
+<h4><span id="torchchunk将张量按照维度dim-进行平均切分-若不能整除则最后一份张量小于其他张量">torch.chunk()：将张量按照维度
+dim 进行平均切分。若不能整除，则最后一份张量小于其他张量。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.chunk(input, chunks, dim=0)</span><br><span class="line">torch.chunk(a, dim=1, chunks=3)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>input: 要切分的张量</li>
+<li>chunks: 要切分的份数</li>
+<li>dim: 要切分的维度</li>
+</ul>
+<h4><span id="torchsplit将张量按照维度dim-进行平均切分-可以指定每一个分量的切分长度">torch.split()：将张量按照维度
+dim 进行平均切分。可以指定每一个==分量的切分长度==。</span></h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.split(tensor, split_size_or_sections, dim=<span class="number">0</span>)</span><br><span class="line">torch.split(t, [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>tensor: 要切分的张量</li>
+<li>split_size_or_sections: 为 int
+时，表示每一份的长度，如果不能被整除，则最后一份张量小于其他张量；为
+list 时，按照 list 元素作为每一个分量的长度切分。如果 list
+元素之和不等于切分维度 (dim) 的值，就会报错。</li>
+<li>dim: 要切分的维度</li>
+</ul>
+<h3><span id="133-索引">==1.3.3 索引==</span></h3>
+<h4><span id="torchindex_select在维度dim-上按照-index-索引取出数据拼接为张量返回">torch.index_select()：在维度
+dim 上，按照 index 索引取出数据拼接为张量返回。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.index_select(input, dim, index, out=None)</span><br></pre></td></tr></table></figure>
+<p>功能：在维度 dim 上，按照 index
+索引取出数据拼接为张量返回。<code>torch.tensor([0, 2], dtype=torch.long)</code></p>
+<ul>
+<li>input: 要索引的张量</li>
+<li>dim: 要索引的维度</li>
+<li>index: 要索引数据的序号</li>
+</ul>
+<h4><span id="torchmask_select按照mask-中的-true-进行索引拼接得到一维张量返回">torch.mask_select()：按照
+mask 中的 True 进行索引拼接得到一维张量返回。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.masked_select(input, mask, out=None)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>要索引的张量</li>
+<li>mask: 与 input 同形状的布尔类型张量</li>
+</ul>
+<h3><span id="134-变换">==1.3.4 变换==</span></h3>
+<h4><span id="torchreshape变换张量的形状-当张量在内存中是连续时返回的张量和原来的张量共享数据内存改变一个变量时另一个变量也会被改变">torch.reshape()：变换张量的形状。当张量在内存中是连续时，返回的张量和原来的张量共享数据内存，改变一个变量时，另一个变量也会被改变。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.reshape(input, shape)</span><br><span class="line">torch.reshape(t, (-1, 2, 2))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>input: 要变换的张量</li>
+<li>shape: 新张量的形状</li>
+</ul>
+<h4><span id="torchtranspose交换张量的两个维度-常用于图像的变换比如把chw变换为hwc">torch.transpose()：交换张量的两个维度。常用于图像的变换，比如把<code>c*h*w</code>变换为<code>h*w*c</code>。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.transpose(input, dim0, dim1)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>input: 要交换的变量</li>
+<li>dim0: 要交换的第一个维度</li>
+<li>dim1: 要交换的第二个维度</li>
+</ul>
+<h4><span id="torcht2维张量转置对于-2维矩阵而言等价于torchtransposeinput-0-1">torch.t()：2
+维张量转置，对于 2
+维矩阵而言，等价于<code>torch.transpose(input, 0, 1)</code>。</span></h4>
+<h4><span id="torchsqueeze压缩长度为-1的维度">torch.squeeze()：压缩长度为 1
+的维度</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.squeeze(input, dim=None, out=None)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>dim: 若为 None，则移除所有长度为 1
+的维度；若指定维度，则当且仅当该维度长度为 1 时可以移除。</li>
+</ul>
+<h4><span id="torchunsqueeze根据dim-扩展维度长度为-1">torch.unsqueeze()：根据
+dim 扩展维度，长度为 1。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.unsqueeze(input, dim)</span><br></pre></td></tr></table></figure>
+<h3><span id="135-张量的数学运算">==1.3.5 张量的数学运算==</span></h3>
+<h4><span id="加减乘除对数指数幂函数和三角函数">加减乘除，对数，指数，幂函数
+和三角函数。</span></h4>
+<h4><span id="torchadd逐元素计算-input-alpha-other-因为在深度学习中经常用到先乘后加的操作">torch.add():
+逐元素计算 input + alpha *
+other。因为在深度学习中经常用到先乘后加的操作。</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.add(input, other, out=None)</span><br><span class="line">torch.add(input, other, *, alpha=1, out=None)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>input: 第一个张量</li>
+<li>alpha: 乘项因子</li>
+<li>other: 第二个张量</li>
+</ul>
+<h4><span id="torchaddcdiv">torch.addcdiv()</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.addcdiv(input, tensor1, tensor2, *, value=1, out=None)</span><br></pre></td></tr></table></figure>
+<p>计算公式为：out <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%3D%5Coperatorname%7Binput%7D_%7Bi%7D%2B" alt="[公式]"> value <img src="https://www.zhihu.com/equation?tex=%5Ctimes+%5Cfrac%7B%5Ctext+%7B+tensor+%7D+1_%7Bi%7D%7D%7B%5Ctext+%7B+tensor+%7D+2_%7Bi%7D%7D" alt="[公式]"></p>
+<h4><span id="torchaddcmul">torch.addcmul()</span></h4>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.addcmul(input, tensor1, tensor2, *, value=1, out=None)</span><br></pre></td></tr></table></figure>
+<p>计算公式为：out <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%3D" alt="[公式]">
+input <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%2B" alt="[公式]"> value <img src="https://www.zhihu.com/equation?tex=%5Ctimes" alt="[公式]"> tensor
+<img src="https://www.zhihu.com/equation?tex=1_%7Bi%7D+%5Ctimes" alt="[公式]"> tensor <img src="https://www.zhihu.com/equation?tex=2_%7Bi%7D" alt="[公式]"></p>
+<h4><span id="pytorch-线性回归">==Pytorch 线性回归==</span></h4>
+<p>线性回归是分析一个变量 (<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">) 与另外一
+(多) 个变量 (<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">) 之间的关系的方法。一般可以写成 <img src="https://www.zhihu.com/equation?tex=y%3Dwx%2Bb" alt="[公式]">。线性回归的目的就是求解参数 <img src="https://www.zhihu.com/equation?tex=w%2C+b" alt="[公式]">。</p>
+<p>线性回归的求解可以分为 3 步：</p>
+<ol type="1">
+<li>确定模型：<img src="https://www.zhihu.com/equation?tex=y%3Dwx%2Bb" alt="[公式]"></li>
+<li>选择损失函数，一般使用均方误差 MSE：<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D+%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%5Cleft%28y_%7Bi%7D-%5Chat%7By%7D_%7Bi%7D%5Cright%29%5E%7B2%7D" alt="[公式]">。其中 <img src="https://www.zhihu.com/equation?tex=+%5Chat%7By%7D_%7Bi%7D+" alt="[公式]"> 是预测值，<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">
+是真实值。</li>
+<li>使用梯度下降法求解梯度 (其中 <img src="https://www.zhihu.com/equation?tex=lr" alt="[公式]">
+是学习率)，并更新参数：</li>
+</ol>
+<ul>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=w+%3D+w+-+lr+%2A+w.grad" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=b+%3D+b+-+lr+%2A+b.grad" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">代码如下：</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">torch.manual_seed(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">lr = <span class="number">0.05</span>  <span class="comment"># 学习率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建训练数据</span></span><br><span class="line">x = torch.rand(<span class="number">20</span>, <span class="number">1</span>) * <span class="number">10</span>  <span class="comment"># x data (tensor), shape=(20, 1)</span></span><br><span class="line"><span class="comment"># torch.randn(20, 1) 用于添加噪声</span></span><br><span class="line">y = <span class="number">2</span>*x + (<span class="number">5</span> + torch.randn(<span class="number">20</span>, <span class="number">1</span>))  <span class="comment"># y data (tensor), shape=(20, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建线性回归参数</span></span><br><span class="line">w = torch.randn((<span class="number">1</span>), requires_grad=<span class="literal">True</span>) <span class="comment"># 设置梯度求解为 true</span></span><br><span class="line">b = torch.zeros((<span class="number">1</span>), requires_grad=<span class="literal">True</span>) <span class="comment"># 设置梯度求解为 true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练 1000 次</span></span><br><span class="line"><span class="keyword">for</span> iteration <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 前向传播，计算预测值</span></span><br><span class="line">    wx = torch.mul(w, x)</span><br><span class="line">    y_pred = torch.add(wx, b)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算 MSE loss</span></span><br><span class="line">    loss = (<span class="number">0.5</span> * (y - y_pred) ** <span class="number">2</span>).mean()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向传播</span></span><br><span class="line">    loss.backward()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新参数</span></span><br><span class="line">    b.data.sub_(lr * b.grad)</span><br><span class="line">    w.data.sub_(lr * w.grad)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每次更新参数之后，都要清零张量的梯度</span></span><br><span class="line">    w.grad.zero_()</span><br><span class="line">    b.grad.zero_()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘图，每隔 20 次重新绘制直线</span></span><br><span class="line">    <span class="keyword">if</span> iteration % <span class="number">20</span> == <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        plt.scatter(x.data.numpy(), y.data.numpy())</span><br><span class="line">        plt.plot(x.data.numpy(), y_pred.data.numpy(), <span class="string">&#x27;r-&#x27;</span>, lw=<span class="number">5</span>)</span><br><span class="line">        plt.text(<span class="number">2</span>, <span class="number">20</span>, <span class="string">&#x27;Loss=%.4f&#x27;</span> % loss.data.numpy(), fontdict=&#123;<span class="string">&#x27;size&#x27;</span>: <span class="number">20</span>, <span class="string">&#x27;color&#x27;</span>:  <span class="string">&#x27;red&#x27;</span>&#125;)</span><br><span class="line">        plt.xlim(<span class="number">1.5</span>, <span class="number">10</span>)</span><br><span class="line">        plt.ylim(<span class="number">8</span>, <span class="number">28</span>)</span><br><span class="line">        plt.title(<span class="string">&quot;Iteration: &#123;&#125;\nw: &#123;&#125; b: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(iteration, w.data.numpy(), b.data.numpy()))</span><br><span class="line">        plt.pause(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果 MSE 小于 1，则停止训练</span></span><br><span class="line">        <span class="keyword">if</span> loss.data.numpy() &lt; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/3NVTGC1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/3NVTGC1/" class="post-title-link" itemprop="url">hadoop基础</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-27 21:00:14" itemprop="dateCreated datePublished" datetime="2022-04-27T21:00:14+08:00">2022-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-19 13:53:35" itemprop="dateModified" datetime="2023-03-19T13:53:35+08:00">2023-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大数据处理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>149</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>应该是指可以打通整个项目开发过程的，比如基于BS架构的话，就是熟悉前后端，知道怎么把算法模型部署到后端服务器，熟悉分布式计算，能玩转mapreduce，spark，hadoop，能熟练搭建项目框架</p>
+</blockquote>
+<p>三、大数据（简单了解其中一二个）</p>
+<p>Hadoop基础、MapReduce、spark、hive、flink</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2T4G0D4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2T4G0D4/" class="post-title-link" itemprop="url">hadoop&spark的</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-27 20:44:15 / 修改时间：20:56:14" itemprop="dateCreated datePublished" datetime="2022-04-27T20:44:15+08:00">2022-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">大数据处理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1><span id="hadoop和spark的区别和联系">hadoop和spark的区别和联系</span></h1>
+<blockquote>
+<p>==<strong>总结一句话：spark在hadoop肩膀上可以让大数据跑的更快</strong>==</p>
+</blockquote>
+<h3><span id="一-hadoop">一、 hadoop</span></h3>
+<h4><span id="11-hadoop简介">1.1 hadoop简介</span></h4>
+<p><strong>Hadoop是一个由Apache基金会所开发的分布式系统基础架构</strong>。
+<strong>Hadoop实现了一个分布式文件系统HDFS</strong>。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程序。Hadoop的框架最核心的设计就是：HDFS和MapReduce。<strong>HDFS为海量的数据提供了存储，而MapReduce则为海量的数据提供了计算</strong>。</p>
+<h4><span id="12-hadoop优点">1.2 hadoop优点</span></h4>
+<p><strong>Hadoop
+以一种可靠、高效、可伸缩的方式进行数据处理。</strong></p>
+<ul>
+<li><p><strong>可靠性</strong>:
+Hadoop将数据存储在多个备份，Hadoop提供高吞吐量来访问应用程序的数据。</p></li>
+<li><p><strong>高扩展性</strong>：
+Hadoop是在可用的计算机集簇间分配数据并完成计算任务的，这些集簇可以方便地扩展到数以千计的节点中。</p></li>
+<li><p><strong>高效性</strong>：
+Hadoop以并行的方式工作，通过并行处理加快处理速度。</p></li>
+<li><p><strong>高容错性</strong>：
+Hadoop能够自动保存数据的多个副本，并且能够自动将失败的任务重新分配。</p></li>
+<li><p><strong>低成本</strong>：
+Hadoop能够部署在低廉的（low-cost）硬件上。</p></li>
+</ul>
+<h3><span id="二-spark"><strong>二、spark</strong></span></h3>
+<h4><span id="21-spark简介">2.1 spark简介</span></h4>
+<p><strong>Spark
+是专为大规模数据处理而设计的快速通用的计算引擎</strong>。Spark拥有Hadoop
+MapReduce所具有的优点，Spark在Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark性能以及运算速度高于MapReduce。</p>
+<h4><span id="22-spark优点">2.2 spark优点</span></h4>
+<p><strong>计算速度快</strong>:
+因为spark从磁盘中读取数据，把<strong>中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
+<ul>
+<li><p><strong>Spark 提供了大量的库</strong>: 包括Spark Core、Spark
+SQL、Spark Streaming、MLlib、GraphX。</p></li>
+<li><p><strong>支持多种资源管理器</strong>: Spark 支持 Hadoop
+YARN，及其自带的独立集群管理器</p></li>
+<li><p><strong>操作简单</strong>: 高级 API 剥离了对集群本身的关注，Spark
+应用开发者可以专注于应用所要做的计算本身</p></li>
+</ul>
+<h3><span id="三-spark与hadoop的不同点">三、spark与hadoop的不同点</span></h3>
+<h4><span id="31-应用场景不同">3.1 应用场景不同</span></h4>
+<p>Hadoop和Spark两者都是大数据框架，但是各自应用场景是不同的。<strong>Hadoop是一个分布式数据存储架构，它将巨大的数据集分派到一个由普通计算机组成的集群中的多个节点进行存储，降低了硬件的成本</strong>。<strong>Spark是那么一个专门用来对那些分布式存储的大数据进行处理的工具，它要借助hdfs的数据存储</strong>。</p>
+<h4><span id="32-处理速度不同">3.2 处理速度不同</span></h4>
+<p><strong>hadoop的MapReduce是分步对数据进行处理的，从磁盘中读取数据，进行一次处理，将结果写到磁盘</strong>，然后在从磁盘中读取更新后的数据，再次进行的处理，最后再将结果存入磁盘，这存取磁盘的过程会影响处理速度。<strong>spark从磁盘中读取数据，把中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
+<h4><span id="33-容错性不同">3.3 容错性不同</span></h4>
+<p><strong>Hadoop将每次处理后的数据都写入到磁盘上，基本谈不上断电或者出错数据丢失的情况</strong>。Spark的数据对象存储在弹性分布式数据集
+RDD，RDD是分布在一组节点中的只读对象集合，如果数据集一部分丢失，则可以根据于数据衍生过程对它们进行重建。而且RDD
+计算时可以通过 CheckPoint 来实现容错。</p>
+<h3><span id="四-spark与hadoop的联系">四、spark与hadoop的联系</span></h3>
+<p>Hadoop提供分布式数据存储功能HDFS，还提供了用于数据处理的MapReduce。
+MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依靠HDFS进行运作，它可以依靠其它的分布式文件系统。但是两者完全可以结合在一起，<strong>hadoop提供分布式集群和分布式文件系统</strong>，<strong>spark可以依附在hadoop的HDFS代替MapReduce弥补MapReduce计算能力不足的问题。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1263,1184 +1828,6 @@ python中多进程读取excel文件 - 异步读取，返回值管理</span></h3>
 <p>耗时：12.019948959350586</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ExcelReader</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, path, file_suffix=<span class="string">&quot;.xls&quot;</span></span>):</span><br><span class="line">        self.path = path</span><br><span class="line">        self.file_suffix = file_suffix</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getData</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(self.path):</span><br><span class="line">            <span class="keyword">raise</span> FileNotFoundError()</span><br><span class="line">        data = pd.DataFrame()</span><br><span class="line">        <span class="keyword">if</span> os.path.isdir(self.path):</span><br><span class="line">            xls_names = [x <span class="keyword">for</span> x <span class="keyword">in</span> os.listdir(self.path) <span class="keyword">if</span> x.endswith(self.file_suffix)]</span><br><span class="line">            logger.info(<span class="string">&quot;开始&quot;</span>)</span><br><span class="line">            <span class="keyword">for</span> xls_name <span class="keyword">in</span> xls_names:</span><br><span class="line">                df = pd.read_excel(os.path.join(self.path, xls_name), skiprows=<span class="number">1</span>, skipfooter=<span class="number">1</span>)</span><br><span class="line">                data = data.append(df, sort=<span class="literal">False</span>)</span><br><span class="line">            logger.info(<span class="string">&quot;读取Excel文件完毕，共读取&quot;</span> + <span class="built_in">str</span>(xls_names.__len__()) + <span class="string">&quot;个文件&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    reader = ExcelReader(os.path.join(os.getcwd(), <span class="string">&quot;../excels&quot;</span>))</span><br><span class="line">    data = reader.getData()</span><br><span class="line">    end = time.time()</span><br><span class="line">    <span class="built_in">print</span>(end - start)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">len</span>(data))</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/23JEMKQ/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/23JEMKQ/" class="post-title-link" itemprop="url">安全场景-客户端安全</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-12 21:15:02" itemprop="dateCreated datePublished" datetime="2022-04-12T21:15:02+08:00">2022-04-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-20 16:06:46" itemprop="dateModified" datetime="2022-05-20T16:06:46+08:00">2022-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p><strong>AI安全实习生（日常/寒假实习）</strong></p>
-<p><strong>岗位职责：</strong></p>
-<ul>
-<li>AI与软件安全相结合的前沿研究；</li>
-</ul>
-<p><strong>岗位需求（满足其一即可）：</strong></p>
-<ul>
-<li>对机器学习、深度学习等有较好的理解和掌握。在自然语言处理、大数据分析等人工智能领域有较丰富的项目或科研经验。能独立开展研究工作；</li>
-<li><strong>有扎实的计算机学科基础知识储备</strong>，有<strong>程序语言分析</strong>，<strong>逆向分析</strong>等软件安全相关技术知识或项目经验。同时了解机器学习等相关知识，对算法研究感兴趣；</li>
-</ul>
-</blockquote>
-<p><strong>4月15日</strong></p>
-<figure>
-<img src="../../../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application%20Support/com.tencent.xinWeChat/2.0b4.0.9/076b7987d1501ed1ebeee6aecab0dccc/Message/MessageTemp/d94f2f3724071aa466f759517f6fd464/Image/4001647676481_.pic.jpg" alt="4001647676481_.pic">
-<figcaption aria-hidden="true">4001647676481_.pic</figcaption>
-</figure>
-<p>【<strong>岗位职责</strong>】
-负责腾讯安全产品的研发工作，负责云主机安全的研究工作，负责数据分析及后台研发工作，对实验室海量的复杂恶意样本进行分析，提取恶意样本特征，设计恶意样本查杀方法，<strong>研发恶意代码分析领域的自动化工具</strong>，<strong>利用数据分析算法进行样本行为分析自动化以及特征提取自动化</strong>，研究前沿的程序安全和代码安全技术。</p>
-<p>【<strong>岗位要求</strong>】</p>
-<ul>
-<li>掌握C/C++/Go中至少一门开发语言</li>
-<li>掌握Python脚本开发</li>
-<li>拥有安全研究/安全开发/攻防经验者优先</li>
-<li>了解PE/Webshell等常见恶意程序的基本结构优先</li>
-</ul>
-<h2><span id="客户端安全qampa">客户端安全Q&amp;A</span></h2>
-<h3><span id="1-pe文件结构">1、PE文件结构？</span></h3>
-<p>https://bbs.pediy.com/user-home-825190.htm</p>
-<blockquote>
-<p>PE文件被称之为：“可执行文件，可以在Windows操作系统中进行加载和执行的文件”</p>
-</blockquote>
-<ul>
-<li>Windows平台：PE（Portable
-Executable）文件结构，其中Portable也就是Windows系统中能够跨平台运行</li>
-<li>Linux平台：ELF（Executable and Linking Format）文件结构</li>
-</ul>
-<h4><span id="pe文件结构">PE文件结构：</span></h4>
-<figure>
-<img src="https://pic1.zhimg.com/v2-092acf1b67886791643b26b34ac669ec_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<ul>
-<li><h4><span id="dos部分">Dos部分</span></h4></li>
-</ul>
-<p><strong>Dos分为两个部分，一个是DOS MZ文件头和DOS块</strong></p>
-<h5><span id="mz文件头"><strong>MZ文件头</strong></span></h5>
-<blockquote>
-<p><strong>IMAGE_DOS_HEADER结构体</strong>：其大小占<strong>64个字节「重点」</strong>，并且该结构中的<strong>最后一个LONG类型e_lfanew成员指向PE文件头的位置为中的PE文件头标志的地址</strong></p>
-</blockquote>
-<h5><span id="dos-stub"><strong>Dos Stub</strong></span></h5>
-<blockquote>
-<p>属于链接器进行填充的，大小不一定，属于DOS部分的DOS块，无实际作用，但是可以作为注入手段进行利用！</p>
-</blockquote>
-<ul>
-<li><h4><span id="pe文件头">PE文件头</span></h4></li>
-</ul>
-<blockquote>
-<p>##### <strong>PE文件头标志（PE标识）</strong>z [4 字节] +
-<strong>PE文件表头</strong>（<strong>标准PE头</strong>）[20 字节] +
-扩展文件表头（<strong>扩展PE头</strong>）</p>
-</blockquote>
-<ul>
-<li><h4><span id="节表">节表</span></h4></li>
-</ul>
-<p>IMAGE_SECTION_HEADER结构体（40字节） *
-节的数量（大小取决于节的数量）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">IMAGE_SECTION_HEADER</span> &#123;</span></span><br><span class="line">    BYTE    Name[IMAGE_SIZEOF_SHORT_NAME];<span class="comment">// 节表名称,如“.text” </span></span><br><span class="line">  <span class="comment">//IMAGE_SIZEOF_SHORT_NAME=8</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">      <span class="comment">//　共用体，也叫联合体，在一个“联合”内可以定义多种不同的数据类型， </span></span><br><span class="line"><span class="comment">//一个被说明为该“联合”类型的变量中，允许装入该“联合”所定义的任何一种数据，这些数据共享同一段内存，</span></span><br><span class="line"><span class="comment">//以达到节省空间的目的。union变量所占用的内存长度等于最长的成员的内存长度。</span></span><br><span class="line">            DWORD   PhysicalAddress; <span class="comment">//当前节的名称 ， 占8字节</span></span><br><span class="line">            DWORD   VirtualSize; <span class="comment">//内存中文件对齐大小</span></span><br><span class="line">    &#125; Misc;</span><br><span class="line">    DWORD   VirtualAddress; <span class="comment">//在内存中的偏移地址 +imageOfBase=真正的位置</span></span><br><span class="line">    DWORD   SizeOfRawData; <span class="comment">//当前节在文件中对齐后的大小 也就是节点的大小 [内存和文件中是一样的]</span></span><br><span class="line">    DWORD   PointerToRawData; <span class="comment">//当前节在文件中的偏移 也就是文件的开始位置</span></span><br><span class="line">    DWORD   PointerToRelocations; <span class="comment">// 调试相关</span></span><br><span class="line">    DWORD   PointerToLinenumbers;<span class="comment">// 调试相关</span></span><br><span class="line">    WORD    NumberOfRelocations;<span class="comment">// 调试相关</span></span><br><span class="line">    WORD    NumberOfLinenumbers;<span class="comment">// 调试相关</span></span><br><span class="line">    DWORD   Characteristics; <span class="comment">//文件属性，比如该节数据属性是否为可执行属性，都在这里面</span></span><br><span class="line">&#125; IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;</span><br></pre></td></tr></table></figure>
-<p>pc客户端安全业务有什么了解？</p>
-<p>对windows汇编有什么了解？</p>
-<p>ollydbg调试原理？</p>
-<h3><span id="2-用过什么样的ollydbg的断点">2、用过什么样的OllyDBG的断点？</span></h3>
-<ul>
-<li>寻常断点</li>
-<li>API断点</li>
-<li>内存断点</li>
-<li>硬件断点</li>
-</ul>
-<h3><span id="3-win下进程间通信">3、win下进程间通信？</span></h3>
-<ul>
-<li>文件映射</li>
-<li>共享内纯</li>
-<li>匿名管道</li>
-<li>命名管道</li>
-</ul>
-<h3><span id="3-call-和jump指令的区别和相同">3、call 和
-jump指令的区别和相同？</span></h3>
-<p>https://www.nhooo.com/note/qa0ucr.html</p>
-<ol type="1">
-<li><p>传送指令（4个）：mov、push、pop、lea。</p></li>
-<li><p>转移指令（8个）：call、jmp、je、jne、jb、jnb、ja、jna。</p></li>
-<li><p>运算指令（7个）：add、sub、mul、div、adc、sbb、cmp。</p></li>
-<li><p>处理机控制指令（1个）：nop。</p></li>
-</ol>
-<p><strong>CALL指令用于调用子例程（不是主程序的一部分），但是JUMP指令更新程序计数器值并指向程序内部的另一个位置。</strong></p>
-<h3><span id="4-cuckoo-inline-hook">4、Cuckoo inline hook ？</span></h3>
-<blockquote>
-<p>Cuckoo对ntdll.dll, kernel32.dll,
-advapi32.dll，shell32.dll，msvcrt.dll，user32.dll，wininet.dll，ws2_32.dll，mswsock.dll中的170+API进行hook</p>
-</blockquote>
-<p>Cuckoo对样本行为的捕获依靠<strong>API Inline
-Hook</strong>，被测样本会被注入加载一个监控模块，当样本调用某个API函数时会被劫持到Cuckoo的模块内，这个模块除了常规的做log操作然后返回原函数外还会对某些API的上下文进行篡改，目的在于劫持某些API的执行逻辑。</p>
-<p><strong>inline
-hook是一种通过修改机器码的方式来实现hook的技术。</strong></p>
-<p>对于正常执行的程序，它的函数调用流程大概是这样的：</p>
-<p><a target="_blank" rel="noopener" href="https://images.cnblogs.com/cnblogs_com/luoyesiqiu/1643996/o_200208152801正常流程.png"><img src="https://images.cnblogs.com/cnblogs_com/luoyesiqiu/1643996/o_200208152801%E6%AD%A3%E5%B8%B8%E6%B5%81%E7%A8%8B.png" alt="img" style="zoom: 67%;"></a></p>
-<p>0x1000地址的call指令执行后跳转到0x3000地址处执行，执行完毕后再返回执行call指令的下一条指令。</p>
-<p>我们在hook的时候，可能会读取或者修改call指令执行之前所压入栈的内容。那么，我们可以将call指令<strong>替换</strong>成jmp指令，jmp到我们自己编写的函数，在函数里call原来的函数，函数结束后再jmp回到原先call指令的下一条指令。如图：</p>
-<p><a target="_blank" rel="noopener" href="https://images.cnblogs.com/cnblogs_com/luoyesiqiu/1643996/o_200213062347inlinehook.png"><img src="https://images.cnblogs.com/cnblogs_com/luoyesiqiu/1643996/o_200213062347inlinehook.png" alt="img" style="zoom:67%;"></a></p>
-<p>通过修改机器码实现的inline
-hook，不仅不会破坏原本的程序逻辑，而且还能执行我们的代码，读写被hook的函数的数据。</p>
-<h3><span id="5-cuckoo-windows-dll-注入">5、cuckoo windows DLL 注入</span></h3>
-<blockquote>
-<p>Cuckoo
-sandbox在样本启动的时候,注入了相关的监控代码。在process.py文件中，通过Process调用，调用inject-x86.exe或inject-x64.exe完成注入。</p>
-<p>https://www.cnblogs.com/luoyesiqiu/p/12173609.html</p>
-</blockquote>
-<p><strong>DLL注入（英语：DLL
-injection）是一种计算机编程技术，它可以强行使另一个进程加载一个动态链接库以在其地址空间内运行指定代码[1]。</strong>在Windows操作系统上，每个进程都有独立的进程空间，即一个进程是无法直接操作另一个进程的数据的（事实上，不仅Windows，许多操作系统也是如此）。但是DLL注入是用一种不直接的方式，来实现操作其他进程的数据。假设我们有一个DLL文件，里面有操作目标进程数据的程序代码逻辑，DLL注入就是使目标进程加载这个DLL，加载后，这个DLL就成为目标进程的一部分，目标进程的数据也就可以直接操作了。</p>
-<h4><span id="51-apc注入">5.1 APC注入</span></h4>
-<blockquote>
-<p>APC 队列（Asynchronous Procedure Call 异步过程调用）是一种可以在
-Windows 中使用的机制，用于将要在特定线程上下文中完成的作业排队。</p>
-</blockquote>
-<p>APC注入，<strong>通过write_data向远程进程中写入DLL路径、Loadlibrary()执行函数指针、执行加载函数的指针</strong>,然后利用QueueUserAPC()在软中断时向线程的APC队列插入Loadlibrary()执行函数指针，达到注入DLL的目的。当线程再次被唤醒时，此线程会首先执行APC队列中被注册的函数。</p>
-<h4><span id="52-crt注入">5.2 CRT注入</span></h4>
-<p>同样通过write_data向远程进程中写入DLL路径、Loadlibrary()执行函数指针、执行加载函数的指针，之后在create_thread_and_wait中调用CreateRemoteThrea。当目标进程中执行load_library_woker（已事先写入进程空间）加载DLL，之后调用free_data清理现场，释放空间。</p>
-<h3><span id="6-脱壳缓冲区溢出有什么经验">6、脱壳，缓冲区溢出有什么经验？</span></h3>
-<h3><span id="7-沙箱如何获得动态样本信息">7、沙箱如何获得动态样本信息？</span></h3>
-<h3><span id="8-沙箱反调试">8、沙箱反调试？</span></h3>
-<h4><span id="样本对抗沙箱irc-bot">==样本对抗沙箱？IRC Bot==</span></h4>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-377352-1-1.html"><strong>针对沙箱检测的逃逸技术</strong></a></p>
-<p>https://www.anquanke.com/post/id/152631:当通过<code>CreateProcess</code>创建进程时，命令行中的路径的大小写会被沙箱的hook替换掉。</p>
-</blockquote>
-<p>因为反病毒沙箱大多都是基于虚拟机的，所以如果能保证样本在虚拟机环境中不执行那么就能大概率保证其在沙箱中不执行，针对沙箱的检测主要有如下几类：</p>
-<h5><span id="针对虚拟机">针对虚拟机</span></h5>
-<ul>
-<li>虚拟机的特殊进程/注册表信息，比如像VBoxTray.exe、VMwareTray.exe等；</li>
-<li>特殊的驱动程序，比如Virtualbox或VMware在Guest机器里面安装的驱动；</li>
-<li>硬件信息，比如网卡的mac地址，特定品牌虚拟机的网卡mac地址默认情况下大多都在一个特定范围内；</li>
-<li>指令执行环境，比如像LDT、GDT的地址范围等等；</li>
-</ul>
-<h5><span id="针对检测时间">针对检测时间</span></h5>
-<p>沙箱每一轮分析一个样本的时间是有限的，通常就3分钟（默认），所以如果能让样本在这几分钟内不进入任何核心逻辑那么就可以避免被检测到。通常采取的做法有：</p>
-<ul>
-<li>利用Sleep函数，或和Sleep同等功能的延时函数；</li>
-<li>检测系统时间，通过系统的时间来延时；</li>
-<li>运行一些非常耗时的操作，比如一些特殊的数学算法以达到消耗时间的目的。</li>
-</ul>
-<h5><span id="针对交互">针对交互</span></h5>
-<p>这种做法是为了确保样本是在有人操作的计算机中启动的，比如可以检测鼠标的移动、故意弹窗让用户点击等等。</p>
-<h4><span id="ember-用了哪些特征">Ember 用了哪些特征？</span></h4>
-<p>https://www.jianshu.com/p/cf96a701e899</p>
-<p>头信息。从COFF报头中，我们报告报头中的时间戳、目标机器(字符串)和图像特征列表(字符串列表)。从可选的头文件中，我们提供了目标子系统(字符串)、DLL特征(字符串列表)、文件魔法作为字符串(例如“PE32”)、主映像版本和副映像版本、链接器版本、系统版本和子系统版本，以及代码、头文件和提交大小。在训练一个模型之前，使用特征哈希技巧总结模型特征、字符串描述符(如DLL特征、目标机器、子系统等)，每个带噪声的指标向量分配10个bin。</p>
-<h4><span id="沙箱全局结果容器有哪些特征">沙箱全局结果容器有哪些特征？</span></h4>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/PVPCFM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/PVPCFM/" class="post-title-link" itemprop="url">Python（1）《流畅的Python》</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-11 14:01:43" itemprop="dateCreated datePublished" datetime="2022-04-11T14:01:43+08:00">2022-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-21 14:29:42" itemprop="dateModified" datetime="2023-04-21T14:29:42+08:00">2023-04-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">【draft】工程</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%B7%A5%E7%A8%8B/%E6%B5%81%E7%A8%8B%E7%9A%84Python/" itemprop="url" rel="index"><span itemprop="name">流程的Python</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>20k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>36 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1><span id="流畅的python阅读笔记">《流畅的python》阅读笔记</span></h1>
-<p>《流畅的python》是一本适合python进阶的书,
-里面介绍的基本都是高级的python用法. 对于初学python的人来说,
-基础大概也就够用了, 但往往由于够用让他们忘了深入, 去精通.
-我们希望全面了解这个语言的能力边界,
-可能一些高级的特性并不能马上掌握使用, 因此这本书是工作之余,
-还有余力的人来阅读, 我这边就将其有用, 精妙的进阶内容整理出来.</p>
-<p><strong>笔记链接</strong>：https://juejin.cn/post/6844903503987474446</p>
-<figure>
-<img src="../../../../Desktop/《流畅的python》阅读笔记.png" alt="《流畅的python》阅读笔记">
-<figcaption aria-hidden="true">《流畅的python》阅读笔记</figcaption>
-</figure>
-<h2><span id="第0章基础知识">第0章：基础知识</span></h2>
-<h4><span id="迭代器">迭代器：</span></h4>
-<h2><span id="第一章-python数据模型">第一章: python数据模型</span></h2>
-<ul>
-<li>https://www.cnblogs.com/chenhuabin/p/13752770.html</li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/344951719">Python：实例讲解Python中的魔法函数（高级语法)</a></li>
-<li><strong>更多的特殊方法</strong>: <a href="https://link.juejin.cn/?target=https%3A%2F%2Fdocs.python.org%2F3%2Freference%2Fdatamodel.html">docs.python.org/3/reference…</a></li>
-</ul>
-<p>常用魔法函数： <code>__init__</code> , <code>__lt__</code>,
-<code>__len__</code>，<code>__str__</code> 与 <code>__repr__</code> ，
-<code>__call__</code> <code>__iter__</code></p>
-<p>这部分主要介绍了python的<strong>魔术方法</strong>,
-它们经常是两个下划线包围来命名的(比如 <code>__init__</code> ,
-<code>__lt__</code>, <code>__len__</code> ).
-<strong>这些特殊方法是为了被python解释器调用的,
-这些方法会注册到他们的类型中方法集合中</strong>,
-相当于为cpython提供抄近路. 这些方法的速度也比普通方法要快,
-当然在自己不清楚这些魔术方法的用途时, 不要随意添加.</p>
-<p>关于字符串的表现形式是两种, <code>__str__</code> 与
-<code>__repr__</code> . python的内置函数 <code>repr</code> 就是通过
-<code>__repr__</code> 这个特殊方法来得到一个对象的字符串表示形式.
-这个在交互模式下比较常用, 如果没有实现 <code>__repr__</code> ,
-当控制台打印一个对象时往往是 <code>&lt;A object at 0x000&gt;</code> . 而
-<code>__str__</code> 则是 <code>str()</code> 函数时使用的, 或是在
-<code>print</code> 函数打印一个对象的时候才被调用, 终端用户友好.</p>
-<p>两者还有一个区别, 在字符串格式化时, <code>"%s"</code> 对应了
-<code>__str__</code> . 而 <code>"%r"</code> 对应了
-<code>__repr__</code>. <code>__str__</code> 和 <code>__repr__</code>
-在使用上比较推荐的是，前者是给终端用户看，而后者则更方便我们调试和记录日志.</p>
-<ul>
-<li>字符串表示：<code>__str__</code>、<code>__repr__</code></li>
-<li>集合、序列相关：<code>__len__</code>、<code>__getitem__</code>、<code>__setitem__</code>、<code>__delitem__</code>、<code>__contains__</code></li>
-<li>迭代相关：<code>__iter__</code>、<code>__next__</code></li>
-<li>可调用：<code>__call__</code></li>
-<li>with上下文管理器：<code>__enter__</code>、<code>__exit__</code></li>
-<li>属性相关：<code>__getattr__</code>、<code>__setattr__</code>、<code>__getattribute__</code></li>
-</ul>
-<p><img src="https://pic4.zhimg.com/80/v2-82a512ae404403ff00ed790d8f2569f7_1440w.jpg" alt="img" style="zoom:75%;"></p>
-<h2><span id="第二章-序列构成的数组">第二章: 序列构成的数组</span></h2>
-<p>这部分主要是介绍<strong>序列</strong>,
-着重介绍<strong>数组</strong>和<strong>元组</strong>的一些高级用法.</p>
-<p>序列按照容纳数据的类型可以分为:</p>
-<ul>
-<li><strong>容器序列</strong>: list、tuple 和 collections.deque
-这些序列能<strong>存放不同类型的数据</strong>。</li>
-<li><strong>扁平序列</strong>: str、bytes、bytearray、memoryview 和
-array.array，这类<strong>序列只能容纳一种类型</strong>。</li>
-</ul>
-<p>如果按照是否能被修改可以分为:</p>
-<ul>
-<li><strong>可变序列</strong>:
-list、bytearray、array.array、collections.deque 和 memoryview</li>
-<li><strong>不可变序列</strong>: tuple、str 和 bytes</li>
-</ul>
-<h3><span id="列表推导">列表推导</span></h3>
-<p><strong>列表推导是构建列表的快捷方式,
-可读性更好且效率更高.</strong></p>
-<p>例如, 把<strong>一个字符串变成unicode的码</strong>位列表的例子,
-一般:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">symbols = <span class="string">&#x27;$¢£¥€¤&#x27;</span></span><br><span class="line">codes = []</span><br><span class="line"><span class="keyword">for</span> symbol <span class="keyword">in</span> symbols:</span><br><span class="line">    codes.append(<span class="built_in">ord</span>(symbol))复制代码</span><br></pre></td></tr></table></figure>
-<p>使用列表推导:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">symbols = <span class="string">&#x27;$¢£¥€¤&#x27;</span></span><br><span class="line">codes = [<span class="built_in">ord</span>(symbol) <span class="keyword">for</span> symbol <span class="keyword">in</span> symbols]复制代码</span><br></pre></td></tr></table></figure>
-<p>能用列表推导来创建一个列表, 尽量使用推导, 并且保持它简短.</p>
-<h3><span id="笛卡尔积与生成器表达式">笛卡尔积与生成器表达式</span></h3>
-<p>生成器表达式是能逐个产出元素, 节省内存. 例如:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>colors = [<span class="string">&#x27;black&#x27;</span>, <span class="string">&#x27;white&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sizes = [<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;L&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> tshirt <span class="keyword">in</span> (<span class="string">&#x27;%s %s&#x27;</span> % (c, s) <span class="keyword">for</span> c <span class="keyword">in</span> colors <span class="keyword">for</span> s <span class="keyword">in</span> sizes):</span><br><span class="line"><span class="meta">... </span><span class="built_in">print</span>(tshirt)复制代码</span><br></pre></td></tr></table></figure>
-<p>实例中列表元素比较少, 如果换成两个各有1000个元素的列表,
-显然这样组合的笛卡尔积是一个含有100万元素的列表, 内存将会占用很大,
-而是用生成器表达式就可以帮忙省掉for循环的开销.</p>
-<h3><span id="具名元组">具名元组</span></h3>
-<p>元组经常被作为 <code>不可变列表</code> 的代表.
-经常只要数字索引获取元素, 但其实它还可以给元素命名:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>City = namedtuple(<span class="string">&#x27;City&#x27;</span>, <span class="string">&#x27;name country population coordinates&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tokyo = City(<span class="string">&#x27;Tokyo&#x27;</span>, <span class="string">&#x27;JP&#x27;</span>, <span class="number">36.933</span>, (<span class="number">35.689722</span>, <span class="number">139.691667</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tokyo</span><br><span class="line">City(name=<span class="string">&#x27;Tokyo&#x27;</span>, country=<span class="string">&#x27;JP&#x27;</span>, population=<span class="number">36.933</span>, coordinates=(<span class="number">35.689722</span>,</span><br><span class="line"><span class="number">139.691667</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tokyo.population</span><br><span class="line"><span class="number">36.933</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tokyo.coordinates</span><br><span class="line">(<span class="number">35.689722</span>, <span class="number">139.691667</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tokyo[<span class="number">1</span>]</span><br><span class="line"><span class="string">&#x27;JP&#x27;</span></span><br></pre></td></tr></table></figure>
-<h3><span id="切片">切片</span></h3>
-<p>列表中是以0作为第一个元素的下标, 切片可以根据下标提取某一个片段.</p>
-<p>用 <code>s[a:b:c]</code> 的形式对 <code>s</code> 在 <code>a</code> 和
-<code>b</code> 之间以 <code>c</code> 为间隔取值。<code>c</code>
-的值还可以为负, 负值意味着反向取值.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&#x27;bicycle&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[::<span class="number">3</span>]</span><br><span class="line"><span class="string">&#x27;bye&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[::-<span class="number">1</span>]</span><br><span class="line"><span class="string">&#x27;elcycib&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[::-<span class="number">2</span>]</span><br><span class="line"><span class="string">&#x27;eccb&#x27;</span></span><br></pre></td></tr></table></figure>
-<h2><span id="第三章-字典和集合">第三章: 字典和集合</span></h2>
-<p><strong><code>dict</code> 类型不但在各种程序里广泛使用, 它也是
-<code>Python</code> 语言的基石</strong>. 正是因为 <code>dict</code>
-类型的重要, <code>Python</code> 对其的实现做了高度的优化,
-其中最重要的原因就是背后的「散列表」 set（集合）和dict一样,
-其实现基础也是依赖于散列表.</p>
-<p>散列表也叫哈希表, 对于dict类型, 它的key必须是可哈希的数据类型.
-什么是可哈希的数据类型呢, 它的官方解释是:</p>
-<blockquote>
-<p><strong>如果一个对象是可散列的，那么在这个对象的生命周期中，它的散列值是不变</strong></p>
-</blockquote>
-<p>的，而且这个对象需要实现 <code>__hash__()</code>
-方法。另外可散列对象还要有 <code>__qe__()</code>
-方法，这样才能跟其他键做比较。如果两个可散列对象是相等的，那么它们的散列值一定是一样的……</p>
-<p><code>str</code>, <code>bytes</code>, <code>frozenset</code> 和
-<code>数值</code> 都是可散列类型.</p>
-<h3><span id="字典推导式">字典推导式</span></h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">DIAL_CODE = [</span><br><span class="line">    (<span class="number">86</span>, <span class="string">&#x27;China&#x27;</span>),</span><br><span class="line">    (<span class="number">91</span>, <span class="string">&#x27;India&#x27;</span>),</span><br><span class="line">    (<span class="number">7</span>, <span class="string">&#x27;Russia&#x27;</span>),</span><br><span class="line">    (<span class="number">81</span>, <span class="string">&#x27;Japan&#x27;</span>),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">### 利用字典推导快速生成字典</span></span><br><span class="line">country_code = &#123;country: code <span class="keyword">for</span> code, country <span class="keyword">in</span> DIAL_CODE&#125;</span><br><span class="line"><span class="built_in">print</span>(country_code)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">OUT:</span></span><br><span class="line"><span class="string">&#123;&#x27;China&#x27;: 86, &#x27;India&#x27;: 91, &#x27;Russia&#x27;: 7, &#x27;Japan&#x27;: 81&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span>复制代码</span><br></pre></td></tr></table></figure>
-<h3><span id="defaultdict处理找不到的键的一个选择">defaultdict：处理找不到的键的一个选择</span></h3>
-<p>当某个键不在映射里, 我们也希望也能得到一个默认值. 这就是
-<code>defaultdict</code> , 它是 <code>dict</code> 的子类, 并实现了
-<code>__missing__</code> 方法.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">index = collections.defaultdict(<span class="built_in">list</span>)</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> nums:</span><br><span class="line">    key = item % <span class="number">2</span></span><br><span class="line">    index[key].append(item)</span><br></pre></td></tr></table></figure>
-<h3><span id="字典的变种">字典的变种</span></h3>
-<p>标准库里 <code>collections</code> 模块中，除了
-<code>defaultdict</code> 之外的不同映射类型:</p>
-<ul>
-<li><strong>OrderDict</strong>：
-这个类型在添加键的时候，会保存顺序，因此键的迭代顺序总是一致的</li>
-<li><strong>ChainMap</strong>：
-该类型可以容纳数个不同的映射对像，在进行键的查找时，这些对象会被当做一个整体逐个查找，直到键被找到为止
-<code>pylookup = ChainMap(locals(), globals())</code></li>
-<li><strong>Counter</strong>：
-这个映射类型会给键准备一个整数技术器，每次更行一个键的时候都会增加这个计数器，所以这个类型可以用来给散列表对象计数，或者当成多重集来用.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line">ct = collections.Counter(<span class="string">&#x27;abracadabra&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(ct)   <span class="comment"># Counter(&#123;&#x27;a&#x27;: 5, &#x27;b&#x27;: 2, &#x27;r&#x27;: 2, &#x27;c&#x27;: 1, &#x27;d&#x27;: 1&#125;)</span></span><br><span class="line">ct.update(<span class="string">&#x27;aaaaazzz&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(ct)   <span class="comment"># Counter(&#123;&#x27;a&#x27;: 10, &#x27;z&#x27;: 3, &#x27;b&#x27;: 2, &#x27;r&#x27;: 2, &#x27;c&#x27;: 1, &#x27;d&#x27;: 1&#125;)</span></span><br><span class="line"><span class="built_in">print</span>(ct.most_common(<span class="number">2</span>)) <span class="comment"># [(&#x27;a&#x27;, 10), (&#x27;z&#x27;, 3)]复制代码</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>UserDict</strong>: 这个类其实就是把标准 dict 用纯 Python
-又实现了一遍</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">StrKeyDict</span>(collections.UserDict):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__missing__</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(key, <span class="built_in">str</span>):</span><br><span class="line">            <span class="keyword">raise</span> KeyError(key)</span><br><span class="line">        <span class="keyword">return</span> self[<span class="built_in">str</span>(key)]</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__contains__</span>(<span class="params">self, key</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(key) <span class="keyword">in</span> self.data</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setitem__</span>(<span class="params">self, key, item</span>):</span><br><span class="line">        self.data[<span class="built_in">str</span>(key)] = item</span><br></pre></td></tr></table></figure>
-<h3><span id="不可变映射类型mappingproxytype">不可变映射类型【MappingProxyType】</span></h3>
-<p>说到不可变, 第一想到的肯定是元组, 但是对于字典来说,
-要将key和value的对应关系变成不可变, <code>types</code> 模块的
-<code>MappingProxyType</code> 可以做到:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> types <span class="keyword">import</span> MappingProxyType</span><br><span class="line">d = &#123;<span class="number">1</span>:<span class="string">&#x27;A&#x27;</span>&#125;</span><br><span class="line">d_proxy = MappingProxyType(d)</span><br><span class="line">d_proxy[<span class="number">1</span>]=<span class="string">&#x27;B&#x27;</span> <span class="comment"># TypeError: &#x27;mappingproxy&#x27; object does not support item assignment</span></span><br><span class="line"></span><br><span class="line">d[<span class="number">2</span>] = <span class="string">&#x27;B&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(d_proxy) <span class="comment"># mappingproxy(&#123;1: &#x27;A&#x27;, 2: &#x27;B&#x27;&#125;)复制代码</span></span><br></pre></td></tr></table></figure>
-<p><code>d_proxy</code> 是动态的, 也就是说对 <code>d</code>
-所做的任何改动都会反馈到它上面.</p>
-<h3><span id="集合论本身不可散列元素必须可散列">集合论：本身不可散列，元素必须可散列</span></h3>
-<p>集合的本质是许多唯一对象的聚集. 因此, <strong>集合可以用于去重.
-集合中的元素必须是可散列的</strong>, 但是 <code>set</code>
-本身是不可散列的, 而 <code>frozenset</code> 本身可以散列.</p>
-<p>集合具有唯一性, 与此同时, 集合还实现了很多基础的中缀运算符.
-给定两个集合 a 和 b, <code>a | b</code> 返 回的是它们的合集,
-<code>a &amp; b</code> 得到的是交集, 而 <code>a - b</code>
-得到的是差集.</p>
-<p>合理的利用这些特性, 不仅能减少代码的数量, 更能增加运行效率.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 集合的创建</span></span><br><span class="line">s = <span class="built_in">set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="comment"># 空集合</span></span><br><span class="line">s = <span class="built_in">set</span>()</span><br><span class="line"><span class="comment"># 集合字面量</span></span><br><span class="line">s = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line"><span class="comment"># 集合推导</span></span><br><span class="line">s = &#123;<span class="built_in">chr</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">23</span>, <span class="number">45</span>)&#125;</span><br></pre></td></tr></table></figure>
-<h2><span id="第四章-文本和字节序列">第四章: 文本和字节序列</span></h2>
-<p>本章讨论了<strong>文本字符串</strong>和<strong>字节序列</strong>,
-以及一些编码上的转换. 本章讨论的 <code>str</code> 指的是python3下的.</p>
-<h3><span id="字符问题">字符问题</span></h3>
-<p>字符串是个比较简单的概念: 一个字符串是一个字符序列. 但是关于
-<code>"字符"</code> 的定义却五花八门, 其中, <code>"字符"</code>
-的最佳定义是 <code>Unicode 字符</code> . 因此, python3中的
-<code>str</code> 对象中获得的元素就是 unicode 字符.</p>
-<p>把码位转换成字节序列的过程就是 <code>编码</code>,
-把字节序列转换成码位的过程就是 <code>编码</code> :</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&#x27;café&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(s)</span><br><span class="line"><span class="number">4</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = s.encode(<span class="string">&#x27;utf8&#x27;</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">b&#x27;caf\xc3\xa9&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(b)</span><br><span class="line"><span class="number">5</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.decode(<span class="string">&#x27;utf8&#x27;</span>) <span class="comment">#&#x27;café复制代码</span></span><br></pre></td></tr></table></figure>
-<p><strong>码位可以认为是人类可读的文本</strong>,
-而字符序列则可以认为是对机器更友好. 所以要区分 <code>.decode()</code> 和
-<code>.encode()</code> 也很简单.
-从字节序列到人类能理解的文本就是解码(decode).
-而把人类能理解的变成人类不好理解的字节序列就是编码(encode).</p>
-<h3><span id="字节概要">字节概要</span></h3>
-<p>python3有两种字节序列, 不可变的 <code>bytes</code> 类型和可变的
-<code>bytearray</code> 类型. 字节序列中的各个元素都是介于
-<code>[0, 255]</code> 之间的整数.</p>
-<h3><span id="处理编码问题">处理编码问题</span></h3>
-<p>python自带了超过100中编解码器. 每个编解码器都有一个名称,
-甚至有的会有一些别名, 如 <code>utf_8</code> 就有 <code>utf8</code>,
-<code>utf-8</code>, <code>U8</code> 这些别名.</p>
-<p>如果字符序列和预期不符, 在进行解码或编码时容易抛出
-<code>Unicode*Error</code> 的异常.
-造成这种错误是因为目标编码中没有定义某个字符(没有定义某个码位对应的字符),
-这里说说解决这类问题的方式.</p>
-<ul>
-<li>使用python3, python3可以避免95%的字符问题.</li>
-<li>主流编码尝试下: latin1, cp1252, cp437, gb2312, utf-8, utf-16le</li>
-<li>留意BOM头部 <code>b'\xff\xfe'</code> ,
-UTF-16编码的序列开头也会有这几个额外字节.</li>
-<li>找出序列的编码, 建议使用 <code>codecs</code> 模块</li>
-</ul>
-<h3><span id="规范化unicode字符串">规范化unicode字符串</span></h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1 = <span class="string">&#x27;café&#x27;</span></span><br><span class="line">s2 = <span class="string">&#x27;caf\u00e9&#x27;</span>复制代码</span><br></pre></td></tr></table></figure>
-<p>这两行代码完全等价. 而有一种是要避免的是, 在Unicode标准中
-<code>é</code> 和 <code>e\u0301</code> 这样的序列叫
-<code>"标准等价物"</code>.
-这种情况用NFC使用最少的码位构成等价的字符串:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = <span class="string">&#x27;café&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s2 = <span class="string">&#x27;cafe\u0301&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1, s2</span><br><span class="line">(<span class="string">&#x27;café&#x27;</span>, <span class="string">&#x27;café&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(s1), <span class="built_in">len</span>(s2)</span><br><span class="line">(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1  s2</span><br><span class="line"><span class="literal">False</span>复制代码</span><br></pre></td></tr></table></figure>
-<p>改进后:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> unicodedata <span class="keyword">import</span> normalize</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = <span class="string">&#x27;café&#x27;</span> <span class="comment"># 把&quot;e&quot;和重音符组合在一起</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s2 = <span class="string">&#x27;cafe\u0301&#x27;</span> <span class="comment"># 分解成&quot;e&quot;和重音符</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(s1), <span class="built_in">len</span>(s2)</span><br><span class="line">(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(normalize(<span class="string">&#x27;NFC&#x27;</span>, s1)), <span class="built_in">len</span>(normalize(<span class="string">&#x27;NFC&#x27;</span>, s2))</span><br><span class="line">(<span class="number">4</span>, <span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(normalize(<span class="string">&#x27;NFD&#x27;</span>, s1)), <span class="built_in">len</span>(normalize(<span class="string">&#x27;NFD&#x27;</span>, s2))</span><br><span class="line">(<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>normalize(<span class="string">&#x27;NFC&#x27;</span>, s1)  normalize(<span class="string">&#x27;NFC&#x27;</span>, s2)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>normalize(<span class="string">&#x27;NFD&#x27;</span>, s1)  normalize(<span class="string">&#x27;NFD&#x27;</span>, s2)</span><br><span class="line"><span class="literal">True</span>复制代码</span><br></pre></td></tr></table></figure>
-<h3><span id="unicode文本排序">unicode文本排序</span></h3>
-<p>对于字符串来说, 比较的码位. 所以在非 ascii 字符时,
-得到的结果可能会不尽人意.</p>
-<h2><span id="第五章-一等函数">第五章: 一等函数</span></h2>
-<p>在python中, 函数是一等对象. 编程语言把 <code>"一等对象"</code>
-定义为满足下列条件:</p>
-<ul>
-<li>在运行时创建</li>
-<li>能赋值给变量或数据结构中的元素</li>
-<li>能作为参数传给函数</li>
-<li>能作为函数的返回结果</li>
-</ul>
-<p>在python中, 整数, 字符串, 列表, 字典都是一等对象.</p>
-<h3><span id="51-把函数视作对象">5.1 把函数视作对象</span></h3>
-<p>Python即可以函数式编程，也可以面向对象编程. 这里我们创建了一个函数,
-然后读取它的 <code>__doc__</code> 属性, 并且确定函数对象其实是
-<code>function</code> 类的实例:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    return n</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> n &lt; <span class="number">2</span> <span class="keyword">else</span> n * factorial(n-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(factorial.__doc__)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(factorial))</span><br><span class="line"><span class="built_in">print</span>(factorial(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">OUT</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    return n</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;class &#x27;function&#x27;&gt;</span></span><br><span class="line"><span class="string">6</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span>复制代码</span><br></pre></td></tr></table></figure>
-<h3><span id="52-高阶函数">5.2 高阶函数</span></h3>
-<p><strong>高阶函数就是接受函数作为参数,
-或者把函数作为返回结果的函数</strong>. 如 <code>map</code>,
-<code>filter</code> , <code>reduce</code> 等.</p>
-<p>比如调用 <code>sorted</code> 时, 将 <code>len</code>
-作为参数传递:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fruits = [<span class="string">&#x27;strawberry&#x27;</span>, <span class="string">&#x27;fig&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;cherry&#x27;</span>, <span class="string">&#x27;raspberry&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>]</span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=<span class="built_in">len</span>)</span><br><span class="line"><span class="comment"># [&#x27;fig&#x27;, &#x27;apple&#x27;, &#x27;cherry&#x27;, &#x27;banana&#x27;, &#x27;raspberry&#x27;, &#x27;strawberry&#x27;]复制代码</span></span><br></pre></td></tr></table></figure>
-<h3><span id="53-匿名函数">5.3 匿名函数</span></h3>
-<p><code>lambda</code> 关键字是用来创建匿名函数. 匿名函数一些限制,
-匿名函数的定义体只能使用纯表达式. 换句话说, <code>lambda</code>
-函数内不能赋值, 也不能使用while和try等语句.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fruits = [<span class="string">&#x27;strawberry&#x27;</span>, <span class="string">&#x27;fig&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;cherry&#x27;</span>, <span class="string">&#x27;raspberry&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>]</span><br><span class="line"><span class="built_in">sorted</span>(fruits, key=<span class="keyword">lambda</span> word: word[::-<span class="number">1</span>])</span><br><span class="line"><span class="comment"># [&#x27;banana&#x27;, &#x27;apple&#x27;, &#x27;fig&#x27;, &#x27;raspberry&#x27;, &#x27;strawberry&#x27;, &#x27;cherry&#x27;]复制代码</span></span><br></pre></td></tr></table></figure>
-<h3><span id="54-可调用对象">5.4 可调用对象</span></h3>
-<p>除了用户定义的函数, 调用运算符即 <code>()</code>
-还可以应用到其他对象上. 如果像判断对象能否被调用, 可以使用内置的
-<code>callable()</code> 函数进行判断.
-python的数据模型中有7种可是可以被调用的:</p>
-<ul>
-<li><strong>用户定义的函数</strong>: 使用def语句或lambda表达式创建</li>
-<li><strong>内置函数</strong>:如len</li>
-<li><strong>内置方法</strong>:如dict.get</li>
-<li><strong>方法</strong>:在类定义体中的函数</li>
-<li><strong>类</strong></li>
-<li><strong>类的实例</strong>: 如果类定义了 <code>__call__</code> ,
-那么它的实例可以作为函数调用.</li>
-<li><strong>生成器函数</strong>: 使用 <code>yield</code>
-关键字的函数或方法.</li>
-</ul>
-<h3><span id="55-从定位参数到仅限关键字参数">5.5 从定位参数到仅限关键字参数</span></h3>
-<p>就是可变参数和关键字参数:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">name, age, *args, **kwargs</span>):</span><br><span class="line">    <span class="keyword">pass</span>复制代码</span><br></pre></td></tr></table></figure>
-<p>其中 <code>*args</code> 和 <code>**kwargs</code> 都是可迭代对象,
-展开后映射到单个参数. <strong>args是个元组, kwargs是字典</strong>.</p>
-<h2><span id="第六章-python设计模式">第六章 Python设计模式</span></h2>
-<p>https://github.com/faif/python-patterns</p>
-<p>https://refactoringguru.cn/design-patterns/python</p>
-<p><strong>设计模式是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了可重用代码、让代码更容易地被他人理解、保证代码可靠性。</strong></p>
-<h2><span id="第七章-函数装饰器和闭包">第七章: 函数装饰器和闭包</span></h2>
-<blockquote>
-<p>函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。</p>
-</blockquote>
-<p>修饰器和闭包经常在一起讨论,
-因为<strong>修饰器就是闭包的一种形式</strong>.
-闭包还是<strong>回调式异步编程</strong>和<strong>函数式编程风格</strong>的基础.</p>
-<h3><span id="装饰器基础知识">装饰器基础知识</span></h3>
-<p><strong>装饰器</strong>是<strong>可调用的对象</strong>,
-其<strong>参数是另一个函数</strong>(被装饰的函数).
-装饰器可能会处理被装饰的函数, 然后把它返回,
-或者将其替换成<strong>另一个函数或可调用对象</strong>.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorate</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)复制代码</span><br></pre></td></tr></table></figure>
-<p>这种写法与下面写法完全等价:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)</span><br><span class="line">target = decorate(target)</span><br></pre></td></tr></table></figure>
-<p>装饰器是语法糖, 它其实是将函数作为参数让其他函数处理.
-装饰器有两大特征:</p>
-<ul>
-<li><strong>把被装饰的函数替换成其他函数</strong></li>
-<li><strong>装饰器在加载模块时立即执行</strong></li>
-</ul>
-<p>要理解立即执行看下等价的代码就知道了,
-<code>target = decorate(target)</code> 这句调用了函数.
-一般情况下装饰函数都会将某个函数作为返回值.</p>
-<h3><span id="变量作用域规则">变量作用域规则</span></h3>
-<p>要理解装饰器中变量的作用域, 应该要理解闭包,
-我觉得书里将闭包和作用域的顺序换一下比较好. <strong>在python中,
-一个变量的查找顺序是 <code>LEGB</code> (L：Local 局部环境，E：Enclosing
-闭包，G：Global 全局，B：Built-in 内置).</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">base = <span class="number">20</span> <span class="comment"># 3</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_compare</span>():</span><br><span class="line">    base = <span class="number">10</span> <span class="comment"># 2</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">real_compare</span>(<span class="params">value</span>):</span><br><span class="line">    		base = <span class="number">5</span> <span class="comment"># 1</span></span><br><span class="line">        <span class="keyword">return</span> value &gt; base</span><br><span class="line">    <span class="keyword">return</span> real_compare</span><br><span class="line">    </span><br><span class="line">compare_10 = get_compare()</span><br><span class="line"><span class="built_in">print</span>(compare_10(<span class="number">5</span>))复制代码</span><br></pre></td></tr></table></figure>
-<p>在闭包的函数 <code>real_compare</code> 中, 使用的变量
-<code>base</code> 其实是 <code>base = 10</code> 的.
-因为base这个变量在闭包中就能命中, 而不需要去 <code>global</code>
-中获取.</p>
-<h3><span id="闭包">闭包</span></h3>
-<p>闭包其实挺好理解的, 当匿名函数出现的时候, 才使得这部分难以掌握.
-简单简短的解释闭包就是:</p>
-<p><strong>名字空间与函数捆绑后的结果被称为一个闭包(closure).</strong></p>
-<p>这个名字空间就是 <code>LEGB</code> 中的 <code>E</code> .
-所以闭包不仅仅是将函数作为返回值.
-而是将名字空间和函数捆绑后作为返回值的. 多少人忘了理解这个
-<code>"捆绑"</code> , 不知道变量最终取的哪和哪啊. 哎.</p>
-<h3><span id="标准库中的装饰器">标准库中的装饰器</span></h3>
-<p>python内置了三个用于装饰方法的函数: <code>property</code> 、
-<code>classmethod</code> 和 <code>staticmethod</code> .
-这些是用来丰富类的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">age</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="number">12</span></span><br></pre></td></tr></table></figure>
-<h2><span id="第八章对象引用-可变性和垃圾回收">第八章:
-对象引用、可变性和垃圾回收</span></h2>
-<h3><span id="变量不是盒子">变量不是盒子</span></h3>
-<p>很多人把变量理解为盒子, 要存什么数据往盒子里扔就行了.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">b = a </span><br><span class="line">a.append(<span class="number">4</span>)</span><br><span class="line"><span class="built_in">print</span>(b) <span class="comment"># [1, 2, 3, 4]复制代码</span></span><br></pre></td></tr></table></figure>
-<p>变量 <code>a</code> 和 <code>b</code> 引用同一个列表,
-而不是那个列表的副本.
-因此赋值语句应该理解为将变量和值进行引用的关系而已.</p>
-<h3><span id="标识-相等性和别名">标识、相等性和别名</span></h3>
-<p><strong>要知道变量a和b是否是同一个值的引用,</strong> 可以用
-<code>is</code> 来进行判断:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = b = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a <span class="keyword">is</span> b</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x <span class="keyword">is</span> c</span><br><span class="line"><span class="literal">False</span>复制代码</span><br></pre></td></tr></table></figure>
-<p>如果两个变量都是指向同一个对象, 我们通常会说变量是另一个变量的
-<code>别名</code> .</p>
-<p><strong>在 和 is 之间选择</strong> 运算符
-<code>是用来判断两个对象值是否相等(注意是**对象值**). 而 `is` 则是用于判断两个变量是否指向同一个对象, 或者说判断变量是不是两一个的别名, is 并不关心对象的值. 从使用上,</code>
-使用比较多, 而 <code>is</code> 的执行速度比较快.</p>
-<h3><span id="默认做浅复制">默认做浅复制</span></h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">l1 = [<span class="number">3</span>, [<span class="number">55</span>, <span class="number">44</span>], (<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)]</span><br><span class="line"></span><br><span class="line">l2 = <span class="built_in">list</span>(l1) <span class="comment"># 通过构造方法进行复制 </span></span><br><span class="line">l2 = l1[:]  <span class="comment">#也可以这样想写</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l2  l1</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l2 <span class="keyword">is</span> l1</span><br><span class="line"><span class="literal">False</span>复制代码</span><br></pre></td></tr></table></figure>
-<p>尽管 l2 是 l1 的副本, 但是复制的过程是先复制
-(即复制了<strong>最外层容器</strong>，<strong>副本中的元素是源容器中元素的引用</strong>)
-. 因此在操作 l2[1] 时, l1[1] 也会跟着变化.
-而如果列表中的所有元素是不可变的, 那么就没有这样的问题,
-而且还能节省内存. 但是, 如果有可变元素存在,
-就可能造成意想不到的问题.</p>
-<p>python标准库中提供了两个工具 <code>copy</code> 和
-<code>deepcopy</code> .
-分别用于<strong>浅拷贝</strong>与<strong>深拷贝</strong>:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">l1 = [<span class="number">3</span>, [<span class="number">55</span>, <span class="number">44</span>], (<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)]</span><br><span class="line"></span><br><span class="line">l2 = copy.copy(l1)</span><br><span class="line">l2 = copy.deepcopy(l1)复制代码</span><br></pre></td></tr></table></figure>
-<h3><span id="函数的参数做引用时">函数的参数做引用时</span></h3>
-<p>python中的函数参数都是采用共享传参.
-共享传参指函数的各个形式参数获得实参中各个引用的副本. 也就是说,
-函数内部的形参是实参的别名.</p>
-<p>这种方案就是当传入参数是可变对象时,
-在函数内对参数的修改也就是对外部可变对象进行修改.
-但这种参数试图重新赋值为一个新的对象时则无效,
-因为这只是相当于把参数作为另一个东西的引用, 原有的对象并不变. 也就是说,
-在函数内, 参数是不能把一个对象替换成另一个对象的.</p>
-<h3><span id="不要使用可变类型作为参数的默认值">不要使用可变类型作为参数的默认值</span></h3>
-<p>参数默认值是个很棒的特性. 对于开发者来说,
-应该避免使用可变对象作为参数默认值. 因为如果参数默认值是可变对象,
-而且修改了它的内容, 那么后续的函数调用上都会收到影响.</p>
-<h3><span id="del和垃圾回收">del和垃圾回收</span></h3>
-<p>在python中, 当一个对象失去了最后一个引用时, 会当做垃圾, 然后被回收掉.
-虽然python提供了 <code>del</code> 语句用来删除变量.
-但实际上只是删除了变量和对象之间的引用, 并不一定能让对象进行回收,
-因为这个对象可能还存在其他引用.</p>
-<p>在CPython中,
-<strong>垃圾回收</strong>主要用的是<strong>引用计数</strong>的算法.
-每个对象都会统计有多少引用指向自己. 当引用计数归零时,
-意味着这个对象没有在使用, 对象就会被立即销毁.【分代垃圾回收算法】</p>
-<h2><span id="符合python风格的对象">符合Python风格的对象</span></h2>
-<blockquote>
-<p>得益于 Python
-数据模型，自定义类型的行为可以像内置类型那样自然。实现如此自然的行为，靠的不是继承，而是<strong>鸭子类型</strong>（duck
-typing）：我们只需按照预定行为实现对象所需的方法即可。</p>
-</blockquote>
-<h3><span id="对象表示形式">对象表示形式</span></h3>
-<p>每门面向对象的语言至少都有一种<strong>获取对象的字符串表示形式的标准方式</strong>。Python
-提供了两种方式。</p>
-<ul>
-<li><code>repr()</code> :
-以便于开发者理解的方式返回对象的字符串表示形式。</li>
-<li><code>str()</code> :
-以便于用户理解的方式返回对象的字符串表示形式。</li>
-</ul>
-<h3><span id="classmethod-与-staticmethod">classmethod 与 staticmethod</span></h3>
-<p>这两个都是python内置提供了装饰器,
-一般python教程都没有提到这两个装饰器. 这两个都是在类 <code>class</code>
-定义中使用的, 一般情况下, class 里面定义的函数是与其类的实例进行绑定的.
-而这两个装饰器则可以改变这种调用方式.</p>
-<p>先来看看 <code>classmethod</code> , 这个装饰器不是操作实例的方法,
-并且将类本身作为第一个参数. 而 <code>staticmethod</code>
-装饰器也会改变方法的调用方式, 它就是一个普通的函数,</p>
-<p><code>classmethod</code> 与 <code>staticmethod</code> 的区别就是
-<code>classmethod</code> <strong>会把类本身作为第一个参数传入</strong>,
-其他都一样了.</p>
-<h3><span id="格式化显示">格式化显示</span></h3>
-<p>内置的 <code>format()</code> 函数和 <code>str.format()</code>
-方法把各个类型的格式化方式委托给相应的
-<code>.__format__(format_spec)</code> 方法. <code>format_spec</code>
-是格式说明符，它是：</p>
-<ul>
-<li><code>format(my_obj, format_spec)</code> 的第二个参数</li>
-<li><code>str.format()</code> 方法的格式字符串，{}
-里代换字段中冒号后面的部分</li>
-</ul>
-<h3><span id="python的私有属性和受保护的属性">Python的私有属性和"受保护的"属性</span></h3>
-<p>python中对于实例变量没有像 <code>private</code>
-这样的修饰符来创建私有属性, 在python中,
-有一个简单的机制来处理私有属性.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.__x = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line"><span class="built_in">print</span>(a.__x) <span class="comment"># AttributeError: &#x27;A&#x27; object has no attribute &#x27;__x&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(a.__dict__)复制代码</span><br></pre></td></tr></table></figure>
-<p>如果属性以 <code>__name</code> 的
-<code>两个下划线为前缀, 尾部最多一个下划线</code> 命名的实例属性,
-python会把它名称前面加一个下划线加类名, 再放入 <code>__dict__</code> 中,
-以 <code>__name</code> 为例, 就会变成 <code>_A__name</code> .</p>
-<p><strong>名称改写算是一种安全措施</strong>, 但是不能保证万无一失,
-它能避免意外访问, 但不能阻止故意做坏事.</p>
-<p>只要知道私有属性的机制, 任何人都能直接读取和改写私有属性.
-因此很多python程序员严格规定:
-<code>遵守使用一个下划线标记对象的私有属性</code> . Python
-解释器不会对使用单个下划线的属性名做特殊处理, 由程序员自行控制,
-不在类外部访问这些属性. 这种方法也是所推荐的,
-两个下划线的那种方式就不要再用了. 引用python大神的话:</p>
-<blockquote>
-<p>绝对不要使用两个前导下划线，这是很烦人的自私行为。如果担心名称冲突，应该明确使用一种名称改写方式（如
-_MyThing_blahblah）。这其实与使用双下划线一样，不过自己定的规则比双下划线易于理解。</p>
-</blockquote>
-<p><strong>Python中的把使用一个下划线前缀标记的属性称为"受保护的"属性</strong>。</p>
-<h3><span id="使用-slots类属性节省空间">使用 <strong>slots</strong>
-类属性节省空间</span></h3>
-<p>默认情况下, <strong>python在各个实例中, 用 <code>__dict__</code>
-的字典存储实例属性</strong>. 因此实例的属性是动态变化的,
-可以在运行期间任意添加属性. 而字典是消耗内存比较大的结构.
-因此当对象的属性名称确定时, 使用 <code>__slots__</code>
-可以节约内存.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vector2d</span>:</span><br><span class="line">    __slots__ = (<span class="string">&#x27;__x&#x27;</span>, <span class="string">&#x27;__y&#x27;</span>)</span><br><span class="line">    typecode = <span class="string">&#x27;d&#x27;</span></span><br><span class="line">    <span class="comment"># 下面是各个方法（因排版需要而省略了）复制代码</span></span><br></pre></td></tr></table></figure>
-<p>在类中定义<code>__slots__</code>
-属性的目的是告诉解释器："这个类中的所有实例属性都在这儿了！" 这样,
-Python 会在各个实例中使用类似元组的结构存储实例变量,
-从而避免使用消耗内存的 <code>__dict__</code> 属性.
-如果有数百万个实例同时活动, 这样做能节省大量内存.</p>
-<h2><span id="第十五章-上下文管理器和-else块">第十五章: 上下文管理器和 else
-块</span></h2>
-<p>本章讨论的是其他语言不常见的流程控制特性, 正因如此,
-python新手往往忽视或没有充分使用这些特性. 下面讨论的特性有:</p>
-<ul>
-<li>with 语句和上下文管理器</li>
-<li>for while try 语句的 else 子句</li>
-</ul>
-<p><code>with</code> 语句会设置一个临时的上下文,
-交给<strong>上下文管理器对象控制</strong>,
-并且负<strong>责清理上下文</strong>.
-这么做能避免错误并<strong>减少代码量</strong>,
-因此<strong>API更安全</strong>, 而且更易于使用. 除了自动关闭文件之外,
-with 块还有其他很多用途.</p>
-<p><code>else</code> 子句先做这个，选择性再做那个的作用.</p>
-<h3><span id="if语句之外的else块">if语句之外的else块</span></h3>
-<p>这里的 else 不是在在 if 语句中使用的, 而是在 for while try
-语句中使用的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    <span class="keyword">if</span> i &gt; <span class="number">10</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;no num bigger than 10&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>else</strong> 子句的行为如下:</p>
-<ul>
-<li><code>for</code> : 仅当 for 循环运行完毕时（即 <strong>for
-循环没有被 break 语句中止</strong>）才运行 else 块。</li>
-<li><code>while</code> : 仅当 while 循环因为条件为假值而退出时（即 while
-循环没有被 <code>break</code> 语句中止）才运行 else 块。</li>
-<li><code>try</code> : 仅当 <strong>try
-块中没有异常抛出时</strong>才运行 else 块。</li>
-</ul>
-<p><strong>在所有情况下, 如果异常或者 <code>return</code> ,
-<code>break</code> 或 <code>continue</code>
-语句导致控制权跳到了复合语句的住块外, <code>else</code>
-子句也会被跳过.</strong></p>
-<p>这一些情况下, 使用 else 子句通常让代码更便于阅读, 而且能省去一些麻烦,
-<strong>不用设置控制标志作用的变量和额外的if判断.</strong></p>
-<h3><span id="上下文管理器和with块">上下文管理器和with块</span></h3>
-<p><strong>上下文管理器对象的目的就是管理 with 语句,</strong>
-<strong>with 语句的目的是简化 <code>try/finally</code> 模式</strong>.
-<strong>这种模式用于保证一段代码运行完毕后执行某项操作,
-即便那段代码由于异常</strong>, <code>return</code> 或者
-<code>sys.exit()</code> 调用而终止, 也会执行执行的操作.
-<code>finally</code> 子句中的代码通常用于释放重要的资源,
-或者还原临时变更的状态.</p>
-<p>上下文管理器协议包含 <code>__enter__</code> 和 <code>__exit__</code>
-两个方法. <strong>with 语句开始运行时, 会在上下文管理器上调用
-<code>__enter__</code> 方法, 待 with 语句运行结束后, 再调用
-<code>__exit__</code> 方法, 以此扮演了 <code>finally</code>
-子句的角色.</strong></p>
-<p>with 最常见的例子就是确保关闭文件对象.</p>
-<p>上下文管理器调用 <code>__enter__</code> 没有参数, 而调用
-<code>__exit__</code> 时, 会传入3个参数:</p>
-<ul>
-<li><code>exc_type</code> : 异常类（例如 ZeroDivisionError）</li>
-<li><code>exc_value</code> :
-异常实例。有时会有参数传给异常构造方法，例如错误消息，这些参数可以使用
-<code>exc_value.args</code> 获取</li>
-<li><code>traceback</code> : <code>traceback</code> 对象</li>
-</ul>
-<h3><span id="contextlib模块中的实用工具">contextlib模块中的实用工具</span></h3>
-<p>在ptyhon的标准库中, contextlib
-模块中还有一些类和其他函数，使用范围更广。</p>
-<ul>
-<li><code>closing</code>: 如果对象提供了 <code>close()</code>
-方法，但没有实现 <code>__enter__/__exit__</code>
-协议，那么可以使用这个函数构建上下文管理器。</li>
-<li><code>suppress</code>: 构建临时忽略指定异常的上下文管理器。</li>
-<li><strong><code>@contextmanager</code>:
-这个装饰器把简单的生成器函数变成上下文管理器，这样就不用创建类去实现管理器协议了。</strong></li>
-<li><code>ContextDecorator</code>:
-这是个基类，用于定义基于类的上下文管理器。这种上下文管理器也能用于装饰函数，在受管理的上下文中运行整个函数。</li>
-<li><code>ExitStack</code>: 这个上下文管理器能进入多个上下文管理器。with
-块结束时，ExitStack 按照后进先出的顺序调用栈中各个上下文管理器的
-<code>__exit__</code> 方法。如果事先不知道 with
-块要进入多少个上下文管理器，可以使用这个类。例如，同时打开任意一个文件列表中的所有文件。</li>
-</ul>
-<p>显然，在这些实用工具中，使用最广泛的是 <code>@contextmanager</code>
-装饰器，因此要格外留心。这个装饰器也有迷惑人的一面，因为它与迭代无关，却要使用
-yield 语句。</p>
-<h3><span id="使用contextmanager">使用@contextmanager</span></h3>
-<p><strong><span class="citation" data-cites="contextmanager">@contextmanager</span>
-装饰器能减少创建上下文管理器的样板代码量, 因为不用定义
-<code>__enter__</code> 和 <code>__exit__</code> 方法, 只需要实现一个
-<code>yield</code> 语句的生成器.</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> contextlib</span><br><span class="line"><span class="meta">@contextlib.contextmanager</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">looking_glass</span>():</span><br><span class="line"></span><br><span class="line">    original_write = sys.stdout.write</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reverse_write</span>(<span class="params">text</span>):</span><br><span class="line">        original_write(text[::-<span class="number">1</span>])</span><br><span class="line">    sys.stdout.write = reverse_write</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">&#x27;JABBERWOCKY&#x27;</span></span><br><span class="line">    sys.stdout.write = original_write</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> looking_glass() <span class="keyword">as</span> f:</span><br><span class="line">    <span class="built_in">print</span>(f)        <span class="comment"># YKCOWREBBAJ</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;ABCD&quot;</span>)   <span class="comment"># DCBA</span></span><br><span class="line">    复制代码</span><br></pre></td></tr></table></figure>
-<p><code>yield</code> 语句起到了分割的作用, yield 语句前面的所有代码在
-with 块开始时（即解释器调用 <code>__enter__</code> 方法时）执行， yield
-语句后面的代码在 with 块结束时（即调用 <code>__exit__</code>
-方法时）执行.</p>
-<h2><span id="第十六章-协程">第十六章: 协程</span></h2>
-<p>为了理解协程的概念, 先从 <code>yield</code> 来说.
-<code>yield item</code> 会产出一个值, 提供给 <code>next(...)</code>
-调用方; 此外还会做出让步, 暂停执行生成器, 让调用方继续工作,
-直到需要使用另一个值时再调用 <code>next(...)</code>
-从暂停的地方继续执行.</p>
-<p>从句子语法上看, 协程与生成器类似, 都是通过 <code>yield</code>
-关键字的函数. <strong>可是, 在协程中, <code>yield</code>
-通常出现在表达式的右边(datum = yield), 可以产出值,
-也可以不产出(如果yield后面没有表达式, 那么会产出None).</strong>
-协程可能会从调用方接收数据, 不过调用方把数据提供给协程使用的是
-<code>.send(datum)</code> 方法. 而不是 <code>next(...)</code> . 通常,
-调用方会把值推送给协程.</p>
-<p>生成器调用方是一直索要数据, 而协程这是调用方可以想它传入数据,
-协程也不一定要产出数据.</p>
-<p><strong>不管数据如何流动, <code>yield</code> 都是一种流程控制工具,
-使用它可以实现写作式多任务: 协程可以把控制器让步给中心调度程序,
-从而激活其他的协程.</strong></p>
-<h3><span id="生成器如何进化成协程">生成器如何进化成协程</span></h3>
-<p>协程的底层框架实现后, 生成器API中增加了 <code>.send(value)</code>
-方法. 生成器的调用方可以使用 <code>.send(...)</code> 来发送数据,
-发送的数据会变成生成器函数中 <code>yield</code> 表达式的值. 因此,
-生成器可以作为协程使用. 除了 <code>.send(...)</code> 方法, 还添加了
-<code>.throw(...)</code> 和 <code>.close()</code> 方法,
-用来让调用方<strong>抛出异常</strong>和<strong>终止生成器</strong>.</p>
-<h3><span id="用作协程的生成器的基本行为">用作协程的生成器的基本行为</span></h3>
-<blockquote>
-<p><strong>优势：</strong></p>
-<ul>
-<li>一个线程中运行，非抢占式的</li>
-<li>无需使用实例属性或者闭包, 在多次调用之间都能保持上下文</li>
-</ul>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">simple_coroutine</span>():</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine started&#x27;</span>)</span><br><span class="line"><span class="meta">... </span>    x = <span class="keyword">yield</span></span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; coroutine received:&#x27;</span>, x)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_coro = simple_coroutine()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_coro</span><br><span class="line">&lt;generator <span class="built_in">object</span> simple_coroutine at <span class="number">0x100c2be10</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(my_coro)</span><br><span class="line">-&gt; coroutine started</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_coro.send(<span class="number">42</span>)</span><br><span class="line">-&gt; coroutine received: <span class="number">42</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">...</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
-<p>在 <code>yield</code> 表达式中, 如果协程只需从调用那接受数据,
-那么产出的值是 <code>None</code> . 与创建生成器的方式一样,
-调用函数得到生成器对象. 协程都要先调用 <code>next(...)</code> 函数,
-因为生成器还没启动, 没在 yield 出暂定, 所以一开始无法发送数据.
-如果控制器流动到协程定义体末尾, 会像迭代器一样抛出
-<code>StopIteration</code> 异常.</p>
-<p><strong>使用协程的好处是不用加锁, 因为所有协程只在一个线程中运行,
-他们是非抢占式的. 协程也有一些状态, 可以调用
-<code>inspect.getgeneratorstate(...)</code> 来获得,
-协程都是这4个状态中的一种:</strong></p>
-<ul>
-<li><code>'GEN_CREATED'</code> 等待开始执行。</li>
-<li><code>'GEN_RUNNING'</code> 解释器正在执行。</li>
-<li><code>'GEN_SUSPENDED'</code> 在 yield 表达式处暂停。</li>
-<li><code>'GEN_CLOSED'</code> 执行结束。</li>
-</ul>
-<p>只有在多线程应用中才能看到这个状态。此外，生成器对象在自己身上调用
-<code>getgeneratorstate</code> 函数也行，不过这样做没什么用。</p>
-<p>为了更好理解继承的行为, 来看看产生两个值的协程:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> inspect <span class="keyword">import</span> getgeneratorstate</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">simple_coro2</span>(<span class="params">a</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Started: a =&#x27;</span>, a)</span><br><span class="line"><span class="meta">... </span>    b = <span class="keyword">yield</span> a</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Received: b =&#x27;</span>, b)</span><br><span class="line"><span class="meta">... </span>    c = <span class="keyword">yield</span> a + b</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Received: c =&#x27;</span>, c)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_coro2 = simple_coro2(<span class="number">14</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getgeneratorstate(my_coro2) <span class="comment"># 协程处于未启动的状态</span></span><br><span class="line"><span class="string">&#x27;GEN_CREATED&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(my_coro2)              <span class="comment"># 向前执行到yield表达式, 产出值 a, 暂停并等待 b 赋值</span></span><br><span class="line">-&gt; Started: a = <span class="number">14</span></span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getgeneratorstate(my_coro2) <span class="comment"># 协程处于暂停状态</span></span><br><span class="line"><span class="string">&#x27;GEN_SUSPENDED&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_coro2.send(<span class="number">28</span>)           <span class="comment"># 数字28发给协程, yield 表达式中 b 得到28, 协程向前执行, 产出 a + b 值</span></span><br><span class="line">-&gt; Received: b = <span class="number">28</span></span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_coro2.send(<span class="number">99</span>)           <span class="comment"># 同理, c 得到 99, 但是由于协程终止, 导致生成器对象抛出 StopIteration 异常</span></span><br><span class="line">-&gt; Received: c = <span class="number">99</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>getgeneratorstate(my_coro2) <span class="comment"># 协程处于终止状态</span></span><br><span class="line"><span class="string">&#x27;GEN_CLOSED&#x27;</span>复制代码</span><br></pre></td></tr></table></figure>
-<p>关键的一点是, 协程在 <code>yield</code> 关键字所在的位置暂停执行.
-<strong>对于 <code>b = yield a</code> 这行代码来说,
-等到客户端代码再激活协程时才会设定 b 的值</strong>.
-这种方式要花点时间才能习惯, 理解了这个, 才能弄懂异步编程中
-<code>yield</code> 的作用.</p>
-<h3><span id="示例使用协程计算移动平均值">示例：使用协程计算移动平均值</span></h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">averager</span>():</span><br><span class="line">    total = <span class="number">0.0</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        term = <span class="keyword">yield</span> average</span><br><span class="line">        total += term</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total/count复制代码</span><br></pre></td></tr></table></figure>
-<p>这是一个动态计算平均值的协程代码, 这个无限循环表明,
-它会一直接收值然后生成结果. 只有当调用方在协程上调用
-<code>.close()</code> 方法, 或者没有该协程的引用时, 协程才会终止.</p>
-<p><strong>协程的好处是, 无需使用实例属性或者闭包,
-在多次调用之间都能保持上下文.</strong></p>
-<h3><span id="使用-yield-from">使用 yield from</span></h3>
-<p><code>yield from</code> 是全新的语法结构. 它的作用比
-<code>yield</code> 多很多.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">gen</span>():</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> c <span class="keyword">in</span> <span class="string">&#x27;AB&#x27;</span>:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">yield</span> c</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">3</span>):</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">yield</span> i</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(gen())</span><br><span class="line">[<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>]复制代码</span><br></pre></td></tr></table></figure>
-<p>可以改写成:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">gen</span>():</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">yield</span> <span class="keyword">from</span> <span class="string">&#x27;AB&#x27;</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">yield</span> <span class="keyword">from</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">3</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(gen())</span><br><span class="line">[<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>]复制代码</span><br></pre></td></tr></table></figure>
-<p>在生成器 <code>gen</code> 中使用 <code>yield form subgen()</code> 时,
-subgen 会得到控制权, 把产出的值传给 gen 的调用方, 既调用方可以直接调用
-subgen. 而此时, gen 会阻塞, 等待 subgen 终止.</p>
-<p><strong><code>yield from x</code> 表达式对 <code>x</code>
-对象所做的第一件事是, 调用 <code>iter(x)</code> 获得迭代器. 因此, x
-对象可以是任何可迭代对象.</strong></p>
-<p>这个语义过于复杂, 来看看作者 <code>Greg Ewing</code> 的解释:</p>
-<blockquote>
-<p>“把迭代器当作生成器使用，相当于把子生成器的定义体内联在 yield from
-表达式</p>
-</blockquote>
-<p>中。此外，子生成器可以执行 return 语句，返回一个值，而返回的值会成为
-yieldfrom 表达式的值。”</p>
-<p>子生成器是从 <code>yield from &lt;iterable&gt;</code> 中获得的生成器.
-而后, 如果调用方使用 <code>send()</code> 方法, 其实也是直接传给子生成器.
-如果发送的是 <code>None</code> , 那么会调用子生成器的
-<code>__next__()</code> 方法. 如果不是 <code>None</code> ,
-那么会调用子生成器的 <code>send()</code> 方法. 当子生成器抛出
-<code>StopIteration</code> 异常, 那么委派生成器恢复运行.
-任何其他异常都会向上冒泡, 传给委派生成器.</p>
-<p>生成器在 <code>return expr</code> 表达式中会触发
-<code>StopIteration</code> 异常.</p>
-<h2><span id="第十七章-使用-futrues包处理并发">第十七章: 使用 futrues包
-处理并发</span></h2>
-<p><code>"futures"</code> 是什么概念呢? 期物指一种对象,
-表示异步执行的操作. 这个概念是 <code>concurrent.futures</code> 模块和
-<code>asyncio</code> 包的基础.</p>
-<h3><span id="阻塞型io和gil">阻塞型I/O和GIL</span></h3>
-<p><strong>CPython解释器不是线程安全的, 因此有全局解释锁(GIL),
-一次只允许使用一个线程执行 python 字节码,
-所以一个python进程不能同时使用多个 CPU 核心.</strong></p>
-<p>python程序员编写代码时无法控制 GIL, 然而,
-在标准库中所有执行阻塞型I/O操作的函数,
-在登台操作系统返回结果时都会释放GIL.
-这意味着IO密集型python程序能从中受益.</p>
-<h3><span id="使用concurrentfutures模块启动进程">使用concurrent.futures模块启动进程</span></h3>
-<p><strong>一个python进程只有一个 GIL. 多个python进程就能绕开GIL,
-因此这种方法就能利用所有的 CPU 核心.</strong>
-<code>concurrent.futures</code> 模块就实现了真正的并行计算, 因为它使用
-<code>ProcessPoolExecutor</code> 把工作交个多个python进程处理.</p>
-<p><code>ProcessPoolExecutor</code> 和 <code>ThreadPoolExecutor</code>
-类都实现了通用的 <code>Executor</code> 接口, 因此使用
-<code>concurrent.futures</code>
-能很轻松把基于线程的方案转成基于进程的方案.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">download_many</span>(<span class="params">cc_list</span>):</span><br><span class="line">    workers = <span class="built_in">min</span>(MAX_WORKERS, <span class="built_in">len</span>(cc_list))</span><br><span class="line">    <span class="keyword">with</span> futures.ThreadPoolExecutor(workers) <span class="keyword">as</span> executor:</span><br><span class="line">        res = executor.<span class="built_in">map</span>(download_one, <span class="built_in">sorted</span>(cc_list))复制代码</span><br></pre></td></tr></table></figure>
-<p>改成:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">download_many</span>(<span class="params">cc_list</span>):</span><br><span class="line">    <span class="keyword">with</span> futures.ProcessPoolExecutor() <span class="keyword">as</span> executor:</span><br><span class="line">        res = executor.<span class="built_in">map</span>(download_one, <span class="built_in">sorted</span>(cc_list))复制代码</span><br></pre></td></tr></table></figure>
-<p><code>ThreadPoolExecutor.__init__</code> 方法需要
-<code>max_workers</code> 参数，指定线程池中线程的数量; 在
-<code>ProcessPoolExecutor</code> 类中, 这个参数是可选的.</p>
-<h2><span id="第十八章-使用-asyncio包处理并发">第十八章: 使用 asyncio
-包处理并发</span></h2>
-<blockquote>
-<p><strong>并发是指一次处理多件事。</strong></p>
-</blockquote>
-<p>并行是指一次做多件事。 二者不同，但是有联系。
-一个关于结构，一个关于执行。
-并发用于制定方案，用来解决可能（但未必）并行的问题。—— Rob Pike Go
-语言的创造者之一</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/27P0XPW/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/27P0XPW/" class="post-title-link" itemprop="url">安全场景（0）AI+安全概述</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-10 21:01:24" itemprop="dateCreated datePublished" datetime="2022-04-10T21:01:24+08:00">2022-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-06-16 20:35:10" itemprop="dateModified" datetime="2022-06-16T20:35:10+08:00">2022-06-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1><span id="ai-for-security-learning">AI-for-Security-Learning</span></h1>
-<blockquote>
-<p>##### <a target="_blank" rel="noopener" href="https://github.com/404notf0und">404notf0und</a>/<strong><a target="_blank" rel="noopener" href="https://github.com/404notf0und/AI-for-Security-Learning">AI-for-Security-Learning</a></strong></p>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg5MTM5ODU2Mg==&amp;action=getalbum&amp;album_id=2041739478687416320&amp;scene=173&amp;from_msgid=2247493698&amp;from_itemidx=1&amp;count=3&amp;nolastread=1#wechat_redirect">杨秀章</a></p>
-</blockquote>
-<h3><span id="一-恶意加密流量数据">一 、恶意加密流量数据</span></h3>
-<h4><span id="工具">工具：</span></h4>
-<p><strong>cicflowmeter</strong>，一款流量特征提取工具，该工具输入pcap文件，输出pcap文件中包含的数据包的特征信息（80多维）</p>
-<h4><span id="11-机器学习检测cobaltstrike木马初探">1.1 机器学习检测Cobalt
-Strike木马初探</span></h4>
-<h4><span id="httpswwwfreebufcomarticlesnetwork279190html">https://www.freebuf.com/articles/network/279190.html</span></h4>
-<p>通过机器学习分析cobalt
-strike的通信包，找出通信规律，然后用这个规律对新的通信包进行检测。</p>
-<p><strong>数据集</strong>：</p>
-<blockquote>
-<p>cobalt strike恶意通信的心跳包，无需抓指令包</p>
-<p><strong>TCP特征</strong>：每秒传输的数据包字节数、流包率，即每秒传输的数据包数、每秒前向包的数量、正向数据包的总大小、数据包在正向的平均大小、数据包正向标准偏差大小、流的最大长度、最小包到达间隔时间等等。</p>
-</blockquote>
-<p>Microsoft Network Monitor 3.4
-https://www.microsoft.com/en-us/download/details.aspx?id=4865</p>
-<h3><span id="二-恶意软件">二、恶意软件</span></h3>
-<p><strong>==阿里云安全==：win32程序在沙箱中运行的API序列信息，训练集11w条程序记录，测试集5w条程序记录。6类程序中正常程序特别多，病毒程序偏少。</strong></p>
-<p>如图所示赛题数据按照文件file_id进行组织：每个文件file_id对应一个文件标签，即文件的病毒标签；每个文件file_id可能由一个或者多个线程tid组成。每个线程tid由一个api或者多个api组成，每个api对应一个返回值，api的次序关系由index表示。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-4b1c1f507ffb4f88a673c3f661547043_1440w.jpg" alt="img" style="zoom:33%;"></p>
-<ul>
-<li><strong>统计特征</strong>：统计API的出现次数、类型统计以及API返回值的统计特征；</li>
-<li><strong>图模型特征</strong>：将API序列转换成API图的边，统计有向图的相关的特征；</li>
-<li><strong>时序特征</strong>：API序列的出现次数等时序特征，API返回值的时序特征；</li>
-</ul>
-<p><strong>==<a target="_blank" rel="noopener" href="https://github.com/ocatak/lstm_malware_detection/blob/master/deep_learnin_lstm_malware_detection.ipynb">LSTM
-+ API</a>==</strong>：</p>
-<h4><span id="pdf-malware">PDF malware</span></h4>
-<ul>
-<li>Malware Analysis – Dissecting PDF
-file：https://github.com/filipi86/MalwareAnalysis-in-PDF</li>
-</ul>
-<h5><span id="基于bert的恶意软件多分类"></span></h5>
-<h3><span id="三-ddos">三 、DDOS</span></h3>
-<p>在攻击感知方面，可从<strong>宏观攻击流感</strong>知与<strong>微观检测方法</strong>两个角度，分别<strong>基于IP流序列谱分析的泛洪攻击</strong>与<strong>低速率拒绝服务（Low-rate
-Denial of
-Service，LDoS）方法</strong>进行感知。在此基础上，将DDoS攻击检测转化为机器学习的二分类问题。</p>
-<p><strong>基于多特征并行隐马尔科夫模型（Multi-FeatureParallel Hidden
-Markov
-Model，MFP-HMM）的DDoS攻击检测方法</strong>，利用HMM隐状态序列与特征观测序列的对应关系，将攻击引起的多维特征异常变化转化为离散型随机变量，通过概率计算来刻画当前滑动窗口序列与正常行为轮廓的偏离程度。</p>
-<h3><span id="四-web安全">四、WEB安全</span></h3>
-<p><strong>Web安全是指个人用户在Web相关操作时不因偶然或恶意的原因受到破坏、更改、泄露</strong>。除了现有的<strong>SQL注入检测、XSS攻击检测</strong>等
-AI应用，本部分将列举“恶意URL检测”与“
-Webshell检测”两例。后续实验部分，作者将详细描述Python实现该过程。</p>
-<p><strong>恶意URL检测</strong></p>
-<p>基于机器学习，从
-URL特征、域名特征、Web特征的关联分析，使恶意URL识别具有高准确率</p>
-<p>开源工具如Phinn：Phinn使用了机器学习领域中的卷积神经网络算法来生成和训练一个自定义的Chrome扩展，这个
-Chrome扩展可以将用户浏览器中呈现的页面与真正的登录页面进行视觉相似度分析，以此来识别出恶意URL（钓鱼网站）。</p>
-<p><strong>Webshell检测</strong></p>
-<p><strong>Webshell常常被称为匿名用户（入侵者）通过网站端口对网站服务器的某种程度上操作的权限</strong>。由于Webshell其大多是以动态脚本的形式出现，也有人称之为网站的后门工具。在攻击链模型中，整个攻击过程分为：踩点、组装、投送、攻击、植入、控制、行动。在针对网站的攻击中，通常是利用上传漏洞，上传Webshell，然后通过Webshell进一步控制web服务器。</p>
-<p>通过词袋&amp;TF-IDF模型、Opcode&amp;N-gram模型、Opcode调用序列模型等特征抽取方式，采用合适的模型，如朴素贝叶斯和深度学习的MLP、CNN等，实现Webshell的检测。类似地，也可进行SQL注入、
-XSS攻击检测等。</p>
-<h3><span id="五-入侵检测与防御">五、入侵检测与防御</span></h3>
-<p>入侵检测与防御是指对入侵行为的发现并采取相应的防御行动。除了现有的内网入侵检测等AI应用，本部分将列举“APT检测与防范”与“C2链接分析”两例。</p>
-<p><strong>5.1 APT检测与防范</strong></p>
-<p>进行APT攻击的攻击者从侦查目标，制作攻击工具，传递攻击工具，利用漏洞或者弱点来进行突防，拿下全线运行工具，后期远端的维护这个工具，到最后达到了长期控制目标的目的。针对这种现在日益广泛的APT
-攻击，威胁情报存在于整个攻击的各个环节。</p>
-<p>威胁情报是基于证据的描述威胁的一组关联的信息，包括威胁相关的<strong>环境信息</strong>，如具体的<strong>攻击组织</strong>、<strong>恶意域名</strong>。恶意域名又包括<strong>远控的IOC</strong>、<strong>恶意文件的HASH</strong>和<strong>URL以及威胁指标之间的关联性</strong>，时间纬度上攻击手法的变化。这些信息汇总在一起形成高级威胁情报。除此之外，所关注的情报，还包括传统威胁种类的扩充，包括木马远控，僵尸网络，间谍软件，
-Web后门等。利用机器学习来处理威胁情报，检测并识别出APT攻击中的恶意载荷，提高APT攻击威胁感知系统的效率与精确性，让安全研究人员能更快实现
-APT攻击的发现和溯源。</p>
-<p><strong>==5.1 DGA域名检测——C2链接分析==</strong>
-<strong>DGA（域名生成算法）是一种利用随机字符来生成C2域名</strong>，从而逃避域名黑名单检测的技术手段。而有了DGA域名生成算法，攻击者就可以利用它来生成用作域名的伪随机字符串，这样就可以有效的避开黑名单列表的检测。伪随机意味着字符串序列似乎是随机的，但由于其结构可以预先确定，因此可以重复产生和复制。该算法常被运用于远程控制软件上。</p>
-<h2><span id="安全-ai的问题和难点">安全 + AI的问题和难点</span></h2>
-<h1><span id="fuzzing漏洞挖掘">Fuzzing漏洞挖掘</span></h1>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=Mzg5MTM5ODU2Mg==&amp;action=getalbum&amp;album_id=2041739478687416320&amp;scene=173&amp;from_msgid=2247493698&amp;from_itemidx=1&amp;count=3&amp;nolastread=1#wechat_redirect">杨秀章</a></p>
 
       
     </div>
