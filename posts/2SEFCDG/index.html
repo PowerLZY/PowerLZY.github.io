@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到“距离”的计算，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不同维度量纲">
+    <meta name="description" content="¶归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到**“距离”的计算**，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理论基础（7）BatchNormalization">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2SEFCDG/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到“距离”的计算，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不同维度量纲">
+<meta property="og:description" content="¶归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到**“距离”的计算**，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903590.jpg">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903952.jpg">
@@ -150,15 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、BatchNormalization的原理、作用和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 从缓解ICS现象出发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.2
-Batch Normalization的算法过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 Batch
-Normalization在测试阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 Batch Normalization的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 CNN中的Batch
-Normalization实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、Batch
-Normalization VS Layer Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 Batch
-Normalization的些许缺陷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 Layer Normalization的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 Transformer中Layer
-Normalization的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4
-讨论：Transformer 为什么使用 Layer
-normalization，而不是其他的归一化方法？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、BatchNormalization的原理、作用和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 从缓解ICS现象出发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 1.2 Batch Normalization的算法过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 Batch Normalization在测试阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 Batch Normalization的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 CNN中的Batch Normalization实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、Batch Normalization VS Layer Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 Batch Normalization的些许缺陷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 Layer Normalization的原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.3 Transformer中Layer Normalization的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4 讨论：Transformer 为什么使用 Layer normalization，而不是其他的归一化方法？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -179,7 +171,7 @@ normalization，而不是其他的归一化方法？</span></a></li><li class="n
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -317,21 +309,20 @@ normalization，而不是其他的归一化方法？</span></a></li><li class="n
         <h5><span id="归一化的作用">归一化的作用：</span></h5>
 <ul>
 <li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>回归系数无法直接解读</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
-<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>“距离”的计算</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
-<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>梯度下降</strong>，在使用梯度下降的方法求解最优化问题时，
-归一化/标准化后可以加快梯度下降的求解速度，即<strong>提升模型的收敛速度</strong>。</li>
+<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到**“距离”的计算**，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
+<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>梯度下降</strong>，在使用梯度下降的方法求解最优化问题时， 归一化/标准化后可以加快梯度下降的求解速度，即<strong>提升模型的收敛速度</strong>。</li>
 </ul>
 <h5><span id="batch-normalization-作用">Batch Normalization 作用：</span></h5>
 <ul>
-<li><strong>更好的尺度不变性：</strong>也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
+<li>**更好的尺度不变性：**也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
 <ul>
 <li><strong><font color="red">尺度不变性能够提高梯度下降算法的效率，从而加快收敛</font></strong>;</li>
 <li><strong><font color="red">归一化到均值为0，方差为1的分布也能够使得经过sigmoid，tanh等激活函数以后，尽可能落在梯度非饱和区，缓解梯度消失的问题。</font></strong>【<strong>bn和ln都可以比较好的抑制梯度消失和梯度爆炸的情况</strong>】;</li>
-</ul></li>
-<li><strong>更平滑的优化地形：</strong>更平滑的优化地形意味着<strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
-<li><strong><font color="red">
-对参数初始化和学习率大小不太敏感：</font></strong>BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
-<li><strong>隐性的正则化效果：（Batch）</strong>训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
+</ul>
+</li>
+<li><strong>更平滑的优化地形：<strong>更平滑的优化地形意味着</strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
+<li>**<font color="red"> 对参数初始化和学习率大小不太敏感：</font>**BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
+<li>**隐性的正则化效果：（Batch）**训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
 </ul>
 <span id="more"></span>
 <h3><span id="一-batchnormalization的原理-作用和实现">一、BatchNormalization的原理、作用和实现</span></h3>
@@ -339,10 +330,7 @@ normalization，而不是其他的归一化方法？</span></a></li><li class="n
 <p><strong>归一化（白化）的方法有很多，为什么要设计BN这个样子的？</strong></p>
 </blockquote>
 <h4><span id="概要">概要</span></h4>
-<p>上一节介绍了<strong>归一化方法（Batch
-Normalization）在深度神经网络中的作用：有人认为是更好的尺度不变性来缓解ICS现象。有人认为是更平滑的优化地形。</strong>但实际上我们还没有介绍Batch
-Normalization究竟是什么东西。这一节我们从缓解ICS现象的角度来引出Batch
-Normalization，并介绍其原理和实现。</p>
+<p>上一节介绍了**归一化方法（Batch Normalization）在深度神经网络中的作用：有人认为是更好的尺度不变性来缓解ICS现象。有人认为是更平滑的优化地形。**但实际上我们还没有介绍Batch Normalization究竟是什么东西。这一节我们从缓解ICS现象的角度来引出Batch Normalization，并介绍其原理和实现。</p>
 <p>必须要说明的是，这个出发点在现在看来很可能已经有问题了。。（参见上一篇文章对优化地形的讨论）</p>
 <h4><span id="11-从缓解ics现象出发">1.1 从缓解ICS现象出发</span></h4>
 <p>ICS现象指的是该层的输入分布会因为之前层的参数更新而发生改变。为了缓解这一问题，我们需要对输入分布进行归一化。上上节讲了<strong>白化</strong>（其实还没填坑）是一种机器学习中常见的归一化手段，其好处在于：</p>
@@ -356,269 +344,160 @@ Normalization，并介绍其原理和实现。</p>
 <li>由于对输入分布进行了限制，会损害输入数据原本的表达能力（其实就是说原本数据的分布信息丢失了）</li>
 <li>均值为0，方差为1的输入分布容易使得经过sigmoid或者tanh的激活函数时，落入梯度饱和区</li>
 </ul>
-<p><strong><font color="red">
-解决思路很简单：设计一种简化计算的白化操作，归一化后让数据尽量保留原始的表达能力。</font></strong></p>
+<p><strong><font color="red"> 解决思路很简单：设计一种简化计算的白化操作，归一化后让数据尽量保留原始的表达能力。</font></strong></p>
 <ul>
 <li><strong>单独对每一维特征进行归一化，使其满足均值为0，方差为1</strong></li>
 <li><strong>增加线性变换操作，让数据能够尽量恢复本身表达能力</strong></li>
 </ul>
-<h4><span id="12batch-normalization的算法过程"><strong><font color="red"> 1.2
-Batch Normalization的算法过程</font></strong></span></h4>
-<p><strong>首先是对每一维特征进行归一化</strong>，可以借助上上节介绍的归一化方法：<strong>本质上是减去一个统计量，再除以一个统计量</strong>。另一方面，BN的操作是在mini-batch层面进行计算，而不是full
-batch。具体来说：</p>
-<p>假设输入样本的形状是 <span class="math inline">\(m \times d\)</span>,
-其中 <span class="math inline">\(m\)</span> 指batch size。</p>
+<h4><span id="12-batch-normalization的算法过程"><strong><font color="red"> 1.2 Batch Normalization的算法过程</font></strong></span></h4>
+<p><strong>首先是对每一维特征进行归一化</strong>，可以借助上上节介绍的归一化方法：<strong>本质上是减去一个统计量，再除以一个统计量</strong>。另一方面，BN的操作是在mini-batch层面进行计算，而不是full batch。具体来说：</p>
+<p>假设输入样本的形状是 $m \times d$, 其中 $m$ 指batch size。</p>
 <ul>
-<li>计算第 <span class="math inline">\(i\)</span> 个样本的第 <span class="math inline">\(j\)</span> 个维度上的均值: <span class="math inline">\(\mu_j=\frac{1}{m} \sum_{i=1}^m
-Z_j^{(i)}\)</span></li>
-<li>计算第 <span class="math inline">\(i\)</span> 个样本的第 <span class="math inline">\(j\)</span> 个维度上的方差: <span class="math inline">\(\frac{1}{m}
-\sum_{i=1}^m\left(Z_j^{(i)}-\mu_j\right)^2\)</span></li>
-<li>归一化: <span class="math inline">\(\hat{Z}_j=\frac{Z_j-\mu_j}{\sqrt{\sigma^2+\epsilon}}\)</span>
-(加 <span class="math inline">\(\epsilon\)</span> 防止分母为 0 )</li>
+<li>计算第 $i$ 个样本的第 $j$ 个维度上的均值: $\mu_j=\frac{1}{m} \sum_{i=1}^m Z_j^{(i)}$</li>
+<li>计算第 $i$ 个样本的第 $j$ 个维度上的方差: $\frac{1}{m} \sum_{i=1}<sup>m\left(Z_j</sup>{(i)}-\mu_j\right)^2$</li>
+<li>归一化: $\hat{Z}_j=\frac{Z_j-\mu_j}{\sqrt{\sigma^2+\epsilon}}$ (加 $\epsilon$ 防止分母为 0 )</li>
 </ul>
 <p><strong>通过上述变换实现每个特征维度上的均值和方差为0和1。</strong></p>
-<p><font color="red">进一步的, 为了保证输入数据的表达能力,
-引入两个可学习参数 <span class="math inline">\(\gamma\)</span> 和 <span class="math inline">\(\beta\)</span> (都是 <span class="math inline">\(\mathrm{d}\)</span> 维向量)
-来对归一化后的数据进行线性变换: <span class="math inline">\(\tilde{Z}_j=\gamma_j \hat{Z}_j+\beta_j\)</span>
-。</font>特别地, 当 <span class="math inline">\(\gamma^2=\sigma^2,
-\beta=\mu\)</span> 时, 即可实现identity transform,
-并保留了原始输入特征的分布信息。</p>
+<p><font color="red">进一步的, 为了保证输入数据的表达能力, 引入两个可学习参数 $\gamma$ 和 $\beta$ (都是 $\mathrm{d}$ 维向量) 来对归一化后的数据进行线性变换: $\tilde{Z}_j=\gamma_j \hat{Z}_j+\beta_j$ 。</font>特别地, 当 $\gamma<sup>2=\sigma</sup>2, \beta=\mu$ 时, 即可实现identity transform, 并保留了原始输入特征的分布信息。</p>
 <p><strong>通过上述变换，在一定程度上保证了输入数据的表达能力。</strong></p>
-<p><strong>综上所述：</strong> <span class="math display">\[
-\tilde{Z}_j=\gamma_j \cdot
-\frac{Z_j-\mu_j}{\sqrt{\sigma^2+\epsilon}}+\beta_j
-\]</span></p>
+<p><strong>综上所述：</strong><br>
+$$<br>
+\tilde{Z}_j=\gamma_j \cdot \frac{Z_j-\mu_j}{\sqrt{\sigma^2+\epsilon}}+\beta_j<br>
+$$</p>
 <blockquote>
-<p>补充：在进行归一化过程中, 由于归一化操作会减去均值,
-所以偏置项可以忽略或者置0, 即 <span class="math inline">\(BN(W x+b)=B
-N(Wx)\)</span></p>
+<p>补充：在进行归一化过程中, 由于归一化操作会减去均值, 所以偏置项可以忽略或者置0, 即 $BN(W x+b)=B N(Wx)$</p>
 </blockquote>
-<h4><span id="13-batchnormalization在测试阶段">1.3 Batch
-Normalization在测试阶段</span></h4>
-<p>首先, 在训练阶段,
-我们是对一个mini-batch的数据计算每个维度上的均值和方差。为什么不用全量数据的均值
-和方差呢? 这样一来,
-不管哪个batch都用的一种分布了，会降低模型的鲁棒性。</p>
+<h4><span id="13-batch-normalization在测试阶段">1.3 Batch Normalization在测试阶段</span></h4>
+<p>首先, 在训练阶段, 我们是对一个mini-batch的数据计算每个维度上的均值和方差。为什么不用全量数据的均值 和方差呢? 这样一来, 不管哪个batch都用的一种分布了，会降低模型的鲁棒性。</p>
 <ul>
-<li><p>在测试阶段, 有可能只需要预测一个样本或者很少样本,
-不足以拼成一个mini-batch, 此时计算得到的均值和方
-差一定是有偏估计。为了解决这一问题, BN的原论文中提出下面的方法:</p></li>
-<li><p><font color="red">保留训练阶段, 每个mini-batch的均值和方差信息:
-<span class="math inline">\(\mu_{\text {batch }}, \sigma_{\text {batch
-}}^2\)</span> 。对测试集的数据, 计算均值和方差的无偏
-估计：</font></p></li>
+<li>
+<p>在测试阶段, 有可能只需要预测一个样本或者很少样本, 不足以拼成一个mini-batch, 此时计算得到的均值和方 差一定是有偏估计。为了解决这一问题, BN的原论文中提出下面的方法:</p>
+</li>
+<li>
+<p><font color="red">保留训练阶段, 每个mini-batch的均值和方差信息: $\mu_{\text {batch }}, \sigma_{\text {batch }}^2$ 。对测试集的数据, 计算均值和方差的无偏 估计：</font></p>
+</li>
 </ul>
-<p><span class="math display">\[
-\begin{gathered}
-\mu_{\text {test }}=\mathbb{E}\left(\mu_{\text {batch }}\right),
-\sigma_{\text {test }}^2=\frac{m}{m-1} \mathbb{E}\left(\sigma_{\text
-{batch }}^2\right) \\
-B N\left(X_{\text {test }}\right)=\gamma \cdot \frac{X_{\text {test
-}}-\mu_{\text {test }}}{\sqrt{\sigma^2+\epsilon}}+\beta
-\end{gathered}
-\]</span></p>
+<p>$$<br>
+\begin{gathered}<br>
+\mu_{\text {test }}=\mathbb{E}\left(\mu_{\text {batch }}\right), \sigma_{\text {test }}^2=\frac{m}{m-1} \mathbb{E}\left(\sigma_{\text {batch }}^2\right) \<br>
+B N\left(X_{\text {test }}\right)=\gamma \cdot \frac{X_{\text {test }}-\mu_{\text {test }}}{\sqrt{\sigma^2+\epsilon}}+\beta<br>
+\end{gathered}<br>
+$$</p>
 <h5><span id="为什么训练和测试的时候计算方差不一样呢"><strong>为什么训练和测试的时候计算方差不一样呢？</strong></span></h5>
-<p>训练时，计算当前batch
-var时，当前batch的样本就是该随机变量的所有样本了，因此除以n就好了。而测试时是全局样本的var，<strong>因此当前batch的样本只是该随机变量的部分采样样本，为了是无偏估计，必须乘以
-n/n-1</strong>。</p>
-<p>在计算随机变量的均值和方差时, 一般情况下无法知道该随机变量的分布公式,
-因此我们通常会采样一些样本,
-然后计算这些样本的均值和方差作为该随机变量的均值和方差。<strong>由于计算这些样本的方差时减的是样本均值而不
-是随机变量的均值, 而样本均值是和采样的样本有关的, 是有偏估计,
-如果要得到无偏估计, 需要乘以 <span class="math inline">\(n /
-n-1\)</span> 。</strong> <span class="math display">\[
-\begin{array}{r}
-E\left(\frac{1}{n}
-\sum_{i=1}^n\left(X_i-\bar{X}\right)^2\right)=\frac{1}{n}
-E\left(\sum_{i=1}^n\left(X_i-\mu+\mu-\bar{X}\right)^2\right) \\
-=\frac{1}{n}\left(\sum_{i=1}^n E\left(\left(x_i-\mu\right)^2\right)-n
-E\left((\bar{X}-\mu)^2\right)\right) \\
-=\frac{1}{n}(n \operatorname{Var}(X)-n
-\operatorname{Var}(\bar{X}))=\operatorname{Var}(X)-\operatorname{Var}(\bar{X})
-\\
-=\sigma^2-\frac{\sigma^2}{n}=\frac{n-1}{n} \sigma^2
-\end{array}
-\]</span> 在实际中，<strong>采用的是moving
-average的方式来实现</strong>，也就是在每个batch训练时，用当前batch计算出的均值和方差(即sample_mean和sample_var)
-来更新
-running_mean和runing_var。<strong>最后测试使用的实际是running_mean和running_var</strong>。</p>
+<p>训练时，计算当前batch var时，当前batch的样本就是该随机变量的所有样本了，因此除以n就好了。而测试时是全局样本的var，<strong>因此当前batch的样本只是该随机变量的部分采样样本，为了是无偏估计，必须乘以 n/n-1</strong>。</p>
+<p>在计算随机变量的均值和方差时, 一般情况下无法知道该随机变量的分布公式, 因此我们通常会采样一些样本, 然后计算这些样本的均值和方差作为该随机变量的均值和方差。<strong>由于计算这些样本的方差时减的是样本均值而不 是随机变量的均值, 而样本均值是和采样的样本有关的, 是有偏估计, 如果要得到无偏估计, 需要乘以 $n / n-1$ 。</strong><br>
+$$<br>
+\begin{array}{r}<br>
+E\left(\frac{1}{n} \sum_{i=1}<sup>n\left(X_i-\bar{X}\right)</sup>2\right)=\frac{1}{n} E\left(\sum_{i=1}<sup>n\left(X_i-\mu+\mu-\bar{X}\right)</sup>2\right) \<br>
+=\frac{1}{n}\left(\sum_{i=1}^n E\left(\left(x_i-\mu\right)^2\right)-n E\left((\bar{X}-\mu)^2\right)\right) \<br>
+=\frac{1}{n}(n \operatorname{Var}(X)-n \operatorname{Var}(\bar{X}))=\operatorname{Var}(X)-\operatorname{Var}(\bar{X}) \<br>
+=\sigma<sup>2-\frac{\sigma</sup>2}{n}=\frac{n-1}{n} \sigma^2<br>
+\end{array}<br>
+$$<br>
+在实际中，<strong>采用的是moving average的方式来实现</strong>，也就是在每个batch训练时，用当前batch计算出的均值和方差(即sample_mean和sample_var) 来更新 running_mean和runing_var。<strong>最后测试使用的实际是running_mean和running_var</strong>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">running_mean = momentum * running_mean + (<span class="number">1</span> - momentum) * sample_mean</span><br><span class="line">running_var = momentum * running_var + (<span class="number">1</span> - momentum) * sample_var</span><br><span class="line"></span><br><span class="line">x_stand = (x - running_mean) / np.sqrt(running_var)</span><br><span class="line">out = x_stand * gamma + beta</span><br></pre></td></tr></table></figure>
 <h4><span id="14-batch-normalization的作用">1.4 Batch Normalization的作用</span></h4>
 <p>总结起来就是为了<strong>稳定训练，加速收敛</strong>。具体来说，有下面几种作用：</p>
 <ul>
-<li><strong>更好的尺度不变性：</strong>也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
+<li>**更好的尺度不变性：**也就是说不管低层的参数如何变化，逐层的输入分布都保持相对稳定。
 <ul>
 <li><strong><font color="red">尺度不变性能够提高梯度下降算法的效率，从而加快收敛</font></strong>;</li>
 <li><strong><font color="red">归一化到均值为0，方差为1的分布也能够使得经过sigmoid，tanh等激活函数以后，尽可能落在梯度非饱和区，缓解梯度消失的问题。</font></strong>【<strong>bn和ln都可以比较好的抑制梯度消失和梯度爆炸的情况</strong>】;</li>
-</ul></li>
-<li><strong>更平滑的优化地形：</strong>更平滑的优化地形意味着<strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
-<li><strong>隐性的正则化效果：</strong>训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
-<li><strong><font color="red">
-对参数初始化和学习率大小不太敏感：</font></strong>BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
 </ul>
-<p>假设对网络参数 <span class="math inline">\(W\)</span> 进行缩放得到
-<span class="math inline">\(a W\)</span> 。对于缩放前的值 <span class="math inline">\(W x\)</span>, 设其均值为 <span class="math inline">\(\mu_1\)</span>, 方差为 <span class="math inline">\(\sigma_1^2\)</span>; 对于缩放值 <span class="math inline">\(a W x\)</span>, 设其均值为 <span class="math inline">\(\mu_2\)</span>, 方差为 <span class="math inline">\(\sigma_2^2\)</span>, 则有: <span class="math inline">\(\mu_2=a \mu_1, \sigma_2^2=a^2 \sigma_1^2\)</span>
-。忽略 <span class="math inline">\(\epsilon\)</span>, 则有: <span class="math display">\[
-\begin{aligned}
-&amp; B N(a W x)=\gamma \cdot \frac{a W
-x-\mu_2}{\sqrt{\sigma_2^2}}+\beta=\gamma \cdot \frac{a W x-a
-\mu_1}{\sqrt{a^2 \sigma_1^2}}+\beta=\gamma \cdot \frac{W
-x-\mu_1}{\sqrt{\sigma_1^2}}+\beta=B N(W x) \\
-&amp; \frac{\partial B N(a W x)}{\partial x}=\gamma \cdot \frac{a
-W}{\sqrt{\sigma_2^2}}=\gamma \cdot \frac{a W}{\sqrt{a^2
-\sigma_1^2}}=\gamma \cdot \frac{W}{\sqrt{\sigma_1^2}}=\frac{\partial B
-N(W x)}{\partial x} \\
-&amp; \frac{\partial B N(a W x)}{\partial(a W)}=\gamma \cdot
-\frac{x}{\sqrt{\sigma_2^2}}=\gamma \cdot \frac{x}{a
-\sqrt{\sigma_1^2}}=\frac{1}{a} \frac{\partial B N(W x)}{\partial W}
-\end{aligned}
-\]</span> <strong>经过BN操作后, 权重的缩放会被抺去, 保证输入分布稳定,
-同时权重的缩放也不会改变对输入的梯度</strong>, 而当权 重越大时
-(即a越大时)，权重的梯度越小，即变化越小，保证了梯度不会依赖于参数的尺度。
-注意一个问题是: 计算特征 <span class="math inline">\(x\)</span>
-的统计量的时候, 都是在统计每个特征维度上统计量, 也就是对该维度上的所有样
-本求和取均值，或者求方差, axis=bsz那个维度!</p>
-<p><strong>还要注意一个问题： (一个简单的MLP)
-上面讨论的所有情况的shape都是</strong>：(batch_size，hidden_dim),
-此时针对每个特征维度,
-我们对整个batch的样本在这个维度上计算统计量。但实际情况是, CV和NLP在应用
-normalization时, shape并没有这么简单。</p>
-<h4><span id="15-cnn中的batchnormalization实现">1.5 CNN中的Batch
-Normalization实现</span></h4>
-<p>针对CV，<strong>一个CNN的常见的输出shape是</strong>：(N, C, H, W)
-，针对BN的话，这个特征维度是Channel，也就是我们需要在一个batch中所有样本<em>所有H</em>所有W上进行统计。最后得到的均值和方差向量都是(C),
-因此两个参数也是C维的向量。</p>
-<p>卷积操作：最初输入的图片样本的 channels
-，取决于图片类型，比如RGB；常见的图像就是（N，3，H，W）。一开始，卷积核的shape可以是（3，3，3），第一个维度表示3个通道，也就是说通道有多少个，卷积核就有多少个。注意不同图像，图像不同位置使用的卷积核的参数都共享的。一个卷积核可以输出一个特征图（h1，w1），多个卷积核可以得到多个特征图，从而形成特征图的shape是（C，H，W），也就是说<strong>卷积核数=
-通道数</strong>。</p>
-<p>因为卷积核数=通道数, 所以一个卷积核可以得到一个通道的特征图数据,
-<strong>我们希望不同图像, 图像不同位置用
-这个卷积核执行卷积以后的数据分布是稳定的，所以需要在通道维度执行normalization。</strong></p>
-<p>对于输入的特征图: <span class="math inline">\(x \in \mathbb{R}^{N
-\times C \times H \times W}\)</span> 包含 <span class="math inline">\(\mathrm{N}\)</span> 个样本, 每个样本的通道数为
-<span class="math inline">\(\mathrm{C}\)</span>, 高为 <span class="math inline">\(\mathrm{H}\)</span>, 宽为 <span class="math inline">\(\mathrm{W}\)</span> 。求均值和方差 时, 是在 <span class="math inline">\(N, H, W\)</span> 上操作, 保留 <span class="math inline">\(\mathrm{C}\)</span> 的维度, 最后形成维度为 <span class="math inline">\(\mathrm{C}\)</span> 的均值和方差向量。 <span class="math display">\[
-\begin{gathered}
-\mu_c(x)=\frac{1}{N H W} \sum_{n=1}^N \sum_{h=1}^H \sum_{w=1}^W x_{n c h
-w} \\
-\sigma_c(x)=\sqrt{\frac{1}{N H W} \sum_{n=1}^N \sum_{h=1}^H
-\sum_{w=1}^W\left(x_{n c h w}-\mu_c(x)\right)^2+\epsilon}
-\end{gathered}
-\]</span>
+</li>
+<li><strong>更平滑的优化地形：<strong>更平滑的优化地形意味着</strong>局部最小值的点更少</strong>，能够使得梯度更加reliable和predictive，从而让我们有更大的”信心”迈出更大的step来优化，即可以使用更大的学习率来加速收敛。</li>
+<li>**隐性的正则化效果：**训练时采用随机选取mini-batch来计算均值和方差，不同mini-batch的均值和方差不同，近似于引入了随机噪音，使得模型不会过拟合到某一特定的均值和方差参数下，提高网络泛化能力。</li>
+<li>**<font color="red"> 对参数初始化和学习率大小不太敏感：</font>**BN操作可以抑制参数微小变化随网络加深的影响，使网络可以对参数初始化和尺度变化适应性更强，从而可以使用更大的学习率而不用担心参数更新step过大带来的训练不稳定。</li>
+</ul>
+<p>假设对网络参数 $W$ 进行缩放得到 $a W$ 。对于缩放前的值 $W x$, 设其均值为 $\mu_1$, 方差为 $\sigma_1^2$; 对于缩放值 $a W x$, 设其均值为 $\mu_2$, 方差为 $\sigma_2^2$, 则有: $\mu_2=a \mu_1, \sigma_2<sup>2=a</sup>2 \sigma_1^2$ 。忽略 $\epsilon$, 则有:<br>
+$$<br>
+\begin{aligned}<br>
+&amp; B N(a W x)=\gamma \cdot \frac{a W x-\mu_2}{\sqrt{\sigma_2^2}}+\beta=\gamma \cdot \frac{a W x-a \mu_1}{\sqrt{a^2 \sigma_1^2}}+\beta=\gamma \cdot \frac{W x-\mu_1}{\sqrt{\sigma_1^2}}+\beta=B N(W x) \<br>
+&amp; \frac{\partial B N(a W x)}{\partial x}=\gamma \cdot \frac{a W}{\sqrt{\sigma_2^2}}=\gamma \cdot \frac{a W}{\sqrt{a^2 \sigma_1^2}}=\gamma \cdot \frac{W}{\sqrt{\sigma_1^2}}=\frac{\partial B N(W x)}{\partial x} \<br>
+&amp; \frac{\partial B N(a W x)}{\partial(a W)}=\gamma \cdot \frac{x}{\sqrt{\sigma_2^2}}=\gamma \cdot \frac{x}{a \sqrt{\sigma_1^2}}=\frac{1}{a} \frac{\partial B N(W x)}{\partial W}<br>
+\end{aligned}<br>
+$$<br>
+<strong>经过BN操作后, 权重的缩放会被抺去, 保证输入分布稳定, 同时权重的缩放也不会改变对输入的梯度</strong>, 而当权 重越大时 (即a越大时)，权重的梯度越小，即变化越小，保证了梯度不会依赖于参数的尺度。<br>
+注意一个问题是: 计算特征 $x$ 的统计量的时候, 都是在统计每个特征维度上统计量, 也就是对该维度上的所有样 本求和取均值，或者求方差, axis=bsz那个维度!</p>
+<p><strong>还要注意一个问题： (一个简单的MLP) 上面讨论的所有情况的shape都是</strong>：(batch_size，hidden_dim), 此时针对每个特征维度, 我们对整个batch的样本在这个维度上计算统计量。但实际情况是, CV和NLP在应用 normalization时, shape并没有这么简单。</p>
+<h4><span id="15-cnn中的batch-normalization实现">1.5 CNN中的Batch Normalization实现</span></h4>
+<p>针对CV，<strong>一个CNN的常见的输出shape是</strong>：(N, C, H, W) ，针对BN的话，这个特征维度是Channel，也就是我们需要在一个batch中所有样本<em>所有H</em>所有W上进行统计。最后得到的均值和方差向量都是©, 因此两个参数也是C维的向量。</p>
+<p>卷积操作：最初输入的图片样本的 channels ，取决于图片类型，比如RGB；常见的图像就是（N，3，H，W）。一开始，卷积核的shape可以是（3，3，3），第一个维度表示3个通道，也就是说通道有多少个，卷积核就有多少个。注意不同图像，图像不同位置使用的卷积核的参数都共享的。一个卷积核可以输出一个特征图（h1，w1），多个卷积核可以得到多个特征图，从而形成特征图的shape是（C，H，W），也就是说<strong>卷积核数= 通道数</strong>。</p>
+<p>因为卷积核数=通道数, 所以一个卷积核可以得到一个通道的特征图数据, <strong>我们希望不同图像, 图像不同位置用 这个卷积核执行卷积以后的数据分布是稳定的，所以需要在通道维度执行normalization。</strong></p>
+<p>对于输入的特征图: $x \in \mathbb{R}^{N \times C \times H \times W}$ 包含 $\mathrm{N}$ 个样本, 每个样本的通道数为 $\mathrm{C}$, 高为 $\mathrm{H}$, 宽为 $\mathrm{W}$ 。求均值和方差 时, 是在 $N, H, W$ 上操作, 保留 $\mathrm{C}$ 的维度, 最后形成维度为 $\mathrm{C}$ 的均值和方差向量。<br>
+$$<br>
+\begin{gathered}<br>
+\mu_c(x)=\frac{1}{N H W} \sum_{n=1}^N \sum_{h=1}^H \sum_{w=1}^W x_{n c h w} \<br>
+\sigma_c(x)=\sqrt{\frac{1}{N H W} \sum_{n=1}^N \sum_{h=1}^H \sum_{w=1}^W\left(x_{n c h w}-\mu_c(x)\right)^2+\epsilon}<br>
+\end{gathered}<br>
+$$<br>
 <strong>在实现中需要注意的一点是：到底是对哪个维度求均值和方差</strong></p>
 <ul>
-<li><strong>对于shape为 <span class="math inline">\(b x d\)</span>
-的张量来说, 特征维度是最后一维</strong>： <span class="math inline">\(d\)</span> 。求均值和方差实际就是：对于 <span class="math inline">\(d\)</span> 中的每一维, 统 计 <span class="math inline">\(b\)</span> 个样本的均值和方差,
-均值和方差向量的形状为( <span class="math inline">\(d)\)</span>
-。实现：x.mean(dim=0)。</li>
-<li><strong>对于shape为BCHW的张量来说, 如果是batch Normalization,
-特征维度是channel: C</strong>。求均值和方差 实际就是：先reshape：C, BHW,
-然后统计BHW个样本的均值和方差, 均值和方差向量形状为(C)。实现: x.permute
-<span class="math inline">\((1,0,2,3) \cdot v i e w(3,-1) \cdot\)</span>
-mean(dim=1)</li>
-<li>总结来说: batch
-Normalization实际是对特征的每一维统计所有样本的均值和方差,
-CNN里面特征维度是 channel维, 所以最后向量形状就是(C)。</li>
-<li><font color="red">提前说一下: Layer
-Normalization实际是对每个样本的所有维度统计均值和方差,
-所以求和取平均的是d 维度, 最后向量形状就是(B, max_len)。</font></li>
+<li><strong>对于shape为 $b x d$ 的张量来说, 特征维度是最后一维</strong>： $d$ 。求均值和方差实际就是：对于 $d$ 中的每一维, 统 计 $b$ 个样本的均值和方差, 均值和方差向量的形状为( $d)$ 。实现：x.mean(dim=0)。</li>
+<li><strong>对于shape为BCHW的张量来说, 如果是batch Normalization, 特征维度是channel: C</strong>。求均值和方差 实际就是：先reshape：C, BHW, 然后统计BHW个样本的均值和方差, 均值和方差向量形状为©。实现: x.permute $(1,0,2,3) \cdot v i e w(3,-1) \cdot$ mean(dim=1)</li>
+<li>总结来说: batch Normalization实际是对特征的每一维统计所有样本的均值和方差, CNN里面特征维度是 channel维, 所以最后向量形状就是©。</li>
+<li><font color="red">提前说一下: Layer Normalization实际是对每个样本的所有维度统计均值和方差, 所以求和取平均的是d 维度, 最后向量形状就是(B, max_len)。</font></li>
 </ul>
-<h3><span id="二-batchnormalization-vs-layer-normalization">二、Batch
-Normalization VS Layer Normalization</span></h3>
+<h3><span id="二-batch-normalization-vs-layer-normalization">二、Batch Normalization VS Layer Normalization</span></h3>
 <h4><span id="概要">概要</span></h4>
-<p><strong>上一节介绍了Batch
-Normalization的原理，作用和实现（既讲了MLP的情况，又讲了CNN的情况）</strong>。然而我们知道，<strong>Transformer里面实际使用的Layer
-Normalization</strong>。因此，本文将对比Batch Normalization介绍Layer
-Normalization。</p>
-<h4><span id="21-batchnormalization的些许缺陷">2.1 Batch
-Normalization的些许缺陷</span></h4>
-<p>要讲Layer Normalization，先讲讲Batch
-Normalization存在的一些问题：即不适用于什么场景。</p>
+<p><strong>上一节介绍了Batch Normalization的原理，作用和实现（既讲了MLP的情况，又讲了CNN的情况）</strong>。然而我们知道，<strong>Transformer里面实际使用的Layer Normalization</strong>。因此，本文将对比Batch Normalization介绍Layer Normalization。</p>
+<h4><span id="21-batch-normalization的些许缺陷">2.1 Batch Normalization的些许缺陷</span></h4>
+<p>要讲Layer Normalization，先讲讲Batch Normalization存在的一些问题：即不适用于什么场景。</p>
 <ul>
 <li><strong>BN在mini-batch较小的情况下不太适用</strong>。BN是对整个mini-batch的样本统计均值和方差，当训练样本数很少时，<strong>样本的均值和方差不能反映全局的统计分布信息</strong>，从而导致效果下降。</li>
-<li><strong>BN无法应用于RNN（Sq2Sq）</strong>，RNN实际是共享的MLP，在时间维度上展开，每个step的输出是(bsz,
-hidden_dim)。由于不同句子的同一位置的分布大概率是不同的，所以应用BN来约束是没意义的。注：<strong>而BN应用在CNN可以的原因是同一个channel的特征图都是由同一个卷积核产生的</strong>。</li>
+<li><strong>BN无法应用于RNN（Sq2Sq）</strong>，RNN实际是共享的MLP，在时间维度上展开，每个step的输出是(bsz, hidden_dim)。由于不同句子的同一位置的分布大概率是不同的，所以应用BN来约束是没意义的。注：<strong>而BN应用在CNN可以的原因是同一个channel的特征图都是由同一个卷积核产生的</strong>。</li>
 </ul>
 <p><strong>LN原文的说法是</strong>：在训练时，对BN来说需要保存每个step的统计信息（均值和方差）。在测试时，由于变长句子的特性，测试集可能出现比训练集更长的句子，所以对于后面位置的step，是没有训练的统计量使用的。（不过实践中的话都是固定了maxlen，然后padding的。）<strong>不同句子的长度不一样，对所有的样本统计均值是无意义的，因为某些样本在后面的timestep时其实是padding。</strong></p>
 <h4><span id="22-layer-normalization的原理">2.2 Layer Normalization的原理</span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903590.jpg" alt="img" style="zoom: 50%;"></p>
-<p><strong>BN是对batch的维度去做归一化，也就是针对不同样本的同一特征做操作。LN是对hidden的维度去做归一化，也就是针对单个样本的不同特征做操作。</strong>因此<strong>LN可以不受样本数的限制。</strong></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903590.jpg" alt="img" style="zoom: 50%;">
+<p><strong>BN是对batch的维度去做归一化，也就是针对不同样本的同一特征做操作。LN是对hidden的维度去做归一化，也就是针对单个样本的不同特征做操作。<strong>因此</strong>LN可以不受样本数的限制。</strong></p>
 <p><strong>BN就是在每个特征维度上统计所有样本的值，计算均值和方差；LN就是在每个样本上统计所有维度的值，计算均值和方差</strong>（注意，这里都是指的简单的MLP情况，输入特征是（<strong>bsz，hidden_dim</strong>））。所以BN在每个特征维度上分布是稳定的，LN是每个样本的分布是稳定的。</p>
-<h4><span id="23-transformer中layernormalization的实现">2.3 Transformer中Layer
-Normalization的实现</span></h4>
-<p>对于一个输入tensor：(batch_size, max_len, hidden_dim)
-应该如何应用LN层呢？</p>
+<h4><span id="23-transformer中layer-normalization的实现">2.3 Transformer中Layer Normalization的实现</span></h4>
+<p>对于一个输入tensor：(batch_size, max_len, hidden_dim) 应该如何应用LN层呢？</p>
 <blockquote>
-<p>注意，和Batch
-Normalization一样，同样会施以线性映射的。区别就是操作的维度不同而已！公式都是统一的：<strong>减去均值除以标准差，施以线性映射</strong>。同时LN也有BN的那些个好处！</p>
+<p>注意，和Batch Normalization一样，同样会施以线性映射的。区别就是操作的维度不同而已！公式都是统一的：<strong>减去均值除以标准差，施以线性映射</strong>。同时LN也有BN的那些个好处！</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># features: (bsz, max_len, hidden_dim)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LayerNorm</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, features, eps=<span class="number">1e-6</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(LayerNorm, self).__init__()</span><br><span class="line">        self.a_2 = nn.Parameter(torch.ones(features))</span><br><span class="line">        self.b_2 = nn.Parameter(torch.zeros(features))</span><br><span class="line">        self.eps = eps</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 就是在统计每个样本所有维度的值，求均值和方差，所以就是在hidden dim上操作</span></span><br><span class="line">        <span class="comment"># 相当于变成[bsz*max_len, hidden_dim], 然后再转回来, 保持是三维</span></span><br><span class="line">        mean = x.mean(-<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># mean: [bsz, max_len, 1]</span></span><br><span class="line">        std = x.std(-<span class="number">1</span>, keepdim=<span class="literal">True</span>) <span class="comment"># std: [bsz, max_len, 1]</span></span><br><span class="line">        <span class="comment"># 注意这里也在最后一个维度发生了广播</span></span><br><span class="line">        <span class="keyword">return</span> self.a_2 * (x - mean) / (std + self.eps) + self.b_2</span><br></pre></td></tr></table></figure>
-<h4><span id="24讨论transformer-为什么使用-layernormalization而不是其他的归一化方法">2.4
-讨论：Transformer 为什么使用 Layer
-normalization，而不是其他的归一化方法？</span></h4>
+<h4><span id="24-讨论transformer-为什么使用-layer-normalization而不是其他的归一化方法">2.4 讨论：Transformer 为什么使用 Layer normalization，而不是其他的归一化方法？</span></h4>
 <p>当然这个问题还没有啥定论，包括BN和LN为啥能work也众说纷纭。这里先列出一些相关的研究论文。</p>
 <ul>
 <li>Leveraging Batch Normalization for Vision Transformers</li>
 <li>PowerNorm: Rethinking Batch Normalization in Transformers</li>
 <li>Understanding and Improving Layer Normalization</li>
 </ul>
-<h5><span id="1understanding-and-improving-layer-normalization">(1)
-Understanding and Improving Layer Normalization</span></h5>
+<h5><span id="1-understanding-and-improving-layer-normalization">(1) Understanding and Improving Layer Normalization</span></h5>
 <p>这篇文章主要研究LN为啥work，除了一般意义上认为可以稳定前向输入分布，加快收敛快，还有没有啥原因。最后的结论有：</p>
 <ul>
-<li><strong>相比于稳定前向输入分布，反向传播时mean和variance计算引入的梯度更有用，可以稳定反向传播的梯度</strong>（让<span class="math inline">\(\frac{\partial l o s s}{\partial x}\)</span>
-梯度的均值趋于0，同时降低其方差，相当于re-zeros和re-scales操作），起名叫gradient
-normalization（其实就是ablation了下，把mean和variance的梯度断掉，看看效果)</li>
-<li><strong>去掉
-gain和bias这两个参数可以在很多数据集上有提升，可能是因为这两个参数会带来过拟合</strong>，因为这两个参数是在训练集上学出来的</li>
+<li><strong>相比于稳定前向输入分布，反向传播时mean和variance计算引入的梯度更有用，可以稳定反向传播的梯度</strong>（让$\frac{\partial l o s s}{\partial x}$ 梯度的均值趋于0，同时降低其方差，相当于re-zeros和re-scales操作），起名叫gradient normalization（其实就是ablation了下，把mean和variance的梯度断掉，看看效果)</li>
+<li><strong>去掉 gain和bias这两个参数可以在很多数据集上有提升，可能是因为这两个参数会带来过拟合</strong>，因为这两个参数是在训练集上学出来的</li>
 </ul>
 <blockquote>
-<p>注：Towards Stabilizing Batch Statistics in Backward Propagation
-也讨论了额外两个统计量：mean和variance的梯度的影响。实验中看到了对于小的batch
-size，在反向传播中这两个统计量的方差甚至大于前向输入分布的统计量的方差，其实说白了就是这两个与梯度相关的统计量的不稳定是BN在小batch
-size下不稳定的关键原因之一。</p>
+<p>注：Towards Stabilizing Batch Statistics in Backward Propagation 也讨论了额外两个统计量：mean和variance的梯度的影响。实验中看到了对于小的batch size，在反向传播中这两个统计量的方差甚至大于前向输入分布的统计量的方差，其实说白了就是这两个与梯度相关的统计量的不稳定是BN在小batch size下不稳定的关键原因之一。</p>
 </blockquote>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903952.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h5><span id="2powernorm-rethinking-batch-normalization-in-transformers">(2)
-PowerNorm: Rethinking Batch Normalization in Transformers</span></h5>
-<p><strong>这篇文章就主要研究Transformer中BN为啥表现不太好</strong>。研究了训练中的四个统计量：batch的均值和方差，以及他们的梯度的均值和方差。对于batch的均值和方差，计算了他们和running
-statistics（就是用移动平均法累积的均值和方差，见前面的文章）的欧氏距离。可以看到NLP任务上（IWSLT14）batch的均值和方差一直震荡，偏离全局的running
-statistics，而CV任务也相对稳定。对于他们梯度的均值和方差，研究了其magnitude（绝对值），可以看到CV任务上震荡更小，且训练完成后，也没有离群点。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903952.jpg" alt="img"></p>
+<h5><span id="2-powernorm-rethinking-batch-normalization-in-transformers">(2) PowerNorm: Rethinking Batch Normalization in Transformers</span></h5>
+<p><strong>这篇文章就主要研究Transformer中BN为啥表现不太好</strong>。研究了训练中的四个统计量：batch的均值和方差，以及他们的梯度的均值和方差。对于batch的均值和方差，计算了他们和running statistics（就是用移动平均法累积的均值和方差，见前面的文章）的欧氏距离。可以看到NLP任务上（IWSLT14）batch的均值和方差一直震荡，偏离全局的running statistics，而CV任务也相对稳定。对于他们梯度的均值和方差，研究了其magnitude（绝对值），可以看到CV任务上震荡更小，且训练完成后，也没有离群点。</p>
 <p>总结来说，<strong>Transformer中BN表现不太好的原因可能在于CV和NLP数据特性的不同，对于NLP数据，前向和反向传播中，batch统计量及其梯度都不太稳定。</strong></p>
-<h5><span id="3leveraging-batch-normalization-for-vision-transformers">(3)
-Leveraging Batch Normalization for Vision Transformers</span></h5>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903408.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>刚刚讲了对于NLP
-data，为啥Transformer的BN表现不好。这篇文章就是去研究对于CV
-data，VIT中能不能用BN呢。有一些有意思的观点：</p>
+<h5><span id="3-leveraging-batch-normalization-for-vision-transformers">(3) Leveraging Batch Normalization for Vision Transformers</span></h5>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301903408.jpg" alt="img"></p>
+<p>刚刚讲了对于NLP data，为啥Transformer的BN表现不好。这篇文章就是去研究对于CV data，VIT中能不能用BN呢。有一些有意思的观点：</p>
 <ul>
 <li><strong>LN特别适合处理变长数据，因为是对channel维度做操作(这里指NLP中的hidden维度)，和句子长度和batch大小无关</strong></li>
-<li><strong>BN比LN在inference的时候快，因为不需要计算mean和variance，直接用running
-mean和running variance就行</strong></li>
-<li><strong>直接把VIT中的LN替换成BN，容易训练不收敛，原因是FFN没有被Normalized，所以还要在FFN
-block里面的两层之间插一个BN层。（可以加速20% VIT的训练）</strong></li>
+<li><strong>BN比LN在inference的时候快，因为不需要计算mean和variance，直接用running mean和running variance就行</strong></li>
+<li><strong>直接把VIT中的LN替换成BN，容易训练不收敛，原因是FFN没有被Normalized，所以还要在FFN block里面的两层之间插一个BN层。（可以加速20% VIT的训练）</strong></li>
 </ul>
 <h4><span id="总结">总结</span></h4>
 <ul>
-<li><strong>Layer Normalization和Batch
-Normalization一样都是一种归一化方法，因此，BatchNorm的好处LN也有</strong></li>
+<li><strong>Layer Normalization和Batch Normalization一样都是一种归一化方法，因此，BatchNorm的好处LN也有</strong></li>
 <li>然而BN无法胜任mini-batch size很小的情况，也很难应用于RNN。</li>
 <li>LN特别适合处理变长数据，因为是对channel维度做操作(这里指NLP中的hidden维度)，和句子长度和batch大小无关。</li>
-<li>BN比LN在inference的时候快，因为不需要计算mean和variance，直接用running
-mean和running variance就行。</li>
+<li>BN比LN在inference的时候快，因为不需要计算mean和variance，直接用running mean和running variance就行。</li>
 <li>BN和LN在实现上的区别仅仅是：BN是对batch的维度去做归一化，也就是针对不同样本的同一特征做操作。LN是对hidden的维度去做归一化，也就是针对单个样本的不同特征做操作。因此，他们都可以归结为：减去均值除以标准差，施以线性映射。</li>
 </ul>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li><strong>Transformer中的归一化(四)：BatchNormalization的原理、作用和实现</strong>:https://zhuanlan.zhihu.com/p/481277619?utm_source=wechatMessage_undefined_bottom</li>
-<li><strong>Transformer中的归一化(五)：Layer Norm的原理和实现 &amp;
-为什么Transformer要用LayerNorm</strong> - Gordon Lee的文章 - 知乎
-https://zhuanlan.zhihu.com/p/492803886</li>
+<li><strong>Transformer中的归一化(四)：BatchNormalization的原理、作用和实现</strong>:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/481277619?utm_source=wechatMessage_undefined_bottom">https://zhuanlan.zhihu.com/p/481277619?utm_source=wechatMessage_undefined_bottom</a></li>
+<li><strong>Transformer中的归一化(五)：Layer Norm的原理和实现 &amp; 为什么Transformer要用LayerNorm</strong> - Gordon Lee的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/492803886">https://zhuanlan.zhihu.com/p/492803886</a></li>
 </ul>
 
     </div>

@@ -162,7 +162,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -293,28 +293,19 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="hetgnn">HetGNN</span></h2>
 <blockquote>
-<p>HetGNN --异构图处理 - wlkq的文章 - 知乎
-https://zhuanlan.zhihu.com/p/411528472</p>
-<p>异构图embedding学习，舍HetGNN其谁？ - 李杰的文章 - 知乎
-https://zhuanlan.zhihu.com/p/392367843</p>
+<p>HetGNN --异构图处理 - wlkq的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/411528472">https://zhuanlan.zhihu.com/p/411528472</a></p>
+<p>异构图embedding学习，舍HetGNN其谁？ - 李杰的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/392367843">https://zhuanlan.zhihu.com/p/392367843</a></p>
 </blockquote>
-<p>图嵌入领域，同构图算法大行其道，如：DeepWalk、Node2vec、GCN、GraphSage、GAT。但实际业务场景中异构图居多，除了经典的MetaPath2vec、RGCN，貌似其他选项并不多，今天就为大家介绍一款异构图嵌入学习神器---HetGNN。</p>
+<p>图嵌入领域，同构图算法大行其道，如：DeepWalk、Node2vec、GCN、GraphSage、GAT。但实际业务场景中异构图居多，除了经典的MetaPath2vec、RGCN，貌似其他选项并不多，今天就为大家介绍一款异构图嵌入学习神器—HetGNN。</p>
 <h3><span id="hetgnn简介">HetGNN简介</span></h3>
-<p>提出的网络名称：<strong>HetGNN（Heterogeneous Graph Neural
-Network），2019 SIGKDD</strong></p>
-<p>核心理念：heterogeneous structural graph information + <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=heterogeneous&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22392367843%22%7D">heterogeneous</a>
-attributes or contents for each node</p>
+<p>提出的网络名称：<strong>HetGNN（Heterogeneous Graph Neural Network），2019 SIGKDD</strong></p>
+<p>核心理念：heterogeneous structural graph information + <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=heterogeneous&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22392367843%22%7D">heterogeneous</a> attributes or contents for each node</p>
 <h3><span id="异构图嵌入学习">异构图嵌入学习</span></h3>
 <p>异构图算法相较同构图算法有如下三方面挑战：</p>
 <ul>
-<li>异质图中的大多数节点并不会连接所有类型的其他节点。如academic
-graph中user节点不会直接连到venue（论文）节点上。另外说节点能够连接的邻居数也不一样。大部分GNN直接聚合邻居（一阶）节点信息，而远处传过来的节点信息会随着距离而减弱。hub节点会被弱关联的邻居节点扰乱信息，冷启动的节点会因为邻居不足而导致不能充分表示。<strong>那么问题1就是：如何对异质图上的每个节点采样到强相关的邻居节点呢？（这边我认为一般都是用了注意力机制了）</strong></li>
-<li>每个节点都带有非结构化的属性特征，如text、image，常用的从concatenate或者linear
-transformation不能建模节点属性间的deep
-interaction。<strong>那么问题2就是：如何设计异质图上节点属性的encoder（编码器）来处理不同节点内容异质性问题。</strong></li>
-<li>不同类型的邻居节点对生成节点embedding的贡献也不一样。例如在academic
-graph，author和paper节点对author的embedding的影响会强如venue，venue节点包含不同的主题，具有更一般的嵌入，而大部分gnn集中在同质图的处理上，也没有考虑这种不同类型节点的影响。
-<strong>挑战3是:如何通过考虑不同节点类型的影响来聚合异构邻居的特征信息。</strong>【<strong>自注意力机制</strong>】</li>
+<li>异质图中的大多数节点并不会连接所有类型的其他节点。如academic graph中user节点不会直接连到venue（论文）节点上。另外说节点能够连接的邻居数也不一样。大部分GNN直接聚合邻居（一阶）节点信息，而远处传过来的节点信息会随着距离而减弱。hub节点会被弱关联的邻居节点扰乱信息，冷启动的节点会因为邻居不足而导致不能充分表示。<strong>那么问题1就是：如何对异质图上的每个节点采样到强相关的邻居节点呢？（这边我认为一般都是用了注意力机制了）</strong></li>
+<li>每个节点都带有非结构化的属性特征，如text、image，常用的从concatenate或者linear transformation不能建模节点属性间的deep interaction。<strong>那么问题2就是：如何设计异质图上节点属性的encoder（编码器）来处理不同节点内容异质性问题。</strong></li>
+<li>不同类型的邻居节点对生成节点embedding的贡献也不一样。例如在academic graph，author和paper节点对author的embedding的影响会强如venue，venue节点包含不同的主题，具有更一般的嵌入，而大部分gnn集中在同质图的处理上，也没有考虑这种不同类型节点的影响。 <strong>挑战3是:如何通过考虑不同节点类型的影响来聚合异构邻居的特征信息。</strong>【<strong>自注意力机制</strong>】</li>
 </ul>
 
     </div>

@@ -145,8 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">Attention-注意力机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、注意力机制是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、经典注意力机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1
-用机器翻译任务带你看Attention机制的计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 注意力机制的正式引入</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">Attention-注意力机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、注意力机制是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、经典注意力机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1 用机器翻译任务带你看Attention机制的计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2 注意力机制的正式引入</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -305,107 +304,57 @@
         <h1><span id="attention-注意力机制">Attention-注意力机制</span></h1>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://paddlepedia.readthedocs.io/en/latest/tutorials/deep_learning/model_tuning/attention/attention_description.html">注意力机制</a></p>
-<p>如何理解attention中的Q,K,V？ - 林亿的回答 - 知乎
-https://www.zhihu.com/question/298810062/answer/2274132657</p>
-<p>Self-attention中dot-product操作为什么要被缩放：https://www.zhihu.com/question/339723385/answer/782509914</p>
+<p>如何理解attention中的Q,K,V？ - 林亿的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/298810062/answer/2274132657">https://www.zhihu.com/question/298810062/answer/2274132657</a></p>
+<p>Self-attention中dot-product操作为什么要被缩放：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/339723385/answer/782509914">https://www.zhihu.com/question/339723385/answer/782509914</a></p>
 </blockquote>
 <h3><span id="一-注意力机制是什么">一、注意力机制是什么</span></h3>
 <p>假设有一天热爱绘画的你决定去户外写生，你来到一片山坡上，极目远去，心旷神怡。头顶一片蔚蓝，脚踩一席草绿，远处山川连绵，眼前花草送香，暖阳含羞云后，轻风拂动衣襟，鸟啼虫鸣入耳，美景丹青共卷。</p>
-<p>你集中精神，拿起画笔将蓝天、白云、青草等等这些元素，按照所思所想纷纷绘入画板。在绘画的过程中，你会持续地关注你构思到画板上的元素（比如蓝天，白云），而不会太多关注那些其他的元素，比如风，虫鸣，阳光等等。即你的精神是聚焦在你关心的那些事物上，这其实就是注意力的体现，这种有意识的聚焦被称为<strong>聚焦式注意力（Focus
-Attention</strong>）。</p>
+<p>你集中精神，拿起画笔将蓝天、白云、青草等等这些元素，按照所思所想纷纷绘入画板。在绘画的过程中，你会持续地关注你构思到画板上的元素（比如蓝天，白云），而不会太多关注那些其他的元素，比如风，虫鸣，阳光等等。即你的精神是聚焦在你关心的那些事物上，这其实就是注意力的体现，这种有意识的聚焦被称为<strong>聚焦式注意力（Focus Attention</strong>）。</p>
 <p>在深度学习领域，模型往往需要接收和处理大量的数据，然而在特定的某个时刻，往往只有少部分的某些数据是重要的，这种情况就非常适合<strong>Attention机制</strong>发光发热。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220529190526010.png" alt="image-20220529190526010" style="zoom:50%;"></p>
-<p>举个例子，<strong>上图</strong>展示了一个机器翻译的结果，在这个例子中，我们想将”who
-are
-you”翻译为”你是谁”，传统的模型处理方式是一个seq-to-seq的模型，其包含一个encoder端和一个decoder端，其中encoder端对”who
-are
-you”进行编码，然后将整句话的信息传递给decoder端，由decoder解码出”我是谁”。在这个过程中，decoder是逐字解码的，在每次解码的过程中，如果接收信息过多，可能会导致模型的内部混乱，从而导致错误结果的出现。</p>
-<p>我们可以使用<strong>Attention机制</strong>来解决这个问题，从<strong>图中</strong>可以看到，在生成”你”的时候和单词”you”关系比较大，和”who
-are”关系不大，所以我们更希望在这个过程中能够使用<strong>Attention机制</strong>，将更多注意力放到”you”上，而不要太多关注”who
-are”，从而提高整体模型的表现。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220529190526010.png" alt="image-20220529190526010" style="zoom:50%;">
+<p>举个例子，<strong>上图</strong>展示了一个机器翻译的结果，在这个例子中，我们想将”who are you”翻译为”你是谁”，传统的模型处理方式是一个seq-to-seq的模型，其包含一个encoder端和一个decoder端，其中encoder端对”who are you”进行编码，然后将整句话的信息传递给decoder端，由decoder解码出”我是谁”。在这个过程中，decoder是逐字解码的，在每次解码的过程中，如果接收信息过多，可能会导致模型的内部混乱，从而导致错误结果的出现。</p>
+<p>我们可以使用<strong>Attention机制</strong>来解决这个问题，从<strong>图中</strong>可以看到，在生成”你”的时候和单词”you”关系比较大，和”who are”关系不大，所以我们更希望在这个过程中能够使用<strong>Attention机制</strong>，将更多注意力放到”you”上，而不要太多关注”who are”，从而提高整体模型的表现。</p>
 <blockquote>
 <p>备注：在深度学习领域，无意识的<strong>显著性注意力</strong>更加常见。</p>
 </blockquote>
 <p>Attention机制自提出以来，出现了很多不同Attention应用方式，但大道是共同的，均是将模型的注意力聚焦在重要的事情上。本文后续将选择一些经典或常用的Attention机制展开讨论。</p>
 <h3><span id="二-经典注意力机制">二、经典注意力机制</span></h3>
-<h4><span id="21用机器翻译任务带你看attention机制的计算">2.1
-用机器翻译任务带你看Attention机制的计算</span></h4>
+<h4><span id="21-用机器翻译任务带你看attention机制的计算">2.1 用机器翻译任务带你看Attention机制的计算</span></h4>
 <p>单独地去讲<strong>Attention机制</strong>会有些抽象，也有些枯燥，所以我们不妨以<strong>机器翻译</strong>任务为例，通过讲解<strong>Attention机制</strong>在机器翻译任务中的应用方式，来了解<strong>Attention机制</strong>的使用。</p>
 <p>什么是机器翻译任务？以<strong>中译英</strong>为例，机器翻译是将一串中文语句翻译为对应的英文语句，如<strong>图1</strong>所示。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220529201640683.png" alt="image-20220529201640683" style="zoom:50%;"></p>
-<p>图1展示了一种经典的机器翻译结构Seq-to-Seq,
-并且向其中添加了Attention计算。<strong>Seq-to-Seq结
-构包含两个部分：Encoder和Decoder</strong>。其中Encoder用于将中文语句进行编码,
-这些编码后续将提 供给Decoder进行使用;
-Decoder将根据Encoder的数据进行解码。我们还是以图1为例详细解释一
-下Decoder的解码过程。 更明确的讲,
-图1展示的是生成单词"machine"时的计算方式。首先将前一个时刻的输出状态
-<span class="math inline">\(q_{2}\)</span> 和 Encoder的输出 <span class="math inline">\(h=\left[h_{1}, h_{2}, h_{3}, h_{4}\right]\)</span>
-进行Attention计算, 得到一个当前时刻的 context, 用公式可 以这样组织:
-<span class="math display">\[
-\begin{aligned}
-{\left[a_{1}, a_{2}, a_{3}, a_{4}\right] }
-&amp;=\operatorname{softmax}\left(\left[s\left(q_{2}, h_{1}\right),
-s\left(q_{2}, h_{2}\right), s\left(q_{2}, h_{3}\right), s\left(q_{2},
-h_{4}\right)\right]\right) \\
-\text { context } &amp;=\sum_{i=1}^{4} a_{i} \cdot h_{i}
-\end{aligned}
-\]</span> 我们来解释一下, 这里的 <span class="math inline">\(s\left(q_{i}, h_{j}\right)\)</span>
-表示注意力打分函数, 它是个标量, 其大小描述了当前时刻在这
-些Encoder的结果上的关注程度,
-这个函数在后边会展开讨论。然后用softmax对这个结果进行归一 化,
-最后使用加权评价获得当前时刻的上下文向量 context。这个context
-可以解释为：截止到当前 已经有了"I love",
-在此基础上下一个时刻应该更加关注源中文语句的那些内容。这就是关于
-Attention机制的一个完整计算。</p>
-<p><strong>最后,
-将这个context和上个时刻的输出”love"进行融合作为当前时刻RNN单元的输入</strong>。图1中采用了继续融合上一步的输出结果,
-例如上述描述中融合了"love", 在有些实现中, 并没 有融入这个上一步的输出,
-默认 <span class="math inline">\(q_{2}\)</span>
-中已经携带了"love"的信息, 这也是合理的。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220529201640683.png" alt="image-20220529201640683" style="zoom:50%;">
+<p>图1展示了一种经典的机器翻译结构Seq-to-Seq, 并且向其中添加了Attention计算。<strong>Seq-to-Seq结 构包含两个部分：Encoder和Decoder</strong>。其中Encoder用于将中文语句进行编码, 这些编码后续将提 供给Decoder进行使用; Decoder将根据Encoder的数据进行解码。我们还是以图1为例详细解释一 下Decoder的解码过程。<br>
+更明确的讲, 图1展示的是生成单词&quot;machine&quot;时的计算方式。首先将前一个时刻的输出状态 $q_{2}$ 和 Encoder的输出 $h=\left[h_{1}, h_{2}, h_{3}, h_{4}\right]$ 进行Attention计算, 得到一个当前时刻的 context, 用公式可 以这样组织:<br>
+$$<br>
+\begin{aligned}<br>
+{\left[a_{1}, a_{2}, a_{3}, a_{4}\right] } &amp;=\operatorname{softmax}\left(\left[s\left(q_{2}, h_{1}\right), s\left(q_{2}, h_{2}\right), s\left(q_{2}, h_{3}\right), s\left(q_{2}, h_{4}\right)\right]\right) \<br>
+\text { context } &amp;=\sum_{i=1}^{4} a_{i} \cdot h_{i}<br>
+\end{aligned}<br>
+$$<br>
+我们来解释一下, 这里的 $s\left(q_{i}, h_{j}\right)$ 表示注意力打分函数, 它是个标量, 其大小描述了当前时刻在这 些Encoder的结果上的关注程度, 这个函数在后边会展开讨论。然后用softmax对这个结果进行归一 化, 最后使用加权评价获得当前时刻的上下文向量 context。这个context 可以解释为：截止到当前 已经有了&quot;I love&quot;, 在此基础上下一个时刻应该更加关注源中文语句的那些内容。这就是关于 Attention机制的一个完整计算。</p>
+<p><strong>最后, 将这个context和上个时刻的输出”love&quot;进行融合作为当前时刻RNN单元的输入</strong>。图1中采用了继续融合上一步的输出结果, 例如上述描述中融合了&quot;love&quot;, 在有些实现中, 并没 有融入这个上一步的输出, 默认 $q_{2}$ 中已经携带了&quot;love&quot;的信息, 这也是合理的。</p>
 <h4><span id="22-注意力机制的正式引入">2.2 注意力机制的正式引入</span></h4>
 <p>前边我们通过机器翻译任务介绍了<strong>Attention机制</strong>的整体计算。但是还有点<strong>小尾巴</strong>没有展开，就是那个<strong>注意力打分函数</strong>的计算，现在我们将来讨论这个事情。但在讲这个函数之前，我们先来对上边的<strong>Attention机制</strong>的计算做个总结，<strong>图2</strong>详细地描述了Attention机制的计算原理。</p>
-<p><img src="../../../../../Library/Application Support/typora-user-images/image-20220529202937945.png" alt="image-20220529202937945" style="zoom:50%;"></p>
-<p>假设现在我们要对一组输入 <span class="math inline">\(H=\left[h_{1},
-h_{2}, h_{3}, \ldots, h_{n}\right]\)</span>
-使用<strong>Attention机制</strong>计算重要的内容, 这里往
-往需要一个<strong>查询向量</strong> <span class="math inline">\(q\)</span> (这个向量往往和你做的任务有关,
-比如机器翻译中用到的那个 <span class="math inline">\(q_{2}\)</span> ),
-然后通 过一个<strong>打分函数</strong>计算查询向量 <span class="math inline">\(q\)</span> 和每个输入 <span class="math inline">\(h_{i}\)</span> 之间的相关性,
-得出一个分数。<strong>接下来使用softmax 对这些分数进行归一化,
-归一化后的结果便是查询向量 <span class="math inline">\(q\)</span>
-在各个输入 <span class="math inline">\(h_{i}\)</span>
-上的注意力分布</strong><span class="math inline">\(a=\left[a_{1}, a_{2},
-a_{3}, \ldots, a_{n}\right]\)</span>, 其中每一项数值和原始的输入<span class="math inline">\(H=\left[h_{1}, h_{2}, h_{3}, \ldots,
-h_{n}\right]\)</span> 一一对应。以 <span class="math inline">\(a_{i}\)</span> 为例, 相关计算公式如下: <span class="math display">\[
-a_{i}=\operatorname{softmax}\left(s\left(h_{i},
-q\right)\right)=\frac{\exp \left(s\left(h_{i},
-q\right)\right)}{\sum_{j=1}^{n} \exp \left(s\left(h_{j},
-q\right)\right)}
-\]</span> 最后根据这些注意力分布可以去有选择性的从输入信息 <span class="math inline">\(H\)</span> 中提取信息, 这里比较常用的信息提取方式,
-是一种”软性”的信息提取（图2展示的就是一种"软性"注意力）,
-即根据注意力分布对输入信 息进行加权求和，最终的这个结果 context
-体现了模型当前应该关注的内容： <span class="math display">\[
-\text { context }=\sum_{i=1}^{n} a_{i} \cdot h_{i}
-\]</span> 现在我们来解决之前一直没有展开的小尾巴-打分函数,
-它可以使用以下几种方式来计算: - <strong>加性模型</strong>: <span class="math inline">\(s(h, q)=v^{T} \tanh (W h+U q)\)</span> -
-<strong>点积模型</strong>: <span class="math inline">\(s(h, q)=h^{T}
-q\)</span> - <strong><font color="red"> 缩放点积模型</font></strong>:
-<span class="math inline">\(s(h, q)=\frac{h^{T} q}{\sqrt{D}}\)</span> -
-<strong>双线性模型</strong>: <span class="math inline">\(s(h, q)=h^{T} W
-q\)</span></p>
-<p>以上公式中的参数 <span class="math inline">\(W 、 U\)</span> 和 <span class="math inline">\(v\)</span> 均是可学习的参数矩阵或向量, <span class="math inline">\(D\)</span> 为输入向量的维度。下边我们来分
-析一下这些分数计算方式的差别。</p>
-<p><strong>加性模型</strong>引入了可学习的参数, 将查询向量 <span class="math inline">\(q\)</span> 和原始输入向量 <span class="math inline">\(h\)</span> 映射到不同的向量空间后进行计算打分,
-显然相较于加性模型, <strong>点积模型</strong>具有更好的计算效率。</p>
-<p>另外, 当输入向量的维度比较高的时候,
-<strong>点积模型</strong>通常有比较大的方差, 从而导致Softmax函数的
-梯度会比较小。因此<strong>缩放点积模型</strong>通过除以一个<strong>平方根项</strong>来平滑分数数值,
-也相当于平滑最终的<strong>注意力分布</strong>, 缓解这个问题。</p>
-<p>最后, <strong>双线性模型</strong>可以重塑为 <span class="math inline">\(s\left(h_{i}, q\right)=h^{T} W q=h^{T}\left(U^{T}
-V\right) q=(U h)^{T}(V q)\)</span>, 即分别对查询向量 <span class="math inline">\(q\)</span> 和原始输入向量 <span class="math inline">\(h\)</span> 进行线性变换之后,
-再计算点积。<strong>相比点积模型, 双线性模型在计算相似度时
-引入了非对称性</strong>。</p>
+<img src="../../../../../Library/Application Support/typora-user-images/image-20220529202937945.png" alt="image-20220529202937945" style="zoom:50%;">
+<p>假设现在我们要对一组输入 $H=\left[h_{1}, h_{2}, h_{3}, \ldots, h_{n}\right]$ 使用<strong>Attention机制</strong>计算重要的内容, 这里往 往需要一个<strong>查询向量</strong> $q$ (这个向量往往和你做的任务有关, 比如机器翻译中用到的那个 $q_{2}$ ), 然后通 过一个<strong>打分函数</strong>计算查询向量 $q$ 和每个输入 $h_{i}$ 之间的相关性, 得出一个分数。<strong>接下来使用softmax 对这些分数进行归一化, 归一化后的结果便是查询向量 $q$ 在各个输入 $h_{i}$ 上的注意力分布</strong>$a=\left[a_{1}, a_{2}, a_{3}, \ldots, a_{n}\right]$, 其中每一项数值和原始的输入$H=\left[h_{1}, h_{2}, h_{3}, \ldots, h_{n}\right]$ 一一对应。以 $a_{i}$ 为例, 相关计算公式如下:<br>
+$$<br>
+a_{i}=\operatorname{softmax}\left(s\left(h_{i}, q\right)\right)=\frac{\exp \left(s\left(h_{i}, q\right)\right)}{\sum_{j=1}^{n} \exp \left(s\left(h_{j}, q\right)\right)}<br>
+$$<br>
+最后根据这些注意力分布可以去有选择性的从输入信息 $H$ 中提取信息, 这里比较常用的信息提取方式, 是一种”软性”的信息提取（图2展示的就是一种&quot;软性&quot;注意力）, 即根据注意力分布对输入信 息进行加权求和，最终的这个结果 context 体现了模型当前应该关注的内容：<br>
+$$<br>
+\text { context }=\sum_{i=1}^{n} a_{i} \cdot h_{i}<br>
+$$<br>
+现在我们来解决之前一直没有展开的小尾巴-打分函数, 它可以使用以下几种方式来计算:</p>
+<ul>
+<li><strong>加性模型</strong>: $s(h, q)=v^{T} \tanh (W h+U q)$</li>
+<li><strong>点积模型</strong>: $s(h, q)=h^{T} q$</li>
+<li><strong><font color="red"> 缩放点积模型</font></strong>: $s(h, q)=\frac{h^{T} q}{\sqrt{D}}$</li>
+<li><strong>双线性模型</strong>: $s(h, q)=h^{T} W q$</li>
+</ul>
+<p>以上公式中的参数 $W 、 U$ 和 $v$ 均是可学习的参数矩阵或向量, $D$ 为输入向量的维度。下边我们来分 析一下这些分数计算方式的差别。</p>
+<p><strong>加性模型</strong>引入了可学习的参数, 将查询向量 $q$ 和原始输入向量 $h$ 映射到不同的向量空间后进行计算打分, 显然相较于加性模型, <strong>点积模型</strong>具有更好的计算效率。</p>
+<p>另外, 当输入向量的维度比较高的时候, <strong>点积模型</strong>通常有比较大的方差, 从而导致Softmax函数的 梯度会比较小。因此<strong>缩放点积模型</strong>通过除以一个<strong>平方根项</strong>来平滑分数数值, 也相当于平滑最终的<strong>注意力分布</strong>, 缓解这个问题。</p>
+<p>最后, <strong>双线性模型</strong>可以重塑为 $s\left(h_{i}, q\right)=h^{T} W q=h<sup>{T}\left(U</sup>{T} V\right) q=(U h)^{T}(V q)$, 即分别对查询向量 $q$ 和原始输入向量 $h$ 进行线性变换之后, 再计算点积。<strong>相比点积模型, 双线性模型在计算相似度时 引入了非对称性</strong>。</p>
 
     </div>
 

@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -268,7 +268,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.8k</span>
+      <span>3.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -286,11 +286,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>朴素贝叶斯（Naive
-Bayes）是基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入、输出的联合分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。朴素贝叶斯是<strong>选出各个分类类别后验概率最大</strong>的作为最终分类。</p>
+          <p>朴素贝叶斯（Naive Bayes）是基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入、输出的联合分布；然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出y。朴素贝叶斯是<strong>选出各个分类类别后验概率最大</strong>的作为最终分类。</p>
 <ul>
 <li><strong>优点</strong>：对小规模的数据表现很好，适合多分类任务，<strong>适合增量式训练</strong>。</li>
-<li><strong>缺点</strong>：对输入数据的表达形式很敏感<strong>（离散、连续，值极大极小之类的）。</strong></li>
+<li><strong>缺点</strong>：对输入数据的表达形式很敏感**（离散、连续，值极大极小之类的）。**</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -409,49 +408,40 @@ Bayes）是基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</
           <h3><span id="一-最大似然估计-最大后验估计-贝叶斯估计的对比">一、最大似然估计、最大后验估计、贝叶斯估计的对比</span></h3>
 <h4><span id="11-贝叶斯公式">1.1 <strong>贝叶斯公式</strong></span></h4>
 <p>这三种方法都和贝叶斯公式有关，所以我们先来了解下贝叶斯公式：</p>
-<p><span class="math display">\[
-p(\theta \mid X)=\frac{p(X \mid \theta) p(\theta)}{p(X)}
-\]</span> 每一项的表示如下: <span class="math display">\[
-\text { posterior }=\frac{\text { likehood } * \text { prior }}{\text {
-evidence }}
-\]</span> + posterior: 通过样本X得到参数 <span class="math inline">\(\theta\)</span> 的概率, 也就是后验概率。 +
-likehood: 通过参数 <span class="math inline">\(\theta\)</span>
-得到样本X的概率, 似然函数, 通常就是我们的数据集的表现。 + prior: 参数
-<span class="math inline">\(\theta\)</span> 的先验概率,
-一般是根据人的先验知识来得出的。</p>
+<p>$$<br>
+p(\theta \mid X)=\frac{p(X \mid \theta) p(\theta)}{p(X)}<br>
+$$<br>
+每一项的表示如下:<br>
+$$<br>
+\text { posterior }=\frac{\text { likehood } * \text { prior }}{\text { evidence }}<br>
+$$</p>
+<ul>
+<li>posterior: 通过样本X得到参数 $\theta$ 的概率, 也就是后验概率。</li>
+<li>likehood: 通过参数 $\theta$ 得到样本X的概率, 似然函数, 通常就是我们的数据集的表现。</li>
+<li>prior: 参数 $\theta$ 的先验概率, 一般是根据人的先验知识来得出的。</li>
+</ul>
 <h4><span id="12-极大似然估计-mle">1.2 极大似然估计 (MLE)</span></h4>
-<p>极大似然估计的核心思想是:
-认为当前发生的事件是概率最大的事件。<strong>因此就可以给定的数据集,
-使得该数据集发生的概率最大来求得模型中的参数</strong>。似然函数如下:
-<span class="math display">\[
-p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)
-\]</span> 为了便于计算, 我们对似然函数两边取对数,
-生成新的对数似然函数（因为对数函数是单调增函数, 因此求似然函数最大化就可
-以转换成对数似然函数最大化）： <span class="math display">\[
-p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n}
-\log p(x i \mid \theta)
-\]</span> 求对数似然函数最大化, 可以通过导数为 0
-来求解。<strong><font color="red"> 极大似然估计只关注当前的样本,
-也就是只关注当前发生的事情,
-不考虑事情的先验情况</font></strong>。由于计算简单, 而且不需要关注先验
-知识, 因此在机器学习中的应用非常广, 最常见的就是逻辑回归。</p>
+<p>极大似然估计的核心思想是: 认为当前发生的事件是概率最大的事件。<strong>因此就可以给定的数据集, 使得该数据集发生的概率最大来求得模型中的参数</strong>。似然函数如下:<br>
+$$<br>
+p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)<br>
+$$<br>
+为了便于计算, 我们对似然函数两边取对数, 生成新的对数似然函数（因为对数函数是单调增函数, 因此求似然函数最大化就可 以转换成对数似然函数最大化）：<br>
+$$<br>
+p(X \mid \theta)=\prod_{x 1}^{x n} p(x i \mid \theta)=\sum_{x 1}^{x n} \log p(x i \mid \theta)<br>
+$$<br>
+求对数似然函数最大化, 可以通过导数为 0 来求解。<strong><font color="red"> 极大似然估计只关注当前的样本, 也就是只关注当前发生的事情, 不考虑事情的先验情况</font></strong>。由于计算简单, 而且不需要关注先验 知识, 因此在机器学习中的应用非常广, 最常见的就是逻辑回归。</p>
 <h4><span id="13-最大后验估计-map">1.3 最大后验估计 (MAP)</span></h4>
-<p>和最大似然估计不同的是,
-最大后验估计中引入了<strong>先验概率</strong>（先验分布属于贝叶斯学派引入的,
-像L1, L2正则化就是对参数引入 了拉普拉斯先验分布和高斯先验分布）,
-而且最大后验估计要求的是 <span class="math inline">\(p(\theta \mid
-X)\)</span></p>
-<p>最大后验估计可以写成下面的形式: <span class="math display">\[
-\operatorname{argmaxp}(\theta \mid X)=\operatorname{argmax} \frac{p(X
-\mid \theta) p(\theta)}{p(X)}=\operatorname{argmax}\left(\prod_{x 1}^{x
-n} p(x i \mid \theta)\right) p(\theta)
-\]</span> 在求最大后验概率时, 可以忽略分母 <span class="math inline">\(p(x)\)</span>, 因为该值不影响对 <span class="math inline">\(\theta\)</span> 的估计。同样为了便于计算,
-对两边取对数, 后验概率最大化就变成了: <span class="math display">\[
-\operatorname{argmax}\left(\sum_{x 1}^{x n} \operatorname{logp}(x i \mid
-\theta)+\log p(\theta)\right)
-\]</span> <strong><font color="red">
-最大后验估计不只是关注当前的样本的情况，还关注已经发生过的先验知识。在朴素贝叶斯中会有最大后验概率的应用，但并没有用上最大后验估计来求参数（因为朴素贝叶斯中的θ其实就是分类的类别）。</font></strong></p>
-<p><strong>最大后验估计和最大似然估计的区别：</strong>最大后验估计允许我们把先验知识加入到估计模型中，<strong>这在样本很少的时候是很有用的（因此朴素贝叶斯在较少的样本下就能有很好的表现）</strong>，因为样本很少的时候我们的观测结果很可能出现偏差，此时先验知识会把估计的结果“拉”向先验，实际的预估结果将会在先验结果的两侧形成一个顶峰。通过调节先验分布的参数，比如beta分布的α，β，我们还可以调节把估计的结果“拉”向先验的幅度，α，β越大，这个顶峰越尖锐。这样的参数，我们叫做预估模型的“超参数”。</p>
+<p>和最大似然估计不同的是, 最大后验估计中引入了<strong>先验概率</strong>（先验分布属于贝叶斯学派引入的, 像L1, L2正则化就是对参数引入 了拉普拉斯先验分布和高斯先验分布）, 而且最大后验估计要求的是 $p(\theta \mid X)$</p>
+<p>最大后验估计可以写成下面的形式:<br>
+$$<br>
+\operatorname{argmaxp}(\theta \mid X)=\operatorname{argmax} \frac{p(X \mid \theta) p(\theta)}{p(X)}=\operatorname{argmax}\left(\prod_{x 1}^{x n} p(x i \mid \theta)\right) p(\theta)<br>
+$$<br>
+在求最大后验概率时, 可以忽略分母 $p(x)$, 因为该值不影响对 $\theta$ 的估计。同样为了便于计算, 对两边取对数, 后验概率最大化就变成了:<br>
+$$<br>
+\operatorname{argmax}\left(\sum_{x 1}^{x n} \operatorname{logp}(x i \mid \theta)+\log p(\theta)\right)<br>
+$$<br>
+<strong><font color="red"> 最大后验估计不只是关注当前的样本的情况，还关注已经发生过的先验知识。在朴素贝叶斯中会有最大后验概率的应用，但并没有用上最大后验估计来求参数（因为朴素贝叶斯中的θ其实就是分类的类别）。</font></strong></p>
+<p>**最大后验估计和最大似然估计的区别：**最大后验估计允许我们把先验知识加入到估计模型中，<strong>这在样本很少的时候是很有用的（因此朴素贝叶斯在较少的样本下就能有很好的表现）</strong>，因为样本很少的时候我们的观测结果很可能出现偏差，此时先验知识会把估计的结果“拉”向先验，实际的预估结果将会在先验结果的两侧形成一个顶峰。通过调节先验分布的参数，比如beta分布的α，β，我们还可以调节把估计的结果“拉”向先验的幅度，α，β越大，这个顶峰越尖锐。这样的参数，我们叫做预估模型的“超参数”。</p>
 
       
     </div>
@@ -562,27 +552,19 @@ n} p(x i \mid \theta)\right) p(\theta)
           <h3><span id="朴素贝叶斯-qampa">朴素贝叶斯 Q&amp;A</span></h3>
 <blockquote>
 <ul>
-<li>朴素贝叶斯分类器原理以及公式，出现估计概率值为 0
-怎么处理（拉普拉斯平滑），缺点；</li>
+<li>朴素贝叶斯分类器原理以及公式，出现估计概率值为 0 怎么处理（拉普拉斯平滑），缺点；</li>
 <li>解释贝叶斯公式和朴素贝叶斯分类。</li>
 <li>贝叶斯分类，这是一类分类方法，主要代表是朴素贝叶斯，朴素贝叶斯的原理，重点在假设各个属性类条件独立。然后能根据贝叶斯公式具体推导。考察给你一个问题，如何利用朴素贝叶斯分类去分类，比如：给你一个人的特征，判断是男是女，比如身高，体重，头发长度等特征的的数据，那么你要能推到这个过程。给出最后的分类器公式。</li>
-<li>那你说说贝叶斯怎么分类啊？<strong>比如说看看今天天气怎么样？</strong>我：blabla，，，利用天气的历史数据，可以知道天气类型的先验分布，以及每种类型下特征数据（比如天气数据的特征：温度啊，湿度啊）的条件分布，这样我们根据贝叶斯公式就能求得天气类型的后验分布了。。。。面试官：en（估计也比较满意吧）<strong>那你了解关于求解模型的优化方法吗？一般用什么优化方法来解？</strong></li>
+<li>那你说说贝叶斯怎么分类啊？**比如说看看今天天气怎么样？**我：blabla，，，利用天气的历史数据，可以知道天气类型的先验分布，以及每种类型下特征数据（比如天气数据的特征：温度啊，湿度啊）的条件分布，这样我们根据贝叶斯公式就能求得天气类型的后验分布了。。。。面试官：en（估计也比较满意吧）<strong>那你了解关于求解模型的优化方法吗？一般用什么优化方法来解？</strong></li>
 <li>贝叶斯分类器的优化和特殊情况的处理</li>
 </ul>
 </blockquote>
-<h4><span id="1-朴素贝叶斯-svm和lr的区别"><strong><font color="red">
-1、朴素贝叶斯、SVM和LR的区别？</font></strong></span></h4>
+<h4><span id="1-朴素贝叶斯-svm和lr的区别"><strong><font color="red"> 1、朴素贝叶斯、SVM和LR的区别？</font></strong></span></h4>
 <p><strong>朴素贝叶斯是生成模型</strong>，根据已有样本进行贝叶斯估计学习出先验概率P(Y)和条件概率P(X|Y)，进而求出联合分布概率P(XY),最后利用贝叶斯定理求解P(Y|X)。</p>
 <p><strong>LR是判别模型</strong>，根据极大化对数似然函数直接求出条件概率P(Y|X)；朴素贝叶斯是基于很强的条件独立假设（在已知分类Y的条件下，各个特征变量取值是相互独立的），而LR则对此没有要求；<strong>朴素贝叶斯适用于数据集少的情景，而LR适用于大规模数据集。</strong></p>
 <table>
-<colgroup>
-<col style="width: 8%">
-<col style="width: 30%">
-<col style="width: 30%">
-<col style="width: 30%">
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>算法</th>
 <th>SVM</th>
 <th>LR</th>
@@ -590,74 +572,69 @@ n} p(x i \mid \theta)\right) p(\theta)
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><strong>思想</strong></td>
 <td><strong>想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面</strong>。</td>
 <td>使用线性回归模型的预测值逼近分类任务真实标记的对数几率。</td>
 <td>基于<strong>贝叶斯定理</strong>与<strong>特征条件假设</strong>的<strong>分类</strong>方法。选出各个分类类别后验概率最大的作为最终分类。</td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>输出</strong></td>
 <td>判别模型、<strong>非概率方法</strong>；</td>
-<td><strong>概率方法</strong>；需要对<span class="math inline">\(p(y|x)\)</span>进行假设，具有概率意义。</td>
-<td>生成模型</td>
+<td><strong>概率方法</strong>；需要对$p(y</td>
+<td>x)$进行假设，具有概率意义。</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>经验损失函数</strong></td>
 <td><strong>合页损失函数</strong>；有一段平的零区域、使得SVM的对偶性有稀疏性。</td>
 <td><strong>交叉熵损失函数</strong></td>
 <td><strong>后验概率最大</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td><strong>训练样本</strong></td>
 <td><strong>支持向量</strong>（少数样本），SVM的参数和假设函数只和支持向量有关。</td>
 <td>全样本</td>
 <td>全样本</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>优化方法</strong></td>
 <td>次梯度下降和坐标梯度下降 【<strong>SMO算法</strong>】</td>
 <td><strong>梯度下降</strong></td>
 <td>无</td>
 </tr>
-<tr class="even">
+<tr>
 <td>多分类</td>
 <td><strong>多分类SVM</strong></td>
 <td><strong>Softmax回归</strong></td>
 <td>后验概率最大</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><strong>敏感程度</strong></td>
 <td><strong>SVM考虑分类边界线附近的样本</strong>（决定分类超平面的样本）。在支持向量外添加或减少任何样本点对分类决策面没有任何影响；【不敏感】</td>
 <td><strong>LR受所有数据点的影响</strong>。直接依赖数据分布，每个样本点都会影响决策面的结果。如果训练数据不同类别严重不平衡。【敏感】</td>
-<td><strong>特征值是基于频数进行统计的。</strong>一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，不敏感【概率排序】</td>
+<td>**特征值是基于频数进行统计的。**一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，不敏感【概率排序】</td>
 </tr>
 </tbody>
 </table>
-<h4><span id="2-朴素贝叶斯朴素在哪里">2、<strong><font color="red">
-朴素贝叶斯“朴素”在哪里？</font></strong></span></h4>
+<h4><span id="2-朴素贝叶斯朴素在哪里">2、<strong><font color="red"> 朴素贝叶斯“朴素”在哪里？</font></strong></span></h4>
 <p>简单来说：它假定<strong>所有的特征在数据集中的作用是同样重要和独立的</strong>，正如我们所知，这个假设在现实世界中是很不真实的，因此，说朴素贝叶斯真的很“朴素”。</p>
-<p>利用贝叶斯定理求解联合概率<span class="math inline">\(P(XY)\)</span>时，需要计算条件概率<span class="math inline">\(P(X|Y)\)</span>。在计算<span class="math inline">\(P(X|Y)\)</span>时，朴素贝叶斯做了一个很强的条件独立假设（当Y确定时，X的各个分量取值之间相互独立），即<span class="math inline">\(P(X1=x1,X2=x2,…Xj=xj|Y=yk) =
-P(X1=x1|Y=yk)…*P(Xj=xj|Y=yk)\)</span>。
-多个特征全是独立的，需要分别相乘。</p>
+<p>利用贝叶斯定理求解联合概率$P(XY)$时，需要计算条件概率$P(X|Y)$。在计算$P(X|Y)$时，朴素贝叶斯做了一个很强的条件独立假设（当Y确定时，X的各个分量取值之间相互独立），即$P(X1=x1,X2=x2,…Xj=xj|Y=yk) = P(X1=x1|Y=yk)…*P(Xj=xj|Y=yk)$。 多个特征全是独立的，需要分别相乘。</p>
 <h4><span id="3-在估计条件概率pxy时出现概率为0的情况怎么办">3、<strong>在估计条件概率P(X|Y)时出现概率为0的情况怎么办？</strong></span></h4>
 <p><strong>拉普拉斯平滑法</strong>是朴素贝叶斯中处理零概率问题的一种修正方式。在进行分类的时候，可能会出现某个属性在训练集中没有与某个类同时出现过的情况，如果直接基于朴素贝叶斯分类器的表达式进行计算的话就会出现<strong>零概率现象</strong>。</p>
-<p>为了避免其他属性所携带的信息被训练集中未出现过的属性值“抹去”，所以才使用拉普拉斯估计器进行修正。具体的方法是：<strong>在分子上加1,对于先验概率，在分母上加上训练集中label的类别数；对于特征i
-在label下的条件概率，则在分母上加上第i个属性可能的取值数（特征 i
-的unique()）</strong></p>
-<p>先验概率的贝叶斯估计: <span class="math display">\[
-P_\lambda\left(Y=c_k\right)=\frac{\sum_{i=1}^N
-I\left(y_i=c_k\right)+\lambda}{N+K \lambda}
-\]</span> 条件概率的贝叶斯估计：【离散型】 <span class="math display">\[
-P_\lambda\left(X^{(j)}=a_{j l} \| Y=c_k\right)=\frac{\sum_{i=1}^N
-I\left(x_i^{(j)}=a_{j l}, y_{i=} c_k\right)+\lambda}{\sum_{i=1}^N
-I\left(y_i=c_k\right)+S_j \lambda}
-\]</span></p>
+<p>为了避免其他属性所携带的信息被训练集中未出现过的属性值“抹去”，所以才使用拉普拉斯估计器进行修正。具体的方法是：<strong>在分子上加1,对于先验概率，在分母上加上训练集中label的类别数；对于特征i 在label下的条件概率，则在分母上加上第i个属性可能的取值数（特征 i 的unique()）</strong></p>
+<p>先验概率的贝叶斯估计:<br>
+$$<br>
+P_\lambda\left(Y=c_k\right)=\frac{\sum_{i=1}^N I\left(y_i=c_k\right)+\lambda}{N+K \lambda}<br>
+$$<br>
+条件概率的贝叶斯估计：【离散型】<br>
+$$<br>
+P_\lambda\left(X^{(j)}=a_{j l} | Y=c_k\right)=\frac{\sum_{i=1}^N I\left(x_i^{(j)}=a_{j l}, y_{i=} c_k\right)+\lambda}{\sum_{i=1}^N I\left(y_i=c_k\right)+S_j \lambda}<br>
+$$</p>
 <h4><span id="4-先验概率和后验概率都是">4、<strong>先验概率和后验概率都是？</strong></span></h4>
-<p><strong>先验概率是指根据以往经验和分析得到的概率</strong>,如全概率公式,它往往作为"由因求果"问题中的"因"出现.<strong>后验概率是基于新的信息，修正原来的先验概率后所获得的更接近实际情况的概率估计。</strong></p>
-<p><strong>先验概率和后验概率是相对的。</strong>如果以后还有新的信息引入，更新了现在所谓的后验概率，得到了新的概率值，那么这个新的概率值被称为后验概率。</p>
+<p><strong>先验概率是指根据以往经验和分析得到的概率</strong>,如全概率公式,它往往作为&quot;由因求果&quot;问题中的&quot;因&quot;出现.<strong>后验概率是基于新的信息，修正原来的先验概率后所获得的更接近实际情况的概率估计。</strong></p>
+<p>**先验概率和后验概率是相对的。**如果以后还有新的信息引入，更新了现在所谓的后验概率，得到了新的概率值，那么这个新的概率值被称为后验概率。</p>
 <h4><span id="5-朴素贝叶斯算法的前提假设是什么">5、<strong>朴素贝叶斯算法的前提假设是什么？</strong></span></h4>
-<ol type="1">
+<ol>
 <li>特征之间相互独立</li>
 <li>每个特征同等重要</li>
 </ol>
@@ -672,12 +649,11 @@ I\left(y_i=c_k\right)+S_j \lambda}
 <li><strong>分类问题看中的是类别的条件概率的排序</strong>，而不是具体的概率值，所以这里面对精准概率值的计算是有一定的容错的。</li>
 <li>如果特征属性之间的依赖对所有类别影响相同，或依赖关系的影响能相互抵消，则属性条件独立性假设在降低计算开销的同时不会对性能产生负面影响。</li>
 </ul>
-<h4><span id="8-朴素贝叶斯中概率计算的下溢问题如何解决"><strong><font color="red">
-8、朴素贝叶斯中概率计算的下溢问题如何解决？</font></strong></span></h4>
+<h4><span id="8-朴素贝叶斯中概率计算的下溢问题如何解决"><strong><font color="red"> 8、朴素贝叶斯中概率计算的下溢问题如何解决？</font></strong></span></h4>
 <p><strong>在朴素贝叶斯的计算过程中，需要对特定分类中各个特征出现的概率进行连乘</strong>，小数相乘，越乘越小，这样就造成下溢出。在程序中，在相应小数位置进行四舍五入，计算结果可能就变成0了。</p>
 <p>为了解决这个问题，<strong>对乘积结果取自然对数</strong>。将小数的乘法操作转化为取对数后的加法操作，规避了变为0的风险同时并不影响分类结果。</p>
 <h4><span id="9-朴素贝叶斯分类器对异常值和缺失值敏感吗">9、<strong>朴素贝叶斯分类器对异常值和缺失值敏感吗？</strong></span></h4>
-<p>回想朴素贝叶斯的计算过程，它在推理的时候，输入的某个特征组合，<strong>他们的特征值在训练的时候在贝叶斯公式中都是基于频数进行统计的。</strong>所以一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，就算微微影响最终概率值的获得，由于<strong>分类问题只关注概率的排序而不关注概率的值，所以影响不大</strong>，保留异常值还可以提高模型的泛化性能。</p>
+<p>回想朴素贝叶斯的计算过程，它在推理的时候，输入的某个特征组合，<strong>他们的特征值在训练的时候在贝叶斯公式中都是基于频数进行统计的。<strong>所以一个值的异常（变成了别的数），<strong>只是贝叶斯公式里的计算概率的分子或者分母发生微小的变化，整体结果影响不大</strong>，就算微微影响最终概率值的获得，由于</strong>分类问题只关注概率的排序而不关注概率的值，所以影响不大</strong>，保留异常值还可以提高模型的泛化性能。</p>
 <p>缺失值也是一样，如果一个数据实例缺失了一个属性的数值，在建模的时将被忽略，不影响类条件概率的计算，在预测时，计算数据实例是否属于某类的概率时也将忽略缺失属性，不影响最终结果。</p>
 <h4><span id="10-朴素贝叶斯中有没有超参数可以调">10、<strong>朴素贝叶斯中有没有超参数可以调？</strong></span></h4>
 <p><strong>朴素贝叶斯是没有超参数可以调的，所以它不需要调参</strong>，朴素贝叶斯是根据训练集进行分类，分类出来的结果基本上就是确定了的，拉普拉斯估计器不是朴素贝叶斯中的参数，不能通过拉普拉斯估计器来对朴素贝叶斯调参。</p>
@@ -685,21 +661,26 @@ I\left(y_i=c_k\right)+S_j \lambda}
 <ul>
 <li><strong>多项式模型对应于离散变量</strong>，其中离散变量指的是category型变量，也就是类别变量，比如性别；连续变量一般是数字型变量，比如年龄，身高，体重。</li>
 <li><strong>高斯模型 对应于连续变量</strong>（每一维服从正态分布）</li>
-<li><strong>伯努利模型</strong> <strong>对应于文本分类</strong>
-（特征只能是0或者1）</li>
+<li><strong>伯努利模型</strong> <strong>对应于文本分类</strong> （特征只能是0或者1）</li>
 </ul>
-<h4><span id="12-朴素贝叶斯为什么适合增量计算"><strong><font color="red">
-12、朴素贝叶斯为什么适合增量计算？</font></strong></span></h4>
+<h4><span id="12-朴素贝叶斯为什么适合增量计算"><strong><font color="red"> 12、朴素贝叶斯为什么适合增量计算？</font></strong></span></h4>
 <p>朴素贝叶斯在训练过程中实际上需要<strong>计算出各个类别的概率和各个特征的条件概率</strong>，这些概率以频数统计比值（对于多项式模型而言）的形式产生概率值，<strong>可以快速根据增量数据进行更新，无需重新全量训练，所以其十分适合增量计算。</strong></p>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li><p>https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes</p></li>
-<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2017/02/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%EF%BC%8810%EF%BC%89%EF%BC%9A%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">FREE
-WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
-<li><h5><span id="最大似然估计-最大后验估计-贝叶斯估计的对比">最大似然估计、最大后验估计、贝叶斯估计的对比</span></h5>
+<li>
+<p><a target="_blank" rel="noopener" href="https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes">https://scikit-learn.org/dev/modules/naive_bayes.html#naive-bayes</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2017/02/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%B3%BB%E5%88%97%EF%BC%8810%EF%BC%89%EF%BC%9A%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">FREE WILL 机器学习算法系列（10）：朴素贝叶斯</a></p>
+</li>
+<li>
+<h5><span id="最大似然估计-最大后验估计-贝叶斯估计的对比">最大似然估计、最大后验估计、贝叶斯估计的对比</span></h5>
 <ul>
-<li><h5><span id="httpswwwcnblogscomjiangxinyangp9378535html">https://www.cnblogs.com/jiangxinyang/p/9378535.html</span></h5></li>
-</ul></li>
+<li>
+<h5><span id="httpswwwcnblogscomjiangxinyangp9378535html"></span></h5>
+</li>
+</ul>
+</li>
 </ul>
 
       
@@ -790,7 +771,7 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.6k</span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -808,13 +789,11 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red"> SVM
-是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM
-想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2P1GDXT/#more" rel="contents">
@@ -911,7 +890,7 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.2k</span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -929,13 +908,11 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red"> SVM
-是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM
-想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/349WYTC/#more" rel="contents">
@@ -1032,7 +1009,7 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5k</span>
+      <span>4.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1050,13 +1027,11 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red">SVM
-是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM
-想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red">SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/A9Y29H/#more" rel="contents">
@@ -1153,7 +1128,7 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.8k</span>
+      <span>2.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1171,13 +1146,11 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><strong><font color="red"> SVM
-是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM
-想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/3MCYRQP/#more" rel="contents">
@@ -1292,14 +1265,12 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="一支持向量机-svm">一、支持向量机 SVM</h3>
-<p><strong><font color="red"> SVM
-是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
-<p><strong>本质：SVM
-想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。</strong>为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
+          <h3 id="一、支持向量机-SVM"><a class="header-anchor" href="#一、支持向量机-SVM">¶</a>一、支持向量机 SVM</h3>
+<p><strong><font color="red"> SVM 是一个非常优雅的算法，具有完善的数学理论，虽然如今工业界用到的不多，但还是决定花点时间去写篇文章整理一下。</font></strong></p>
+<p>**本质：SVM 想要的就是找到各类样本点到超平面的距离最远，也就是找到最大间隔超平面。**为了对数据中的噪声有一定的容忍能力。<strong>以几何的角度，在丰富的数据理论的基础上，简化了通常的分类和回归问题。</strong></p>
 <p><strong>几何意义</strong>：找到一个超平面将特征空间的正负样本分开，最大分隔（对噪音有一定的容忍能力）；</p>
 <p><strong>间隔表示</strong>：划分超平面到属于不同标记的最近样本的距离之和；</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191157912.jpg" alt="【机器学习】支持向量机 SVM（非常详细）" style="zoom: 33%;">
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/2NSQX65/#more" rel="contents">
@@ -1415,88 +1386,56 @@ WILL 机器学习算法系列（10）：朴素贝叶斯</a></p></li>
     
     <div class="post-body" itemprop="articleBody">
           <h3><span id="一-k-means">一、K-means</span></h3>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211326577.jpg" alt="【机器学习】K-means（非常详细）" style="zoom:51%;"></p>
-<p>K-means 聚类的迭代算法实际上是 EM 算法。EM
-算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在
-K-means
-中的隐变量是每个类别所属类别。k近邻法中，当<strong>训练集</strong>、<strong>距离度量</strong>、<strong>K值</strong>以及<strong>分类决策规则</strong>确定后，对于任何一个新的输入实例，它所属的类唯一地确定。这相当于根据上述要素将特征空间划分为一些子空间，确定子空间里的每个点所属的类。</p>
-<p><strong>K-均值是一个迭代算法，假设我们想要将数据聚类成 n
-个组，其方法为:</strong></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211326577.jpg" alt="【机器学习】K-means（非常详细）" style="zoom:51%;">
+<p>K-means 聚类的迭代算法实际上是 EM 算法。EM 算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在 K-means 中的隐变量是每个类别所属类别。k近邻法中，当<strong>训练集</strong>、<strong>距离度量</strong>、<strong>K值</strong>以及<strong>分类决策规则</strong>确定后，对于任何一个新的输入实例，它所属的类唯一地确定。这相当于根据上述要素将特征空间划分为一些子空间，确定子空间里的每个点所属的类。</p>
+<p><strong>K-均值是一个迭代算法，假设我们想要将数据聚类成 n 个组，其方法为:</strong></p>
 <ul>
-<li>首先选择𝐾个<strong>随机</strong>的点，称为<strong>聚类中心</strong>（cluster
-centroids）；</li>
+<li>首先选择𝐾个<strong>随机</strong>的点，称为<strong>聚类中心</strong>（cluster centroids）；</li>
 <li>对于数据集中的每一个数据，按照<strong>距离𝐾个中心点的距离</strong>，将其与距离最近的中心点关联起来，与同一个中心点关联的所有点聚成一类。</li>
 <li>计算每一个组的平均值，将该组所<strong>关联的中心点移动到平均值</strong>的位置。</li>
 <li>重复步骤，直至中心点不再变化。</li>
 </ul>
-<p>K-均值算法也可以很便利地用于将数据分为许多不同组，即使在没有非常明显区分的组群的情况下也可以。下图所示的数据集包含身高和体重两项特征构成的，利用
-K-均值算法将数据分为三类，用于帮助确定将要生产的 T-恤衫的三种尺寸。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221641204.jpeg" alt="img" style="zoom: 50%;"></p>
+<p>K-均值算法也可以很便利地用于将数据分为许多不同组，即使在没有非常明显区分的组群的情况下也可以。下图所示的数据集包含身高和体重两项特征构成的，利用 K-均值算法将数据分为三类，用于帮助确定将要生产的 T-恤衫的三种尺寸。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221641204.jpeg" alt="img" style="zoom: 50%;">
 <h4><span id="11-损失函数">1.1 损失函数</span></h4>
-<p><strong>K-均值最小化问题，是要最小化所有的数据点与其所关联的聚类中心点之间的距离之和</strong>，因此
-<strong>K-均值的代价函数（又称畸变函数 Distortion
-function）为</strong>： <span class="math display">\[
-J\left(c^{(1)}, c^{(2)}, \ldots, c^{(m)}, u_1, \ldots,
-u_k\right)=\frac{1}{m} \sum_{i=1}^m\left\|X^{(1)}-u_{c^{(i)}}\right\|^2
-\]</span> 其中 <span class="math inline">\(u_{c^{(i)}}\)</span> 代表与
-<span class="math inline">\(x^{(i)}\)</span>
-最近的聚类中心点。我们的的优化目标便是找出使得代价函数最小的 <span class="math inline">\(c^{(1)}, c^{(2)}, \ldots, c^{(m)}\)</span> 和
-<span class="math inline">\(u_1, u_2, \ldots, u_k\)</span> 。</p>
+<p><strong>K-均值最小化问题，是要最小化所有的数据点与其所关联的聚类中心点之间的距离之和</strong>，因此 <strong>K-均值的代价函数（又称畸变函数 Distortion function）为</strong>：<br>
+$$<br>
+J\left(c^{(1)}, c^{(2)}, \ldots, c^{(m)}, u_1, \ldots, u_k\right)=\frac{1}{m} \sum_{i=1}<sup>m\left|X</sup>{(1)}-u_{c<sup>{(i)}}\right|</sup>2<br>
+$$<br>
+其中 $u_{c^{(i)}}$ 代表与 $x^{(i)}$ 最近的聚类中心点。我们的的优化目标便是找出使得代价函数最小的 $c^{(1)}, c^{(2)}, \ldots, c^{(m)}$ 和 $u_1, u_2, \ldots, u_k$ 。</p>
 <h4><span id="12-k值的选择-肘部法则">1.2 k值的选择 【肘部法则】</span></h4>
-<p>在运行
-K-均值算法的之前，我们首先要随机初始化所有的聚类中心点，下面介绍怎样做：</p>
-<ol type="1">
-<li>我们应该选择𝐾 &lt;
-𝑚，即聚类中心点的个数要小于所有训练集实例的数量。</li>
+<p>在运行 K-均值算法的之前，我们首先要随机初始化所有的聚类中心点，下面介绍怎样做：</p>
+<ol>
+<li>我们应该选择𝐾 &lt; 𝑚，即聚类中心点的个数要小于所有训练集实例的数量。</li>
 <li>随机选择𝐾个训练实例，然后令𝐾个聚类中心分别与这𝐾个训练实例相等K-均值的一个问题在于，它有可能会<strong>停留在一个局部最小值</strong>处，而这取决于初始化的情况。</li>
 </ol>
-<p>为了解决这个问题，我们通常需要多次运行
-K-均值算法，每一次都重新进行随机初始化，最后再比较多次运行
-K-均值的结果，选择代价函数最小的结果。这种方法在𝐾较小的时候（2--10）还是可行的，<strong>但是如果𝐾较大，这么做也可能不会有明显地改善。</strong></p>
-<p>没有所谓最好的选择聚类数的方法，通常是需要根据不同的问题，人工进行选择的。选择的时候思考我们运用
-K-均值算法聚类的动机是什么。有一个可能会谈及的方法叫作<strong>“肘部法则”</strong>。关
-于“肘部法则”，我们所需要做的是改变𝐾值，也就是聚类类别数目的总数。我们用一个聚类来运行
-K
-均值聚类方法。这就意味着，所有的数据都会分到一个聚类里，然后<strong>计算成本函数或者计算畸变函数</strong>𝐽。𝐾代表聚类数字。</p>
+<p>为了解决这个问题，我们通常需要多次运行 K-均值算法，每一次都重新进行随机初始化，最后再比较多次运行 K-均值的结果，选择代价函数最小的结果。这种方法在𝐾较小的时候（2–10）还是可行的，<strong>但是如果𝐾较大，这么做也可能不会有明显地改善。</strong></p>
+<p>没有所谓最好的选择聚类数的方法，通常是需要根据不同的问题，人工进行选择的。选择的时候思考我们运用 K-均值算法聚类的动机是什么。有一个可能会谈及的方法叫作**“肘部法则”<strong>。关 于“肘部法则”，我们所需要做的是改变𝐾值，也就是聚类类别数目的总数。我们用一个聚类来运行 K 均值聚类方法。这就意味着，所有的数据都会分到一个聚类里，然后</strong>计算成本函数或者计算畸变函数**𝐽。𝐾代表聚类数字。</p>
 <p>[<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221641692.jpeg" alt="img"></p>
-<p>我们可能会得到一条类似于这样的曲线。像一个人的肘部。这就是“肘部法则”所做的，让我们来看这样一个图，看起来就好像有一个很清楚的肘在那儿。你会发现这种模式，它的畸变值会迅速下降，从
-1 到 2，从 2 到 3 之后，你会在 3
-的时候达到一个肘点。在此之后，畸变值就下降的非常慢，看起来就像使用 3
-个聚类来进行聚类是正确的，<strong>这是因为那个点是曲线的肘点，畸变值下降得很快，𝐾
-= 3之后就下降得很慢，那么我们就选𝐾 =
-3。</strong>当你应用“肘部法则”的时候，如果你得到了一个像上面这样的图，那么这将是一种用来选择聚类个数的合理方法。</p>
+<p>我们可能会得到一条类似于这样的曲线。像一个人的肘部。这就是“肘部法则”所做的，让我们来看这样一个图，看起来就好像有一个很清楚的肘在那儿。你会发现这种模式，它的畸变值会迅速下降，从 1 到 2，从 2 到 3 之后，你会在 3 的时候达到一个肘点。在此之后，畸变值就下降的非常慢，看起来就像使用 3 个聚类来进行聚类是正确的，**这是因为那个点是曲线的肘点，畸变值下降得很快，𝐾 = 3之后就下降得很慢，那么我们就选𝐾 = 3。**当你应用“肘部法则”的时候，如果你得到了一个像上面这样的图，那么这将是一种用来选择聚类个数的合理方法。</p>
 <h4><span id="13-knn与k-means区别">1.3 KNN与K-means区别？</span></h4>
-<p>K最近邻(k-Nearest
-Neighbor，KNN)分类算法，是一个理论上比较成熟的方法，也是最简单的机器学习算法之一。</p>
+<p>K最近邻(k-Nearest Neighbor，KNN)分类算法，是一个理论上比较成熟的方法，也是最简单的机器学习算法之一。</p>
 <h5><span id="区别">区别：</span></h5>
 <table>
-<colgroup>
-<col style="width: 6%">
-<col style="width: 46%">
-<col style="width: 46%">
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>算法</th>
 <th>KNN</th>
 <th>K-Means</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>类别</td>
-<td>1.KNN是<strong>分类</strong>算法 2.属于<strong>监督学习</strong>
-3.训练数据集是带label的数据</td>
-<td>1.K-Means是<strong>聚类</strong>算法
-2.属于<strong>非监督学习</strong>
-3.训练数据集是无label的数据，是杂乱无章的，经过聚类后变得有序，先无序，后有序。</td>
+<td>1.KNN是<strong>分类</strong>算法 2.属于<strong>监督学习</strong> 3.训练数据集是带label的数据</td>
+<td>1.K-Means是<strong>聚类</strong>算法 2.属于<strong>非监督学习</strong> 3.训练数据集是无label的数据，是杂乱无章的，经过聚类后变得有序，先无序，后有序。</td>
 </tr>
-<tr class="even">
+<tr>
 <td>训练模式</td>
 <td>没有明显的前期训练过程，属于memory based learning</td>
 <td>有明显的前期训练过程</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>k值的含义</td>
 <td>K的含义：一个样本x，对它进行分类，就从训练数据集中，<strong>在x附近找离它最近的K个数据点</strong>，这K个数据点，类别c占的个数最多，就把x的label设为c。</td>
 <td>K的含义：<strong>K是人工固定好的数字，假设数据集合可以分为K个蔟</strong>，那么就利用训练数据来训练出这K个分类。</td>
@@ -1504,138 +1443,98 @@ Neighbor，KNN)分类算法，是一个理论上比较成熟的方法，也是�
 </tbody>
 </table>
 <h5><span id="相似点"><strong>相似点</strong>：</span></h5>
-<p>都包含这样的过程，给定一个点，在数据集中找离它最近的点。即二者都用到了NN(Nears
-Neighbor)算法思想。</p>
+<p>都包含这样的过程，给定一个点，在数据集中找离它最近的点。即二者都用到了NN(Nears Neighbor)算法思想。</p>
 <h4><span id="14-k-means优缺点及改进">1.4 K-Means优缺点及改进</span></h4>
-<p>k-means：在大数据的条件下，<strong>会耗费大量的时间和内存</strong>。
-优化k-means的建议：</p>
-<ol type="1">
-<li><p>减少聚类的数目K。因为，每个样本都要跟类中心计算距离。</p></li>
-<li><p>减少样本的特征维度。比如说，<strong>通过PCA等进行降维</strong>。</p></li>
-<li><p>考察其他的聚类算法，通过选取toy数据，去测试不同聚类算法的性能。</p></li>
-<li><p><strong>hadoop集群</strong>，K-means算法是很容易进行并行计算的。</p></li>
-<li><p>算法可能找到局部最优的聚类，而不是全局最优的聚类。使用改进的二分k-means算法。</p>
-<p>二分k-means算法：首先将整个数据集看成一个簇，然后进行一次k-means（k=2）算法将该簇一分为二，并计算每个簇的误差平方和，选择平方和最大的簇迭代上述过程再次一分为二，直至簇数达到用户指定的k为止，此时可以达到的全局最优。</p></li>
+<p>k-means：在大数据的条件下，<strong>会耗费大量的时间和内存</strong>。 优化k-means的建议：</p>
+<ol>
+<li>
+<p>减少聚类的数目K。因为，每个样本都要跟类中心计算距离。</p>
+</li>
+<li>
+<p>减少样本的特征维度。比如说，<strong>通过PCA等进行降维</strong>。</p>
+</li>
+<li>
+<p>考察其他的聚类算法，通过选取toy数据，去测试不同聚类算法的性能。</p>
+</li>
+<li>
+<p><strong>hadoop集群</strong>，K-means算法是很容易进行并行计算的。</p>
+</li>
+<li>
+<p>算法可能找到局部最优的聚类，而不是全局最优的聚类。使用改进的二分k-means算法。</p>
+<p>二分k-means算法：首先将整个数据集看成一个簇，然后进行一次k-means（k=2）算法将该簇一分为二，并计算每个簇的误差平方和，选择平方和最大的簇迭代上述过程再次一分为二，直至簇数达到用户指定的k为止，此时可以达到的全局最优。</p>
+</li>
 </ol>
 <h3><span id="二-k-means的调优与改进">二、K - means的调优与改进</span></h3>
-<p>针对 K-means
-算法的缺点，我们可以有很多种调优方式：如<strong>数据预处理</strong>（去除异常点），<strong>合理选择
-K 值</strong>，<strong>高维映射</strong>等。以下将简单介绍：</p>
+<p>针对 K-means 算法的缺点，我们可以有很多种调优方式：如<strong>数据预处理</strong>（去除异常点），<strong>合理选择 K 值</strong>，<strong>高维映射</strong>等。以下将简单介绍：</p>
 <h4><span id="21-数据预处理">2.1 数据预处理</span></h4>
-<p>K-means
-的本质是基于欧式距离的数据划分算法，均值和方差大的维度将对数据的聚类产生决定性影响。所以<strong>未做归一化处理和统一单位的数据是无法直接参与运算和比较</strong>的。常见的数据预处理方式有：<strong>数据归一化，数据标准化</strong>。</p>
+<p>K-means 的本质是基于欧式距离的数据划分算法，均值和方差大的维度将对数据的聚类产生决定性影响。所以<strong>未做归一化处理和统一单位的数据是无法直接参与运算和比较</strong>的。常见的数据预处理方式有：<strong>数据归一化，数据标准化</strong>。</p>
 <p>此外，离群点或者噪声数据会对均值产生较大的影响，导致中心偏移，因此我们还需要对数据进行异常点检测。</p>
 <h4><span id="22-合理选择-k-值">2.2 合理选择 K 值</span></h4>
-<p>K 值的选取对 K-means 影响很大，这也是 K-means 最大的缺点，常见的选取
-K 值的方法有：<strong>手肘法、Gap statistic 方法</strong>。</p>
+<p>K 值的选取对 K-means 影响很大，这也是 K-means 最大的缺点，常见的选取 K 值的方法有：<strong>手肘法、Gap statistic 方法</strong>。</p>
 <p><strong>【手肘法】</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-5ca4a5fe0b06b25a2b97262abb401a16_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>当 K &lt; 3 时，曲线急速下降；当 K &gt; 3
-时，曲线趋于平稳，通过手肘法我们认为拐点 3 为 K 的最佳值。</p>
+<img src="https://pic3.zhimg.com/80/v2-5ca4a5fe0b06b25a2b97262abb401a16_1440w.jpg" alt="img" style="zoom: 67%;">
+<p>当 K &lt; 3 时，曲线急速下降；当 K &gt; 3 时，曲线趋于平稳，通过手肘法我们认为拐点 3 为 K 的最佳值。</p>
 <p>【<strong>Gap statistic</strong>】</p>
-<p><span class="math display">\[
-G a p(K)=\mathrm{E}\left(\log D_k\right)-\log D_k
-\]</span> 其中 <span class="math inline">\(D_k\)</span> 为损失函数, 这里
-<span class="math inline">\(E\left(\log D_k\right)\)</span> 指的是 <span class="math inline">\(\log D_k\)</span>
-的期望。这个数值通常通过蒙特卡洛模拟产生, <strong>我们在样本
-里所在的区域中按照均匀分布随机产生和原始样本数一样多的随机样本,
-并对这个随机样本做 K-Means, 从而得到一个 <span class="math inline">\(D_k\)</span> 。如此往复多次, 通常 20 次,
-我们可以得到 20 个 <span class="math inline">\(\log
-D_k\)</span></strong> 。对这 20 个数值求平均值, 就得到了 <span class="math inline">\(E\left(\log D_k\right)\)</span>
-的近似值。最终可以计算 Gap Statisitc。而 Gap statistic
-取得最大值所对应的 K 就是最佳的 K。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-9a39a8dad143e5dd52a506d83c2cbb36_1440w.jpg" alt="img" style="zoom: 67%;"></p>
+<p>$$<br>
+G a p(K)=\mathrm{E}\left(\log D_k\right)-\log D_k<br>
+$$<br>
+其中 $D_k$ 为损失函数, 这里 $E\left(\log D_k\right)$ 指的是 $\log D_k$ 的期望。这个数值通常通过蒙特卡洛模拟产生, <strong>我们在样本 里所在的区域中按照均匀分布随机产生和原始样本数一样多的随机样本, 并对这个随机样本做 K-Means, 从而得到一个 $D_k$ 。如此往复多次, 通常 20 次, 我们可以得到 20 个 $\log D_k$</strong> 。对这 20 个数值求平均值, 就得到了 $E\left(\log D_k\right)$ 的近似值。最终可以计算 Gap Statisitc。而 Gap statistic 取得最大值所对应的 K 就是最佳的 K。</p>
+<img src="https://pic3.zhimg.com/80/v2-9a39a8dad143e5dd52a506d83c2cbb36_1440w.jpg" alt="img" style="zoom: 67%;">
 <p>由图可见，当 K=3 时，Gap(K) 取值最大，所以最佳的簇数是 K=3。</p>
-<p>Github 上一个项目叫 <a href="https://link.zhihu.com/?target=https%3A//github.com/milesgranger/gap_statistic">gap_statistic</a>
-，可以更方便的获取建议的类簇个数。</p>
+<p>Github 上一个项目叫 <a href="https://link.zhihu.com/?target=https%3A//github.com/milesgranger/gap_statistic">gap_statistic</a> ，可以更方便的获取建议的类簇个数。</p>
 <h4><span id="23-采用核函数">2.3 采用核函数</span></h4>
-<p><strong>基于欧式距离的 K-means
-假设了了各个数据簇的数据具有一样的的先验概率并呈现球形分布</strong>，但这种分布在实际生活中并不常见。面对非凸的数据分布形状时我们可以引入核函数来优化，这时算法又称为核
-K-means
-算法，是核聚类方法的一种。<strong>核聚类方法的主要思想是通过一个非线性映射，将输入空间中的数据点映射到高位的特征空间中，并在新的特征空间中进行聚类。</strong>非线性映射增加了数据点线性可分的概率，从而在经典的聚类算法失效的情况下，通过引入核函数可以达到更为准确的聚类结果。</p>
+<p><strong>基于欧式距离的 K-means 假设了了各个数据簇的数据具有一样的的先验概率并呈现球形分布</strong>，但这种分布在实际生活中并不常见。面对非凸的数据分布形状时我们可以引入核函数来优化，这时算法又称为核 K-means 算法，是核聚类方法的一种。**核聚类方法的主要思想是通过一个非线性映射，将输入空间中的数据点映射到高位的特征空间中，并在新的特征空间中进行聚类。**非线性映射增加了数据点线性可分的概率，从而在经典的聚类算法失效的情况下，通过引入核函数可以达到更为准确的聚类结果。</p>
 <h4><span id="24-k-means">2.4 K-means++</span></h4>
-<p><strong>K-means++
-就是选择离已选中心点最远的点</strong>。这也比较符合常理,
-聚类中心当然是互相离得越远越好。我们知道 初始值的选取对结果的影响很大,
-对初始值选择的改进是很重要的一部分。在所有的改进算法中, K-means++ 最
-有名。 K-means++ 算法步骤如下所示：</p>
-<ol type="1">
-<li>随机选取一个中心点 <span class="math inline">\(a_1\)</span>;</li>
-<li>计算数据到之前 <span class="math inline">\(\mathrm{n}\)</span>
-个聚类中心最远的距离 <span class="math inline">\(D(x)\)</span>,
-并以一定概率 <span class="math inline">\(\frac{D(x)^2}{\sum
-D(x)^2}\)</span> 选择新中心点 <span class="math inline">\(a_i\)</span>;</li>
+<p><strong>K-means++ 就是选择离已选中心点最远的点</strong>。这也比较符合常理, 聚类中心当然是互相离得越远越好。我们知道 初始值的选取对结果的影响很大, 对初始值选择的改进是很重要的一部分。在所有的改进算法中, K-means++ 最 有名。<br>
+K-means++ 算法步骤如下所示：</p>
+<ol>
+<li>随机选取一个中心点 $a_1$;</li>
+<li>计算数据到之前 $\mathrm{n}$ 个聚类中心最远的距离 $D(x)$, 并以一定概率 $\frac{D(x)^2}{\sum D(x)^2}$ 选择新中心点 $a_i$;</li>
 <li>重复第二步。</li>
 </ol>
-<p>简单的来说, 就是 <strong>K-means++
-就是选择离已选中心点最远的点</strong>。这也比较符合常理,
-聚类中心当然是互相离得越 远越好。 但是这个算法的缺点在于,
-难以并行化。所以 k-means II 改变取样策略, 并非按照 k-means++
-那样每次遍历只取 样一个样本, 而是每次遍历取样 <span class="math inline">\(\mathrm{k}\)</span> 个, 重复该取样过程 <span class="math inline">\(\log (n)\)</span> 次, 则得到 <span class="math inline">\(k \log (n)\)</span> 个样本点组成的集合, 然后从
-这些点中选取 k 个。当然一般也不需要 <span class="math inline">\(\log
-(n)\)</span> 次取样, 5 次即可。</p>
+<p>简单的来说, 就是 <strong>K-means++ 就是选择离已选中心点最远的点</strong>。这也比较符合常理, 聚类中心当然是互相离得越 远越好。<br>
+但是这个算法的缺点在于, 难以并行化。所以 k-means II 改变取样策略, 并非按照 k-means++ 那样每次遍历只取 样一个样本, 而是每次遍历取样 $\mathrm{k}$ 个, 重复该取样过程 $\log (n)$ 次, 则得到 $k \log (n)$ 个样本点组成的集合, 然后从 这些点中选取 k 个。当然一般也不需要 $\log (n)$ 次取样, 5 次即可。</p>
 <h4><span id="25-isodata">2.5 ISODATA</span></h4>
-<p>ISODATA 的全称是<strong>迭代自组织数据分析法</strong>。它解决了 K
-的值需要预先人为的确定这一缺点。而当遇到高维度、海量的数据集时，人们往往很难准确地估计出
-K 的大小。ISODATA
-就是针对这个问题进行了改进，它的思想也很直观：当属于某个类别的样本数过少时把这个类别去除，当属于某个类别的样本数过多、分散程度较大时把这个类别分为两个子类别。</p>
+<p>ISODATA 的全称是<strong>迭代自组织数据分析法</strong>。它解决了 K 的值需要预先人为的确定这一缺点。而当遇到高维度、海量的数据集时，人们往往很难准确地估计出 K 的大小。ISODATA 就是针对这个问题进行了改进，它的思想也很直观：当属于某个类别的样本数过少时把这个类别去除，当属于某个类别的样本数过多、分散程度较大时把这个类别分为两个子类别。</p>
 <h3><span id="三-收敛证明em算法">三、 收敛证明【EM算法】</span></h3>
-<p>我们先来看一下 K-means
-算法的步骤：先随机选择初始节点，然后计算每个样本所属类别，然后通过类别再跟新初始化节点。这个过程有没有想到之前介绍的
-<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/78311644">EM 算法</a> 。</p>
-<p>我们需要知道的是 K-means 聚类的迭代算法实际上是 EM 算法。EM
-算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在
-<strong>K-means 中的隐变量是每个样本所属类别</strong>。</p>
-<p>K-means 算法迭代步骤中的每次确认中心点以后重新进行标记对应 EM
-算法中的 <strong>E 步</strong>：<strong>求当前参数条件下的
-Expectation</strong>。而根据标记重新求中心点 对应 EM 算法中的 <strong>M
-步</strong>：<strong>求似然函数最大化时（损失函数最小时）对应的参数
-。</strong></p>
-<p>首先我们看一下损失函数的形式: <span class="math display">\[
-J=\sum_{i=1}^C \sum_{j=1}^N r_{i j} \cdot \nu\left(x_j, \mu_i\right)
-\]</span> 其中: <span class="math display">\[
-\nu\left(x_j, \mu_i\right)=\left\|x_j-\mu_i\right\|^2, \quad r_{n k}=
-\begin{cases}1 &amp; \text { if } x_n \in k \\ 0 &amp; \text { else
-}\end{cases}
-\]</span> 为了求极值，我们令损失函数求偏导数且等于 0 : <span class="math display">\[
-\frac{\partial J}{\partial \mu_k}=2 \sum_{i=1}^N r_{i
-k}\left(x_i-\mu_k\right)=0
-\]</span> <span class="math inline">\(\mathrm{k}\)</span> 是指第 <span class="math inline">\(\mathrm{k}\)</span> 个中心点, 于是我们有: <span class="math display">\[
-\mu_k=\frac{\sum_{i=1}^N r_{i k} x_i}{\sum_{i=1}^N r_{i k}}
-\]</span> 可以看出，新的中心点就是所有该类的<strong>质心</strong>。</p>
-<p><strong>EM 算法的缺点就是，容易陷入局部极小值，这也是 K-means
-有时会得到局部最优解的原因。</strong></p>
+<p>我们先来看一下 K-means 算法的步骤：先随机选择初始节点，然后计算每个样本所属类别，然后通过类别再跟新初始化节点。这个过程有没有想到之前介绍的 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/78311644">EM 算法</a> 。</p>
+<p>我们需要知道的是 K-means 聚类的迭代算法实际上是 EM 算法。EM 算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在 <strong>K-means 中的隐变量是每个样本所属类别</strong>。</p>
+<p>K-means 算法迭代步骤中的每次确认中心点以后重新进行标记对应 EM 算法中的 <strong>E 步</strong>：<strong>求当前参数条件下的 Expectation</strong>。而根据标记重新求中心点 对应 EM 算法中的 <strong>M 步</strong>：<strong>求似然函数最大化时（损失函数最小时）对应的参数 。</strong></p>
+<p>首先我们看一下损失函数的形式:<br>
+$$<br>
+J=\sum_{i=1}^C \sum_{j=1}^N r_{i j} \cdot \nu\left(x_j, \mu_i\right)<br>
+$$<br>
+其中:<br>
+$$<br>
+\nu\left(x_j, \mu_i\right)=\left|x_j-\mu_i\right|^2, \quad r_{n k}= \begin{cases}1 &amp; \text { if } x_n \in k \ 0 &amp; \text { else }\end{cases}<br>
+$$<br>
+为了求极值，我们令损失函数求偏导数且等于 0 :<br>
+$$<br>
+\frac{\partial J}{\partial \mu_k}=2 \sum_{i=1}^N r_{i k}\left(x_i-\mu_k\right)=0<br>
+$$<br>
+$\mathrm{k}$ 是指第 $\mathrm{k}$ 个中心点, 于是我们有:<br>
+$$<br>
+\mu_k=\frac{\sum_{i=1}^N r_{i k} x_i}{\sum_{i=1}^N r_{i k}}<br>
+$$<br>
+可以看出，新的中心点就是所有该类的<strong>质心</strong>。</p>
+<p><strong>EM 算法的缺点就是，容易陷入局部极小值，这也是 K-means 有时会得到局部最优解的原因。</strong></p>
 <h3><span id="四-高斯混合模型gmm">四、高斯混合模型(GMM)</span></h3>
 <h4><span id="41-gmm的思想">4.1 GMM的思想</span></h4>
-<p>高斯混合模型（Gaussian Mixed
-Model，GMM）也是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。<strong>高斯混合模型假设每个簇的数据都是符合高斯分布（又叫正态分布）的</strong>，当前<strong>数据呈现的分布就是各个簇的高斯分布叠加在一起的结果。</strong></p>
-<p>第一张图是一个数据分布的样例，如果只用一个高斯分布来拟合图中的数据，图
-中所示的椭圆即为高斯分布的二倍标准差所对应的椭圆。直观来说，图中的数据
-明显分为两簇，因此只用一个高斯分布来拟和是不太合理的，需要推广到用多个
-高斯分布的叠加来对数据进行拟合。第二张图是用两个高斯分布的叠加来拟合得到的结果。<strong>这就引出了高斯混合模型，即用多个高斯分布函数的线形组合来对数据分布进行拟合。</strong>理论上，高斯混合模型可以拟合出任意类型的分布。</p>
-<p>高斯混合模型的核心思想是, 假设数据可以看作从多个高斯分布中生成出来
-的。在该假设下, 每个单独的分模型 都是标准高斯模型, 其均值 <span class="math inline">\(u_i\)</span> 和方差 <span class="math inline">\(\sum_i\)</span> 是待估计的参数。此外,
-每个分模型都还有一个参数 <span class="math inline">\(\pi_i\)</span>,
-可以理解为权 重或生成数据的概率。高斯混合模型的公式为: <span class="math display">\[
-p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)
-\]</span> 通常我们并不能直接得到高斯混合模型的参数,
-而是观察到了一系列数据点, 给出一个类别的数量K后, 希望求得最佳的 <span class="math inline">\(K\)</span>
-个高斯分模型。<strong>因此，高斯混合模型的计算，便成了最佳的均值 <span class="math inline">\(\mu\)</span>, 方差 <span class="math inline">\(\Sigma 、\)</span> 权重 <span class="math inline">\(\pi\)</span> 的寻找, 这类问题通常
-通过最大似然估计来求解。遗憾的是, 此问题中直接使用最大似然估计,
-得到的是一个复杂的非凸函数, 目标函数 是和的对数,
-难以展开和对其求偏导。</strong></p>
-<p><strong>在这种情况下，可以用EM算法。
-</strong>EM算法是在最大化目标函数时，先固定一个变量使整体函数变为凸优化函数，求导得到最值，然后利用最优参数更新被固定的变量，进入下一个循环。具体到高
-斯混合模型的求解，EM算法的迭代过程如下。</p>
+<p>高斯混合模型（Gaussian Mixed Model，GMM）也是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。<strong>高斯混合模型假设每个簇的数据都是符合高斯分布（又叫正态分布）的</strong>，当前<strong>数据呈现的分布就是各个簇的高斯分布叠加在一起的结果。</strong></p>
+<p>第一张图是一个数据分布的样例，如果只用一个高斯分布来拟合图中的数据，图 中所示的椭圆即为高斯分布的二倍标准差所对应的椭圆。直观来说，图中的数据 明显分为两簇，因此只用一个高斯分布来拟和是不太合理的，需要推广到用多个 高斯分布的叠加来对数据进行拟合。第二张图是用两个高斯分布的叠加来拟合得到的结果。**这就引出了高斯混合模型，即用多个高斯分布函数的线形组合来对数据分布进行拟合。**理论上，高斯混合模型可以拟合出任意类型的分布。</p>
+<p>高斯混合模型的核心思想是, 假设数据可以看作从多个高斯分布中生成出来 的。在该假设下, 每个单独的分模型 都是标准高斯模型, 其均值 $u_i$ 和方差 $\sum_i$ 是待估计的参数。此外, 每个分模型都还有一个参数 $\pi_i$, 可以理解为权 重或生成数据的概率。高斯混合模型的公式为:<br>
+$$<br>
+p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)<br>
+$$<br>
+通常我们并不能直接得到高斯混合模型的参数, 而是观察到了一系列数据点, 给出一个类别的数量K后, 希望求得最佳的 $K$ 个高斯分模型。<strong>因此，高斯混合模型的计算，便成了最佳的均值 $\mu$, 方差 $\Sigma 、$ 权重 $\pi$ 的寻找, 这类问题通常 通过最大似然估计来求解。遗憾的是, 此问题中直接使用最大似然估计, 得到的是一个复杂的非凸函数, 目标函数 是和的对数, 难以展开和对其求偏导。</strong></p>
+<p>**在这种情况下，可以用EM算法。 **EM算法是在最大化目标函数时，先固定一个变量使整体函数变为凸优化函数，求导得到最值，然后利用最优参数更新被固定的变量，进入下一个循环。具体到高 斯混合模型的求解，EM算法的迭代过程如下。</p>
 <p>首先，初始随机选择各参数的值。然后，重复下述两步，直到收敛。</p>
 <ul>
 <li>E步骤。根据当前的参数，计算每个点由某个分模型生成的概率。</li>
 <li>M步骤。使用E步骤估计出的概率，来改进每个分模型的均值，方差和权重。</li>
 </ul>
 <p>高斯混合模型是一个生成式模型。可以这样理解数据的生成过程，假设一个最简单的情况，即只有两个一维标准高斯分布的分模型<em>N</em>(0,1)和<em>N</em>(5,1)，其权重分别为0.7和0.3。那么，在生成第一个数据点时，先按照权重的比例，随机选择一个分布，比如选择第一个高斯分布，接着从<em>N</em>(0,1)中生成一个点，如−0.5，便是第一个数据点。在生成第二个数据点时，随机选择到第二个高斯分布<em>N</em>(5,1)，生成了第二个点4.7。如此循环执行，便生成出了所有的数据点。</p>
-<p>也就是说，我们并不知道最佳的K个高斯分布的各自3个参数，也不知道每个
-数据点究竟是哪个高斯分布生成的。所以每次循环时，先固定当前的高斯分布不
-变，获得每个数据点由各个高斯分布生成的概率。然后固定该生成概率不变，根据数据点和生成概率，获得一个组更佳的高斯分布。循环往复，直到参数的不再变化，或者变化非常小时，便得到了比较合理的一组高斯分布。</p>
+<p>也就是说，我们并不知道最佳的K个高斯分布的各自3个参数，也不知道每个 数据点究竟是哪个高斯分布生成的。所以每次循环时，先固定当前的高斯分布不 变，获得每个数据点由各个高斯分布生成的概率。然后固定该生成概率不变，根据数据点和生成概率，获得一个组更佳的高斯分布。循环往复，直到参数的不再变化，或者变化非常小时，便得到了比较合理的一组高斯分布。</p>
 <h4><span id="42-gmm与k-means相比">4.2 GMM与K-Means相比</span></h4>
 <p>高斯混合模型与K均值算法的相同点是：</p>
 <ul>
@@ -1643,14 +1542,11 @@ p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)
 <li><strong>都是使用EM算法来求解</strong>；</li>
 <li>都往往只能收敛于局部最优。</li>
 </ul>
-<p>而它相比于K
-均值算法的优点是，可以给出一个样本属于某类的<strong>概率</strong>是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；<strong>并且可以用于生成新的样本点</strong>。</p>
+<p>而它相比于K 均值算法的优点是，可以给出一个样本属于某类的<strong>概率</strong>是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；<strong>并且可以用于生成新的样本点</strong>。</p>
 <h3><span id="参考文献">参考文献</span></h3>
-<ol type="1">
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20463356">K-means
-笔记（三）数学原理</a></li>
-<li><a href="https://link.zhihu.com/?target=http%3A//sofasofa.io/forum_main_post.php%3Fpostid%3D1000282">K-means
-怎么选 K?</a></li>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20463356">K-means 笔记（三）数学原理</a></li>
+<li><a href="https://link.zhihu.com/?target=http%3A//sofasofa.io/forum_main_post.php%3Fpostid%3D1000282">K-means 怎么选 K?</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/161733843">K-Means：隐变量、聚类、EM</a></li>
 </ol>
 
@@ -1742,7 +1638,7 @@ p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.9k</span>
+      <span>3.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1762,103 +1658,60 @@ p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)
     <div class="post-body" itemprop="articleBody">
           <h3><span id="一-dbscan算法基于密度">一、DBSCAN算法【基于密度】</span></h3>
 <blockquote>
-<p>（3）聚类算法之DBSCAN算法 - GISer.Wang的文章 - 知乎
-https://zhuanlan.zhihu.com/p/77043965</p>
+<p>（3）聚类算法之DBSCAN算法 - GISer.Wang的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/77043965">https://zhuanlan.zhihu.com/p/77043965</a></p>
 </blockquote>
 <p>密度聚类方法的指导思想是，只要样本点的密度大于某阈值，则将该样本添加到最近的簇中。这类算法能克服基于距离的算法只能发现“类圆”（凸）的聚类的缺点，可发现任意形状的聚类，且对噪声数据不敏感。但计算密度单元的计算复杂度大，需要建立空间索引来降低计算量。其代表算法为<strong>DBSCAN算法</strong>和<strong>密度最大值</strong>算法。</p>
 <h4><span id="21-dbscan算法原理">2.1 DBSCAN算法原理</span></h4>
-<p><strong><font color="red"> DBCSAN（Density-Based Spatial Clustering
-of Applications with
-Noise）是一个比较有代表性的基于密度的聚类算法。</font></strong>与划分和层次聚类方法不同，它将簇定义为密度相连的点的最大集合，能够把具有足够高密度的区域划分为簇，并<strong>可在有“噪声”的数据中发现任意形状的聚类</strong>。</p>
+<p><strong><font color="red"> DBCSAN（Density-Based Spatial Clustering of Applications with Noise）是一个比较有代表性的基于密度的聚类算法。</font><strong>与划分和层次聚类方法不同，它将簇定义为密度相连的点的最大集合，能够把具有足够高密度的区域划分为簇，并</strong>可在有“噪声”的数据中发现任意形状的聚类</strong>。</p>
 <h4><span id="22-若干概念">2.2 若干概念</span></h4>
-<p><strong>DBSCAN是基于一组邻域来描述样本集的紧密程度的, 参数 <span class="math inline">\((\epsilon, M i n P t s)\)</span>
-用来描述邻域的样本分布紧密程度。其 中, <span class="math inline">\(\epsilon\)</span> 描述了某一数据点的邻域距离阈值
-(半径)</strong>, MinPts 描述了数据点半径为 <span class="math inline">\(\epsilon\)</span> 的邻域中数据点个数的最
-小个数。下面是与密度聚类相关的定义 (假设我的样本集是 <span class="math inline">\(D=\left\{x_1, x_2, \ldots, x_m\right\}\)</span>
-):</p>
+<p><strong>DBSCAN是基于一组邻域来描述样本集的紧密程度的, 参数 $(\epsilon, M i n P t s)$ 用来描述邻域的样本分布紧密程度。其 中, $\epsilon$ 描述了某一数据点的邻域距离阈值 (半径)</strong>, MinPts 描述了数据点半径为 $\epsilon$ 的邻域中数据点个数的最 小个数。下面是与密度聚类相关的定义 (假设我的样本集是 $D=\left{x_1, x_2, \ldots, x_m\right}$ ):</p>
 <ul>
-<li><p><strong>对象的 <span class="math inline">\(\varepsilon\)</span>
-领域</strong>：给定对象在半径 <span class="math inline">\(\varepsilon\)</span> 内的区域; 对于 <span class="math inline">\(x_j \in D\)</span>, 其 <span class="math inline">\(\epsilon\)</span>-邻域包含样本集 <span class="math inline">\(D\)</span> 中与 <span class="math inline">\(x_j\)</span> 的距离不大于 <span class="math inline">\(\epsilon\)</span> 的子样本集。即 <span class="math inline">\(N_\epsilon\left(x_j\right)=\left\{x_i \in D \mid
-\operatorname{distance}\left(x_i, x_j\right) \leq
-\epsilon\right\}\)</span> ，这个子样本集的个数记为 <span class="math inline">\(\left|N_\epsilon\left(x_j\right)\right|\)</span>
-。 <span class="math inline">\(\epsilon\)</span>-邻域是
-一个集合</p></li>
-<li><p><strong>核心对象</strong>: 对于任一样本 <span class="math inline">\(x_j \in D\)</span>, 如果其 <span class="math inline">\(\epsilon\)</span>-邻域对应的 <span class="math inline">\(N_\epsilon\left(x_j\right)\)</span> 至少包含
-MinPts 个样本, 即如果 <span class="math inline">\(\left|N_\epsilon\left(x_j\right)\right|
-\geq\)</span> MinPts ，则 <span class="math inline">\(x_j\)</span>
-是核心对象。</p></li>
-<li><p><strong>直接密度可达</strong>: 如果 <span class="math inline">\(x_i\)</span> 位于 <span class="math inline">\(x_j\)</span> 的 <span class="math inline">\(\epsilon\)</span>-邻域中, 且 <span class="math inline">\(x_j\)</span> 是核心对象, 则称 <span class="math inline">\(x_i\)</span> 由 <span class="math inline">\(x_j\)</span> 密度直达。反之不一定成 立,
-即此时不能说 <span class="math inline">\(x_j\)</span> 由 <span class="math inline">\(x_i\)</span> 密度直达，除非 <span class="math inline">\(x_i\)</span> 也是核心对象,
-即<strong>密度直达不满足对称性</strong>。如图 <span class="math inline">\(\varepsilon=1, \mathrm{~m}=5, \mathrm{q}\)</span>
-是一个核心对象, 从对象q出发到对象p是直接密度可达的。</p></li>
+<li>
+<p><strong>对象的 $\varepsilon$ 领域</strong>：给定对象在半径 $\varepsilon$ 内的区域; 对于 $x_j \in D$, 其 $\epsilon$-邻域包含样本集 $D$ 中与 $x_j$ 的距离不大于 $\epsilon$ 的子样本集。即 $N_\epsilon\left(x_j\right)=\left{x_i \in D \mid \operatorname{distance}\left(x_i, x_j\right) \leq \epsilon\right}$ ，这个子样本集的个数记为 $\left|N_\epsilon\left(x_j\right)\right|$ 。 $\epsilon$-邻域是 一个集合</p>
+</li>
+<li>
+<p><strong>核心对象</strong>: 对于任一样本 $x_j \in D$, 如果其 $\epsilon$-邻域对应的 $N_\epsilon\left(x_j\right)$ 至少包含 MinPts 个样本, 即如果 $\left|N_\epsilon\left(x_j\right)\right| \geq$ MinPts ，则 $x_j$ 是核心对象。</p>
+</li>
+<li>
+<p><strong>直接密度可达</strong>: 如果 $x_i$ 位于 $x_j$ 的 $\epsilon$-邻域中, 且 $x_j$ 是核心对象, 则称 $x_i$ 由 $x_j$ 密度直达。反之不一定成 立, 即此时不能说 $x_j$ 由 $x_i$ 密度直达，除非 $x_i$ 也是核心对象, 即<strong>密度直达不满足对称性</strong>。如图 $\varepsilon=1, \mathrm{~m}=5, \mathrm{q}$ 是一个核心对象, 从对象q出发到对象p是直接密度可达的。</p>
+</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648998.jpg" alt="2019-05-18-061126.jpg" style="zoom:50%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648998.jpg" alt="2019-05-18-061126.jpg" style="zoom:50%;">
 <ul>
-<li>*密度可达<strong>: 对于 <span class="math inline">\(x_i\)</span> 和
-<span class="math inline">\(x_j\)</span> ，如果存在样本样本序列 <span class="math inline">\(p_1, p_2, \ldots, p_T\)</span> ，满足 <span class="math inline">\(p 1=x_i, p_T=x_j\)</span> ，且 <span class="math inline">\(p_{t+1}\)</span> 由 <span class="math inline">\(p_t\)</span> 密度 直达, 则称 <span class="math inline">\(x_j\)</span> 由 <span class="math inline">\(x_i\)</span> 密度可达。也就是说,
-密度可达满足传递性。此时序列中的传递样本 <span class="math inline">\(p_1, p_2, \ldots, p_{T-1}\)</span> 均 为核心对象,
-因为只有核心对象才能使其他样本密度直达。</strong>密度可达也不满足对称性**,
-这个可以由密度直达的 不对称性得出。</li>
+<li><em>密度可达</em>*: 对于 $x_i$ 和 $x_j$ ，如果存在样本样本序列 $p_1, p_2, \ldots, p_T$ ，满足 $p 1=x_i, p_T=x_j$ ，且 $p_{t+1}$ 由 $p_t$ 密度 直达, 则称 $x_j$ 由 $x_i$ 密度可达。也就是说, 密度可达满足传递性。此时序列中的传递样本 $p_1, p_2, \ldots, p_{T-1}$ 均 为核心对象, 因为只有核心对象才能使其他样本密度直达。<strong>密度可达也不满足对称性</strong>, 这个可以由密度直达的 不对称性得出。</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648520.jpg" alt="2019-05-18-061154.jpg" style="zoom:50%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648520.jpg" alt="2019-05-18-061154.jpg" style="zoom:50%;">
 <ul>
-<li><strong>密度相连</strong>：对于 <span class="math inline">\(x_i\)</span> 和 <span class="math inline">\(x_j\)</span> ，如果存在核心对象样本 <span class="math inline">\(x_k\)</span>, 使 <span class="math inline">\(x_i\)</span> 和 <span class="math inline">\(x_j\)</span> 均由 <span class="math inline">\(x_k\)</span> 密度可达, 则称 <span class="math inline">\(x_i\)</span> 和 <span class="math inline">\(x_j\)</span> 密度
-相连。密度相连关系满足对称性。</li>
+<li><strong>密度相连</strong>：对于 $x_i$ 和 $x_j$ ，如果存在核心对象样本 $x_k$, 使 $x_i$ 和 $x_j$ 均由 $x_k$ 密度可达, 则称 $x_i$ 和 $x_j$ 密度 相连。密度相连关系满足对称性。</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648223.jpg" alt="2019-05-18-061202.jpg" style="zoom:50%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221648223.jpg" alt="2019-05-18-061202.jpg" style="zoom:50%;">
 <ul>
-<li><p><strong>簇</strong>：一个基于密度的簇是最大的密度相连对象的集合。</p></li>
-<li><p><strong>噪声</strong>：不包含在任何簇中的对象称为噪声。</p></li>
+<li>
+<p><strong>簇</strong>：一个基于密度的簇是最大的密度相连对象的集合。</p>
+</li>
+<li>
+<p><strong>噪声</strong>：不包含在任何簇中的对象称为噪声。</p>
+</li>
 </ul>
-<p>从下图可以很容易看出理解上述定义，图中 MinPts <span class="math inline">\(=5\)</span> ，红色的点都是核心对象, 因为其 <span class="math inline">\(\epsilon\)</span>-邻域至少有 5 个
-样本。黑色的样本是非核心对象。所有核心对象密度直达的样本在以红色核心对象为中心的圆内,
-如果不在圆内,
-则不能密度直达。图中用绿色箭头连起来的核心对象组成了密度可达的样本序列，此序列是一个簇集。在这些密度
-可达的样本序列的 <span class="math inline">\(\epsilon\)</span>-邻域内所有的样本相互都是密度相连的
-(<strong>注意, 此图中有两个簇集</strong>)。</p>
-<p><img src="https://pic2.zhimg.com/80/v2-7d15fc871942e0287be42a12d6d615dd_1440w.jpg" alt="img" style="zoom: 33%;"></p>
+<p>从下图可以很容易看出理解上述定义，图中 MinPts $=5$ ，红色的点都是核心对象, 因为其 $\epsilon$-邻域至少有 5 个 样本。黑色的样本是非核心对象。所有核心对象密度直达的样本在以红色核心对象为中心的圆内, 如果不在圆内, 则不能密度直达。图中用绿色箭头连起来的核心对象组成了密度可达的样本序列，此序列是一个簇集。在这些密度 可达的样本序列的 $\epsilon$-邻域内所有的样本相互都是密度相连的 (<strong>注意, 此图中有两个簇集</strong>)。</p>
+<img src="https://pic2.zhimg.com/80/v2-7d15fc871942e0287be42a12d6d615dd_1440w.jpg" alt="img" style="zoom: 33%;">
 <h4><span id="23-dbscan密度聚类思想">2.3 DBSCAN密度聚类思想</span></h4>
-<p><strong>DBSCAN的聚类定义很简单：由密度可达关系导出的最大密度相连的样本集合,
-即为我们最终聚类的一个类别,
-或者说一个簇。（注意是密度相连的集合）</strong>,
-簇里面可以有一个或者多个核心对象。<strong>如果只有一个核心对象,
-则簇里其他的非核心对象样本都在这个核心对象的 <span class="math inline">\(\epsilon\)</span>-邻域里; 如果有多个核心对象,
-则簇里的任意一个核心对象的 <span class="math inline">\(\epsilon\)</span>
--邻域中一定有一个其他的核心对象,
-否则这两个核心对象无法密度可达</strong>。这些核心对象的 <span class="math inline">\(\epsilon\)</span>-邻域里所有的样本的
-集合组成的一个DBSCAN聚类笶。</p>
-<p>那么怎么才能找到这样的簇样本集合呢？DBSCAN使用的方法很简单，它任意选择一个没有类别的核心对象作为种子，然后找到所有这个核心对象能够<strong>密度可达</strong>的样本集合，即为一个聚类簇。接着继续选择另一个没有类别的核心对象去寻找<strong>密度可达</strong>的样本集合，这样就得到另一个聚类簇
-<strong>（这样的得到都肯定是密度相连的）</strong>。一直运行到<strong>所有核心对象都有类别为止。</strong></p>
+<p><strong>DBSCAN的聚类定义很简单：由密度可达关系导出的最大密度相连的样本集合, 即为我们最终聚类的一个类别, 或者说一个簇。（注意是密度相连的集合）</strong>, 簇里面可以有一个或者多个核心对象。<strong>如果只有一个核心对象, 则簇里其他的非核心对象样本都在这个核心对象的 $\epsilon$-邻域里; 如果有多个核心对象, 则簇里的任意一个核心对象的 $\epsilon$ -邻域中一定有一个其他的核心对象, 否则这两个核心对象无法密度可达</strong>。这些核心对象的 $\epsilon$-邻域里所有的样本的 集合组成的一个DBSCAN聚类笶。</p>
+<p>那么怎么才能找到这样的簇样本集合呢？DBSCAN使用的方法很简单，它任意选择一个没有类别的核心对象作为种子，然后找到所有这个核心对象能够<strong>密度可达</strong>的样本集合，即为一个聚类簇。接着继续选择另一个没有类别的核心对象去寻找<strong>密度可达</strong>的样本集合，这样就得到另一个聚类簇 <strong>（这样的得到都肯定是密度相连的）</strong>。一直运行到<strong>所有核心对象都有类别为止。</strong></p>
 <p>基本上这就是DBSCAN算法的主要内容了，是不是很简单？<strong>但是我们还是有三个问题没有考虑。</strong></p>
 <ul>
-<li><strong>异常点问题：</strong>一些异常样本点或者说少量游离于簇外的样本点，这些点不在任何一个核心对象在周围，在DBSCAN中，我们一般将这些样本点标记为噪音点。</li>
-<li><strong>距离度量问题</strong>：<strong><font color="red">
-即如何计算某样本和核心对象样本的距离</font></strong>。在DBSCAN中，一般采用最近邻思想，采用某一种距离度量来衡量<strong>样本距离，比如欧式距离、曼哈顿距离</strong>等。</li>
-<li><strong>数据点优先级分配问题</strong>：例如某些样本可能到两个核心对象的距离都小于
-<span class="math inline">\(\epsilon\)</span>,
-但是这两个核心对象由于不是 密度直达, 又不属于同一个聚类笶,
-那么如果界定这个样本的类别呢? 一般来说, 此时 DBSCAN采用先来后 到,
-先进行聚类的类别簇会标记这个样本为它的类别。也就是说<strong>DBSCAN的算法不是完全稳定的算法</strong>。</li>
+<li>**异常点问题：**一些异常样本点或者说少量游离于簇外的样本点，这些点不在任何一个核心对象在周围，在DBSCAN中，我们一般将这些样本点标记为噪音点。</li>
+<li><strong>距离度量问题</strong>：<strong><font color="red"> 即如何计算某样本和核心对象样本的距离</font></strong>。在DBSCAN中，一般采用最近邻思想，采用某一种距离度量来衡量<strong>样本距离，比如欧式距离、曼哈顿距离</strong>等。</li>
+<li><strong>数据点优先级分配问题</strong>：例如某些样本可能到两个核心对象的距离都小于 $\epsilon$, 但是这两个核心对象由于不是 密度直达, 又不属于同一个聚类笶, 那么如果界定这个样本的类别呢? 一般来说, 此时 DBSCAN采用先来后 到, 先进行聚类的类别簇会标记这个样本为它的类别。也就是说<strong>DBSCAN的算法不是完全稳定的算法</strong>。</li>
 </ul>
 <h4><span id="24-算法步骤">2.4 算法步骤</span></h4>
-<p><strong>输入: 样本集</strong> <span class="math inline">\(D=\left\{x_1, x_2, \ldots, x_m\right\}\)</span>,
-<strong>邻域参数</strong> <span class="math inline">\((\epsilon\)</span>, MinPts <span class="math inline">\()\)</span></p>
-<ol type="1">
-<li>初始化核心对象集合 <span class="math inline">\(\Omega=\emptyset\)</span>, 初始化类别 <span class="math inline">\(k=0\)</span></li>
-<li>遍历 <span class="math inline">\(D\)</span> 的元素, 如果是核心对象,
-则将其加入到核心对象集合 <span class="math inline">\(\Omega\)</span>
-中</li>
-<li>如果核心对象集合 <span class="math inline">\(\Omega\)</span>
-中元素都已经被访问, 则算法结束, 否则转入步骤4.</li>
-<li>在核心对象集合 <span class="math inline">\(\Omega\)</span> 中,
-随机选择一个末访问的核心对象 <span class="math inline">\(o\)</span>,
-首先将 <span class="math inline">\(o\)</span> 标记为已访问, 然后将 <span class="math inline">\(o\)</span> 标记类别 <span class="math inline">\(k\)</span> , 最后将 <span class="math inline">\(o\)</span> 的 <span class="math inline">\(\epsilon\)</span>-邻域中末访问的数据，存放到种子集合
-Seeds 中。</li>
-<li>如果种子集合 <span class="math inline">\(S e e d
-s=\emptyset\)</span>, 则当前聚类簇 <span class="math inline">\(C_k\)</span> 生成完毕，且 <span class="math inline">\(k=k+1\)</span>, 跳转到3。否则, 从种子集合 <span class="math inline">\(S e e d s\)</span> 中挑选一个种子点 seed,
-首先将其标记为已访问、标记类别 <span class="math inline">\(k\)</span>,
-然后判断 seed 是否为核心对象, 如果是将 seed
-中末访问的种子点加入到种子集合中, 跳转到 5 。</li>
+<p><strong>输入: 样本集</strong> $D=\left{x_1, x_2, \ldots, x_m\right}$, <strong>邻域参数</strong> $(\epsilon$, MinPts $)$</p>
+<ol>
+<li>初始化核心对象集合 $\Omega=\emptyset$, 初始化类别 $k=0$</li>
+<li>遍历 $D$ 的元素, 如果是核心对象, 则将其加入到核心对象集合 $\Omega$ 中</li>
+<li>如果核心对象集合 $\Omega$ 中元素都已经被访问, 则算法结束, 否则转入步骤4.</li>
+<li>在核心对象集合 $\Omega$ 中, 随机选择一个末访问的核心对象 $o$, 首先将 $o$ 标记为已访问, 然后将 $o$ 标记类别 $k$ , 最后将 $o$ 的 $\epsilon$-邻域中末访问的数据，存放到种子集合 Seeds 中。</li>
+<li>如果种子集合 $S e e d s=\emptyset$, 则当前聚类簇 $C_k$ 生成完毕，且 $k=k+1$, 跳转到3。否则, 从种子集合 $S e e d s$ 中挑选一个种子点 seed, 首先将其标记为已访问、标记类别 $k$, 然后判断 seed 是否为核心对象, 如果是将 seed 中末访问的种子点加入到种子集合中, 跳转到 5 。</li>
 </ol>
 <p><strong>从上述算法可知：</strong></p>
 <ul>
@@ -1868,27 +1721,20 @@ s=\emptyset\)</span>, 则当前聚类簇 <span class="math inline">\(C_k\)</span
 </ul>
 <h4><span id="25-总结">2.5 总结</span></h4>
 <h5><span id="优点">优点</span></h5>
-<ol type="1">
+<ol>
 <li><strong>可以对任意形状的稠密数据集进行聚类</strong>，相对的，K-Means之类的聚类算法一般只适用于凸数据集。</li>
 <li><strong>可以在聚类的同时发现异常点</strong>，对数据集中的异常点不敏感。</li>
 <li>聚类结果没有偏倚，相对的，K-Means之类的聚类算法初始值对聚类结果有很大影响。</li>
 </ol>
 <h5><span id="缺点">缺点</span></h5>
-<ol type="1">
+<ol>
 <li><strong>不能处理密度差异过大（密度不均匀）的聚类</strong>：如果样本集的密度不均匀、聚类间距差相差很大时，聚类质量较差，这时用DBSCAN聚类一般不适合。</li>
 <li>如果样本集较大时，聚类收敛时间较长;<strong>此时可以对搜索最近邻时建立的KD树或者球树进行规模限制来改进；</strong></li>
 <li>调参相对于传统的K-Means之类的聚类算法稍复杂，<strong>主要需要对距离阈值ϵ，邻域样本数阈值MinPts联合调参，不同的参数组合对最后的聚类效果有较大影响</strong>。【OPTICS算法】</li>
 <li><strong>边界点不完全确定性</strong></li>
 </ol>
 <h4><span id="26-optics算法">2.6 OPTICS算法</span></h4>
-<p><strong>OPTICS主要针对输入参数 <span class="math inline">\(\epsilon\)</span> 过敏感做的改进</strong>,
-OPTICS和DBSCNA的输入参数一样 ( <span class="math inline">\(\epsilon\)</span> 和 MinPts ), 虽然
-OPTICS算法中也需要两个输入参数, 但该算法对 <span class="math inline">\(\epsilon\)</span> 输入不敏感（一般将 <span class="math inline">\(\epsilon\)</span> 固定为无穷大）,
-同时该算法中并不显式的生成数据聚类, 只是对数据集合中的对象进行排序,
-得到一个有序的对象列表, 通过该有序列表, 可以得到 一个决策图,
-通过决策图可以不同 <span class="math inline">\(\epsilon\)</span>
-参数的数据集中检测笶集, 即: 先通过固定的 MinPts 和无穷大的 <span class="math inline">\(\epsilon\)</span>
-得到有序列表，然后得到决策图，通过决策图可以知道当 <span class="math inline">\(\epsilon\)</span> 取特定值时（比如 <span class="math inline">\(\epsilon=3\)</span> ) 数据的聚类情况。</p>
+<p><strong>OPTICS主要针对输入参数 $\epsilon$ 过敏感做的改进</strong>, OPTICS和DBSCNA的输入参数一样 ( $\epsilon$ 和 MinPts ), 虽然 OPTICS算法中也需要两个输入参数, 但该算法对 $\epsilon$ 输入不敏感（一般将 $\epsilon$ 固定为无穷大）, 同时该算法中并不显式的生成数据聚类, 只是对数据集合中的对象进行排序, 得到一个有序的对象列表, 通过该有序列表, 可以得到 一个决策图, 通过决策图可以不同 $\epsilon$ 参数的数据集中检测笶集, 即: 先通过固定的 MinPts 和无穷大的 $\epsilon$ 得到有序列表，然后得到决策图，通过决策图可以知道当 $\epsilon$ 取特定值时（比如 $\epsilon=3$ ) 数据的聚类情况。</p>
 
       
     </div>

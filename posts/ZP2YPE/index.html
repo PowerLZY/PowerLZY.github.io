@@ -141,9 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">SliceLine:
-Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
-’21）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、说明</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">SliceLine: Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD ’21）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、说明</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +162,7 @@ Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -299,17 +297,15 @@ Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="slicelinefast-linear-algebra-based-slice-finding-for-ml-model-debugging-sigmod21">SliceLine:
-Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD
-’21）</span></h2>
+        <h2><span id="sliceline-fast-linear-algebra-based-slice-finding-for-ml-model-debugging-sigmod-21">SliceLine: Fast, Linear-Algebra-based Slice Finding for ML Model Debugging （SIGMOD ’21）</span></h2>
 <blockquote>
 <ul>
-<li>论文下载：https://mboehm7.github.io/resources/sigmod2021b_sliceline.pdf</li>
+<li>论文下载：<a target="_blank" rel="noopener" href="https://mboehm7.github.io/resources/sigmod2021b_sliceline.pdf">https://mboehm7.github.io/resources/sigmod2021b_sliceline.pdf</a></li>
 <li></li>
 </ul>
 </blockquote>
 <h3><span id="摘要">摘要</span></h3>
-<p>切片查找——最近一项关于调试机器学习（ML）模型的工作旨在查找前K个数据切片（例如，谓词的连接词，如性别女性和博士学位），其中经过训练的模型的表现明显不如整个训练/测试数据。这些切片可以用于为有问题的子集获取更多数据、添加规则或以其他方式改进模型。与决策树相比，一般的切片查找问题允许重叠的切片。由此产生的搜索空间是巨大的，因为它涵盖了特征的所有子集及其不同的值。因此，现有的工作主要依赖于启发式，并专注于适合单个节点内存的小型数据集。在本文中，我们从算法和系统的角度，以整体的方式解决了切片查找的这些可扩展性限制。我们利用切片大小、错误和结果分数的单调性财产来促进有效的修剪。<strong>此外，我们提出了一种优雅的基于线性代数的枚举算法，它允许在现有ML系统的基础上进行快速枚举和自动并行化。</strong>对不同真实世界回归和分类数据集的实验表明，有效的修剪和高效的稀疏线性代数使精确枚举变得可行，即使对于具有许多特征、相关性和数据大小超过单节点内存的数据集也是如此。</p>
+<p>切片查找——最近一项关于调试机器学习（ML）模型的工作旨在查找前K个数据切片（例如，谓词的连接词，如性别女性和博士学位），其中经过训练的模型的表现明显不如整个训练/测试数据。这些切片可以用于为有问题的子集获取更多数据、添加规则或以其他方式改进模型。与决策树相比，一般的切片查找问题允许重叠的切片。由此产生的搜索空间是巨大的，因为它涵盖了特征的所有子集及其不同的值。因此，现有的工作主要依赖于启发式，并专注于适合单个节点内存的小型数据集。在本文中，我们从算法和系统的角度，以整体的方式解决了切片查找的这些可扩展性限制。我们利用切片大小、错误和结果分数的单调性财产来促进有效的修剪。**此外，我们提出了一种优雅的基于线性代数的枚举算法，它允许在现有ML系统的基础上进行快速枚举和自动并行化。**对不同真实世界回归和分类数据集的实验表明，有效的修剪和高效的稀疏线性代数使精确枚举变得可行，即使对于具有许多特征、相关性和数据大小超过单节点内存的数据集也是如此。</p>
 <h3><span id="一-说明">一、说明</span></h3>
 <p>机器学习（ML）和数据驱动的应用程序从根本上改变了IT格局的许多方面，从面向用户的应用程序到后端决策系统，再到软件和硬件堆栈的优化[21，36，56]。开发和部署用于生产的ML管道过程中的关键步骤是<strong>数据验证（分析输入数据特征）</strong>[56，59]和<strong>模型调试（分析有效的ML模型特征）</strong>[22，56，60]。需要考虑的方面包括数据误差（如异质性、人为误差、测量误差）、缺乏模型泛化（如过拟合、不平衡、域外预测）以及系统偏差和缺乏公平性。缺乏模型验证和调试可能会导致无声但严重的问题[56]。例如，种族偏见的监狱风险评估[6]、基于积雪的狼检测[58]和基于图像水印的马检测[38]。模型调试旨在识别此类问题。</p>
 <p>模型调试技术：除了基本数据调试和验证[56，59]、服务期间的模型准确性监测和比较[56，60]，以及通过混淆矩阵进行手动模型误差分析（例如，正确标签与预测标签的矩阵可视化）外，还存在几种先进的模型调试技术。计算机视觉领域的例子有显著性图[30，63，70]、逐层相关性传播[8，38]和基于遮挡的解释[75]，它们都旨在找到对预测有重大影响的输入图像区域。数据管理界最近通过利用这种计算中固有的重叠，为基于遮挡的解释贡献了有效的增量计算方法[47，48]。然而，对于具有连续和分类特征的结构化数据和预测任务，文献相对较少。现有的工作包括解释表[25]（主要关注数据摘要）和切片查找器[18，19]，其目的是查找前K个数据切片（例如，谓词的连接词，如性别女性和博士学位），其中训练的模型的表现明显不如整个数据集。找到这样的有问题的切片对于理解缺乏训练数据或模型偏差非常有用，但也可以作为改进模型的途径</p>

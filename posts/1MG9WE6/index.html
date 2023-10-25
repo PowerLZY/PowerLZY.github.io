@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到“距离”的计算，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不同维度量纲">
+    <meta name="description" content="¶归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到**“距离”的计算**，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理论基础（5）归一化">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1MG9WE6/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到“距离”的计算，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不同维度量纲">
+<meta property="og:description" content="¶归一化的作用：  可解释性：回归模型中自变量X的量纲不一致导致了回归系数无法直接解读或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；取决于我们的逻辑回归是不是用了正则化。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。 距离计算：机器学习任务和统计学任务中有很多地方要用到**“距离”的计算**，比如PCA，比如KNN，比如kmeans等等，假使算欧式距离，不">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301703044.jpg">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301703852.jpg">
@@ -152,8 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 从函数的等高线说起</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 梯度与等高线的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3
-从等高线看为什么特征需要归一化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、归一化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">概要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 从函数的等高线说起</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 梯度与等高线的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 从等高线看为什么特征需要归一化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -174,7 +173,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -312,9 +311,8 @@
         <h5><span id="归一化的作用">归一化的作用：</span></h5>
 <ul>
 <li><strong>可解释性</strong>：<strong>回归模型</strong>中自变量X的量纲不一致导致了<strong>回归系数无法直接解读</strong>或者错误解读；需要将X都处理到统一量纲下，这样才可比【可解释性】；<strong>取决于我们的逻辑回归是不是用了正则化</strong>。如果你不用正则，标准化并不是必须的，如果用正则，那么标准化是必须的。</li>
-<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到<strong>“距离”的计算</strong>，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
-<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>梯度下降</strong>，在使用梯度下降的方法求解最优化问题时，
-归一化/标准化后可以加快梯度下降的求解速度，即<strong>提升模型的收敛速度</strong>。</li>
+<li><strong>距离计算</strong>：机器学习任务和统计学任务中有很多地方要用到**“距离”的计算**，比如<strong>PCA，比如KNN，比如kmeans</strong>等等，假使算欧式距离，不同维度量纲不同可能会导致距离的计算依赖于量纲较大的那些特征而得到不合理的结果；</li>
+<li><strong>加速收敛（BN）</strong>：参数估计时使用<strong>梯度下降</strong>，在使用梯度下降的方法求解最优化问题时， 归一化/标准化后可以加快梯度下降的求解速度，即<strong>提升模型的收敛速度</strong>。</li>
 </ul>
 <span id="more"></span>
 <h3><span id="一-归一化">一、归一化</span></h3>
@@ -326,73 +324,61 @@
 </ul>
 <h4><span id="11-从函数的等高线说起">1.1 <strong>从函数的等高线说起</strong></span></h4>
 <h5><span id="函数的等高线是什么">函数的等高线是什么</span></h5>
-<p>讨论一个二元损失函数的情况，即损失函数只有两个参数: <span class="math inline">\(J\left(w_1, w_2\right)=w_1^2+w_2^2+5\)</span></p>
+<p>讨论一个二元损失函数的情况，即损失函数只有两个参数: $J\left(w_1, w_2\right)=w_1<sup>2+w_2</sup>2+5$</p>
 <ul>
-<li>下图就是这个损失函数的图像, <strong>等高线就是函数 <span class="math inline">\(J\)</span> 在参数平面 <span class="math inline">\(\left(w_1, w_2\right)\)</span>
-上的投影;</strong></li>
+<li>下图就是这个损失函数的图像, <strong>等高线就是函数 $J$ 在参数平面 $\left(w_1, w_2\right)$ 上的投影;</strong></li>
 <li>等高的理解：<strong>在投影面上的任意一个环中，所有点的函数值都一样;</strong></li>
 <li>等高的理解：在函数曲面上存在一个环，环上所有点的函数值一样，即距离投影平面的距离都一样;</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301703044.jpg" alt="img" style="zoom:67%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301703044.jpg" alt="img" style="zoom:67%;">
 <p><strong>具体看这个参数平面的话，绘制等高线图是：</strong></p>
 <ul>
-<li>任意一个环上的不同参数取值 <span class="math inline">\(\left(w_1,
-w_2\right)\)</span>, 其函数值都一样;</li>
-<li>可以看到, 当 <span class="math inline">\(\left(w_1=0,
-w_2=0\right)\)</span> 时, 函数值 <span class="math inline">\(=5\)</span>, 即全局最小点;</li>
+<li>任意一个环上的不同参数取值 $\left(w_1, w_2\right)$, 其函数值都一样;</li>
+<li>可以看到, 当 $\left(w_1=0, w_2=0\right)$ 时, 函数值 $=5$, 即全局最小点;</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301703852.jpg" alt="img" style="zoom: 33%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301703852.jpg" alt="img" style="zoom: 33%;">
 <h4><span id="12-梯度与等高线的关系">1.2 梯度与等高线的关系</span></h4>
-<p>假设存在一个损失函数 <span class="math inline">\(z=f(x, y)\)</span>,
-在空间中是一个曲面, 当其被一个平面 <span class="math inline">\(z=c\)</span>, c为常数所截后, 得到的曲线方程是：
-<span class="math display">\[
-\left\{\begin{array}{l}
-z=f(x, y) \\
-z=c
-\end{array}\right.
-\]</span> 曲线在xoy平面上的投影是一个平面曲线, 即 <span class="math inline">\(f(x, y)=c\)</span>,
-即损失函数在xoy平面的某一条等高线, 在这条等高线上, 所有函数值均为 <span class="math inline">\(c\)</span> 。</p>
-<p>在这条等高线上，任意一点的切线斜率为 <span class="math inline">\(\frac{d y}{d x}\)</span> 。由隐函数存在定理：
-<span class="math display">\[
-f^{\prime}(x)=-\frac{F_x(x, y)}{F_y(x, y)}
-\]</span> 可知： <span class="math inline">\(\frac{d y}{d
-x}=-\frac{f_x}{f_y}\)</span></p>
-<p>任意一点的法线由于和切线垂直, 所以斜率相乘为-1, 则法线斜率为: <span class="math display">\[
--1 /\left(\frac{d y}{d
-x}\right)=-\frac{1}{-\frac{f_x}{f_y}}=\frac{f_y}{f_x}
-\]</span> 又由梯度的定义: <span class="math display">\[
-\operatorname{gradf}(x, y)=\nabla f(x, y)=\left(\frac{\partial
-f}{\partial x}, \frac{\partial f}{\partial y}\right)=\left(f_x,
-f_y\right)
-\]</span> 梯度向量的斜率, 即正切值= <span class="math inline">\(\frac{f_y}{f_x}\)</span>
-，可以看到恰好等于法线的斜率,
-<strong>因此：梯度的方向和等高线上的切线时时垂 直。</strong></p>
-<h4><span id="13从等高线看为什么特征需要归一化">1.3
-从等高线看为什么特征需要归一化</span></h4>
-<p><strong><font color="red">
-采用梯度下降算法时，因为梯度的方向和等高线的切线是垂直的，所以沿着梯度反方向迭代时，实际就是垂直于等高线一步步迭代。</font></strong>如下图所示，这是两种不同的等高线采用梯度下降算法时的迭代情况。<strong><font color="red">
-很明显，左图也就是等高线呈现正圆形时能够有最少的迭代步数，因此收敛速度更快。</font></strong>然而在有些情况下，等高线是椭圆形的，会有更多的迭代步数才能到达函数最低点，收敛变慢。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301704564.jpg" alt="img" style="zoom: 33%;"></p>
+<p>假设存在一个损失函数 $z=f(x, y)$, 在空间中是一个曲面, 当其被一个平面 $z=c$, c为常数所截后, 得到的曲线方程是：<br>
+$$<br>
+\left{\begin{array}{l}<br>
+z=f(x, y) \<br>
+z=c<br>
+\end{array}\right.<br>
+$$<br>
+曲线在xoy平面上的投影是一个平面曲线, 即 $f(x, y)=c$, 即损失函数在xoy平面的某一条等高线, 在这条等高线上, 所有函数值均为 $c$ 。</p>
+<p>在这条等高线上，任意一点的切线斜率为 $\frac{d y}{d x}$ 。由隐函数存在定理：<br>
+$$<br>
+f^{\prime}(x)=-\frac{F_x(x, y)}{F_y(x, y)}<br>
+$$<br>
+可知： $\frac{d y}{d x}=-\frac{f_x}{f_y}$</p>
+<p>任意一点的法线由于和切线垂直, 所以斜率相乘为-1, 则法线斜率为:<br>
+$$<br>
+-1 /\left(\frac{d y}{d x}\right)=-\frac{1}{-\frac{f_x}{f_y}}=\frac{f_y}{f_x}<br>
+$$<br>
+又由梯度的定义:<br>
+$$<br>
+\operatorname{gradf}(x, y)=\nabla f(x, y)=\left(\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right)=\left(f_x, f_y\right)<br>
+$$<br>
+梯度向量的斜率, 即正切值= $\frac{f_y}{f_x}$ ，可以看到恰好等于法线的斜率, <strong>因此：梯度的方向和等高线上的切线时时垂 直。</strong></p>
+<h4><span id="13-从等高线看为什么特征需要归一化">1.3 从等高线看为什么特征需要归一化</span></h4>
+<p>**<font color="red"> 采用梯度下降算法时，因为梯度的方向和等高线的切线是垂直的，所以沿着梯度反方向迭代时，实际就是垂直于等高线一步步迭代。</font><strong>如下图所示，这是两种不同的等高线采用梯度下降算法时的迭代情况。</strong><font color="red"> 很明显，左图也就是等高线呈现正圆形时能够有最少的迭代步数，因此收敛速度更快。</font>**然而在有些情况下，等高线是椭圆形的，会有更多的迭代步数才能到达函数最低点，收敛变慢。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301704564.jpg" alt="img" style="zoom: 33%;">
 <p>那么，<strong>什么时候会出现这种椭圆形的等高线情况呢？我们对线性回归和逻辑回归分别进行分析。</strong></p>
-<p>以线性回归为例，假设某线性回归模型为 <span class="math inline">\(\hat{y}=w_1 x_1+w_2 x_2, x_1 \in[0,1], x_2
-\in[10,100]\)</span> 。目标函数为(忽略偏 置): <span class="math display">\[
-J\left(w_1, w_2\right)=\frac{1}{2} \sum_{i=1}^m\left(y^{(i)}-\left(w_1
-x_1^{(i)}+w_2 x_2^{(i)}\right)\right)^2
-\]</span> 从上式可以看出, 由于 <span class="math inline">\(x_2&gt;&gt;x_1\)</span>, 那么当 <span class="math inline">\(w_1, w_2\)</span> 产生相同的增量时,
-后者能产生更大的函数变化值, 从而产 生椭圆形的环状等高线。本质上,
-这是因为输入的特征的尺度（即取值范围)不一样!</p>
-<p><strong><font color="red">
-因此，在线性回归中若各个特征变量之间的取值范围差异较大，则会导致目标函数收敛速度慢等问题，需要对输入特征进行归一化，尽量避免形成椭圆形的等高线。</font></strong></p>
-<p><strong>以逻辑回归为例，由于逻辑回归中特征组合的加权和还会作用上sigmoid函数</strong>，影响收敛的因素，除了梯度下降算法的效率外，更重要的是最后的输出<span class="math inline">\(z\)</span>的大小的影响。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-327e6fc1e096d387e2650b4057afd633_1440w.jpg" alt="img" style="zoom:33%;"></p>
+<p>以线性回归为例，假设某线性回归模型为 $\hat{y}=w_1 x_1+w_2 x_2, x_1 \in[0,1], x_2 \in[10,100]$ 。目标函数为(忽略偏 置):<br>
+$$<br>
+J\left(w_1, w_2\right)=\frac{1}{2} \sum_{i=1}<sup>m\left(y</sup>{(i)}-\left(w_1 x_1^{(i)}+w_2 x_2<sup>{(i)}\right)\right)</sup>2<br>
+$$<br>
+从上式可以看出, 由于 $x_2&gt;&gt;x_1$, 那么当 $w_1, w_2$ 产生相同的增量时, 后者能产生更大的函数变化值, 从而产 生椭圆形的环状等高线。本质上, 这是因为输入的特征的尺度（即取值范围)不一样!</p>
+<p><strong><font color="red"> 因此，在线性回归中若各个特征变量之间的取值范围差异较大，则会导致目标函数收敛速度慢等问题，需要对输入特征进行归一化，尽量避免形成椭圆形的等高线。</font></strong></p>
+<p><strong>以逻辑回归为例，由于逻辑回归中特征组合的加权和还会作用上sigmoid函数</strong>，影响收敛的因素，除了梯度下降算法的效率外，更重要的是最后的输出$z$的大小的影响。</p>
+<img src="https://pic4.zhimg.com/80/v2-327e6fc1e096d387e2650b4057afd633_1440w.jpg" alt="img" style="zoom:33%;">
 <p>从上图可以看出，当z的值小于-5左右时，函数值约等于0，当z的值大于5左右时，函数值约等于1。<strong>这两种情况下面，梯度趋近于0，使得参数无法得到更新</strong>。因此，对于逻辑回归来说，主要影响的是特征组合加权和后的sigmoid输出，而特征的输入范围又会影响最终的sigmoid输出，影响模型的收敛性，所以要对输入特征进行归一化，避免最后的输出处于梯度饱和区。</p>
 <h4><span id="14-总结">1.4 总结</span></h4>
 <p>总结来说，<strong>输入特征的尺度会影响梯度下降算法的迭代步数以及梯度更新的难度，从而影响训练的收敛性。</strong></p>
 <p><strong>因此，我们需要对特征进行归一化，即使得各个特征有相似的尺度。</strong></p>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li>Transformer中的归一化(一)：什么是归一化&amp;为什么要归一化 - Gordon
-Lee的文章 - 知乎 https://zhuanlan.zhihu.com/p/476102712</li>
+<li>Transformer中的归一化(一)：什么是归一化&amp;为什么要归一化 - Gordon Lee的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/476102712">https://zhuanlan.zhihu.com/p/476102712</a></li>
 </ul>
 
     </div>

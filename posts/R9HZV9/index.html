@@ -141,7 +141,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、局部敏感哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 局部敏感哈希的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 hash方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、局部敏感哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 局部敏感哈希的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 hash方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">mmdthash：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,7 +162,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -289,30 +289,21 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="一-局部敏感哈希函数">一、局部敏感哈希函数</span></h2>
 <blockquote>
-<p>python_mmdt:ssdeep、tlsh、vhash、mmdthash对比 :
-https://www.freebuf.com/sectool/321011.html</p>
-<p>局部敏感哈希(Locality Sensitive
-Hashing，LSH)总结：http://yangyi-bupt.github.io/ml/2015/08/28/lsh.html</p>
+<p>python_mmdt:ssdeep、tlsh、vhash、mmdthash对比 : <a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/321011.html">https://www.freebuf.com/sectool/321011.html</a></p>
+<p>局部敏感哈希(Locality Sensitive Hashing，LSH)总结：<a target="_blank" rel="noopener" href="http://yangyi-bupt.github.io/ml/2015/08/28/lsh.html">http://yangyi-bupt.github.io/ml/2015/08/28/lsh.html</a></p>
 </blockquote>
 <h3><span id="11-局部敏感哈希的基本概念">1.1 局部敏感哈希的基本概念</span></h3>
-<p>局部敏感哈希(Locality Sensitive
-Hashing，LSH)的基本思想类似于一种空间域转换思想，LSH算法基于一个假设，<strong>如果两个文本在原有的数据空间是相似的，那么分别经过哈希函数转换以后的它们也具有很高的相似度</strong>；相反，如果它们本身是不相似的，那么经过转换后它们应仍不具有相似性。</p>
+<p>局部敏感哈希(Locality Sensitive Hashing，LSH)的基本思想类似于一种空间域转换思想，LSH算法基于一个假设，<strong>如果两个文本在原有的数据空间是相似的，那么分别经过哈希函数转换以后的它们也具有很高的相似度</strong>；相反，如果它们本身是不相似的，那么经过转换后它们应仍不具有相似性。</p>
 <h3><span id="12-hash方法">1.2 hash方法</span></h3>
-<p><strong><a target="_blank" rel="noopener" href="https://ssdeep-project.github.io/ssdeep/index.html">CTPH(ssdeep)</a>：Context
-Triggered Piecewise Hashes(CTPH)</strong>，又叫模糊哈希，最早由Jesse
-Kornblum博士在2006年提出，论文地址点击<a target="_blank" rel="noopener" href="https://ssdeep-project.github.io/ssdeep/index.html">这里</a>。CTPH可用于文件/数据的<strong>同源性判定</strong>。据官方文档介绍，其计算速度是<code>tlsh</code>的两倍（测试了一下，好像并没有）。</p>
+<p><strong><a target="_blank" rel="noopener" href="https://ssdeep-project.github.io/ssdeep/index.html">CTPH(ssdeep)</a>：Context Triggered Piecewise Hashes(CTPH)</strong>，又叫模糊哈希，最早由Jesse Kornblum博士在2006年提出，论文地址点击<a target="_blank" rel="noopener" href="https://ssdeep-project.github.io/ssdeep/index.html">这里</a>。CTPH可用于文件/数据的<strong>同源性判定</strong>。据官方文档介绍，其计算速度是<code>tlsh</code>的两倍（测试了一下，好像并没有）。</p>
 <blockquote>
-<p>当使用传统的加密散列时，会为整个文件创建一个散列。单个位的变化会对输出哈希值产生雪崩效应。另一方面，CTPH
-为文件的多个固定大小段计算多个传统加密哈希。它使用<em>滚动哈希</em>。</p>
+<p>当使用传统的加密散列时，会为整个文件创建一个散列。单个位的变化会对输出哈希值产生雪崩效应。另一方面，CTPH 为文件的多个固定大小段计算多个传统加密哈希。它使用<em>滚动哈希</em>。</p>
 </blockquote>
 <p><strong><a target="_blank" rel="noopener" href="https://tlsh.org/index.html">tlsh</a>：是趋势科技开源的一款模糊哈希计算工具</strong>，将50字节以上的数据计算生成一个哈希值，通过计算哈希值之间的相似度，从而得到原始文件之间的同源性关联。据官方文档介绍，<code>tlsh</code>比<code>ssdeep</code>和<code>sdhash</code>等其他模糊哈希算法更难攻击和绕过。</p>
-<p><a target="_blank" rel="noopener" href="https://developers.virustotal.com/reference/files">vhash</a>：（翻遍了整个virustotal的文档，就找到这么一句话）“an
-in-house similarity clustering algorithm value, based on a simple
-structural feature hash allows you to find similar
-files”，大概就是说是个内部相似性聚类算法，允许你通过这个简单的值，找到相似的样本。</p>
+<p><a target="_blank" rel="noopener" href="https://developers.virustotal.com/reference/files">vhash</a>：（翻遍了整个virustotal的文档，就找到这么一句话）“an in-house similarity clustering algorithm value, based on a simple structural feature hash allows you to find similar files”，大概就是说是个内部相似性聚类算法，允许你通过这个简单的值，找到相似的样本。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/a232319779/python_mmdt">mmdthash</a>：是开源的一款模糊哈希计算工具，将任意数据计算生成一个模糊哈希值，通过计算模糊哈希值之间的相似度，从而判断两个数据之间的关联性。详情前文1-5篇。</p>
 <blockquote>
-<p>#### mmdthash：</p>
+<h4><span id="mmdthash">mmdthash：</span></h4>
 <p>通过重采样之后的数据，我们假设其满足独立同分布。同时，我们将重采样的数据，平均分成N块，每块之间的数据进行累计求和，和值分布近似服从正态分布，我们取和值高x位的一个byte做为本块数据的敏感哈希值。</p>
 <p>51030000:D6E26822530202020202020202020202：</p>
 <ul>

@@ -162,10 +162,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、反向传播推导到梯度消失and爆炸的原因</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 反向传播推导：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2
-梯度消失，爆炸产生原因</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、梯度消失、爆炸解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1（预训练加微调）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2（梯度剪切、正则）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
-2.3（改变激活函数）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4（batchnorm）：【梯度消失】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">
-2.5（残差结构）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.6（LSTM）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、缓解梯度消失&amp;爆炸 Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1、残差神经网络为什么可以缓解梯度消失？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、反向传播推导到梯度消失and爆炸的原因</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 反向传播推导：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 梯度消失，爆炸产生原因</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、梯度消失、爆炸解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.1（预训练加微调）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.2（梯度剪切、正则）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 2.3（改变激活函数）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.4（batchnorm）：【梯度消失】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> 2.5（残差结构）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">2.6（LSTM）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、缓解梯度消失&amp;爆炸 Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1、残差神经网络为什么可以缓解梯度消失？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -186,7 +183,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -303,7 +300,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>14k</span>
+      <span>13k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -321,247 +318,166 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><strong>本质上</strong>是因为神经网络的更新方法，梯度消失是因为反向传播过程中对梯度的求解会产生sigmoid导数和参数的连乘，sigmoid导数的最大值为0.25，权重一般初始都在0，1之间，乘积小于1，多层的话就会有多个小于1的值连乘，导致靠近输入层的梯度几乎为0，得不到更新。梯度爆炸是也是同样的原因，只是如果初始权重大于1，或者更大一些，多个大于1的值连乘，将会很大或溢出，导致梯度更新过大，模型无法收敛。<strong><font color="red">
-梯度爆炸和梯度消失问题都是因为网络太深，网络权值更新不稳定造成的，本质上是因为梯度反向传播中的连乘效应。</font></strong></p>
+        <p><strong>本质上</strong>是因为神经网络的更新方法，梯度消失是因为反向传播过程中对梯度的求解会产生sigmoid导数和参数的连乘，sigmoid导数的最大值为0.25，权重一般初始都在0，1之间，乘积小于1，多层的话就会有多个小于1的值连乘，导致靠近输入层的梯度几乎为0，得不到更新。梯度爆炸是也是同样的原因，只是如果初始权重大于1，或者更大一些，多个大于1的值连乘，将会很大或溢出，导致梯度更新过大，模型无法收敛。<strong><font color="red"> 梯度爆炸和梯度消失问题都是因为网络太深，网络权值更新不稳定造成的，本质上是因为梯度反向传播中的连乘效应。</font></strong></p>
 <span id="more"></span>
 <h3><span id="一-反向传播推导到梯度消失and爆炸的原因">一、反向传播推导到梯度消失and爆炸的原因</span></h3>
 <h4><span id="11-反向传播推导">1.1 反向传播推导：</span></h4>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301915342.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301915342.jpg" alt="img"></p>
 <p>以上图为例开始推起来，先说明几点，i1，i2是输入节点，h1，h2为隐藏层节点，o1，o2为输出层节点，除了输入层，其他两层的节点结构为下图所示：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301915186.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>举例说明, <span class="math inline">\(N E T_{o 1}\)</span>
-为输出层的输入, 也就是隐藏层的输出经过线性变换后的值, <span class="math inline">\(O U T_{o 1}\)</span> 为经过激活函数 sigmoid后的值;
-同理 <span class="math inline">\(N E T_{h 1}\)</span> 为隐藏层的输入,
-也就是输入层经过线性变换后的值, <span class="math inline">\(O U T_{h
-1}\)</span> 为经过激活函数 sigmoid 的值。只有这两层有激活函数,
-输入层没有。</p>
-<p><strong>定义一下sigmoid的函数：</strong> <span class="math display">\[
-\sigma(z)=\frac{1}{1+e^{-z}}
-\]</span> <strong>说一下sigmoid的求导:</strong> <span class="math display">\[
-\begin{aligned}
-\sigma^{\prime}(z) &amp; =\left(\frac{1}{1+e^{-z}}\right)^{\prime} \\
-&amp; =\frac{e^{-z}}{\left(1+e^{-z}\right)^2} \\
-&amp; =\frac{1+e^{-z}-1}{\left(1+e^{-z}\right)^2} \\
-&amp; =\frac{\sigma(z)}{\left(1+e^{-z}\right)^2} \\
-&amp; =\sigma(z)(1-\sigma(z))
-\end{aligned}
-\]</span> 定义一下损失函数，这里的损失函数是均方误差函数，即: <span class="math display">\[
-\text { Loss }_{\text {total }}=\sum \frac{1}{2}(\text { target }- \text
-{ output })^2
-\]</span> 具体到上图，就是: <span class="math display">\[
-\text { Loss }_{\text {total }}=\frac{1}{2}(\operatorname{target}
-1-\text out_{o1} )^2+\frac{1}{2}(\operatorname{target} 2-\text
-out_{o2})^2
-\]</span> 到这里, 所有前提就交代清楚了，前向传播就不推了，默认大家都会,
-下面推反向传播。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301915186.jpg" alt="img"></p>
+<p>举例说明, $N E T_{o 1}$ 为输出层的输入, 也就是隐藏层的输出经过线性变换后的值, $O U T_{o 1}$ 为经过激活函数 sigmoid后的值; 同理 $N E T_{h 1}$ 为隐藏层的输入, 也就是输入层经过线性变换后的值, $O U T_{h 1}$ 为经过激活函数 sigmoid 的值。只有这两层有激活函数, 输入层没有。</p>
+<p><strong>定义一下sigmoid的函数：</strong><br>
+$$<br>
+\sigma(z)=\frac{1}{1+e^{-z}}<br>
+$$<br>
+<strong>说一下sigmoid的求导:</strong><br>
+$$<br>
+\begin{aligned}<br>
+\sigma^{\prime}(z) &amp; =\left(\frac{1}{1+e<sup>{-z}}\right)</sup>{\prime} \<br>
+&amp; =\frac{e<sup>{-z}}{\left(1+e</sup>{-z}\right)^2} \<br>
+&amp; =\frac{1+e<sup>{-z}-1}{\left(1+e</sup>{-z}\right)^2} \<br>
+&amp; =\frac{\sigma(z)}{\left(1+e<sup>{-z}\right)</sup>2} \<br>
+&amp; =\sigma(z)(1-\sigma(z))<br>
+\end{aligned}<br>
+$$<br>
+定义一下损失函数，这里的损失函数是均方误差函数，即:<br>
+$$<br>
+\text { Loss }<em>{\text {total }}=\sum \frac{1}{2}(\text { target }- \text { output })^2<br>
+$$<br>
+具体到上图，就是:<br>
+$$<br>
+\text { Loss }</em>{\text {total }}=\frac{1}{2}(\operatorname{target} 1-\text out_{o1} )^2+\frac{1}{2}(\operatorname{target} 2-\text out_{o2})^2<br>
+$$<br>
+到这里, 所有前提就交代清楚了，前向传播就不推了，默认大家都会, 下面推反向传播。</p>
 <ul>
 <li><strong>第一个反向传播（热身）</strong></li>
 </ul>
-<p>先来一个简单的热热身, 求一下损失函数对W5的偏导, 即： <span class="math display">\[
-\frac{\partial L o s s_{\text {total }}}{\partial w_5}
-\]</span></p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304302031329.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>首先根据链式求导法则写出对W5求偏导的总公式, 再把图拿下来对照 (如上),
-可以看出, 需要计算三部分的求 导【损失函数、激活函数、线性函数】,
-下面就一步一步来:</p>
-<p><strong>第一步:</strong> <span class="math display">\[
-\frac{\partial \text { Loss }_{\text {total }}}{\partial o u t_{o
-1}}=\frac{\partial \frac{1}{2}\left(\text { target }_1-o u t_{o
-1}\right)^2+\frac{1}{2}\left(\text { target }_2-\text { out }_{o
-2}\right)^2}{\partial o u t_{o 1}}=out _{o 1}- target _1
-\]</span> <strong>第二步：</strong> <span class="math display">\[
-\frac{\partial o u t_{o 1}}{\partial \text { net }_{o 1}}=\frac{\partial
-\frac{1}{1+e^{-n e t_{o 1}}}}{\partial \text { net }_{o
-1}}=\sigma\left(\right.net \left._{o
-1}\right)\left(1-\sigma\left(\right.\right. net \left.\left._{o
-1}\right)\right)
-\]</span></p>
-<p><strong>第三步:</strong> <span class="math display">\[
-\frac{\partial n e t_{o 1}}{\partial w_5}=\frac{\partial o u t_{h 1}
-w_5+\text { out }_{h 2} w_6}{\partial w_5}= out _{h_1}
-\]</span> 综上三个步骤，得到总公式:</p>
-<p><strong>总公式:</strong> <span class="math display">\[
-\frac{\partial L_{o s s_{t o t a l}}}{\partial w_5}=\left(o u t_{o
-1}-\right. target \left._1\right) \cdot\left(\sigma\left(\right.\right.
-net \left._{o 1}\right)\left(1-\sigma\left(\right.\right. net
-\left.\left.\left._{o 1}\right)\right)\right) \cdot out _{h_1}
-\]</span></p>
+<p>先来一个简单的热热身, 求一下损失函数对W5的偏导, 即：<br>
+$$<br>
+\frac{\partial L o s s_{\text {total }}}{\partial w_5}<br>
+$$</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304302031329.jpg" alt="img"></p>
+<img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img" style="zoom:50%;">
+<p>首先根据链式求导法则写出对W5求偏导的总公式, 再把图拿下来对照 (如上), 可以看出, 需要计算三部分的求 导【损失函数、激活函数、线性函数】, 下面就一步一步来:</p>
+<p><strong>第一步:</strong><br>
+$$<br>
+\frac{\partial \text { Loss }<em>{\text {total }}}{\partial o u t</em>{o 1}}=\frac{\partial \frac{1}{2}\left(\text { target }<em>1-o u t</em>{o 1}\right)^2+\frac{1}{2}\left(\text { target }<em>2-\text { out }</em>{o 2}\right)^2}{\partial o u t_{o 1}}=out <em>{o 1}- target <em>1<br>
+$$<br>
+<strong>第二步：</strong><br>
+$$<br>
+\frac{\partial o u t</em>{o 1}}{\partial \text { net }</em>{o 1}}=\frac{\partial \frac{1}{1+e^{-n e t_{o 1}}}}{\partial \text { net }<em>{o 1}}=\sigma\left(\right.net \left.</em>{o 1}\right)\left(1-\sigma\left(\right.\right. net \left.\left._{o 1}\right)\right)<br>
+$$</p>
+<p><strong>第三步:</strong><br>
+$$<br>
+\frac{\partial n e t_{o 1}}{\partial w_5}=\frac{\partial o u t_{h 1} w_5+\text { out }_{h 2} w_6}{\partial w_5}= out _{h_1}<br>
+$$<br>
+综上三个步骤，得到总公式:</p>
+<p><strong>总公式:</strong><br>
+$$<br>
+\frac{\partial L_{o s s_{t o t a l}}}{\partial w_5}=\left(o u t_{o 1}-\right. target \left.<em>1\right) \cdot\left(\sigma\left(\right.\right. net \left.</em>{o 1}\right)\left(1-\sigma\left(\right.\right. net \left.\left.\left._{o 1}\right)\right)\right) \cdot out _{h_1}<br>
+$$</p>
 <ul>
 <li><strong>第二个反向传播：</strong></li>
 </ul>
-<p>接下来，要求损失函数对<span class="math inline">\(w1\)</span>的偏导，即： <span class="math display">\[
-\frac{\partial \operatorname{Loss}_{\text {total }}}{\partial w_1}
-\]</span></p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-cbcb60d90cbd259a717cbe991aa93f5c_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>还是把图摆在这, 方便看, 先写出总公式, 对w1求导有个地方要注意, <span class="math inline">\(w 1\)</span> 的影响不仅来自 01 还来自 02 , 从图上
-可以一目了然, 所以总公式为: <span class="math display">\[
-\frac{\partial \text { Loss }_{\text {total }}}{\partial w_1}= l1 + l2
-\]</span></p>
-<p><span class="math display">\[
-l1 = \frac{\partial \text { Loss }_{\text {total }}}{\partial o u t_{o
-1}} \frac{\partial o u t_{o 1}}{\partial \text { net }_{o 1}}
-\frac{\partial n e t_{o 1}}{\partial \text { out }_{h 1}} \frac{\partial
-o u t_{h 1}}{\partial \text { net }_{h 1}} \frac{\partial \text { net
-}_{h 1}}{\partial w_1}
-\]</span></p>
-<p><span class="math display">\[
-l2 = \frac{\partial \text { Loss }_{\text {total }}}{\partial \text {
-out }_{o 2}} \frac{\text { out }_{o 2}}{\partial \text { net }_{o 2}}
-\frac{\partial \text { net }_{o 2}}{\partial \text { out }_{h 1}}
-\frac{\partial \text { out }_{h 1}}{\partial \text { net }_{h 1}}
-\frac{\partial n e t_{h 1}}{\partial w_1}
-\]</span></p>
-<p>所以总共分为左右两个式子, 分别又对应 5 个步骤, 详细写一下左边,
-右边同理:</p>
-<p>第一步: <span class="math display">\[
-\frac{\partial \text { Loss }_{\text {total }}}{\partial o u t_{o
-1}}=out _{o 1}- target _1
-\]</span></p>
-<p>第二步: <span class="math display">\[
-\frac{\partial o u t_{o 1}}{\partial \text { net }_{o 1}}=\sigma\left(n
-e t_{o 1}\right)\left(1-\sigma\left(n_{e 1} t_{o 1}\right)\right)
-\]</span></p>
-<p>第三步: <span class="math display">\[
-\frac{\partial \text { net }_{o 1}}{\partial o u t_{h 1}}=\frac{\partial
-o u t_{h 1} w_5+\text { out }_{h 2} w_6}{\partial o u t_{h 1}}=w_5
-\]</span></p>
-<p>第四步： <span class="math display">\[
-\frac{\partial o u t_{h 1}}{\partial \text { net }_{h
-1}}=\sigma\left(\right. net \left._{h
-1}\right)\left(1-\sigma\left(\right.\right.net \left.\left._{h
-1}\right)\right)
-\]</span></p>
-<p>第二步: <span class="math display">\[
-\frac{\partial n e t_{h 1}}{\partial w_1}=\frac{\partial i_1 w_1+i_2
-w_2}{\partial w_1}=i_1
-\]</span></p>
-<p>右边也是同理, 就不详细写了, 写一下总的公式: <span class="math display">\[
-\begin{aligned}
-&amp; \frac{\partial \text { Loss }_{\text {total }}}{\partial
-w_1}=\left(\left(\text { out }_{o 1}-\text { target }_1\right)
-\cdot\left(\sigma\left(\text { net }_{o
-1}\right)\left(1-\sigma\left(\text { net }_{o 1}\right)\right)\right)
-\cdot w_5 \cdot\left(\sigma\left(\text { net }_{h
-1}\right)\left(1-\sigma\left(\text { net }_{h 1}\right)\right)\right)
-\cdot i_1\right) \\
-&amp; +\left(\left(\text { out }_{o 2}-\text { target }_2\right)
-\cdot\left(\sigma\left(\text { net }_{o
-2}\right)\left(1-\sigma\left(\text { net }_{o 2}\right)\right)\right)
-\cdot w_7 \cdot\left(\sigma\left(\text { net }_{h
-1}\right)\left(1-\sigma\left(\text { net }_{h 1}\right)\right)\right)
-\cdot i_1\right) \\
-&amp;
-\end{aligned}
-\]</span> 这个公式只是对如此简单的一个网络结构的一个节点的偏导,
-就这么复杂。。亲自推完才深深的意识到。。。</p>
-<p>为了后面描述方便, 把上面的公式化简一下, out <span class="math inline">\({ }_{o 1}-\)</span> target <span class="math inline">\(_1\)</span> 记为 <span class="math inline">\(C_{o
-1}, \sigma\left(\right.\)</span> net <span class="math inline">\(\left._{o
-1}\right)\left(1-\sigma\left(\right.\right.\)</span> net <span class="math inline">\(\left.\left._{o 1}\right)\right)\)</span> 记为
-<span class="math inline">\(\sigma\left(n_e t_{o
-1}\right)^{\prime}\)</span> ，则: <span class="math display">\[
-\frac{\partial \text { Loss }_{t_{\text {otal }}}}{\partial w_1}=C_{o 1}
-\cdot \sigma\left(\text { net }_{o 1}\right)^{\prime} \cdot w_5 \cdot
-\sigma\left(\text { net }_{h 1}\right)^{\prime} \cdot i_1+C_{o 2} \cdot
-\sigma\left(\text { net }_{o 2}\right)^{\prime} \cdot w_7 \cdot
-\sigma\left(n e t_{h 1}\right)^{\prime} \cdot i_1
-\]</span></p>
-<h4><span id="12梯度消失爆炸产生原因">1.2
-<strong>梯度消失，爆炸产生原因</strong></span></h4>
-<p>从上式其实已经能看出来, 求和操作其实不影响,
-主要是是看乘法操作就可以说明问题, 可以看出, 损失函数对 w1的偏导, 与
-<span class="math inline">\(C_{o 1}\)</span>, 权重w, sigmoid的导数有关,
-明明还有输入i为什么不提? 因为如果是多层神经网络的中间
-某层的某个节点，那么就没有输入什么事了。所以产生影响的就是刚刚提的三个因素。</p>
+<p>接下来，要求损失函数对$w1$的偏导，即：<br>
+$$<br>
+\frac{\partial \operatorname{Loss}_{\text {total }}}{\partial w_1}<br>
+$$</p>
+<p><img src="https://pic1.zhimg.com/80/v2-cbcb60d90cbd259a717cbe991aa93f5c_1440w.jpg" alt="img"></p>
+<img src="https://pic2.zhimg.com/80/v2-7c0b41fdbd084ed875480516967857ed_1440w.jpg" alt="img" style="zoom:50%;">
+<p>还是把图摆在这, 方便看, 先写出总公式, 对w1求导有个地方要注意, $w 1$ 的影响不仅来自 01 还来自 02 , 从图上 可以一目了然, 所以总公式为:<br>
+$$<br>
+\frac{\partial \text { Loss }_{\text {total }}}{\partial w_1}= l1 + l2<br>
+$$</p>
+<p>$$<br>
+l1 = \frac{\partial \text { Loss }<em>{\text {total }}}{\partial o u t</em>{o 1}} \frac{\partial o u t_{o 1}}{\partial \text { net }<em>{o 1}} \frac{\partial n e t</em>{o 1}}{\partial \text { out }<em>{h 1}} \frac{\partial o u t</em>{h 1}}{\partial \text { net }<em>{h 1}} \frac{\partial \text { net }</em>{h 1}}{\partial w_1}<br>
+$$</p>
+<p>$$<br>
+l2 = \frac{\partial \text { Loss }<em>{\text {total }}}{\partial \text { out }</em>{o 2}} \frac{\text { out }<em>{o 2}}{\partial \text { net }</em>{o 2}} \frac{\partial \text { net }<em>{o 2}}{\partial \text { out }</em>{h 1}} \frac{\partial \text { out }<em>{h 1}}{\partial \text { net }</em>{h 1}} \frac{\partial n e t_{h 1}}{\partial w_1}<br>
+$$</p>
+<p>所以总共分为左右两个式子, 分别又对应 5 个步骤, 详细写一下左边, 右边同理:</p>
+<p>第一步:<br>
+$$<br>
+\frac{\partial \text { Loss }<em>{\text {total }}}{\partial o u t</em>{o 1}}=out _{o 1}- target _1<br>
+$$</p>
+<p>第二步:<br>
+$$<br>
+\frac{\partial o u t_{o 1}}{\partial \text { net }<em>{o 1}}=\sigma\left(n e t</em>{o 1}\right)\left(1-\sigma\left(n_{e 1} t_{o 1}\right)\right)<br>
+$$</p>
+<p>第三步:<br>
+$$<br>
+\frac{\partial \text { net }<em>{o 1}}{\partial o u t</em>{h 1}}=\frac{\partial o u t_{h 1} w_5+\text { out }<em>{h 2} w_6}{\partial o u t</em>{h 1}}=w_5<br>
+$$</p>
+<p>第四步：<br>
+$$<br>
+\frac{\partial o u t_{h 1}}{\partial \text { net }<em>{h 1}}=\sigma\left(\right. net \left.</em>{h 1}\right)\left(1-\sigma\left(\right.\right.net \left.\left._{h 1}\right)\right)<br>
+$$</p>
+<p>第二步:<br>
+$$<br>
+\frac{\partial n e t_{h 1}}{\partial w_1}=\frac{\partial i_1 w_1+i_2 w_2}{\partial w_1}=i_1<br>
+$$</p>
+<p>右边也是同理, 就不详细写了, 写一下总的公式:<br>
+$$<br>
+\begin{aligned}<br>
+&amp; \frac{\partial \text { Loss }<em>{\text {total }}}{\partial w_1}=\left(\left(\text { out }</em>{o 1}-\text { target }<em>1\right) \cdot\left(\sigma\left(\text { net }</em>{o 1}\right)\left(1-\sigma\left(\text { net }<em>{o 1}\right)\right)\right) \cdot w_5 \cdot\left(\sigma\left(\text { net }</em>{h 1}\right)\left(1-\sigma\left(\text { net }<em>{h 1}\right)\right)\right) \cdot i_1\right) \<br>
+&amp; +\left(\left(\text { out }</em>{o 2}-\text { target }<em>2\right) \cdot\left(\sigma\left(\text { net }</em>{o 2}\right)\left(1-\sigma\left(\text { net }<em>{o 2}\right)\right)\right) \cdot w_7 \cdot\left(\sigma\left(\text { net }</em>{h 1}\right)\left(1-\sigma\left(\text { net }_{h 1}\right)\right)\right) \cdot i_1\right) \<br>
+&amp;<br>
+\end{aligned}<br>
+$$<br>
+这个公式只是对如此简单的一个网络结构的一个节点的偏导, 就这么复杂。。亲自推完才深深的意识到。。。</p>
+<p>为了后面描述方便, 把上面的公式化简一下, out ${ }<em>{o 1}-$ target $<em>1$ 记为 $C</em>{o 1}, \sigma\left(\right.$ net $\left.</em>{o 1}\right)\left(1-\sigma\left(\right.\right.$ net $\left.\left.<em>{o 1}\right)\right)$ 记为 $\sigma\left(n_e t</em>{o 1}\right)^{\prime}$ ，则:<br>
+$$<br>
+\frac{\partial \text { Loss }<em>{t</em>{\text {otal }}}}{\partial w_1}=C_{o 1} \cdot \sigma\left(\text { net }<em>{o 1}\right)^{\prime} \cdot w_5 \cdot \sigma\left(\text { net }</em>{h 1}\right)^{\prime} \cdot i_1+C_{o 2} \cdot \sigma\left(\text { net }<em>{o 2}\right)^{\prime} \cdot w_7 \cdot \sigma\left(n e t</em>{h 1}\right)^{\prime} \cdot i_1<br>
+$$</p>
+<h4><span id="12-梯度消失爆炸产生原因">1.2 <strong>梯度消失，爆炸产生原因</strong></span></h4>
+<p>从上式其实已经能看出来, 求和操作其实不影响, 主要是是看乘法操作就可以说明问题, 可以看出, 损失函数对 w1的偏导, 与 $C_{o 1}$, 权重w, sigmoid的导数有关, 明明还有输入i为什么不提? 因为如果是多层神经网络的中间 某层的某个节点，那么就没有输入什么事了。所以产生影响的就是刚刚提的三个因素。</p>
 <p>再详细点描述，如图，多层神经网络：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011352977.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>参考：</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25631496">PENG：神经网络训练中的梯度消失与梯度爆炸282
-赞同 · 26 评论文章</a></p>
-<p>假设 (假设每一层只有一个神经元且对于每一层 <span class="math inline">\(y_i=\sigma\left(z_i\right)=\sigma\left(w_i
-x_i+b_i\right)\)</span>, 其中 <span class="math inline">\(\sigma\)</span> 为sigmoid函数), 如图:</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-ea9beb6c28c7d4e89be89dc5f4cbae2e_1440w.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011352977.jpg" alt="img"></p>
+<p><strong>参考：</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25631496">PENG：神经网络训练中的梯度消失与梯度爆炸282 赞同 · 26 评论文章</a></p>
+<p>假设 (假设每一层只有一个神经元且对于每一层 $y_i=\sigma\left(z_i\right)=\sigma\left(w_i x_i+b_i\right)$, 其中 $\sigma$ 为sigmoid函数), 如图:</p>
+<p><img src="https://pic3.zhimg.com/80/v2-ea9beb6c28c7d4e89be89dc5f4cbae2e_1440w.png" alt="img"></p>
 <p>则：</p>
-<p><span class="math display">\[
-\begin{aligned}
-&amp; \frac{\partial C}{\partial b_1}=\frac{\partial C}{\partial y_4}
-\frac{\partial y_4}{\partial z_4} \frac{\partial z_4}{\partial x_4}
-\frac{\partial x_4}{\partial z_3} \frac{\partial z_3}{\partial x_3}
-\frac{\partial x_3}{\partial z_2} \frac{\partial z_2}{\partial x_2}
-\frac{\partial x_2}{\partial z_1} \frac{\partial z_1}{\partial b_1} \\
-&amp; =C_{y 4} \sigma^{\prime}\left(z_4\right) w_4
-\sigma^{\prime}\left(z_3\right) w_3 \sigma^{\prime}\left(z_2\right) w_2
-\sigma^{\prime}\left(z_1\right)
-\end{aligned}
-\]</span></p>
+<p>$$<br>
+\begin{aligned}<br>
+&amp; \frac{\partial C}{\partial b_1}=\frac{\partial C}{\partial y_4} \frac{\partial y_4}{\partial z_4} \frac{\partial z_4}{\partial x_4} \frac{\partial x_4}{\partial z_3} \frac{\partial z_3}{\partial x_3} \frac{\partial x_3}{\partial z_2} \frac{\partial z_2}{\partial x_2} \frac{\partial x_2}{\partial z_1} \frac{\partial z_1}{\partial b_1} \<br>
+&amp; =C_{y 4} \sigma^{\prime}\left(z_4\right) w_4 \sigma^{\prime}\left(z_3\right) w_3 \sigma^{\prime}\left(z_2\right) w_2 \sigma^{\prime}\left(z_1\right)<br>
+\end{aligned}<br>
+$$</p>
 <p>看一下sigmoid函数的求导之后的样子：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-208a4aa5dc657fe86919f3549d853793_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<p><img src="https://pic4.zhimg.com/80/v2-208a4aa5dc657fe86919f3549d853793_1440w.jpg" alt="img"></p>
 <p><strong>发现sigmoid函数求导后最大最大也只能是0.25。</strong></p>
 <p>再来看W，一般我们初始化权重参数W时，通常都小于1，用的最多的应该是0，1正态分布吧。</p>
-<p><font color="red">所以 <span class="math inline">\(\left|\sigma^{\prime}(z) w\right| \leq
-0.25\)</span>, 多个小于1的数连乘之后, 那将会越来越小,
-导致靠近输入层的层的权重的偏导几乎为 0 ,
-也就是说几乎不更新，这就是梯度消失的根本原因。</font></p>
-<p>再来看看<strong>梯度爆炸</strong>的原因, 也就是说如果 <span class="math inline">\(\left|\sigma^{\prime}(z) w\right| \geq 1\)</span>
-时，连乘下来就会导致梯度过大, 导致梯度更新幅度特别 大, 可能会溢出,
-导致模型无法收玫。sigmoid的函数是不可能大于1了, 上图看的很清楚,
-那只能是w了, 这也 就是经常看到别人博客里的一句话, 初始权重过大,
-一直不理解为啥。。现在明白了。</p>
-<p>但梯度爆炸的情况一般不会发生, 对于sigmoid函数来说, <span class="math inline">\(\sigma(z)^{\prime}\)</span> 的大小也与w有关, 因为
-<span class="math inline">\(z=w x+b\)</span>, 除非该层的输入值 <span class="math inline">\(x\)</span> 在一直一个比较小的范围内。</p>
-<p>其实<strong>梯度爆炸和梯度消失问题都是因为网络太深</strong>,
-网络权值更新不稳定造成的, 本质上是因为<strong>梯度反向传播中的连
-乘效应。</strong></p>
+<p><font color="red">所以 $\left|\sigma^{\prime}(z) w\right| \leq 0.25$, 多个小于1的数连乘之后, 那将会越来越小, 导致靠近输入层的层的权重的偏导几乎为 0 , 也就是说几乎不更新，这就是梯度消失的根本原因。</font></p>
+<p>再来看看<strong>梯度爆炸</strong>的原因, 也就是说如果 $\left|\sigma^{\prime}(z) w\right| \geq 1$ 时，连乘下来就会导致梯度过大, 导致梯度更新幅度特别 大, 可能会溢出, 导致模型无法收玫。sigmoid的函数是不可能大于1了, 上图看的很清楚, 那只能是w了, 这也 就是经常看到别人博客里的一句话, 初始权重过大, 一直不理解为啥。。现在明白了。</p>
+<p>但梯度爆炸的情况一般不会发生, 对于sigmoid函数来说, $\sigma(z)^{\prime}$ 的大小也与w有关, 因为 $z=w x+b$, 除非该层的输入值 $x$ 在一直一个比较小的范围内。</p>
+<p>其实<strong>梯度爆炸和梯度消失问题都是因为网络太深</strong>, 网络权值更新不稳定造成的, 本质上是因为<strong>梯度反向传播中的连 乘效应。</strong></p>
 <p><strong><font color="red">所以，总结一下，为什么会发生梯度爆炸和消失：</font></strong></p>
 <p>本质上是因为神经网络的更新方法，梯度消失是因为反向传播过程中对梯度的求解会产生sigmoid导数和参数的连乘，sigmoid导数的最大值为0.25，权重一般初始都在0，1之间，乘积小于1，多层的话就会有多个小于1的值连乘，导致靠近输入层的梯度几乎为0，得不到更新。梯度爆炸是也是同样的原因，只是如果初始权重大于1，或者更大一些，多个大于1的值连乘，将会很大或溢出，导致梯度更新过大，模型无法收敛。</p>
 <h3><span id="二-梯度消失-爆炸解决方案">二、梯度消失、爆炸解决方案</span></h3>
 <h4><span id="21预训练加微调"><strong>2.1（预训练加微调）：</strong></span></h4>
 <p>提出采取无监督逐层训练方法，其基本思想是每次训练一层隐节点，训练时将上一层隐节点的输出作为输入，而本层隐节点的输出作为下一层隐节点的输入，此过程就是逐层“预训练”（pre-training）；在预训练完成后，再对整个网络进行“微调”（<strong>fine-tunning</strong>）。</p>
-<p>Hinton在训练深度信念网络（Deep Belief
-Networks中，使用了这个方法，在各层预训练完成后，再利用BP算法对整个网络进行训练。此思想相当于是先寻找局部最优，然后整合起来寻找全局最优，此方法有一定的好处，但是目前应用的不是很多了。</p>
+<p>Hinton在训练深度信念网络（Deep Belief Networks中，使用了这个方法，在各层预训练完成后，再利用BP算法对整个网络进行训练。此思想相当于是先寻找局部最优，然后整合起来寻找全局最优，此方法有一定的好处，但是目前应用的不是很多了。</p>
 <h4><span id="22梯度剪切-正则"><strong>2.2（梯度剪切、正则）：</strong></span></h4>
 <p><strong>梯度剪切</strong>这个方案主要是针对梯度爆炸提出的，其思想是设置一个梯度剪切阈值，然后更新梯度的时候，如果梯度超过这个阈值，那么就将其强制限制在这个范围之内。这可以防止梯度爆炸。</p>
-<p><strong>正则化</strong>是通过对网络权重做正则限制过拟合，仔细看正则项在损失函数的形式：
-<span class="math display">\[
-Loss =\left(y-W^T x\right)^2+\alpha\|W\|^2
-\]</span> 其中，<span class="math inline">\(\alpha\)</span>是指正则项系数，因此，如果发生梯度爆炸，权值的范数就会变的非常大，通过正则化项，可以部分限制梯度爆炸的发生。</p>
+<p><strong>正则化</strong>是通过对网络权重做正则限制过拟合，仔细看正则项在损失函数的形式：<br>
+$$<br>
+Loss =\left(y-W^T x\right)<sup>2+\alpha|W|</sup>2<br>
+$$<br>
+其中，$\alpha$是指正则项系数，因此，如果发生梯度爆炸，权值的范数就会变的非常大，通过正则化项，可以部分限制梯度爆炸的发生。</p>
 <p>注：事实上，在深度神经网络中，往往是梯度消失出现的更多一些</p>
-<h4><span id="23改变激活函数"><strong><font color="red">
-2.3（改变激活函数）：</font></strong></span></h4>
+<h4><span id="23改变激活函数"><strong><font color="red"> 2.3（改变激活函数）：</font></strong></span></h4>
 <p>首先说明一点，<strong>tanh激活函数不能有效的改善这个问题</strong>，先来看tanh的形式：</p>
-<p><span class="math display">\[
-\tanh (x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}
-\]</span></p>
+<p>$$<br>
+\tanh (x)=\frac{e<sup>x-e</sup>{-x}}{e<sup>x+e</sup>{-x}}<br>
+$$</p>
 <p>再来看tanh的导数图像：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011401273.jpg" alt="img" style="zoom:50%;"></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011401273.jpg" alt="img" style="zoom:50%;">
 <p><strong>发现虽然比sigmoid的好一点，sigmoid的最大值小于0.25，tanh的最大值小于1，但仍是小于1的，所以并不能解决这个问题。</strong></p>
-<p><strong>Relu</strong>:思想也很简单，如果激活函数的导数为1，那么就不存在梯度消失爆炸的问题了，每层的网络都可以得到相同的更新速度，relu就这样应运而生。先看一下relu的数学表达式：
-<span class="math display">\[
-\operatorname{Re} \operatorname{lu}(\mathrm{x})=\max (\mathrm{x},
-0)=\left\{\begin{array}{l}0, x&lt;0 \\ x, x&gt;0\end{array}\right\}
-\]</span></p>
-<p><img src="https://pic2.zhimg.com/80/v2-55475ee2d90cd7257a39f62549a65769_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p><strong>Relu</strong>:思想也很简单，如果激活函数的导数为1，那么就不存在梯度消失爆炸的问题了，每层的网络都可以得到相同的更新速度，relu就这样应运而生。先看一下relu的数学表达式：<br>
+$$<br>
+\operatorname{Re} \operatorname{lu}(\mathrm{x})=\max (\mathrm{x}, 0)=\left{\begin{array}{l}0, x&lt;0 \ x, x&gt;0\end{array}\right}<br>
+$$</p>
+<img src="https://pic2.zhimg.com/80/v2-55475ee2d90cd7257a39f62549a65769_1440w.jpg" alt="img" style="zoom:50%;">
 <p>从上图中，我们可以很容易看出，<strong>relu函数的导数在正数部分是恒等于1的，因此在深层网络中使用relu激活函数就不会导致梯度消失和爆炸的问题。</strong></p>
 <p><strong>relu</strong>的主要贡献在于：</p>
 <ul>
@@ -575,171 +491,112 @@ Loss =\left(y-W^T x\right)^2+\alpha\|W\|^2
 <li>输出不是以0为中心的</li>
 </ul>
 <p><strong>leakrelu</strong></p>
-<p>leakrelu就是为了解决relu的0区间带来的影响, 其数学表达为： leakrelu
-<span class="math inline">\(=f(x)=\left\{\begin{array}{ll}x, &amp;
-x&gt;0 \\ x * k, &amp; x \leq 0\end{array}\right.\)</span> 其中k是leak
-系数, 一般选择 0.1 或者 0.2 , 或者通过学习而来解决死神经元的问题。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-3ab1bd8fb85542a0c85eb907b73fa327_1440w.jpg" alt="img" style="zoom:33%;"></p>
+<p>leakrelu就是为了解决relu的0区间带来的影响, 其数学表达为： leakrelu $=f(x)=\left{\begin{array}{ll}x, &amp; x&gt;0 \ x * k, &amp; x \leq 0\end{array}\right.$ 其中k是leak 系数, 一般选择 0.1 或者 0.2 , 或者通过学习而来解决死神经元的问题。</p>
+<img src="https://pic4.zhimg.com/80/v2-3ab1bd8fb85542a0c85eb907b73fa327_1440w.jpg" alt="img" style="zoom:33%;">
 <p>leakrelu解决了0区间带来的影响，而且包含了relu的所有优点</p>
 <p><strong>elu</strong></p>
-<p>elu激活函数也是为了解决relu的0区间带来的影响, 其数学表达为: <span class="math display">\[
-\left\{\begin{array}{cc}
-x, &amp; \text { if } x&gt;0 \\
-\alpha\left(e^x-1\right), &amp; \text { otherwise }
-\end{array}\right.
-\]</span> 其函数及其导数数学形式为：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-ec3c80e51129bd76d49cad6e52d449c2_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>elu激活函数也是为了解决relu的0区间带来的影响, 其数学表达为:<br>
+$$<br>
+\left{\begin{array}{cc}<br>
+x, &amp; \text { if } x&gt;0 \<br>
+\alpha\left(e^x-1\right), &amp; \text { otherwise }<br>
+\end{array}\right.<br>
+$$<br>
+其函数及其导数数学形式为：</p>
+<img src="https://pic3.zhimg.com/80/v2-ec3c80e51129bd76d49cad6e52d449c2_1440w.jpg" alt="img" style="zoom:50%;">
 <p>但是elu相对于leakrelu来说，计算要更耗时间一些，因为有e。</p>
 <h4><span id="24batchnorm梯度消失"><strong>2.4（batchnorm）：</strong>【梯度消失】</span></h4>
-<p>Batchnorm是深度学习发展以来提出的最重要的成果之一了,
-目前已经被广泛的应用到了各大网络中, 具有加速网络收玫速度,
-提升训练稳定性的效果,
-Batchnorm本质上是解决反向传播过程中的梯度问题。batchnorm全名是batch
-normalization, 简称 <span class="math inline">\(\mathrm{BN}\)</span>,
-即批规范化, 通过规范化操作将输出信号x规范化到均值为 0 , 方差为 1
-保证网络的稳定性。</p>
-<p>具体的batchnorm原理非常复杂, 在这里不做详细展开,
-此部分大概讲一下batchnorm解决梯度的问题上。具体来说就是反向传播中,
-经过每一层的梯度会乘以该层的权重, 举个简单例子：正向传播中 <span class="math inline">\(f_3=f_2\left(w^T * x+b\right)\)</span>,
-那么反向传播中, <span class="math inline">\(\frac{\partial f_2}{\partial
-x}=\frac{\partial f_2}{\partial f_1} w\)</span>, 反向传播式子中有 <span class="math inline">\(w\)</span> 的存在, 所以 <span class="math inline">\(w\)</span>
-的大小影响了梯度的消失和爆炸,batchnorm就是通过对每一层的输出做scale和shift的方法，通过一定的规范化手段，<strong>把每层神经网络任意神经元这个输入值的分布【假设原始是正态分布】强行拉回到接近均值为0方差为1的标准正太分布，即严重偏离的分布强制拉回比较标准的分布，<font color="red">
-这样使得激活输入值落在非线性函数对输入比较敏感的区域，这样输入的小变化就会导致损失函数较大的变化，使得让梯度变大，避免梯度消失问题产生</font>，而且梯度变大意味着学习收敛速度快，能大大加快训练速度。</strong></p>
-<h4><span id="25残差结构"><strong><font color="red">
-2.5（残差结构）：</font></strong></span></h4>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011409884.jpg" alt="img" style="zoom:50%;"></p>
-<p>如图, 把输入加入到某层中, 这样求导时, 总会有个1在,
-这样就不会梯度消失了。 <span class="math display">\[
-\frac{\partial \text { loss }}{\partial x_l}=\frac{\partial \text { loss
-}}{\partial x_L} \cdot \frac{\partial x_L}{\partial x_l}=\frac{\partial
-\text { loss }}{\partial x_L} \cdot\left(1+\frac{\partial}{\partial x_L}
-\sum_{i=l}^{L-1} F\left(x_i, W_i\right)\right)
-\]</span> 式子的第一个因子 <span class="math inline">\(\frac{\partial l
-o s s}{\partial x_L}\)</span> 表示的损失函数到达 <span class="math inline">\(\mathrm{L}\)</span> 的梯度, 小括号中的 1
-表明短路机制可以无损地传播梯度,
-而另外一项残差梯度则需要经过带有weights的层,
-梯度不是直接传递过来的。残差梯度不会那么巧全为- 1 , 而且就算其比较小, 有
-1 的存在也不会导致梯度消失。所以残差学习会更容易。</p>
+<p>Batchnorm是深度学习发展以来提出的最重要的成果之一了, 目前已经被广泛的应用到了各大网络中, 具有加速网络收玫速度, 提升训练稳定性的效果, Batchnorm本质上是解决反向传播过程中的梯度问题。batchnorm全名是batch normalization, 简称 $\mathrm{BN}$, 即批规范化, 通过规范化操作将输出信号x规范化到均值为 0 , 方差为 1 保证网络的稳定性。</p>
+<p>具体的batchnorm原理非常复杂, 在这里不做详细展开, 此部分大概讲一下batchnorm解决梯度的问题上。具体来说就是反向传播中, 经过每一层的梯度会乘以该层的权重, 举个简单例子：正向传播中 $f_3=f_2\left(w^T * x+b\right)$, 那么反向传播中, $\frac{\partial f_2}{\partial x}=\frac{\partial f_2}{\partial f_1} w$, 反向传播式子中有 $w$ 的存在, 所以 $w$ 的大小影响了梯度的消失和爆炸,batchnorm就是通过对每一层的输出做scale和shift的方法，通过一定的规范化手段，<strong>把每层神经网络任意神经元这个输入值的分布【假设原始是正态分布】强行拉回到接近均值为0方差为1的标准正太分布，即严重偏离的分布强制拉回比较标准的分布，<font color="red"> 这样使得激活输入值落在非线性函数对输入比较敏感的区域，这样输入的小变化就会导致损失函数较大的变化，使得让梯度变大，避免梯度消失问题产生</font>，而且梯度变大意味着学习收敛速度快，能大大加快训练速度。</strong></p>
+<h4><span id="25残差结构"><strong><font color="red"> 2.5（残差结构）：</font></strong></span></h4>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011409884.jpg" alt="img" style="zoom:50%;">
+<p>如图, 把输入加入到某层中, 这样求导时, 总会有个1在, 这样就不会梯度消失了。<br>
+$$<br>
+\frac{\partial \text { loss }}{\partial x_l}=\frac{\partial \text { loss }}{\partial x_L} \cdot \frac{\partial x_L}{\partial x_l}=\frac{\partial \text { loss }}{\partial x_L} \cdot\left(1+\frac{\partial}{\partial x_L} \sum_{i=l}^{L-1} F\left(x_i, W_i\right)\right)<br>
+$$<br>
+式子的第一个因子 $\frac{\partial l o s s}{\partial x_L}$ 表示的损失函数到达 $\mathrm{L}$ 的梯度, 小括号中的 1 表明短路机制可以无损地传播梯度, 而另外一项残差梯度则需要经过带有weights的层, 梯度不是直接传递过来的。残差梯度不会那么巧全为- 1 , 而且就算其比较小, 有 1 的存在也不会导致梯度消失。所以残差学习会更容易。</p>
 <p><code>注：上面的推导并不是严格的证</code>，只为帮助理解</p>
 <h4><span id="26lstm"><strong><font color="red">2.6（LSTM）</font></strong></span></h4>
 <p>在介绍这个方案之前，有必要来推导一下RNN的反向传播，<strong>因为关于梯度消失的含义它跟DNN不一样！不一样！不一样！</strong></p>
-<p>先推导再来说，从这copy的：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28687529">沉默中的思索：RNN梯度消失和爆炸的原因565
-赞同</a></p>
+<p>先推导再来说，从这copy的：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28687529">沉默中的思索：RNN梯度消失和爆炸的原因565 赞同 </a></p>
 <p>RNN结构如图：</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011410693.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>假设我们的时间序列只有三段, <span class="math inline">\(S_0\)</span>
-为给定值, 神经元没有激活函数, 则RNN最简单的前向传播过程如下: <span class="math display">\[
-\begin{array}{ll}
-S_1=W_x X_1+W_s S_0+b_1 &amp; O_1=W_o S_1+b_2 \\
-S_2=W_x X_2+W_s S_1+b_1 &amp; O_2=W_o S_2+b_2 \\
-S_3=W_x X_3+W_s S_2+b_1 &amp; O_3=W_o S_3+b_2
-\end{array}
-\]</span> 假设在 <span class="math inline">\(\mathrm{t}=3\)</span> 时刻,
-损失函数为 <span class="math inline">\(L_3=\frac{1}{2}\left(Y_3-O_3\right)^2\)</span>
-。</p>
-<p>则对于一次训练任务的损失函数为 <span class="math inline">\(L=\sum_{t=0}^T L_t\)</span>,
-即每一时刻损失值的累加。</p>
-<p>使用随机梯度下降法训练 <span class="math inline">\(\mathrm{RNN}\)</span> 其实就是对 <span class="math inline">\(W_x\)</span> 、 <span class="math inline">\(W_s\)</span> 、 <span class="math inline">\(W_o\)</span> 以及 <span class="math inline">\(b_1
-b_2\)</span> 求偏导, 并不断调整它们以使L尽可能达 到最小的过程。</p>
-<p>现在假设我们我们的时间序列只有三段, <span class="math inline">\(t 1,
-t 2, t 3\)</span> 。<strong>我们只对 <span class="math inline">\(\mathrm{t}\)</span> 时刻的 <span class="math inline">\(W_x 、 W_s 、 W_0\)</span>
-求偏导（其他时刻类似）：</strong> <span class="math display">\[
-\begin{gathered}
-\frac{\partial L_3}{\partial W_0}=\frac{\partial L_3}{\partial O_3}
-\frac{\partial O_3}{\partial W_o} \\
-\frac{\partial L_3}{\partial W_x}=\frac{\partial L_3}{\partial O_3}
-\frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial
-W_x}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3}
-\frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial
-W_x}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3}
-\frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial S_1}
-\frac{\partial S_1}{\partial W_x} \\
-\frac{\partial L_3}{\partial W_s}=\frac{\partial L_3}{\partial O_3}
-\frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial
-W_s}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3}
-\frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial
-W_s}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3}
-\frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial S_1}
-\frac{\partial S_1}{\partial W_s}
-\end{gathered}
-\]</span> <strong>可以看出对于 <span class="math inline">\(W_0\)</span>
-求偏导并没有长期依赖，但是对于 <span class="math inline">\(W_x 、
-W_s\)</span> 求偏导，会随着时间序列产生长期依赖。</strong>因为 <span class="math inline">\(S_t\)</span> 随着时间序列向前传播, 而 <span class="math inline">\(S_t\)</span> 又是 <span class="math inline">\(W_x
-、 W_s\)</span> 的函数。</p>
-<p>根据上述求偏导的过程, 我们可以得出任意时刻对 <span class="math inline">\(W_x 、 W_s\)</span> 求偏导的公式： <span class="math display">\[
-\frac{\partial L_t}{\partial W_x}=\sum_{k=0}^t \frac{\partial
-L_t}{\partial O_t} \frac{\partial O_t}{\partial
-S_t}\left(\prod_{j=k+1}^t \frac{\partial S_j}{\partial S_{j-1}}\right)
-\frac{\partial S_k}{\partial W_x}
-\]</span> 任意时刻对 <span class="math inline">\(W_s\)</span>
-求偏导的公式同上。</p>
-<p>如果加上激活函数, <span class="math inline">\(S_j=\tanh \left(W_x
-X_j+W_s S_{j-1}+b_1\right)\)</span> ，则 <span class="math inline">\(\prod_{j=k+1}^t \frac{\partial S_j}{\partial
-S_{j-1}}=\prod_{j=k+1}^t \tanh W_s^{\prime}\)</span> 激活函数tanh和它的
-导数图像在上面已经说过了, 所以原因在这就不帻述了, 还是一样的,
-激活函数导数小于 1 。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011410693.jpg" alt="img"></p>
+<p>假设我们的时间序列只有三段, $S_0$ 为给定值, 神经元没有激活函数, 则RNN最简单的前向传播过程如下:<br>
+$$<br>
+\begin{array}{ll}<br>
+S_1=W_x X_1+W_s S_0+b_1 &amp; O_1=W_o S_1+b_2 \<br>
+S_2=W_x X_2+W_s S_1+b_1 &amp; O_2=W_o S_2+b_2 \<br>
+S_3=W_x X_3+W_s S_2+b_1 &amp; O_3=W_o S_3+b_2<br>
+\end{array}<br>
+$$<br>
+假设在 $\mathrm{t}=3$ 时刻, 损失函数为 $L_3=\frac{1}{2}\left(Y_3-O_3\right)^2$ 。</p>
+<p>则对于一次训练任务的损失函数为 $L=\sum_{t=0}^T L_t$, 即每一时刻损失值的累加。</p>
+<p>使用随机梯度下降法训练 $\mathrm{RNN}$ 其实就是对 $W_x$ 、 $W_s$ 、 $W_o$ 以及 $b_1 b_2$ 求偏导, 并不断调整它们以使L尽可能达 到最小的过程。</p>
+<p>现在假设我们我们的时间序列只有三段, $t 1, t 2, t 3$ 。<strong>我们只对 $\mathrm{t}$ 时刻的 $W_x 、 W_s 、 W_0$ 求偏导（其他时刻类似）：</strong><br>
+$$<br>
+\begin{gathered}<br>
+\frac{\partial L_3}{\partial W_0}=\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial W_o} \<br>
+\frac{\partial L_3}{\partial W_x}=\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial W_x}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial W_x}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial S_1} \frac{\partial S_1}{\partial W_x} \<br>
+\frac{\partial L_3}{\partial W_s}=\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial W_s}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial W_s}+\frac{\partial L_3}{\partial O_3} \frac{\partial O_3}{\partial S_3} \frac{\partial S_3}{\partial S_2} \frac{\partial S_2}{\partial S_1} \frac{\partial S_1}{\partial W_s}<br>
+\end{gathered}<br>
+$$<br>
+**可以看出对于 $W_0$ 求偏导并没有长期依赖，但是对于 $W_x 、 W_s$ 求偏导，会随着时间序列产生长期依赖。**因为 $S_t$ 随着时间序列向前传播, 而 $S_t$ 又是 $W_x 、 W_s$ 的函数。</p>
+<p>根据上述求偏导的过程, 我们可以得出任意时刻对 $W_x 、 W_s$ 求偏导的公式：<br>
+$$<br>
+\frac{\partial L_t}{\partial W_x}=\sum_{k=0}^t \frac{\partial L_t}{\partial O_t} \frac{\partial O_t}{\partial S_t}\left(\prod_{j=k+1}^t \frac{\partial S_j}{\partial S_{j-1}}\right) \frac{\partial S_k}{\partial W_x}<br>
+$$<br>
+任意时刻对 $W_s$ 求偏导的公式同上。</p>
+<p>如果加上激活函数, $S_j=\tanh \left(W_x X_j+W_s S_{j-1}+b_1\right)$ ，则 $\prod_{j=k+1}^t \frac{\partial S_j}{\partial S_{j-1}}=\prod_{j=k+1}^t \tanh W_s^{\prime}$ 激活函数tanh和它的 导数图像在上面已经说过了, 所以原因在这就不帻述了, 还是一样的, 激活函数导数小于 1 。</p>
 <p><strong><font color="red">现在来解释一下，为什么说RNN和DNN的梯度消失问题含义不一样？</font></strong></p>
 <ul>
-<li><strong>先来说DNN中的反向传播：</strong>在上文的DNN反向传播中，我推导了两个权重的梯度，第一个梯度是直接连接着输出层的梯度，求解起来并没有梯度消失或爆炸的问题，因为它没有连乘，只需要计算一步。第二个梯度出现了连乘，也就是说越靠近输入层的权重，梯度消失或爆炸的问题越严重，可能就会消失会爆炸。<strong>一句话总结一下，DNN中各个权重的梯度是独立的，该消失的就会消失，不会消失的就不会消失。</strong></li>
-<li><strong>再来说RNN：</strong>RNN的特殊性在于，它的权重是共享的。抛开W_o不谈，因为它在某时刻的梯度不会出现问题（某时刻并不依赖于前面的时刻），但是W_s和W_x就不一样了，每一时刻都由前面所有时刻共同决定，是一个相加的过程，这样的话就有个问题，当距离长了，计算最前面的导数时，最前面的导数就会消失或爆炸，但当前时刻整体的梯度并不会消失，因为它是求和的过程，当下的梯度总会在，只是前面的梯度没了，但是更新时，由于权值共享，所以整体的梯度还是会更新，<strong>通常人们所说的梯度消失就是指的这个，指的是当下梯度更新时，用不到前面的信息了，因为距离长了，前面的梯度就会消失，也就是没有前面的信息了，但要知道，整体的梯度并不会消失，因为当下的梯度还在，并没有消失。</strong></li>
-<li><strong>一句话概括：</strong>RNN的梯度不会消失，RNN的梯度消失指的是当下梯度用不到前面的梯度了，但DNN靠近输入的权重的梯度是真的会消失。</li>
+<li>**先来说DNN中的反向传播：**在上文的DNN反向传播中，我推导了两个权重的梯度，第一个梯度是直接连接着输出层的梯度，求解起来并没有梯度消失或爆炸的问题，因为它没有连乘，只需要计算一步。第二个梯度出现了连乘，也就是说越靠近输入层的权重，梯度消失或爆炸的问题越严重，可能就会消失会爆炸。<strong>一句话总结一下，DNN中各个权重的梯度是独立的，该消失的就会消失，不会消失的就不会消失。</strong></li>
+<li>**再来说RNN：**RNN的特殊性在于，它的权重是共享的。抛开W_o不谈，因为它在某时刻的梯度不会出现问题（某时刻并不依赖于前面的时刻），但是W_s和W_x就不一样了，每一时刻都由前面所有时刻共同决定，是一个相加的过程，这样的话就有个问题，当距离长了，计算最前面的导数时，最前面的导数就会消失或爆炸，但当前时刻整体的梯度并不会消失，因为它是求和的过程，当下的梯度总会在，只是前面的梯度没了，但是更新时，由于权值共享，所以整体的梯度还是会更新，<strong>通常人们所说的梯度消失就是指的这个，指的是当下梯度更新时，用不到前面的信息了，因为距离长了，前面的梯度就会消失，也就是没有前面的信息了，但要知道，整体的梯度并不会消失，因为当下的梯度还在，并没有消失。</strong></li>
+<li>**一句话概括：**RNN的梯度不会消失，RNN的梯度消失指的是当下梯度用不到前面的梯度了，但DNN靠近输入的权重的梯度是真的会消失。</li>
 </ul>
 <p>说完了RNN的反向传播及梯度消失的含义，终于该说<strong>为什么LSTM可以解决这个问题了</strong>，这里默认大家都懂LSTM的结构，对结构不做过多的描述。<strong>见第三节</strong>。【LSTM通过它的“门控装置”有效的缓解了这个问题，这也就是为什么我们现在都在使用LSTM而非普通RNN。】</p>
 <h3><span id="三-缓解梯度消失amp爆炸-qampa">三、缓解梯度消失&amp;爆炸 Q&amp;A</span></h3>
 <h4><span id="1-残差神经网络为什么可以缓解梯度消失">1、残差神经网络为什么可以缓解梯度消失？</span></h4>
 <p><strong>残差单元可以以跳层连接的形式实现，即将单元的输入直接与单元输出加在一起，然后再激活</strong>。因此残差网络可以轻松地用主流的自动微分深度学习框架实现，直接使用BP算法更新参数损失对某低层输出的梯度，被分解为了两项。</p>
 <p><strong>（1）从前后向信息传播的角度来看</strong></p>
-<p><strong>普通神经网络前向传播</strong>。前向传播将数据特征逐层抽象,
-最终提取出完成任务所需要的特征/表示。 <span class="math display">\[
-a^{l_2}=F\left(a^{l_2-1}\right)=F\left(F\left(a^{l_2-2}\right)\right)=\ldots
-\]</span>
-<strong>普通神经网络反向传播</strong>。梯度涉及两层参数交叉相乘,
-可能会在离输入近的网络中产生梯度消失的现象。 <span class="math display">\[
-\frac{\partial \epsilon}{\partial a^{l_1}}=\frac{\partial
-\epsilon}{\partial a^{l_2}} \frac{\partial a^{l_2}}{\partial
-a^{l_1}}=\frac{\partial \epsilon}{\partial a^{l_2}} \frac{\partial
-a^{l_2}}{\partial a^{l_2-1}} \ldots \frac{\partial a^{l_1+1}}{\partial
-a^{l_1}}
-\]</span>
-<strong>残差网络前向传播</strong>。输入信号可以从任意低层直接传播到高层。由于包含了一个天然的恒等映射，一定程度上可以
-解决网络退化问题。 <span class="math display">\[
-a^{l_2}=a^{l_2-1}+F\left(a^{l_2-1}\right)=\left(a^{l_2-2}+F\left(a^{l_2-2}\right)\right)+F\left(a^{l_2-1}\right)=\ldots=a^{l_1}+\sum_{i=l_1}^{l_2-1}
-F\left(a^i\right)
-\]</span> <strong>残差网络反向传播</strong>。 <span class="math inline">\(\frac{\partial \epsilon}{\partial
-a^{l_2}}\)</span> 表明, 反向传播时,
-错误信号可以不经过任何中间权重矩阵变换直接传播到低层, 一定
-程度上可以缓解梯度弥散问题（即便中间层矩阵权重很小，梯度也基本不会消失）。
-<span class="math display">\[
-\frac{\partial \epsilon}{\partial a^{l_1}}=\frac{\partial
-\epsilon}{\partial a^{l_2}}\left(1+\frac{\partial \sum_{i=l_1}^{l_2-1}
-F\left(a^i\right)}{a^{l_1}}\right)
-\]</span> 所以可以认为残差连接使得信息前后向传播更加顺畅。</p>
+<p><strong>普通神经网络前向传播</strong>。前向传播将数据特征逐层抽象, 最终提取出完成任务所需要的特征/表示。<br>
+$$<br>
+a<sup>{l_2}=F\left(a</sup>{l_2-1}\right)=F\left(F\left(a^{l_2-2}\right)\right)=\ldots<br>
+$$<br>
+<strong>普通神经网络反向传播</strong>。梯度涉及两层参数交叉相乘, 可能会在离输入近的网络中产生梯度消失的现象。<br>
+$$<br>
+\frac{\partial \epsilon}{\partial a^{l_1}}=\frac{\partial \epsilon}{\partial a^{l_2}} \frac{\partial a^{l_2}}{\partial a^{l_1}}=\frac{\partial \epsilon}{\partial a^{l_2}} \frac{\partial a^{l_2}}{\partial a^{l_2-1}} \ldots \frac{\partial a^{l_1+1}}{\partial a^{l_1}}<br>
+$$<br>
+<strong>残差网络前向传播</strong>。输入信号可以从任意低层直接传播到高层。由于包含了一个天然的恒等映射，一定程度上可以 解决网络退化问题。<br>
+$$<br>
+a<sup>{l_2}=a</sup>{l_2-1}+F\left(a<sup>{l_2-1}\right)=\left(a</sup>{l_2-2}+F\left(a<sup>{l_2-2}\right)\right)+F\left(a</sup>{l_2-1}\right)=\ldots=a<sup>{l_1}+\sum_{i=l_1}</sup>{l_2-1} F\left(a^i\right)<br>
+$$<br>
+<strong>残差网络反向传播</strong>。 $\frac{\partial \epsilon}{\partial a^{l_2}}$ 表明, 反向传播时, 错误信号可以不经过任何中间权重矩阵变换直接传播到低层, 一定 程度上可以缓解梯度弥散问题（即便中间层矩阵权重很小，梯度也基本不会消失）。<br>
+$$<br>
+\frac{\partial \epsilon}{\partial a^{l_1}}=\frac{\partial \epsilon}{\partial a^{l_2}}\left(1+\frac{\partial \sum_{i=l_1}^{l_2-1} F\left(a<sup>i\right)}{a</sup>{l_1}}\right)<br>
+$$<br>
+所以可以认为残差连接使得信息前后向传播更加顺畅。</p>
 <p><strong>(2) 集成学习的角度</strong></p>
-<p>将残差网络展开，以一个三层的ResNet为例，可得到下面的树形结构: <span class="math display">\[
-\begin{array}{ll}
-y_3=y_2+f_3\left(y_2\right)=
-\left[y_1+f_2\left(y_1\right)\right]+f_3\left(y_1+f_2\left(y_1\right)\right)
-\\
-=\left[y_0+f_1\left(y_0\right)+f_2\left(y_0+f_1\left(y_0\right)\right)\right]+f_3\left(y_0+f_1\left(y_0\right)+f_2\left(y_0+f_1\left(y_0\right)\right)\right)
-\end{array}
-\]</span> <img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011420876.jpg" alt="img"></p>
+<p>将残差网络展开，以一个三层的ResNet为例，可得到下面的树形结构:<br>
+$$<br>
+\begin{array}{ll}<br>
+y_3=y_2+f_3\left(y_2\right)=<br>
+\left[y_1+f_2\left(y_1\right)\right]+f_3\left(y_1+f_2\left(y_1\right)\right) \<br>
+=\left[y_0+f_1\left(y_0\right)+f_2\left(y_0+f_1\left(y_0\right)\right)\right]+f_3\left(y_0+f_1\left(y_0\right)+f_2\left(y_0+f_1\left(y_0\right)\right)\right)<br>
+\end{array}<br>
+$$<br>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202305011420876.jpg" alt="img"></p>
 <p>残差网络就可以被看作是一系列路径集合组装而成的一个集成模型，其中不同的路径包含了不同的网络层子集。</p>
 <h5><span id="特点">特点：</span></h5>
-<ol type="1">
+<ol>
 <li>跳层连接;</li>
 <li>例子：DCN（Deep Cross Network）、Transformer;</li>
 <li>有效的缓解梯度消失问题的手段;</li>
-<li>输入和输出维度一致，因为残差正向传播有相加的过程<span class="math inline">\(a^{l_2}=a^{l_2-1}+F\left(a^{l_2-1}\right)\)</span>;</li>
+<li>输入和输出维度一致，因为残差正向传播有相加的过程$a<sup>{l_2}=a</sup>{l_2-1}+F\left(a^{l_2-1}\right)$;</li>
 </ol>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li><strong>残差神经网络为什么可以缓解梯度消失？</strong> - 十三的文章 -
-知乎 https://zhuanlan.zhihu.com/p/452867110</li>
-<li>从反向传播推导到梯度消失and爆炸的原因及解决方案（从DNN到RNN，内附详细反向传播公式推导）
-- 韦伟的文章 - 知乎 https://zhuanlan.zhihu.com/p/76772734</li>
+<li><strong>残差神经网络为什么可以缓解梯度消失？</strong> - 十三的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/452867110">https://zhuanlan.zhihu.com/p/452867110</a></li>
+<li>从反向传播推导到梯度消失and爆炸的原因及解决方案（从DNN到RNN，内附详细反向传播公式推导） - 韦伟的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/76772734">https://zhuanlan.zhihu.com/p/76772734</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33006526">DoubleV：详解深度学习中的梯度消失、爆炸原因及其解决方法</a></li>
 </ul>
 

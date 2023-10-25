@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -272,7 +272,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.4k</span>
+      <span>6.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -292,77 +292,41 @@
     <div class="post-body" itemprop="articleBody">
           <h2><span id="网络威胁情报之-stix-21">网络威胁情报之 STIX 2.1</span></h2>
 <blockquote>
-<p>https://zhuanlan.zhihu.com/p/365563090</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/365563090">https://zhuanlan.zhihu.com/p/365563090</a></p>
 </blockquote>
 <h3><span id="一-说明">一、说明</span></h3>
-<p>STIX（Structured Threat Information
-Expression）是一种用于交换网络威胁情报（cyber threat
-intelligence，CTI）的语言和序列化格式。STIX的应用场景包括：<strong>协同威胁分析、自动化威胁情报交换、自动化威胁检测和响应</strong>等。</p>
+<p>STIX（Structured Threat Information Expression）是一种用于交换网络威胁情报（cyber threat intelligence，CTI）的语言和序列化格式。STIX的应用场景包括：<strong>协同威胁分析、自动化威胁情报交换、自动化威胁检测和响应</strong>等。</p>
 <h5><span id="stix对网络威胁情报的描述方法如下">STIX对网络威胁情报的描述方法如下：</span></h5>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-c9e59ff49083188d1bf41879c9e1756b_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>STIX Domain
-Objects</strong>（SDO）：威胁情报主要的分类对象，包含了一些威胁的behaviors和construct，共有18种类型：<strong>Attack
-Pattern</strong>, Campaign, <strong>Course of Action</strong>, Grouping,
-Identity, Indicator, Infrastructure, Intrusion Set, Location, Malware,
-Malware Analysis, Note, Observed Data, Opinion, Report, Threat Actor,
-Tool, and Vulnerability.</p>
-<figure>
-<img src="https://pic3.zhimg.com/80/v2-e5fbd4d7693f6dae450a18d6e5981c6a_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://pic2.zhimg.com/80/v2-acb4fcb44a2a7d8dd065c75aa848cdc1_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>STIX Cyber-observable
-Objects</strong>（SCO）：威胁情报中具体的可观察对象，用于刻画<strong>基于主机或基于网络的信息</strong>。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-c9e59ff49083188d1bf41879c9e1756b_1440w.jpg" alt="img"></p>
+<p><strong>STIX Domain Objects</strong>（SDO）：威胁情报主要的分类对象，包含了一些威胁的behaviors和construct，共有18种类型：<strong>Attack Pattern</strong>, Campaign, <strong>Course of Action</strong>, Grouping, Identity, Indicator, Infrastructure, Intrusion Set, Location, Malware, Malware Analysis, Note, Observed Data, Opinion, Report, Threat Actor, Tool, and Vulnerability.</p>
+<p><img src="https://pic3.zhimg.com/80/v2-e5fbd4d7693f6dae450a18d6e5981c6a_1440w.jpg" alt="img"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-acb4fcb44a2a7d8dd065c75aa848cdc1_1440w.jpg" alt="img"></p>
+<p><strong>STIX Cyber-observable Objects</strong>（SCO）：威胁情报中具体的可观察对象，用于刻画<strong>基于主机或基于网络的信息</strong>。</p>
 <ul>
-<li>SCO会被多种SDO所使用，以提供上下文支持，如<em>Observed Data</em>
-SDO，表示在特定时间观察到的raw
-data；在STIX2.0中，SCO在SDO中出现时只会以Observed
-Data的形式出现，在STIX2.1则不限于此。</li>
+<li>SCO会被多种SDO所使用，以提供上下文支持，如<em>Observed Data</em> SDO，表示在特定时间观察到的raw data；在STIX2.0中，SCO在SDO中出现时只会以Observed Data的形式出现，在STIX2.1则不限于此。</li>
 <li>SCO本身不包括who，when和why的信息，但是将SCO和SDO关联起来，可能会得到这些信息以及对威胁更高层面的理解。</li>
 <li>SCO可以捕获的对象包括文件、进程、IP之间的流量等。</li>
 </ul>
-<p><strong>STIX Relationship
-Objects</strong>（SRO）：用于SDO之间、SCO之间、SDO和SCO之间的关系。SRO的大类包括以下两种：</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-2e19804c43197207ae032bc991594ca0_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p><strong>generic
-SRO（Relationship）</strong>：大多数关系所采用的类型，其relation_type字段包括：内置关系：如Indicator到Malware之间的关系，可以用<em>indicates</em>
-表示，它描述了该Indicator可用于检测对应的恶意软件；自定义关系；</p>
-<p><strong>Sighting
-SRO</strong>：用于捕获实体在SDO中出现的案例，如sighting an
-indicator。没有明确指明连接哪两个object。之所以将其作为独立的SRO，是因为其具有一些独有的属性，如<em>count</em>。</p>
-<p>除了SRO，STIX还用ID references来表示嵌入关系（embedded
-relationship）。当使用嵌入关系时，表示该属性时该对象的内置属性，从而不需要使用SRO表示，如<em>create_by_ref。</em>因此，SRO可以视为两个节点直接的边，而embedded
-relationship则可以视为属性（只不过其表示了二元关系）</p>
+<p><strong>STIX Relationship Objects</strong>（SRO）：用于SDO之间、SCO之间、SDO和SCO之间的关系。SRO的大类包括以下两种：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-2e19804c43197207ae032bc991594ca0_1440w.jpg" alt="img"></p>
+<p><strong>generic SRO（Relationship）</strong>：大多数关系所采用的类型，其relation_type字段包括：内置关系：如Indicator到Malware之间的关系，可以用<em>indicates</em> 表示，它描述了该Indicator可用于检测对应的恶意软件；自定义关系；</p>
+<p><strong>Sighting SRO</strong>：用于捕获实体在SDO中出现的案例，如sighting an indicator。没有明确指明连接哪两个object。之所以将其作为独立的SRO，是因为其具有一些独有的属性，如<em>count</em>。</p>
+<p>除了SRO，STIX还用ID references来表示嵌入关系（embedded relationship）。当使用嵌入关系时，表示该属性时该对象的内置属性，从而不需要使用SRO表示，如*create_by_ref。*因此，SRO可以视为两个节点直接的边，而embedded relationship则可以视为属性（只不过其表示了二元关系）</p>
 <ul>
-<li><strong>STIX Meta Objects</strong>：用于丰富或扩展STIX Core
-Objects</li>
+<li><strong>STIX Meta Objects</strong>：用于丰富或扩展STIX Core Objects</li>
 <li><strong>STIX Bundle Object</strong>：用于打包STIX内容</li>
 </ul>
-<p><strong>STIX是一种基于图的模型，其中SDO和SCO定义了图的节点，而STIX
-relationships定义了边</strong>。</p>
-<p><strong>STIX Patterning
-language</strong>：STIX模式语言可以实现网络或终端的威胁检测。该语言目前使用STIX
-Indicator对象，来匹配时序的observable data。</p>
+<p><strong>STIX是一种基于图的模型，其中SDO和SCO定义了图的节点，而STIX relationships定义了边</strong>。</p>
+<p><strong>STIX Patterning language</strong>：STIX模式语言可以实现网络或终端的威胁检测。该语言目前使用STIX Indicator对象，来匹配时序的observable data。</p>
 <h3><span id="二-通用数据类型">二、<strong>通用数据类型</strong></span></h3>
-<p><img src="https://pic3.zhimg.com/80/v2-2d7ff334fee36adda542c0d3281c5d62_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<img src="https://pic3.zhimg.com/80/v2-2d7ff334fee36adda542c0d3281c5d62_1440w.jpg" alt="img" style="zoom:67%;">
 <h3><span id="三-stix-通用概念">三、 <strong>STIX 通用概念</strong></span></h3>
 <ul>
 <li>STIX common properties</li>
 </ul>
-<p><img src="https://pic3.zhimg.com/80/v2-4502a49dc00fc1bfae5913c20a191a3e_1440w.jpg" alt="img" style="zoom:67%;"></p>
-<h3><span id="四-stix-domainobjects"><strong>四、 STIX Domain
-Objects</strong></span></h3>
-<p>每个SDO对应
-交换网络威胁情报CTI中的唯一概念。<strong>使用SDO，SCO和SRO作为基本模块</strong>，用户可以方便的创建和共享CTI。</p>
+<img src="https://pic3.zhimg.com/80/v2-4502a49dc00fc1bfae5913c20a191a3e_1440w.jpg" alt="img" style="zoom:67%;">
+<h3><span id="四-stix-domain-objects"><strong>四、 STIX Domain Objects</strong></span></h3>
+<p>每个SDO对应 交换网络威胁情报CTI中的唯一概念。<strong>使用SDO，SCO和SRO作为基本模块</strong>，用户可以方便的创建和共享CTI。</p>
 <p><strong>SDO</strong>：</p>
 <ul>
 <li>Property：通用属性、SDO转专用属性</li>
@@ -370,155 +334,92 @@ Objects</strong></span></h3>
 </ul>
 <p>一些相似的SDO可以被归为一个大类，如：</p>
 <ul>
-<li><strong>Attack Pattern, Malware, and
-Tool可以被归为TTP，因为它们描述了攻击行为和资源</strong></li>
-<li>Campaign, Intrusion Set, and Threat Actor
-可以被描述为“攻击者发动攻击的原因，以及如何组织（why and how）”</li>
+<li><strong>Attack Pattern, Malware, and Tool可以被归为TTP，因为它们描述了攻击行为和资源</strong></li>
+<li>Campaign, Intrusion Set, and Threat Actor 可以被描述为“攻击者发动攻击的原因，以及如何组织（why and how）”</li>
 </ul>
 <h4><span id="41-attack-pattern">4.1 <strong>Attack Pattern</strong></span></h4>
-<p>TTP类型之一，它描述了攻击者试图破坏目标的<strong>方式，</strong>对应于TTP中的<strong>战术</strong>。可用于帮助对<strong>攻击进行分类</strong>，将特定的<strong>攻击概括为其遵循的模式</strong>，并提供有关<strong>如何进行攻击的详细信息</strong>。</p>
+<p>TTP类型之一，它描述了攻击者试图破坏目标的<strong>方式，<strong>对应于TTP中的</strong>战术</strong>。可用于帮助对<strong>攻击进行分类</strong>，将特定的<strong>攻击概括为其遵循的模式</strong>，并提供有关<strong>如何进行攻击的详细信息</strong>。</p>
 <blockquote>
-<p>如spear
-fishing就是一种攻击模式，而更具体的描述，如被特定攻击者实施的spear
-fishing也是一种攻击模式。</p>
+<p>如spear fishing就是一种攻击模式，而更具体的描述，如被特定攻击者实施的spear fishing也是一种攻击模式。</p>
 </blockquote>
 <h4><span id="42-campaign"><strong>4.2 Campaign</strong></span></h4>
-<p>表示某次具体的攻击活动。A Campaign is a grouping of adversarial
-behaviors that describes a set of malicious activities or attacks
-(sometimes called waves) that occur over a period of time against a
-specific set of targets. Campaigns usually have well defined objectives
-and may be part of an Intrusion Set.</p>
+<p>表示某次具体的攻击活动。A Campaign is a grouping of adversarial behaviors that describes a set of malicious activities or attacks (sometimes called waves) that occur over a period of time against a specific set of targets. Campaigns usually have well defined objectives and may be part of an Intrusion Set.</p>
 <blockquote>
 <p>战役是一组敌对行为，描述了针对特定目标集在一段时间内发生的一组恶意活动或攻击（有时称为WAVE）。活动通常有明确的目标，可能是入侵集的一部分。</p>
 </blockquote>
-<h4><span id="43-course-of-action响应的行为">4.3 <strong>Course of Action
-(响应的行为)</strong></span></h4>
+<h4><span id="43-course-of-action-响应的行为">4.3 <strong>Course of Action (响应的行为)</strong></span></h4>
 <p>用于预防攻击或对攻击做出响应的行为，它回包含技术，自动化响应（补丁、重新配置防火墙），或高级别的动作（如员工培训或者策略制定）。</p>
 <h4><span id="44-grouping"><strong>4.4 Grouping</strong></span></h4>
 <p>Grouping表示分析和调查<strong>过程中</strong>产生的数据（待确认的线索数据）；还可以用来声明<strong>其引用的STIX对象与正在进行的分析过程有关</strong>，如当一个安全分析人员正在跟其它人合作，分析一系列Campaigns和Indicators的时，<strong>Gouping会引用一系列其它SDO、SCO和SRO（Grouping就表示协作分析吧）。</strong></p>
-<p>除了embedded relationship和common
-relationship之外，没有明确定义Grouping对象和其它STIX对象之间的关系。</p>
+<p>除了embedded relationship和common relationship之外，没有明确定义Grouping对象和其它STIX对象之间的关系。</p>
 <h4><span id="45-identity"><strong>4.5 Identity</strong></span></h4>
-<p><strong>Identity可以代表特定的个人、组织或团伙</strong>；也可以代表一类个人、组织、系统或团伙。Identity
-SDO可以捕获基本标识信息，联系信息以及Identity所属的部门。
-Identity在STIX中用于表示攻击目标，信息源，对象创建者和威胁参与者身份。</p>
+<p><strong>Identity可以代表特定的个人、组织或团伙</strong>；也可以代表一类个人、组织、系统或团伙。Identity SDO可以捕获基本标识信息，联系信息以及Identity所属的部门。 Identity在STIX中用于表示攻击目标，信息源，对象创建者和威胁参与者身份。</p>
 <h4><span id="46-incident"><strong>4.6 Incident</strong></span></h4>
 <p>stub对象，待完善，没有专门定义的property和relationship。</p>
 <h4><span id="47-indicator"><strong>4.7 Indicator</strong></span></h4>
-<p>Indicator表示可用于检测可疑行为的模式。如用STIX Patterning
-Language来描述恶意域名集合（第九章）。</p>
+<p>Indicator表示可用于检测可疑行为的模式。如用STIX Patterning Language来描述恶意域名集合（第九章）。</p>
 <h4><span id="48-infrastructure"><strong>4.8 Infrastructure</strong></span></h4>
 <p><strong>TTP的类型之一，用于描述系统、软件服务等其它的物理或虚拟资源</strong>；如攻击者使用的C2服务器，防御者使用的设备和服务器，以及作为被攻击目标的数据库服务器等；</p>
 <p>基于此我们可以将受保护网络中的设备纳入知识图谱，采用类似于这样的关系：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-1d2970679ce3243e8ccefe0eda890351_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<img src="https://pic2.zhimg.com/80/v2-1d2970679ce3243e8ccefe0eda890351_1440w.jpg" alt="img" style="zoom:50%;">
 <h4><span id="49-intrusion-set"><strong>4.9 Intrusion Set</strong></span></h4>
-<p>Intrusion
-set是由<strong>某个组织</strong>所使用的恶意行为和资源的集合。一个Intrusion
-Set可能会捕获多个Campaigns，他们共同指向一个Threat
-Actor。新捕获的活动可以被归因于某个Intrusion
-Set，而Actors可以在Intrusion之间跳转，甚至从属于多个Intrusion Set。</p>
-<p>如在 apt1.json 中，整个报告被打包在bundle中，而Intrusion
-Set用来指示APT组织：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-e40a11cbdf0b033063367a3d045d77ba_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<p>Intrusion set是由<strong>某个组织</strong>所使用的恶意行为和资源的集合。一个Intrusion Set可能会捕获多个Campaigns，他们共同指向一个Threat Actor。新捕获的活动可以被归因于某个Intrusion Set，而Actors可以在Intrusion之间跳转，甚至从属于多个Intrusion Set。</p>
+<p>如在 apt1.json 中，整个报告被打包在bundle中，而Intrusion Set用来指示APT组织：</p>
+<img src="https://pic3.zhimg.com/80/v2-e40a11cbdf0b033063367a3d045d77ba_1440w.jpg" alt="img" style="zoom:67%;">
 <p><strong>Intrusion Set和Campaigns对比：</strong></p>
-<p><strong><font color="red"> 如果 Campaigns
-是在一段时间内针对一组特定目标进行的一组攻击，以实现某些目标，那么入侵集就是整个攻击包，可以在多个活动中长期使用，以实现潜在的多个目的.</font></strong>由Intrusion
-Set找出Threat Actors，nation state或者nation
-state中的某个APT组织，是一个<strong>溯源</strong>的过程。</p>
+<p><strong><font color="red"> 如果 Campaigns 是在一段时间内针对一组特定目标进行的一组攻击，以实现某些目标，那么入侵集就是整个攻击包，可以在多个活动中长期使用，以实现潜在的多个目的.</font><strong>由Intrusion Set找出Threat Actors，nation state或者nation state中的某个APT组织，是一个</strong>溯源</strong>的过程。</p>
 <h4><span id="410-location"><strong>4.10 Location</strong></span></h4>
-<p>表示具体地点，可以与Identity或Intrusion
-Set相关联，表示其位置；与Malware或Attack Pattern相关联，表示其目标。</p>
+<p>表示具体地点，可以与Identity或Intrusion Set相关联，表示其位置；与Malware或Attack Pattern相关联，表示其目标。</p>
 <h4><span id="411-malware"><strong>4.11 Malware</strong></span></h4>
 <p>TTP类型之一，表示<strong>恶意软件或代码。</strong></p>
 <h4><span id="412-malware-analysis"><strong>4.12 Malware Analysis</strong></span></h4>
 <p>捕获了在恶意软件实例或恶意软件家族分析过程中，动态分析或静态分析的结果。</p>
 <h4><span id="413-note"><strong>4.13 Note</strong></span></h4>
-<p>其他对象中不存在的额外信息；例如，分析人员可以在一个Campaign对象中添加注释，以表明他在黑客论坛上看到了与该Campaign相关的帖子。同样，Note对象也没有定义与其他STIX
-Object之间的关系。</p>
+<p>其他对象中不存在的额外信息；例如，分析人员可以在一个Campaign对象中添加注释，以表明他在黑客论坛上看到了与该Campaign相关的帖子。同样，Note对象也没有定义与其他STIX Object之间的关系。</p>
 <h4><span id="414-observed-data"><strong>4.14 Observed Data</strong></span></h4>
-<p><strong>网络安全相关的可观察对象（raw
-information）集合，其引用对象为SCO，包含从analyst reports, sandboxes,
-and network and host-based detection tools等收集的信息。</strong></p>
+<p><strong>网络安全相关的可观察对象（raw information）集合，其引用对象为SCO，包含从analyst reports, sandboxes, and network and host-based detection tools等收集的信息。</strong></p>
 <p><strong>必须包含objects或者object_refs属性，表示对SCO的引用</strong>：</p>
-<p>Observed Data只有反向关系。此外，还会被Sighting SRO所指向：Sightings
-represent a relationship between some intelligence entity** that was
-seen** (e.g., an Indicator or Malware instance), <strong>where it was
-seen</strong>, and <strong>what evidence was actually seen.</strong> The
-<strong>evidence (or raw data) in that relationship is captured as
-Observed Data（Sighting中的证据就是Observed Data）。</strong></p>
+<p>Observed Data只有反向关系。此外，还会被Sighting SRO所指向：Sightings represent a relationship between some intelligence entity** that was seen** (e.g., an Indicator or Malware instance), <strong>where it was seen</strong>, and <strong>what evidence was actually seen.</strong> The <strong>evidence (or raw data) in that relationship is captured as Observed Data（Sighting中的证据就是Observed Data）。</strong></p>
 <h4><span id="415-opinion"><strong>4.15 Opinion</strong></span></h4>
 <p>Opinion是对STIX对象中信息正确性的评估。</p>
 <h4><span id="416-report"><strong>4.16 Report</strong></span></h4>
 <p>威胁情报报告。</p>
 <h4><span id="417-threat-actor"><strong>4.17 Threat Actor</strong></span></h4>
-<p>攻击的个人、团体或组织；其与Intrusion Set不同，Threat
-Actor会同时支持或附属于不同的Intrusion Set、团体或组织。</p>
+<p>攻击的个人、团体或组织；其与Intrusion Set不同，Threat Actor会同时支持或附属于不同的Intrusion Set、团体或组织。</p>
 <h4><span id="418-tool"><strong>4.18 Tool</strong></span></h4>
 <p><strong>Tool是威胁参与者可以用来执行攻击的合法软件。与Malware不同，Tool一般是合法软件，如Namp、VNC。</strong></p>
 <h4><span id="419-vulnerability"><strong>4.19 Vulnerability</strong></span></h4>
 <p>漏洞。用于连接相关漏洞的外部描述（external_references），或还没有相关描述的0-day漏洞。</p>
 <p><strong>Q&amp;A：</strong></p>
 <ul>
-<li><strong>Q1：embedded
-relationship和节点property有啥区别？</strong>property是节点属性，embedded
-relationship是带有二元关系的节点属性</li>
-<li><strong>Q2：Observed Data和SCO有啥区别？</strong>Observed
-Data观察行为与观察对象的信息，而<strong>SCO是具体可观察实体的信息，二者是引用与被引用的关系</strong></li>
-<li><strong>Q3：Intrusion Set、Identity和Threat
-Actor的区别？</strong>Intrusion
-Set是最高层的实体，其包括Identity和Threat
-Actor，如APT1（高层APT组织）为Intrusion Set，其包含一些个人（Ugly
-Gorilla）或团体（SuperHard）的Threat
-Actor，而Identity是用真实名称描述的个人或组织（如Ugly Gorilla指向Wang
-Dong）。由此看来，Threat Actor也可以用真是名称描述（Communist Party of
-China），但是明显指示了其表示威胁主体，而Identity本身不显示其角色信息。</li>
+<li>**Q1：embedded relationship和节点property有啥区别？**property是节点属性，embedded relationship是带有二元关系的节点属性</li>
+<li><strong>Q2：Observed Data和SCO有啥区别？<strong>Observed Data观察行为与观察对象的信息，而</strong>SCO是具体可观察实体的信息，二者是引用与被引用的关系</strong></li>
+<li>**Q3：Intrusion Set、Identity和Threat Actor的区别？**Intrusion Set是最高层的实体，其包括Identity和Threat Actor，如APT1（高层APT组织）为Intrusion Set，其包含一些个人（Ugly Gorilla）或团体（SuperHard）的Threat Actor，而Identity是用真实名称描述的个人或组织（如Ugly Gorilla指向Wang Dong）。由此看来，Threat Actor也可以用真是名称描述（Communist Party of China），但是明显指示了其表示威胁主体，而Identity本身不显示其角色信息。</li>
 </ul>
-<h3><span id="五-stix-relationshipobjects"><strong>五、 STIX Relationship
-Objects</strong></span></h3>
+<h3><span id="五-stix-relationship-objects"><strong>五、 STIX Relationship Objects</strong></span></h3>
 <h4><span id="51-relationship"><strong>5.1 Relationship</strong></span></h4>
 <p><strong>Type Name: relationship</strong></p>
-<p>用于连接STIX中的SDO或SCO;
-STIX中的Relationship在每个SDO或SCO的定义中进行了描述,
-用户还可以自定义关系。STIX中所有内置的Relationship详见文档Appendix
-B。注意, Relationship本身也是一个对象, 因此其也有自身的 Property 和
-Relationships。</p>
+<p>用于连接STIX中的SDO或SCO; STIX中的Relationship在每个SDO或SCO的定义中进行了描述, 用户还可以自定义关系。STIX中所有内置的Relationship详见文档Appendix B。注意, Relationship本身也是一个对象, 因此其也有自身的 Property 和 Relationships。</p>
 <h4><span id="52-sighting"><strong>5.2 Sighting</strong></span></h4>
 <p><strong>Type Name: sighting</strong></p>
 <p><strong>原文定义</strong>:目击(sighting)表示认为在CTI中看到了某些东西（例如指示器、恶意软件、工具、威胁因素等）。目击用于跟踪目标是谁和什么，如何实施攻击，以及跟踪攻击行为的趋势。</p>
 <blockquote>
-<p>A Sighting denotes the belief that something in CTI (e.g., an
-indicator, malware, tool, threat actor, etc.) was seen. Sightings are
-used to track who and what are being targeted, how attacks are carried
-out, and to track trends in attack behavior.</p>
+<p>A Sighting denotes the belief that something in CTI (e.g., an indicator, malware, tool, threat actor, etc.) was seen. Sightings are used to track who and what are being targeted, how attacks are carried out, and to track trends in attack behavior.</p>
 </blockquote>
-<p>Sighting 没有连接两个对象, 但却被定义为关系,
-原因是:目击包括三部分的内容:•
-发现的内容，如指示器、恶意软件、活动或其他SDO（sightingfef）•发现者和/或发现地点，表示为身份（whereightedefs）•系统和网络上实际看到的内容，表示为观察数据（SECUREDataefs）</p>
+<p>Sighting 没有连接两个对象, 但却被定义为关系, 原因是:目击包括三部分的内容:• 发现的内容，如指示器、恶意软件、活动或其他SDO（sighting\u of\u ref）•发现者和/或发现地点，表示为身份（where\u sighted\u refs）•系统和网络上实际看到的内容，表示为观察数据（SECURED\u Data\u refs）</p>
 <blockquote>
-<p>Sighting is captured as a relationship because you cannot have a
-sighting unless you have something that has been sighted. Sighting does
-not make sense without the relationship to what was sighted</p>
+<p>Sighting is captured as a relationship because you cannot have a sighting unless you have something that has been sighted. Sighting does not make sense without the relationship to what was sighted</p>
 </blockquote>
 <p>Sighting包括三部分的内容:</p>
 <ul>
-<li><strong>What</strong> was sighted, such as the <strong>Indicator,
-Malware, Campaign, or other SDO</strong> (<em>sighting_of_ref</em>)</li>
-<li><strong>Who</strong> sighted it and/or where it was sighted,
-represented as an <strong>Identity</strong>
-(<em>where_sighted_refs</em>)</li>
-<li><strong>What</strong> was actually seen on systems and networks,
-represented as <strong>Observed Data</strong>
-(<em>observed_data_refs</em>)</li>
+<li><strong>What</strong> was sighted, such as the <strong>Indicator, Malware, Campaign, or other SDO</strong> (<em>sighting_of_ref</em>)</li>
+<li><strong>Who</strong> sighted it and/or where it was sighted, represented as an <strong>Identity</strong> (<em>where_sighted_refs</em>)</li>
+<li><strong>What</strong> was actually seen on systems and networks, represented as <strong>Observed Data</strong> (<em>observed_data_refs</em>)</li>
 </ul>
 <p>Sighting和Observed Data的区别:</p>
-<p><strong>目击与观察到的数据不同，因为目击是一种情报断言（“我看到了这个威胁参与者”）</strong>，而观察到的数据只是信息（“我看到了这个文件”）。当您通过包含来自目击的链接观测数据（Observedataefs）来组合它们时，您可以说“我看到了这个文件，这让我觉得我看到了这个威胁参与者”。</p>
+<p><strong>目击与观察到的数据不同，因为目击是一种情报断言（“我看到了这个威胁参与者”）</strong>，而观察到的数据只是信息（“我看到了这个文件”）。当您通过包含来自目击的链接观测数据（Observed\u Data\u refs）来组合它们时，您可以说“我看到了这个文件，这让我觉得我看到了这个威胁参与者”。</p>
 <blockquote>
-<p>Sighting is distinct from Observed Data in that Sighting is an
-<strong>intelligence assertion</strong> ("I saw this threat actor")
-while Observed Data is simply information ("I saw this file"). When you
-combine them by including the linked Observed Data (observed_data_refs)
-from a Sighting, you can say "I saw this file, and that makes me think I
-saw this threat actor".</p>
+<p>Sighting is distinct from Observed Data in that Sighting is an <strong>intelligence assertion</strong> (“I saw this threat actor”) while Observed Data is simply information (“I saw this file”). When you combine them by including the linked Observed Data (observed_data_refs) from a Sighting, you can say “I saw this file, and that makes me think I saw this threat actor”.</p>
 </blockquote>
 
       
@@ -631,41 +532,32 @@ saw this threat actor".</p>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="raid-cyberthreat-intelligence-modeling-based-on-gcn">RAID-Cyber
-Threat Intelligence Modeling Based on GCN</span></h2>
+          <h2><span id="raid-cyber-threat-intelligence-modeling-based-on-gcn">RAID-Cyber Threat Intelligence Modeling Based on GCN</span></h2>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5MTM5ODU2Mg==&amp;mid=2247490941&amp;idx=1&amp;sn=30cf491cf7455bbd075f8285d292a9d8&amp;chksm=cfccadb0f8bb24a6c4e87c5c95aecda92578ee634f2b8642bece665efde54417655ed79936c7&amp;scene=178&amp;cur_album_id=1776483007625822210#rd">[AI安全论文]
-05.RAID-Cyber Threat Intelligence Modeling Based on GCN</a></p>
-<p>这篇文章将详细介绍北航老师发表在RAID 2020上的论文《Cyber Threat
-Intelligence Modeling Based on Heterogeneous Graph Convolutional
-Network》</p>
-<p>原文作者：Jun Zhao, Qiben Yan, Xudong Liu, Bo Li, Guangsheng Zuo
-原文链接：https://www.usenix.org/system/files/raid20-zhao.pdf
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5MTM5ODU2Mg==&amp;mid=2247490941&amp;idx=1&amp;sn=30cf491cf7455bbd075f8285d292a9d8&amp;chksm=cfccadb0f8bb24a6c4e87c5c95aecda92578ee634f2b8642bece665efde54417655ed79936c7&amp;scene=178&amp;cur_album_id=1776483007625822210#rd">[AI安全论文] 05.RAID-Cyber Threat Intelligence Modeling Based on GCN</a></p>
+<p>这篇文章将详细介绍北航老师发表在RAID 2020上的论文《Cyber Threat Intelligence Modeling Based on Heterogeneous Graph Convolutional Network》</p>
+<p>原文作者：Jun Zhao, Qiben Yan, Xudong Liu, Bo Li, Guangsheng Zuo<br>
+原文链接：<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/raid20-zhao.pdf">https://www.usenix.org/system/files/raid20-zhao.pdf</a><br>
 论文来源：RAID 2020/CCF B</p>
 </blockquote>
 <h3><span id="摘要">摘要</span></h3>
-<p>网络威胁情报（CTI，Cyber Threat
-Intelligence）已在业界被广泛用于抵御流行的网络攻击，CTI通常被看作将威胁参与者形式化的妥协指标（IOC）。然而当前的网络威胁情报（CTI）存在三个主要局限性：</p>
+<p>网络威胁情报（CTI，Cyber Threat Intelligence）已在业界被广泛用于抵御流行的网络攻击，CTI通常被看作将威胁参与者形式化的妥协指标（IOC）。然而当前的网络威胁情报（CTI）存在三个主要局限性：</p>
 <ul>
 <li>IOC提取的准确性低</li>
 <li><strong>孤立的IOC几乎无法描述威胁事件的全面情况</strong></li>
 <li><strong>异构IOC之间的相互依存关系尚未得到开发，无法利用它们来挖掘深层次安全知识</strong></li>
 </ul>
-<p>本文提出了基于异构信息网络（HIN， Heterogeneous Information
-Network）的网络威胁情报框架——HINTI，旨在建模异构IOCs之间的相互依赖关系，以量化其相关性，对CTI进行建模和分析。</p>
+<p>本文提出了基于异构信息网络（HIN， Heterogeneous Information Network）的网络威胁情报框架——HINTI，旨在建模异构IOCs之间的相互依赖关系，以量化其相关性，对CTI进行建模和分析。</p>
 <p>本文的主要贡献如下：</p>
 <ul>
-<li><strong>提出了基于多粒度注意力机制（ multi-granular
-attention）的IOC识别方法，可以从非结构化威胁描述中自动提取网络威胁对象，并提高准确性。</strong></li>
+<li><strong>提出了基于多粒度注意力机制（ multi-granular attention）的IOC识别方法，可以从非结构化威胁描述中自动提取网络威胁对象，并提高准确性。</strong></li>
 <li>构建一个异构信息网络（HIN）来建模IOCs之间的依赖关系</li>
-<li>提出一个基于图卷积网络（Graph Convolutional
-Networks）的威胁情报计算框架来发现知识</li>
+<li>提出一个基于图卷积网络（Graph Convolutional Networks）的威胁情报计算框架来发现知识</li>
 <li>实现了网络威胁情报（CTI）原型系统</li>
 </ul>
 <p>实验结果表明，本文提出的IOC提取方法优于现有方法，HINTI可以建模和量化异构IOCs之间的潜在关系，为不断变化的威胁环境提供了新的线索。</p>
 <blockquote>
-<p>IOC（Indicator of
-Compromise）是MANDIANT在长期的数字取证实践中定义的可以反映主机或网络行为的技术指示器。</p>
+<p>IOC（Indicator of Compromise）是MANDIANT在长期的数字取证实践中定义的可以反映主机或网络行为的技术指示器。</p>
 </blockquote>
 <h3><span id="一-hinti工作步骤">一、HINTI工作步骤</span></h3>
 <ul>
@@ -676,10 +568,7 @@ Compromise）是MANDIANT在长期的数字取证实践中定义的可以反映�
 </ul>
 <h4><span id="11-hinti总体架构">1.1 HINTI总体架构</span></h4>
 <p>HINTI由四个主要部分组成：（a）收集与安全相关的数据并提取即IOC；（b）将IOC之间的相互依存关系建模为异构信息网络；（c）使用基于权重学习的相似性度量将节点嵌入到低维向量空间中；（d）基于图卷积网络和知识挖掘来计算威胁情报。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191555337.jpeg" alt="图片">
-<figcaption aria-hidden="true">图片</figcaption>
-</figure>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191555337.jpeg" alt="图片"></p>
 
       
     </div>
@@ -782,7 +671,6 @@ Compromise）是MANDIANT在长期的数字取证实践中定义的可以反映�
     
     <div class="post-body" itemprop="articleBody">
           
-
       
     </div>
 
@@ -871,7 +759,7 @@ Compromise）是MANDIANT在长期的数字取证实践中定义的可以反映�
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.6k</span>
+      <span>5.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -891,135 +779,91 @@ Compromise）是MANDIANT在长期的数字取证实践中定义的可以反映�
     <div class="post-body" itemprop="articleBody">
           <h1><span id="gpt3">GPT3</span></h1>
 <p>除了BERT以外,还有下一个,也是鼎鼎有名的模型,就是==GPT==系列的模型</p>
-<p><img src="image-20220613185324111.png" alt="image-20220613185324111" style="zoom: 33%;"></p>
-<p><font color="red">
-<strong>BERT做的是填空题,GPT就是改一下我们现在在,self-supervised
-learning的时候,要模型做的任务</strong>。</font></p>
+<img src="image-20220613185324111.png" alt="image-20220613185324111" style="zoom: 33%;">
+<p><font color="red"> <strong>BERT做的是填空题,GPT就是改一下我们现在在,self-supervised learning的时候,要模型做的任务</strong>。</font></p>
 <h3><span id="predict-next-token">Predict Next Token</span></h3>
 <p>GPT要做的任务是：<strong>预测接下来,会出现的token是什麼</strong>？</p>
 <p>举例来说,假设你的训练资料裡面,有一个句子是台湾大学,那GPT拿到这一笔训练资料的时候,它做的事情是这样。</p>
-<p><strong>你给它BOS这个token</strong>,然后GPT
-output一个embedding,然后接下来,你用这个embedding去预测下一个,应该出现的token是什麼？</p>
-<p><img src="image-20220613185452298.png" alt="image-20220613185452298" style="zoom: 33%;"></p>
-<p>那在这个句子裡面,根据这笔训练资料,下一个应该出现的token是"台",所以你要训练你的模型,根据第一个token,根据BOS给你的embedding,那它要输出"台"这个token。</p>
-<p>这个部分,详细来看就是这样,你有一个embedding,这边用h来表示,然后通过一个Linear
-Transform,再通过一个softmax,得到一个distribution,跟一般你做分类的问题是一样的,接下来,你希望你output的distribution,跟正确答案的Cross
-entropy,越小越好,也就是你要去预测,下一个出现的token是什麼。</p>
-<p>好那接下来要做的事情,就是<strong>以此类推</strong>了,你给你的GPT,BOS跟"台",它產生embedding,接下来它会预测,下一个出现的token是什麼,那你告诉它说,下一个应该出现的token,是"湾"。</p>
-<p><img src="image-20220613185654700.png" alt="image-20220613185654700" style="zoom: 33%;"></p>
-<p>好再反覆继续下去,你给它BOS
-"台"跟"湾",然后预测下一个应该出现的token,它应该要预测"大"。你给它"台"跟"湾"跟"大",接下来,下一个应该出现的token是"学"。</p>
-<p><img src="image-20220613185722536.png" alt="image-20220613185722536" style="zoom: 33%;"></p>
-<p>那这边呢,是指拿一笔资料
-一个句子,来给GPT训练,当然实际上你不会只用一笔句子,你会用成千上万个句子,来训练这个模型,然后就这样子说完了。<strong>它厉害的地方就是,用了很多资料,训了一个异常巨大的模型</strong>。</p>
-<p><strong><font color="red">
-GPT的模型像是一个transformer的decoder,不过拿掉BOS的attention这个部分,也就是说,你会做那个mask的attention。
-</font></strong></p>
-<p><img src="image-20220613185925358.png" alt="image-20220613185925358" style="zoom: 50%;"></p>
+<p><strong>你给它BOS这个token</strong>,然后GPT output一个embedding,然后接下来,你用这个embedding去预测下一个,应该出现的token是什麼？</p>
+<img src="image-20220613185452298.png" alt="image-20220613185452298" style="zoom: 33%;">
+<p>那在这个句子裡面,根据这笔训练资料,下一个应该出现的token是&quot;台&quot;,所以你要训练你的模型,根据第一个token,根据BOS给你的embedding,那它要输出&quot;台&quot;这个token。</p>
+<p>这个部分,详细来看就是这样,你有一个embedding,这边用h来表示,然后通过一个Linear Transform,再通过一个softmax,得到一个distribution,跟一般你做分类的问题是一样的,接下来,你希望你output的distribution,跟正确答案的Cross entropy,越小越好,也就是你要去预测,下一个出现的token是什麼。</p>
+<p>好那接下来要做的事情,就是<strong>以此类推</strong>了,你给你的GPT,BOS跟&quot;台&quot;,它產生embedding,接下来它会预测,下一个出现的token是什麼,那你告诉它说,下一个应该出现的token,是&quot;湾&quot;。</p>
+<img src="image-20220613185654700.png" alt="image-20220613185654700" style="zoom: 33%;">
+<p>好再反覆继续下去,你给它BOS “台&quot;跟&quot;湾”,然后预测下一个应该出现的token,它应该要预测&quot;大&quot;。你给它&quot;台&quot;跟&quot;湾&quot;跟&quot;大&quot;,接下来,下一个应该出现的token是&quot;学&quot;。</p>
+<img src="image-20220613185722536.png" alt="image-20220613185722536" style="zoom: 33%;">
+<p>那这边呢,是指拿一笔资料 一个句子,来给GPT训练,当然实际上你不会只用一笔句子,你会用成千上万个句子,来训练这个模型,然后就这样子说完了。<strong>它厉害的地方就是,用了很多资料,训了一个异常巨大的模型</strong>。</p>
+<p><strong><font color="red"> GPT的模型像是一个transformer的decoder,不过拿掉BOS的attention这个部分,也就是说,你会做那个mask的attention。 </font></strong></p>
+<img src="image-20220613185925358.png" alt="image-20220613185925358" style="zoom: 50%;">
 <p><strong>就是你现在在预测给BOS,预测台的时候,你不会看到接下来出现的词汇,给它台要预测湾的时候,你不会看到接下来要输入的词汇,以此类推这个就是GPT</strong>。</p>
 <p>那这个GPT最知名的就是,因為GPT可以预测下一个token,那所以它有<strong>生成的能力</strong>,你可以让它不断地预测下一个token,產生完整的文章,所以我每次提到GPT的时候,它的形象都是一隻独角兽。</p>
-<p><img src="image-20220613190018230.png" alt="image-20220613190018230" style="zoom:50%;"></p>
+<img src="image-20220613190018230.png" alt="image-20220613190018230" style="zoom:50%;">
 <p>GPT系列最知名的一个例子,就是用GPT写了一篇,跟独角兽有关的新闻,因為他放一个假新闻,然后那个假新闻裡面说,在安地斯山脉发现独角兽等等,一个活灵活现的假新闻。</p>
-<p>為了让你更清楚了解,GPT运作起来是什麼样子,那这个线上有一个demo的网页,叫做talk
-to transformer,就是有人把一个比较小的,不是那个最大的GPT的模型,不是public
-available的,有人把比较小的GPT模型放在线上,让你可以输入一个句子,让它会把接下来的其餘的内容,把它补完</p>
+<p>為了让你更清楚了解,GPT运作起来是什麼样子,那这个线上有一个demo的网页,叫做talk to transformer,就是有人把一个比较小的,不是那个最大的GPT的模型,不是public available的,有人把比较小的GPT模型放在线上,让你可以输入一个句子,让它会把接下来的其餘的内容,把它补完</p>
 <h3><span id="how-to-use-gpt">How to use GPT?</span></h3>
-<p>怎麼把它用在downstream 的任务上呢,举例来说,怎麼把它用在question
-answering,或者是其他的,跟人类语言处理有关的任务上呢？</p>
-<p><strong>GPT用的想法跟BERT不一样</strong>,其实我要强调一下,GPT也可以跟BERT用一样的做法。在使用BERT时，把BERT
-model
-拿出来,后面接一个简单的linear的classifier,那你就可以做很多事情,你也可以把GPT拿出来,接一个简单的classifier,我相信也是会有效。</p>
-<p>但是在GPT的论文中,它没有这样做,它有一个更狂的想法,為什麼会有更狂的想法呢,因為首先就是,BERT那一招BERT用过了嘛,所以总不能再用一样的东西,这样写paper就没有人觉得厉害了,然后再来就是,<strong>GPT这个模型,也许真的太大了,大到连fine
-tune可能都有困难</strong>。</p>
-<p>我们在用BERT的时候,你要把BERT模型,后面接一个linear
-classifier,然后BERT也是你的,要train的model的一部分,所以它的参数也是要调的,所以在刚才助教公告的,BERT相关的作业裡面,你还是需要花一点时间来training,虽然助教说你大概20分鐘,就可以train完了,因為你并不是要train一个,完整的BERT的模型,BERT的模型在之前,在做这个填空题的时候,已经训练得差不多了,你只需要微调它就好了,但是微调还是要花时间的,也许GPT实在是太过巨大,巨大到要微调它,要train一个epoch,可能都有困难,所以GPT系列,有一个更狂的使用方式。</p>
+<p>怎麼把它用在downstream 的任务上呢,举例来说,怎麼把它用在question answering,或者是其他的,跟人类语言处理有关的任务上呢？</p>
+<p><strong>GPT用的想法跟BERT不一样</strong>,其实我要强调一下,GPT也可以跟BERT用一样的做法。在使用BERT时，把BERT model 拿出来,后面接一个简单的linear的classifier,那你就可以做很多事情,你也可以把GPT拿出来,接一个简单的classifier,我相信也是会有效。</p>
+<p>但是在GPT的论文中,它没有这样做,它有一个更狂的想法,為什麼会有更狂的想法呢,因為首先就是,BERT那一招BERT用过了嘛,所以总不能再用一样的东西,这样写paper就没有人觉得厉害了,然后再来就是,<strong>GPT这个模型,也许真的太大了,大到连fine tune可能都有困难</strong>。</p>
+<p>我们在用BERT的时候,你要把BERT模型,后面接一个linear classifier,然后BERT也是你的,要train的model的一部分,所以它的参数也是要调的,所以在刚才助教公告的,BERT相关的作业裡面,你还是需要花一点时间来training,虽然助教说你大概20分鐘,就可以train完了,因為你并不是要train一个,完整的BERT的模型,BERT的模型在之前,在做这个填空题的时候,已经训练得差不多了,你只需要微调它就好了,但是微调还是要花时间的,也许GPT实在是太过巨大,巨大到要微调它,要train一个epoch,可能都有困难,所以GPT系列,有一个更狂的使用方式。</p>
 <p>这个更狂的使用方式<strong>和人类更接近</strong>,你想想看假设你去考,譬如说托福的听力测验,你是怎麼去考。</p>
-<p><img src="image-20220613190341900.png" alt="image-20220613190341900" style="zoom: 33%;"></p>
+<img src="image-20220613190341900.png" alt="image-20220613190341900" style="zoom: 33%;">
 <h3><span id="in-context-learning">“In-context” Learning</span></h3>
 <h4><span id="few-shot-learning">“Few-shot” Learning</span></h4>
 <p>举例来说假设要GPT这个模型做翻译：</p>
-<p><img src="image-20220613190432234.png" alt="image-20220613190432234" style="zoom:50%;"></p>
+<img src="image-20220613190432234.png" alt="image-20220613190432234" style="zoom:50%;">
 <ul>
-<li><p>你就先打Translate English to French</p></li>
-<li><p>就先给它这个句子,这个句子代表问题的描述</p></li>
-<li><p>然后给它几个范例跟它说,sea
-otter然后=&gt;,后面就应该长这个样子</p></li>
-<li><p>或者是这个什麼plush girafe,plush
-girafe后面,就应该长这个样子等等</p></li>
-<li><p>然后接下来,你问它说cheese=&gt;,叫它把后面的补完,希望它就可以產生翻译的结果</p></li>
+<li>
+<p>你就先打Translate English to French</p>
+</li>
+<li>
+<p>就先给它这个句子,这个句子代表问题的描述</p>
+</li>
+<li>
+<p>然后给它几个范例跟它说,sea otter然后=&gt;,后面就应该长这个样子</p>
+</li>
+<li>
+<p>或者是这个什麼plush girafe,plush girafe后面,就应该长这个样子等等</p>
+</li>
+<li>
+<p>然后接下来,你问它说cheese=&gt;,叫它把后面的补完,希望它就可以產生翻译的结果</p>
+</li>
 </ul>
 <p>不知道大家能不能够了解,这一个想法是多麼地狂,在training的时候,GPT并没有教它做翻译这件事,它唯一学到的就是,给一段文字的前半段,把后半段补完,就像我们刚才给大家示范的例子一样,现在我们直接给它前半段的文字,就长这个样子,告诉它说你要做翻译了,给你几个例子,告诉你说翻译是怎麼回事,接下来给它cheese这个英文单字,后面能不能就直接接出,法文的翻译结果呢</p>
-<p>这个在GPT的文献裡面,叫做==Few-shot Learning==,但是它跟一般的Few-shot
-Learning,又不一样,所谓Few
-Shot的意思是说,确实只给了它一点例子,所以叫做Few
-Shot,但是它不是一般的learning,这裡面<strong>完全没有gradient
-descent</strong>,完全没有要去调,GPT那个模型参数的意思,所以在GPT的文献裡面,把这种训练给了一个特殊的名字,它们叫做==In-context
-Learning==,代表说它不是一种,一般的learning,它连gradient
-descent都没有做</p>
-<h4><span id="one-shot-learningzero-shot-learning">“One-shot” Learning
-“Zero-shot” Learning</span></h4>
-<p>当然你也可以给GPT更大的挑战,我们在考托福听力测验的时候,都只给一个例子而已,那GPT可不可以只看一个例子,就知道它要做翻译这件事,这个叫One-shot
-Learning。</p>
-<p><img src="image-20220613190603332.png" alt="image-20220613190603332" style="zoom: 33%;"></p>
-<p>还有更狂的,是Zero-shot
-Learning,直接给它一个叙述,说我们现在要做翻译了,GPT能不能够自己就看得懂,就自动知道说要来做翻译这件事情呢,那如果能够做到的话,那真的就非常地惊人了,那GPT系列,到底有没有达成这个目标呢,这个是一个见仁见智的问题啦。</p>
-<p><img src="image-20220613190625552.png" alt="image-20220613190625552" style="zoom: 33%;"></p>
+<p>这个在GPT的文献裡面,叫做==Few-shot Learning==,但是它跟一般的Few-shot Learning,又不一样,所谓Few Shot的意思是说,确实只给了它一点例子,所以叫做Few Shot,但是它不是一般的learning,这裡面<strong>完全没有gradient descent</strong>,完全没有要去调,GPT那个模型参数的意思,所以在GPT的文献裡面,把这种训练给了一个特殊的名字,它们叫做==In-context Learning==,代表说它不是一种,一般的learning,它连gradient descent都没有做</p>
+<h4><span id="one-shot-learning-zero-shot-learning">“One-shot” Learning  “Zero-shot” Learning</span></h4>
+<p>当然你也可以给GPT更大的挑战,我们在考托福听力测验的时候,都只给一个例子而已,那GPT可不可以只看一个例子,就知道它要做翻译这件事,这个叫One-shot Learning。</p>
+<img src="image-20220613190603332.png" alt="image-20220613190603332" style="zoom: 33%;">
+<p>还有更狂的,是Zero-shot Learning,直接给它一个叙述,说我们现在要做翻译了,GPT能不能够自己就看得懂,就自动知道说要来做翻译这件事情呢,那如果能够做到的话,那真的就非常地惊人了,那GPT系列,到底有没有达成这个目标呢,这个是一个见仁见智的问题啦。</p>
+<img src="image-20220613190625552.png" alt="image-20220613190625552" style="zoom: 33%;">
 <p>它不是完全不可能答对,但是<strong>正确率有点低</strong>,相较於你可以微调模型,正确率是有点低的,那细节你就再看看GPT那篇文章。</p>
-<p>第三代的GPT,它测试了42个任务,这个纵轴是正确率,这些实线
-这三条实线,是42个任务的平均正确率,那这边包括了Few Shot,One Shot跟Zero
-Shot,三条线分别代表Few Shot,One Shot跟Zero
-Shot,横轴代表模型的大小,它们测试了一系列不同大小的模型,从只有0.1个billion的参数,到175个billion的参数,那从只有0.1个billion的参数,到175个billion的参数,我们看Few
-Shot的部分,从20几%的正确率
-平均正确率,一直做到50几%的平均正确率,那至於50几％的平均正确率,算是有做起来
-还是没有做起来,那这个就是见仁见智的问题啦。</p>
-<p>目前看起来状况是,<strong>有些任务它还真的学会了</strong>,举例来说2这个加减法,你给它一个数字加另外一个数字,它真的可以得到,正确的两个数字加起来的结果,但是有些任务,它可能怎麼学都学不会,譬如说一些跟<strong>逻辑推理</strong>有关的任务,它的结果就非常<strong>非常地惨</strong>,好
-那有关GPT3的细节,这个就留给大家再自己研究,然后这边有一个过去上课的录影,我把连结放在这边给大家参考。</p>
+<p>第三代的GPT,它测试了42个任务,这个纵轴是正确率,这些实线 这三条实线,是42个任务的平均正确率,那这边包括了Few Shot,One Shot跟Zero Shot,三条线分别代表Few Shot,One Shot跟Zero Shot,横轴代表模型的大小,它们测试了一系列不同大小的模型,从只有0.1个billion的参数,到175个billion的参数,那从只有0.1个billion的参数,到175个billion的参数,我们看Few Shot的部分,从20几%的正确率 平均正确率,一直做到50几%的平均正确率,那至於50几％的平均正确率,算是有做起来 还是没有做起来,那这个就是见仁见智的问题啦。</p>
+<p>目前看起来状况是,<strong>有些任务它还真的学会了</strong>,举例来说2这个加减法,你给它一个数字加另外一个数字,它真的可以得到,正确的两个数字加起来的结果,但是有些任务,它可能怎麼学都学不会,譬如说一些跟<strong>逻辑推理</strong>有关的任务,它的结果就非常<strong>非常地惨</strong>,好 那有关GPT3的细节,这个就留给大家再自己研究,然后这边有一个过去上课的录影,我把连结放在这边给大家参考。</p>
 <h2><span id="beyond-text">Beyond Text</span></h2>
-<p>到目前為止我们举的例子,都是只有跟文字有关,但是你不要误会说,这种self-supervised
-learning的概念,只能用在文字上</p>
-<p>在CV, CV就是computer
-vision,也就是影像,<strong>在语音跟影像的应用上也都可以用,self-supervised
-learning的技术</strong>,那其实今天,self-supervised
-learning的技术,非常非常地多,我们讲的<strong>BERT跟GPT系列,它只是三个类型的,这个self-supervised
-learning的方法,的其中一种</strong>,它们是属於<strong>prediction</strong>那一类。</p>
-<p><img src="image-20220613190824763.png" alt="image-20220613190824763" style="zoom:50%;"></p>
-<p>那其实还有其他的类型,那就不是我们这一堂课要讲的,那接下来的课程,你可能会觉得有点流水帐,就是我们每一个主题呢,就是告诉你说这个主题裡面,有什麼
-但是细节这个更多的知识,就留给大家自己来做更进一步的研究,所以这些投影片,只是要告诉你说,在self-supervised
-learning这个部分,我们讲的只是整个领域的其中一小块,那还有更多的内容,是等待大家去探索的。</p>
+<p>到目前為止我们举的例子,都是只有跟文字有关,但是你不要误会说,这种self-supervised learning的概念,只能用在文字上</p>
+<p>在CV, CV就是computer vision,也就是影像,<strong>在语音跟影像的应用上也都可以用,self-supervised learning的技术</strong>,那其实今天,self-supervised learning的技术,非常非常地多,我们讲的<strong>BERT跟GPT系列,它只是三个类型的,这个self-supervised learning的方法,的其中一种</strong>,它们是属於<strong>prediction</strong>那一类。</p>
+<img src="image-20220613190824763.png" alt="image-20220613190824763" style="zoom:50%;">
+<p>那其实还有其他的类型,那就不是我们这一堂课要讲的,那接下来的课程,你可能会觉得有点流水帐,就是我们每一个主题呢,就是告诉你说这个主题裡面,有什麼 但是细节这个更多的知识,就留给大家自己来做更进一步的研究,所以这些投影片,只是要告诉你说,在self-supervised learning这个部分,我们讲的只是整个领域的其中一小块,那还有更多的内容,是等待大家去探索的。</p>
 <h3><span id="image-simclr">Image - SimCLR</span></h3>
 <p>好那有关影像的部分呢,我们就真的不会细讲,我这边就是放两页投影片带过去,告诉你说有一招非常有名的,叫做SimCLR,它的概念也不难,我相信你自己读论文,应该也有办法看懂它。</p>
-<p><img src="image-20220613190911297.png" alt="image-20220613190911297" style="zoom:33%;"></p>
+<img src="image-20220613190911297.png" alt="image-20220613190911297" style="zoom:33%;">
 <h3><span id="image-byol">Image - BYOL</span></h3>
-<p>那还有很奇怪的,叫做BYOL。BYOL这个东西呢,我们是不太可能在上课讲它,為什麼呢,因為根本不知道它為什麼会work,不是
-这个是很新的论文,这个是去年夏天的论文,那这个论文是,假设它不是已经发表的文章,然后学生来跟我提这个想法,我一定就是,我一定不会让他做,这不可能会work的,这是个不可能会实现的想法,不可能会成功的,这个想法感觉有一个巨大的瑕疵,但不知道為什麼它是work的,而且还曾经一度得到,state
-of the art的结果,deep learning就是这麼神奇。</p>
-<p><img src="image-20220613190925800.png" alt="image-20220613190925800" style="zoom:33%;"></p>
+<p>那还有很奇怪的,叫做BYOL。BYOL这个东西呢,我们是不太可能在上课讲它,為什麼呢,因為根本不知道它為什麼会work,不是 这个是很新的论文,这个是去年夏天的论文,那这个论文是,假设它不是已经发表的文章,然后学生来跟我提这个想法,我一定就是,我一定不会让他做,这不可能会work的,这是个不可能会实现的想法,不可能会成功的,这个想法感觉有一个巨大的瑕疵,但不知道為什麼它是work的,而且还曾经一度得到,state of the art的结果,deep learning就是这麼神奇。</p>
+<img src="image-20220613190925800.png" alt="image-20220613190925800" style="zoom:33%;">
 <h3><span id="speech">Speech</span></h3>
 <p>那在语音的部分,你也完全可以使用,self-supervised learning的概念。</p>
-<p><img src="image-20220613191009513.png" alt="image-20220613191009513" style="zoom:50%;"></p>
+<img src="image-20220613191009513.png" alt="image-20220613191009513" style="zoom:50%;">
 <p>你完全可以试著训练,语音版的BERT。那怎麼训练语音版的BERT呢,你就看看文字版的BERT,是怎麼训练的,譬如说做填空题,语音也可以做填空题,就把一段声音讯号盖起来,叫机器去猜盖起来的部分是什麼嘛,语音也可以预测接下来会出现的内容,讲GPT就是预测,接下来要出现的token嘛,那语音你也可以叫它预测,叫模型预测接下来会出现的声音去套,所以你也可以做语音版的GPT,不管是语音版的BERT,语音版的GPT,其实都已经有很多相关的研究成果了。</p>
 <h3><span id="speech-glue-superb">Speech GLUE - SUPERB</span></h3>
-<p>不过其实在语音上,相较於文字处理的领域,还是有一些比较缺乏的东西,那我认為现在很缺乏的一个东西,就是像GLUE这样子的benchmark
-corpus。</p>
-<p>在自然语言处理的领域,在文字上有GLUE这个corpus,我们在这门课的刚开头,这个投影片的刚开头,就告诉你说有一个,这个基準的资料库叫做GLUE,它裡面有九个NLP的任务,今天你要知道BERT做得好不好,就让它去跑那九个任务在去平均,那代表这个self-supervised
-learning,模型的好坏。</p>
-<p>但在语音上
-到目前為止,还没有类似的基準的资料库,所以我们实验室就跟其他的研究团队,共同开发了一个语音版的GLUE。</p>
-<p><img src="image-20220613191139242.png" alt="image-20220613191139242" style="zoom: 33%;"></p>
-<p>我们叫做SUPERB,它是Speech processing Universal,PERformance
-Benchmark的缩写,你知道今天你做什麼模型,都一定要硬凑梗才行啦,所以这边也是要硬凑一个梗,把它叫做SUPERB。</p>
+<p>不过其实在语音上,相较於文字处理的领域,还是有一些比较缺乏的东西,那我认為现在很缺乏的一个东西,就是像GLUE这样子的benchmark corpus。</p>
+<p>在自然语言处理的领域,在文字上有GLUE这个corpus,我们在这门课的刚开头,这个投影片的刚开头,就告诉你说有一个,这个基準的资料库叫做GLUE,它裡面有九个NLP的任务,今天你要知道BERT做得好不好,就让它去跑那九个任务在去平均,那代表这个self-supervised learning,模型的好坏。</p>
+<p>但在语音上 到目前為止,还没有类似的基準的资料库,所以我们实验室就跟其他的研究团队,共同开发了一个语音版的GLUE。</p>
+<img src="image-20220613191139242.png" alt="image-20220613191139242" style="zoom: 33%;">
+<p>我们叫做SUPERB,它是Speech processing Universal,PERformance Benchmark的缩写,你知道今天你做什麼模型,都一定要硬凑梗才行啦,所以这边也是要硬凑一个梗,把它叫做SUPERB。</p>
 <p>那其实我们已经準备了差不多了,其实网站都已经做好了,只等其他团队的人看过以后,就可以上线了,所以现在虽然还没有上线,但是再过一阵子,你应该就可以找得到相关的连结。</p>
-<p>在这个基準语料库裡面,包含了十个不同的任务,那语音其实有非常多不同的面向,很多人讲到语音相关的技术,都只知道语音辨识把声音转成文字,但这并不是语音技术的全貌,语音其实包含了非常丰富的资讯,它除了有内容的资讯,就是你说了什麼,还有其他的资讯,举例来说这句话是谁说的,举例这个人说这句话的时候,他的语气是什麼样,还有这句话背后,它到底有什麼样的语意,所以我们準备了十个不同的任务,这个任务包含了语音不同的面向,包括去检测一个模型,它能够识别内容的能力,识别谁在说话的能力,识别他是怎麼说的能力,甚至是识别这句话背后语意的能力,从全方位来检测一个,self-supervised
-learning的模型,它在理解人类语言上的能力。</p>
-<p>而且我们还有一个Toolkit,这个Toolkit裡面就包含了,各式各样的,self-supervised
-learning的模型：</p>
-<p><img src="image-20220613191333351.png" alt="image-20220613191333351" style="zoom:50%;"></p>
-<p>还有这些,self-supervised
-learning的模型,它可以做的,各式各样语音的下游的任务,然后把连结放在这边给大家参考。讲这些只是想告诉大家说,self-supervised
-learning的技术,不是只能被用在文字上,在这个影像上
-在语音上,都仍然有非常大的空间可以使用,self-supervised learning的技术,好
-那这个,self-supervised
-learning的部分呢,这个BERT跟GPT我们就讲到这边。</p>
+<p>在这个基準语料库裡面,包含了十个不同的任务,那语音其实有非常多不同的面向,很多人讲到语音相关的技术,都只知道语音辨识把声音转成文字,但这并不是语音技术的全貌,语音其实包含了非常丰富的资讯,它除了有内容的资讯,就是你说了什麼,还有其他的资讯,举例来说这句话是谁说的,举例这个人说这句话的时候,他的语气是什麼样,还有这句话背后,它到底有什麼样的语意,所以我们準备了十个不同的任务,这个任务包含了语音不同的面向,包括去检测一个模型,它能够识别内容的能力,识别谁在说话的能力,识别他是怎麼说的能力,甚至是识别这句话背后语意的能力,从全方位来检测一个,self-supervised learning的模型,它在理解人类语言上的能力。</p>
+<p>而且我们还有一个Toolkit,这个Toolkit裡面就包含了,各式各样的,self-supervised learning的模型：</p>
+<img src="image-20220613191333351.png" alt="image-20220613191333351" style="zoom:50%;">
+<p>还有这些,self-supervised learning的模型,它可以做的,各式各样语音的下游的任务,然后把连结放在这边给大家参考。讲这些只是想告诉大家说,self-supervised learning的技术,不是只能被用在文字上,在这个影像上 在语音上,都仍然有非常大的空间可以使用,self-supervised learning的技术,好 那这个,self-supervised learning的部分呢,这个BERT跟GPT我们就讲到这边。</p>
 
       
     </div>
@@ -1130,12 +974,9 @@ learning的部分呢,这个BERT跟GPT我们就讲到这边。</p>
           <h2><span id="fasttext">FastText</span></h2>
 <blockquote>
 <ul>
-<li>FastText代码详解(一) - BlockheadLS的文章 - 知乎
-https://zhuanlan.zhihu.com/p/52154254</li>
-<li>【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎
-https://zhuanlan.zhihu.com/p/442768234</li>
-<li><strong>fastText原理及实践 - 陈运文的文章</strong> - 知乎
-https://zhuanlan.zhihu.com/p/32965521</li>
+<li>FastText代码详解(一) - BlockheadLS的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/52154254">https://zhuanlan.zhihu.com/p/52154254</a></li>
+<li>【DL&amp;NLP】fasttext不仅仅只做文本分类 - 叮当猫的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/442768234">https://zhuanlan.zhihu.com/p/442768234</a></li>
+<li><strong>fastText原理及实践 - 陈运文的文章</strong> - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32965521">https://zhuanlan.zhihu.com/p/32965521</a></li>
 </ul>
 </blockquote>
 <h3><span id="abstract">Abstract</span></h3>
@@ -1143,31 +984,24 @@ https://zhuanlan.zhihu.com/p/32965521</li>
 <p>作者中又出现了托老师，不知道是不是受他影响，这篇文章在表述上也很有word2vec的味道，更不用说模型本身。fastText和word2vec的卖点都是简单高效（快）。</p>
 <h3><span id="一-什么是fasttext">一、什么是fastText？</span></h3>
 <p>先说结论，fastText在不同语境中至少有两个含义：</p>
-<ol type="1">
+<ol>
 <li>在文章Bag of Tricks for Efficient Text Classification[<a href="#ref_1">1]</a>中，fastText是作者提出的文本分类器的名字。<strong>与sub-word无关！也不是新的词嵌入训练模型！是<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=word2vec&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">word2vec</a>中CBOW模型的简单变种。</strong></li>
-<li>作为Facebook开源包，<a href="https://link.zhihu.com/?target=https%3A//fasttext.cc/">fastText</a>是用来训练词嵌入或句嵌入的，其不仅包括1中论文的代码实现，还包括Enriching
-Word Vectors with Subword Information[<a href="#ref_2">2]</a>及FastText.zip: Compressing text classification
-models[<a href="#ref_3">3]</a>两文的代码实现。</li>
+<li>作为Facebook开源包，<a href="https://link.zhihu.com/?target=https%3A//fasttext.cc/">fastText</a>是用来训练词嵌入或句嵌入的，其不仅包括1中论文的代码实现，还包括Enriching Word Vectors with Subword Information[<a href="#ref_2">2]</a>及FastText.zip: Compressing text classification models[<a href="#ref_3">3]</a>两文的代码实现。</li>
 </ol>
-<p>本来觉得这些含义区别不重要，直到连我自己都被弄迷糊了。在写这篇解读前，我心中的fastText一直是第三种含义：<strong>用sub-word信息加强词嵌入训练，解决OOV（Out-Of-Vocabulary）表征的方法</strong>。结果带着这个预先的理解读Bag
-of Tricks for Efficient Text Classification，越读越迷惑。</p>
-<p>为理清思路，fastText（一）中我们就先讲讲Bag of Tricks for Efficient
-Text Classification中的fastText，fastText（二）则围绕Enriching Word
-Vectors with Subword Information。</p>
+<p>本来觉得这些含义区别不重要，直到连我自己都被弄迷糊了。在写这篇解读前，我心中的fastText一直是第三种含义：<strong>用sub-word信息加强词嵌入训练，解决OOV（Out-Of-Vocabulary）表征的方法</strong>。结果带着这个预先的理解读Bag of Tricks for Efficient Text Classification，越读越迷惑。</p>
+<p>为理清思路，fastText（一）中我们就先讲讲Bag of Tricks for Efficient Text Classification中的fastText，fastText（二）则围绕Enriching Word Vectors with Subword Information。</p>
 <h3><span id="二-一句话介绍fasttext">二、一句话介绍fastText</span></h3>
 <p>word2vec的CBOW模型中将中心词替换为类别标签就得到了fastText。</p>
 <p>具体到一些小区别：</p>
 <ul>
 <li>CBOW中词袋的大小由window_size决定，而fastText中就是整个要分类的文本。</li>
-<li>CBOW实际运行中用Hierarchical <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=softmax&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">softmax</a>，fastText用softmax或Hierarchical
-softmax，具体试类的数量决定。</li>
+<li>CBOW实际运行中用Hierarchical <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=softmax&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%22138019676%22%7D">softmax</a>，fastText用softmax或Hierarchical softmax，具体试类的数量决定。</li>
 </ul>
 <p>这就是一个标配版且可以实际应用的fastText了，我要再强调三点它和CBOW无区别的地方，因为在别的讲该论文的文章中看到了一些错误的理解：</p>
 <ul>
 <li>CBOW和fastText都是用平均值来预测的。（CBOW不是求和，是求平均）</li>
 <li>N-gram对于CBOW和fastText都是锦上添花的元素，不是标配。</li>
-<li><strong><font color="red">
-词向量初始化都是随机的</font></strong>，fastText并没有在word2vec预训练词嵌入的基础上再训练。</li>
+<li><strong><font color="red"> 词向量初始化都是随机的</font></strong>，fastText并没有在word2vec预训练词嵌入的基础上再训练。</li>
 </ul>
 
       
@@ -1262,7 +1096,7 @@ softmax，具体试类的数量决定。</li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>99</span>
+      <span>100</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1283,7 +1117,7 @@ softmax，具体试类的数量决定。</li>
           <h2><span id="西湖论剑ai大数据安全分析赛加密恶意流量检测">西湖论剑AI大数据安全分析赛加密恶意流量检测</span></h2>
 <blockquote>
 <p>数据集：csv</p>
-<p>加密恶意流量检测初赛第一名，决赛第二名方案：https://github.com/undefinedXD/WestLakeSwordComp</p>
+<p>加密恶意流量检测初赛第一名，决赛第二名方案：<a target="_blank" rel="noopener" href="https://github.com/undefinedXD/WestLakeSwordComp">https://github.com/undefinedXD/WestLakeSwordComp</a></p>
 </blockquote>
 
       
@@ -1370,7 +1204,7 @@ softmax，具体试类的数量决定。</li>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>845</span>
+      <span>852</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1391,11 +1225,10 @@ softmax，具体试类的数量决定。</li>
           <h2><span id="文本相似度匹配">文本相似度匹配</span></h2>
 <blockquote>
 <p>from 《Scaling Up All Pairs Similarity Search》</p>
-<p>海量文本的成对相似度的高性能计算（待续） - 马东什么的文章 - 知乎
-https://zhuanlan.zhihu.com/p/457947482</p>
+<p>海量文本的成对相似度的高性能计算（待续） - 马东什么的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/457947482">https://zhuanlan.zhihu.com/p/457947482</a></p>
 </blockquote>
 <h4><span id="摘要">摘要：</span></h4>
-<p>对于高维空间中的大量稀疏向量数据，我们研究了寻找相似性分数(由余弦距离等函数确定)高于给定阈值的所有向量对的问题。我们提出了一个简单的算法<strong>，基于新的索引和优化策略，解决了这个问题，而不依赖于近似方法或广泛的参数调整</strong>。我们展示了该方法在广泛的相似阈值设置中有效地处理各种数据集，与以前的最先进的方法相比有很大的加速。</p>
+<p>对于高维空间中的大量稀疏向量数据，我们研究了寻找相似性分数(由余弦距离等函数确定)高于给定阈值的所有向量对的问题。我们提出了一个简单的算法**，基于新的索引和优化策略，解决了这个问题，而不依赖于近似方法或广泛的参数调整**。我们展示了该方法在广泛的相似阈值设置中有效地处理各种数据集，与以前的最先进的方法相比有很大的加速。</p>
 <p>(海量成对文本相似度问题对于反欺诈而言非常重要，因为无论是电商中重要的地址信息，还是设备或用户的离散features之间的相似度计算和构图，都依赖于高性能的文本相似度计算方法，在实践中，我们不可能直接写双循环去做计算，即使是离线也往往需要耗费大量的时间)</p>
 <h3><span id="一-介绍">一、介绍</span></h3>
 <p>许多现实世界的应用程序需要解决一个相似度搜索问题，在这个问题中，人们对所有相似度高于指定阈值的对象对都感兴趣。</p>
@@ -1490,7 +1323,7 @@ https://zhuanlan.zhihu.com/p/457947482</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1512,47 +1345,27 @@ https://zhuanlan.zhihu.com/p/457947482</p>
 <blockquote>
 <p>函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为。这是一项强大的功能，但是若想掌握，必须理解闭包。</p>
 </blockquote>
-<p>修饰器和闭包经常在一起讨论,
-因为<strong>修饰器就是闭包的一种形式</strong>.
-闭包还是<strong>回调式异步编程</strong>和<strong>函数式编程风格</strong>的基础.装饰器是语法糖,
-它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:</p>
+<p>修饰器和闭包经常在一起讨论, 因为<strong>修饰器就是闭包的一种形式</strong>. 闭包还是<strong>回调式异步编程</strong>和<strong>函数式编程风格</strong>的基础.装饰器是语法糖, 它其实是将函数作为参数让其他函数处理. 装饰器有两大特征:</p>
 <ul>
 <li><strong>把被装饰的函数替换成其他函数</strong></li>
-<li><font color="red">
-<strong>装饰器在加载模块时立即执行</strong></font></li>
+<li><font color="red"> <strong>装饰器在加载模块时立即执行</strong></font></li>
 </ul>
 <h3><span id="一-装饰器基础知识">一、装饰器基础知识</span></h3>
-<p><strong>装饰器</strong>是<strong>可调用的对象</strong>,
-其<strong>参数是另一个函数</strong>(被装饰的函数).
-装饰器可能会处理被装饰的函数, 然后把它返回,
-或者将其替换成<strong>另一个函数或可调用对象</strong>.</p>
+<p><strong>装饰器</strong>是<strong>可调用的对象</strong>, 其<strong>参数是另一个函数</strong>(被装饰的函数). 装饰器可能会处理被装饰的函数, 然后把它返回, 或者将其替换成<strong>另一个函数或可调用对象</strong>.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@decorate</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)复制代码</span><br></pre></td></tr></table></figure>
 <p>这种写法与下面写法完全等价:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">target</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;running target()&#x27;</span>)</span><br><span class="line">target = decorate(target)</span><br></pre></td></tr></table></figure>
-<p>要理解立即执行看下等价的代码就知道了,
-<code>target = decorate(target)</code> 这句调用了函数.
-一般情况下装饰函数都会将某个函数作为返回值.</p>
+<p>要理解立即执行看下等价的代码就知道了, <code>target = decorate(target)</code> 这句调用了函数. 一般情况下装饰函数都会将某个函数作为返回值.</p>
 <h3><span id="二-变量作用域规则">二、变量作用域规则</span></h3>
-<p>要理解装饰器中变量的作用域, 应该要理解闭包,
-我觉得书里将闭包和作用域的顺序换一下比较好. <strong>在python中,
-一个变量的查找顺序是 <code>LEGB</code> (L：Local 局部环境，E：Enclosing
-闭包，G：Global 全局，B：Built-in 内置).</strong></p>
+<p>要理解装饰器中变量的作用域, 应该要理解闭包, 我觉得书里将闭包和作用域的顺序换一下比较好. <strong>在python中, 一个变量的查找顺序是 <code>LEGB</code> (L：Local 局部环境，E：Enclosing 闭包，G：Global 全局，B：Built-in 内置).</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">base = <span class="number">20</span> <span class="comment"># 3</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_compare</span>():</span><br><span class="line">    base = <span class="number">10</span> <span class="comment"># 2</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">real_compare</span>(<span class="params">value</span>):</span><br><span class="line">    		base = <span class="number">5</span> <span class="comment"># 1</span></span><br><span class="line">        <span class="keyword">return</span> value &gt; base</span><br><span class="line">    <span class="keyword">return</span> real_compare</span><br><span class="line">    </span><br><span class="line">compare_10 = get_compare()</span><br><span class="line"><span class="built_in">print</span>(compare_10(<span class="number">5</span>))复制代码</span><br></pre></td></tr></table></figure>
-<p>在闭包的函数 <code>real_compare</code> 中, 使用的变量
-<code>base</code> 其实是 <code>base = 10</code> 的.
-因为base这个变量在闭包中就能命中, 而不需要去 <code>global</code>
-中获取.</p>
+<p>在闭包的函数 <code>real_compare</code> 中, 使用的变量 <code>base</code> 其实是 <code>base = 10</code> 的. 因为base这个变量在闭包中就能命中, 而不需要去 <code>global</code> 中获取.</p>
 <h3><span id="三-闭包">三、闭包</span></h3>
-<p>闭包其实挺好理解的, 当匿名函数出现的时候, 才使得这部分难以掌握.
-简单简短的解释闭包就是:</p>
+<p>闭包其实挺好理解的, 当匿名函数出现的时候, 才使得这部分难以掌握. 简单简短的解释闭包就是:</p>
 <p><strong>名字空间与函数捆绑后的结果被称为一个闭包(closure).</strong></p>
-<p>这个名字空间就是 <code>LEGB</code> 中的 <code>E</code> .
-所以闭包不仅仅是将函数作为返回值.
-而是将名字空间和函数捆绑后作为返回值的. 多少人忘了理解这个
-<code>"捆绑"</code> , 不知道变量最终取的哪和哪啊. 哎.</p>
+<p>这个名字空间就是 <code>LEGB</code> 中的 <code>E</code> . 所以闭包不仅仅是将函数作为返回值. 而是将名字空间和函数捆绑后作为返回值的. 多少人忘了理解这个 <code>&quot;捆绑&quot;</code> , 不知道变量最终取的哪和哪啊. 哎.</p>
 <h4><span id="标准库中的装饰器">标准库中的装饰器</span></h4>
-<p>python内置了三个用于装饰方法的函数: <code>property</code> 、
-<code>classmethod</code> 和 <code>staticmethod</code> .
+<p>python内置了三个用于装饰方法的函数: <code>property</code> 、 <code>classmethod</code> 和 <code>staticmethod</code> .<br>
 这些是用来丰富类的.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">age</span>():</span><br><span class="line">        <span class="keyword">return</span> <span class="number">12</span></span><br></pre></td></tr></table></figure>
 <h3><span id="四-应用">四、应用</span></h3>
@@ -1563,26 +1376,12 @@ https://zhuanlan.zhihu.com/p/457947482</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_logg</span>(<span class="params">func</span>):</span><br><span class="line">    logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">    func()</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;i am bar&#x27;</span>)</span><br><span class="line">use_log(bar)    <span class="comment">#将函数作为参数传入</span></span><br></pre></td></tr></table></figure>
 <p>这样写的确可以复用插入的日志，缺点就是显示的封装原来的函数，我们希望透明的做这件事。<strong>用装饰器来写</strong>:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        logging.warn(<span class="string">&#x27;%s is running&#x27;</span> % func.__name___)</span><br><span class="line">        <span class="keyword">return</span> func(*args,**kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am bar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">bar = use_log(bar)</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
-<p><code>use_log()</code> 就是装饰器，它把真正我们想要执行的函数
-<code>bar()</code>
-封装在里面，返回一个封装了加入代码的新函数，看起来就像是
-<code>bar()</code>
-被装饰了一样。这个例子中的切面就是函数进入的时候，在这个时候，我们插入了一句记录日志的代码。这样写还是不够透明，通过@语法糖来起到
-<code>bar = use_log(bar)</code> 的作用。</p>
+<p><code>use_log()</code> 就是装饰器，它把真正我们想要执行的函数 <code>bar()</code> 封装在里面，返回一个封装了加入代码的新函数，看起来就像是 <code>bar()</code> 被装饰了一样。这个例子中的切面就是函数进入的时候，在这个时候，我们插入了一句记录日志的代码。这样写还是不够透明，通过@语法糖来起到 <code>bar = use_log(bar)</code> 的作用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bar = use_log(bar)<span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">func</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args,**kwargs</span>):</span><br><span class="line">        logging.warn(<span class="string">&#x27;%s is running&#x27;</span> % func.__name___)</span><br><span class="line">        <span class="keyword">return</span> func(*args,**kwargs)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am bar&#x27;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@use_log</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">haha</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am haha&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">bar()</span><br><span class="line">haha()</span><br></pre></td></tr></table></figure>
 <h5><span id="装饰器也是可以带参数的这位装饰器提供了更大的灵活性">装饰器也是可以带参数的，这位装饰器提供了更大的灵活性。</span></h5>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">use_log</span>(<span class="params">level</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decorator</span>(<span class="params">func</span>): </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">            <span class="keyword">if</span> level == <span class="string">&quot;warn&quot;</span>:</span><br><span class="line">                logging.warn(<span class="string">&quot;%s is running&quot;</span> % func.__name__)</span><br><span class="line">            <span class="keyword">return</span> func(*args)</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@use_log(<span class="params">level=<span class="string">&quot;warn&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">name=<span class="string">&#x27;foo&#x27;</span></span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;i am %s&quot;</span> % name)</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
-<p><font color="red"><strong>实际上是对装饰器的一个函数封装，并返回一个装饰器。</strong></font><strong>这里涉及到作用域的概念，之前有一篇博客提到过。可以把它看成一个带参数的闭包</strong>。当使用
-<code>@use_log(level='warn')</code> 时，会将 <code>level</code>
-的值传给装饰器的环境中。它的效果相当于
-<code>use_log(level='warn')(foo)</code> ，也就是一个三层的调用。</p>
-<p>这里有一个美中不足，<code>decorator</code>
-不会改变装饰的函数的功能，但会悄悄的改变一个 <code>__name__</code>
-的属性(还有其他一些元信息)，因为 <code>__name__</code>
-是跟着函数命名走的。<font color="red"> <strong>可以用
-<code>@functools.wraps(func)</code> 来让装饰器仍然使用 <code>func</code>
-的名字。</strong></font><strong>functools.wraps
-也是一个装饰器，它将原函数的元信息拷贝到装饰器环境中，从而不会被所替换的新函数覆盖掉。</strong></p>
+<p><font color="red"><strong>实际上是对装饰器的一个函数封装，并返回一个装饰器。</strong></font><strong>这里涉及到作用域的概念，之前有一篇博客提到过。可以把它看成一个带参数的闭包</strong>。当使用 <code>@use_log(level='warn')</code> 时，会将 <code>level</code> 的值传给装饰器的环境中。它的效果相当于 <code>use_log(level='warn')(foo)</code> ，也就是一个三层的调用。</p>
+<p>这里有一个美中不足，<code>decorator</code> 不会改变装饰的函数的功能，但会悄悄的改变一个 <code>__name__</code> 的属性(还有其他一些元信息)，因为 <code>__name__</code> 是跟着函数命名走的。<font color="red"> <strong>可以用 <code>@functools.wraps(func)</code> 来让装饰器仍然使用 <code>func</code> 的名字。</strong></font><strong>functools.wraps 也是一个装饰器，它将原函数的元信息拷贝到装饰器环境中，从而不会被所替换的新函数覆盖掉。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">log</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @functools.wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">wrapper</span>(<span class="params">*args, **kw</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;call %s():&#x27;</span> % func.__name__)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kw)</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
 
       
@@ -1700,12 +1499,10 @@ https://zhuanlan.zhihu.com/p/457947482</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/404notf0und">404notf0und</a>/<strong><a target="_blank" rel="noopener" href="https://github.com/404notf0und/FXY">FXY</a></strong></p>
 </blockquote>
 <h3><span id="一-个人思考">一、个人思考</span></h3>
-<p><strong><font color="red">
-通过对安全与NLP的实践和思考，有以下三点产出：</font></strong></p>
+<p><strong><font color="red"> 通过对安全与NLP的实践和思考，有以下三点产出：</font></strong></p>
 <ul>
-<li><strong>首先，产出一种通用解决方案和轮子，一把梭实现对各种安全场景的安全检测。</strong>通用解决方案给出一类安全问题的解决思路，打造轮子来具体解决这一类问题，而不是使用单个技术点去解决单个问题。<strong>具体来说，将安全与NLP结合，在各种安全场景中，将其安全数据统一视作文本数据，从NLP视角，统一进行文本预处理、特征化、预训练和模型训练。</strong>例如，在Webshell检测中，Webshell文件内容，在恶意软件检测中，API序列，都可以视作长文本数据，使用NLP技术进行分词、向量化、预训练等操作，同理，在Web安全中，SQl、XSS等URL类安全数据，在DNS安全中，DGA域名、DNS隧道等域名安全数据，同样可以视作短文本数据。因此，只要安全场景中安全数据可以看作文本数据，<a target="_blank" rel="noopener" href="https://github.com/404notf0und/FXY">FXY：<em>Security-Scenes-Feature-Engineering-Toolkit</em></a>
-中，内置多种通用特征化方法和多种通用深度学习模型，以支持多种安全场景的特征化和模型训练，达到流水线式作业。</li>
-<li><strong>其次，是对应用能力和底层能力的思考</strong>。之前写过一篇文章《<a target="_blank" rel="noopener" href="https://4o4notfound.org/index.php/archives/188/">应用型安全算法工程师的自我修养</a>》，在我当时预期想法中，我理解的应用型，重点在于解决实际安全问题，不必苛求于对使用技术本身的理解深度，可以不具备研究型、轮子型的底层能力。映射到我自身，我做安全和算法，最初想法很好，安全和算法两者我都要做好，这里做好，仅仅指用好。之后，面试时暴露了问题，主管给出的建议是两者都要做好。这里做好，不单单指用好，还要知其所以然。举个例子，就是不仅要调包调参玩的6，还要掌握算法的底层原理，这就是底层能力。当时，懂，也不懂，似懂非懂，因为，说，永远是别人的，悟，才是自己的。在实现通用解决方案和轮子的过程中，遇到关于word2vec底层的非预期问题，才深刻体会到，底层能力对应用能力的重要性。过程中遇到的预期和非预期问题，下文会详述。<strong>现在我理解的应用型，重点还是在解决安全问题，以及对安全问题本身的理解，但应用型还需具备研究型、轮子型等上下游岗位的底层能力。</strong>安全算法是这样，其他细分安全领域也是一样，都需要底层能力，以发展技术深度。</li>
+<li>**首先，产出一种通用解决方案和轮子，一把梭实现对各种安全场景的安全检测。**通用解决方案给出一类安全问题的解决思路，打造轮子来具体解决这一类问题，而不是使用单个技术点去解决单个问题。**具体来说，将安全与NLP结合，在各种安全场景中，将其安全数据统一视作文本数据，从NLP视角，统一进行文本预处理、特征化、预训练和模型训练。**例如，在Webshell检测中，Webshell文件内容，在恶意软件检测中，API序列，都可以视作长文本数据，使用NLP技术进行分词、向量化、预训练等操作，同理，在Web安全中，SQl、XSS等URL类安全数据，在DNS安全中，DGA域名、DNS隧道等域名安全数据，同样可以视作短文本数据。因此，只要安全场景中安全数据可以看作文本数据，<a target="_blank" rel="noopener" href="https://github.com/404notf0und/FXY">FXY：<em>Security-Scenes-Feature-Engineering-Toolkit</em></a> 中，内置多种通用特征化方法和多种通用深度学习模型，以支持多种安全场景的特征化和模型训练，达到流水线式作业。</li>
+<li><strong>其次，是对应用能力和底层能力的思考</strong>。之前写过一篇文章《<a target="_blank" rel="noopener" href="https://4o4notfound.org/index.php/archives/188/">应用型安全算法工程师的自我修养</a>》，在我当时预期想法中，我理解的应用型，重点在于解决实际安全问题，不必苛求于对使用技术本身的理解深度，可以不具备研究型、轮子型的底层能力。映射到我自身，我做安全和算法，最初想法很好，安全和算法两者我都要做好，这里做好，仅仅指用好。之后，面试时暴露了问题，主管给出的建议是两者都要做好。这里做好，不单单指用好，还要知其所以然。举个例子，就是不仅要调包调参玩的6，还要掌握算法的底层原理，这就是底层能力。当时，懂，也不懂，似懂非懂，因为，说，永远是别人的，悟，才是自己的。在实现通用解决方案和轮子的过程中，遇到关于word2vec底层的非预期问题，才深刻体会到，底层能力对应用能力的重要性。过程中遇到的预期和非预期问题，下文会详述。**现在我理解的应用型，重点还是在解决安全问题，以及对安全问题本身的理解，但应用型还需具备研究型、轮子型等上下游岗位的底层能力。**安全算法是这样，其他细分安全领域也是一样，都需要底层能力，以发展技术深度。</li>
 <li>最后，带来思考和认识的提升。<strong>从基于机器学习的XX检测，基于深度学习的XX检测，等各种单点检测，到基于NLP的通用安全检测，是一个由点到面的认知提升</strong>。从安全和算法都要做好，到安全和算法都要做好，其中蕴含着认知的提升。从之前写过一篇安全与NLP的文章《<a target="_blank" rel="noopener" href="https://www.4o4notfound.org/index.php/archives/190/">当安全遇上NLP</a>》，到现在这篇文章。对一件事物的认识，在不同阶段应该是不一样的，甚至可能完全推翻自己之前的认识。我们能做的，是保持思考，重新认识过去的经历，提升对事物的认知和认知能力。这个提升认知的过程，类似boosting的残差逼近和强化学习的奖惩，是一个基于不知道不知道-&gt;知道不知道&gt;知道知道-&gt;不知道知道的螺旋式迭代上升过程。</li>
 </ul>
 <h3><span id="二-预期问题">二、预期问题</span></h3>
@@ -1719,12 +1516,9 @@ https://zhuanlan.zhihu.com/p/457947482</p>
 </ul>
 <p><strong>FXY特征化类wordindex和word2vec中参数char_level实现了该功能</strong>。在其他安全场景中，可以根据此思路，写自定义的<strong>基于攻击模式的分词</strong>，但适用范围有限。我这里提供了两种通用词粒度分词模式，第一种是忽略特殊符号的简洁版分词模式，第二种是考虑全量特殊符号的完整版分词模式，这两种分词模式可以适用于各种安全场景中。FXY特征化类word2vec中参数punctuation的值‘concise’，‘all’和‘define’实现了两种通用分词和自定义安全分词功能。下文的实验部分，会测试不同安全场景中，使用字符粒度和词粒度，使用不同词粒度分词模式训练模型的性能对比。</p>
 <h4><span id="22-语料库">2.2 语料库</span></h4>
-<p><strong>关于预训练前字典的建立（语料库）</strong>。特征化类word2vec的预训练需求直接引发了字典建立的相关问题。在word2vec预训练前，需要考虑预训练数据的产生。基于深度学习的XSS检测文中，是通过<strong>建立一个基于黑样本数据的指定大小的字典，不在字典内的数据全部泛化为一个特定词，将泛化后的数据作为预训练的数据</strong>。这里我们将此思路扩充，增加使用全量数据建立任意大小的字典。具体到word2vec类中，参数one_class的True
-or
-False决定了预训练的数据来源是单类黑样本还是全量黑白样本，参数vocabulary_size的值决定了字典大小，如果为None，就不截断，为全量字典数据。下文的实验部分会测试是<strong>单类黑样本预训练</strong>word2vec好，还是<strong>全量数据预训练</strong>更占优势，是<strong>字典截断</strong>好，还是用全量字典来预训练好。</p>
+<p><strong>关于预训练前字典的建立（语料库）</strong>。特征化类word2vec的预训练需求直接引发了字典建立的相关问题。在word2vec预训练前，需要考虑预训练数据的产生。基于深度学习的XSS检测文中，是通过<strong>建立一个基于黑样本数据的指定大小的字典，不在字典内的数据全部泛化为一个特定词，将泛化后的数据作为预训练的数据</strong>。这里我们将此思路扩充，增加使用全量数据建立任意大小的字典。具体到word2vec类中，参数one_class的True or False决定了预训练的数据来源是单类黑样本还是全量黑白样本，参数vocabulary_size的值决定了字典大小，如果为None，就不截断，为全量字典数据。下文的实验部分会测试是<strong>单类黑样本预训练</strong>word2vec好，还是<strong>全量数据预训练</strong>更占优势，是<strong>字典截断</strong>好，还是用全量字典来预训练好。</p>
 <h4><span id="23-序列">2.3 序列</span></h4>
-<p><font color="red">
-<strong>关于序列的问题，具体地说，是长文本数据特征化需求</strong>。</font><strong>webshell检测等安全场景，引发了序列截断和填充的问题。</strong>短文本数据的特征化，可以保留所有原始信息。而在某些安全场景中的长文本数据，特征化比较棘手，保留全部原始信息不太现实，需要对其进行截断，截断的方式主要有<strong>字典截断、序列软截断、序列硬截断</strong>。</p>
+<p><font color="red"> <strong>关于序列的问题，具体地说，是长文本数据特征化需求</strong>。</font><strong>webshell检测等安全场景，引发了序列截断和填充的问题。<strong>短文本数据的特征化，可以保留所有原始信息。而在某些安全场景中的长文本数据，特征化比较棘手，保留全部原始信息不太现实，需要对其进行截断，截断的方式主要有</strong>字典截断、序列软截断、序列硬截断</strong>。</p>
 <ul>
 <li><strong>序列软截断</strong>是指对不在某个范围内（参数num_words控制范围大小）的数据，直接去除或填充为某值，长文本选择直接去除，缩短整体序列的长度，尽可能保留后续更多的原始信息。如果长本文数据非常非常长，那么就算有字典截断和序列软截断，截断后的序列也可能非常长，超出了模型和算力的承受范围;</li>
 <li><strong>序列硬截断</strong>（参数max_length控制）可以发挥实际作用，直接整整齐齐截断和填充序列，保留指定长度的序列数据。这里需要注意的是，为了兼容后文将说到的“预训练+微调”训练模式中的<strong>预训练矩阵</strong>，序列填充值默认为0。</li>
@@ -1738,23 +1532,17 @@ False决定了预训练的数据来源是单类黑样本还是全量黑白样本
 </ul>
 <p>这里我把这三种方式简单叫做微调、预训练、预训练+微调，从特征工程角度，这三种方式是产生词嵌入向量的方法，从模型角度，也可以看作是模型训练的三种方法。第一种微调的方式实现起来比较简单，直接使用keras的文本处理类Tokenizer就可以分词，转换为词序列，得到词序列索引，输入到深度学习模型中即可。第二种预训练的方式，调个gensim库中word2vec类预训练，对于不在预训练字典中的数据，其词嵌入向量直接填充为0，第三种预训练+微调的方式，稍微复杂一点，简单来说就是前两种方式的组合，用第二种方式得到预训练矩阵，作为嵌入层的初始化权重矩阵参数，用第一种方式得到词序列索引，作为嵌入层的原始输入。下文的实验部分会测试并对比按这三种方式训练模型的性能，<strong>先说结论：预训练+微调&gt;预训练&gt;微调</strong>。</p>
 <h3><span id="三-非预期问题">三、非预期问题</span></h3>
-<h4><span id="31已知的库和函数不能满足我们的需求">3.1
-已知的库和函数不能满足我们的需求</span></h4>
-<p>使用keras的文本处理类Tokenizer预处理文本数据，得到词序列索引，完全没有问题。<strong>但类Tokenizer毕竟是文本数据处理类，没有考虑到安全领域的需求。</strong>
-+ <strong><font color="red">
-类Tokenizer的单词分词默认会过滤所有的特殊符号，仅保留单词，而特殊符号在安全数据中是至关重要的，很多payload的构成都有着大量特殊符号，忽略特殊符号会流失部分原始信息。</font></strong>
-+
-<strong>首先阅读了keras的文本处理源码和序列处理源码</strong>，不仅搞懂了其结构和各函数的底层实现方式，还学到了一些trick和优质代码的特性。搞懂了其结构和各函数的底层实现方式，还学到了一些trick和优质代码的特性。下图为Tokenizer类的结构。借鉴并改写Tokenizer类，加入了多种分词模式，我们实现了wordindex类。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181514240.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
+<h4><span id="31-已知的库和函数不能满足我们的需求">3.1 已知的库和函数不能满足我们的需求</span></h4>
+<p>使用keras的文本处理类Tokenizer预处理文本数据，得到词序列索引，完全没有问题。<strong>但类Tokenizer毕竟是文本数据处理类，没有考虑到安全领域的需求。</strong></p>
+<ul>
+<li><strong><font color="red"> 类Tokenizer的单词分词默认会过滤所有的特殊符号，仅保留单词，而特殊符号在安全数据中是至关重要的，很多payload的构成都有着大量特殊符号，忽略特殊符号会流失部分原始信息。</font></strong></li>
+<li><strong>首先阅读了keras的文本处理源码和序列处理源码</strong>，不仅搞懂了其结构和各函数的底层实现方式，还学到了一些trick和优质代码的特性。搞懂了其结构和各函数的底层实现方式，还学到了一些trick和优质代码的特性。下图为Tokenizer类的结构。借鉴并改写Tokenizer类，加入了多种分词模式，我们实现了wordindex类。</li>
+</ul>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181514240.png" alt="img"></p>
 <h4><span id="32-对word2vec的理解不到位">3.2 对word2vec的理解不到位</span></h4>
 <p>第二个非预期问题是，对word2vec的理解不到位，尤其是其底层原理和代码实现，导致会有一些疑惑，无法得到验证，这是潜在的问题。虽然可以直接调用gensim库中的word2vec类暂时解决问题，但我还是决定把word2vec深究深究，一方面可以答疑解惑，另一方面，就算不能调用别人的库，自己也可以造轮子自给自足。限于篇幅问题，不多讲word2vec的详细原理，原理是我们私下里花时间可以搞清楚的，不算是干货，对原理有兴趣的话，这里给大家推荐几篇优质文章，在github仓库<a target="_blank" rel="noopener" href="https://github.com/404notf0und/Always-Learning">Always-Learning</a>中。</p>
-<p><strong>word2vec本质上是一个神经网络模型，具体来说此神经网络模型是一个输入层-嵌入层-输出层的三层结构，我们用到的词嵌入向量只是神经网络模型的副产物，是模型嵌入层的权重矩阵。</strong>以word2vec实现方式之一的skip-gram方法为例，此方法本质是通过中心词预测周围词。如果有一段话，要对这段话训练一个word2vec模型，那么很明显需要输入数据，还要是打标的数据。以这段话中的某个单词为中心词为例，在一定滑动窗口内的其他单词都默认和此单词相关，此单词和周围其他单词，一对多产生多个组合，默认是相关的，因此label为1，即是输入数据的y为1，而这些单词组合的one-hot编码是输入数据的x。<strong>那么很明显label全为1，全为positive
-sample，需要负采样来中和。这里的负采样不是简单地从滑动窗口外采样，而是按照词频的概率，取概率最小的一批样本来做负样本（这个概念下面马上要用到），因为和中心词毫不相关，自然label为0。</strong></p>
-<p><strong><font color="red">
-tensorflow中的nce_loss函数实现了负采样。</font></strong></p>
+<p>**word2vec本质上是一个神经网络模型，具体来说此神经网络模型是一个输入层-嵌入层-输出层的三层结构，我们用到的词嵌入向量只是神经网络模型的副产物，是模型嵌入层的权重矩阵。**以word2vec实现方式之一的skip-gram方法为例，此方法本质是通过中心词预测周围词。如果有一段话，要对这段话训练一个word2vec模型，那么很明显需要输入数据，还要是打标的数据。以这段话中的某个单词为中心词为例，在一定滑动窗口内的其他单词都默认和此单词相关，此单词和周围其他单词，一对多产生多个组合，默认是相关的，因此label为1，即是输入数据的y为1，而这些单词组合的one-hot编码是输入数据的x。<strong>那么很明显label全为1，全为positive sample，需要负采样来中和。这里的负采样不是简单地从滑动窗口外采样，而是按照词频的概率，取概率最小的一批样本来做负样本（这个概念下面马上要用到），因为和中心词毫不相关，自然label为0。</strong></p>
+<p><strong><font color="red"> tensorflow中的nce_loss函数实现了负采样。</font></strong></p>
 
       
     </div>
@@ -1867,7 +1655,6 @@ tensorflow中的nce_loss函数实现了负采样。</font></strong></p>
     
     <div class="post-body" itemprop="articleBody">
           
-
       
     </div>
 

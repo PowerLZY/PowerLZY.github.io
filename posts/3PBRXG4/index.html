@@ -173,7 +173,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -290,7 +290,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>563</span>
+      <span>550</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -309,40 +309,22 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3><span id="一-特征交叉-从lr到deepfm">一、特征交叉-从LR到DeepFM</span></h3>
-<p><strong>提到LR-&gt;FM-&gt;FFM-&gt;Wide &amp;
-Deep-&gt;DeepFM这一发展，必然离不开点击率CTR(click-through
-rate)和转化率CVR(conversion rate)。</strong></p>
-<p>这里再补充一下从MF到FM，矩阵分解MF(Matrix
-Factorization)基本原理：</p>
-<p><img src="https://pic4.zhimg.com/v2-bc8928c25ddfd4e6baefccaac8218bcb_b.jpg" alt="img" style="zoom:50%;"></p>
-<p><img src="https://pic2.zhimg.com/v2-1600655df8413c5c12c0eb9fe0275461_b.jpg" alt="img" style="zoom:50%;"></p>
+<p><strong>提到LR-&gt;FM-&gt;FFM-&gt;Wide &amp; Deep-&gt;DeepFM这一发展，必然离不开点击率CTR(click-through rate)和转化率CVR(conversion rate)。</strong></p>
+<p>这里再补充一下从MF到FM，矩阵分解MF(Matrix Factorization)基本原理：</p>
+<img src="https://pic4.zhimg.com/v2-bc8928c25ddfd4e6baefccaac8218bcb_b.jpg" alt="img" style="zoom:50%;">
+<img src="https://pic2.zhimg.com/v2-1600655df8413c5c12c0eb9fe0275461_b.jpg" alt="img" style="zoom:50%;">
 <p>主要是将用户-物品矩阵分解为用户矩阵(实质为用户的embedding矩阵)和物品矩阵(实质为物品的embedding矩阵)，有了<strong>用户表征向量</strong>和<strong>物品表征向量</strong>我们就可以计算任意用户和物品之间的联系。</p>
 <h4><span id="11-lr-gtfm">1.1 LR-&gt;FM</span></h4>
 <p><strong>线性模型：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D+%5C%5C" alt="[公式]"></p>
 <p>从公式中我们就可以看出，线性模型中默认假设特征之间是相互独立的，但是在现实中基本不可能存在，因此线性模型会丢失很多组合信息。</p>
 <p><strong>多项式模型：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7Bw_%7Bij%7Dx_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>多项式模型中增加了特征的组合信息，但是又引入了新的问题，参数爆炸，复杂度太高，在实际推荐中特征可能是上万甚至更高维，单单二阶的特征交叉就是
-<img src="https://www.zhihu.com/equation?tex=n%5E%7B2%7D" alt="[公式]">
-，更不用说更高阶特征交叉。此外，在CTR任务中，特征是特别稀疏的（如图2），进行特征交叉以后也都是0，这将导致模型训练不能充分。</p>
-<figure>
-<img src="https://pic4.zhimg.com/v2-9e67de04a67911ec78c8166da0e62153_b.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7B%3Cv_%7Bi%7D%2C+v_%7Bj%7D%3Ex_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7Bw_%7Bij%7Dx_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]"></p>
+<p>多项式模型中增加了特征的组合信息，但是又引入了新的问题，参数爆炸，复杂度太高，在实际推荐中特征可能是上万甚至更高维，单单二阶的特征交叉就是 <img src="https://www.zhihu.com/equation?tex=n%5E%7B2%7D" alt="[公式]"> ，更不用说更高阶特征交叉。此外，在CTR任务中，特征是特别稀疏的（如图2），进行特征交叉以后也都是0，这将导致模型训练不能充分。</p>
+<p><img src="https://pic4.zhimg.com/v2-9e67de04a67911ec78c8166da0e62153_b.jpg" alt="img"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ctilde%7By%7D%3Dw_%7B0%7D%2B%5Csum_%7Bi%7D%7Bw_%7Bi%7Dx_%7Bi%7D%7D%2B%5Csum_%7Bi%7D%7B%5Csum_%7Bj%3Ci%7D%7B%3Cv_%7Bi%7D%2C+v_%7Bj%7D%3Ex_%7Bi%7Dx_%7Bj%7D%7D%7D+%5C%5C" alt="[公式]"></p>
 <p><strong>FM主要的优化有两个方面：</strong></p>
-<p>（1）<strong>将复杂度从 <img src="https://www.zhihu.com/equation?tex=n%5E2" alt="[公式]"> 降到了
-<img src="https://www.zhihu.com/equation?tex=kn" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%5Cleft%28+k+%5Cll+n+%5Cright%29" alt="[公式]"></strong> ；</p>
+<p>（1）<strong>将复杂度从 <img src="https://www.zhihu.com/equation?tex=n%5E2" alt="[公式]"> 降到了 <img src="https://www.zhihu.com/equation?tex=kn" alt="[公式]"> <img src="https://www.zhihu.com/equation?tex=%5Cleft%28+k+%5Cll+n+%5Cright%29" alt="[公式]"></strong> ；</p>
 <p>（2）可以在稀疏数据中学习到组合特征，甚至是那些数据中没有观测值的组合特征。</p>
 
     </div>

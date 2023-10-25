@@ -244,7 +244,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -361,7 +361,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
+      <span>2.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -381,232 +381,148 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="评分卡基础逻辑回归算法理解">评分卡基础—逻辑回归算法理解</span></h2>
 <h4><span id="风控业务背景"><strong>风控业务背景</strong></span></h4>
-<p>逻辑回归（Logistic
-Regression，LR）是建立信贷金融评分卡的重要模型，其具有形式简单、易于解释、鲁棒性强等优点。然而，很多建模同学并不是很清楚其原理。本文尝试对逻辑回归基础加以分析理解。</p>
+<p>逻辑回归（Logistic Regression，LR）是建立信贷金融评分卡的重要模型，其具有形式简单、易于解释、鲁棒性强等优点。然而，很多建模同学并不是很清楚其原理。本文尝试对逻辑回归基础加以分析理解。</p>
 <blockquote>
-<p>目录 Part 1. 从线性回归到逻辑回归 Part 2. 为什么采用sigmoid函数 Part
-3. 利用极大似然估计法估计参数 Part 4. 最优化问题求解之梯度下降法 Part 5.
-正则项的作用和种类 Part 6. 总结 致谢 版权声明 参考资料</p>
+<p>目录<br>
+Part 1. 从线性回归到逻辑回归<br>
+Part 2. 为什么采用sigmoid函数<br>
+Part 3. 利用极大似然估计法估计参数<br>
+Part 4. 最优化问题求解之梯度下降法<br>
+Part 5. 正则项的作用和种类<br>
+Part 6. 总结<br>
+致谢<br>
+版权声明<br>
+参考资料</p>
 </blockquote>
 <h3><span id="一-从线性回归到逻辑回归">一、从线性回归到逻辑回归</span></h3>
 <p>线性模型是指对各种属性进行<strong>线性加权</strong>组合的函数：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb+%7Bx%7D%29+%3D+w_%7B1%7Dx_%7B1%7D+%2B+w_%7B2%7Dx_%7B2%7D+%2B+...+%2B+w_%7Bn%7D+x_%7Bn%7D+%2B+b+%5C%5C+%3D+%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b++%5Ctag%7B1%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>这一过程将信息进行整合；不同的权重(weight)反映了自变量对因变量不同的贡献程度
-。线性回归（Liner
-Regression）具有广泛应用，例如：预测房价、天气等等。</p>
-<p><strong><font color="red">
-但在实际应用中，很多人会忽略线性回归的几大假设：</font></strong></p>
+<p><img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb+%7Bx%7D%29+%3D+w_%7B1%7Dx_%7B1%7D+%2B+w_%7B2%7Dx_%7B2%7D+%2B+...+%2B+w_%7Bn%7D+x_%7Bn%7D+%2B+b+%5C%5C+%3D+%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b++%5Ctag%7B1%7D" alt="[公式]"></p>
+<p>这一过程将信息进行整合；不同的权重(weight)反映了自变量对因变量不同的贡献程度 。线性回归（Liner Regression）具有广泛应用，例如：预测房价、天气等等。</p>
+<p><strong><font color="red"> 但在实际应用中，很多人会忽略线性回归的几大假设：</font></strong></p>
 <ul>
 <li><strong>零均值假设</strong>：随机误差项均值为0。</li>
 <li><strong>同方差假设</strong>：随机误差项方差相同。若满足这一特性，称模型具有<strong>同方差性</strong></li>
-<li><strong>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]">
-服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"></strong></li>
+<li><strong>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]"> 服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"></strong></li>
 <li><strong>无自相关假设</strong>：若不满足这一特性，称模型具有<strong>自相关性</strong>（Autocorrelation）。</li>
-<li>...</li>
+<li>…</li>
 </ul>
-<p>显然，线性回归的输出结果 <img src="https://www.zhihu.com/equation?tex=f%28%5Ctextbf%7Bx%7D%29+%5Cin+%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]">
-。那如果要做分类呢？我们就考虑将线性回归的输出与分类任务的真实标签 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">联系起来，即再找一个映射函数。</p>
+<p>显然，线性回归的输出结果 <img src="https://www.zhihu.com/equation?tex=f%28%5Ctextbf%7Bx%7D%29+%5Cin+%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 。那如果要做分类呢？我们就考虑将线性回归的输出与分类任务的真实标签 <img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">联系起来，即再找一个映射函数。</p>
 <p>我们采用一个 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数（也叫对数几率）：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=+f%28z%29+%3D+%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D++%5Ctag%7B2%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=+f%28z%29+%3D+%5Cfrac%7B1%7D%7B1%2Be%5E%7B-z%7D%7D++%5Ctag%7B2%7D" alt="[公式]"></p>
 <p>其函数图像如图2所示，直观感受其优美的姿态，对称、平滑，且输出 <img src="https://www.zhihu.com/equation?tex=+f%28z%29+%5Cin+%280%2C1%29" alt="[公式]"> .</p>
-<p><img src="https://pic2.zhimg.com/80/v2-4b114919fe629cb80abcdfd949e73869_1440w.jpg" alt="img" style="zoom:33%;"></p>
+<img src="https://pic2.zhimg.com/80/v2-4b114919fe629cb80abcdfd949e73869_1440w.jpg" alt="img" style="zoom:33%;">
 <p>我们尝试把 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数模块拼接到线性回归的输出后面，如图3所示。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-d48c12be1ae99fd3008ea54e242be983_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>把图3用公式表达，也就是在 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-函数内嵌套一个线性回归：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb%7Bx%7D%29%3D+%5Cfrac%7B1%7D%7B1+%2B+e%5E-%7B%28%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%29%7D%7D+%5Ctag%7B3%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<img src="https://pic4.zhimg.com/80/v2-d48c12be1ae99fd3008ea54e242be983_1440w.jpg" alt="img" style="zoom:50%;">
+<p>把图3用公式表达，也就是在 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数内嵌套一个线性回归：</p>
+<p><img src="https://www.zhihu.com/equation?tex=f%28%5Cpmb%7Bx%7D%29%3D+%5Cfrac%7B1%7D%7B1+%2B+e%5E-%7B%28%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%29%7D%7D+%5Ctag%7B3%7D" alt="[公式]"></p>
 <p>我们再将其变换得到逻辑回归的另一种常见形式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=+ln+%5Cfrac%7Bp%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D%7B1%E2%88%92p%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D+%3D+%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D+%5Ctag%7B4%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>为什么要这样做呢？这是因为右边就是线性回归，而左边则引入了 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> (几率)
-的概念，即<strong>事件发生概率相对于不发生概率的比值。</strong></p>
+<p><img src="https://www.zhihu.com/equation?tex=+ln+%5Cfrac%7Bp%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D%7B1%E2%88%92p%28y%3D1%7C%5Cpmb%7Bx%7D%29%7D+%3D+%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D+%5Ctag%7B4%7D" alt="[公式]"></p>
+<p>为什么要这样做呢？这是因为右边就是线性回归，而左边则引入了 <img src="https://www.zhihu.com/equation?tex=odds" alt="[公式]"> (几率) 的概念，即<strong>事件发生概率相对于不发生概率的比值。</strong></p>
 <p>显然可以得到正负样例的概率表达式：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=p%28y%3D1%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7Be%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5C%5C+p%28y%3D0%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7B1%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5Ctag%7B5%7D+" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=p%28y%3D1%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7Be%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5C%5C+p%28y%3D0%7C%5Cpmb%7Bx%7D%29+%3D++%5Cfrac%7B1%7D%7B1+%2B+e%5E%7B%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D+%2B+b%7D%7D+%5Ctag%7B5%7D+" alt="[公式]"></p>
 <h3><span id="二-为什么采用sigmoid函数">二、为什么采用sigmoid函数</span></h3>
 <blockquote>
 <p>根本原因：</p>
 <p>函数优点：</p>
 </blockquote>
-<p>至此，你可能会有疑问：为什么这里就直接选择了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-函数？如果只是为了将输出结果从 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 映射到 <img src="https://www.zhihu.com/equation?tex=%280%2C+1%29" alt="[公式]">
-，完全可以选择其他函数，比如单位阶跃函数：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=p%28y%3D1+%7C+x%29%3D%5Cbegin%7Bcases%7D+0%2C%26+z%5Clt+0+%5C%5C+0.5%2C%26+z+%3D+0%5C%5C+1%2C%26+z%5Cgt+0%5C+%5Cend%7Bcases%7D+%2C%5Cquad+z%3Dw%5ET+x%2Bb++%5Ctag%7B6%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>若预测值 <img src="https://www.zhihu.com/equation?tex=z+%3E0" alt="[公式]"> 则判为正例， <img src="https://www.zhihu.com/equation?tex=z+%3C+0" alt="[公式]">
-则判为负例， <img src="https://www.zhihu.com/equation?tex=z+%3D+0" alt="[公式]">
-则可任意判别。你可能会说，这个阶跃函数不可微，也无法像<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-函数那样输出概率。这就冒出两个问题：</p>
-<ol type="1">
+<p>至此，你可能会有疑问：为什么这里就直接选择了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数？如果只是为了将输出结果从 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 映射到 <img src="https://www.zhihu.com/equation?tex=%280%2C+1%29" alt="[公式]"> ，完全可以选择其他函数，比如单位阶跃函数：</p>
+<p><img src="https://www.zhihu.com/equation?tex=p%28y%3D1+%7C+x%29%3D%5Cbegin%7Bcases%7D+0%2C%26+z%5Clt+0+%5C%5C+0.5%2C%26+z+%3D+0%5C%5C+1%2C%26+z%5Cgt+0%5C+%5Cend%7Bcases%7D+%2C%5Cquad+z%3Dw%5ET+x%2Bb++%5Ctag%7B6%7D" alt="[公式]"></p>
+<p>若预测值 <img src="https://www.zhihu.com/equation?tex=z+%3E0" alt="[公式]"> 则判为正例， <img src="https://www.zhihu.com/equation?tex=z+%3C+0" alt="[公式]"> 则判为负例， <img src="https://www.zhihu.com/equation?tex=z+%3D+0" alt="[公式]"> 则可任意判别。你可能会说，这个阶跃函数不可微，也无法像<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数那样输出概率。这就冒出两个问题：</p>
+<ol>
 <li><strong>为什么这个映射函数一定要求可微？</strong></li>
 <li><strong>为什么 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数输出值可以代表概率？</strong></li>
 </ol>
-<p>首先，我们先分析 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-函数的基本性质：</p>
-<ol type="1">
+<p>首先，我们先分析 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数的基本性质：</p>
+<ol>
 <li>定义域：<img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"></li>
 <li>值域：<img src="https://www.zhihu.com/equation?tex=%280%2C1%29" alt="[公式]"></li>
 <li>函数在定义域内为连续和光滑函数</li>
 <li>处处可导，导数为 <img src="https://www.zhihu.com/equation?tex=f%E2%80%B2%28x%29%3Df%28x%29%281%E2%88%92f%28x%29%29" alt="[公式]"> ，以下是推导过程：</li>
 </ol>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=f%27%28x%29%3D%5B%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%5D%27+%3D%5Cfrac%7B1%27%C2%B7%281%2Be%5E%7B-x%7D%29-1%C2%B7%281%2Be%5E%7B-x%7D%29%27%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D+%5C%5C+%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D-%5Cfrac%7B1%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D++%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D+%281-%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%29+%5C%5C+%3Df%28x%29%5B1-f%28x%29%5D+%5Ctag%7B7%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>可以看到，<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-函数确实具有很多优点，但这仍不是我们选择它的<strong>根本原因</strong>。这是因为，我们仍可以找到一些与之类似性质的函数。</p>
+<p><img src="https://www.zhihu.com/equation?tex=f%27%28x%29%3D%5B%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%5D%27+%3D%5Cfrac%7B1%27%C2%B7%281%2Be%5E%7B-x%7D%29-1%C2%B7%281%2Be%5E%7B-x%7D%29%27%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D+%5C%5C+%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D-%5Cfrac%7B1%7D%7B%281%2Be%5E%7B-x%7D%29%5E%7B2%7D%7D++%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D+%281-%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D%29+%5C%5C+%3Df%28x%29%5B1-f%28x%29%5D+%5Ctag%7B7%7D" alt="[公式]"></p>
+<p>可以看到，<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数确实具有很多优点，但这仍不是我们选择它的<strong>根本原因</strong>。这是因为，我们仍可以找到一些与之类似性质的函数。</p>
 <h4><span id="根本原因">根本原因：</span></h4>
-<p>由于逻辑回归本质上属于线性模型，我们尝试<strong>从广义线性模型（Generalized
-Linear
-Model，GLM）角度入手解释</strong>。前文提到，<strong>线性回归存在诸多假设，实际应用中往往无法满足</strong>。这就会有以下问题：</p>
+<p>由于逻辑回归本质上属于线性模型，我们尝试<strong>从广义线性模型（Generalized Linear Model，GLM）角度入手解释</strong>。前文提到，<strong>线性回归存在诸多假设，实际应用中往往无法满足</strong>。这就会有以下问题：</p>
 <ul>
-<li><img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">
-的取值范围 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 与某些场景矛盾。例如，要求 <img src="https://www.zhihu.com/equation?tex=y+%5Cin+%280%2C%5Cinfty%29" alt="[公式]">
-。假设一个线性回归模型预测当温度下降10摄氏度，沙滩上的游客将减少1000人。那么，如果当前20摄氏度时，沙滩上只有50人，按此模型预测，当温度为10摄氏度时，沙滩上便有-950人。这显然不符合常理，因为人数不能为负数。</li>
-<li>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]"> 服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"> ，且要求方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]">
-是常数。但有时，均值 <img src="https://www.zhihu.com/equation?tex=%5Cmu" alt="[公式]"> 越大，我们越预测不准确（方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]">
-越大）。</li>
+<li><img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 的取值范围 <img src="https://www.zhihu.com/equation?tex=%28-%5Cinfty%2C+%5Cinfty%29" alt="[公式]"> 与某些场景矛盾。例如，要求 <img src="https://www.zhihu.com/equation?tex=y+%5Cin+%280%2C%5Cinfty%29" alt="[公式]"> 。假设一个线性回归模型预测当温度下降10摄氏度，沙滩上的游客将减少1000人。那么，如果当前20摄氏度时，沙滩上只有50人，按此模型预测，当温度为10摄氏度时，沙滩上便有-950人。这显然不符合常理，因为人数不能为负数。</li>
+<li>残差 <img src="https://www.zhihu.com/equation?tex=%5Cvarepsilon" alt="[公式]"> 服从正态分布 <img src="https://www.zhihu.com/equation?tex=N%28%5Cmu%2C+%5Csigma%5E2%29" alt="[公式]"> ，且要求方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]"> 是常数。但有时，均值 <img src="https://www.zhihu.com/equation?tex=%5Cmu" alt="[公式]"> 越大，我们越预测不准确（方差 <img src="https://www.zhihu.com/equation?tex=%5Csigma%5E2" alt="[公式]"> 越大）。</li>
 </ul>
 <p><strong>为了解决这些局限性，后人发展了GLM，用以提高线性模型的普适性。</strong></p>
 <blockquote>
-<p>GLM允许因变量 <span class="math inline">\(y\)</span>
-的分布<strong>并不一定要服从正态分布</strong>，而可以服从其它分布。</p>
+<p>GLM允许因变量 $y$ 的分布<strong>并不一定要服从正态分布</strong>，而可以服从其它分布。</p>
 </blockquote>
 <p><strong>广义线性模型GLM由三要素组成, 即：</strong></p>
 <ul>
-<li><p><strong>概率分布</strong> (Probability distribution) : 指因变量
-<span class="math inline">\(y\)</span> 的分布假设,
-来自指数分布族。</p></li>
-<li><p><strong>线性预测</strong> (Linear predictor) : 自变量的线性组合,
-即 <span class="math inline">\(\eta=\boldsymbol{X}
-\boldsymbol{\beta}\)</span></p></li>
-<li><p><strong>链接函数</strong> (Link function) : 通过均值 <span class="math inline">\(\mu\)</span> 来链接前两者, 即 <span class="math inline">\(E(Y)=\mu=g^{-1}(\eta)\)</span>
+<li>
+<p><strong>概率分布</strong> (Probability distribution) : 指因变量 $y$ 的分布假设, 来自指数分布族。</p>
+</li>
+<li>
+<p><strong>线性预测</strong> (Linear predictor) : 自变量的线性组合, 即 $\eta=\boldsymbol{X} \boldsymbol{\beta}$</p>
+</li>
+<li>
+<p><strong>链接函数</strong> (Link function) : 通过均值 $\mu$ 来链接前两者, 即 $E(Y)=\mu=g^{-1}(\eta)$<br>
 <img src="/Users/apple/Library/Application Support/typora-user-images/image-20220708133222814.png" alt="image-20220708133222814" style="zoom:50%;"></p>
-<p><strong>首先分析概率分布。对于只有单个参数 <span class="math inline">\(\theta\)</span> 的指数分布族的通用形式为:</strong>
-<span class="math display">\[
-f(x \mid \theta)=h(x) \exp (\eta(\theta) \cdot T(x)-A(\theta))
-\]</span> 其中, <span class="math inline">\(h(x)\)</span> 和 <span class="math inline">\(T(x)\)</span> 只是关于自变量 <span class="math inline">\(x\)</span> 的函数； <span class="math inline">\(\eta(\theta)\)</span> 和 <span class="math inline">\(A(\theta)\)</span> 只是关于末知参数 <span class="math inline">\(\theta\)</span> 的函数。
-不同的线性模型具有不同的分布假设。比如：</p></li>
-<li><p><strong><font color="red"> 线性回归假设 <span class="math inline">\(y\)</span> 的残差 <span class="math inline">\(\varepsilon\)</span> 服从正态分布 <span class="math inline">\(N\left(\mu,
-\sigma^{2}\right)\)</span></font></strong></p></li>
-<li><p><strong><font color="red"> 逻辑回归假设 <span class="math inline">\(y\)</span> 服从伯努利分布
-(Bernoulli)</font></strong></p></li>
+<p><strong>首先分析概率分布。对于只有单个参数 $\theta$ 的指数分布族的通用形式为:</strong><br>
+$$<br>
+f(x \mid \theta)=h(x) \exp (\eta(\theta) \cdot T(x)-A(\theta))<br>
+$$<br>
+其中, $h(x)$ 和 $T(x)$ 只是关于自变量 $x$ 的函数； $\eta(\theta)$ 和 $A(\theta)$ 只是关于末知参数 $\theta$ 的函数。 不同的线性模型具有不同的分布假设。比如：</p>
+</li>
+<li>
+<p><strong><font color="red"> 线性回归假设 $y$ 的残差 $\varepsilon$ 服从正态分布 $N\left(\mu, \sigma^{2}\right)$</font></strong></p>
+</li>
+<li>
+<p><strong><font color="red"> 逻辑回归假设 $y$ 服从伯努利分布 (Bernoulli)</font></strong></p>
+</li>
 </ul>
 <p>接下来，我们尝试：</p>
-<ol type="1">
-<li>将逻辑回归因变量 <span class="math inline">\(y\)</span> 变换到式
-<img src="https://www.zhihu.com/equation?tex=%288%29" alt="[公式]">
-的形式，确定以上几个函数，验证其属于指数分布族。</li>
+<ol>
+<li>将逻辑回归因变量 $y$ 变换到式 <img src="https://www.zhihu.com/equation?tex=%288%29" alt="[公式]"> 的形式，确定以上几个函数，验证其属于指数分布族。</li>
 <li>求解出逻辑回归对应的链接函数。注意，此时我们<strong>还没有认可sigmoid函数</strong>。⚠️</li>
 </ol>
-<p><strong>由于逻辑回归假设 <span class="math inline">\(y\)</span>
-服从伯努利分布（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Bernoulli%2Bdistribution">Bernoulli</a>），即：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Beqnarray%2A%7D++%26%26+f%28x%7Cp%29+%3D+p%5Ex+%281-p%29%5E%7B1-x%7D+%5C%5C++%26%26+%3D++%5Cexp%28x%2Alnp+%2B+%281-x%29%2Aln%281-p%29%29+%5C%5C+%26%26+%3D%5Cexp%28ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%2A+x+%2B+ln%281-p%29%29+%5C%5C++%26%26%3D%5Cexp%28%CE%B7%2Ax+%2B+ln%281%2Be%5E%CE%B7%29%29+%5C%5C+%26%26+Let%3A+%CE%B7%3Dln%28%5Cfrac%7Bp%7D%7B1-p%7D%29++%5Cend%7Beqnarray%2A%7D+%5Ctag%7B9%7D+" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><strong>由于逻辑回归假设 $y$ 服从伯努利分布（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Bernoulli%2Bdistribution">Bernoulli</a>），即：</strong></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Beqnarray%2A%7D++%26%26+f%28x%7Cp%29+%3D+p%5Ex+%281-p%29%5E%7B1-x%7D+%5C%5C++%26%26+%3D++%5Cexp%28x%2Alnp+%2B+%281-x%29%2Aln%281-p%29%29+%5C%5C+%26%26+%3D%5Cexp%28ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%2A+x+%2B+ln%281-p%29%29+%5C%5C++%26%26%3D%5Cexp%28%CE%B7%2Ax+%2B+ln%281%2Be%5E%CE%B7%29%29+%5C%5C+%26%26+Let%3A+%CE%B7%3Dln%28%5Cfrac%7Bp%7D%7B1-p%7D%29++%5Cend%7Beqnarray%2A%7D+%5Ctag%7B9%7D+" alt="[公式]"></p>
 <p>对比式 <img src="https://www.zhihu.com/equation?tex=%288%29" alt="[公式]"> 指数函数族的通用形式，我们发现：</p>
 <ul>
-<li><figure>
-<img src="https://www.zhihu.com/equation?tex=h%28x%29+%3D+1%EF%BC%8CT%28x%29%3Dx" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure></li>
-<li><figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29%2C+A%28p%29+%3D+-ln%281%2Be%5E%CE%B7%29" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure></li>
+<li><img src="https://www.zhihu.com/equation?tex=h%28x%29+%3D+1%EF%BC%8CT%28x%29%3Dx" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29%2C+A%28p%29+%3D+-ln%281%2Be%5E%CE%B7%29" alt="[公式]"></li>
 </ul>
-<p><strong>这说明伯努利分布也是指数分布族（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Exponential%2Bfamily">exponential
-family</a>）的成员。按GLM的第二要素定义：</strong></p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Ceta+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5C%5C+%5CRightarrow+ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5Ctag%7B10%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>我们再计算 <img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29" alt="[公式]"> 的反函数，就得到了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">
-函数：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=f%28x%29+%3D+%5Cfrac%7B1%7D%7B1%2B+e%5E%7B-x%7D%7D+%5Ctag%7B11%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><strong>这说明伯努利分布也是指数分布族（<a href="https://link.zhihu.com/?target=https%3A//encyclopedia.thefreedictionary.com/Exponential%2Bfamily">exponential family</a>）的成员。按GLM的第二要素定义：</strong></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ceta+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5C%5C+%5CRightarrow+ln%28%5Cfrac%7Bp%7D%7B1-p%7D%29+%3D+%5Cpmb%7BX%7D+%5Cpmb%7B%5Cbeta%7D+%5Ctag%7B10%7D" alt="[公式]"></p>
+<p>我们再计算 <img src="https://www.zhihu.com/equation?tex=%5Ceta%28p%29%3Dln%28%7Bp%7D%2F%281-p%29%29" alt="[公式]"> 的反函数，就得到了<img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]"> 函数：</p>
+<p><img src="https://www.zhihu.com/equation?tex=f%28x%29+%3D+%5Cfrac%7B1%7D%7B1%2B+e%5E%7B-x%7D%7D+%5Ctag%7B11%7D" alt="[公式]"></p>
 <p>按类似方法，我们可以推导出各分布函数及其链接函数，如图5所示。</p>
-<p><img src="https://pic1.zhimg.com/80/v2-ffe75b45239773e6245b00b78c65d908_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<img src="https://pic1.zhimg.com/80/v2-ffe75b45239773e6245b00b78c65d908_1440w.jpg" alt="img" style="zoom:50%;">
 <p><strong>从广义线性模型角度，我们确实推导出 <img src="https://www.zhihu.com/equation?tex=sigmoid" alt="[公式]">函数与逻辑回归之间密不可分的联系。但是，sigmoid函数输出值为什么可以代表概率？</strong></p>
-<p><strong><font color="red"> 上文提到，逻辑回归中因变量 <span class="math inline">\(y\)</span> 服从伯努利分布，而伯努利分布的参数 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]">
-的含义就是样例属于 <img src="https://www.zhihu.com/equation?tex=y+%3D+1" alt="[公式]"> 的概率。</font></strong></p>
+<p><strong><font color="red"> 上文提到，逻辑回归中因变量 $y$ 服从伯努利分布，而伯努利分布的参数 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]"> 的含义就是样例属于 <img src="https://www.zhihu.com/equation?tex=y+%3D+1" alt="[公式]"> 的概率。</font></strong></p>
 <h3><span id="三-利用极大似然估计法估计参数">三、利用极大似然估计法估计参数</span></h3>
 <p>在模型参数估计问题上，两大主流学派持有不同观点：</p>
 <ul>
-<li><strong>频率主义学派（Frequentist）：</strong>
-<strong>认为参数虽然未知，但却是客观存在的固定值</strong>。因此，可通过优化似然函数等准则估计参数值。</li>
-<li><strong>贝叶斯学派（Bayesian）： </strong>
-<strong>认为参数是未观察到的随机变量，其本身也可有分布</strong>。因此，可假定参数服从一个先验分布，再基于观察到的数据来计算参数的后验分布。</li>
+<li><strong>频率主义学派（Frequentist）：</strong> <strong>认为参数虽然未知，但却是客观存在的固定值</strong>。因此，可通过优化似然函数等准则估计参数值。</li>
+<li>**贝叶斯学派（Bayesian）： ** <strong>认为参数是未观察到的随机变量，其本身也可有分布</strong>。因此，可假定参数服从一个先验分布，再基于观察到的数据来计算参数的后验分布。</li>
 </ul>
-<p><strong>极大似然估计法（Maximum Likelihood
-Estimation，MLE）属于频率主义学派方法，其蕴含的朴素思想在于：</strong></p>
-<p>我们已经确定了一个模型种类 <img src="https://www.zhihu.com/equation?tex=h_%7B%5Ctheta%7D%28x%7C%5Ctheta%29" alt="[公式]"> ，但还不清楚其真实参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]">
-。既然目前观察样本已经出现，那么就<strong>由果溯因</strong>，估计出一组参数
-<img src="https://www.zhihu.com/equation?tex=%5Chat+%7B%5Ctheta%7D" alt="[公式]">
-，使得出现目前结果的可能性<strong>最大</strong>（优化目标)，如图6所示。</p>
+<p><strong>极大似然估计法（Maximum Likelihood Estimation，MLE）属于频率主义学派方法，其蕴含的朴素思想在于：</strong></p>
+<p>我们已经确定了一个模型种类 <img src="https://www.zhihu.com/equation?tex=h_%7B%5Ctheta%7D%28x%7C%5Ctheta%29" alt="[公式]"> ，但还不清楚其真实参数 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="[公式]"> 。既然目前观察样本已经出现，那么就<strong>由果溯因</strong>，估计出一组参数 <img src="https://www.zhihu.com/equation?tex=%5Chat+%7B%5Ctheta%7D" alt="[公式]"> ，使得出现目前结果的可能性<strong>最大</strong>（优化目标)，如图6所示。</p>
 <p>由于一组样本中的所有样例是一个整体，因此我们<strong>将各样例的概率相乘</strong>（排列组合中的乘法原理）来得到我们的目标函数。</p>
-<figure>
-<img src="https://pic1.zhimg.com/80/v2-13bed4bb32c44c57bdde2cc772a34184_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>我们把第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 个样例的类别属于 <img src="https://www.zhihu.com/equation?tex=y%3D1" alt="[公式]">
-的概率记为： <img src="https://www.zhihu.com/equation?tex=P%28y%3D1%7C+%5Cpmb%7Bx%7D_i%29+%3D+p%28+%5Cpmb%7Bx%7D_i%7C+%5Cpmb%7Bw%7D+%29" alt="[公式]"> .</p>
+<p><img src="https://pic1.zhimg.com/80/v2-13bed4bb32c44c57bdde2cc772a34184_1440w.jpg" alt="img"></p>
+<p>我们把第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 个样例的类别属于 <img src="https://www.zhihu.com/equation?tex=y%3D1" alt="[公式]"> 的概率记为： <img src="https://www.zhihu.com/equation?tex=P%28y%3D1%7C+%5Cpmb%7Bx%7D_i%29+%3D+p%28+%5Cpmb%7Bx%7D_i%7C+%5Cpmb%7Bw%7D+%29" alt="[公式]"> .</p>
 <p>现在，我们有观测样本 <img src="https://www.zhihu.com/equation?tex=+D%3D%5C%7B%28+%5Cpmb%7Bx%7D_1%2C+y_%7B1%7D%29%2C+%28+%5Cpmb%7Bx%7D_2%2C+y_%7B2%7D%29%2C...%2C%28+%5Cpmb%7Bx%7D_m%2C+y_%7Bm%7D%29%5C%7D%2C+%5Cpmb+x_%7Bi%7D+%5Cin+R%5En" alt="[公式]"> ，那么似然函数为：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=L%28%5Cpmb%7Bw%7D%29%3D+%5Cprod_%7Bi%3D1%7D%5E%7Bm%7Dp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29++%3D+%5Cprod_%7Bi%3D1%7D%5Em+%5Bp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D++%5Ctag%7B12%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>其中，样例 <img src="https://www.zhihu.com/equation?tex=+%5Cpmb%7Bx%7D_i" alt="[公式]"> 具有标签 <img src="https://www.zhihu.com/equation?tex=y_%7Bi%7D+%5Cin+%5C%7B0%2C1%5C%7D" alt="[公式]">
-。右边为什么要写成这种形式呢？主要原因在于这是<strong>伯努利分布的常见形式</strong>。按正负样例分析，可以帮助你理解这个形式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=L%28%5Cpmb%7Bw%7D%29%3D+%5Cprod_%7Bi%3D1%7D%5E%7Bm%7Dp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29++%3D+%5Cprod_%7Bi%3D1%7D%5Em+%5Bp%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28+%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D++%5Ctag%7B12%7D" alt="[公式]"></p>
+<p>其中，样例 <img src="https://www.zhihu.com/equation?tex=+%5Cpmb%7Bx%7D_i" alt="[公式]"> 具有标签 <img src="https://www.zhihu.com/equation?tex=y_%7Bi%7D+%5Cin+%5C%7B0%2C1%5C%7D" alt="[公式]"> 。右边为什么要写成这种形式呢？主要原因在于这是<strong>伯努利分布的常见形式</strong>。按正负样例分析，可以帮助你理解这个形式：</p>
 <ul>
 <li><img src="https://www.zhihu.com/equation?tex=y_i+%3D+1" alt="[公式]"> 时，<img src="https://www.zhihu.com/equation?tex=%5Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D+%3D+p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5E%7B1%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B0%7D+%3D+p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29" alt="[公式]"></li>
 <li><img src="https://www.zhihu.com/equation?tex=y_i+%3D+0" alt="[公式]"> 时，<img src="https://www.zhihu.com/equation?tex=%5Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7By_%7Bi%7D%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1-y_%7Bi%7D%7D+%3D+p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5E%7B0%7D%5B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%5D%5E%7B1%7D+%3D+1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29" alt="[公式]"></li>
 </ul>
-<p>为便于求解，将连乘 <img src="https://www.zhihu.com/equation?tex=%5Cprod" alt="[公式]"> 转为
-<img src="https://www.zhihu.com/equation?tex=%5Csum" alt="[公式]">
-，我们对等式 <img src="https://www.zhihu.com/equation?tex=%2812%29" alt="[公式]"> 两边同取对数 <img src="https://www.zhihu.com/equation?tex=ln" alt="[公式]">
-，写成对数似然函数：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+L%28%5Cpmb%7Bw%7D%29%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dlnp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_%7Bi%7D%29ln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dln%5Cfrac%7Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%7B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%2Bln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D++%5C%5C++%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D_i+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5En%28w_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5Cend%7Baligned%7D+%5Ctag%7B13%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p>为便于求解，将连乘 <img src="https://www.zhihu.com/equation?tex=%5Cprod" alt="[公式]"> 转为 <img src="https://www.zhihu.com/equation?tex=%5Csum" alt="[公式]"> ，我们对等式 <img src="https://www.zhihu.com/equation?tex=%2812%29" alt="[公式]"> 两边同取对数 <img src="https://www.zhihu.com/equation?tex=ln" alt="[公式]"> ，写成对数似然函数：</p>
+<p><img src="https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+L%28%5Cpmb%7Bw%7D%29%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dlnp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_%7Bi%7D%29ln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7Dln%5Cfrac%7Bp%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%7B1-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%7D%2Bln%281-p%28%5Cpmb%7Bx%7D_i%7C%5Cpmb%7Bw%7D%29%29%5D++%5C%5C++%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Cpmb%7Bw%7D%5ET%5Cpmb%7Bx%7D_i+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5C%5C+%26%3D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5En%28w_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29+-+ln%281%2Be%5E%7B%5Cpmb%7Bw%7D%5ET+%5Ccdot+%5Cpmb%7Bx%7D_%7Bi%7D%7D%29%5D+%5Cend%7Baligned%7D+%5Ctag%7B13%7D" alt="[公式]"></p>
 <p>我们的优化目标是：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cmax+L%28%5Cpmb%7Bw%7D%29+%5C%5C+%5CLeftrightarrow+%5Cmax+J%28%5Cpmb%7Bw%7D%29+%3D++%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5C%5C+%5CLeftrightarrow++%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-+%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5Ctag%7B14%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cmax+L%28%5Cpmb%7Bw%7D%29+%5C%5C+%5CLeftrightarrow+%5Cmax+J%28%5Cpmb%7Bw%7D%29+%3D++%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5C%5C+%5CLeftrightarrow++%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-+%5Cfrac%7B1%7D%7Bm%7D%28%5Csum_%7Bi%3D1%7D%5Em%28y_%7Bi%7Dln+p%28x_i%7C%5Cpmb%7Bw%7D%29%2B%281-y_i%29+ln%281-p%28x_i%7C%5Cpmb%7Bw%7D%29%29%29+%5Ctag%7B14%7D" alt="[公式]"></p>
 <p>认真考虑后，我们发现并没有其他<strong>约束项。</strong>(事实上，这里将蕴含正则项的思想)</p>
 <h3><span id="四-最优化问题求解之梯度下降法">四、最优化问题求解之梯度下降法</span></h3>
 <p>回到式 <img src="https://www.zhihu.com/equation?tex=%2814%29" alt="[公式]"> 这个问题中：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D+-+ln%281%2B%5Cexp%28%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29%5D+%5Ctag%7B17%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
-<p>我们不断重复这一过程：达到某个点 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">
-后，继续计算下一个点 <img src="https://www.zhihu.com/equation?tex=%7Bk%2B1%7D" alt="[公式]">
-：</p>
-<figure>
-<img src="https://www.zhihu.com/equation?tex=+w%5E%7Bk%2B1%7D_i+%3Dw%5Ek_i-%5Clambda++%5Cfrac%7B%5Cpartial+J%28%5Ctextbf%7Bw%7D%29%7D+%7B%5Cpartial+w_i%7D+%5Ctag%7B18%7D" alt="[公式]">
-<figcaption aria-hidden="true">[公式]</figcaption>
-</figure>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cmin+J%28%5Cpmb%7Bw%7D%29+%3D+-%5Cfrac%7B1%7D%7Bm%7D%5Csum_%7Bi%3D1%7D%5Em%5By_%7Bi%7D%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D+-+ln%281%2B%5Cexp%28%5Csum_%7Bj%3D1%7D%5Enw_i%5Ccdot+x_%7Bi%7D%5E%7B%28j%29%7D%29%5D+%5Ctag%7B17%7D" alt="[公式]"></p>
+<p>我们不断重复这一过程：达到某个点 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]"> 后，继续计算下一个点 <img src="https://www.zhihu.com/equation?tex=%7Bk%2B1%7D" alt="[公式]"> ：</p>
+<p><img src="https://www.zhihu.com/equation?tex=+w%5E%7Bk%2B1%7D_i+%3Dw%5Ek_i-%5Clambda++%5Cfrac%7B%5Cpartial+J%28%5Ctextbf%7Bw%7D%29%7D+%7B%5Cpartial+w_i%7D+%5Ctag%7B18%7D" alt="[公式]"></p>
 <p>那么，这个迭代过程何时才能停止呢？一般满足以下任意条件即可：</p>
 <ul>
 <li>达到迭代次数上限： <img src="https://www.zhihu.com/equation?tex=k+%3D+k_%7Bmax%7D" alt="[公式]"></li>
@@ -642,13 +558,13 @@ Estimation，MLE）属于频率主义学派方法，其蕴含的朴素思想在�
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/387JGHJ/" rel="prev" title="风控算法（3）技术算法-PU Learning">
-                  <i class="fa fa-chevron-left"></i> 风控算法（3）技术算法-PU Learning
+                <a href="/posts/DMQR7N/" rel="prev" title="风控算法（1）业务风控常用算法归纳">
+                  <i class="fa fa-chevron-left"></i> 风控算法（1）业务风控常用算法归纳
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/2105FD/" rel="next" title="python-dict和set">
-                  python-dict和set <i class="fa fa-chevron-right"></i>
+                <a href="/posts/387JGHJ/" rel="next" title="风控算法（3）技术算法-PU Learning">
+                  风控算法（3）技术算法-PU Learning <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

@@ -172,7 +172,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">61</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -308,88 +308,56 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3><span id="一-k-means">一、K-means</span></h3>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211326577.jpg" alt="【机器学习】K-means（非常详细）" style="zoom:51%;"></p>
-<p>K-means 聚类的迭代算法实际上是 EM 算法。EM
-算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在
-K-means
-中的隐变量是每个类别所属类别。k近邻法中，当<strong>训练集</strong>、<strong>距离度量</strong>、<strong>K值</strong>以及<strong>分类决策规则</strong>确定后，对于任何一个新的输入实例，它所属的类唯一地确定。这相当于根据上述要素将特征空间划分为一些子空间，确定子空间里的每个点所属的类。</p>
-<p><strong>K-均值是一个迭代算法，假设我们想要将数据聚类成 n
-个组，其方法为:</strong></p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211326577.jpg" alt="【机器学习】K-means（非常详细）" style="zoom:51%;">
+<p>K-means 聚类的迭代算法实际上是 EM 算法。EM 算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在 K-means 中的隐变量是每个类别所属类别。k近邻法中，当<strong>训练集</strong>、<strong>距离度量</strong>、<strong>K值</strong>以及<strong>分类决策规则</strong>确定后，对于任何一个新的输入实例，它所属的类唯一地确定。这相当于根据上述要素将特征空间划分为一些子空间，确定子空间里的每个点所属的类。</p>
+<p><strong>K-均值是一个迭代算法，假设我们想要将数据聚类成 n 个组，其方法为:</strong></p>
 <ul>
-<li>首先选择𝐾个<strong>随机</strong>的点，称为<strong>聚类中心</strong>（cluster
-centroids）；</li>
+<li>首先选择𝐾个<strong>随机</strong>的点，称为<strong>聚类中心</strong>（cluster centroids）；</li>
 <li>对于数据集中的每一个数据，按照<strong>距离𝐾个中心点的距离</strong>，将其与距离最近的中心点关联起来，与同一个中心点关联的所有点聚成一类。</li>
 <li>计算每一个组的平均值，将该组所<strong>关联的中心点移动到平均值</strong>的位置。</li>
 <li>重复步骤，直至中心点不再变化。</li>
 </ul>
-<p>K-均值算法也可以很便利地用于将数据分为许多不同组，即使在没有非常明显区分的组群的情况下也可以。下图所示的数据集包含身高和体重两项特征构成的，利用
-K-均值算法将数据分为三类，用于帮助确定将要生产的 T-恤衫的三种尺寸。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221641204.jpeg" alt="img" style="zoom: 50%;"></p>
+<p>K-均值算法也可以很便利地用于将数据分为许多不同组，即使在没有非常明显区分的组群的情况下也可以。下图所示的数据集包含身高和体重两项特征构成的，利用 K-均值算法将数据分为三类，用于帮助确定将要生产的 T-恤衫的三种尺寸。</p>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221641204.jpeg" alt="img" style="zoom: 50%;">
 <h4><span id="11-损失函数">1.1 损失函数</span></h4>
-<p><strong>K-均值最小化问题，是要最小化所有的数据点与其所关联的聚类中心点之间的距离之和</strong>，因此
-<strong>K-均值的代价函数（又称畸变函数 Distortion
-function）为</strong>： <span class="math display">\[
-J\left(c^{(1)}, c^{(2)}, \ldots, c^{(m)}, u_1, \ldots,
-u_k\right)=\frac{1}{m} \sum_{i=1}^m\left\|X^{(1)}-u_{c^{(i)}}\right\|^2
-\]</span> 其中 <span class="math inline">\(u_{c^{(i)}}\)</span> 代表与
-<span class="math inline">\(x^{(i)}\)</span>
-最近的聚类中心点。我们的的优化目标便是找出使得代价函数最小的 <span class="math inline">\(c^{(1)}, c^{(2)}, \ldots, c^{(m)}\)</span> 和
-<span class="math inline">\(u_1, u_2, \ldots, u_k\)</span> 。</p>
+<p><strong>K-均值最小化问题，是要最小化所有的数据点与其所关联的聚类中心点之间的距离之和</strong>，因此 <strong>K-均值的代价函数（又称畸变函数 Distortion function）为</strong>：<br>
+$$<br>
+J\left(c^{(1)}, c^{(2)}, \ldots, c^{(m)}, u_1, \ldots, u_k\right)=\frac{1}{m} \sum_{i=1}<sup>m\left|X</sup>{(1)}-u_{c<sup>{(i)}}\right|</sup>2<br>
+$$<br>
+其中 $u_{c^{(i)}}$ 代表与 $x^{(i)}$ 最近的聚类中心点。我们的的优化目标便是找出使得代价函数最小的 $c^{(1)}, c^{(2)}, \ldots, c^{(m)}$ 和 $u_1, u_2, \ldots, u_k$ 。</p>
 <h4><span id="12-k值的选择-肘部法则">1.2 k值的选择 【肘部法则】</span></h4>
-<p>在运行
-K-均值算法的之前，我们首先要随机初始化所有的聚类中心点，下面介绍怎样做：</p>
-<ol type="1">
-<li>我们应该选择𝐾 &lt;
-𝑚，即聚类中心点的个数要小于所有训练集实例的数量。</li>
+<p>在运行 K-均值算法的之前，我们首先要随机初始化所有的聚类中心点，下面介绍怎样做：</p>
+<ol>
+<li>我们应该选择𝐾 &lt; 𝑚，即聚类中心点的个数要小于所有训练集实例的数量。</li>
 <li>随机选择𝐾个训练实例，然后令𝐾个聚类中心分别与这𝐾个训练实例相等K-均值的一个问题在于，它有可能会<strong>停留在一个局部最小值</strong>处，而这取决于初始化的情况。</li>
 </ol>
-<p>为了解决这个问题，我们通常需要多次运行
-K-均值算法，每一次都重新进行随机初始化，最后再比较多次运行
-K-均值的结果，选择代价函数最小的结果。这种方法在𝐾较小的时候（2--10）还是可行的，<strong>但是如果𝐾较大，这么做也可能不会有明显地改善。</strong></p>
-<p>没有所谓最好的选择聚类数的方法，通常是需要根据不同的问题，人工进行选择的。选择的时候思考我们运用
-K-均值算法聚类的动机是什么。有一个可能会谈及的方法叫作<strong>“肘部法则”</strong>。关
-于“肘部法则”，我们所需要做的是改变𝐾值，也就是聚类类别数目的总数。我们用一个聚类来运行
-K
-均值聚类方法。这就意味着，所有的数据都会分到一个聚类里，然后<strong>计算成本函数或者计算畸变函数</strong>𝐽。𝐾代表聚类数字。</p>
+<p>为了解决这个问题，我们通常需要多次运行 K-均值算法，每一次都重新进行随机初始化，最后再比较多次运行 K-均值的结果，选择代价函数最小的结果。这种方法在𝐾较小的时候（2–10）还是可行的，<strong>但是如果𝐾较大，这么做也可能不会有明显地改善。</strong></p>
+<p>没有所谓最好的选择聚类数的方法，通常是需要根据不同的问题，人工进行选择的。选择的时候思考我们运用 K-均值算法聚类的动机是什么。有一个可能会谈及的方法叫作**“肘部法则”<strong>。关 于“肘部法则”，我们所需要做的是改变𝐾值，也就是聚类类别数目的总数。我们用一个聚类来运行 K 均值聚类方法。这就意味着，所有的数据都会分到一个聚类里，然后</strong>计算成本函数或者计算畸变函数**𝐽。𝐾代表聚类数字。</p>
 <p>[<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304221641692.jpeg" alt="img"></p>
-<p>我们可能会得到一条类似于这样的曲线。像一个人的肘部。这就是“肘部法则”所做的，让我们来看这样一个图，看起来就好像有一个很清楚的肘在那儿。你会发现这种模式，它的畸变值会迅速下降，从
-1 到 2，从 2 到 3 之后，你会在 3
-的时候达到一个肘点。在此之后，畸变值就下降的非常慢，看起来就像使用 3
-个聚类来进行聚类是正确的，<strong>这是因为那个点是曲线的肘点，畸变值下降得很快，𝐾
-= 3之后就下降得很慢，那么我们就选𝐾 =
-3。</strong>当你应用“肘部法则”的时候，如果你得到了一个像上面这样的图，那么这将是一种用来选择聚类个数的合理方法。</p>
+<p>我们可能会得到一条类似于这样的曲线。像一个人的肘部。这就是“肘部法则”所做的，让我们来看这样一个图，看起来就好像有一个很清楚的肘在那儿。你会发现这种模式，它的畸变值会迅速下降，从 1 到 2，从 2 到 3 之后，你会在 3 的时候达到一个肘点。在此之后，畸变值就下降的非常慢，看起来就像使用 3 个聚类来进行聚类是正确的，**这是因为那个点是曲线的肘点，畸变值下降得很快，𝐾 = 3之后就下降得很慢，那么我们就选𝐾 = 3。**当你应用“肘部法则”的时候，如果你得到了一个像上面这样的图，那么这将是一种用来选择聚类个数的合理方法。</p>
 <h4><span id="13-knn与k-means区别">1.3 KNN与K-means区别？</span></h4>
-<p>K最近邻(k-Nearest
-Neighbor，KNN)分类算法，是一个理论上比较成熟的方法，也是最简单的机器学习算法之一。</p>
+<p>K最近邻(k-Nearest Neighbor，KNN)分类算法，是一个理论上比较成熟的方法，也是最简单的机器学习算法之一。</p>
 <h5><span id="区别">区别：</span></h5>
 <table>
-<colgroup>
-<col style="width: 6%">
-<col style="width: 46%">
-<col style="width: 46%">
-</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>算法</th>
 <th>KNN</th>
 <th>K-Means</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>类别</td>
-<td>1.KNN是<strong>分类</strong>算法 2.属于<strong>监督学习</strong>
-3.训练数据集是带label的数据</td>
-<td>1.K-Means是<strong>聚类</strong>算法
-2.属于<strong>非监督学习</strong>
-3.训练数据集是无label的数据，是杂乱无章的，经过聚类后变得有序，先无序，后有序。</td>
+<td>1.KNN是<strong>分类</strong>算法 2.属于<strong>监督学习</strong> 3.训练数据集是带label的数据</td>
+<td>1.K-Means是<strong>聚类</strong>算法 2.属于<strong>非监督学习</strong> 3.训练数据集是无label的数据，是杂乱无章的，经过聚类后变得有序，先无序，后有序。</td>
 </tr>
-<tr class="even">
+<tr>
 <td>训练模式</td>
 <td>没有明显的前期训练过程，属于memory based learning</td>
 <td>有明显的前期训练过程</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>k值的含义</td>
 <td>K的含义：一个样本x，对它进行分类，就从训练数据集中，<strong>在x附近找离它最近的K个数据点</strong>，这K个数据点，类别c占的个数最多，就把x的label设为c。</td>
 <td>K的含义：<strong>K是人工固定好的数字，假设数据集合可以分为K个蔟</strong>，那么就利用训练数据来训练出这K个分类。</td>
@@ -397,138 +365,98 @@ Neighbor，KNN)分类算法，是一个理论上比较成熟的方法，也是�
 </tbody>
 </table>
 <h5><span id="相似点"><strong>相似点</strong>：</span></h5>
-<p>都包含这样的过程，给定一个点，在数据集中找离它最近的点。即二者都用到了NN(Nears
-Neighbor)算法思想。</p>
+<p>都包含这样的过程，给定一个点，在数据集中找离它最近的点。即二者都用到了NN(Nears Neighbor)算法思想。</p>
 <h4><span id="14-k-means优缺点及改进">1.4 K-Means优缺点及改进</span></h4>
-<p>k-means：在大数据的条件下，<strong>会耗费大量的时间和内存</strong>。
-优化k-means的建议：</p>
-<ol type="1">
-<li><p>减少聚类的数目K。因为，每个样本都要跟类中心计算距离。</p></li>
-<li><p>减少样本的特征维度。比如说，<strong>通过PCA等进行降维</strong>。</p></li>
-<li><p>考察其他的聚类算法，通过选取toy数据，去测试不同聚类算法的性能。</p></li>
-<li><p><strong>hadoop集群</strong>，K-means算法是很容易进行并行计算的。</p></li>
-<li><p>算法可能找到局部最优的聚类，而不是全局最优的聚类。使用改进的二分k-means算法。</p>
-<p>二分k-means算法：首先将整个数据集看成一个簇，然后进行一次k-means（k=2）算法将该簇一分为二，并计算每个簇的误差平方和，选择平方和最大的簇迭代上述过程再次一分为二，直至簇数达到用户指定的k为止，此时可以达到的全局最优。</p></li>
+<p>k-means：在大数据的条件下，<strong>会耗费大量的时间和内存</strong>。 优化k-means的建议：</p>
+<ol>
+<li>
+<p>减少聚类的数目K。因为，每个样本都要跟类中心计算距离。</p>
+</li>
+<li>
+<p>减少样本的特征维度。比如说，<strong>通过PCA等进行降维</strong>。</p>
+</li>
+<li>
+<p>考察其他的聚类算法，通过选取toy数据，去测试不同聚类算法的性能。</p>
+</li>
+<li>
+<p><strong>hadoop集群</strong>，K-means算法是很容易进行并行计算的。</p>
+</li>
+<li>
+<p>算法可能找到局部最优的聚类，而不是全局最优的聚类。使用改进的二分k-means算法。</p>
+<p>二分k-means算法：首先将整个数据集看成一个簇，然后进行一次k-means（k=2）算法将该簇一分为二，并计算每个簇的误差平方和，选择平方和最大的簇迭代上述过程再次一分为二，直至簇数达到用户指定的k为止，此时可以达到的全局最优。</p>
+</li>
 </ol>
 <h3><span id="二-k-means的调优与改进">二、K - means的调优与改进</span></h3>
-<p>针对 K-means
-算法的缺点，我们可以有很多种调优方式：如<strong>数据预处理</strong>（去除异常点），<strong>合理选择
-K 值</strong>，<strong>高维映射</strong>等。以下将简单介绍：</p>
+<p>针对 K-means 算法的缺点，我们可以有很多种调优方式：如<strong>数据预处理</strong>（去除异常点），<strong>合理选择 K 值</strong>，<strong>高维映射</strong>等。以下将简单介绍：</p>
 <h4><span id="21-数据预处理">2.1 数据预处理</span></h4>
-<p>K-means
-的本质是基于欧式距离的数据划分算法，均值和方差大的维度将对数据的聚类产生决定性影响。所以<strong>未做归一化处理和统一单位的数据是无法直接参与运算和比较</strong>的。常见的数据预处理方式有：<strong>数据归一化，数据标准化</strong>。</p>
+<p>K-means 的本质是基于欧式距离的数据划分算法，均值和方差大的维度将对数据的聚类产生决定性影响。所以<strong>未做归一化处理和统一单位的数据是无法直接参与运算和比较</strong>的。常见的数据预处理方式有：<strong>数据归一化，数据标准化</strong>。</p>
 <p>此外，离群点或者噪声数据会对均值产生较大的影响，导致中心偏移，因此我们还需要对数据进行异常点检测。</p>
 <h4><span id="22-合理选择-k-值">2.2 合理选择 K 值</span></h4>
-<p>K 值的选取对 K-means 影响很大，这也是 K-means 最大的缺点，常见的选取
-K 值的方法有：<strong>手肘法、Gap statistic 方法</strong>。</p>
+<p>K 值的选取对 K-means 影响很大，这也是 K-means 最大的缺点，常见的选取 K 值的方法有：<strong>手肘法、Gap statistic 方法</strong>。</p>
 <p><strong>【手肘法】</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-5ca4a5fe0b06b25a2b97262abb401a16_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>当 K &lt; 3 时，曲线急速下降；当 K &gt; 3
-时，曲线趋于平稳，通过手肘法我们认为拐点 3 为 K 的最佳值。</p>
+<img src="https://pic3.zhimg.com/80/v2-5ca4a5fe0b06b25a2b97262abb401a16_1440w.jpg" alt="img" style="zoom: 67%;">
+<p>当 K &lt; 3 时，曲线急速下降；当 K &gt; 3 时，曲线趋于平稳，通过手肘法我们认为拐点 3 为 K 的最佳值。</p>
 <p>【<strong>Gap statistic</strong>】</p>
-<p><span class="math display">\[
-G a p(K)=\mathrm{E}\left(\log D_k\right)-\log D_k
-\]</span> 其中 <span class="math inline">\(D_k\)</span> 为损失函数, 这里
-<span class="math inline">\(E\left(\log D_k\right)\)</span> 指的是 <span class="math inline">\(\log D_k\)</span>
-的期望。这个数值通常通过蒙特卡洛模拟产生, <strong>我们在样本
-里所在的区域中按照均匀分布随机产生和原始样本数一样多的随机样本,
-并对这个随机样本做 K-Means, 从而得到一个 <span class="math inline">\(D_k\)</span> 。如此往复多次, 通常 20 次,
-我们可以得到 20 个 <span class="math inline">\(\log
-D_k\)</span></strong> 。对这 20 个数值求平均值, 就得到了 <span class="math inline">\(E\left(\log D_k\right)\)</span>
-的近似值。最终可以计算 Gap Statisitc。而 Gap statistic
-取得最大值所对应的 K 就是最佳的 K。</p>
-<p><img src="https://pic3.zhimg.com/80/v2-9a39a8dad143e5dd52a506d83c2cbb36_1440w.jpg" alt="img" style="zoom: 67%;"></p>
+<p>$$<br>
+G a p(K)=\mathrm{E}\left(\log D_k\right)-\log D_k<br>
+$$<br>
+其中 $D_k$ 为损失函数, 这里 $E\left(\log D_k\right)$ 指的是 $\log D_k$ 的期望。这个数值通常通过蒙特卡洛模拟产生, <strong>我们在样本 里所在的区域中按照均匀分布随机产生和原始样本数一样多的随机样本, 并对这个随机样本做 K-Means, 从而得到一个 $D_k$ 。如此往复多次, 通常 20 次, 我们可以得到 20 个 $\log D_k$</strong> 。对这 20 个数值求平均值, 就得到了 $E\left(\log D_k\right)$ 的近似值。最终可以计算 Gap Statisitc。而 Gap statistic 取得最大值所对应的 K 就是最佳的 K。</p>
+<img src="https://pic3.zhimg.com/80/v2-9a39a8dad143e5dd52a506d83c2cbb36_1440w.jpg" alt="img" style="zoom: 67%;">
 <p>由图可见，当 K=3 时，Gap(K) 取值最大，所以最佳的簇数是 K=3。</p>
-<p>Github 上一个项目叫 <a href="https://link.zhihu.com/?target=https%3A//github.com/milesgranger/gap_statistic">gap_statistic</a>
-，可以更方便的获取建议的类簇个数。</p>
+<p>Github 上一个项目叫 <a href="https://link.zhihu.com/?target=https%3A//github.com/milesgranger/gap_statistic">gap_statistic</a> ，可以更方便的获取建议的类簇个数。</p>
 <h4><span id="23-采用核函数">2.3 采用核函数</span></h4>
-<p><strong>基于欧式距离的 K-means
-假设了了各个数据簇的数据具有一样的的先验概率并呈现球形分布</strong>，但这种分布在实际生活中并不常见。面对非凸的数据分布形状时我们可以引入核函数来优化，这时算法又称为核
-K-means
-算法，是核聚类方法的一种。<strong>核聚类方法的主要思想是通过一个非线性映射，将输入空间中的数据点映射到高位的特征空间中，并在新的特征空间中进行聚类。</strong>非线性映射增加了数据点线性可分的概率，从而在经典的聚类算法失效的情况下，通过引入核函数可以达到更为准确的聚类结果。</p>
+<p><strong>基于欧式距离的 K-means 假设了了各个数据簇的数据具有一样的的先验概率并呈现球形分布</strong>，但这种分布在实际生活中并不常见。面对非凸的数据分布形状时我们可以引入核函数来优化，这时算法又称为核 K-means 算法，是核聚类方法的一种。**核聚类方法的主要思想是通过一个非线性映射，将输入空间中的数据点映射到高位的特征空间中，并在新的特征空间中进行聚类。**非线性映射增加了数据点线性可分的概率，从而在经典的聚类算法失效的情况下，通过引入核函数可以达到更为准确的聚类结果。</p>
 <h4><span id="24-k-means">2.4 K-means++</span></h4>
-<p><strong>K-means++
-就是选择离已选中心点最远的点</strong>。这也比较符合常理,
-聚类中心当然是互相离得越远越好。我们知道 初始值的选取对结果的影响很大,
-对初始值选择的改进是很重要的一部分。在所有的改进算法中, K-means++ 最
-有名。 K-means++ 算法步骤如下所示：</p>
-<ol type="1">
-<li>随机选取一个中心点 <span class="math inline">\(a_1\)</span>;</li>
-<li>计算数据到之前 <span class="math inline">\(\mathrm{n}\)</span>
-个聚类中心最远的距离 <span class="math inline">\(D(x)\)</span>,
-并以一定概率 <span class="math inline">\(\frac{D(x)^2}{\sum
-D(x)^2}\)</span> 选择新中心点 <span class="math inline">\(a_i\)</span>;</li>
+<p><strong>K-means++ 就是选择离已选中心点最远的点</strong>。这也比较符合常理, 聚类中心当然是互相离得越远越好。我们知道 初始值的选取对结果的影响很大, 对初始值选择的改进是很重要的一部分。在所有的改进算法中, K-means++ 最 有名。<br>
+K-means++ 算法步骤如下所示：</p>
+<ol>
+<li>随机选取一个中心点 $a_1$;</li>
+<li>计算数据到之前 $\mathrm{n}$ 个聚类中心最远的距离 $D(x)$, 并以一定概率 $\frac{D(x)^2}{\sum D(x)^2}$ 选择新中心点 $a_i$;</li>
 <li>重复第二步。</li>
 </ol>
-<p>简单的来说, 就是 <strong>K-means++
-就是选择离已选中心点最远的点</strong>。这也比较符合常理,
-聚类中心当然是互相离得越 远越好。 但是这个算法的缺点在于,
-难以并行化。所以 k-means II 改变取样策略, 并非按照 k-means++
-那样每次遍历只取 样一个样本, 而是每次遍历取样 <span class="math inline">\(\mathrm{k}\)</span> 个, 重复该取样过程 <span class="math inline">\(\log (n)\)</span> 次, 则得到 <span class="math inline">\(k \log (n)\)</span> 个样本点组成的集合, 然后从
-这些点中选取 k 个。当然一般也不需要 <span class="math inline">\(\log
-(n)\)</span> 次取样, 5 次即可。</p>
+<p>简单的来说, 就是 <strong>K-means++ 就是选择离已选中心点最远的点</strong>。这也比较符合常理, 聚类中心当然是互相离得越 远越好。<br>
+但是这个算法的缺点在于, 难以并行化。所以 k-means II 改变取样策略, 并非按照 k-means++ 那样每次遍历只取 样一个样本, 而是每次遍历取样 $\mathrm{k}$ 个, 重复该取样过程 $\log (n)$ 次, 则得到 $k \log (n)$ 个样本点组成的集合, 然后从 这些点中选取 k 个。当然一般也不需要 $\log (n)$ 次取样, 5 次即可。</p>
 <h4><span id="25-isodata">2.5 ISODATA</span></h4>
-<p>ISODATA 的全称是<strong>迭代自组织数据分析法</strong>。它解决了 K
-的值需要预先人为的确定这一缺点。而当遇到高维度、海量的数据集时，人们往往很难准确地估计出
-K 的大小。ISODATA
-就是针对这个问题进行了改进，它的思想也很直观：当属于某个类别的样本数过少时把这个类别去除，当属于某个类别的样本数过多、分散程度较大时把这个类别分为两个子类别。</p>
+<p>ISODATA 的全称是<strong>迭代自组织数据分析法</strong>。它解决了 K 的值需要预先人为的确定这一缺点。而当遇到高维度、海量的数据集时，人们往往很难准确地估计出 K 的大小。ISODATA 就是针对这个问题进行了改进，它的思想也很直观：当属于某个类别的样本数过少时把这个类别去除，当属于某个类别的样本数过多、分散程度较大时把这个类别分为两个子类别。</p>
 <h3><span id="三-收敛证明em算法">三、 收敛证明【EM算法】</span></h3>
-<p>我们先来看一下 K-means
-算法的步骤：先随机选择初始节点，然后计算每个样本所属类别，然后通过类别再跟新初始化节点。这个过程有没有想到之前介绍的
-<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/78311644">EM 算法</a> 。</p>
-<p>我们需要知道的是 K-means 聚类的迭代算法实际上是 EM 算法。EM
-算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在
-<strong>K-means 中的隐变量是每个样本所属类别</strong>。</p>
-<p>K-means 算法迭代步骤中的每次确认中心点以后重新进行标记对应 EM
-算法中的 <strong>E 步</strong>：<strong>求当前参数条件下的
-Expectation</strong>。而根据标记重新求中心点 对应 EM 算法中的 <strong>M
-步</strong>：<strong>求似然函数最大化时（损失函数最小时）对应的参数
-。</strong></p>
-<p>首先我们看一下损失函数的形式: <span class="math display">\[
-J=\sum_{i=1}^C \sum_{j=1}^N r_{i j} \cdot \nu\left(x_j, \mu_i\right)
-\]</span> 其中: <span class="math display">\[
-\nu\left(x_j, \mu_i\right)=\left\|x_j-\mu_i\right\|^2, \quad r_{n k}=
-\begin{cases}1 &amp; \text { if } x_n \in k \\ 0 &amp; \text { else
-}\end{cases}
-\]</span> 为了求极值，我们令损失函数求偏导数且等于 0 : <span class="math display">\[
-\frac{\partial J}{\partial \mu_k}=2 \sum_{i=1}^N r_{i
-k}\left(x_i-\mu_k\right)=0
-\]</span> <span class="math inline">\(\mathrm{k}\)</span> 是指第 <span class="math inline">\(\mathrm{k}\)</span> 个中心点, 于是我们有: <span class="math display">\[
-\mu_k=\frac{\sum_{i=1}^N r_{i k} x_i}{\sum_{i=1}^N r_{i k}}
-\]</span> 可以看出，新的中心点就是所有该类的<strong>质心</strong>。</p>
-<p><strong>EM 算法的缺点就是，容易陷入局部极小值，这也是 K-means
-有时会得到局部最优解的原因。</strong></p>
+<p>我们先来看一下 K-means 算法的步骤：先随机选择初始节点，然后计算每个样本所属类别，然后通过类别再跟新初始化节点。这个过程有没有想到之前介绍的 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/78311644">EM 算法</a> 。</p>
+<p>我们需要知道的是 K-means 聚类的迭代算法实际上是 EM 算法。EM 算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。在 <strong>K-means 中的隐变量是每个样本所属类别</strong>。</p>
+<p>K-means 算法迭代步骤中的每次确认中心点以后重新进行标记对应 EM 算法中的 <strong>E 步</strong>：<strong>求当前参数条件下的 Expectation</strong>。而根据标记重新求中心点 对应 EM 算法中的 <strong>M 步</strong>：<strong>求似然函数最大化时（损失函数最小时）对应的参数 。</strong></p>
+<p>首先我们看一下损失函数的形式:<br>
+$$<br>
+J=\sum_{i=1}^C \sum_{j=1}^N r_{i j} \cdot \nu\left(x_j, \mu_i\right)<br>
+$$<br>
+其中:<br>
+$$<br>
+\nu\left(x_j, \mu_i\right)=\left|x_j-\mu_i\right|^2, \quad r_{n k}= \begin{cases}1 &amp; \text { if } x_n \in k \ 0 &amp; \text { else }\end{cases}<br>
+$$<br>
+为了求极值，我们令损失函数求偏导数且等于 0 :<br>
+$$<br>
+\frac{\partial J}{\partial \mu_k}=2 \sum_{i=1}^N r_{i k}\left(x_i-\mu_k\right)=0<br>
+$$<br>
+$\mathrm{k}$ 是指第 $\mathrm{k}$ 个中心点, 于是我们有:<br>
+$$<br>
+\mu_k=\frac{\sum_{i=1}^N r_{i k} x_i}{\sum_{i=1}^N r_{i k}}<br>
+$$<br>
+可以看出，新的中心点就是所有该类的<strong>质心</strong>。</p>
+<p><strong>EM 算法的缺点就是，容易陷入局部极小值，这也是 K-means 有时会得到局部最优解的原因。</strong></p>
 <h3><span id="四-高斯混合模型gmm">四、高斯混合模型(GMM)</span></h3>
 <h4><span id="41-gmm的思想">4.1 GMM的思想</span></h4>
-<p>高斯混合模型（Gaussian Mixed
-Model，GMM）也是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。<strong>高斯混合模型假设每个簇的数据都是符合高斯分布（又叫正态分布）的</strong>，当前<strong>数据呈现的分布就是各个簇的高斯分布叠加在一起的结果。</strong></p>
-<p>第一张图是一个数据分布的样例，如果只用一个高斯分布来拟合图中的数据，图
-中所示的椭圆即为高斯分布的二倍标准差所对应的椭圆。直观来说，图中的数据
-明显分为两簇，因此只用一个高斯分布来拟和是不太合理的，需要推广到用多个
-高斯分布的叠加来对数据进行拟合。第二张图是用两个高斯分布的叠加来拟合得到的结果。<strong>这就引出了高斯混合模型，即用多个高斯分布函数的线形组合来对数据分布进行拟合。</strong>理论上，高斯混合模型可以拟合出任意类型的分布。</p>
-<p>高斯混合模型的核心思想是, 假设数据可以看作从多个高斯分布中生成出来
-的。在该假设下, 每个单独的分模型 都是标准高斯模型, 其均值 <span class="math inline">\(u_i\)</span> 和方差 <span class="math inline">\(\sum_i\)</span> 是待估计的参数。此外,
-每个分模型都还有一个参数 <span class="math inline">\(\pi_i\)</span>,
-可以理解为权 重或生成数据的概率。高斯混合模型的公式为: <span class="math display">\[
-p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)
-\]</span> 通常我们并不能直接得到高斯混合模型的参数,
-而是观察到了一系列数据点, 给出一个类别的数量K后, 希望求得最佳的 <span class="math inline">\(K\)</span>
-个高斯分模型。<strong>因此，高斯混合模型的计算，便成了最佳的均值 <span class="math inline">\(\mu\)</span>, 方差 <span class="math inline">\(\Sigma 、\)</span> 权重 <span class="math inline">\(\pi\)</span> 的寻找, 这类问题通常
-通过最大似然估计来求解。遗憾的是, 此问题中直接使用最大似然估计,
-得到的是一个复杂的非凸函数, 目标函数 是和的对数,
-难以展开和对其求偏导。</strong></p>
-<p><strong>在这种情况下，可以用EM算法。
-</strong>EM算法是在最大化目标函数时，先固定一个变量使整体函数变为凸优化函数，求导得到最值，然后利用最优参数更新被固定的变量，进入下一个循环。具体到高
-斯混合模型的求解，EM算法的迭代过程如下。</p>
+<p>高斯混合模型（Gaussian Mixed Model，GMM）也是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。<strong>高斯混合模型假设每个簇的数据都是符合高斯分布（又叫正态分布）的</strong>，当前<strong>数据呈现的分布就是各个簇的高斯分布叠加在一起的结果。</strong></p>
+<p>第一张图是一个数据分布的样例，如果只用一个高斯分布来拟合图中的数据，图 中所示的椭圆即为高斯分布的二倍标准差所对应的椭圆。直观来说，图中的数据 明显分为两簇，因此只用一个高斯分布来拟和是不太合理的，需要推广到用多个 高斯分布的叠加来对数据进行拟合。第二张图是用两个高斯分布的叠加来拟合得到的结果。**这就引出了高斯混合模型，即用多个高斯分布函数的线形组合来对数据分布进行拟合。**理论上，高斯混合模型可以拟合出任意类型的分布。</p>
+<p>高斯混合模型的核心思想是, 假设数据可以看作从多个高斯分布中生成出来 的。在该假设下, 每个单独的分模型 都是标准高斯模型, 其均值 $u_i$ 和方差 $\sum_i$ 是待估计的参数。此外, 每个分模型都还有一个参数 $\pi_i$, 可以理解为权 重或生成数据的概率。高斯混合模型的公式为:<br>
+$$<br>
+p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)<br>
+$$<br>
+通常我们并不能直接得到高斯混合模型的参数, 而是观察到了一系列数据点, 给出一个类别的数量K后, 希望求得最佳的 $K$ 个高斯分模型。<strong>因此，高斯混合模型的计算，便成了最佳的均值 $\mu$, 方差 $\Sigma 、$ 权重 $\pi$ 的寻找, 这类问题通常 通过最大似然估计来求解。遗憾的是, 此问题中直接使用最大似然估计, 得到的是一个复杂的非凸函数, 目标函数 是和的对数, 难以展开和对其求偏导。</strong></p>
+<p>**在这种情况下，可以用EM算法。 **EM算法是在最大化目标函数时，先固定一个变量使整体函数变为凸优化函数，求导得到最值，然后利用最优参数更新被固定的变量，进入下一个循环。具体到高 斯混合模型的求解，EM算法的迭代过程如下。</p>
 <p>首先，初始随机选择各参数的值。然后，重复下述两步，直到收敛。</p>
 <ul>
 <li>E步骤。根据当前的参数，计算每个点由某个分模型生成的概率。</li>
 <li>M步骤。使用E步骤估计出的概率，来改进每个分模型的均值，方差和权重。</li>
 </ul>
 <p>高斯混合模型是一个生成式模型。可以这样理解数据的生成过程，假设一个最简单的情况，即只有两个一维标准高斯分布的分模型<em>N</em>(0,1)和<em>N</em>(5,1)，其权重分别为0.7和0.3。那么，在生成第一个数据点时，先按照权重的比例，随机选择一个分布，比如选择第一个高斯分布，接着从<em>N</em>(0,1)中生成一个点，如−0.5，便是第一个数据点。在生成第二个数据点时，随机选择到第二个高斯分布<em>N</em>(5,1)，生成了第二个点4.7。如此循环执行，便生成出了所有的数据点。</p>
-<p>也就是说，我们并不知道最佳的K个高斯分布的各自3个参数，也不知道每个
-数据点究竟是哪个高斯分布生成的。所以每次循环时，先固定当前的高斯分布不
-变，获得每个数据点由各个高斯分布生成的概率。然后固定该生成概率不变，根据数据点和生成概率，获得一个组更佳的高斯分布。循环往复，直到参数的不再变化，或者变化非常小时，便得到了比较合理的一组高斯分布。</p>
+<p>也就是说，我们并不知道最佳的K个高斯分布的各自3个参数，也不知道每个 数据点究竟是哪个高斯分布生成的。所以每次循环时，先固定当前的高斯分布不 变，获得每个数据点由各个高斯分布生成的概率。然后固定该生成概率不变，根据数据点和生成概率，获得一个组更佳的高斯分布。循环往复，直到参数的不再变化，或者变化非常小时，便得到了比较合理的一组高斯分布。</p>
 <h4><span id="42-gmm与k-means相比">4.2 GMM与K-Means相比</span></h4>
 <p>高斯混合模型与K均值算法的相同点是：</p>
 <ul>
@@ -536,14 +464,11 @@ p(x)=\sum_{i=1}^k \pi_i N\left(x \mid u_i, \sum_i\right)
 <li><strong>都是使用EM算法来求解</strong>；</li>
 <li>都往往只能收敛于局部最优。</li>
 </ul>
-<p>而它相比于K
-均值算法的优点是，可以给出一个样本属于某类的<strong>概率</strong>是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；<strong>并且可以用于生成新的样本点</strong>。</p>
+<p>而它相比于K 均值算法的优点是，可以给出一个样本属于某类的<strong>概率</strong>是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；<strong>并且可以用于生成新的样本点</strong>。</p>
 <h3><span id="参考文献">参考文献</span></h3>
-<ol type="1">
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20463356">K-means
-笔记（三）数学原理</a></li>
-<li><a href="https://link.zhihu.com/?target=http%3A//sofasofa.io/forum_main_post.php%3Fpostid%3D1000282">K-means
-怎么选 K?</a></li>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20463356">K-means 笔记（三）数学原理</a></li>
+<li><a href="https://link.zhihu.com/?target=http%3A//sofasofa.io/forum_main_post.php%3Fpostid%3D1000282">K-means 怎么选 K?</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/161733843">K-Means：隐变量、聚类、EM</a></li>
 </ol>
 
