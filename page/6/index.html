@@ -350,6 +350,207 @@ Seq）</strong>：指手机上包含安装时间的App序列。如：["
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2ZK2C8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat_mac.jpg">
+      <meta itemprop="name" content="lzy">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PowerLZY's Blog">
+      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | PowerLZY's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/posts/2ZK2C8F/" class="post-title-link" itemprop="url">风控算法（4）特征工程-时序数据与特征工程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-01 19:33:41" itemprop="dateCreated datePublished" datetime="2022-07-01T19:33:41+08:00">2022-07-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-19 17:13:22" itemprop="dateModified" datetime="2023-04-19T17:13:22+08:00">2023-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2><span id="特征工程-时序数据与特征工程">特征工程-时序数据与特征工程</span></h2>
+<blockquote>
+<p>信贷时序数据与特征工程介绍 - 求是汪在路上的文章 - 知乎
+https://zhuanlan.zhihu.com/p/397614923</p>
+</blockquote>
+<h3><span id="引言">引言</span></h3>
+<p><strong>无论是模型还是策略，其遵循的方法论都是“发现问题-&gt;确定目标-&gt;分析原因-&gt;寻找抓手-&gt;上线应对”这样一个闭环</strong>。对于模型岗而言，<strong><font color="red">
+其核心KPI是提供具有良好排序能力的模型。而特征工程是提高模型区分度的最有效途径，决定了模型拟合的上限。</font></strong></p>
+<p>信贷业务流程中积累了很多时间序列数据。因此，<strong>本文将介绍如何利用时序数据来构建常见的特征</strong>。同时，为兼顾实践性，本文附上了一些特征的SQL实现逻辑，供参考。</p>
+<h3><span id="一-信贷时序行为数据">一、<strong>信贷时序行为数据</strong></span></h3>
+<p>信贷业务经营中会积累很多时间序列数据。例如，<strong>客户的APP登录行为埋点数据、借款申请行为记录数据、还款行为数据、调额记录数据等</strong>。根据是否在平台内部沉淀，这些数据又可分为内部和外部数据。</p>
+<h4><span id="11-内部数据">1.1 <strong>内部数据</strong></span></h4>
+<p>以借款、还款行为数据为例，需要明确几个最细的时间粒度，包括：</p>
+<ul>
+<li>借款时点（draw_date）：客户借款申请时点。</li>
+<li>应还时点（due_date）：约定还款时间，固定不变。</li>
+<li>实还时点（settle_date）：客户实际还款时间，若早于应还日，称提前还款；若晚于应还时点，则成为逾期（overdue）；若在应还日当天还款，则为正常还款。</li>
+</ul>
+<p>独立来看，每个时点的数据都具有不同的信息。对于借据而已，具有以下属性：</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-bd57625dec1cdc547dc81c05796912d3_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>因此，从借款订单数据入手，其可反映客户的额度使用率、借款金额变化、借款时间集中度等信息。</p>
+<p>如图2所示，当把这些时点线索交叉在一起，就会衍生出大量信息。例如：</p>
+<ul>
+<li><strong>结合应还时点和实还时点，可刻画客户历史上的还款行为，包括逾期、提前还款、正常还款</strong>。——由此可构建“过去一段时间内，<strong>逾期/提前还款/正常还款次数</strong>”这类特征。</li>
+<li>结合应还时点和借款时点，如果客户在某个应还时点前多次发起借款申请，那么很可能是在“借新还旧”。——由此可构建“过去一段时间内，应还日前借款次数”这类特征。</li>
+<li>结合逾期时点和借款时点，如果客户当前处于逾期状态，则新申请借款则可直接拒绝，或者提前管制客户。</li>
+</ul>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-45b5c68a863deaf80abafc882e3c3703_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="12-外部数据">1.2 外部数据</span></h4>
+<p>客户不仅会在本平台内借款，当无法满足其借款需求时，其也会在其他平台借款，由此形成了多头借款行为数据。这是一块非常宝贵的数据。</p>
+<p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/109649516">求是汪在路上：多头借贷风险分析与建模</a>》一文中，我们介绍过多头数据的相关知识。整合目前市场上数据商提供的多头数据，我们可分解为以下结构：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-bf2f245a96e5f359e82901341f3cae2e_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>在本文中，先构造一些假数据用以后续衍生特征。可通过以下SQL语句建表，并插入数据。</p>
+<h3><span id="二-行为特征衍生思路">二、<strong>行为特征衍生思路</strong></span></h3>
+<p>如果拥有这样的数据，你会如何构建特征？通常做法是取最近一段时间窗口（比如最近12个月），在这段时间内，我们可以从以下维度来统计出可累加的指标：</p>
+<ul>
+<li><strong>指标维度</strong>：金额、次数、笔数、天数、机构数、人数</li>
+<li><strong>时间粒度</strong>：日、周、月</li>
+<li><strong>聚合函数</strong>：计数（count），求和（sum）</li>
+</ul>
+<p>为什么要是可累加的呢？这是因为我们可以再次聚合，并且后续计算<strong>比例类特征</strong>时方便。由此，可得到如图5所示的时序数据：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-68035afb016202fe873d761ce4ecd3ee_1440w.jpg" alt="img" style="zoom: 67%;"></p>
+<p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85440355">求是汪在路上：风控特征—时间滑窗统计特征体系</a>》中，介绍过RFM特征体系的概念。</p>
+<ul>
+<li><strong>R（Recency）</strong>：<strong>客户最近一次交易消费时间的间隔</strong>。R值越大，表示客户交易发生的日期越久，反之则表示客户交易发生的日期越近。</li>
+<li><strong>F（Frequency）</strong>：<strong>客户在最近一段时间内交易消费的次数</strong>。F值越大，表示客户交易越频繁，反之则表示客户交易不够活跃。</li>
+<li><strong>M（Monetary）</strong>：<strong>客户在最近一段时间内交易消费的金额</strong>。M值越大，表示客户价值越高，反之则表示客户价值越低。</li>
+</ul>
+<p><strong>在RFM特征体系的基础上，我们进一步扩展维度</strong>。至少能从图5中捕捉到以下信息：</p>
+<p><strong>1）常规统计特征</strong></p>
+<p>把客户行为按最小时间粒度统计完毕后，我们就会得到一个分布。接下来则是利用统计函数<strong>最大值（MAX）、最小值（MIN）、平均值（AVG）、标准差（STD）</strong>来描述以上分布特征。</p>
+<p>但是，这些指标在统计时只能对给定的数据集合计算，没有考虑到时间序列变化信息。换言之，什么时间段在持续上升，什么时间段在持续下降，什么时间段断档形成空窗期，这些信息都被掩盖了。</p>
+<p><strong>2）时间距离特征</strong></p>
+<p>用以刻画客户最远一次、最近一次或者某个特殊事件发生的时点。例如：</p>
+<ul>
+<li>最近一次申请日距离观察点的日期差（天数）</li>
+<li>最近一次取到最大值、最小值的事件时点距离观察点的日期差（天数）</li>
+<li>最近一次逾期距离观察点的日期差（天数）</li>
+</ul>
+<p><strong>3）行为波动特征</strong></p>
+<p>用以刻画客户某段连续时间内的行为变化特征。例如：</p>
+<ul>
+<li>最长持续上升（或下降）的时间跨度（天数）。</li>
+<li>最长睡眠期（天数）。即，客户多久没有活跃了？</li>
+<li>连续行为窗口出现次数。</li>
+</ul>
+<p><strong>在信贷风控中，变化趋势是衡量风险非常重要的维度。我们喜欢稳定，但是风险天生具有易变性，当有变化的趋势就意味着风险，也意味着机遇。</strong>例如，当客户近期在行业内借款申请次数在上升时，我们就可以判断客户资金紧张，故而在到处借钱。那么，我们需要思考：</p>
+<ol type="1">
+<li>业务侧：客户是否因为我们的额度不够，无法满足其资金需求而跑到其他平台借款？出于余额增长的目标，我们能不能给客户提额呢？</li>
+<li>风险侧：该客户的还款能力是否出现问题？我们给他放开额度后，我们能否承受风险？那么我们就需要给客户打一下风险分，判断客户风险。</li>
+</ol>
+<p>为捕捉客户行为变化趋势，我们可以用一种简单的方法：<strong>最近N个月次数
+/ 最近M个月次数（N &lt;
+M）</strong>。例如，多头变量中，该值越高，说明借款申请记录更为集中在近期。一般来说，近期行为对于识别短期欺诈风险更有用，远期行为对于识别长期信用风险更有用。</p>
+<p><strong>4）集中度特征</strong></p>
+<p><strong>用以刻画客户行为的偏好程度</strong>。如果说时间维度是纵向视角，那么集中度特征则是横截面视角。通常以比例特征形式出现。例如：</p>
+<ul>
+<li>一天内集中于哪个时间段活动？</li>
+<li>借款机构中集中于哪些机构？</li>
+<li>借款金额倾向于什么数目（例如1K以内，1K-5K，5K以上）？</li>
+<li>购买的商品内集中于买什么品类？</li>
+</ul>
+<h3><span id="四-其他算法实现思路">四、<strong>其他算法实现思路</strong></span></h3>
+<p>前面都是从业务领域知识先入手，分析潜在有用的变量逻辑，再去实现。这是平时大部分模型师所做的事情。但目前也有一些尝试用LSTM、RNN来处理时序数据的技术方案。这是后续可尝试探索和对比的方向。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191712092.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/29H4DXP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -531,207 +732,6 @@ end)操作需要消耗大量资源，可以考虑将when中的条件提前到表
 </figure>
 <h3><span id="附录a">附录A</span></h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool <span class="keyword">as</span> ThreadPool</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">compare_online_offline</span>(<span class="params">data_offline,  </span></span><br><span class="line"><span class="params">                           data_online,</span></span><br><span class="line"><span class="params">                           remove_list=[<span class="string">&#x27;order_id&#x27;</span>],</span></span><br><span class="line"><span class="params">                           key_var=<span class="string">&#x27;order_id&#x27;</span>,</span></span><br><span class="line"><span class="params">                           spec_value=<span class="number">0</span>,</span></span><br><span class="line"><span class="params">                           filename=<span class="string">&#x27;report.xlsx&#x27;</span>,</span></span><br><span class="line"><span class="params">                           need_detail=<span class="number">1</span></span>):</span><br><span class="line">    <span class="keyword">import</span> time</span><br><span class="line">    t0 = time.time()</span><br><span class="line">    data_online_new  = data_online.copy()</span><br><span class="line">    data_offline_new = data_offline.copy()</span><br><span class="line">    data_offline_new.columns = [i.lower() <span class="keyword">for</span> i <span class="keyword">in</span> data_offline_new.columns]</span><br><span class="line">    data_online_new.columns  = [i.lower() <span class="keyword">for</span> i <span class="keyword">in</span> data_online_new.columns]</span><br><span class="line">    comp_list = <span class="built_in">list</span>(<span class="built_in">set</span>(data_online_new.columns) &amp; <span class="built_in">set</span>(data_offline_new.columns))  <span class="comment"># 取交集</span></span><br><span class="line">    comp_list = <span class="built_in">sorted</span>(<span class="built_in">list</span>(<span class="built_in">set</span>(comp_list).difference(remove_list)))   <span class="comment"># 比较列</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;比较特征数量为: &#x27;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>(comp_list)))</span><br><span class="line">    num_varlist = <span class="built_in">list</span>(<span class="built_in">set</span>(data_online_new[comp_list].select_dtypes(exclude=[<span class="string">&#x27;object&#x27;</span>,<span class="string">&#x27;datetime&#x27;</span>]).columns))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compare</span>(<span class="params">x1, x2, vartype</span>):</span><br><span class="line">        <span class="keyword">if</span> pd.notna(x1) <span class="keyword">and</span> pd.notna(x2):</span><br><span class="line">            <span class="keyword">if</span> vartype == <span class="string">&#x27;numeric&#x27;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> <span class="built_in">abs</span>(x1 - x2) &lt; <span class="number">0.001</span> <span class="keyword">else</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> x1 == x2 <span class="keyword">else</span> <span class="number">2</span></span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> pd.notna(x1) <span class="keyword">and</span> <span class="keyword">not</span> pd.notna(x2):</span><br><span class="line">                <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> np.nan</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stat</span>(<span class="params">var</span>):</span><br><span class="line">        df = pd.merge(data_offline_new[[key_var,var]], data_online_new[[key_var,var]], on=key_var, how=<span class="string">&#x27;inner&#x27;</span>)</span><br><span class="line">        df.columns = [key_var, var+<span class="string">&#x27;_offline&#x27;</span>, var+<span class="string">&#x27;_online&#x27;</span>] </span><br><span class="line">        total = df.shape[<span class="number">0</span>]</span><br><span class="line">        miss_offline = df[var+<span class="string">&#x27;_offline&#x27;</span>].isnull().<span class="built_in">sum</span>()</span><br><span class="line">        miss_online  = df[var+<span class="string">&#x27;_online&#x27;</span>].isnull().<span class="built_in">sum</span>()</span><br><span class="line">        spec_offline = <span class="built_in">sum</span>(df[var+<span class="string">&#x27;_offline&#x27;</span>] == spec_value)</span><br><span class="line">        spec_online  = <span class="built_in">sum</span>(df[var+<span class="string">&#x27;_online&#x27;</span>] == spec_value)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>  var <span class="keyword">in</span> num_varlist:   </span><br><span class="line">            mean_offline = df[var+<span class="string">&#x27;_offline&#x27;</span>].mean()</span><br><span class="line">            mean_online  = df[var+<span class="string">&#x27;_online&#x27;</span>].mean()</span><br><span class="line">            df[var+<span class="string">&#x27;_same&#x27;</span>] = df.apply(<span class="keyword">lambda</span> row: compare(row[var+<span class="string">&#x27;_offline&#x27;</span>], row[var+<span class="string">&#x27;_online&#x27;</span>], <span class="string">&#x27;numeric&#x27;</span>), axis=<span class="number">1</span>) </span><br><span class="line">            value_same = df[df[var+<span class="string">&#x27;_same&#x27;</span>]==<span class="number">1</span>].shape[<span class="number">0</span>] <span class="comment"># 有值并且满足精度一致要求</span></span><br><span class="line">            value_diff = df[df[var+<span class="string">&#x27;_same&#x27;</span>]==<span class="number">2</span>].shape[<span class="number">0</span>] <span class="comment"># 有值但不满足精度一致要求</span></span><br><span class="line">        <span class="keyword">else</span>: </span><br><span class="line">            mean_offline = np.nan</span><br><span class="line">            mean_online = np.nan</span><br><span class="line">            df[var+<span class="string">&#x27;_same&#x27;</span>] = df.apply(<span class="keyword">lambda</span> row: compare(row[var+<span class="string">&#x27;_offline&#x27;</span>], row[var+<span class="string">&#x27;_online&#x27;</span>], <span class="string">&#x27;string&#x27;</span>), axis=<span class="number">1</span>)</span><br><span class="line">            value_same = df[df[var+<span class="string">&#x27;_same&#x27;</span>]==<span class="number">1</span>].shape[<span class="number">0</span>] <span class="comment"># 有值并且相同</span></span><br><span class="line">            value_diff = df[df[var+<span class="string">&#x27;_same&#x27;</span>]==<span class="number">2</span>].shape[<span class="number">0</span>] <span class="comment"># 有值但是不同</span></span><br><span class="line"></span><br><span class="line">        miss_same = df[df[var+<span class="string">&#x27;_same&#x27;</span>]==<span class="number">3</span>].shape[<span class="number">0</span>] <span class="comment"># 两者取值都为null</span></span><br><span class="line">        miss_diff = df[var+<span class="string">&#x27;_same&#x27;</span>].isnull().<span class="built_in">sum</span>()  <span class="comment"># 其中有一个为null</span></span><br><span class="line">        total_same = value_same + miss_same         <span class="comment"># 两者完全相同   </span></span><br><span class="line">        df[var+<span class="string">&#x27;_same&#x27;</span>] = df[var+<span class="string">&#x27;_same&#x27;</span>].apply(<span class="keyword">lambda</span> x: <span class="number">1</span> <span class="keyword">if</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">3</span>] <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> [var, total, miss_offline, miss_online, mean_offline, mean_online, </span><br><span class="line">                value_diff, value_same, miss_diff, miss_same, total_same, spec_offline, spec_online, df]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 启动多线程</span></span><br><span class="line">    pool = ThreadPool(<span class="number">10</span>)</span><br><span class="line">    stat_list = pool.<span class="built_in">map</span>(stat, comp_list)</span><br><span class="line">    pool.close()</span><br><span class="line">    pool.join()</span><br><span class="line"></span><br><span class="line">    final_cols = [<span class="string">&#x27;var&#x27;</span>,<span class="string">&#x27;total&#x27;</span>,<span class="string">&#x27;miss_offline&#x27;</span>,<span class="string">&#x27;miss_online&#x27;</span>,<span class="string">&#x27;mean_offline&#x27;</span>,<span class="string">&#x27;mean_online&#x27;</span>,</span><br><span class="line">                  <span class="string">&#x27;value_diff&#x27;</span>,<span class="string">&#x27;value_same&#x27;</span>,<span class="string">&#x27;miss_diff&#x27;</span>,<span class="string">&#x27;miss_same&#x27;</span>,<span class="string">&#x27;total_same&#x27;</span>,<span class="string">&#x27;spec_offline&#x27;</span>,<span class="string">&#x27;spec_online&#x27;</span>]</span><br><span class="line">    stat_arr = [x[:-<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> stat_list]</span><br><span class="line">    df_stat = pd.DataFrame(stat_arr, columns=final_cols)</span><br><span class="line">    df_stat[<span class="string">&#x27;miss_del&#x27;</span>] = df_stat[<span class="string">&#x27;miss_offline&#x27;</span>] - df_stat[<span class="string">&#x27;miss_online&#x27;</span>]</span><br><span class="line">    df_stat[<span class="string">&#x27;mean_del&#x27;</span>] = df_stat[<span class="string">&#x27;mean_offline&#x27;</span>] - df_stat[<span class="string">&#x27;mean_online&#x27;</span>]</span><br><span class="line">    df_stat[<span class="string">&#x27;same_rate&#x27;</span>] = df_stat[<span class="string">&#x27;total_same&#x27;</span>] / df_stat[<span class="string">&#x27;total&#x27;</span>]</span><br><span class="line">    df_report = df_stat[[<span class="string">&#x27;var&#x27;</span>,<span class="string">&#x27;total&#x27;</span>,<span class="string">&#x27;miss_offline&#x27;</span>,<span class="string">&#x27;miss_online&#x27;</span>,<span class="string">&#x27;miss_del&#x27;</span>,<span class="string">&#x27;mean_offline&#x27;</span>,<span class="string">&#x27;mean_online&#x27;</span>,<span class="string">&#x27;mean_del&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;value_diff&#x27;</span>,<span class="string">&#x27;value_same&#x27;</span>,<span class="string">&#x27;miss_diff&#x27;</span>,<span class="string">&#x27;miss_same&#x27;</span>,<span class="string">&#x27;total_same&#x27;</span>,<span class="string">&#x27;same_rate&#x27;</span>,<span class="string">&#x27;spec_offline&#x27;</span>,<span class="string">&#x27;spec_online&#x27;</span>]]</span><br><span class="line">    df_report.columns = [<span class="string">&#x27;变量名&#x27;</span>,<span class="string">&#x27;比较数&#x27;</span>,<span class="string">&#x27;离线缺失&#x27;</span>,<span class="string">&#x27;在线缺失&#x27;</span>,<span class="string">&#x27;离线-在线缺失&#x27;</span>,<span class="string">&#x27;离线均值&#x27;</span>,<span class="string">&#x27;在线均值&#x27;</span>,<span class="string">&#x27;离线-在线均值&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;有值不一致&#x27;</span>,<span class="string">&#x27;有值一致量&#x27;</span>,<span class="string">&#x27;缺失不一致&#x27;</span>,<span class="string">&#x27;缺失一致量&#x27;</span>,<span class="string">&#x27;一致量&#x27;</span>,<span class="string">&#x27;一致率&#x27;</span>,<span class="string">&#x27;离线特殊值数&#x27;</span>,<span class="string">&#x27;在线特殊值数&#x27;</span>]</span><br><span class="line">    df_report = df_report.sort_values(by=[<span class="string">&#x27;一致率&#x27;</span>], ascending=<span class="number">1</span>)</span><br><span class="line">    df_report.to_excel(filename, index=<span class="number">0</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;对比报告保存在%s&#x27;</span> % filename)</span><br><span class="line">    t1 = time.time()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;耗时%s分钟&#x27;</span> % <span class="built_in">int</span>((t1-t0)/<span class="number">60</span>))</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;拼接明细...&#x27;</span>)</span><br><span class="line">    df_detail = pd.DataFrame(data_offline_new[key_var], columns=[key_var])</span><br><span class="line">    <span class="keyword">if</span> need_detail:</span><br><span class="line">       df_list = [x[-<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> stat_list]</span><br><span class="line">       <span class="keyword">for</span> i <span class="keyword">in</span> tqdm(<span class="built_in">range</span>(<span class="built_in">len</span>(df_list))):</span><br><span class="line">           df_detail = pd.merge(df_detail, df_list[i], on=key_var)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> df_report, df_detail</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://powerlzy.github.io/posts/2ZK2C8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/cat_mac.jpg">
-      <meta itemprop="name" content="lzy">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PowerLZY's Blog">
-      <meta itemprop="description" content="相比到达的地方，同行的人更重要！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | PowerLZY's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/posts/2ZK2C8F/" class="post-title-link" itemprop="url">风控算法（4）特征工程-时序数据与特征工程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-01 19:33:41" itemprop="dateCreated datePublished" datetime="2022-07-01T19:33:41+08:00">2022-07-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-19 17:13:22" itemprop="dateModified" datetime="2023-04-19T17:13:22+08:00">2023-04-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/" itemprop="url" rel="index"><span itemprop="name">【draft】应用</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="url" rel="index"><span itemprop="name">应用场景</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E3%80%90draft%E3%80%91%E5%BA%94%E7%94%A8/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/%E4%B8%9A%E5%8A%A1%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">业务安全</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2><span id="特征工程-时序数据与特征工程">特征工程-时序数据与特征工程</span></h2>
-<blockquote>
-<p>信贷时序数据与特征工程介绍 - 求是汪在路上的文章 - 知乎
-https://zhuanlan.zhihu.com/p/397614923</p>
-</blockquote>
-<h3><span id="引言">引言</span></h3>
-<p><strong>无论是模型还是策略，其遵循的方法论都是“发现问题-&gt;确定目标-&gt;分析原因-&gt;寻找抓手-&gt;上线应对”这样一个闭环</strong>。对于模型岗而言，<strong><font color="red">
-其核心KPI是提供具有良好排序能力的模型。而特征工程是提高模型区分度的最有效途径，决定了模型拟合的上限。</font></strong></p>
-<p>信贷业务流程中积累了很多时间序列数据。因此，<strong>本文将介绍如何利用时序数据来构建常见的特征</strong>。同时，为兼顾实践性，本文附上了一些特征的SQL实现逻辑，供参考。</p>
-<h3><span id="一-信贷时序行为数据">一、<strong>信贷时序行为数据</strong></span></h3>
-<p>信贷业务经营中会积累很多时间序列数据。例如，<strong>客户的APP登录行为埋点数据、借款申请行为记录数据、还款行为数据、调额记录数据等</strong>。根据是否在平台内部沉淀，这些数据又可分为内部和外部数据。</p>
-<h4><span id="11-内部数据">1.1 <strong>内部数据</strong></span></h4>
-<p>以借款、还款行为数据为例，需要明确几个最细的时间粒度，包括：</p>
-<ul>
-<li>借款时点（draw_date）：客户借款申请时点。</li>
-<li>应还时点（due_date）：约定还款时间，固定不变。</li>
-<li>实还时点（settle_date）：客户实际还款时间，若早于应还日，称提前还款；若晚于应还时点，则成为逾期（overdue）；若在应还日当天还款，则为正常还款。</li>
-</ul>
-<p>独立来看，每个时点的数据都具有不同的信息。对于借据而已，具有以下属性：</p>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-bd57625dec1cdc547dc81c05796912d3_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<p>因此，从借款订单数据入手，其可反映客户的额度使用率、借款金额变化、借款时间集中度等信息。</p>
-<p>如图2所示，当把这些时点线索交叉在一起，就会衍生出大量信息。例如：</p>
-<ul>
-<li><strong>结合应还时点和实还时点，可刻画客户历史上的还款行为，包括逾期、提前还款、正常还款</strong>。——由此可构建“过去一段时间内，<strong>逾期/提前还款/正常还款次数</strong>”这类特征。</li>
-<li>结合应还时点和借款时点，如果客户在某个应还时点前多次发起借款申请，那么很可能是在“借新还旧”。——由此可构建“过去一段时间内，应还日前借款次数”这类特征。</li>
-<li>结合逾期时点和借款时点，如果客户当前处于逾期状态，则新申请借款则可直接拒绝，或者提前管制客户。</li>
-</ul>
-<figure>
-<img src="https://pic4.zhimg.com/80/v2-45b5c68a863deaf80abafc882e3c3703_1440w.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h4><span id="12-外部数据">1.2 外部数据</span></h4>
-<p>客户不仅会在本平台内借款，当无法满足其借款需求时，其也会在其他平台借款，由此形成了多头借款行为数据。这是一块非常宝贵的数据。</p>
-<p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/109649516">求是汪在路上：多头借贷风险分析与建模</a>》一文中，我们介绍过多头数据的相关知识。整合目前市场上数据商提供的多头数据，我们可分解为以下结构：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-bf2f245a96e5f359e82901341f3cae2e_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>在本文中，先构造一些假数据用以后续衍生特征。可通过以下SQL语句建表，并插入数据。</p>
-<h3><span id="二-行为特征衍生思路">二、<strong>行为特征衍生思路</strong></span></h3>
-<p>如果拥有这样的数据，你会如何构建特征？通常做法是取最近一段时间窗口（比如最近12个月），在这段时间内，我们可以从以下维度来统计出可累加的指标：</p>
-<ul>
-<li><strong>指标维度</strong>：金额、次数、笔数、天数、机构数、人数</li>
-<li><strong>时间粒度</strong>：日、周、月</li>
-<li><strong>聚合函数</strong>：计数（count），求和（sum）</li>
-</ul>
-<p>为什么要是可累加的呢？这是因为我们可以再次聚合，并且后续计算<strong>比例类特征</strong>时方便。由此，可得到如图5所示的时序数据：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-68035afb016202fe873d761ce4ecd3ee_1440w.jpg" alt="img" style="zoom: 67%;"></p>
-<p>在《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85440355">求是汪在路上：风控特征—时间滑窗统计特征体系</a>》中，介绍过RFM特征体系的概念。</p>
-<ul>
-<li><strong>R（Recency）</strong>：<strong>客户最近一次交易消费时间的间隔</strong>。R值越大，表示客户交易发生的日期越久，反之则表示客户交易发生的日期越近。</li>
-<li><strong>F（Frequency）</strong>：<strong>客户在最近一段时间内交易消费的次数</strong>。F值越大，表示客户交易越频繁，反之则表示客户交易不够活跃。</li>
-<li><strong>M（Monetary）</strong>：<strong>客户在最近一段时间内交易消费的金额</strong>。M值越大，表示客户价值越高，反之则表示客户价值越低。</li>
-</ul>
-<p><strong>在RFM特征体系的基础上，我们进一步扩展维度</strong>。至少能从图5中捕捉到以下信息：</p>
-<p><strong>1）常规统计特征</strong></p>
-<p>把客户行为按最小时间粒度统计完毕后，我们就会得到一个分布。接下来则是利用统计函数<strong>最大值（MAX）、最小值（MIN）、平均值（AVG）、标准差（STD）</strong>来描述以上分布特征。</p>
-<p>但是，这些指标在统计时只能对给定的数据集合计算，没有考虑到时间序列变化信息。换言之，什么时间段在持续上升，什么时间段在持续下降，什么时间段断档形成空窗期，这些信息都被掩盖了。</p>
-<p><strong>2）时间距离特征</strong></p>
-<p>用以刻画客户最远一次、最近一次或者某个特殊事件发生的时点。例如：</p>
-<ul>
-<li>最近一次申请日距离观察点的日期差（天数）</li>
-<li>最近一次取到最大值、最小值的事件时点距离观察点的日期差（天数）</li>
-<li>最近一次逾期距离观察点的日期差（天数）</li>
-</ul>
-<p><strong>3）行为波动特征</strong></p>
-<p>用以刻画客户某段连续时间内的行为变化特征。例如：</p>
-<ul>
-<li>最长持续上升（或下降）的时间跨度（天数）。</li>
-<li>最长睡眠期（天数）。即，客户多久没有活跃了？</li>
-<li>连续行为窗口出现次数。</li>
-</ul>
-<p><strong>在信贷风控中，变化趋势是衡量风险非常重要的维度。我们喜欢稳定，但是风险天生具有易变性，当有变化的趋势就意味着风险，也意味着机遇。</strong>例如，当客户近期在行业内借款申请次数在上升时，我们就可以判断客户资金紧张，故而在到处借钱。那么，我们需要思考：</p>
-<ol type="1">
-<li>业务侧：客户是否因为我们的额度不够，无法满足其资金需求而跑到其他平台借款？出于余额增长的目标，我们能不能给客户提额呢？</li>
-<li>风险侧：该客户的还款能力是否出现问题？我们给他放开额度后，我们能否承受风险？那么我们就需要给客户打一下风险分，判断客户风险。</li>
-</ol>
-<p>为捕捉客户行为变化趋势，我们可以用一种简单的方法：<strong>最近N个月次数
-/ 最近M个月次数（N &lt;
-M）</strong>。例如，多头变量中，该值越高，说明借款申请记录更为集中在近期。一般来说，近期行为对于识别短期欺诈风险更有用，远期行为对于识别长期信用风险更有用。</p>
-<p><strong>4）集中度特征</strong></p>
-<p><strong>用以刻画客户行为的偏好程度</strong>。如果说时间维度是纵向视角，那么集中度特征则是横截面视角。通常以比例特征形式出现。例如：</p>
-<ul>
-<li>一天内集中于哪个时间段活动？</li>
-<li>借款机构中集中于哪些机构？</li>
-<li>借款金额倾向于什么数目（例如1K以内，1K-5K，5K以上）？</li>
-<li>购买的商品内集中于买什么品类？</li>
-</ul>
-<h3><span id="四-其他算法实现思路">四、<strong>其他算法实现思路</strong></span></h3>
-<p>前面都是从业务领域知识先入手，分析潜在有用的变量逻辑，再去实现。这是平时大部分模型师所做的事情。但目前也有一些尝试用LSTM、RNN来处理时序数据的技术方案。这是后续可尝试探索和对比的方向。</p>
-<figure>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191712092.jpg" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
 
       
     </div>
