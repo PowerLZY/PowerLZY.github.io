@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="¶一、关联规则概述 关联规则-策略挖掘中必不可少的算法。 1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。">
+    <meta name="description" content="一、关联规则概述 关联规则-策略挖掘中必不可少的算法。 1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关联规则（1）概述">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1E0CW4H/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="¶一、关联规则概述 关联规则-策略挖掘中必不可少的算法。 1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。">
+<meta property="og:description" content="一、关联规则概述 关联规则-策略挖掘中必不可少的算法。 1993年，Agrawal等人在首先提出关联规则概念，迄今已经差不多30年了，在各种算法层出不穷的今天，这算得上是老古董了，比很多人的年纪还大，往往是数据挖掘的入门算法，但深入研究的不多，尤其在风控领域，有着极其重要的应用潜力，是一个被低估的算法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png">
@@ -175,7 +175,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -310,59 +310,89 @@
 <span id="more"></span>
 <h4><span id="11-关联评价">1.1 关联评价</span></h4>
 <p>关联规则有三个核心概念需要理解：<strong>支持度、置信度、提升度</strong>，下面用最经典的啤酒-尿不湿案例给大家举例说明这三个概念，假如以下是几名客户购买订单的商品列表：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271442867.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <p><strong><font color="red">（1）支持度</font></strong></p>
-<p><strong>支持度 (Support)：<strong>指某个</strong>商品组合出现的次数</strong>与<strong>总订单数</strong>之间的比例。</p>
-<p>在这个例子中，我们可以看到“牛奶”出现了 4 次，那么这 5 笔订单中“牛奶”的支持度就是 4/5=0.8。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png" alt="图片"></p>
-<p>同样“牛奶 + 面包”出现了 3 次，那么这 5 笔订单中“牛奶 + 面包”的支持度就是 3/5=0.6</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443641.png" alt="图片"></p>
-<p>这样理解起来是不是非常简单了呢，大家可以动动手计算下 **‘尿不湿+啤酒’**的支持度是多少？</p>
+<p><strong>支持度
+(Support)：</strong>指某个<strong>商品组合出现的次数</strong>与<strong>总订单数</strong>之间的比例。</p>
+<p>在这个例子中，我们可以看到“牛奶”出现了 4 次，那么这 5
+笔订单中“牛奶”的支持度就是 4/5=0.8。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443574.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>同样“牛奶 + 面包”出现了 3 次，那么这 5 笔订单中“牛奶 +
+面包”的支持度就是 3/5=0.6</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443641.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>这样理解起来是不是非常简单了呢，大家可以动动手计算下
+<strong>'尿不湿+啤酒'</strong>的支持度是多少？</p>
 <h5><span id="2置信度">（2）置信度</span></h5>
-<p>**置信度 (Confidence)：**指的就是当你购买了商品 A，会有多大的概率购买商品 B，在包含A的子集中，B的支持度，也就是包含B的订单的比例。</p>
-<p>置信度（牛奶→啤酒）= 3/4=0.75，代表购买了牛奶的订单中，还有多少订单购买了啤酒，如下面的表格所示。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443708.png" alt="图片"></p>
-<p>置信度（啤酒→牛奶）= 3/4=0.75，代表如果你购买了啤酒，有多大的概率会购买牛奶？</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443782.png" alt="图片"></p>
-<p>置信度（啤酒→尿不湿）= 4/4=1.0，代表如果你购买了啤酒，有多大的概率会买尿不湿，下面的表格看出来是100%。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443851.png" alt="图片"></p>
-<p>由上面的例子可以看出，置信度其实就是个条件概念，就是说在 A 发生的情况下，B 发生的概率是多大。如果仅仅知道这两个概念，很多情况下还是不够用，需要用到提升度的概念。比如A出现的情况下B出现的概率为80%，那到底AB是不是有关系呢，不一定，人家B本来在大盘中的比例95%。你的A出现，反而减少了B出现的概率。</p>
+<p><strong>置信度 (Confidence)：</strong>指的就是当你购买了商品
+A，会有多大的概率购买商品
+B，在包含A的子集中，B的支持度，也就是包含B的订单的比例。</p>
+<p>置信度（牛奶→啤酒）=
+3/4=0.75，代表购买了牛奶的订单中，还有多少订单购买了啤酒，如下面的表格所示。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443708.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>置信度（啤酒→牛奶）=
+3/4=0.75，代表如果你购买了啤酒，有多大的概率会购买牛奶？</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443782.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>置信度（啤酒→尿不湿）=
+4/4=1.0，代表如果你购买了啤酒，有多大的概率会买尿不湿，下面的表格看出来是100%。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271443851.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p>由上面的例子可以看出，置信度其实就是个条件概念，就是说在 A
+发生的情况下，B
+发生的概率是多大。如果仅仅知道这两个概念，很多情况下还是不够用，需要用到提升度的概念。比如A出现的情况下B出现的概率为80%，那到底AB是不是有关系呢，不一定，人家B本来在大盘中的比例95%。你的A出现，反而减少了B出现的概率。</p>
 <p><strong>（3）提升度</strong></p>
-<p>**提升度 (Lift)：**我们在做商品推荐或者风控策略的时候，重点考虑的是提升度，因为提升度代表的是A 的出现，对B的出现概率提升的程度。</p>
+<p><strong>提升度
+(Lift)：</strong>我们在做商品推荐或者风控策略的时候，重点考虑的是提升度，因为提升度代表的是A
+的出现，对B的出现概率提升的程度。</p>
 <p><strong>提升度 (A→B) = 置信度 (A→B) / 支持度 (B)</strong></p>
 <p>所以提升度有三种可能：</p>
 <ul>
-<li>
-<p>提升度 (A→B)&gt;1：代表有提升；</p>
-</li>
-<li>
-<p>提升度 (A→B)=1：代表有没有提升，也没有下降；</p>
-</li>
-<li>
-<p>提升度 (A→B)&lt;1：代表有下降。</p>
-</li>
+<li><p>提升度 (A→B)&gt;1：代表有提升；</p></li>
+<li><p>提升度 (A→B)=1：代表有没有提升，也没有下降；</p></li>
+<li><p>提升度 (A→B)&lt;1：代表有下降。</p></li>
 </ul>
-<p>提升度 (啤酒→尿不湿) =置信度 (啤酒→尿不湿) /支持度 (尿不湿) = 1.0/0.8 = 1.25，可见啤酒对尿不湿是有提升的，提升度为1.25，大于1。</p>
+<p>提升度 (啤酒→尿不湿) =置信度 (啤酒→尿不湿) /支持度 (尿不湿) = 1.0/0.8
+= 1.25，可见啤酒对尿不湿是有提升的，提升度为1.25，大于1。</p>
 <p><strong>可以简单理解为：在全集的情况下，尿不湿的概率为80%，而在包含啤酒这个子集中，尿不湿的概率为100%，因此，子集的限定，提高了尿不湿的概率，啤酒的出现，提高了尿不湿的概率。</strong></p>
 <p><strong>（4）频繁项集</strong></p>
-<p>**频繁项集(frequent itemset) ：**就是支持度大于等于最小支持度 (Min Support) 阈值的项集，所以小于最小值支持度的项目就是非频繁项集，而大于等于最小支持度的的项集就是频繁项集，项集可以是单个商品，也可以是组合。</p>
+<p><strong>频繁项集(frequent itemset)
+：</strong>就是支持度大于等于最小支持度 (Min Support)
+阈值的项集，所以小于最小值支持度的项目就是非频繁项集，而大于等于最小支持度的的项集就是频繁项集，项集可以是单个商品，也可以是组合。</p>
 <p><strong>频繁集挖掘面临的最大难题就是项集的组合爆炸</strong>，如下图：</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449952.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449952.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <p>随着商品数量增多，这个网络的规模将变得特别庞大，我们不可能根据传统方法进行统计和计算，为了解决这个问题，Apriori算法提出了两个核心思想：</p>
 <ul>
-<li>
-<p><strong><font color="red">某个项集是频繁的，那么它的所有子集也是频繁的</font></strong><br>
-{Milk, Bread, Coke} 是频繁的 → {Milk, Coke} 是频繁的</p>
-</li>
-<li>
-<p><strong><font color="red">如果一个项集是非频繁项集，那么它的所有超集也是非频繁项集</font></strong><br>
-{Battery} 是非频繁的 → {Milk, Battery} 也非平凡</p>
-</li>
+<li><p><strong><font color="red">某个项集是频繁的，那么它的所有子集也是频繁的</font></strong>
+{Milk, Bread, Coke} 是频繁的 → {Milk, Coke} 是频繁的</p></li>
+<li><p><strong><font color="red">如果一个项集是非频繁项集，那么它的所有超集也是非频繁项集</font></strong>
+{Battery} 是非频繁的 → {Milk, Battery} 也非平凡</p></li>
 </ul>
 <p>如下图，如果我们已知<strong>B</strong>不频繁，那么可以说图中所有绿色的项集都不频繁，搜索时就要这些项避开，减少计算开销。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449043.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271449043.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <p>同理，如果下图所示，{A,B}这个项集是非频繁的，那虚线框后面的都不用计算了。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271451871.png" alt="图片" style="zoom: 33%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304271451871.png" alt="图片" style="zoom: 33%;"></p>
 <p><strong>需要注意的是：</strong></p>
 <p>1）如果支持度和置信度阈值过高，虽然可以在一定程度上减少数据挖掘的时间，但是一些隐含在数据中的非频繁特征项容易被忽略掉，难以发现足够有用的规则；</p>
 <p>2）如果支持度和置信度阈值过低，可能会导致大量冗余和无效的规则产生，导致较大计算量负荷。</p>
@@ -395,7 +425,8 @@
 <ul>
 <li><strong>关联规则算法</strong>：<font color="red">典型如Apriori，PySpark中为FP-Growth；</font></li>
 </ul>
-<p>关联规则算法是挖掘频繁项集的算法，1993年由Rakesh Agrawal 和Ramakrishnan Skrikant提出，并应用于IBM的业务场景。</p>
+<p>关联规则算法是挖掘频繁项集的算法，1993年由Rakesh Agrawal
+和Ramakrishnan Skrikant提出，并应用于IBM的业务场景。</p>
 <ul>
 <li><strong>序列模式算法</strong>：典型算法如Apriori-All，PySpark中为PrefixSpan；</li>
 </ul>
@@ -403,16 +434,20 @@
 <p><strong>（2）优化</strong></p>
 <p>大部分的算法都是<strong>先频繁模式再关联规则流</strong>，<font color="red">算法的优化目的都是减少数据扫描的时间成本</font>。</p>
 <ul>
-<li><strong>树基算法</strong>：FP-Growth, PrePost, CFP-Growth算法等，<strong>核心要义是把原始事务数据转换为树状数据结构，减少扫描事务的成本。</strong></li>
-<li><strong>二进制向量算法</strong>：BitTableFI, IndexBitTableFI等，<strong>核心要义是把原始数据转换为二进制向量，用逻辑运算与矩阵运算来代替数据扫描，加快速度。</strong></li>
+<li><strong>树基算法</strong>：FP-Growth, PrePost,
+CFP-Growth算法等，<strong>核心要义是把原始事务数据转换为树状数据结构，减少扫描事务的成本。</strong></li>
+<li><strong>二进制向量算法</strong>：BitTableFI,
+IndexBitTableFI等，<strong>核心要义是把原始数据转换为二进制向量，用逻辑运算与矩阵运算来代替数据扫描，加快速度。</strong></li>
 <li><strong>可靠采样流派</strong>：中心极限定理等，<strong>核心要义是通过采样来减少数据规模来加速</strong>。<font color="red">支持度就是频率，频率与其对应概率的差根据中心极限定理服从期望为0的正态分布。以此为理论基础，可以在频繁模式支持度误差可控的情况下，推导出合理的样本规模。</font></li>
-<li><strong>渐进采样流派</strong>：Progressive sampling，不推公式（当然有些算法用到了齐夫定理，但是鉴于Zipf定理是经验定理，不算很严谨），慢慢增加样本，然后选取几个代表性的项集，以其两个样本规模间的支持度变化量来决定采样是否足够。当变化足够小时，说明样本够了。</li>
+<li><strong>渐进采样流派</strong>：Progressive
+sampling，不推公式（当然有些算法用到了齐夫定理，但是鉴于Zipf定理是经验定理，不算很严谨），慢慢增加样本，然后选取几个代表性的项集，以其两个样本规模间的支持度变化量来决定采样是否足够。当变化足够小时，说明样本够了。</li>
 </ul>
 <h3><span id="二-参考文献">二、参考文献</span></h3>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/52145607/answer/198035075">目前流行的<em>关联规则</em>算法有哪些？</a></li>
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzA4OTAwMjY2Nw==&amp;mid=2650188496&amp;idx=1&amp;sn=b6b9f65ee6ba40457b23fc0e35c8f4e7&amp;chksm=88238d14bf540402e7049e41aca6bfea2f2870827a134d770eb716eed9582dbbde65d50d9b7f&amp;scene=21#wechat_redirect">关联规则-策略挖掘中必不可少的算法</a></li>
-<li>关联规则挖掘在实际中的应用有哪些? - 李小翰的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/62342815/answer/2616887115">https://www.zhihu.com/question/62342815/answer/2616887115</a></li>
+<li>关联规则挖掘在实际中的应用有哪些? - 李小翰的回答 - 知乎
+https://www.zhihu.com/question/62342815/answer/2616887115</li>
 </ul>
 
     </div>
@@ -477,7 +512,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="二、李宏毅-Self Attention自注意力机制 - p2  从这一排 vector 得到 $b^1$,跟从这一排 vector 得到 $b^2$,它的操作是一模一样的.要强调一点是,这边的 $b^1$ 到 $b^4$,它们并不需要依序产生,它们是一次同时被计算出来的。 怎么计算这个 $b^2$？我们现在的主角,就变成 $a^2$    把 $a^2$ 乘上一个 matrix,变成 $q^2">
+    <meta name="description" content="二、李宏毅-Self Attention自注意力机制 - p2  从这一排 vector 得到 \(b^1\),跟从这一排 vector 得到 \(b^2\),它的操作是一模一样的.要强调一点是,这边的 \(b^1\) 到 \(b^4\),它们并不需要依序产生,它们是一次同时被计算出来的。 怎么计算这个 \(b^2\)？我们现在的主角,就变成 \(a^2\)   把 \(a^2\) 乘上一个 m">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习（8）Self Attention*-p2">
 <meta property="og:url" content="https://powerlzy.github.io/posts/2Q8V137/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="二、李宏毅-Self Attention自注意力机制 - p2  从这一排 vector 得到 $b^1$,跟从这一排 vector 得到 $b^2$,它的操作是一模一样的.要强调一点是,这边的 $b^1$ 到 $b^4$,它们并不需要依序产生,它们是一次同时被计算出来的。 怎么计算这个 $b^2$？我们现在的主角,就变成 $a^2$    把 $a^2$ 乘上一个 matrix,变成 $q^2">
+<meta property="og:description" content="二、李宏毅-Self Attention自注意力机制 - p2  从这一排 vector 得到 \(b^1\),跟从这一排 vector 得到 \(b^2\),它的操作是一模一样的.要强调一点是,这边的 \(b^1\) 到 \(b^4\),它们并不需要依序产生,它们是一次同时被计算出来的。 怎么计算这个 \(b^2\)？我们现在的主角,就变成 \(a^2\)   把 \(a^2\) 乘上一个 m">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://powerlzy.github.io/posts/2Q8V137/image-20220613221835154.png">
 <meta property="og:image" content="https://powerlzy.github.io/posts/2Q8V137/image-20220613221854934.png">
@@ -257,7 +257,14 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"> 二、李宏毅-Self Attention自注意力机制 - p2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 矩阵的角度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 Self-attention 流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 Multi-head Self-attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.5 Positional Encoding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">No position information in self-attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Each positon has a unique positional vector $e^i$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Hand-crafted or Learned from data</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.6 Applications …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Self-attention for Speech</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Self-attention for Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Self-attention v.s. CNN&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text"> Self-attention v.s. RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Self-attention for Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.7 More</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、注意力机制 Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1 Self-Attention、CNN、RNN对比？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Self-Attention vs CNN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Self-Attention vs RNN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2 Self-Attention、CNN、RNN时间复杂度对比？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Self-Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Multi-Head Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Recurrent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Convolution</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"> 二、李宏毅-Self
+Attention自注意力机制 - p2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.2 矩阵的角度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.3 Self-attention 流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.4 Multi-head Self-attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.5 Positional Encoding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">No position
+information in self-attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Each positon has
+a unique positional vector \(e^i\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Hand-crafted or Learned from
+data</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.6 Applications …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Self-attention for Speech</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Self-attention for Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;Self-attention v.s. CNN&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">
+Self-attention v.s. RNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">Self-attention for Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">2.7 More</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">三、注意力机制 Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.1
+Self-Attention、CNN、RNN对比？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Self-Attention vs CNN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Self-Attention vs RNN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">3.2
+Self-Attention、CNN、RNN时间复杂度对比？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Self-Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Multi-Head Attention</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Recurrent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Convolution</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -278,7 +285,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -402,7 +409,7 @@
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>28 分钟</span>
+      <span>29 分钟</span>
     </span>
 </div>
 
@@ -413,275 +420,601 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="二-李宏毅-self-attention自注意力机制-p2"><font color="red"> 二、李宏毅-Self Attention自注意力机制 - p2</font></span></h2>
-<img src="image-20220613221835154.png" alt="image-20220613221835154" style="zoom:50%;">
-<p>从这一排 vector 得到 $b^1$,跟从这一排 vector 得到 $b^2$,它的操作是一模一样的.要强调一点是,这边的 $b^1$ 到 $b^4$,它们并<strong>不需要依序产生</strong>,它们是一次同时被计算出来的。</p>
-<p>怎么计算这个 $b^2$？我们现在的主角,就变成 $a^2$</p>
-<img src="image-20220613221854934.png" alt="image-20220613221854934" style="zoom:50%;">
+        <h2><span id="二-李宏毅-selfattention自注意力机制-p2"><font color="red"> 二、李宏毅-Self
+Attention自注意力机制 - p2</font></span></h2>
+<p><img src="image-20220613221835154.png" alt="image-20220613221835154" style="zoom:50%;"></p>
+<p>从这一排 vector 得到 <span class="math inline">\(b^1\)</span>,跟从这一排 vector 得到 <span class="math inline">\(b^2\)</span>,它的操作是一模一样的.要强调一点是,这边的
+<span class="math inline">\(b^1\)</span> 到 <span class="math inline">\(b^4\)</span>,它们并<strong>不需要依序产生</strong>,它们是一次同时被计算出来的。</p>
+<p>怎么计算这个 <span class="math inline">\(b^2\)</span>？我们现在的主角,就变成 <span class="math inline">\(a^2\)</span></p>
+<p><img src="image-20220613221854934.png" alt="image-20220613221854934" style="zoom:50%;"></p>
 <ul>
-<li>
-<p>把 $a^2$ 乘上一个 matrix,变成 $q^2$</p>
-</li>
-<li>
-<p>然后接下来根据 $q<sup>2$,去对$a</sup>1$到 $a^4$ 这四个位置,都去计算 attention 的 score</p>
+<li><p>把 <span class="math inline">\(a^2\)</span> 乘上一个 matrix,变成
+<span class="math inline">\(q^2\)</span></p></li>
+<li><p>然后接下来根据 <span class="math inline">\(q^2\)</span>,去对<span class="math inline">\(a^1\)</span>到 <span class="math inline">\(a^4\)</span> 这四个位置,都去计算 attention 的
+score</p>
 <ul>
-<li>把 $q^2$ 跟 $k^1$ 做个这个 dot product</li>
-<li>把 $q^2$ 跟 $k^2$ 也做个 dot product</li>
-<li>把 $q^2$ 跟 $k^3$ 也做 dot product</li>
-<li>把 $q^2$ 跟 $k^4$ 也做 dot product,得到四个分数</li>
-</ul>
-</li>
-<li>
-<p>得到这四个分数以后,可能还会做一个 **normalization **和 <strong>softmax</strong>,然后得到最后的 attention 的 score,$α’<em>{2,1} \space α’</em>{2,2}  \space α’<em>{2,3}  \space α’</em>{2,4}$那我们这边用 $α’$表示经过 normalization 以后的attention score</p>
-</li>
-<li>
-<p>接下来拿这四个数值,分别乘上 $v^1  \space  v^2 \space  v^3 \space  v^4$</p>
-  <img src="image-20220613221952411.png" alt="image-20220613221952411" style="zoom:50%;">
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^1\)</span> 做个这个 dot product</li>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^2\)</span> 也做个 dot product</li>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^3\)</span> 也做 dot product</li>
+<li>把 <span class="math inline">\(q^2\)</span> 跟 <span class="math inline">\(k^4\)</span> 也做 dot product,得到四个分数</li>
+</ul></li>
+<li><p>得到这四个分数以后,可能还会做一个 <strong>normalization
+</strong>和 <strong>softmax</strong>,然后得到最后的 attention 的
+score,<span class="math inline">\(α&#39;_{2,1} \space α&#39;_{2,2}
+\space α&#39;_{2,3} \space α&#39;_{2,4}\)</span>那我们这边用 <span class="math inline">\(α&#39;\)</span>表示经过 normalization
+以后的attention score</p></li>
+<li><p>接下来拿这四个数值,分别乘上 <span class="math inline">\(v^1
+\space v^2 \space v^3 \space v^4\)</span></p>
+<p><img src="image-20220613221952411.png" alt="image-20220613221952411" style="zoom:50%;"></p>
 <ul>
-<li>把 $α’_{2,1}$乘上 $v^1$</li>
-<li>把 $α’_{2,2}$ 乘上 $v^2$</li>
-<li>把 $α’_{2,3}$ 乘上 $v^3$</li>
-<li>把 $α’_{2,4}$ 乘上 $v^4$,然后全部加起来就是 $ b^2$</li>
+<li>把 <span class="math inline">\(α&#39;_{2,1}\)</span>乘上 <span class="math inline">\(v^1\)</span></li>
+<li>把 <span class="math inline">\(α&#39;_{2,2}\)</span> 乘上 <span class="math inline">\(v^2\)</span></li>
+<li>把 <span class="math inline">\(α&#39;_{2,3}\)</span> 乘上 <span class="math inline">\(v^3\)</span></li>
+<li>把 <span class="math inline">\(α&#39;_{2,4}\)</span> 乘上 <span class="math inline">\(v^4\)</span>,然后全部加起来就是 $ b^2$</li>
 </ul>
-<p>$$<br>
-b<sup>2=\sum_iα’_{2,i}v</sup>i<br>
-$$</p>
-</li>
+<p><span class="math display">\[
+  b^2=\sum_iα&#39;_{2,i}v^i
+  \]</span></p></li>
 </ul>
-<p>同理就可以,由 $a^3$ 乘一个 transform 得到 $q^3$,然后就计算 $b^3$,从 $a^4$ 乘一个 transform 得到 $q^4$,就计算 $b^4$,以上说的是  Self-attention 它运作的过程。</p>
+<p>同理就可以,由 <span class="math inline">\(a^3\)</span> 乘一个
+transform 得到 <span class="math inline">\(q^3\)</span>,然后就计算 <span class="math inline">\(b^3\)</span>,从 <span class="math inline">\(a^4\)</span> 乘一个 transform 得到 <span class="math inline">\(q^4\)</span>,就计算 <span class="math inline">\(b^4\)</span>,以上说的是 Self-attention
+它运作的过程。</p>
 <h3><span id="22-矩阵的角度">2.2 矩阵的角度</span></h3>
-<p>接下来我们从矩阵乘法的角度,再重新讲一次我们刚才讲的,Self-attention 是怎么运作的，我们现在已经知道每一个 a 都产生 q k v。</p>
-<img src="image-20220613222115187.png" alt="image-20220613222115187" style="zoom:50%;">
+<p>接下来我们从矩阵乘法的角度,再重新讲一次我们刚才讲的,Self-attention
+是怎么运作的，我们现在已经知道每一个 a 都产生 q k v。</p>
+<p><img src="image-20220613222115187.png" alt="image-20220613222115187" style="zoom:50%;"></p>
 <h5><span id="如果要用矩阵运算表示这个操作的话是什么样子呢">如果要用矩阵运算表示这个操作的话,是什么样子呢</span></h5>
-<p>我们每一个 a,都乘上一个矩阵,我们这边用 $W^q$ 来表示它,得到 $q^i$,每一个 a 都要乘上 $W<sup>q$,得到$q</sup>i$,<strong>这些不同的 a 你可以把它合起来,当作一个矩阵来看待</strong>。</p>
-<img src="image-20220613222137478.png" alt="image-20220613222137478" style="zoom:50%;">
-<p>一样$a^2\space a^3\space a^4 $也都乘上 $W^q$ 得到$q^2 q^3 $跟 $q^4$,那你可以<strong>把 a1 到 a4 拼起来</strong>,看作是一个矩阵,这个矩阵我们用 I 来表示，这个矩阵的四个 column 就是 $a^1$ 到 $a^4$。</p>
-<p>$I$ 乘上 $W^q$ 就得到另外一个矩阵,我们用 $Q$ 来表示它,这个 $Q$ 就是把 $q^1$ 到 $q^4$ 这四个 vector 拼起来,就是 $Q$ 的四个 column。</p>
-<p>所以我们从 $a^1$ 到 $a^4$,得到  $q^1$ 到 $q^4$这个操作,其实就是<strong>把 I 这个矩阵,乘上另外一个矩阵 $W^q$，得到矩阵$Q$</strong>。$I$ 这个矩阵它里面的 column就是我们 Self-attention 的 input是 $a^1$ 到 $a<sup>4$；**$W</sup>q$其实是 network 的参数,它是等一下会被learn出来的** ；$Q$ 的四个 column,就是  $q^1$ 到 $q^4$。接下来产生 k 跟 v 的操作跟 q 是一模一样的。</p>
-<img src="image-20220613222206939.png" alt="image-20220613222206939" style="zoom:50%;">
-<p>所以每一个 a 得到 q k v ,其实就是把输入的这个,vector sequence 乘上三个不同的矩阵,你就得到了 q,得到了 k,跟得到了 v。下一步是,每一个 q 都会去跟每一个 k,去计算这个 inner product,去<strong>得到这个 attention 的分数</strong>。那得到 attention 分数这一件事情,如果从矩阵操作的角度来看,它在做什么样的事情呢？</p>
-<img src="image-20220613222251046.png" alt="image-20220613222251046" style="zoom:50%;">
-<p>你就是把 $q^1$ 跟 $k^1$ 做 inner product,得到 $α_{1,1}$,所以 $α_{1,1}$就是 $q^1$ 跟$k^1$ 的 inner product,那这边我就把这个,$k^1$它背后的这个向量,把它画成比较宽一点代表说它是 transpose。同理 $α_{1,2}$ 就是 $q^1$ 跟 $k^2$,做 inner product, $α_{1,3}$  就是 $q^1$ 跟 $k^3$ 做 inner product,这个  $α_{1,4}$  就是 $q^1$ 跟 $k^4$ 做 inner product。那这个四个步骤的操作,你其实可以把它拼起来,看作是<strong>矩阵跟向量相乘</strong>。</p>
-<img src="image-20220613222335546.png" alt="image-20220613222335546" style="zoom:50%;">
-<p>这四个动作,你可以看作是我们<strong>把 $k^1$ 到 $k^4$ 拼起来,当作是一个矩阵的四个 row</strong>。那我们刚才讲过说,我们不只是 $q<sup>1$,要对$k</sup>1$ 到 $k^4$ 计算 attention,$q<sup>2,q</sup>3,q^4$也要对 $k^1$ 到 $k^4$ 计算 attention,操作其实都是一模一样的。</p>
-<img src="image-20220613222430034.png" alt="image-20220613222430034" style="zoom:50%;">
-<p>所以这些 <strong>attention 的分数可以看作是两个矩阵的相乘</strong>,一个矩阵它的 row,就是 $k^1$ 到 $k^4$,另外一个矩阵它的 column 。我们会在 attention 的分数,<strong>做一下 normalization</strong>,比如说你会做 softmax,你会对这边的每一个 column,每一个 column 做 softmax,让每一个 column 里面的值相加是 1。</p>
-<p>之前有讲过说 其实这边做 <strong>softmax不是唯一的选项</strong>,你完全可以选择其他的操作,比如说 ReLU 之类的,那其实得到的结果也不会比较差,通过了 softmax 以后,它得到的值有点不一样了,所以我们用 $A’$,来表示通过 softmax 以后的结果。</p>
-<p>我们已经计算出 $A’ $，那我们把这个$v^1$ 到 $v^4$乘上这边的 α 以后,就可以得到 b。</p>
-<img src="image-20220613223101872.png" alt="image-20220613223101872" style="zoom:50%;">
-<p>你就把$v^1$ 到 $v^4$ 拼起来,你<strong>把 $v^1$ 到 $v^4$当成是V 这个矩阵的四个 column</strong>,把它拼起来,然后接下来你把 v 乘上,$A’$ 的第一个 column 以后,你得到的结果就是 $b^1$</p>
-<p>如果你熟悉线性代数的话,你知道说把这个 $A’$ 乘上 V,就是把 $A’$的第一个 column,乘上 V 这一个矩阵,你会得到你 output 矩阵的第一个 column。而把 A 的第一个 column乘上 V 这个矩阵做的事情,其实就是把 V 这个矩阵里面的每一个 column,<strong>根据第 $A’$ 这个矩阵里面的每一个 column 里面每一个 element,做 weighted sum</strong>,那就得到 $b^1$</p>
-<p>那就是这边的操作,把 $v^1$ 到 $v^4$ 乘上 weight,全部加起来得到 $b^1$,如果你是用矩阵操作的角度来看它,就是把$ A’$ 的第一个 column 乘上 V,就得到 $b^1$,然后接下来就是以此类推。</p>
-<img src="image-20220613223143878.png" alt="image-20220613223143878" style="zoom:50%;">
-<p>就是以此类推,把 $A’$ 的第二个 column 乘上 V,就得到 $b^2$,$A’$ 的第三个 column 乘上 V 就得到 $b^3$,$A’$ 的最后一个 column 乘上 V,就得到 $b^4$。所以我们等于就是把 $A’$ 这个矩阵,乘上 V 这个矩阵,得到 O 这个矩阵,O 这个矩阵里面的每一个 column,就是 Self-attention 的输出,也就是 $b^1$ 到 $b^4$,</p>
-<p><strong><font color="red"> 所以其实整个 Self-attention,我们在讲操作的时候,我们在最开始的时候 跟你讲的时候我们讲说,我们先产生了 q k v,然后再根据这个 q 去找出相关的位置,然后再对 v 做 weighted sum,其实这一串操作,就是一连串矩阵的乘法而已</font></strong>。</p>
+<p>我们每一个 a,都乘上一个矩阵,我们这边用 <span class="math inline">\(W^q\)</span> 来表示它,得到 <span class="math inline">\(q^i\)</span>,每一个 a 都要乘上 <span class="math inline">\(W^q\)</span>,得到<span class="math inline">\(q^i\)</span>,<strong>这些不同的 a
+你可以把它合起来,当作一个矩阵来看待</strong>。</p>
+<p><img src="image-20220613222137478.png" alt="image-20220613222137478" style="zoom:50%;"></p>
+<p>一样$a<sup>2a</sup>3a^4 $也都乘上 <span class="math inline">\(W^q\)</span> 得到$q^2 q^3 $跟 <span class="math inline">\(q^4\)</span>,那你可以<strong>把 a1 到 a4
+拼起来</strong>,看作是一个矩阵,这个矩阵我们用 I 来表示，这个矩阵的四个
+column 就是 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span>。</p>
+<p><span class="math inline">\(I\)</span> 乘上 <span class="math inline">\(W^q\)</span> 就得到另外一个矩阵,我们用 <span class="math inline">\(Q\)</span> 来表示它,这个 <span class="math inline">\(Q\)</span> 就是把 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span> 这四个 vector 拼起来,就是 <span class="math inline">\(Q\)</span> 的四个 column。</p>
+<p>所以我们从 <span class="math inline">\(a^1\)</span> 到 <span class="math inline">\(a^4\)</span>,得到 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span>这个操作,其实就是<strong>把 I
+这个矩阵,乘上另外一个矩阵 <span class="math inline">\(W^q\)</span>，得到矩阵<span class="math inline">\(Q\)</span></strong>。<span class="math inline">\(I\)</span> 这个矩阵它里面的 column就是我们
+Self-attention 的 input是 <span class="math inline">\(a^1\)</span> 到
+<span class="math inline">\(a^4\)</span>；<strong><span class="math inline">\(W^q\)</span>其实是 network
+的参数,它是等一下会被learn出来的</strong> ；<span class="math inline">\(Q\)</span> 的四个 column,就是 <span class="math inline">\(q^1\)</span> 到 <span class="math inline">\(q^4\)</span>。接下来产生 k 跟 v 的操作跟 q
+是一模一样的。</p>
+<p><img src="image-20220613222206939.png" alt="image-20220613222206939" style="zoom:50%;"></p>
+<p>所以每一个 a 得到 q k v ,其实就是把输入的这个,vector sequence
+乘上三个不同的矩阵,你就得到了 q,得到了 k,跟得到了 v。下一步是,每一个 q
+都会去跟每一个 k,去计算这个 inner product,去<strong>得到这个 attention
+的分数</strong>。那得到 attention
+分数这一件事情,如果从矩阵操作的角度来看,它在做什么样的事情呢？</p>
+<p><img src="image-20220613222251046.png" alt="image-20220613222251046" style="zoom:50%;"></p>
+<p>你就是把 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^1\)</span> 做 inner product,得到 <span class="math inline">\(α_{1,1}\)</span>,所以 <span class="math inline">\(α_{1,1}\)</span>就是 <span class="math inline">\(q^1\)</span> 跟<span class="math inline">\(k^1\)</span> 的 inner
+product,那这边我就把这个,<span class="math inline">\(k^1\)</span>它背后的这个向量,把它画成比较宽一点代表说它是
+transpose。同理 <span class="math inline">\(α_{1,2}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^2\)</span>,做 inner product, <span class="math inline">\(α_{1,3}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^3\)</span> 做 inner product,这个 <span class="math inline">\(α_{1,4}\)</span> 就是 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(k^4\)</span> 做 inner
+product。那这个四个步骤的操作,你其实可以把它拼起来,看作是<strong>矩阵跟向量相乘</strong>。</p>
+<p><img src="image-20220613222335546.png" alt="image-20220613222335546" style="zoom:50%;"></p>
+<p>这四个动作,你可以看作是我们<strong>把 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 拼起来,当作是一个矩阵的四个
+row</strong>。那我们刚才讲过说,我们不只是 <span class="math inline">\(q^1\)</span>,要对<span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 计算 attention,<span class="math inline">\(q^2,q^3,q^4\)</span>也要对 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span> 计算
+attention,操作其实都是一模一样的。</p>
+<p><img src="image-20220613222430034.png" alt="image-20220613222430034" style="zoom:50%;"></p>
+<p>所以这些 <strong>attention
+的分数可以看作是两个矩阵的相乘</strong>,一个矩阵它的 row,就是 <span class="math inline">\(k^1\)</span> 到 <span class="math inline">\(k^4\)</span>,另外一个矩阵它的 column 。我们会在
+attention 的分数,<strong>做一下 normalization</strong>,比如说你会做
+softmax,你会对这边的每一个 column,每一个 column 做 softmax,让每一个
+column 里面的值相加是 1。</p>
+<p>之前有讲过说 其实这边做
+<strong>softmax不是唯一的选项</strong>,你完全可以选择其他的操作,比如说
+ReLU 之类的,那其实得到的结果也不会比较差,通过了 softmax
+以后,它得到的值有点不一样了,所以我们用 <span class="math inline">\(A&#39;\)</span>,来表示通过 softmax
+以后的结果。</p>
+<p>我们已经计算出 $A' <span class="math inline">\(，那我们把这个\)</span>v^1$ 到 <span class="math inline">\(v^4\)</span>乘上这边的 α 以后,就可以得到 b。</p>
+<p><img src="image-20220613223101872.png" alt="image-20220613223101872" style="zoom:50%;"></p>
+<p>你就把<span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span> 拼起来,你<strong>把 <span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span>当成是V 这个矩阵的四个
+column</strong>,把它拼起来,然后接下来你把 v 乘上,<span class="math inline">\(A&#39;\)</span> 的第一个 column
+以后,你得到的结果就是 <span class="math inline">\(b^1\)</span></p>
+<p>如果你熟悉线性代数的话,你知道说把这个 <span class="math inline">\(A&#39;\)</span> 乘上 V,就是把 <span class="math inline">\(A&#39;\)</span>的第一个 column,乘上 V
+这一个矩阵,你会得到你 output 矩阵的第一个 column。而把 A 的第一个
+column乘上 V 这个矩阵做的事情,其实就是把 V 这个矩阵里面的每一个
+column,<strong>根据第 <span class="math inline">\(A&#39;\)</span>
+这个矩阵里面的每一个 column 里面每一个 element,做 weighted
+sum</strong>,那就得到 <span class="math inline">\(b^1\)</span></p>
+<p>那就是这边的操作,把 <span class="math inline">\(v^1\)</span> 到 <span class="math inline">\(v^4\)</span> 乘上 weight,全部加起来得到 <span class="math inline">\(b^1\)</span>,如果你是用矩阵操作的角度来看它,就是把$
+A'$ 的第一个 column 乘上 V,就得到 <span class="math inline">\(b^1\)</span>,然后接下来就是以此类推。</p>
+<p><img src="image-20220613223143878.png" alt="image-20220613223143878" style="zoom:50%;"></p>
+<p>就是以此类推,把 <span class="math inline">\(A&#39;\)</span> 的第二个
+column 乘上 V,就得到 <span class="math inline">\(b^2\)</span>,<span class="math inline">\(A&#39;\)</span> 的第三个 column 乘上 V 就得到
+<span class="math inline">\(b^3\)</span>,<span class="math inline">\(A&#39;\)</span> 的最后一个 column 乘上 V,就得到
+<span class="math inline">\(b^4\)</span>。所以我们等于就是把 <span class="math inline">\(A&#39;\)</span> 这个矩阵,乘上 V 这个矩阵,得到 O
+这个矩阵,O 这个矩阵里面的每一个 column,就是 Self-attention 的输出,也就是
+<span class="math inline">\(b^1\)</span> 到 <span class="math inline">\(b^4\)</span>,</p>
+<p><strong><font color="red"> 所以其实整个
+Self-attention,我们在讲操作的时候,我们在最开始的时候
+跟你讲的时候我们讲说,我们先产生了 q k v,然后再根据这个 q
+去找出相关的位置,然后再对 v 做 weighted
+sum,其实这一串操作,就是一连串矩阵的乘法而已</font></strong>。</p>
 <h3><span id="23-self-attention-流程">2.3 Self-attention 流程</span></h3>
 <h5><span id="我们再复习一下我们刚才看到的矩阵乘法">我们再复习一下我们刚才看到的矩阵乘法：</span></h5>
-<img src="image-20220613223238727.png" alt="image-20220613223238727" style="zoom:50%;">
+<p><img src="image-20220613223238727.png" alt="image-20220613223238727" style="zoom:50%;"></p>
 <ul>
-<li>
-<p>I 是 Self-attention 的 input,Self-attention 的 input 是一排的vector,这排 vector 拼起来当作矩阵的 column,就是 I；</p>
-</li>
-<li>
-<p>这个 input 分别乘上三个矩阵,$W^q$ $W^k$ 跟$ W^v$,得到 Q K V ；</p>
-</li>
-<li>
-<p>这三个矩阵,接下来 Q 乘上 K 的 transpose,得到 A 这个矩阵,A 的矩阵你可能会做一些处理,得到 $A’$,那有时候我们会把这个 $A’$,叫做 <strong>Attention Matrix</strong>，<strong>生成Q矩阵就是为了得到Attention的score</strong>；</p>
-</li>
-<li>
-<p>然后接下来你把 $A’$ 再乘上 V,就得到 O,O 就是 Self-attention 这个 layer 的输出,<strong>生成V是为了计算最后的b，也就是矩阵O；</strong></p>
-</li>
+<li><p>I 是 Self-attention 的 input,Self-attention 的 input
+是一排的vector,这排 vector 拼起来当作矩阵的 column,就是 I；</p></li>
+<li><p>这个 input 分别乘上三个矩阵,<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span> 跟$ W^v$,得到 Q K V ；</p></li>
+<li><p>这三个矩阵,接下来 Q 乘上 K 的 transpose,得到 A 这个矩阵,A
+的矩阵你可能会做一些处理,得到 <span class="math inline">\(A&#39;\)</span>,那有时候我们会把这个 <span class="math inline">\(A&#39;\)</span>,叫做 <strong>Attention
+Matrix</strong>，<strong>生成Q矩阵就是为了得到Attention的score</strong>；</p></li>
+<li><p>然后接下来你把 <span class="math inline">\(A&#39;\)</span> 再乘上
+V,就得到 O,O 就是 Self-attention 这个 layer
+的输出,<strong>生成V是为了计算最后的b，也就是矩阵O；</strong></p></li>
 </ul>
-<p>所以 Self-attention 输入是 I,输出是 O,那你会发现说虽然是叫 attention,但是<strong>其实 Self-attention layer 里面,唯一需要学的参数,就只有 $W^q$ $W^k$ 跟$ W^v$ 而已,只有$W^q$ $W^k$ 跟$ W^v$是未知的</strong>,是需要透过我们的训练资料把它找出来的。但是其他的操作都没有未知的参数,都是我们人为设定好的,都不需要透过 training data 找出来,那这整个就是 Self-attention 的操作,从 I 到 O 就是做了 Self-attention。</p>
+<p>所以 Self-attention 输入是 I,输出是 O,那你会发现说虽然是叫
+attention,但是<strong>其实 Self-attention layer
+里面,唯一需要学的参数,就只有 <span class="math inline">\(W^q\)</span>
+<span class="math inline">\(W^k\)</span> 跟$ W^v$ 而已,只有<span class="math inline">\(W^q\)</span> <span class="math inline">\(W^k\)</span> 跟$
+W^v$是未知的</strong>,是需要透过我们的训练资料把它找出来的。但是其他的操作都没有未知的参数,都是我们人为设定好的,都不需要透过
+training data 找出来,那这整个就是 Self-attention 的操作,从 I 到 O
+就是做了 Self-attention。</p>
 <h3><span id="24-multi-head-self-attention">2.4 Multi-head Self-attention</span></h3>
-<p><strong>Self-attention 有一个进阶的版本,叫做 ==Multi-head Self-attention==, Multi-head Self-attention,其实今天的使用是非常地广泛的</strong>。在作业 4 里面,助教原来的 code 4 有,Multi-head Self-attention,它的 head 的数目是设成 2,那刚才助教有给你提示说,把 head 的数目改少一点 改成 1,其实就可以过medium baseline。</p>
-<p>但并不代表所有的任务,都适合用比较少的 head,有一些任务,比如说翻译,比如说语音辨识,其实用比较多的 head,你反而可以得到比较好的结果。至于<strong>需要用多少的 head,这个又是另外一个 hyperparameter</strong>,也是你需要调的。</p>
-<h5><span id="那为什么我们会需要比较多的-head-呢你可以想成说相关这件事情">那为什么我们会需要比较多的 head 呢,你可以想成说相关这件事情？</span></h5>
-<p>我们在做这个 Self-attention 的时候,我们就是用 q 去找相关的 k,但是**==相关==这件事情有很多种不同的形式**,有很多种不同的定义,所以也许我们不能只有一个 q,我们应该要有多个 q,<strong>不同的 q 负责不同种类的相关性</strong>。</p>
-<h5><span id="所以假设你要做-multi-head-self-attention-的话你会怎么操作呢">所以假设你要做 Multi-head Self-attention 的话,你会怎么操作呢?</span></h5>
-<img src="image-20220613223634261.png" alt="image-20220613223634261" style="zoom:50%;">
+<p><strong>Self-attention 有一个进阶的版本,叫做 ==Multi-head
+Self-attention==, Multi-head
+Self-attention,其实今天的使用是非常地广泛的</strong>。在作业 4
+里面,助教原来的 code 4 有,Multi-head Self-attention,它的 head
+的数目是设成 2,那刚才助教有给你提示说,把 head 的数目改少一点 改成
+1,其实就可以过medium baseline。</p>
+<p>但并不代表所有的任务,都适合用比较少的
+head,有一些任务,比如说翻译,比如说语音辨识,其实用比较多的
+head,你反而可以得到比较好的结果。至于<strong>需要用多少的
+head,这个又是另外一个 hyperparameter</strong>,也是你需要调的。</p>
+<h5><span id="那为什么我们会需要比较多的head-呢你可以想成说相关这件事情">那为什么我们会需要比较多的
+head 呢,你可以想成说相关这件事情？</span></h5>
+<p>我们在做这个 Self-attention 的时候,我们就是用 q 去找相关的
+k,但是<strong>==相关==这件事情有很多种不同的形式</strong>,有很多种不同的定义,所以也许我们不能只有一个
+q,我们应该要有多个 q,<strong>不同的 q
+负责不同种类的相关性</strong>。</p>
+<h5><span id="所以假设你要做multi-head-self-attention-的话你会怎么操作呢">所以假设你要做
+Multi-head Self-attention 的话,你会怎么操作呢?</span></h5>
+<p><img src="image-20220613223634261.png" alt="image-20220613223634261" style="zoom:50%;"></p>
 <ul>
 <li>先把 a 乘上一个矩阵得到 q</li>
-<li>再把 q 乘上另外两个矩阵,分别得到 $q^1$ 跟 $q^2$,那这边还有 这边是用两个上标,i 代表的是位置,然后这个 1 跟 2 代表是,这个位置的第几个 q,所以这边有 $q^{i,1}$ 跟 $q^{i,2}$,代表说我们有两个 head</li>
+<li>再把 q 乘上另外两个矩阵,分别得到 <span class="math inline">\(q^1\)</span> 跟 <span class="math inline">\(q^2\)</span>,那这边还有 这边是用两个上标,i
+代表的是位置,然后这个 1 跟 2 代表是,这个位置的第几个 q,所以这边有 <span class="math inline">\(q^{i,1}\)</span> 跟 <span class="math inline">\(q^{i,2}\)</span>,代表说我们有两个 head</li>
 </ul>
-<p>我们认为这个问题,里面有两种不同的相关性,是我们需要产生两种不同的 head,来找两种不同的相关性。既然 q 有两个,那 k 也就要有两个,那 v 也就要有两个,从 q 得到 $q^1 q^2$,从 k 得到 $k^1 k^2$,从 v 得到 $v^1 v^2$,那其实就是把 q 把 k 把 v,分别乘上两个矩阵,得到这个不同的 head,就这样子而已,对另外一个位置,也做一样的事情只是现在$q^1$,它在算这个 attention 的分数的时候,它就不要管那个 $k^2$ 了。</p>
-<img src="image-20220613223730387.png" alt="image-20220613223730387" style="zoom:50%;">
+<p>我们认为这个问题,里面有两种不同的相关性,是我们需要产生两种不同的
+head,来找两种不同的相关性。既然 q 有两个,那 k 也就要有两个,那 v
+也就要有两个,从 q 得到 <span class="math inline">\(q^1 q^2\)</span>,从 k
+得到 <span class="math inline">\(k^1 k^2\)</span>,从 v 得到 <span class="math inline">\(v^1 v^2\)</span>,那其实就是把 q 把 k 把
+v,分别乘上两个矩阵,得到这个不同的
+head,就这样子而已,对另外一个位置,也做一样的事情只是现在<span class="math inline">\(q^1\)</span>,它在算这个 attention
+的分数的时候,它就不要管那个 <span class="math inline">\(k^2\)</span>
+了。</p>
+<p><img src="image-20220613223730387.png" alt="image-20220613223730387" style="zoom:50%;"></p>
 <ul>
-<li>
-<p>所以 $q_{i,1}$ 就跟 $k^{i,1}$ 算 attention</p>
-</li>
-<li>
-<p>$q_{i,1}$ 就跟 $k^{j,1}$ 算 attention,也就是算这个 dot product,然后得到这个 attention 的分数</p>
-</li>
-<li>
-<p>然后今天在做 weighted sum 的时候,也不要管 $v^2$ 了,看 $V^{i,1}$ 跟 $v^{j,1}$ 就好,所以你把 attention 的分数乘 $v^{i,1}$,把 attention 的分数乘 $v^{j,1}$</p>
-</li>
-<li>
-<p>然后接下来就得到 $b^{i,1}$</p>
-</li>
+<li><p>所以 <span class="math inline">\(q_{i,1}\)</span> 就跟 <span class="math inline">\(k^{i,1}\)</span> 算 attention</p></li>
+<li><p><span class="math inline">\(q_{i,1}\)</span> 就跟 <span class="math inline">\(k^{j,1}\)</span> 算 attention,也就是算这个 dot
+product,然后得到这个 attention 的分数</p></li>
+<li><p>然后今天在做 weighted sum 的时候,也不要管 <span class="math inline">\(v^2\)</span> 了,看 <span class="math inline">\(V^{i,1}\)</span> 跟 <span class="math inline">\(v^{j,1}\)</span> 就好,所以你把 attention 的分数乘
+<span class="math inline">\(v^{i,1}\)</span>,把 attention 的分数乘 <span class="math inline">\(v^{j,1}\)</span></p></li>
+<li><p>然后接下来就得到 <span class="math inline">\(b^{i,1}\)</span></p></li>
 </ul>
-<p>这边只用了其中一个 head,那你会用另外一个 head,也做一模一样的事情。</p>
-<img src="image-20220613223749217.png" alt="image-20220613223749217" style="zoom:50%;">
-<p>所以 $q^2$ 只对 $k^2$ 做 attention,它们在做 weighted sum 的时候,只对 $v^2$ 做 weighted sum,然后接下来你就得到 $b^{i,2}$</p>
-<p>如果你有多个 head,有 8 个 head 有 16 个 head,那也是一样的操作,那这边是用两个 head 来当作例子,来给你看看有两个 head 的时候,是怎么操作的,现在得到 $b^{i,1}$ 跟 $b^{i,2}$。<strong>然后接下来你可能会把 $b^{i,1}$ 跟 $b^{i,2}$,把它接起来,然后再通过一个 transform。</strong></p>
-<img src="image-20220613223832789.png" alt="image-20220613223832789" style="zoom:50%;">
-<p>也就是再乘上一个矩阵,然后得到 bi,然后再送到下一层去,那这个就是 Multi-head attention,一个这个 Self-attention 的变形。</p>
+<p>这边只用了其中一个 head,那你会用另外一个
+head,也做一模一样的事情。</p>
+<p><img src="image-20220613223749217.png" alt="image-20220613223749217" style="zoom:50%;"></p>
+<p>所以 <span class="math inline">\(q^2\)</span> 只对 <span class="math inline">\(k^2\)</span> 做 attention,它们在做 weighted sum
+的时候,只对 <span class="math inline">\(v^2\)</span> 做 weighted
+sum,然后接下来你就得到 <span class="math inline">\(b^{i,2}\)</span></p>
+<p>如果你有多个 head,有 8 个 head 有 16 个
+head,那也是一样的操作,那这边是用两个 head 来当作例子,来给你看看有两个
+head 的时候,是怎么操作的,现在得到 <span class="math inline">\(b^{i,1}\)</span> 跟 <span class="math inline">\(b^{i,2}\)</span>。<strong>然后接下来你可能会把
+<span class="math inline">\(b^{i,1}\)</span> 跟 <span class="math inline">\(b^{i,2}\)</span>,把它接起来,然后再通过一个
+transform。</strong></p>
+<p><img src="image-20220613223832789.png" alt="image-20220613223832789" style="zoom:50%;"></p>
+<p>也就是再乘上一个矩阵,然后得到 bi,然后再送到下一层去,那这个就是
+Multi-head attention,一个这个 Self-attention 的变形。</p>
 <h3><span id="25-positional-encoding">2.5 Positional Encoding</span></h3>
-<blockquote></blockquote>
-<h4><span id="no-position-information-in-self-attention">No position information in self-attention</span></h4>
-<p>那讲到目前为止,你会发现说 Self-attention 的这个 layer,它少了一个也许很重要的资讯,这个资讯是<strong>位置的资讯</strong>。对一个 Self-attention layer 而言,每一个 input,它是出现在 sequence 的最前面,还是最后面,它是完全没有这个资讯的。</p>
-<p><font color="red"> 对 Self-attention 而言,<strong>位置 1 跟位置 2 跟位置 3 跟位置 4,完全没有任何差别,这四个位置的操作其实是一模一样</strong>,对它来说 q1 到跟 q4 的距离,并没有特别远,1 跟 4 的距离并没有特别远,2 跟 3 的距离也没有特别近。</font></p>
-<p>对它来说就是天涯若比邻,所有的位置之间的距离都是一样的,没有任何一个位置距离比较远,也没有任何位置距离比较近,也没有谁在整个 sequence 的最前面,也没有谁在整个 sequence 的最后面。但是这样子设计可能会有一些问题,因为有时候位置的资讯也许很重要,举例来说,我们在做这个 POS tagging,就是词性标记的时候,也许你知道说<strong>动词比较不容易出现在句首</strong>,所以如果我们知道说,某一个词汇它是放在句首的,那它是动词的可能性可能就比较低,这样子的位置的资讯往往也是有用的。</p>
-<h4><span id="each-positon-has-a-unique-positional-vector-ei">Each positon has a unique positional vector $e^i$</span></h4>
-<p>可是在我们到目前为止,讲的 Self-attention 的操作里面,根本就没有位置的资讯,所以怎么办呢,所以你做 Self-attention 的时候,如果你觉得位置的资讯是一个重要的事情,那你可以把位置的资讯把它塞进去,怎么把位置的资讯塞进去呢,这边就要用到一个叫做,==positional encoding== 的技术。</p>
-<img src="image-20220613224025472.png" alt="image-20220613224025472" style="zoom:50%;">
-<p><font color="red"> <strong>你为每一个位置设定一个 vector,叫做 positional vector</strong>,这边<strong>用 $e^i$ 来表示,上标 i 代表是位置,每一个不同的位置</strong></font>,就有不同的 vector,就是 $e^1$ 是一个 vector,$e^2$ 是一个vector,$e^{128}$ 是一个vector,不同的位置都有一个它专属的 e,然后把这个 e 加到 $a^i$ 上面,就结束了。就是告诉你的 Self-attention,位置的资讯,如果它看到说 $a^i$ 好像有被加上 $ e^i$,它就知道说现在出现的位置,应该是在 i 这个位置。</p>
-<p><strong>最早的这个 transformer,就 Attention Is All You Need 那篇 paper 里面,它用的 $ e^i$长的是这个样子</strong>。</p>
-<img src="image-20220613224248928.png" alt="image-20220613224248928" style="zoom:50%;">
-<h4><span id="hand-crafted-or-learned-from-data">Hand-crafted or Learned from data</span></h4>
-<p><strong>这样子的 positional vector,它是 handcrafted 的,也就是它是人设的</strong>,那人设的这个 vector 有很多问题,就假设我现在在定这个 vector 的时候,只定到 128,那我现在 sequence 的长度,如果是 129 怎么办呢？不过在最早的那个,Attention Is All You Need paper里面,没有这个问题,<strong>它 vector 是透过某一个规则所产生的</strong>,透过一个很神奇的sin和cos 的 function 所产生的。</p>
-<p>其实你不一定要这么产生, <strong>positional encoding仍然是一个尚待研究的问题</strong>,你可以创造自己新的方法,或甚至 positional encoding,是可以根据资料学出来的。那有关 positional encoding,你可以再参考一下文献,这个是一个尚待研究的问题,比如说我这边引用了一篇,这个是去年放在 arxiv 上的论文,所以可以想见这其实都是很新的论文。</p>
-<img src="image-20220613224538933.png" alt="image-20220613224538933" style="zoom:50%;">
+<blockquote>
+
+</blockquote>
+<h4><span id="no-positioninformation-in-self-attention">No position
+information in self-attention</span></h4>
+<p>那讲到目前为止,你会发现说 Self-attention 的这个
+layer,它少了一个也许很重要的资讯,这个资讯是<strong>位置的资讯</strong>。对一个
+Self-attention layer 而言,每一个 input,它是出现在 sequence
+的最前面,还是最后面,它是完全没有这个资讯的。</p>
+<p><font color="red"> 对 Self-attention 而言,<strong>位置 1 跟位置 2
+跟位置 3 跟位置
+4,完全没有任何差别,这四个位置的操作其实是一模一样</strong>,对它来说 q1
+到跟 q4 的距离,并没有特别远,1 跟 4 的距离并没有特别远,2 跟 3
+的距离也没有特别近。</font></p>
+<p>对它来说就是天涯若比邻,所有的位置之间的距离都是一样的,没有任何一个位置距离比较远,也没有任何位置距离比较近,也没有谁在整个
+sequence 的最前面,也没有谁在整个 sequence
+的最后面。但是这样子设计可能会有一些问题,因为有时候位置的资讯也许很重要,举例来说,我们在做这个
+POS
+tagging,就是词性标记的时候,也许你知道说<strong>动词比较不容易出现在句首</strong>,所以如果我们知道说,某一个词汇它是放在句首的,那它是动词的可能性可能就比较低,这样子的位置的资讯往往也是有用的。</p>
+<h4><span id="each-positon-hasa-unique-positional-vector-ei">Each positon has
+a unique positional vector <span class="math inline">\(e^i\)</span></span></h4>
+<p>可是在我们到目前为止,讲的 Self-attention
+的操作里面,根本就没有位置的资讯,所以怎么办呢,所以你做 Self-attention
+的时候,如果你觉得位置的资讯是一个重要的事情,那你可以把位置的资讯把它塞进去,怎么把位置的资讯塞进去呢,这边就要用到一个叫做,==positional
+encoding== 的技术。</p>
+<p><img src="image-20220613224025472.png" alt="image-20220613224025472" style="zoom:50%;"></p>
+<p><font color="red"> <strong>你为每一个位置设定一个 vector,叫做
+positional vector</strong>,这边<strong>用 <span class="math inline">\(e^i\)</span> 来表示,上标 i
+代表是位置,每一个不同的位置</strong></font>,就有不同的 vector,就是 <span class="math inline">\(e^1\)</span> 是一个 vector,<span class="math inline">\(e^2\)</span> 是一个vector,<span class="math inline">\(e^{128}\)</span>
+是一个vector,不同的位置都有一个它专属的 e,然后把这个 e 加到 <span class="math inline">\(a^i\)</span> 上面,就结束了。就是告诉你的
+Self-attention,位置的资讯,如果它看到说 <span class="math inline">\(a^i\)</span> 好像有被加上 $
+e^i$,它就知道说现在出现的位置,应该是在 i 这个位置。</p>
+<p><strong>最早的这个 transformer,就 Attention Is All You Need 那篇
+paper 里面,它用的 $ e^i$长的是这个样子</strong>。</p>
+<p><img src="image-20220613224248928.png" alt="image-20220613224248928" style="zoom:50%;"></p>
+<h4><span id="hand-crafted-or-learned-fromdata">Hand-crafted or Learned from
+data</span></h4>
+<p><strong>这样子的 positional vector,它是 handcrafted
+的,也就是它是人设的</strong>,那人设的这个 vector
+有很多问题,就假设我现在在定这个 vector 的时候,只定到 128,那我现在
+sequence 的长度,如果是 129 怎么办呢？不过在最早的那个,Attention Is All
+You Need paper里面,没有这个问题,<strong>它 vector
+是透过某一个规则所产生的</strong>,透过一个很神奇的sin和cos 的 function
+所产生的。</p>
+<p>其实你不一定要这么产生, <strong>positional
+encoding仍然是一个尚待研究的问题</strong>,你可以创造自己新的方法,或甚至
+positional encoding,是可以根据资料学出来的。那有关 positional
+encoding,你可以再参考一下文献,这个是一个尚待研究的问题,比如说我这边引用了一篇,这个是去年放在
+arxiv 上的论文,所以可以想见这其实都是很新的论文。</p>
+<p><img src="image-20220613224538933.png" alt="image-20220613224538933" style="zoom:50%;"></p>
 <p>里面就是比较了跟提出了,新的 positional encoding</p>
 <ul>
-<li>比如说这个是最早的 positional encoding,它是用一个神奇的 sin function 所产生的</li>
-<li>那如果你的 positional encoding,你把 positional encoding 里面的数值,当作 network 参数的一部分,直接 learn 出来,看起来是这个样子的,这个图是那个横著看的,它是横著看的,它是每一个 row,代表一个 position,好 所以这个是这个最原始的,用 sin function 产生的,这个是 learn 出来的</li>
-<li>它里面又有神奇的做法,比如说这个,这个是用 RNN 生出来的,positional encording 是用 RNN 出来的,这篇 paper 提出来的叫做 FLOATER,是用个神奇的 network 生出来的,</li>
+<li>比如说这个是最早的 positional encoding,它是用一个神奇的 sin function
+所产生的</li>
+<li>那如果你的 positional encoding,你把 positional encoding
+里面的数值,当作 network 参数的一部分,直接 learn
+出来,看起来是这个样子的,这个图是那个横著看的,它是横著看的,它是每一个
+row,代表一个 position,好 所以这个是这个最原始的,用 sin function
+产生的,这个是 learn 出来的</li>
+<li>它里面又有神奇的做法,比如说这个,这个是用 RNN 生出来的,positional
+encording 是用 RNN 出来的,这篇 paper 提出来的叫做 FLOATER,是用个神奇的
+network 生出来的,</li>
 </ul>
-<p>总之你有各式各样不同的方法,来产生 positional encoding,那目前我们还不知道哪一种方法最好,这是一个尚待研究中的问题,所以你不用纠结说,为什么 Sinusoidal 最好,<strong>你永远可以提出新的做法</strong>。</p>
+<p>总之你有各式各样不同的方法,来产生 positional
+encoding,那目前我们还不知道哪一种方法最好,这是一个尚待研究中的问题,所以你不用纠结说,为什么
+Sinusoidal 最好,<strong>你永远可以提出新的做法</strong>。</p>
 <h3><span id="26-applications">2.6 Applications …</span></h3>
-<p><strong>Self-attention 当然是用得很广,我们已经提过很多次 transformer 这个东西</strong>。</p>
-<img src="image-20220613224644049.png" alt="image-20220613224644049" style="zoom:50%;">
-<p>那我们大家也都知道说,在 NLP 的领域有一个东西叫做 BERT,BERT 里面也用到 Self-attention,所以 Self-attention 在 NLP 上面的应用,是大家都耳熟能详的。但 <strong>Self-attention,不是只能用在 NLP 相关的应用上,它还可以用在很多其他的问题上</strong>。</p>
+<p><strong>Self-attention 当然是用得很广,我们已经提过很多次 transformer
+这个东西</strong>。</p>
+<p><img src="image-20220613224644049.png" alt="image-20220613224644049" style="zoom:50%;"></p>
+<p>那我们大家也都知道说,在 NLP 的领域有一个东西叫做 BERT,BERT 里面也用到
+Self-attention,所以 Self-attention 在 NLP
+上面的应用,是大家都耳熟能详的。但 <strong>Self-attention,不是只能用在
+NLP 相关的应用上,它还可以用在很多其他的问题上</strong>。</p>
 <h3><span id="self-attention-for-speech">Self-attention for Speech</span></h3>
-<p>比如说在做语音的时候,你也可以用 Self-attention,不过在做语音的时候,你可能会对 Self-attention,做一些小小的改动。因为一般语音的,如果你要把一段声音讯号,表示成一排向量的话,这排<strong>向量可能会非常地长</strong>。</p>
-<img src="image-20220613224723147.png" alt="image-20220613224723147" style="zoom:50%;">
-<p>而每一个向量,其实只代表了 10 millisecond 的长度而已,所以如果今天是 1 秒鐘的声音讯号,它就有 100 个向量了,5 秒鐘的声音讯号,就 500 个向量了,你随便讲一句话,都是上千个向量了。所以一段声音讯号,你要描述它的时候,那个像这个 vector 的 sequence 它的长度是非常可观的,那可观的 sequence,可观的长度,会造成什么问题呢？</p>
-<p>你想想看,我们今天在<strong>计算这个 attention matrix 的时候,它的计算complexity 是长度的平方。</strong></p>
-<img src="image-20220613224807917.png" alt="image-20220613224807917" style="zoom:50%;">
-<p><strong>计算这个 attention matrix A′你需要做 L 乘以 L 次的 inner product,那如果这个 L 的值很大的话,它的计算量就很可观,你也需要很大的这个 memory,才能够把这个矩阵存下来。</strong></p>
-<p>所以今天如果在做语音辨识的时候,一句话所产生的这个 attention matrix,可能会太大,大到你根本就不容易处理,不容易训练,所以怎么办呢？<strong>在做语音的时候,有一招叫做 ==Truncated Self-attention==</strong>。</p>
-<img src="image-20220613224906348.png" alt="image-20220613224906348" style="zoom:50%;">
-<p><font color="red"><strong>Truncated Self-attention</strong> 做的事情就是,我们今天在做 Self-attention 的时候,<strong>不要看一整句话,就我们就只看一个小的范围就好</strong>，那至于<strong>这个范围应该要多大,那个是人设定的。</strong></font></p>
+<p>比如说在做语音的时候,你也可以用
+Self-attention,不过在做语音的时候,你可能会对
+Self-attention,做一些小小的改动。因为一般语音的,如果你要把一段声音讯号,表示成一排向量的话,这排<strong>向量可能会非常地长</strong>。</p>
+<p><img src="image-20220613224723147.png" alt="image-20220613224723147" style="zoom:50%;"></p>
+<p>而每一个向量,其实只代表了 10 millisecond 的长度而已,所以如果今天是 1
+秒鐘的声音讯号,它就有 100 个向量了,5 秒鐘的声音讯号,就 500
+个向量了,你随便讲一句话,都是上千个向量了。所以一段声音讯号,你要描述它的时候,那个像这个
+vector 的 sequence 它的长度是非常可观的,那可观的
+sequence,可观的长度,会造成什么问题呢？</p>
+<p>你想想看,我们今天在<strong>计算这个 attention matrix
+的时候,它的计算complexity 是长度的平方。</strong></p>
+<p><img src="image-20220613224807917.png" alt="image-20220613224807917" style="zoom:50%;"></p>
+<p><strong>计算这个 attention matrix A′你需要做 L 乘以 L 次的 inner
+product,那如果这个 L 的值很大的话,它的计算量就很可观,你也需要很大的这个
+memory,才能够把这个矩阵存下来。</strong></p>
+<p>所以今天如果在做语音辨识的时候,一句话所产生的这个 attention
+matrix,可能会太大,大到你根本就不容易处理,不容易训练,所以怎么办呢？<strong>在做语音的时候,有一招叫做
+==Truncated Self-attention==</strong>。</p>
+<p><img src="image-20220613224906348.png" alt="image-20220613224906348" style="zoom:50%;"></p>
+<p><font color="red"><strong>Truncated Self-attention</strong>
+做的事情就是,我们今天在做 Self-attention
+的时候,<strong>不要看一整句话,就我们就只看一个小的范围就好</strong>，那至于<strong>这个范围应该要多大,那个是人设定的。</strong></font></p>
 <p>那为什么我们知道说,今天在做语音辨识的时候,也许只需要看一个小的范围就好,那就是<strong>取决于你对这个问题的理解</strong>,也许我们要辨识这个位置有什么样的<strong>phoneme</strong>,这个位置有什么样的内容,我们并不需要看整句话,只要看这句话,跟它前后一定范围之内的资讯,其实就可以判断。</p>
-<p>所以如果在做 Self-attention 的时候,也许没有必要看过一整个句子,也许没有必要让 Self-attention 考虑一整个句子,也许只需要考虑一个小范围就好,这样就可以加快运算的速度，这个是 Truncated Self-attention。</p>
+<p>所以如果在做 Self-attention
+的时候,也许没有必要看过一整个句子,也许没有必要让 Self-attention
+考虑一整个句子,也许只需要考虑一个小范围就好,这样就可以加快运算的速度，这个是
+Truncated Self-attention。</p>
 <h3><span id="self-attention-for-image">Self-attention for Image</span></h3>
-<p>那其实 Self-attention ,还可以被用在影像上,Self-attention那到目前为止,我们在讲 Self-attention 的时候,我们都说 <strong>Self-attention 适用的范围是：输入是一个 vector set 的时候</strong>，一张图片啊,我们把它看作是一个很长的向量,那<strong>其实一张图片,我们也可以换一个观点,把它看作是一个 vector 的 set。</strong></p>
-<img src="image-20220613225206980.png" alt="image-20220613225206980" style="zoom:50%;">
-<p><strong>这个是一个解析度 5 乘以 10 的图片,那这一张图片呢,可以看作是一个 tensor,这个 tensor 的大小是 5 乘以 10 乘以 3,3 代表 RGB 这 3 个 channel。你可以把每一个位置的 pixel,看作是一个三维的向量,所以每一个 pixel,其实就是一个三维的向量,那整张图片,其实就是 5 乘以 10 个向量的set</strong>。</p>
-<p>所以我们其实可以换一个角度,影像这个东西,其实也是一个 vector set,它既然也是一个 vector set 的话,你完全可以用 Self-attention 来处理一张图片,那有没有人用 Self-attention 来处理一张图片呢,是有的。那这边就举了两个例子,来给大家参考,那现在把 Self-attention 用在影像处理上,也不算是一个非常石破天惊的事情。</p>
-<img src="image-20220613225244115.png" alt="image-20220613225244115" style="zoom:50%;">
+<p>那其实 Self-attention
+,还可以被用在影像上,Self-attention那到目前为止,我们在讲 Self-attention
+的时候,我们都说 <strong>Self-attention 适用的范围是：输入是一个 vector
+set
+的时候</strong>，一张图片啊,我们把它看作是一个很长的向量,那<strong>其实一张图片,我们也可以换一个观点,把它看作是一个
+vector 的 set。</strong></p>
+<p><img src="image-20220613225206980.png" alt="image-20220613225206980" style="zoom:50%;"></p>
+<p><strong>这个是一个解析度 5 乘以 10
+的图片,那这一张图片呢,可以看作是一个 tensor,这个 tensor 的大小是 5 乘以
+10 乘以 3,3 代表 RGB 这 3 个 channel。你可以把每一个位置的
+pixel,看作是一个三维的向量,所以每一个
+pixel,其实就是一个三维的向量,那整张图片,其实就是 5 乘以 10
+个向量的set</strong>。</p>
+<p>所以我们其实可以换一个角度,影像这个东西,其实也是一个 vector
+set,它既然也是一个 vector set 的话,你完全可以用 Self-attention
+来处理一张图片,那有没有人用 Self-attention
+来处理一张图片呢,是有的。那这边就举了两个例子,来给大家参考,那现在把
+Self-attention 用在影像处理上,也不算是一个非常石破天惊的事情。</p>
+<p><img src="image-20220613225244115.png" alt="image-20220613225244115" style="zoom:50%;"></p>
 <h3><span id="self-attention-vs-cnn">==Self-attention v.s. CNN==</span></h3>
-<p>我们可以来比较一下,<strong>Self-attention 跟 CNN 之间,有什么样的差异或者是关联性</strong>。如果我们今天,是用 Self-attention 来处理一张图片,代表说,假设这个是你要考虑的 pixel,那它产生 query,其他 pixel 产生 key。</p>
-<img src="image-20220613225357976.png" alt="image-20220613225357976" style="zoom:50%;">
-<p>你今天在<strong>做 inner product 的时候,你考虑的不是一个小的receptive field的信息,而是整张影像的资讯</strong>，但是今天在做 CNN 的时候,会画出一个 receptive field,每一个 filter,每一个 neural,只考虑 receptive field 范围里面的资讯。</p>
-<img src="image-20220613225442244.png" alt="image-20220613225442244" style="zoom:50%;">
+<p>我们可以来比较一下,<strong>Self-attention 跟 CNN
+之间,有什么样的差异或者是关联性</strong>。如果我们今天,是用
+Self-attention 来处理一张图片,代表说,假设这个是你要考虑的 pixel,那它产生
+query,其他 pixel 产生 key。</p>
+<p><img src="image-20220613225357976.png" alt="image-20220613225357976" style="zoom:50%;"></p>
+<p>你今天在<strong>做 inner product 的时候,你考虑的不是一个小的receptive
+field的信息,而是整张影像的资讯</strong>，但是今天在做 CNN
+的时候,,会画出一个 receptive field,每一个 filter,每一个 neural,只考虑
+receptive field 范围里面的资讯。</p>
+<p><img src="image-20220613225442244.png" alt="image-20220613225442244" style="zoom:50%;"></p>
 <ul>
-<li>所以如果我们比较 CNN 跟 Self-attention 的话,<strong><font color="red">CNN 可以看作是一种简化版的 Self-attention </font></strong>，因为在做CNN的时候,我们只考虑 receptive field 里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯,所以 CNN,是简化版的 Self-attention。或者是你可以反过来说,<strong><font color="red"> Self-attention 是一个复杂化的 CNN</font></strong></li>
-<li>在 CNN 里面,我们要划定 receptive field,每一个 neural,只考虑 receptive field 里面的资讯,而 <strong><font color="red"> receptive field 的范围跟大小,是人决定的。而对 Self-attention 而言,我们用 attention,去找出相关的 pixel,就好像是 receptive field 是自动被学出的,network 自己决定说,receptive field 的形状长什么样子,network 自己决定说,以这个 pixel 为中心,哪些 pixel 是我们真正需要考虑的,那些 pixel 是相关的</font></strong>。<strong>所以 receptive field 的范围,不再是人工划定,而是让机器自己学出来</strong>。</li>
+<li>所以如果我们比较 CNN 跟 Self-attention
+的话,<strong><font color="red">CNN 可以看作是一种简化版的 Self-attention
+</font></strong>，因为在做CNN的时候,我们只考虑 receptive field
+里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯,所以
+CNN,是简化版的
+Self-attention。或者是你可以反过来说,<strong><font color="red">
+Self-attention 是一个复杂化的 CNN</font></strong></li>
+<li>在 CNN 里面,我们要划定 receptive field,每一个 neural,只考虑
+receptive field 里面的资讯,而 <strong><font color="red"> receptive field
+的范围跟大小,是人决定的。而对 Self-attention 而言,我们用
+attention,去找出相关的 pixel,就好像是 receptive field
+是自动被学出的,network 自己决定说,receptive field
+的形状长什么样子,network 自己决定说,以这个 pixel 为中心,哪些 pixel
+是我们真正需要考虑的,那些 pixel 是相关的</font></strong>。<strong>所以
+receptive field
+的范围,不再是人工划定,而是让机器自己学出来</strong>。</li>
 </ul>
-<p>其实你可以读一篇 paper,叫做 On the Relationship,between Self-attention and Convolutional Layers。</p>
-<img src="image-20220613230146104.png" alt="image-20220613230146104" style="zoom:50%;">
-<p>在这篇 paper 里面,会用数学的方式严谨的告诉你说,其实这个 <strong>CNN就是 Self-attention 的特例,Self-attention 只要设定合适的参数,它可以做到跟 CNN 一模一样的事情</strong>。所以 self attention,是更 flexible 的 CNN,而 CNN 是有受限制的 Self-attention,Self-attention 只要透过某些设计,某些限制,它就会变成 CNN。</p>
-<img src="image-20220613230212397.png" alt="image-20220613230212397" style="zoom:50%;">
-<p>那这也不是很旧的 paper,你发现它放到网路上的时间呢,是 19 年的 11 月,所以你知道这些,我们今天上课里面讲的东西,其实都是很新的资讯。<strong><font color="red"> 既然Self-attention 比较 flexible,之前有讲说比较 flexible 的 model,比较需要更多的 data,如果你 data 不够,就有可能 overfitting。</font></strong></p>
-<p>如果你今天用不同的 data 量,来训练 CNN 跟 Self-attention,你确实可以看到我刚才讲的现象。</p>
-<img src="image-20220613230309663.png" alt="image-20220613230309663" style="zoom:50%;">
-<p>那这个实验结果,来自于 An image is worth 16 乘以 16 的 words,这个是 Google 的 paper,它就是把这个 Self-attention,apply 在影像上面。那其实<strong>把一张影像呢,拆成 16 乘以 16 个 patch,它把每一个 patch想像成是一个 word</strong>,因为一般我们这个 Self-attention,比较常用在 NLP 上面,所以他就说,想像每一个 patch 其实就是一个 word,所以他就取了一个很 fancy 的 title,叫做<strong>一张图值 16 乘以 16 个文字</strong>。</p>
-<p>横轴是训练的影像的量,那你发现说,对 Google 来说 用的,所谓的资料量比较少,也是你没有办法用的资料量啦这边有 10 个 million 就是,1000 万张图,是资料量比较小的 setting,然后资料量比较大的 setting 呢,有 3 亿张图片,在这个实验里面呢,比较了 Self-attention 是浅蓝色的这一条线,跟 CNN 是深灰色的这条线。</p>
-<p>就会发现说,<strong>随著资料量越来越多,那 Self-attention 的结果就越来越好,最终在资料量最多的时候,Self-attention 可以超过 CNN,但在资料量少的时候,CNN 它是可以比 Self-attention,得到更好的结果的。</strong></p>
-<p>那为什么会这样,你就可以从 CNN 跟 Self-attention,它们的弹性来加以解释：</p>
+<p>其实你可以读一篇 paper,叫做 On the Relationship,between
+Self-attention and Convolutional Layers。</p>
+<p><img src="image-20220613230146104.png" alt="image-20220613230146104" style="zoom:50%;"></p>
+<p>在这篇 paper 里面,会用数学的方式严谨的告诉你说,其实这个
+<strong>CNN就是 Self-attention 的特例,Self-attention
+只要设定合适的参数,它可以做到跟 CNN 一模一样的事情</strong>。所以 self
+attention,是更 flexible 的 CNN,而 CNN 是有受限制的
+Self-attention,Self-attention 只要透过某些设计,某些限制,它就会变成
+CNN。</p>
+<p><img src="image-20220613230212397.png" alt="image-20220613230212397" style="zoom:50%;"></p>
+<p>那这也不是很旧的 paper,你发现它放到网路上的时间呢,是 19 年的 11
+月,所以你知道这些,我们今天上课里面讲的东西,其实都是很新的资讯。<strong><font color="red">
+既然Self-attention 比较 flexible,之前有讲说比较 flexible 的
+model,比较需要更多的 data,如果你 data 不够,就有可能
+overfitting。</font></strong></p>
+<p>如果你今天用不同的 data 量,来训练 CNN 跟
+Self-attention,你确实可以看到我刚才讲的现象。</p>
+<p><img src="image-20220613230309663.png" alt="image-20220613230309663" style="zoom:50%;"></p>
+<p>那这个实验结果,来自于 An image is worth 16 乘以 16 的 words,这个是
+Google 的 paper,它就是把这个 Self-attention,apply
+在影像上面。那其实<strong>把一张影像呢,拆成 16 乘以 16 个
+patch,它把每一个 patch想像成是一个 word</strong>,因为一般我们这个
+Self-attention,比较常用在 NLP 上面,所以他就说,想像每一个 patch
+其实就是一个 word,所以他就取了一个很 fancy 的 title,叫做<strong>一张图值
+16 乘以 16 个文字</strong>。</p>
+<p>横轴是训练的影像的量,那你发现说,对 Google 来说
+用的,所谓的资料量比较少,也是你没有办法用的资料量啦这边有 10 个 million
+就是,1000 万张图,是资料量比较小的 setting,然后资料量比较大的 setting
+呢,有 3 亿张图片,在这个实验里面呢,比较了 Self-attention
+是浅蓝色的这一条线,跟 CNN 是深灰色的这条线。</p>
+<p>就会发现说,<strong>随著资料量越来越多,那 Self-attention
+的结果就越来越好,最终在资料量最多的时候,Self-attention 可以超过
+CNN,但在资料量少的时候,CNN 它是可以比
+Self-attention,得到更好的结果的。</strong></p>
+<p>那为什么会这样,你就可以从 CNN 跟
+Self-attention,它们的弹性来加以解释：</p>
 <ul>
-<li><strong><font color="red"> Self-attention 它弹性比较大,所以需要比较多的训练资料,训练资料少的时候,就会 overfitting。</font></strong></li>
-<li>CNN 它弹性比较小,在训练资料少的时候,结果比较好,但训练资料多的时候,它没有办法从更大量的训练资料得到好处。</li>
+<li><strong><font color="red"> Self-attention
+它弹性比较大,所以需要比较多的训练资料,训练资料少的时候,就会
+overfitting。</font></strong></li>
+<li>CNN
+它弹性比较小,在训练资料少的时候,结果比较好,但训练资料多的时候,它没有办法从更大量的训练资料得到好处。</li>
 </ul>
-<p>所以这个就是 Self-attention 跟 CNN 的比较，那 Self-attention 跟 CNN,谁比较好呢,<strong>我应该选哪一个呢,事实上你也可以都用</strong>,在我们作业四里面,如果你要做 strong baseline 的话,就特别给你一个提示,就是用 conformer,里面就是有用到 Self-attention,也有用到 CNN。</p>
-<h3><span id="self-attention-vs-rnn"><strong><font color="red"> Self-attention v.s. RNN</font></strong></span></h3>
-<p>我们来比较一下,Self-attention 跟 RNN,RNN就是 recurrent neural network,这门课里面现在就不会讲recurrent neural network,因为 recurrent neural network 的角色,很大一部分都可以用 Self-attention 来取代了,但是 RNN 是什么呢,假设你想知道的话,那这边很快地三言两语把它带过去,RNN 跟 Self-attention 一样,都是要处理 input 是一个 sequence 的状况。</p>
-<img src="image-20220613230659968.png" alt="image-20220613230659968" style="zoom:50%;">
+<p>所以这个就是 Self-attention 跟 CNN 的比较，那 Self-attention 跟
+CNN,谁比较好呢,<strong>我应该选哪一个呢,事实上你也可以都用</strong>,在我们作业四里面,如果你要做
+strong baseline 的话,就特别给你一个提示,就是用 conformer,里面就是有用到
+Self-attention,也有用到 CNN。</p>
+<h3><span id="self-attention-vs-rnn"><strong><font color="red">
+Self-attention v.s. RNN</font></strong></span></h3>
+<p>我们来比较一下,Self-attention 跟 RNN,RNN就是 recurrent neural
+network,这门课里面现在就不会讲recurrent neural network,因为 recurrent
+neural network 的角色,很大一部分都可以用 Self-attention 来取代了,但是
+RNN 是什么呢,假设你想知道的话,那这边很快地三言两语把它带过去,RNN 跟
+Self-attention 一样,都是要处理 input 是一个 sequence 的状况。</p>
+<p><img src="image-20220613230659968.png" alt="image-20220613230659968" style="zoom:50%;"></p>
 <p>在 RNN 里面呢</p>
 <ul>
-<li>左边是你的 input sequence,你有一个 <strong>memory</strong> 的 vector</li>
-<li>然后你有一个 RNN 的 block,这个 RNN 的 block 呢,它吃 memory 的 vector,吃第一个 input 的 vector</li>
-<li>然后 output 一个东西,然后根据这个 output 的东西,我们通常叫做这个 hidden,这个 hidden 的 layer 的 output</li>
-<li>然后通过这个 fully connected network,然后再去做你想要的 prediction</li>
+<li>左边是你的 input sequence,你有一个 <strong>memory</strong> 的
+vector</li>
+<li>然后你有一个 RNN 的 block,这个 RNN 的 block 呢,它吃 memory 的
+vector,吃第一个 input 的 vector</li>
+<li>然后 output 一个东西,然后根据这个 output 的东西,我们通常叫做这个
+hidden,这个 hidden 的 layer 的 output</li>
+<li>然后通过这个 fully connected network,然后再去做你想要的
+prediction</li>
 </ul>
-<p>接下来当sequence 里面,第二个 vector 作为 input 的时候,也会把前一个时间点吐出来的东西,当做下一个时间点的输入,再丢进 RNN 里面,然后再产生新的 vector,再拿去给 fully connected network。然后第三个 vector 进来的时候,你把第三个 vector 跟前一个时间点的输出,一起丢进 RNN,再产生新的输出,然后在第四个时间点。第四个 vector 输入的时候,把第四个 vector 跟前一个时间点,产生出来的输出,再一起做处理,得到新的输出,再通过 fully connected network 的 layer,这个就是 RNN。</p>
-<p>Recurrent Neural Network跟 Self-attention 做的事情其实也非常像,它们的 <strong>input 都是一个 vector sequence</strong>，Self-attention output 是另外一个 vector sequence,这里面的每一个 vector,都<strong>考虑了整个 input sequence 以后</strong>,再给 fully connected network 去做处理。</p>
-<p>那 RNN 呢,它也会 output 另外一群 vector,这<strong>另外一排 vector</strong> 也会给,fully connected network 做进一步的处理,那 Self-attention 跟 RNN 有什么不同呢。</p>
-<img src="image-20220613230944896.png" alt="image-20220613230944896" style="zoom:50%;">
-<p><strong>当然一个非常显而易见的不同,你可能会说,这边的每一个 vector,它都考虑了整个 input 的 sequence,而 RNN 每一个 vector,只考虑了左边已经输入的 vector,它没有考虑右边的 vector,那这是一个很好的观察。</strong></p>
-<p>但是 <strong>RNN 其实也可以是双向的</strong>,所以如果你 RNN 用双向的 RNN 的话,其实这边的每一个 hidden 的 output,每一个 memory 的 output,其实也可以看作是考虑了整个 input 的 sequence。但是假设我们把 RNN 的 output,跟 Self-attention 的 output 拿来做对比的话,就算你用 bidirectional 的 RNN,还是有一些差别的。</p>
+<p>接下来当sequence 里面,第二个 vector 作为 input
+的时候,也会把前一个时间点吐出来的东西,当做下一个时间点的输入,再丢进 RNN
+里面,然后再产生新的 vector,再拿去给 fully connected network。然后第三个
+vector 进来的时候,你把第三个 vector 跟前一个时间点的输出,一起丢进
+RNN,再产生新的输出,然后在第四个时间点。第四个 vector 输入的时候,把第四个
+vector 跟前一个时间点,产生出来的输出,再一起做处理,得到新的输出,再通过
+fully connected network 的 layer,这个就是 RNN。</p>
+<p>Recurrent Neural Network跟 Self-attention 做的事情其实也非常像,它们的
+<strong>input 都是一个 vector sequence</strong>，Self-attention output
+是另外一个 vector sequence,这里面的每一个 vector,都<strong>考虑了整个
+input sequence 以后</strong>,再给 fully connected network 去做处理。</p>
+<p>那 RNN 呢,它也会 output 另外一群 vector,这<strong>另外一排
+vector</strong> 也会给,fully connected network 做进一步的处理,那
+Self-attention 跟 RNN 有什么不同呢。</p>
+<p><img src="image-20220613230944896.png" alt="image-20220613230944896" style="zoom:50%;"></p>
+<p><strong>当然一个非常显而易见的不同,你可能会说,这边的每一个
+vector,它都考虑了整个 input 的 sequence,而 RNN 每一个
+vector,只考虑了左边已经输入的 vector,它没有考虑右边的
+vector,那这是一个很好的观察。</strong></p>
+<p>但是 <strong>RNN 其实也可以是双向的</strong>,所以如果你 RNN 用双向的
+RNN 的话,其实这边的每一个 hidden 的 output,每一个 memory 的
+output,其实也可以看作是考虑了整个 input 的 sequence。但是假设我们把 RNN
+的 output,跟 Self-attention 的 output 拿来做对比的话,就算你用
+bidirectional 的 RNN,还是有一些差别的。</p>
 <ul>
-<li>
-<p><strong><font color="red">对RNN 来说,假设最右边这个黄色的 vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory 里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong></p>
-</li>
-<li>
-<p><strong><font color="red"> 对 Self-attention 来说没有这个问题,它只要这边输出一个 query,这边输出一个 key,只要它们 match 得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence 上非常远的 vector,轻易地抽取资讯,所以这是 RNN 跟 Self-attention,一个不一样的地方。</font></strong></p>
-</li>
-<li>
-<p>RNN 今天在处理的时候, input 一排 sequence,output 一排 sequence 的时候,<strong><font color="red"> RNN 是没有办法平行化的。</font><strong>RNN 它今天 input 一排是 vector,output 另外一排 vector 的时候,它没有办法一次处理,没有办法平行处理所有的 output。但 Self-attention 有一个优势,是它可以平行处理所有的输出,你今天 input 一排 vector,再 output 这四个 vector 的时候,<strong>这四个 vector 是平行产生的,并不需要等谁先运算完才把其他运算出来</strong>,output 的这个 vector,里面的 output 这个 vector sequence 里面,每一个 vector 都是同时产生出来的。</strong><font color="red"> 所以在运算速度上,Self-attention 会比 RNN 更有效率。</font></strong></p>
-</li>
+<li><p><strong><font color="red">对RNN 来说,假设最右边这个黄色的
+vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory
+里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong></p></li>
+<li><p><strong><font color="red"> 对 Self-attention
+来说没有这个问题,它只要这边输出一个 query,这边输出一个 key,只要它们
+match 得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence
+上非常远的 vector,轻易地抽取资讯,所以这是 RNN 跟
+Self-attention,一个不一样的地方。</font></strong></p></li>
+<li><p>RNN 今天在处理的时候, input 一排 sequence,output 一排 sequence
+的时候,<strong><font color="red"> RNN
+是没有办法平行化的。</font></strong>RNN 它今天 input 一排是
+vector,output 另外一排 vector
+的时候,它没有办法一次处理,没有办法平行处理所有的 output。但
+Self-attention 有一个优势,是它可以平行处理所有的输出,你今天 input 一排
+vector,再 output 这四个 vector 的时候,<strong>这四个 vector
+是平行产生的,并不需要等谁先运算完才把其他运算出来</strong>,output 的这个
+vector,里面的 output 这个 vector sequence 里面,每一个 vector
+都是同时产生出来的。<strong><font color="red">
+所以在运算速度上,Self-attention 会比 RNN
+更有效率。</font></strong></p></li>
 </ul>
-<img src="image-20220613231148500.png" alt="image-20220613231148500" style="zoom:50%;">
-<p>那你今天发现说,<strong>很多的应用都往往把 RNN 的架构,逐渐改成 Self-attention 的架构了</strong>,如果你想要更进一步了解,RNN 跟 Self-attention 的关係的话,你可以看下面这篇文章,Transformers are RNNs,里面会告诉你说,Self-attention 你加上了什么东西以后,其实它就变成了 RNN,发现说这也不是很旧的 paper,这个是去年的六月放到 arXiv 上。</p>
+<p><img src="image-20220613231148500.png" alt="image-20220613231148500" style="zoom:50%;"></p>
+<p>那你今天发现说,<strong>很多的应用都往往把 RNN 的架构,逐渐改成
+Self-attention 的架构了</strong>,如果你想要更进一步了解,RNN 跟
+Self-attention 的关係的话,你可以看下面这篇文章,Transformers are
+RNNs,里面会告诉你说,Self-attention 你加上了什么东西以后,其实它就变成了
+RNN,发现说这也不是很旧的 paper,这个是去年的六月放到 arXiv 上。</p>
 <h3><span id="self-attention-for-graph">Self-attention for Graph</span></h3>
-<p>Graph 也可以看作是一堆 vector,那如果是一堆 vector,就可以用 Self-attention 来处理,所以 Self-attention 也可以用在 Graph 上面,但是<strong>当我们把 Self-attention,用在Graph 上面的时候,有什么样特别的地方呢？</strong></p>
-<p><strong><font color="red"> Graph 往往是人为根据某些 domain knowledge 建出来的,那 domain knowledge 告诉我们说,这两个向量彼此之间没有关联,我们就没有必要再用机器去学习这件事情。</font></strong></p>
-<img src="image-20220613231411144.png" alt="image-20220613231411144" style="zoom:50%;">
-<p>在 Graph 上面,每一个 node 可以表示成一个向量,但<strong>不只有 node 的资讯,还有 edge 的资讯</strong>,我们知道哪些 node 之间是有相连的,也就是哪些 node 是有关联的。</p>
-<p>我们知道哪些向量间是有关联,那之前我们在做 Self-attention 的时候,所谓的关联性是 network 自己找出来的,但是现在既然有了 Graph 的资讯,<strong>有了 edge 的资讯,那关联性也许就不需要透过机器自动找出来,这个图上面的 edge 已经暗示了我们,node 跟 node 之间的关联性</strong>。</p>
-<p>所以今天当你把 Self-attention,用在 Graph 上面的时候,你有一个选择是你在做这个,Attention Matrix 计算的时候,你可以<strong>只计算有 edge 相连的 node 就好</strong>。那如果两个 node 之间没有相连,那其实很有可能就暗示我们,这两个 node 之间没有关係,<strong>既然没有关係,我们就不需要再去计算它的 attention score,直接把它设为 0 就好了</strong>。</p>
+<p>Graph 也可以看作是一堆 vector,那如果是一堆 vector,就可以用
+Self-attention 来处理,所以 Self-attention 也可以用在 Graph
+上面,但是<strong>当我们把 Self-attention,用在Graph
+上面的时候,有什么样特别的地方呢？</strong></p>
+<p><strong><font color="red"> Graph 往往是人为根据某些 domain knowledge
+建出来的,那 domain knowledge
+告诉我们说,这两个向量彼此之间没有关联,我们就没有必要再用机器去学习这件事情。</font></strong></p>
+<p><img src="image-20220613231411144.png" alt="image-20220613231411144" style="zoom:50%;"></p>
+<p>在 Graph 上面,每一个 node 可以表示成一个向量,但<strong>不只有 node
+的资讯,还有 edge 的资讯</strong>,我们知道哪些 node
+之间是有相连的,也就是哪些 node 是有关联的。</p>
+<p>我们知道哪些向量间是有关联,那之前我们在做 Self-attention
+的时候,所谓的关联性是 network 自己找出来的,但是现在既然有了 Graph
+的资讯,<strong>有了 edge
+的资讯,那关联性也许就不需要透过机器自动找出来,这个图上面的 edge
+已经暗示了我们,node 跟 node 之间的关联性</strong>。</p>
+<p>所以今天当你把 Self-attention,用在 Graph
+上面的时候,你有一个选择是你在做这个,Attention Matrix
+计算的时候,你可以<strong>只计算有 edge 相连的 node
+就好</strong>。那如果两个 node
+之间没有相连,那其实很有可能就暗示我们,这两个 node
+之间没有关係,<strong>既然没有关係,我们就不需要再去计算它的 attention
+score,直接把它设为 0 就好了</strong>。</p>
 <h3><span id="27-more">2.7 More</span></h3>
-<p>其实Self-attention 有非常非常多的变形,你可以看一篇 paper 叫做,<strong>Long Range Arena</strong>,里面比较了各种不同的 Self-attention 的变形。</p>
-<img src="image-20220613231703000.png" alt="image-20220613231703000" style="zoom:50%;">
-<p>Self-attention 它最大的问题就是,<strong>它的运算量非常地大</strong>,所以怎么样减少 Self-attention 的运算量,是一个未来的重点,可以看到这边有,各种各式各样 Self-attention 的变形。</p>
-<p><strong>Self-attention 最早是,用在 Transformer 上面,所以很多人讲 Transformer 的时候,其实它指的就是这个 Self-attention,有人说广义的 Transformer,指的就是 Self-attention</strong>。那所以后来各式各样的,Self-attention 的变形都这样做,都叫做是什么 former,比如说 Linformer Performer Reformer 等等,所以 Self-attention 的变形,现在都叫做 xxformer。</p>
-<p>那可以看到，往右代表它运算的速度,所以有很多各式各样新的 xxformer,它们的速度会比原来的 Transformer 快,但是快的速度带来的就是 performance 变差。这个纵轴代表是 performance,所以它们往往比原来的 Transformer,performance 差一点,但是速度会比较快。那到底什么样的 Self-attention,才能够真的又快又好,这仍然是一个尚待研究的问题,如果你对 Self-attention,想要进一步研究的话,你还可以看一下,<strong>Efficient Transformers: A Survey 这篇 paper,里面会跟你介绍,各式各样 Self-attention 的变形。</strong></p>
+<p>其实Self-attention 有非常非常多的变形,你可以看一篇 paper
+叫做,<strong>Long Range Arena</strong>,里面比较了各种不同的
+Self-attention 的变形。</p>
+<p><img src="image-20220613231703000.png" alt="image-20220613231703000" style="zoom:50%;"></p>
+<p>Self-attention
+它最大的问题就是,<strong>它的运算量非常地大</strong>,所以怎么样减少
+Self-attention 的运算量,是一个未来的重点,可以看到这边有,各种各式各样
+Self-attention 的变形。</p>
+<p><strong>Self-attention 最早是,用在 Transformer 上面,所以很多人讲
+Transformer 的时候,其实它指的就是这个 Self-attention,有人说广义的
+Transformer,指的就是
+Self-attention</strong>。那所以后来各式各样的,Self-attention
+的变形都这样做,都叫做是什么 former,比如说 Linformer Performer Reformer
+等等,所以 Self-attention 的变形,现在都叫做 xxformer。</p>
+<p>那可以看到，往右代表它运算的速度,所以有很多各式各样新的
+xxformer,它们的速度会比原来的 Transformer 快,但是快的速度带来的就是
+performance 变差。这个纵轴代表是 performance,所以它们往往比原来的
+Transformer,performance 差一点,但是速度会比较快。那到底什么样的
+Self-attention,才能够真的又快又好,这仍然是一个尚待研究的问题,如果你对
+Self-attention,想要进一步研究的话,你还可以看一下,<strong>Efficient
+Transformers: A Survey 这篇 paper,里面会跟你介绍,各式各样 Self-attention
+的变形。</strong></p>
 <h2><span id="三-注意力机制-qampa">三、注意力机制 Q&amp;A</span></h2>
-<h3><span id="31-self-attention-cnn-rnn对比">3.1 Self-Attention、CNN、RNN对比？</span></h3>
+<h3><span id="31self-attention-cnn-rnn对比">3.1
+Self-Attention、CNN、RNN对比？</span></h3>
 <h4><span id="self-attention-vs-cnn">Self-Attention vs CNN</span></h4>
 <ul>
-<li><strong><font color="red">CNN 可以看作是一种简化版的 Self-attention </font></strong>，因为在做CNN的时候,我们只考虑 receptive field 里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯。</li>
-<li>在 CNN 里面 <strong><font color="red"> receptive field 的范围跟大小,是人决定的。而对 Self-attention ,不再是人工划定,而是让机器自己学出来</font></strong>。</li>
-<li><strong>Self-attention 比较 flexible,之前有讲说比较 flexible 的 model,比较需要更多的 data,如果你 data 不够,就有可能 overfitting</strong>。</li>
+<li><strong><font color="red">CNN 可以看作是一种简化版的 Self-attention
+</font></strong>，因为在做CNN的时候,我们只考虑 receptive field
+里面的资讯,而在做 Self-attention 的时候,我们是考虑整张图片的资讯。</li>
+<li>在 CNN 里面 <strong><font color="red"> receptive field
+的范围跟大小,是人决定的。而对 Self-attention
+,不再是人工划定,而是让机器自己学出来</font></strong>。</li>
+<li><strong>Self-attention 比较 flexible,之前有讲说比较 flexible 的
+model,比较需要更多的 data,如果你 data 不够,就有可能
+overfitting</strong>。</li>
 </ul>
 <h4><span id="self-attention-vs-rnn">Self-Attention vs RNN</span></h4>
 <ul>
-<li><strong><font color="red">RNN 右边的 vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory 里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong> Self-attention 只要a1输出一个 query,a4输出一个 key,只要它们 match 得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence 上非常远的 vector,轻易地抽取资讯,所以这是 RNN 跟 Self-attention一个不一样的地方。</li>
-<li><strong><font color="red"> RNN 是没有办法平行化的。所以在运算速度上,Self-attention 会比 RNN 更有效率。</font></strong></li>
+<li><strong><font color="red">RNN 右边的
+vector,要考虑最左边的这个输入,那它必须要把最左边的输入存在 memory
+里面,然后接下来都不能够忘掉,一路带到最右边,才能够在最后一个时间点被考虑。</font></strong>
+Self-attention 只要a1输出一个 query,a4输出一个 key,只要它们 match
+得起来,天涯若比邻,你可以从非常远的 vector,在整个 sequence 上非常远的
+vector,轻易地抽取资讯,所以这是 RNN 跟
+Self-attention一个不一样的地方。</li>
+<li><strong><font color="red"> RNN
+是没有办法平行化的。所以在运算速度上,Self-attention 会比 RNN
+更有效率。</font></strong></li>
 </ul>
-<h3><span id="32-self-attention-cnn-rnn时间复杂度对比">3.2 Self-Attention、CNN、RNN时间复杂度对比？</span></h3>
+<h3><span id="32self-attention-cnn-rnn时间复杂度对比">3.2
+Self-Attention、CNN、RNN时间复杂度对比？</span></h3>
 <blockquote>
-<h5><span id="计算效率-一个形状为-的矩阵与另一个形状为-的矩阵相乘其运算复杂度来源于乘法操作的次数时间复杂度为">计算效率: 一个形状为 <img src="https://www.zhihu.com/equation?tex=N%5Ctimes+M" alt="[公式]"> 的矩阵，与另一个形状为 <img src="https://www.zhihu.com/equation?tex=M%5Ctimes+P" alt="[公式]"> 的矩阵相乘，其运算复杂度来源于乘法操作的次数，时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28NMP%29" alt="[公式]"></span></h5>
+<p>##### 计算效率: 一个形状为 <img src="https://www.zhihu.com/equation?tex=N%5Ctimes+M" alt="[公式]">
+的矩阵，与另一个形状为 <img src="https://www.zhihu.com/equation?tex=M%5Ctimes+P" alt="[公式]">
+的矩阵相乘，其运算复杂度来源于乘法操作的次数，时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28NMP%29" alt="[公式]"></p>
 </blockquote>
 <h4><span id="self-attention">Self-Attention</span></h4>
-<p><img src="https://www.zhihu.com/equation?tex=A%28Q%2CK%2CV%29%3D%5Cmathrm%7BSoftmax%7D%28QK%5ET%29V+%5C%5C+" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=A%28Q%2CK%2CV%29%3D%5Cmathrm%7BSoftmax%7D%28QK%5ET%29V+%5C%5C+" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <ul>
-<li><img src="https://www.zhihu.com/equation?tex=Q%2CK%2CV%3An%5Ctimes+d" alt="[公式]"></li>
-<li>相似度计算 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+n" alt="[公式]"> 运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]"> 矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=Q%2CK%2CV%3An%5Ctimes+d" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
+<li>相似度计算 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+n" alt="[公式]"> 运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]">
+矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
 <li>softmax计算：对每行做softmax，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%29" alt="[公式]"> ，则n行的复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2%29" alt="[公式]"></li>
-<li>加权和： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
+<li>加权和： <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+n" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
+运算，得到 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 矩阵，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></li>
 </ul>
 <p>故最后self-attention的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"></p>
-<p>对于受限的self-attention，每个元素仅能和周围 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]"> 个元素进行交互，即和 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 维向量做内积运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28rd%29" alt="[公式]"> ，则 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个元素的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%28rnd%29%7D" alt="[公式]"></p>
+<p>对于受限的self-attention，每个元素仅能和周围 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]">
+个元素进行交互，即和 <img src="https://www.zhihu.com/equation?tex=r" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 维向量做内积运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28rd%29" alt="[公式]"> ，则 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个元素的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%28rnd%29%7D" alt="[公式]"></p>
 <h4><span id="multi-head-attention">Multi-Head Attention</span></h4>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BMultiHead%7D%28Q%2CK%2CV%29%3D%5Cmathrm%7BConcat%28head_1%2C...%2Chead_h%29%7DW%5EO+%5C%5C+%5Cmathrm%7Bwhere%5Cquad+head_i%7D%3DA%28QW_i%5EQ%2CKW_i%5EK%2CVW_i%5EV%29%5C%5C" alt="[公式]"></p>
-<p>对于multi-head attention，假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 个head，这里 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 是一个常数，对于每个head，首先需要把三个矩阵分别映射到 <img src="https://www.zhihu.com/equation?tex=d_q%2Cd_k%2Cd_v" alt="[公式]"> 维度。这里考虑一种简化情况： <img src="https://www.zhihu.com/equation?tex=d_q%3Dd_k%3Dd_v%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。(对于dot-attention计算方式， <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d_v" alt="[公式]"> 可以不同)。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathrm%7BMultiHead%7D%28Q%2CK%2CV%29%3D%5Cmathrm%7BConcat%28head_1%2C...%2Chead_h%29%7DW%5EO+%5C%5C+%5Cmathrm%7Bwhere%5Cquad+head_i%7D%3DA%28QW_i%5EQ%2CKW_i%5EK%2CVW_i%5EV%29%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>对于multi-head attention，假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 个head，这里
+<img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
+是一个常数，对于每个head，首先需要把三个矩阵分别映射到 <img src="https://www.zhihu.com/equation?tex=d_q%2Cd_k%2Cd_v" alt="[公式]">
+维度。这里考虑一种简化情况： <img src="https://www.zhihu.com/equation?tex=d_q%3Dd_k%3Dd_v%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。(对于dot-attention计算方式， <img src="https://www.zhihu.com/equation?tex=d_k" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d_v" alt="[公式]">
+可以不同)。</p>
 <ul>
-<li>输入线性映射的复杂度： <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+d" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 运算，忽略常系数，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"> 。</li>
+<li>输入线性映射的复杂度： <img src="https://www.zhihu.com/equation?tex=n+%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 运算，忽略常系数，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"> 。</li>
 <li>Attention操作复杂度：主要在相似度计算及加权和的开销上， <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=%5Cfrac%7Bd%7D%7Bh%7D%5Ctimes+%7Bn%7D" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7B%7D" alt="[公式]"></li>
-<li>输出线性映射的复杂度：concat操作拼起来形成 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 的矩阵，然后经过输出线性映射，保证输入输出相同，所以是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 计算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></li>
+<li>输出线性映射的复杂度：concat操作拼起来形成 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
+的矩阵，然后经过输出线性映射，保证输入输出相同，所以是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 计算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></li>
 </ul>
 <p>故最后的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%2Bnd%5E2%29" alt="[公式]"></p>
 <blockquote>
-<p>注意：多头的计算并不是通过循环完成的，而是通过 transposes and reshapes，用矩阵乘法来完成的。假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 个head，则新的representation dimension： <img src="https://www.zhihu.com/equation?tex=m%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。因为，我们将 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"> 的矩阵拆为 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+h%5Ctimes+m" alt="[公式]"> 的张量，再利用转置操作转为 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n+%5Ctimes+m" alt="[公式]"> 的张量。故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> 的计算为： <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+m+%5Ctimes+n" alt="[公式]"> 做计算，得到 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+n" alt="[公式]"> 的张量，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28h%5E2n%5E2m%29" alt="[公式]"> ，即 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2dh%29" alt="[公式]"> 。注意，此处 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> 实际是一个常数，故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> 复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"> 。</p>
+<p>注意：多头的计算并不是通过循环完成的，而是通过 transposes and
+reshapes，用矩阵乘法来完成的。假设有 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
+个head，则新的representation dimension： <img src="https://www.zhihu.com/equation?tex=m%3D%5Cfrac%7Bd%7D%7Bh%7D" alt="[公式]"> 。因为，我们将 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]">
+的矩阵拆为 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+h%5Ctimes+m" alt="[公式]"> 的张量，再利用转置操作转为 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n+%5Ctimes+m" alt="[公式]"> 的张量。故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]">
+的计算为： <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+m+%5Ctimes+n" alt="[公式]"> 做计算，得到 <img src="https://www.zhihu.com/equation?tex=h%5Ctimes+n%5Ctimes+n" alt="[公式]"> 的张量，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28h%5E2n%5E2m%29" alt="[公式]"> ，即 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2dh%29" alt="[公式]"> 。注意，此处 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]">
+实际是一个常数，故 <img src="https://www.zhihu.com/equation?tex=QK%5ET" alt="[公式]"> 复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28n%5E2d%29" alt="[公式]"> 。</p>
 </blockquote>
 <h4><span id="recurrent">Recurrent</span></h4>
-<p><img src="https://www.zhihu.com/equation?tex=h_t%3Df%28Ux_t%2BWh_%7Bt-1%7D%29+%5C%5C" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=h_t%3Df%28Ux_t%2BWh_%7Bt-1%7D%29+%5C%5C" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <ul>
-<li><img src="https://www.zhihu.com/equation?tex=Ux_t" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=m%5Ctimes+1" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28md%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=m" alt="[公式]"> 为input size</li>
-<li><img src="https://www.zhihu.com/equation?tex=Wh_%7Bt-1%7D" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+1" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=Ux_t" alt="[公式]">
+： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+m" alt="[公式]"> 与 <img src="https://www.zhihu.com/equation?tex=m%5Ctimes+1" alt="[公式]">
+运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28md%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=m" alt="[公式]"> 为input size</li>
+<li><img src="https://www.zhihu.com/equation?tex=Wh_%7Bt-1%7D" alt="[公式]"> ： <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+d" alt="[公式]"> 与
+<img src="https://www.zhihu.com/equation?tex=d%5Ctimes+1" alt="[公式]"> 运算，复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"></li>
 </ul>
 <p>故一次操作的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 次序列操作后的总时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nd%5E2%29" alt="[公式]"></p>
 <h4><span id="convolution">Convolution</span></h4>
@@ -689,9 +1022,16 @@ $$</p>
 <p>注: 这里保证输入输出都是一样的，即均是 <img src="https://www.zhihu.com/equation?tex=n%5Ctimes+d" alt="[公式]"></p>
 </blockquote>
 <ul>
-<li>为了保证输入和输出在第一个维度都相同，故需要对输入进行padding操作，因为这里kernel size为 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]"> ，（实际kernel的形状为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]"> ）如果不padding的话，那么输出的第一个维度为 <img src="https://www.zhihu.com/equation?tex=n-k%2B1" alt="[公式]"> ，因为这里stride是为1的。为了保证输入输出相同，则需要对序列的前后分别padding长度为 <img src="https://www.zhihu.com/equation?tex=%28k-1%29%2F2" alt="[公式]"> 。</li>
-<li>大小为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]"> 的卷积核一次运算的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28kd%29" alt="[公式]"> ，一共做了 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 次，故复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%29" alt="[公式]"></li>
-<li>为了保证第二个维度在第二个维度都相同，故需要 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 个卷积核，所以卷积操作总的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%5E2%29" alt="[公式]"></li>
+<li>为了保证输入和输出在第一个维度都相同，故需要对输入进行padding操作，因为这里kernel
+size为 <img src="https://www.zhihu.com/equation?tex=k" alt="[公式]">
+，（实际kernel的形状为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]">
+）如果不padding的话，那么输出的第一个维度为 <img src="https://www.zhihu.com/equation?tex=n-k%2B1" alt="[公式]">
+，因为这里stride是为1的。为了保证输入输出相同，则需要对序列的前后分别padding长度为
+<img src="https://www.zhihu.com/equation?tex=%28k-1%29%2F2" alt="[公式]"> 。</li>
+<li>大小为 <img src="https://www.zhihu.com/equation?tex=k%5Ctimes+d" alt="[公式]"> 的卷积核一次运算的复杂度为： <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28kd%29" alt="[公式]"> ，一共做了 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]">
+次，故复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%29" alt="[公式]"></li>
+<li>为了保证第二个维度在第二个维度都相同，故需要 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]">
+个卷积核，所以卷积操作总的时间复杂度为 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28nkd%5E2%29" alt="[公式]"></li>
 </ul>
 
     </div>
@@ -751,7 +1091,7 @@ $$</p>
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

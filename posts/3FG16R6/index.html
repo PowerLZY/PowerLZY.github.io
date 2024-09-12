@@ -146,7 +146,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">HOW 自动部署开源AI模型到生产环境？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、背景介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、部署准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、部署Scikit-learn模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、部署PySpark模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、模型部署管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">HOW
+自动部署开源AI模型到生产环境？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、背景介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、部署准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、部署Scikit-learn模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、部署PySpark模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、模型部署管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,7 +168,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -298,29 +299,35 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="how-自动部署开源ai模型到生产环境">HOW 自动部署开源AI模型到生产环境？</span></h2>
+        <h2><span id="how自动部署开源ai模型到生产环境">HOW
+自动部署开源AI模型到生产环境？</span></h2>
 <h3><span id="一-背景介绍">一、背景介绍</span></h3>
 <p>AI的广泛应用是由AI在开源技术的进步推动的，利用功能强大的开源模型库，数据科学家们可以很容易的训练一个性能不错的模型。但是因为模型生产环境和开发环境的不同，涉及到不同角色人员：模型训练是数据科学家和数据分析师的工作，但是模型部署是开发和运维工程师的事情，导致模型上线部署却不是那么容易。</p>
-<p><strong>DaaS（Deployment-as-a-Service）是AutoDeployAI公司推出的基于Kubernetes的AI模型自动部署系统，提供一键式自动部署开源AI模型生成REST API，以方便在生产环境中调用</strong>。下面，我们主要演示在DaaS中如何部署经典机器学习模型，包括<strong>Scikit-learn、XGBoost、LightGBM、和PySpark ML Pipelines</strong>。关于深度学习模型的部署，会在下一章中介绍。</p>
-<p><strong>DMatrix 格式</strong> 在xgboost当中运行速度更快，性能更好。</p>
+<p><strong>DaaS（Deployment-as-a-Service）是AutoDeployAI公司推出的基于Kubernetes的AI模型自动部署系统，提供一键式自动部署开源AI模型生成REST
+API，以方便在生产环境中调用</strong>。下面，我们主要演示在DaaS中如何部署经典机器学习模型，包括<strong>Scikit-learn、XGBoost、LightGBM、和PySpark
+ML Pipelines</strong>。关于深度学习模型的部署，会在下一章中介绍。</p>
+<p><strong>DMatrix 格式</strong>
+在xgboost当中运行速度更快，性能更好。</p>
 <h3><span id="二-部署准备">二、部署准备</span></h3>
-<p>我们使用DaaS提供的Python客户端（DaaS-Client）来部署模型，对于XGBoost和LightGBM，我们同样使用它们的Python API来作模型训练。在训练和部署模型之前，我们需要完成以下操作。</p>
+<p>我们使用DaaS提供的Python客户端（DaaS-Client）来部署模型，对于XGBoost和LightGBM，我们同样使用它们的Python
+API来作模型训练。在训练和部署模型之前，我们需要完成以下操作。</p>
 <ul>
 <li><strong>安装Python DaaS-Client</strong></li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade git+https://github.com/autodeployai/daas-client.git</span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>初始化DaasClient</strong>。使用DaaS系统的URL、账户、密码登陆系统，文本使用的DaaS演示系统安装在本地的Minikube上。完整Jupyter Notebook，请参考：<a target="_blank" rel="noopener" href="https://github.com/aipredict/ai-deployment/blob/master/deploy-ai-models-in-daas/deploy-sklearn-xgboost-lightgbm-pyspark.ipynb">deploy-sklearn-xgboost-lightgbm-pyspark.ipynb</a></li>
+<li><strong>初始化DaasClient</strong>。使用DaaS系统的URL、账户、密码登陆系统，文本使用的DaaS演示系统安装在本地的Minikube上。完整Jupyter
+Notebook，请参考：<a target="_blank" rel="noopener" href="https://github.com/aipredict/ai-deployment/blob/master/deploy-ai-models-in-daas/deploy-sklearn-xgboost-lightgbm-pyspark.ipynb">deploy-sklearn-xgboost-lightgbm-pyspark.ipynb</a></li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from daas_client import DaasClient</span><br><span class="line"></span><br><span class="line">client = DaasClient(&#x27;https://192.168.64.3:30931&#x27;, &#x27;username&#x27;, &#x27;password&#x27;)</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>创建项目</strong>。DaaS使用项目管理用户不同的分析任务，一个项目中可以包含用户的各种分析资产：模型、部署、程序脚本、数据、数据源等。项目创建成功后，设置为当前活动项目，发布的模型和创建的部署都会存储在该项目下。<code>create_project</code>函数接受三个参数：
 <ul>
 <li><strong>项目名称</strong>：可以是任意有效的Linux文件目录名。</li>
-<li><strong>项目路由</strong>：使用在部署的REST URL中来唯一表示当前项目，只能是小写英文字符(a-z)，数字(0-9)和中横线<code>-</code>，并且<code>-</code>不能在开头和结尾处。</li>
+<li><strong>项目路由</strong>：使用在部署的REST
+URL中来唯一表示当前项目，只能是小写英文字符(a-z)，数字(0-9)和中横线<code>-</code>，并且<code>-</code>不能在开头和结尾处。</li>
 <li><strong>项目说明</strong>（可选）：可以是任意字符。</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">project = <span class="string">&#x27;部署测试&#x27;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> client.project_exists(project):</span><br><span class="line">    client.create_project(project, <span class="string">&#x27;deployment-test&#x27;</span>, <span class="string">&#x27;部署测试项目&#x27;</span>)</span><br><span class="line">client.set_project(project)</span><br></pre></td></tr></table></figure>
 <ul>
@@ -334,8 +341,7 @@
 <li><strong>发布模型</strong>。调用<code>publish</code>函数发布模型到DaaS系统。</li>
 <li><strong>测试模型</strong>（可选）。调用<code>test</code>函数获取测试API信息，可以使用任意的REST客户端程序测试模型在DaaS中是否工作正常，使用的是DaaS系统模型测试API。第一次执行<code>test</code>会比较慢，因为DaaS系统需要启动测试运行时环境。</li>
 <li><strong>部署模型</strong>。发布成功后，调用<code>deploy</code>函数部署部署模型。可以使用任意的REST客户端程序测试模型部署，使用的是DaaS系统正式部署API。</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <h3><span id="三-部署scikit-learn模型">三、部署Scikit-learn模型</span></h3>
 <ul>
@@ -349,8 +355,10 @@
 <p><strong>test</strong>函数必须要指定前两个参数，第一个<strong>model</strong>是训练的模型对象，第二个是模型名称，其余是可选参数：</p>
 <ul>
 <li><strong>mining_function</strong>：指定挖掘功能，可以指定为<code>regression</code>（回归）、<code>classification</code>（分类）、和<code>clustering</code>（聚类）。</li>
-<li><strong>X_test和y_test</strong>：指定测试训练集，发布时计算模型评估指标，比如针对分类模型，计算正确率（Accuracy），对于回归模型，计算可释方差（explained Variance）。</li>
-<li><strong>data_test</strong>： 同样是指定测试训练集，但是该参数用在Spark模型上，非Spark模型通过<code>X_test</code>和<code>y_test</code>指定。</li>
+<li><strong>X_test和y_test</strong>：指定测试训练集，发布时计算模型评估指标，比如针对分类模型，计算正确率（Accuracy），对于回归模型，计算可释方差（explained
+Variance）。</li>
+<li><strong>data_test</strong>：
+同样是指定测试训练集，但是该参数用在Spark模型上，非Spark模型通过<code>X_test</code>和<code>y_test</code>指定。</li>
 <li><strong>description</strong>：模型描述。</li>
 <li><strong>params</strong>：记录模型参数设置。</li>
 </ul>
@@ -360,7 +368,9 @@
 <li><strong>测试Scikit-learn模型</strong></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test_resp = client.test(publish_resp[<span class="string">&#x27;model_name&#x27;</span>],</span><br><span class="line">                        model_version=publish_resp[<span class="string">&#x27;model_version&#x27;</span>])</span><br></pre></td></tr></table></figure>
-<p><code>test_resp</code>是一个字典类型的结果，记录了测试REST API信息。如下，其中<code>access_token</code>是访问令牌，一个长字符串，这里没有显示出来。<code>endpoint_url</code>指定测试REST API地址，<code>payload</code>提供了测试当前模型需要输入的请求正文格式。</p>
+<p><code>test_resp</code>是一个字典类型的结果，记录了测试REST
+API信息。如下，其中<code>access_token</code>是访问令牌，一个长字符串，这里没有显示出来。<code>endpoint_url</code>指定测试REST
+API地址，<code>payload</code>提供了测试当前模型需要输入的请求正文格式。</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">      &#x27;access_token&#x27;<span class="punctuation">:</span> &#x27;A-LONG-STRING-OF-BEARER-TOKEN-USED-IN-HTTP-HEADER-AUTHORIZATION&#x27;<span class="punctuation">,</span></span><br><span class="line">			&#x27;endpoint_url&#x27;<span class="punctuation">:</span> &#x27;https<span class="punctuation">:</span><span class="comment">//192.168.64.3:30931/api/v1/test/deployment-test/daas-python37-faas/test&#x27;,</span></span><br><span class="line">			&#x27;payload&#x27;<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      				&#x27;args&#x27;<span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              			&#x27;X&#x27;<span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span> &#x27;petal length (cm)&#x27;<span class="punctuation">:</span> <span class="number">1.5</span><span class="punctuation">,</span></span><br><span class="line">                            &#x27;petal width (cm)&#x27;<span class="punctuation">:</span> <span class="number">0.4</span><span class="punctuation">,</span></span><br><span class="line">                            &#x27;sepal length (cm)&#x27;<span class="punctuation">:</span> <span class="number">5.7</span><span class="punctuation">,</span></span><br><span class="line">                            &#x27;sepal width (cm)&#x27;<span class="punctuation">:</span> <span class="number">4.4</span></span><br><span class="line">                          <span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">               &#x27;model_name&#x27;<span class="punctuation">:</span> &#x27;iris&#x27;<span class="punctuation">,</span></span><br><span class="line">               &#x27;model_version&#x27;<span class="punctuation">:</span> &#x27;<span class="number">1</span>&#x27;<span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <p>使用requests调用测试API，这里我们直接使用<strong>test_resp</strong>返回的测试payload，您也可以使用自定义的数据<code>X</code>，但是参数<code>model_name</code>和<code>model_version</code>必须使用上面输出的值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">response = requests.post(test_resp[<span class="string">&#x27;endpoint_url&#x27;</span>],</span><br><span class="line">                        headers=&#123;</span><br><span class="line">      <span class="string">&#x27;Authorization&#x27;</span>: <span class="string">&#x27;Bearer &#123;token&#125;&#x27;</span>.<span class="built_in">format</span>(token=test_resp[<span class="string">&#x27;access_token&#x27;</span>])&#125;,</span><br><span class="line">                        json=test_resp[<span class="string">&#x27;payload&#x27;</span>],</span><br><span class="line">                        verify=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
@@ -373,19 +383,23 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">publish_resp = client.publish(model,</span><br><span class="line">                            name=<span class="string">&#x27;iris&#x27;</span>,</span><br><span class="line">                            mining_function=<span class="string">&#x27;classification&#x27;</span>,</span><br><span class="line">                            data_test=df_test,</span><br><span class="line">                            description=<span class="string">&#x27;A RandomForestClassifier of Spark model&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h3><span id="五-模型部署管理">五、模型部署管理</span></h3>
 <p>打开浏览器，登陆DaaS管理系统。进入项目<code>部署测试</code>，切换到<code>模型</code>标签页，有一个<code>iris</code>模型，最新版本是<code>v4</code>，类型是<code>Spark</code>即我们最后发布的模型。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549637.jpeg" alt="Daas-models" style="zoom: 33%;">
-<p>点击模型，进入模型主页（概述）。当前<code>v4</code>是一个Spark Pipeline模型，正确率是94.23%，并且显示了<code>iris</code>不同版本正确率历史图。下面罗列了模型的输入和输出变量，以及评估结果，当前为空，因为还没有在DaaS中执行任何的模型评估任务。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549145.jpeg" alt="Daas-model-overview-v4" style="zoom: 50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549637.jpeg" alt="Daas-models" style="zoom: 33%;"></p>
+<p>点击模型，进入模型主页（概述）。当前<code>v4</code>是一个Spark
+Pipeline模型，正确率是94.23%，并且显示了<code>iris</code>不同版本正确率历史图。下面罗列了模型的输入和输出变量，以及评估结果，当前为空，因为还没有在DaaS中执行任何的模型评估任务。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549145.jpeg" alt="Daas-model-overview-v4" style="zoom: 50%;"></p>
 <p>点击<code>v4</code>，可以自由切换到其他版本。比如，切换到<code>v1</code>。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549781.png" alt="DaaS-model-versions" style="zoom:50%;">
-<p><code>v1</code>版本是一个Scikit-learn SVM分类模型，正确率是98.00%。其他信息与<code>v4</code>类似。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549645.jpeg" alt="DaaS-model-overview-v1" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549781.png" alt="DaaS-model-versions" style="zoom:50%;"></p>
+<p><code>v1</code>版本是一个Scikit-learn
+SVM分类模型，正确率是98.00%。其他信息与<code>v4</code>类似。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261549645.jpeg" alt="DaaS-model-overview-v1" style="zoom:50%;"></p>
 <p>切换到模型<code>部署</code>标签页，有一个我们刚才创建的部署<code>iris-svc</code>，鼠标移动到操作菜单，选择<code>修改设置</code>。可以看到，当前部署服务关联的是模型<code>v1</code>，就是我们刚才通过<code>deploy</code>函数部署的<code>iris</code>第一个版本Scikit-learn模型。选择最新的<code>v4</code>，点击命令<code>保存并且重新部署</code>，该部署就会切换到<code>v4</code>版本。</p>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li>DaaS-Client、Sklearn、XGBoost、LightGBM、和PySpark_关注 AI/ML 模型上线、模型部署-程序员宅基地_</li>
-<li>DaaS-Client：<a target="_blank" rel="noopener" href="https://github.com/autodeployai/daas-client">https://github.com/autodeployai/daas-client</a></li>
-<li>3万字长文 PySpark入门级学习教程，框架思维:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/395431025">https://zhuanlan.zhihu.com/p/395431025</a></li>
+<li>DaaS-Client、Sklearn、XGBoost、LightGBM、和PySpark_关注 AI/ML
+模型上线、模型部署-程序员宅基地_</li>
+<li>DaaS-Client：https://github.com/autodeployai/daas-client</li>
+<li>3万字长文
+PySpark入门级学习教程，框架思维:https://zhuanlan.zhihu.com/p/395431025</li>
 </ul>
 
     </div>
@@ -445,7 +459,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

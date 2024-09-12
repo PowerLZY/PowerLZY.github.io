@@ -174,7 +174,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -316,9 +316,14 @@
         <h2><span id="阿里妈妈-广告主套利风控技术分享">阿里妈妈-“广告主套利”风控技术分享</span></h2>
 <h3><span id="一-背景介绍">一、背景介绍</span></h3>
 <h4><span id="11-套利的影响">1.1 套利的影响</span></h4>
-<p>由于平台的有效总曝光有限，当套利广告主占据了高质量位置后，真实点击率和成交率低于模型预期，平台产生的总点击、总成交就会相应减少，从而导致该资源位的收入降低。这里我们统一使用<strong>千次展现收益</strong>（Revenue Per Mile，以下简称：RPM）来代表地价。即<strong>套利会在一定程度上使对应位置的RPM降低</strong>。</p>
+<p>由于平台的有效总曝光有限，当套利广告主占据了高质量位置后，真实点击率和成交率低于模型预期，平台产生的总点击、总成交就会相应减少，从而导致该资源位的收入降低。这里我们统一使用<strong>千次展现收益</strong>（Revenue
+Per
+Mile，以下简称：RPM）来代表地价。即<strong>套利会在一定程度上使对应位置的RPM降低</strong>。</p>
 <p>由于现阶段ctr、cvr预估模型有在线更新机制，从长周期来看是具备自愈能力的。但模型的更新有一段时间延迟，在每个模型更新的空窗期内，广告主不会恰好都补单补量至模型的预期水平。最终就导致了模型不断被欺骗又修复的过程。如下图所示。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020935.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020935.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <p>因此，在与排序模型的博弈中，广告主周期性地实现着套利。随着online模型更新的时效性提升，套利空间在不断被压缩。也导致广告主更加倾向于高频、低程度地进行操作，识别难度进一步增大。</p>
 <h4><span id="12-困难与挑战">1.2 困难与挑战</span></h4>
 <p>由于<strong>作弊手法千变万化</strong>、<strong>真实标签难以界定</strong>、<strong>作弊Ground-Truth未知</strong>，风控场景很难通过<strong>监督训练</strong>等手段获得<strong>通用解</strong>。具体到广告主套利上，我们还面临着一些其他的问题。</p>
@@ -326,13 +331,16 @@
 <p><strong>相比于以往的无效流量甄别，众包人工流量往往更加贴近平常用户的行为</strong>。难度远超以往的爬虫、机械性攻击。高并发的广告场景，对识别的精度和召回，要求都非常高。而且即使是刷手，也会产出正常的流量。</p>
 <p>如何精细化区分刷手的每次行为以及是否是受雇佣的，是极具挑战的一个课题。</p>
 <h5><span id="122-精度难评价">1.2.2 精度难评价</span></h5>
-<p>**由于众包人工流量会有一定比例的成交，不符合0转化假设。**高效评价流量识别模型的精度和召回，是很困难的。此外，套利广告主检测本身也需要找到合适的假设，没有客观高效的评价方式，难以指导模型迭代。</p>
+<p><strong>由于众包人工流量会有一定比例的成交，不符合0转化假设。</strong>高效评价流量识别模型的精度和召回，是很困难的。此外，套利广告主检测本身也需要找到合适的假设，没有客观高效的评价方式，难以指导模型迭代。</p>
 <h5><span id="123-区分主动与被动">1.2.3 区分主动与被动</span></h5>
 <p>存在任务流量的广告主，不仅是主动套利的，还有一部分是被其他广告主雇佣的刷手误伤、或者受到人工攻击消耗的。如何无监督、高精度、高召回、鲁棒地挖掘广告主的主动性，也是我们需要重点关注的。</p>
 <h3><span id="二-方案概览">二、方案概览</span></h3>
 <p>在正式开始介绍方案之前，我们针对1.3节的问题，分别介绍一下思路。为了解决1.3中提到的3个问题，我们针对广告主套利开发了一套同样集<strong>感知</strong>、<strong>洞察</strong>、<strong>处置、评价</strong>于一体的检测框架，其架构图如下图所示。框架理念可以参考这篇文章：<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020589.png" alt="图片"></p>
-<ol>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020589.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<ol type="1">
 <li><strong>众包流量识别</strong>，分别由统计基线、行为序列、图关系3个模型一起召回，并使用黑话模型的产出评价标准，指导模型迭代；</li>
 <li><strong>感知</strong>部分，通过对<strong>RPM的鲁棒预估</strong>，计算广告主实际产生的RPM与平台预期的diff，从而召回RPM偏低的广告主；</li>
 <li>通过<strong>洞察</strong>分析平台对列表中的实例进行分析，获取新模式认知的同时进行标注作为验证样本；</li>
@@ -340,54 +348,69 @@
 </ol>
 <h3><span id="三-众包流量识别">三、众包流量识别</span></h3>
 <p>在介绍感知、洞察、处置体系之前，我们首先对挖掘套利广告主的基础能力进行介绍——众包人工流量识别。该流量不满足0成交转化，模型的迭代和监控保障，也显然不能依赖低效的人工抽检。首先需要寻找一种可以批量校验、又和处置严格正交的评价方法。整体方案如下图所示。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020065.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020065.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <h4><span id="31-黑话模型">3.1 黑话模型</span></h4>
 <p>考虑到直通车场景下，刷手需要高频地进行搜索，从而定位到自己的任务目标，不可能所有的内容都手敲。风控工程团队基于淘宝的搜索记录，对历史文本信息进行了系统地整合，使得黑话凝聚在标准化的文本库中。</p>
 <h5><span id="311-特性">3.1.1 特性</span></h5>
 <p>黑搜索的文本信息采集，受<strong>设备型号、手滑粘贴、误点搜索的影响</strong>，导致产出上并不稳定，所以没有直接用于召回。但同设备类型、应用、天维度同比是有意义的，可以<strong>作为精度和召回的评价指标</strong>。因此，我们构造了和众包流量构成强相关、但召回有限的黑话模型。</p>
 <p><strong>典型的黑话如下所示：</strong></p>
 <ul>
-<li>“3️⃣看图👆拍苐一个,π下多少仮溃”</li>
+<li>"3️⃣看图👆拍苐一个,π下多少仮溃"</li>
 </ul>
 <p>根据我们的分析显示，黑话具有以下特点：1）文字语序混乱；2）拼音、中、英文混输；3）表情、形近字替代；4）快速迭代、分析低效。这涉及到多种语义的还原，并且新的变种不断产生。基于文本出发的黑话模型开发非常困难。</p>
 <h5><span id="312-用户维度-关键词与树">3.1.2 用户维度、关键词与树</span></h5>
 <p>综合考虑各个方案的性价比后，我们尝试不完全依赖文本，而是从用户出发，<strong>2段式、半监督地召回黑话。</strong></p>
-<ol>
+<ol type="1">
 <li>首先构造用户维度的处罚特征，无监督的召回候选人群集；</li>
 <li>再以变换后的关键词为目标，天维度更新Cart回归树模型，选择额外80%召回的动态阈值，得到离线样本库；</li>
 </ol>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020453.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020453.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <h5><span id="313-bert提效">3.1.3 Bert提效</span></h5>
 <p>我们基于黑话样本库与大盘可信白样本，训练了基于Bert的2分类模型，用于对全量文本进行打分，从而减轻黑话样本库覆盖度不足的影响。使用召回人群多日黑话得分均值，来作为众包流量识别的精度指数，指导模型快速迭代，并持续以黑话精度作为模型的监控指标。</p>
 <h4><span id="32-统计基线">3.2 统计基线</span></h4>
-<p>众包人工流量虽然更难以识别，但是我们始终相信黑灰产用户是不可能完美隐藏的。**我们从用户行为角度设计了一系列的异常检测方案。**首先调研了黑灰产平台。发现用户需要通过一系列行为来完成任务的交付（考虑到攻防属性，暂不透出具体行为）。据此我们构造了本质、鲁棒性的统计特征，结合统计异常检测模型，产出了套利识别的基线。在<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>中介绍过，本质特征更有助于挖掘异常；如用“偏离对应人群的分布的程度”，代替“绝对数量”。</p>
+<p>众包人工流量虽然更难以识别，但是我们始终相信黑灰产用户是不可能完美隐藏的。<strong>我们从用户行为角度设计了一系列的异常检测方案。</strong>首先调研了黑灰产平台。发现用户需要通过一系列行为来完成任务的交付（考虑到攻防属性，暂不透出具体行为）。据此我们构造了本质、鲁棒性的统计特征，结合统计异常检测模型，产出了套利识别的基线。在<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>中介绍过，本质特征更有助于挖掘异常；如用“偏离对应人群的分布的程度”，代替“绝对数量”。</p>
 <p>由于统计特征的粒度偏粗，导致我们并不能区分刷手当天的哪部分流量属于众包，哪部分属于正常流量。所以还需要更加精细化的识别能力建设。</p>
 <h4><span id="33-行为序列">3.3 行为序列</span></h4>
 <p>近期我们一直在尝试，使用更为<strong>细粒度的原始行为序列</strong>、<strong>良好的序列设计</strong>、以及<strong>合理的辅助任务</strong>，训练大规模无监督预训练模型。<strong>Zero-shot</strong>在下游进行应用，实现精细化地捕捉众包流量特点。当前行为序列研究的整体框架如下图所示。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020951.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020951.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <h5><span id="331-序列信息">3.3.1 序列信息</span></h5>
-<p><strong><font color="red"> 首先是通用的行为选择。为了更好地适用于大多数场景，我们只选择了搜索和点击两个行为，并辅以行为的属性与时间信息，共同组成行为序列。</font></strong></p>
-<p>为了方便刻画行为模式，我们使用下划线拼接行为和属性，构造类似于NLP中单词概念的行为元素，形式为：()<em>()</em>()_()。例如：<strong>clk_true_3_2 表示为 一次点击 &amp; 是广告点击 &amp; 商品属性为编号3 &amp; 距离上一次行为时间间隔属于分箱编号2。</strong></p>
+<p><strong><font color="red">
+首先是通用的行为选择。为了更好地适用于大多数场景，我们只选择了搜索和点击两个行为，并辅以行为的属性与时间信息，共同组成行为序列。</font></strong></p>
+<p>为了方便刻画行为模式，我们使用下划线拼接行为和属性，构造类似于NLP中单词概念的行为元素，形式为：()<em>()</em>()_()。例如：<strong>clk_true_3_2
+表示为 一次点击 &amp; 是广告点击 &amp; 商品属性为编号3 &amp;
+距离上一次行为时间间隔属于分箱编号2。</strong></p>
 <p>由于刷手需要接单大量的任务，产品类型、任务目的可能各不相同。通过合理的session划分，将不同的基础行为进行聚合，可以使信息更加凝聚。</p>
 <p>结合搜索广告的特点，我们限制一个session必须以搜索开始，时间间隔在一定范围内都同属于一个session。</p>
 <h5><span id="332-辅助任务设计">3.3.2 辅助任务设计</span></h5>
-<p>为了使模型学习到session排列的模式，我们使用<strong>Transformer结构 + Cut-paste任务</strong>，对序列整体进行表示。</p>
-<p>**<font color="red"> Cut-paste算法是用于图像异常检测的一种辅助任务。通过对原始图片进行随机地局部剪裁，再随机粘贴至新的位置，原位置以黑色阴影覆盖(向量值均为0)，从而获得大量的负样本，并以大量的数据增强产生正样本。</font>**然后通过原图与新图的二分类任务，促使模型学习到剪裁边缘的连续性。算法内容详见[1]。</p>
+<p>为了使模型学习到session排列的模式，我们使用<strong>Transformer结构 +
+Cut-paste任务</strong>，对序列整体进行表示。</p>
+<p><strong><font color="red">
+Cut-paste算法是用于图像异常检测的一种辅助任务。通过对原始图片进行随机地局部剪裁，再随机粘贴至新的位置，原位置以黑色阴影覆盖(向量值均为0)，从而获得大量的负样本，并以大量的数据增强产生正样本。</font></strong>然后通过原图与新图的二分类任务，促使模型学习到剪裁边缘的连续性。算法内容详见[1]。</p>
 <p>类似地，根据刷手行为特点，对序列进行Cut-paste衍生，得到大量的样本用于二分类任务，从而得到完整序列表示。最终的预训练网络结构如下所示。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020120.png" alt="图片" style="zoom:67%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020120.png" alt="图片" style="zoom:67%;"></p>
 <h5><span id="333-异常检测">3.3.3 异常检测</span></h5>
 <p>根据序列表示的结果，我们得到了N维的Embedding向量：</p>
-<ol>
+<ol type="1">
 <li>将序列Embedding与COPOD模型结合，产出Embedding每个维度偏离分布的异常分(1)；</li>
 <li>固定基础行为的Embedding层权重，二次训练Seq2Seq模型，将重构误差产出异常分(2)；</li>
 </ol>
 <p>将2个方案计算的异常分结合，得到下游任务的打分。</p>
 <h4><span id="34-图关联挖掘">3.4 图关联挖掘</span></h4>
-<p><strong>截止目前，我们通过统计基线 + 行为序列对众包人工流量进行了识别</strong>。在阿里妈妈广告场景下，这些流量会在受害者/套利者维度上呈现出聚集。且因为模型的评估依赖于人工抽检，为了保证精度符合预期，显然单体识别模型的精度与召回都会受限。</p>
+<p><strong>截止目前，我们通过统计基线 +
+行为序列对众包人工流量进行了识别</strong>。在阿里妈妈广告场景下，这些流量会在受害者/套利者维度上呈现出聚集。且因为模型的评估依赖于人工抽检，为了保证精度符合预期，显然单体识别模型的精度与召回都会受限。</p>
 <p><strong>因此我们增加了基于图关联的召回。以统计基线为基础节点，用行为序列结果剪枝，最终通过半监督的GAT网络对行为稀疏、但访问宝贝和基础节点重合度高的人工众包流量进行扩召回。</strong></p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020148.png" alt="图片" style="zoom: 50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020148.png" alt="图片" style="zoom: 50%;"></p>
 <p>下图是2021年至今为止，最新挖掘的每日人工众包的设备数量趋势（具体数字已隐藏）。除大型节日外外，流量基本趋于稳定。相比于原始统计基线，组合模型可以精细定位到刷手与宝贝的对应关系，目前已额外新增30%的广告点击召回。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020955.png" alt="图片" style="zoom: 67%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182020955.png" alt="图片" style="zoom: 67%;"></p>
 <h3><span id="四-套利感知">四、套利感知</span></h3>
 <p>为了建立内部自驱循环的异常检测框架，感知系统是必备的。在<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=Mzg3MDYxODE2Ng==&amp;mid=2247484728&amp;idx=1&amp;sn=3305a981f34fe30e2464c627f3842ec8&amp;chksm=ce8a4061f9fdc977cb18acf91d212352a26d9f060dbae6ead52514102e95b9e31cd32523e564&amp;scene=21#wechat_redirect">《阿里妈妈流量反作弊算法实践》</a>文章中我们介绍过：<strong>感知重召回，其理念是召回一切认知之外的异常</strong>。从作弊的结果（果性）出发，才能召回受害者可感知的全部流量。</p>
 <p>在广告主套利场景下，受害者是平台。但广告主的手法各不相同，从结果上看，未必会成功。虽然都需要处置，但在感知角度，我们更关注那些成功套利的案例。因此，我们从RPM低于平台预期的广告主的流量出发，<strong>召回套利成功流量的超集</strong>。</p>
@@ -456,7 +479,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

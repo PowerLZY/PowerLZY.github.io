@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="¶为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】   集成取平均的作用： 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。   减少神经元之间复杂的共适应关系：  因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖">
+    <meta name="description" content="为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】  集成取平均的作用： 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。 减少神经元之间复杂的共适应关系： 因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理论基础（4）Dropout">
 <meta property="og:url" content="https://powerlzy.github.io/posts/FJFCEV/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="¶为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】   集成取平均的作用： 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。   减少神经元之间复杂的共适应关系：  因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖">
+<meta property="og:description" content="为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】  集成取平均的作用： 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。 减少神经元之间复杂的共适应关系： 因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301700504.jpg">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301700871.jpg">
@@ -147,7 +147,11 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Dropout</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Dropout简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Dropout原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 Dropout具体工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4 为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 model.eval() 和 model.trian()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">为什么dropout
+可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、Dropout</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 Dropout简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Dropout原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3
+Dropout具体工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.4
+为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.5 model.eval() 和
+model.trian()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">参考文献</span></a></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +172,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -303,17 +307,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4><span id="为什么dropout-可以解决过拟合-共享隐藏单元的bagging集成模型">为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></h4>
+        <h4><span id="为什么dropout可以解决过拟合-共享隐藏单元的bagging集成模型">为什么dropout
+可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></h4>
 <ul>
-<li>
-<p><strong>集成取平均的作用：</strong> 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。</p>
-</li>
-<li>
-<p><strong>减少神经元之间复杂的共适应关系：</strong>  因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况 。<strong>从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。</strong></p>
-</li>
-<li>
-<p>**Dropout纯粹作为一种高效近似Bagging的方法。<strong>然而,有比这更进一步的Dropout观点。</strong><font color="red"> Dropout不仅仅是训练一个Bagging的集成模型,并且是共享隐藏单元的集成模型。</font>**这意味着无论其他隐藏单元是否在模型中,每个隐藏单元必须都能够表现良好。</p>
-</li>
+<li><p><strong>集成取平均的作用：</strong>
+整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。</p></li>
+<li><p><strong>减少神经元之间复杂的共适应关系：</strong>
+因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况
+。<strong>从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。</strong></p></li>
+<li><p><strong>Dropout纯粹作为一种高效近似Bagging的方法。</strong>然而,有比这更进一步的Dropout观点。<strong><font color="red">
+Dropout不仅仅是训练一个Bagging的集成模型,并且是共享隐藏单元的集成模型。</font></strong>这意味着无论其他隐藏单元是否在模型中,每个隐藏单元必须都能够表现良好。</p></li>
 </ul>
 <span id="more"></span>
 <h3><span id="一-dropout">一、Dropout</span></h3>
@@ -325,83 +328,111 @@
 <p>（2）<strong>费时</strong></p>
 <p><strong>Dropout可以比较有效的缓解过拟合的发生，在一定程度上达到正则化的效果。</strong></p>
 <h4><span id="12-dropout原理">1.2 <strong>Dropout原理</strong></span></h4>
-<p>在2012年，Hinton在其论文《Improving neural networks by preventing co-adaptation of feature detectors》中提出Dropout。当一个复杂的前馈神经网络被训练在小的数据集时，容易造成过拟合。为了防止过拟合，可以通过阻止特征检测器的共同作用来提高神经网络的性能。</p>
-<p>在2012年，Alex、Hinton在其论文《ImageNet Classification with Deep Convolutional Neural Networks》中用到了Dropout算法，用于防止过拟合。并且，这篇论文提到的AlexNet网络模型引爆了神经网络应用热潮，并赢得了2012年图像识别大赛冠军，使得CNN成为图像分类上的核心算法模型。</p>
-<p>随后，又有一些关于Dropout的文章《Dropout:A Simple Way to Prevent Neural Networks from Overfitting》、《Improving Neural Networks with Dropout》、《Dropout as data augmentation》。</p>
+<p>在2012年，Hinton在其论文《Improving neural networks by preventing
+co-adaptation of feature
+detectors》中提出Dropout。当一个复杂的前馈神经网络被训练在小的数据集时，容易造成过拟合。为了防止过拟合，可以通过阻止特征检测器的共同作用来提高神经网络的性能。</p>
+<p>在2012年，Alex、Hinton在其论文《ImageNet Classification with Deep
+Convolutional Neural
+Networks》中用到了Dropout算法，用于防止过拟合。并且，这篇论文提到的AlexNet网络模型引爆了神经网络应用热潮，并赢得了2012年图像识别大赛冠军，使得CNN成为图像分类上的核心算法模型。</p>
+<p>随后，又有一些关于Dropout的文章《Dropout:A Simple Way to Prevent
+Neural Networks from Overfitting》、《Improving Neural Networks with
+Dropout》、《Dropout as data augmentation》。</p>
 <p><strong>Dropout可以作为训练深度神经网络的一种trick供选择</strong>。在每个训练批次中，通过忽略一半的特征检测器（让一半的隐层节点值为0），可以明显地减少过拟合现象。这种方式可以减少特征检测器（隐层节点）间的相互作用，检测器相互作用是指某些检测器依赖其他检测器才能发挥作用。</p>
 <p><strong>Dropout说的简单一点就是：我们在前向传播的时候，让某个神经元的激活值以一定的概率p停止工作，这样可以使模型泛化性更强，因为它不会太依赖某些局部的特征。</strong></p>
-<p><strong>Dropout 是另一种抑制过拟合的方法</strong>。在使用 dropout 时，数据尺度会发生变化，如果设置 dropout_prob =0.3，那么在训练时，数据尺度会变为原来的 70%；<strong><font color="red"> 而在测试时，执行了 model.eval() 后，dropout 是关闭的，因此所有权重需要乘以 (1-dropout_prob)，把数据尺度也缩放到 70%。</font></strong> 加了 dropout 之后，权值更加集中在 0 附近，使得神经元之间的依赖性不至于过大。</p>
-<p><strong>PyTorch 中 Dropout 层如下，通常放在每个网路层的最前面：</strong></p>
+<p><strong>Dropout 是另一种抑制过拟合的方法</strong>。在使用 dropout
+时，数据尺度会发生变化，如果设置 dropout_prob
+=0.3，那么在训练时，数据尺度会变为原来的 70%；<strong><font color="red">
+而在测试时，执行了 model.eval() 后，dropout
+是关闭的，因此所有权重需要乘以 (1-dropout_prob)，把数据尺度也缩放到
+70%。</font></strong> 加了 dropout 之后，权值更加集中在 0
+附近，使得神经元之间的依赖性不至于过大。</p>
+<p><strong>PyTorch 中 Dropout
+层如下，通常放在每个网路层的最前面：</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.nn.Dropout(p=0.5, inplace=False)</span><br></pre></td></tr></table></figure>
 <p>参数：</p>
 <ul>
-<li>p：主力需要注意的是，p 是被舍弃的概率，也叫失活概率；<strong>代码层面实现让某个神经元以概率p停止工作，其实就是让它的激活函数值以概率p变为0</strong></li>
+<li>p：主力需要注意的是，p
+是被舍弃的概率，也叫失活概率；<strong>代码层面实现让某个神经元以概率p停止工作，其实就是让它的激活函数值以概率p变为0</strong></li>
 </ul>
-<h4><span id="13-dropout具体工作流程"><strong>1.3 Dropout具体工作流程</strong></span></h4>
-<ol>
+<h4><span id="13dropout具体工作流程"><strong>1.3
+Dropout具体工作流程</strong></span></h4>
+<ol type="1">
 <li><strong>首先随机（临时）删掉网络中一部分的隐藏神经元，输入输出神经元保持不变</strong>；</li>
 <li>然后把输入x通过修改后的网络前向传播，然后把得到的损失结果通过修改的网络反向传播。一小批训练样本执行完这个过程后，<strong>在没有被删除的神经元上按照随机梯度下降法更新对应的参数</strong>（w，b）。</li>
-<li><strong>恢复被删掉的神经元</strong>（<strong><font color="red"> 此时被删除的神经元保持原样，而没有被删除的神经元已经有所更新</font></strong>）</li>
+<li><strong>恢复被删掉的神经元</strong>（<strong><font color="red">
+此时被删除的神经元保持原样，而没有被删除的神经元已经有所更新</font></strong>）</li>
 <li>重复上述过程</li>
 </ol>
 <h5><span id="1训练阶段">（1）训练阶段</span></h5>
 <ul>
 <li><strong>无可避免的，在训练网络的每个单元都要添加一道概率流程</strong>。</li>
 </ul>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301700504.jpg" alt="img" style="zoom:50%;">
-<p>对应的公式变化如下:</p>
-<ul>
-<li><strong>没有Dropout的网络计算公式</strong><br>
-$$<br>
-\begin{aligned}<br>
-z_{i}^{(l+1)} &amp;=\mathbf{w}<em>{i}^{(l+1)} \mathbf{y}<sup>{l}+b_{i}</sup>{(l+1)} \<br>
-y</em>{i}^{(l+1)} &amp;=f\left(z_{i}^{(l+1)}\right)<br>
-\end{aligned}<br>
-$$</li>
-<li><strong>采用Dropout的网络计算公式</strong><br>
-$$<br>
-\begin{aligned}<br>
-r_{j}^{(l)} &amp; \sim \operatorname{Bernoulli}(p), \<br>
-\widetilde{\mathbf{y}}^{(l)} &amp;=\mathbf{r}^{(l)} * \mathbf{y}^{(l)}, \<br>
-z_{i}^{(l+1)} &amp;=\mathbf{w}<em>{i}^{(l+1)} \widetilde{\mathbf{y}}<sup>{l}+b_{i}</sup>{(l+1)}, \<br>
-y</em>{i}^{(l+1)} &amp;=f\left(z_{i}^{(l+1)}\right) .<br>
-\end{aligned}<br>
-$$<br>
-<strong><font color="red"> 上面公式中Bernoulli函数是为了生成概率r向量, 也就是随机生成一个0、1的向量。</font></strong></li>
-</ul>
-<p>代码层面实现让某个神经元以概率 $p$ 停止工作, 其实就是让它的激活函数值以概率 $p$ 变为 0 。比如我们某一层网络神经元的个数为 1000 个, 其激活函数输出值为 $y 1 、 y 2 、 y 3 、 \ldots \ldots, y 1000$, 我们 dropout比率选择0.4, 那么这一层神经元经过dropout后, 1000个神经元中会有大约400个的值被置为 0 。</p>
-<p><strong>注意</strong>: 经过上面屏蔽掉某些神经元, 使其激活值为 0 以后, 我们还需要对向量y1…y1000进行缩放, 也就是乘以 $1 /(1-p)$ 。如果你在训练的时候, 经过置0后, 没有对y1…y1000进行缩放 (rescale) , 那么在测试的时候, 就需要对权重进行缩放, 操作如下。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301700504.jpg" alt="img" style="zoom:50%;"></p>
+<p>对应的公式变化如下: - <strong>没有Dropout的网络计算公式</strong>
+<span class="math display">\[
+\begin{aligned}
+z_{i}^{(l+1)} &amp;=\mathbf{w}_{i}^{(l+1)} \mathbf{y}^{l}+b_{i}^{(l+1)}
+\\
+y_{i}^{(l+1)} &amp;=f\left(z_{i}^{(l+1)}\right)
+\end{aligned}
+\]</span> - <strong>采用Dropout的网络计算公式</strong> <span class="math display">\[
+\begin{aligned}
+r_{j}^{(l)} &amp; \sim \operatorname{Bernoulli}(p), \\
+\widetilde{\mathbf{y}}^{(l)} &amp;=\mathbf{r}^{(l)} * \mathbf{y}^{(l)},
+\\
+z_{i}^{(l+1)} &amp;=\mathbf{w}_{i}^{(l+1)}
+\widetilde{\mathbf{y}}^{l}+b_{i}^{(l+1)}, \\
+y_{i}^{(l+1)} &amp;=f\left(z_{i}^{(l+1)}\right) .
+\end{aligned}
+\]</span> <strong><font color="red">
+上面公式中Bernoulli函数是为了生成概率r向量,
+也就是随机生成一个0、1的向量。</font></strong></p>
+<p>代码层面实现让某个神经元以概率 <span class="math inline">\(p\)</span>
+停止工作, 其实就是让它的激活函数值以概率 <span class="math inline">\(p\)</span> 变为 0
+。比如我们某一层网络神经元的个数为 1000 个, 其激活函数输出值为 <span class="math inline">\(y 1 、 y 2 、 y 3 、 \ldots \ldots, y
+1000\)</span>, 我们 dropout比率选择0.4, 那么这一层神经元经过dropout后,
+1000个神经元中会有大约400个的值被置为 0 。</p>
+<p><strong>注意</strong>: 经过上面屏蔽掉某些神经元, 使其激活值为 0 以后,
+我们还需要对向量y1.......y1000进行缩放, 也就是乘以 <span class="math inline">\(1 /(1-p)\)</span> 。如果你在训练的时候, 经过置0后,
+没有对y1......y1000进行缩放 (rescale) , 那么在测试的时候,
+就需要对权重进行缩放, 操作如下。</p>
 <h5><span id="2测试阶段">（2）测试阶段</span></h5>
 <p>预测模型的时候, 每一个神经单元的权重参数要乘以概率p。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301700871.jpg" alt="img" style="zoom:50%;">
-<p><strong>测试阶段Dropout公式：</strong><br>
-$$<br>
-w_{\text {test }}^{(l)}=p W^{(l)}<br>
-$$</p>
-<h4><span id="14-为什么dropout-可以解决过拟合-共享隐藏单元的bagging集成模型">1.4 为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></h4>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301700871.jpg" alt="img" style="zoom:50%;"></p>
+<p><strong>测试阶段Dropout公式：</strong> <span class="math display">\[
+w_{\text {test }}^{(l)}=p W^{(l)}
+\]</span></p>
+<h4><span id="14为什么dropout-可以解决过拟合-共享隐藏单元的bagging集成模型">1.4
+为什么dropout 可以解决过拟合？ 【共享隐藏单元的bagging集成模型】</span></h4>
 <ul>
-<li>
-<p><strong>集成取平均的作用：</strong> 整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。</p>
-</li>
-<li>
-<p><strong>减少神经元之间复杂的共适应关系：</strong>  因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况 。<strong>从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。</strong></p>
-</li>
-<li>
-<p>**Dropout纯粹作为一种高效近似Bagging的方法。<strong>然而,有比这更进一步的Dropout观点。</strong><font color="red"> Dropout不仅仅是训练一个Bagging的集成模型,并且是共享隐藏单元的集成模型。</font>**这意味着无论其他隐藏单元是否在模型中,每个隐藏单元必须都能够表现良好。</p>
+<li><p><strong>集成取平均的作用：</strong>
+整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。</p></li>
+<li><p><strong>减少神经元之间复杂的共适应关系：</strong>
+因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况
+。<strong>从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。</strong></p></li>
+<li><p><strong>Dropout纯粹作为一种高效近似Bagging的方法。</strong>然而,有比这更进一步的Dropout观点。<strong><font color="red">
+Dropout不仅仅是训练一个Bagging的集成模型,并且是共享隐藏单元的集成模型。</font></strong>这意味着无论其他隐藏单元是否在模型中,每个隐藏单元必须都能够表现良好。</p>
 <blockquote>
 <p><strong>面试常见问题-dropout与bagging的区别</strong></p>
 <ul>
 <li>dropout训练与bagging训练不太一样，bagging的各个子模型之间是完全独立的，而在dropout里，这些参数是共享的。</li>
 <li>在bagging的情况下，每一个模型在其训练集上训练到收敛，而在dropout情况下，通常大部分的模型都没有显式的训练</li>
 </ul>
-</blockquote>
-</li>
+</blockquote></li>
 </ul>
-<h4><span id="15-modeleval-和-modeltrian">1.5 <strong>model.eval() 和 model.trian()</strong></span></h4>
-<p>有些网络层在训练状态和测试状态是不一样的，如 dropout 层，在训练时 dropout 层是有效的，但是数据尺度会缩放，为了保持数据尺度不变，所有的权重需要除以 1-p。而在测试时 dropout 层是关闭的。因此在测试时需要先调用<code>model.eval()</code>设置各个网络层的的<code>training</code>属性为 False，在训练时需要先调用<code>model.train()</code>设置各个网络层的的<code>training</code>属性为 True。</p>
+<h4><span id="15-modeleval-和modeltrian">1.5 <strong>model.eval() 和
+model.trian()</strong></span></h4>
+<p>有些网络层在训练状态和测试状态是不一样的，如 dropout 层，在训练时
+dropout
+层是有效的，但是数据尺度会缩放，为了保持数据尺度不变，所有的权重需要除以
+1-p。而在测试时 dropout
+层是关闭的。因此在测试时需要先调用<code>model.eval()</code>设置各个网络层的的<code>training</code>属性为
+False，在训练时需要先调用<code>model.train()</code>设置各个网络层的的<code>training</code>属性为
+True。</p>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li>深度学习中Dropout原理解析 - Microstrong的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38200980">https://zhuanlan.zhihu.com/p/38200980</a></li>
+<li>深度学习中Dropout原理解析 - Microstrong的文章 - 知乎
+https://zhuanlan.zhihu.com/p/38200980</li>
 </ul>
 
     </div>
@@ -466,7 +497,7 @@ $$</p>
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

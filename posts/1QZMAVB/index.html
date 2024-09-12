@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="损失函数 机器学习中的监督学习本质上是给定一系列训练样本 $\left(x_i, y_i\right)$, 尝试学习 $x \rightarrow y$ 的映射关系, 使得给定一个 $x$ , 即便这个 $x$ 不在训练样本中, 也能够得到尽量接近真实 $y$ 的输出 $\hat{y}$ 。而损失函数 (Loss Function) 则是这 个过程中关键的一个组成部分, 用来衡量模型的输出 $\h">
+    <meta name="description" content="损失函数 机器学习中的监督学习本质上是给定一系列训练样本 \(\left(x_i, y_i\right)\), 尝试学习 \(x \rightarrow y\) 的映射关系, 使得给定一个 \(x\) , 即便这个 \(x\) 不在训练样本中, 也能够得到尽量接近真实 \(y\) 的输出 \(\hat{y}\) 。而损失函数 (Loss Function) 则是这 个过程中关键的一个组成部分, 用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理论基础（2）损失函数">
 <meta property="og:url" content="https://powerlzy.github.io/posts/1QZMAVB/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="损失函数 机器学习中的监督学习本质上是给定一系列训练样本 $\left(x_i, y_i\right)$, 尝试学习 $x \rightarrow y$ 的映射关系, 使得给定一个 $x$ , 即便这个 $x$ 不在训练样本中, 也能够得到尽量接近真实 $y$ 的输出 $\hat{y}$ 。而损失函数 (Loss Function) 则是这 个过程中关键的一个组成部分, 用来衡量模型的输出 $\h">
+<meta property="og:description" content="损失函数 机器学习中的监督学习本质上是给定一系列训练样本 \(\left(x_i, y_i\right)\), 尝试学习 \(x \rightarrow y\) 的映射关系, 使得给定一个 \(x\) , 即便这个 \(x\) 不在训练样本中, 也能够得到尽量接近真实 \(y\) 的输出 \(\hat{y}\) 。而损失函数 (Loss Function) 则是这 个过程中关键的一个组成部分, 用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2023/04/17/GA3Y4CvZ1PlLOup.png">
 <meta property="og:image" content="https://s2.loli.net/2023/04/17/mEXD8ocy2UtFlbN.png">
@@ -171,7 +171,11 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">结构风险函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、 对数损失函数（逻辑回归）MLE  【交叉熵损失函数】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">原理解释1：&#x3D;&#x3D;条件概率下方便计算极大似然估计&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">原理解释2：相对熵（KL散度）推理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、 平方损失函数（线性回归，GBDT，最小二乘法，Ordinary Least Squares）MSE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、 指数损失函数（Adaboost）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、 &#x3D;&#x3D;Hinge 合页损失函数&#x3D;&#x3D;（SVM，advGAN）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、Softmax函数和Sigmoid函数的区别与联系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.1 分类任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Softmax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.2 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6 损失函数Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;平方误差损失函数和交叉熵损失函数分别适合什么场景？&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">结构风险函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、
+对数损失函数（逻辑回归）MLE 【交叉熵损失函数】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">原理解释1：&#x3D;&#x3D;条件概率下方便计算极大似然估计&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">原理解释2：相对熵（KL散度）推理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">二、
+平方损失函数（线性回归，GBDT，最小二乘法，Ordinary Least
+Squares）MSE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、 指数损失函数（Adaboost）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、 &#x3D;&#x3D;Hinge
+合页损失函数&#x3D;&#x3D;（SVM，advGAN）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、Softmax函数和Sigmoid函数的区别与联系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.1 分类任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">Softmax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">5.2 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">6 损失函数Q&amp;A</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;平方误差损失函数和交叉熵损失函数分别适合什么场景？&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -192,7 +196,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -309,14 +313,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.2k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
+      <span>10 分钟</span>
     </span>
 </div>
 
@@ -328,132 +332,177 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2><span id="损失函数">损失函数</span></h2>
-<p>机器学习中的监督学习本质上是给定一系列训练样本 $\left(x_i, y_i\right)$, 尝试学习 $x \rightarrow y$ 的映射关系, 使得给定一个 $x$ , 即便这个 $x$ 不在训练样本中, 也能够得到尽量接近真实 $y$ 的输出 $\hat{y}$ 。而损失函数 (Loss Function) 则是这 个过程中关键的一个组成部分, 用来衡量模型的输出 $\hat{y}$ 与真实的 $y$ 之间的差距, 给模型的优化指明方向。</p>
-<p>本文将介绍机器学习、深度学习中分类与回归常用的几种损失函数, 包括<strong>均方差损失 Mean Squared Loss、平 均绝对误差损失 Mean Absolute Error Loss、Huber Loss、分位数损失 Quantile Loss、交叉樀损失函数 Cross Entropy Loss、Hinge 损失 Hinge Loss</strong>。主要介绍各种损失函数的基本形式、原理、特点等方面。</p>
-<img src="https://s2.loli.net/2023/04/17/GA3Y4CvZ1PlLOup.png" alt="img" style="zoom: 67%;">
+<p>机器学习中的监督学习本质上是给定一系列训练样本 <span class="math inline">\(\left(x_i, y_i\right)\)</span>, 尝试学习 <span class="math inline">\(x \rightarrow y\)</span> 的映射关系, 使得给定一个
+<span class="math inline">\(x\)</span> , 即便这个 <span class="math inline">\(x\)</span> 不在训练样本中, 也能够得到尽量接近真实
+<span class="math inline">\(y\)</span> 的输出 <span class="math inline">\(\hat{y}\)</span> 。而损失函数 (Loss Function)
+则是这 个过程中关键的一个组成部分, 用来衡量模型的输出 <span class="math inline">\(\hat{y}\)</span> 与真实的 <span class="math inline">\(y\)</span> 之间的差距, 给模型的优化指明方向。</p>
+<p>本文将介绍机器学习、深度学习中分类与回归常用的几种损失函数,
+包括<strong>均方差损失 Mean Squared Loss、平 均绝对误差损失 Mean
+Absolute Error Loss、Huber Loss、分位数损失 Quantile
+Loss、交叉樀损失函数 Cross Entropy Loss、Hinge 损失 Hinge
+Loss</strong>。主要介绍各种损失函数的基本形式、原理、特点等方面。</p>
+<p><img src="https://s2.loli.net/2023/04/17/GA3Y4CvZ1PlLOup.png" alt="img" style="zoom: 67%;"></p>
 <h3><span id="前言">前言</span></h3>
-<p>在正文开始之前, 先说下关于 Loss Function、Cost Function 和 Objective Function 的区别和联系。在机器学习 的语境下这三个术语经常被交叉使用。</p>
+<p>在正文开始之前, 先说下关于 Loss Function、Cost Function 和 Objective
+Function 的区别和联系。在机器学习 的语境下这三个术语经常被交叉使用。</p>
 <ul>
-<li><strong>损失函数</strong> Loss Function 通常是<strong>针对单个训练样本而言,</strong> 给定一个模型输出 $\hat{y}$ 和一个真实 $y$, 损失函数输 出一个实值损失 $L=f\left(y_i, \hat{y_i}\right)$</li>
-<li><strong>代价函数</strong> Cost Function 通常是<strong>针对整个训练集</strong>（或者在使用 mini-batch gradient descent 时一个 minibatch）的总损失 $J=\sum_{i=1}^N f\left(y_i, \hat{y}_i\right)$</li>
-<li><strong>目标函数</strong> Objective Function 是一个更通用的术语, 表示任意希望被优化的函数, 用于机器学习领域和非机 器学习领域 (比如运筹优化)</li>
+<li><strong>损失函数</strong> Loss Function
+通常是<strong>针对单个训练样本而言,</strong> 给定一个模型输出 <span class="math inline">\(\hat{y}\)</span> 和一个真实 <span class="math inline">\(y\)</span>, 损失函数输 出一个实值损失 <span class="math inline">\(L=f\left(y_i, \hat{y_i}\right)\)</span></li>
+<li><strong>代价函数</strong> Cost Function
+通常是<strong>针对整个训练集</strong>（或者在使用 mini-batch gradient
+descent 时一个 minibatch）的总损失 <span class="math inline">\(J=\sum_{i=1}^N f\left(y_i,
+\hat{y}_i\right)\)</span></li>
+<li><strong>目标函数</strong> Objective Function 是一个更通用的术语,
+表示任意希望被优化的函数, 用于机器学习领域和非机 器学习领域
+(比如运筹优化)</li>
 </ul>
-<p>一句话总结三者的关系就是：<font color="red"> <strong>A loss function is a part of a cost function which is a type of an objective function.</strong></font></p>
-<p>由于损失函数和代价函数只是在针对样本集上有区别，因此在本文中统一使用了损失函数这个术语，但下文的相关公式实际上采用的是代价函数 Cost Function 的形式，请读者自行留意。</p>
+<p>一句话总结三者的关系就是：<font color="red"> <strong>A loss function
+is a part of a cost function which is a type of an objective
+function.</strong></font></p>
+<p>由于损失函数和代价函数只是在针对样本集上有区别，因此在本文中统一使用了损失函数这个术语，但下文的相关公式实际上采用的是代价函数
+Cost Function 的形式，请读者自行留意。</p>
 <h4><span id="结构风险函数">结构风险函数</span></h4>
-<p>损失函数（loss function）是用来估量模型的预测值f(x)与真实值$Y$不一致的程度，它是一个非负实数值函数，通常使用$L(Y,f(x))$来表示，损失函数越小，模型的鲁棒性就越好。损失函数是经验风险函数的核心部分，也是结构风险函数的重要组成部分。模型的结构风险函数包括了经验风险项和正则项，通常可以表示成如下的式子：</p>
-<img src="https://s2.loli.net/2023/04/17/mEXD8ocy2UtFlbN.png" alt="image-20220821223950768" style="zoom:50%;">
-<p>前面的均值函数表示的是经验风险函数，L代表的是损失函数，后面的Φ是正则化项（regularizer）或者叫惩罚项（penalty term）,它可以是L1，也可以是L2等其他的正则函数。整个式子表示的意思是找到使目标函数最小时的θ值。下面列出集中常见的损失函数。</p>
-<h3><span id="一-对数损失函数逻辑回归mle-交叉熵损失函数">一、 对数损失函数（逻辑回归）MLE  【交叉熵损失函数】</span></h3>
+<p>损失函数（loss function）是用来估量模型的预测值f(x)与真实值<span class="math inline">\(Y\)</span>不一致的程度，它是一个非负实数值函数，通常使用<span class="math inline">\(L(Y,f(x))\)</span>来表示，损失函数越小，模型的鲁棒性就越好。损失函数是经验风险函数的核心部分，也是结构风险函数的重要组成部分。模型的结构风险函数包括了经验风险项和正则项，通常可以表示成如下的式子：</p>
+<p><img src="https://s2.loli.net/2023/04/17/mEXD8ocy2UtFlbN.png" alt="image-20220821223950768" style="zoom:50%;"></p>
+<p>前面的均值函数表示的是经验风险函数，L代表的是损失函数，后面的Φ是正则化项（regularizer）或者叫惩罚项（penalty
+term）,它可以是L1，也可以是L2等其他的正则函数。整个式子表示的意思是找到使目标函数最小时的θ值。下面列出集中常见的损失函数。</p>
+<h3><span id="一-对数损失函数逻辑回归mle-交叉熵损失函数">一、
+对数损失函数（逻辑回归）MLE 【交叉熵损失函数】</span></h3>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/52100927">https://zhuanlan.zhihu.com/p/52100927</a></p>
+<p>https://zhuanlan.zhihu.com/p/52100927</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tsyccnh/article/details/79163834">一文搞懂交叉熵在机器学习中的使用，透彻理解交叉熵背后的直觉</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35709485">损失函数｜交叉熵损失函数</a></p>
 </blockquote>
 <p>有些人可能觉得逻辑回归的损失函数就是平方损失，其实并不是。<strong>平方损失函数可以通过线性回归在假设样本是高斯分布的条件下推导得到</strong>，而逻辑回归得到的并不是平方损失。在逻辑回归的推导中，<strong>它假设样本服从伯努利分布（0-1分布），然后求得满足该分布的似然函数</strong>，接着取对数求极值等等。而逻辑回归并没有求似然函数的极值，而是把极大化当做是一种思想，进而推导出它的经验风险函数为：</p>
-<p><strong>最小化负的似然函数</strong>（即$maxF(y,f(x))—&gt;min−F(y,f(x))$)。从损失函数的视角来看，它就成了<strong>log损失函数了。</strong></p>
+<p><strong>最小化负的似然函数</strong>（即<span class="math inline">\(maxF(y,f(x))—&gt;min−F(y,f(x))\)</span>)。从损失函数的视角来看，它就成了<strong>log损失函数了。</strong></p>
 <h4><span id="原理解释1条件概率下方便计算极大似然估计">原理解释1：<strong>==条件概率下方便计算极大似然估计==</strong></span></h4>
 <p>Log损失函数的标准形式：</p>
-<p>$L(Y,P(Y|X))=−logP(Y|X)$</p>
-<p>刚刚说到，<strong>取对数是为了方便计算极大似然估计</strong>，因为在MLE中，直接求导比较困难，所以通常都是先取对数再求导找极值点。损失函数$L(Y.P(Y|X))$表达的是样本在分类$Y$的情况下，使概率$P(Y|X)$达到最大值（换言之，就是利用已知的样本分布，找到最有可能（即最大概率）导致这种分布的参数值；或者什么样的参数才能使我们观测到目前这组数据的概率最大）。因为log函数是单调递增的，所以$logP(Y|X)$也会达到最大值，因此在前面加上负号之后，最大化$P(Y|X)$就等价于最小化$L$了。</p>
-<p><strong>logistic回归</strong>的$P(y|x)$表达式如下（为了将类别标签y统一为1和0，下面将表达式分开表示）：</p>
-<img src="https://s2.loli.net/2023/04/17/2aLAcdN97nRS8QV.png" alt="image-20220322202521355" style="zoom:50%;">
+<p><span class="math inline">\(L(Y,P(Y|X))=−logP(Y|X)\)</span></p>
+<p>刚刚说到，<strong>取对数是为了方便计算极大似然估计</strong>，因为在MLE中，直接求导比较困难，所以通常都是先取对数再求导找极值点。损失函数<span class="math inline">\(L(Y.P(Y|X))\)</span>表达的是样本在分类<span class="math inline">\(Y\)</span>的情况下，使概率<span class="math inline">\(P(Y|X)\)</span>达到最大值（换言之，就是利用已知的样本分布，找到最有可能（即最大概率）导致这种分布的参数值；或者什么样的参数才能使我们观测到目前这组数据的概率最大）。因为log函数是单调递增的，所以<span class="math inline">\(logP(Y|X)\)</span>也会达到最大值，因此在前面加上负号之后，最大化<span class="math inline">\(P(Y|X)\)</span>就等价于最小化<span class="math inline">\(L\)</span>了。</p>
+<p><strong>logistic回归</strong>的<span class="math inline">\(P(y|x)\)</span>表达式如下（为了将类别标签y统一为1和0，下面将表达式分开表示）：</p>
+<p><img src="https://s2.loli.net/2023/04/17/2aLAcdN97nRS8QV.png" alt="image-20220322202521355" style="zoom:50%;"></p>
 <p>将上面的公式合并在一起，可得到第i个样本正确预测的概率：</p>
-<img src="https://s2.loli.net/2023/04/17/ebZvW8hzNMuED3d.png" alt="image-20220322202548296" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/ebZvW8hzNMuED3d.png" alt="image-20220322202548296" style="zoom:50%;"></p>
 <p>上式是对一个样本进行建模的数据表达。对于所有的样本，假设每条样本生成过程独立，在整个样本空间中（N个样本）的概率分布为：</p>
-<img src="https://s2.loli.net/2023/04/17/2hZLDVKEaSQMPys.png" alt="image-20220322202618734" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/2hZLDVKEaSQMPys.png" alt="image-20220322202618734" style="zoom:50%;"></p>
 <p>将上式代入到对数损失函数中，得到最终的损失函数为：</p>
-<img src="https://s2.loli.net/2023/04/17/ZLaI9mACg5pojqv.png" alt="image-20220322202653661" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/ZLaI9mACg5pojqv.png" alt="image-20220322202653661" style="zoom:50%;"></p>
 <h4><span id="原理解释2相对熵kl散度推理">原理解释2：相对熵（KL散度）推理</span></h4>
 <blockquote>
-<p>相对熵又称KL散度,如果我们对于同一个随机变量 x 有两个单独的概率分布 P(x) 和 Q(x)，我们可以使用 KL 散度（Kullback-Leibler (KL) divergence）来衡量这两个分布的差异.$DKL$的值越小，表示q分布和p分布越接近.</p>
+<p>相对熵又称KL散度,如果我们对于同一个随机变量 x 有两个单独的概率分布
+P(x) 和 Q(x)，我们可以使用 KL 散度（Kullback-Leibler (KL)
+divergence）来衡量这两个分布的差异.<span class="math inline">\(DKL\)</span>的值越小，表示q分布和p分布越接近.</p>
 </blockquote>
 <h5><span id="相对熵">相对熵:</span></h5>
-<img src="https://s2.loli.net/2023/04/17/y8ulY5HqIKrJRZW.png" alt="image-20220330133351613" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/y8ulY5HqIKrJRZW.png" alt="image-20220330133351613" style="zoom:50%;"></p>
 <h5><span id="相对熵-信息熵-交叉熵">相对熵 = 信息熵 + 交叉熵 ：</span></h5>
-<img src="https://s2.loli.net/2023/04/17/ZiDJTfWudUFmwx7.png" alt="image-20220330134202064" style="zoom:50%;">
-<p><strong>【对数损失函数（Log loss function）】和【交叉熵损失函数（Cross-entroy loss funtion）】在很多文献内是一致的，因为他们的表示式的本质是一样的。</strong></p>
-<h3><span id="二-平方损失函数线性回归gbdt最小二乘法ordinary-least-squaresmse">二、 平方损失函数（线性回归，GBDT，最小二乘法，Ordinary Least Squares）MSE</span></h3>
-<p>最小二乘法是线性回归的一种，OLS 将问题转化成了一个凸优化问题。在线性回归中，它假设样本和噪声都服从高斯分布（为什么假设成高斯分布呢？其实这里隐藏了一个小知识点，就是中心极限定理，可以参考【central limit theorem】），最后通过极大似然估计（MLE）可以推导出最小二乘式子。最小二乘的基本原则是：最优拟合直线应该是使各点到回归直线的距离和最小的直线，即平方和最小。换言之，OLS是基于<strong>距离</strong>的，而这个距离就是我们用的最多的欧几里得距离。为什么它会选择使用欧式距离作为误差度量呢（即Mean squared error， MSE），主要有以下几个原因：</p>
+<p><img src="https://s2.loli.net/2023/04/17/ZiDJTfWudUFmwx7.png" alt="image-20220330134202064" style="zoom:50%;"></p>
+<p><strong>【对数损失函数（Log loss
+function）】和【交叉熵损失函数（Cross-entroy loss
+funtion）】在很多文献内是一致的，因为他们的表示式的本质是一样的。</strong></p>
+<h3><span id="二-平方损失函数线性回归gbdt最小二乘法ordinary-leastsquaresmse">二、
+平方损失函数（线性回归，GBDT，最小二乘法，Ordinary Least
+Squares）MSE</span></h3>
+<p>最小二乘法是线性回归的一种，OLS
+将问题转化成了一个凸优化问题。在线性回归中，它假设样本和噪声都服从高斯分布（为什么假设成高斯分布呢？其实这里隐藏了一个小知识点，就是中心极限定理，可以参考【central
+limit
+theorem】），最后通过极大似然估计（MLE）可以推导出最小二乘式子。最小二乘的基本原则是：最优拟合直线应该是使各点到回归直线的距离和最小的直线，即平方和最小。换言之，OLS是基于<strong>距离</strong>的，而这个距离就是我们用的最多的欧几里得距离。为什么它会选择使用欧式距离作为误差度量呢（即Mean
+squared error， MSE），主要有以下几个原因：</p>
 <ul>
 <li>简单，计算方便；</li>
 <li>欧氏距离是一种很好的相似性度量标准；</li>
 <li>在不同的表示域变换后特征性质不变。</li>
 </ul>
-<p>平方损失（Square loss）的标准形式如下：$L(Y,f(X))=(Y−f(x))^2$当样本个数为n时，此时的损失函数变为：</p>
-<img src="https://s2.loli.net/2023/04/17/NfeyG4SLkFhJBwt.png" alt="image-20220322202912962" style="zoom:50%;">
-<p>$Y−f(X)$ 表示的是<strong>残差</strong>，整个式子表示的是残差的平方和，而我们的目的就是最小化这个目标函数值（注：该式子未加入正则项），也就是最小化残差的平方和（residual sum of squares，RSS）。</p>
+<p>平方损失（Square loss）的标准形式如下：<span class="math inline">\(L(Y,f(X))=(Y−f(x))^2\)</span>当样本个数为n时，此时的损失函数变为：</p>
+<p><img src="https://s2.loli.net/2023/04/17/NfeyG4SLkFhJBwt.png" alt="image-20220322202912962" style="zoom:50%;"></p>
+<p><span class="math inline">\(Y−f(X)\)</span>
+表示的是<strong>残差</strong>，整个式子表示的是残差的平方和，而我们的目的就是最小化这个目标函数值（注：该式子未加入正则项），也就是最小化残差的平方和（residual
+sum of squares，RSS）。</p>
 <p>而在实际应用中，通常会使用<strong>均方差</strong>（MSE）作为一项衡量指标，公式如下：</p>
-<img src="https://s2.loli.net/2023/04/17/9CsrcO3pPXwHoKZ.png" alt="image-20220322202957484" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/9CsrcO3pPXwHoKZ.png" alt="image-20220322202957484" style="zoom:50%;"></p>
 <h3><span id="三-指数损失函数adaboost">三、 指数损失函数（Adaboost）</span></h3>
 <blockquote>
 <p>Adaboost训练误差以指数下降。所以说，指数损失本身并没有带来优化上的特殊，优点在于计算和表达简单。</p>
 </blockquote>
-<p>学过Adaboost算法的人都知道，它是前向分步加法算法的特例，是一个加和模型，损失函数就是指数函数。在Adaboost中，经过m此迭代之后，可以得到$fm(x)$:</p>
-<img src="https://s2.loli.net/2023/04/17/2FKCHj4EDLwxob3.png" alt="image-20220322203050695" style="zoom:50%;">
-<p><strong>Adaboost</strong>每次迭代时的目的是为了找到最小化下列式子时的参数 $a$ 和 $G$：</p>
-<img src="https://s2.loli.net/2023/04/17/XIEqZ21U8ikoOt4.png" alt="image-20220322203141435" style="zoom:50%;">
+<p>学过Adaboost算法的人都知道，它是前向分步加法算法的特例，是一个加和模型，损失函数就是指数函数。在Adaboost中，经过m此迭代之后，可以得到<span class="math inline">\(fm(x)\)</span>:</p>
+<p><img src="https://s2.loli.net/2023/04/17/2FKCHj4EDLwxob3.png" alt="image-20220322203050695" style="zoom:50%;"></p>
+<p><strong>Adaboost</strong>每次迭代时的目的是为了找到最小化下列式子时的参数
+<span class="math inline">\(a\)</span> 和 <span class="math inline">\(G\)</span>：</p>
+<p><img src="https://s2.loli.net/2023/04/17/XIEqZ21U8ikoOt4.png" alt="image-20220322203141435" style="zoom:50%;"></p>
 <p>而指数损失函数(exp-loss）的标准形式如下:</p>
-<img src="https://s2.loli.net/2023/04/17/wDyvbnklec61FYp.png" alt="image-20220322203221432" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/wDyvbnklec61FYp.png" alt="image-20220322203221432" style="zoom:50%;"></p>
 <p>可以看出，Adaboost的目标式子就是指数损失，在给定N个样本的情况下，Adaboost的损失函数为：</p>
-<img src="https://s2.loli.net/2023/04/17/6t2QfviewSNLbzV.png" alt="image-20220322203238853" style="zoom:50%;">
-<h3><span id="四-hinge-合页损失函数svmadvgan">四、 ==Hinge 合页损失函数==（SVM，advGAN）</span></h3>
-<img src="https://s2.loli.net/2023/04/17/EgYO37JubfLwke8.png" alt="image-20220401165315551" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/6t2QfviewSNLbzV.png" alt="image-20220322203238853" style="zoom:50%;"></p>
+<h3><span id="四-hinge合页损失函数svmadvgan">四、 ==Hinge
+合页损失函数==（SVM，advGAN）</span></h3>
+<p><img src="https://s2.loli.net/2023/04/17/EgYO37JubfLwke8.png" alt="image-20220401165315551" style="zoom:50%;"></p>
 <p>线性支持向量机学习除了原始最优化问题，还有另外一种解释，就是最优化以下目标函数：</p>
-<img src="https://s2.loli.net/2023/04/17/kMKy9zPi5hmITxL.png" alt="image-20220322205741804" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/kMKy9zPi5hmITxL.png" alt="image-20220322205741804" style="zoom:50%;"></p>
 <p>目标函数的第一项是经验损失或经验风险函数：</p>
-<img src="https://s2.loli.net/2023/04/17/uJzUqdVDQMf7kCb.png" alt="image-20220322205801232" style="zoom:50%;">
-<p>称为<strong>合页损失函数</strong>（hinge loss function）。下标”+”表示以下取正值的函数：</p>
-<img src="https://s2.loli.net/2023/04/17/w6VqUnRyaLfETKh.png" alt="image-20220322205844003" style="zoom:50%;">
-<p>这就是说，当样本点$(xi,yi)$被正确分类且函数间隔（确信度）$yi(w·xi+b)$大于1时，损失是0，否则损失是$1−yi(w·xi+b)$。目标函数的第二项是系数为 $λ$ 的 $w$ 的 $L2$ 范数，是正则化项。</p>
+<p><img src="https://s2.loli.net/2023/04/17/uJzUqdVDQMf7kCb.png" alt="image-20220322205801232" style="zoom:50%;"></p>
+<p>称为<strong>合页损失函数</strong>（hinge loss
+function）。下标”+”表示以下取正值的函数：</p>
+<p><img src="https://s2.loli.net/2023/04/17/w6VqUnRyaLfETKh.png" alt="image-20220322205844003" style="zoom:50%;"></p>
+<p>这就是说，当样本点<span class="math inline">\((xi,yi)\)</span>被正确分类且函数间隔（确信度）<span class="math inline">\(yi(w·xi+b)\)</span>大于1时，损失是0，否则损失是<span class="math inline">\(1−yi(w·xi+b)\)</span>。目标函数的第二项是系数为
+<span class="math inline">\(λ\)</span> 的 <span class="math inline">\(w\)</span> 的 <span class="math inline">\(L2\)</span> 范数，是正则化项。</p>
 <p>接下来证明线性支持向量机原始最优化问题：</p>
-<img src="https://s2.loli.net/2023/04/17/jDeMzx3QAoZaPw2.png" alt="image-20220322210000477" style="zoom:50%;">
-<img src="https://s2.loli.net/2023/04/17/qKU6kzHTI21BmLV.png" alt="image-20220322210121285" style="zoom:50%;">
-<p>先令$[1−yi(w·xi+b)]+=ξi$，则$ξi≥0$，第二个约束条件成立；由$[1−yi(w·xi+b)]+=ξi$，当$1−yi(w·xi+b)&gt;0$时，有$yi(w·xi+b)=1−ξi$;当$1−yi(w·xi+b)≤0$时，$ξi=0$，有$yi(w·xi+b)≥1−ξi$，所以第一个约束条件成立。所以两个约束条件都满足，最优化问题可以写作</p>
-<img src="https://s2.loli.net/2023/04/17/gi1eSxGrA7MYTQh.png" alt="image-20220322210943775" style="zoom:50%;">
-<p>若取 $λ=1/2C$ 则:</p>
-<img src="https://s2.loli.net/2023/04/17/8Q6BU1lkfF4S3Dd.png" alt="image-20220322211012150" style="zoom:50%;">
+<p><img src="https://s2.loli.net/2023/04/17/jDeMzx3QAoZaPw2.png" alt="image-20220322210000477" style="zoom:50%;"></p>
+<p><img src="https://s2.loli.net/2023/04/17/qKU6kzHTI21BmLV.png" alt="image-20220322210121285" style="zoom:50%;"></p>
+<p>先令<span class="math inline">\([1−yi(w·xi+b)]+=ξi\)</span>，则<span class="math inline">\(ξi≥0\)</span>，第二个约束条件成立；由<span class="math inline">\([1−yi(w·xi+b)]+=ξi\)</span>，当<span class="math inline">\(1−yi(w·xi+b)&gt;0\)</span>时，有<span class="math inline">\(yi(w·xi+b)=1−ξi\)</span>;当<span class="math inline">\(1−yi(w·xi+b)≤0\)</span>时，<span class="math inline">\(ξi=0\)</span>，有<span class="math inline">\(yi(w·xi+b)≥1−ξi\)</span>，所以第一个约束条件成立。所以两个约束条件都满足，最优化问题可以写作</p>
+<p><img src="https://s2.loli.net/2023/04/17/gi1eSxGrA7MYTQh.png" alt="image-20220322210943775" style="zoom:50%;"></p>
+<p>若取 <span class="math inline">\(λ=1/2C\)</span> 则:</p>
+<p><img src="https://s2.loli.net/2023/04/17/8Q6BU1lkfF4S3Dd.png" alt="image-20220322211012150" style="zoom:50%;"></p>
 <h3><span id="五-softmax函数和sigmoid函数的区别与联系">五、Softmax函数和Sigmoid函数的区别与联系</span></h3>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/356976844">https://zhuanlan.zhihu.com/p/356976844</a></p>
+<p>https://zhuanlan.zhihu.com/p/356976844</p>
 </blockquote>
 <h4><span id="51-分类任务">5.1 分类任务</span></h4>
 <h4><span id="sigmoid">sigmoid</span></h4>
 <blockquote>
-<p>Sigmoid =<strong>==多标签分类问题==</strong>=多个正确答案=非独占输出（例如胸部X光检查、住院）。构建分类器，解决有多个正确答案的问题时，用Sigmoid函数分别处理各个原始输出值。</p>
+<p>Sigmoid
+=<strong>==多标签分类问题==</strong>=多个正确答案=非独占输出（例如胸部X光检查、住院）。构建分类器，解决有多个正确答案的问题时，用Sigmoid函数分别处理各个原始输出值。</p>
 </blockquote>
 <blockquote>
-<p>Softmax =<strong>多类别分类问题</strong>=只有一个正确答案=互斥输出（例如手写数字，鸢尾花）。构建分类器，解决只有唯一正确答案的问题时，用Softmax函数处理各个原始输出值。Softmax函数的分母综合了原始输出值的所有因素，这意味着，Softmax函数得到的不同概率之间相互关联。</p>
+<p>Softmax
+=<strong>多类别分类问题</strong>=只有一个正确答案=互斥输出（例如手写数字，鸢尾花）。构建分类器，解决只有唯一正确答案的问题时，用Softmax函数处理各个原始输出值。Softmax函数的分母综合了原始输出值的所有因素，这意味着，Softmax函数得到的不同概率之间相互关联。</p>
 </blockquote>
-<p><strong>Sigmoid函数</strong>是一种logistic函数，它将任意的值转换到 <img src="https://www.zhihu.com/equation?tex=%5B0%2C+1%5D" alt="[公式]"> 之间，如图1所示，函数表达式为： <img src="https://www.zhihu.com/equation?tex=Sigmoid%28x%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"> 。</p>
+<p><strong>Sigmoid函数</strong>是一种logistic函数，它将任意的值转换到
+<img src="https://www.zhihu.com/equation?tex=%5B0%2C+1%5D" alt="[公式]"> 之间，如图1所示，函数表达式为： <img src="https://www.zhihu.com/equation?tex=Sigmoid%28x%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-x%7D%7D" alt="[公式]"> 。</p>
 <p>它的导函数为： <img src="https://www.zhihu.com/equation?tex=Sigmoid%5E%7B%27%7D%28x%29%3DSigmoid%28x%29%5Ccdot+%281-Sigmoid%28x%29%29" alt="[公式]"> 。</p>
-<p><img src="https://s2.loli.net/2023/04/17/i1SyjnQTHW7pYRA.png" alt="img"></p>
+<figure>
+<img src="https://s2.loli.net/2023/04/17/i1SyjnQTHW7pYRA.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p><strong>优点</strong>：</p>
-<ol>
+<ol type="1">
 <li>Sigmoid函数的输出在(0,1)之间，输出范围有限，优化稳定，可以用作<strong>输出层</strong>。</li>
 <li>连续函数，便于<strong>求导</strong>。</li>
 </ol>
 <p><strong>缺点</strong>：</p>
-<ol>
+<ol type="1">
 <li>最明显的就是<strong>饱和性</strong>，从上图也不难看出其两侧导数逐渐趋近于0，容易造成<strong>梯度消失</strong>。</li>
 </ol>
 <p>2.激活函数的偏移现象。Sigmoid函数的输出值均大于0，使得输出不是0的均值，这会导致后一层的神经元将得到上一层非0均值的信号作为输入，这会对梯度产生影响。</p>
-<ol start="3">
+<ol start="3" type="1">
 <li>计算复杂度高，因为Sigmoid函数是指数形式。</li>
 </ol>
 <h4><span id="softmax">Softmax</span></h4>
-<p><strong>Softmax函数</strong>，又称<strong>归一化指数函数</strong>，函数表达式为： <img src="https://www.zhihu.com/equation?tex=Softmax%28x%29%3D%5Cfrac%7Be%5E%7Bx_%7Bi%7D%7D%7D%7B%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%7Be%5E%7Bx_%7Bj%7D%7D%7D%7D" alt="[公式]"> 。</p>
-<img src="https://s2.loli.net/2023/04/17/tuUkTdM47K6jVXx.jpg" alt="img" style="zoom: 67%;">
-<p>**Softmax函数是二分类函数Sigmoid在多分类上的推广，目的是将多分类的结果以概率的形式展现出来。**如图2所示，Softmax直白来说就是将原来输出是3,1,-3通过Softmax函数一作用，就映射成为(0,1)的值，而这些值的累和为1（满足概率的性质），那么我们就可以将它理解成概率，在最后选取输出结点的时候，我们就可以选取概率最大（也就是值对应最大的）结点，作为我们的预测目标。</p>
+<p><strong>Softmax函数</strong>，又称<strong>归一化指数函数</strong>，函数表达式为：
+<img src="https://www.zhihu.com/equation?tex=Softmax%28x%29%3D%5Cfrac%7Be%5E%7Bx_%7Bi%7D%7D%7D%7B%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%7Be%5E%7Bx_%7Bj%7D%7D%7D%7D" alt="[公式]"> 。</p>
+<p><img src="https://s2.loli.net/2023/04/17/tuUkTdM47K6jVXx.jpg" alt="img" style="zoom: 67%;"></p>
+<p><strong>Softmax函数是二分类函数Sigmoid在多分类上的推广，目的是将多分类的结果以概率的形式展现出来。</strong>如图2所示，Softmax直白来说就是将原来输出是3,1,-3通过Softmax函数一作用，就映射成为(0,1)的值，而这些值的累和为1（满足概率的性质），那么我们就可以将它理解成概率，在最后选取输出结点的时候，我们就可以选取概率最大（也就是值对应最大的）结点，作为我们的预测目标。</p>
 <p>由于Softmax函数先拉大了输入向量元素之间的差异（通过指数函数），然后才归一化为一个概率分布，在应用到分类问题时，它使得各个类别的概率差异比较显著，最大值产生的概率更接近1，这样输出分布的形式更接近真实分布。</p>
 <p><strong>Softmax可以由三个不同的角度来解释。从不同角度来看softmax函数，可以对其应用场景有更深刻的理解：</strong></p>
-<ol>
-<li><strong>softmax可以当作argmax的一种平滑近似</strong>，与arg max操作中暴力地选出一个最大值（产生一个one-hot向量）不同，softmax将这种输出作了一定的平滑，即将one-hot输出中最大值对应的1按输入元素值的大小分配给其他位置。</li>
-<li><strong>softmax将输入向量归一化映射到一个类别概率分布</strong>，即 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 个类别上的概率分布（前文也有提到）。这也是为什么在深度学习中常常将softmax作为MLP的最后一层，并配合以交叉熵损失函数（对分布间差异的一种度量)。</li>
+<ol type="1">
+<li><strong>softmax可以当作argmax的一种平滑近似</strong>，与arg
+max操作中暴力地选出一个最大值（产生一个one-hot向量）不同，softmax将这种输出作了一定的平滑，即将one-hot输出中最大值对应的1按输入元素值的大小分配给其他位置。</li>
+<li><strong>softmax将输入向量归一化映射到一个类别概率分布</strong>，即
+<img src="https://www.zhihu.com/equation?tex=n" alt="[公式]">
+个类别上的概率分布（前文也有提到）。这也是为什么在深度学习中常常将softmax作为MLP的最后一层，并配合以交叉熵损失函数（对分布间差异的一种度量)。</li>
 <li>从<strong>概率图模型</strong>的角度来看，softmax的这种形式可以理解为一个概率无向图上的联合概率。因此你会发现，条件最大熵模型与softmax回归模型实际上是一致的，诸如这样的例子还有很多。由于概率图模型很大程度上借用了一些热力学系统的理论，因此也可以从物理系统的角度赋予softmax一定的内涵。</li>
 </ol>
 <h4><span id="52-总结">5.2 总结</span></h4>
-<ol>
+<ol type="1">
 <li>如果模型输出为非互斥类别，且可以同时选择多个类别，则采用Sigmoid函数计算该网络的原始输出值。</li>
 <li>如果模型输出为<strong>互斥类别</strong>，且只能选择一个类别，则采用Softmax函数计算该网络的原始输出值。</li>
 <li><strong>Sigmoid函数</strong>可以用来解决<strong>多标签问题</strong>，<strong>Softmax</strong>函数用来解决<strong>单标签问题</strong>。</li>
@@ -520,7 +569,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

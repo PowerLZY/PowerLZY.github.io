@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -288,24 +288,14 @@
     <div class="post-body" itemprop="articleBody">
           <h2><span id="pytorch-资料">PyTorch 资料</span></h2>
 <ul>
-<li>
-<p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/nn.html#torch.nn.BCELoss">PyTorch 1.7.0 文档 </a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/pytorch/pytorch-mrni3btn.html">https://www.w3cschool.cn/pytorch/pytorch-mrni3btn.html</a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://handbook.pytorch.wiki/chapter1/1.1-pytorch-introduction.html">https://handbook.pytorch.wiki/chapter1/1.1-pytorch-introduction.html</a></p>
-</li>
-<li>
-<p>LSTM细节分析理解（pytorch版）：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79064602">https://zhuanlan.zhihu.com/p/79064602</a></p>
-</li>
-<li>
-<p>OLD：<a target="_blank" rel="noopener" href="https://www.pytorch123.com/SixthSection/Dcgan/">https://www.pytorch123.com/SixthSection/Dcgan/</a></p>
-</li>
-<li>
-<p>PyTorch 学习笔记汇总（完结撒花） - 张贤同学的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265394674">https://zhuanlan.zhihu.com/p/265394674</a></p>
-</li>
+<li><p><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/nn.html#torch.nn.BCELoss">PyTorch
+1.7.0 文档</a></p></li>
+<li><p>https://www.w3cschool.cn/pytorch/pytorch-mrni3btn.html</p></li>
+<li><p>https://handbook.pytorch.wiki/chapter1/1.1-pytorch-introduction.html</p></li>
+<li><p>LSTM细节分析理解（pytorch版）：https://zhuanlan.zhihu.com/p/79064602</p></li>
+<li><p>OLD：https://www.pytorch123.com/SixthSection/Dcgan/</p></li>
+<li><p>PyTorch 学习笔记汇总（完结撒花） - 张贤同学的文章 - 知乎
+https://zhuanlan.zhihu.com/p/265394674</p></li>
 </ul>
 <h1><span id="pytorch-学习笔记"><strong>PyTorch 学习笔记</strong></span></h1>
 <p>在线电子书：<a href="https://link.zhihu.com/?target=https%3A//pytorch.zhangxiann.com/">https://pytorch.zhangxiann.com/</a></p>
@@ -313,7 +303,7 @@
 <h2><span id="一-基本概念">一、基本概念</span></h2>
 <h3><span id="11-pytorch-简介与安装">1.1 Pytorch 简介与安装</span></h3>
 <h3><span id="12-tensor-张量介绍">1.2 Tensor 张量介绍</span></h3>
-<img src="https://image.zhangxiann.com/20200515145801.png" alt="img" style="zoom:75%;">
+<p><img src="https://image.zhangxiann.com/20200515145801.png" alt="img" style="zoom:75%;"></p>
 <h4><span id="121-直接创建-tensor">1.2.1 直接创建 Tensor</span></h4>
 <h4><span id="torchtensor">torch.tensor()</span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.tensor(data, dtype=<span class="literal">None</span>, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>, pin_memory=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
@@ -325,15 +315,23 @@
 <li>pin_memory: 是否存于锁页内存</li>
 </ul>
 <h4><span id="torchfrom_numpyndarray">torch.from_numpy(ndarray)</span></h4>
-<p><strong>从 numpy 创建 tensor。利用这个方法创建的 tensor 和原来的 ndarray 共享内存，当修改其中一个数据，另外一个也会被改动。</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-3c43ca0bec07c933d07de270730e8ba2_1440w.jpg" alt="img"></p>
+<p><strong>从 numpy 创建 tensor。利用这个方法创建的 tensor 和原来的
+ndarray 共享内存，当修改其中一个数据，另外一个也会被改动。</strong></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-3c43ca0bec07c933d07de270730e8ba2_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="122-根据数值创建-tensor">1.2.2 根据数值创建 Tensor</span></h4>
-<h4><span id="torchzeros根据-size-创建全-0-张量">torch.zeros()：根据 size 创建全 0 张量</span></h4>
+<h4><span id="torchzeros根据-size创建全-0-张量">torch.zeros()：根据 size
+创建全 0 张量</span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.zeros(*size, out=<span class="literal">None</span>, dtype=<span class="literal">None</span>, layout=torch.strided, device=<span class="literal">None</span>, requires_grad=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>size: 张量的形状</li>
-<li>out: 输出的张量，如果指定了 out，那么<code>torch.zeros()</code>返回的张量和 out 指向的是同一个地址</li>
-<li>layout: 内存中布局形式，有 strided，sparse_coo 等。当是稀疏矩阵时，设置为 sparse_coo 可以减少内存占用。</li>
+<li>out: 输出的张量，如果指定了
+out，那么<code>torch.zeros()</code>返回的张量和 out
+指向的是同一个地址</li>
+<li>layout: 内存中布局形式，有 strided，sparse_coo
+等。当是稀疏矩阵时，设置为 sparse_coo 可以减少内存占用。</li>
 <li>device: 所在设备，cuda/cpu</li>
 <li>requires_grad: 是否需要梯度</li>
 </ul>
@@ -343,14 +341,16 @@
 <li>size: 张量的形状，如 (3,3)</li>
 <li>fill_value: 张量中每一个元素的值</li>
 </ul>
-<h4><span id="torcharange创建等差的-1-维张量-注意区间为start-end">torch.arange()：创建等差的 1 维张量。注意区间为[start, end)。</span></h4>
+<h4><span id="torcharange创建等差的1-维张量-注意区间为start-end">torch.arange()：创建等差的
+1 维张量。注意区间为[start, end)。</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.arange(start=0, end, step=1, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>start: 数列起始值</li>
 <li>end: 数列结束值，开区间，取不到结束值</li>
 <li>step: 数列公差，默认为 1</li>
 </ul>
-<h4><span id="torchlinspace创建均分的-1-维张量-数值区间为-start-end">torch.linspace()：创建均分的 1 维张量。数值区间为 [start, end]</span></h4>
+<h4><span id="torchlinspace创建均分的1-维张量-数值区间为-start-end">torch.linspace()：创建均分的
+1 维张量。数值区间为 [start, end]</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.linspace(start, end, steps=100, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>start: 数列起始值</li>
@@ -367,43 +367,53 @@
 </ul>
 <h3><span id="13-张量操作与线性回归">==1.3 张量操作与线性回归==</span></h3>
 <h3><span id="131-拼接cat-stack"><strong>==1.3.1 拼接==</strong>：cat、stack</span></h3>
-<h4><span id="torchcat将张量按照-dim-维度进行拼接">torch.cat()：将张量按照 dim 维度进行拼接</span></h4>
+<h4><span id="torchcat将张量按照dim-维度进行拼接">torch.cat()：将张量按照
+dim 维度进行拼接</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.cat(tensors, dim=0, out=None)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>tensors: 张量序列 <strong>[t, t]</strong></li>
 <li>dim: 要拼接的维度</li>
 </ul>
-<h4><span id="torchstack将张量在新创建的-dim-维度上进行拼接已有维度后移">torch.stack()：将张量在==新创建的 dim 维度==上进行拼接，已有维度后移</span></h4>
+<h4><span id="torchstack将张量在新创建的dim-维度上进行拼接已有维度后移">torch.stack()：将张量在==新创建的
+dim 维度==上进行拼接，已有维度后移</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.stack(tensors, dim=0, out=None)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>tensors: 张量序列</li>
 <li>dim: 要拼接的维度</li>
 </ul>
 <h3><span id="132-切分chunk-split">==1.3.2 切分==：chunk、split</span></h3>
-<h4><span id="torchchunk将张量按照维度-dim-进行平均切分-若不能整除则最后一份张量小于其他张量">torch.chunk()：将张量按照维度 dim 进行平均切分。若不能整除，则最后一份张量小于其他张量。</span></h4>
+<h4><span id="torchchunk将张量按照维度dim-进行平均切分-若不能整除则最后一份张量小于其他张量">torch.chunk()：将张量按照维度
+dim 进行平均切分。若不能整除，则最后一份张量小于其他张量。</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.chunk(input, chunks, dim=0)</span><br><span class="line">torch.chunk(a, dim=1, chunks=3)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>input: 要切分的张量</li>
 <li>chunks: 要切分的份数</li>
 <li>dim: 要切分的维度</li>
 </ul>
-<h4><span id="torchsplit将张量按照维度-dim-进行平均切分-可以指定每一个分量的切分长度">torch.split()：将张量按照维度 dim 进行平均切分。可以指定每一个==分量的切分长度==。</span></h4>
+<h4><span id="torchsplit将张量按照维度dim-进行平均切分-可以指定每一个分量的切分长度">torch.split()：将张量按照维度
+dim 进行平均切分。可以指定每一个==分量的切分长度==。</span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.split(tensor, split_size_or_sections, dim=<span class="number">0</span>)</span><br><span class="line">torch.split(t, [<span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], dim=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>tensor: 要切分的张量</li>
-<li>split_size_or_sections: 为 int 时，表示每一份的长度，如果不能被整除，则最后一份张量小于其他张量；为 list 时，按照 list 元素作为每一个分量的长度切分。如果 list 元素之和不等于切分维度 (dim) 的值，就会报错。</li>
+<li>split_size_or_sections: 为 int
+时，表示每一份的长度，如果不能被整除，则最后一份张量小于其他张量；为
+list 时，按照 list 元素作为每一个分量的长度切分。如果 list
+元素之和不等于切分维度 (dim) 的值，就会报错。</li>
 <li>dim: 要切分的维度</li>
 </ul>
 <h3><span id="133-索引">==1.3.3 索引==</span></h3>
-<h4><span id="torchindex_select在维度-dim-上按照-index-索引取出数据拼接为张量返回">torch.index_select()：在维度 dim 上，按照 index 索引取出数据拼接为张量返回。</span></h4>
+<h4><span id="torchindex_select在维度dim-上按照-index-索引取出数据拼接为张量返回">torch.index_select()：在维度
+dim 上，按照 index 索引取出数据拼接为张量返回。</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.index_select(input, dim, index, out=None)</span><br></pre></td></tr></table></figure>
-<p>功能：在维度 dim 上，按照 index 索引取出数据拼接为张量返回。<code>torch.tensor([0, 2], dtype=torch.long)</code></p>
+<p>功能：在维度 dim 上，按照 index
+索引取出数据拼接为张量返回。<code>torch.tensor([0, 2], dtype=torch.long)</code></p>
 <ul>
 <li>input: 要索引的张量</li>
 <li>dim: 要索引的维度</li>
 <li>index: 要索引数据的序号</li>
 </ul>
-<h4><span id="torchmask_select按照-mask-中的-true-进行索引拼接得到一维张量返回">torch.mask_select()：按照 mask 中的 True 进行索引拼接得到一维张量返回。</span></h4>
+<h4><span id="torchmask_select按照mask-中的-true-进行索引拼接得到一维张量返回">torch.mask_select()：按照
+mask 中的 True 进行索引拼接得到一维张量返回。</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.masked_select(input, mask, out=None)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>要索引的张量</li>
@@ -423,17 +433,25 @@
 <li>dim0: 要交换的第一个维度</li>
 <li>dim1: 要交换的第二个维度</li>
 </ul>
-<h4><span id="torcht2-维张量转置对于-2-维矩阵而言等价于torchtransposeinput-0-1">torch.t()：2 维张量转置，对于 2 维矩阵而言，等价于<code>torch.transpose(input, 0, 1)</code>。</span></h4>
-<h4><span id="torchsqueeze压缩长度为-1-的维度">torch.squeeze()：压缩长度为 1 的维度</span></h4>
+<h4><span id="torcht2维张量转置对于-2维矩阵而言等价于torchtransposeinput-0-1">torch.t()：2
+维张量转置，对于 2
+维矩阵而言，等价于<code>torch.transpose(input, 0, 1)</code>。</span></h4>
+<h4><span id="torchsqueeze压缩长度为-1的维度">torch.squeeze()：压缩长度为 1
+的维度</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.squeeze(input, dim=None, out=None)</span><br></pre></td></tr></table></figure>
 <ul>
-<li>dim: 若为 None，则移除所有长度为 1 的维度；若指定维度，则当且仅当该维度长度为 1 时可以移除。</li>
+<li>dim: 若为 None，则移除所有长度为 1
+的维度；若指定维度，则当且仅当该维度长度为 1 时可以移除。</li>
 </ul>
-<h4><span id="torchunsqueeze根据-dim-扩展维度长度为-1">torch.unsqueeze()：根据 dim 扩展维度，长度为 1。</span></h4>
+<h4><span id="torchunsqueeze根据dim-扩展维度长度为-1">torch.unsqueeze()：根据
+dim 扩展维度，长度为 1。</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.unsqueeze(input, dim)</span><br></pre></td></tr></table></figure>
 <h3><span id="135-张量的数学运算">==1.3.5 张量的数学运算==</span></h3>
-<h4><span id="加减乘除对数指数幂函数-和三角函数">加减乘除，对数，指数，幂函数 和三角函数。</span></h4>
-<h4><span id="torchadd-逐元素计算-input-alpha-other-因为在深度学习中经常用到先乘后加的操作">torch.add(): 逐元素计算 input + alpha * other。因为在深度学习中经常用到先乘后加的操作。</span></h4>
+<h4><span id="加减乘除对数指数幂函数和三角函数">加减乘除，对数，指数，幂函数
+和三角函数。</span></h4>
+<h4><span id="torchadd逐元素计算-input-alpha-other-因为在深度学习中经常用到先乘后加的操作">torch.add():
+逐元素计算 input + alpha *
+other。因为在深度学习中经常用到先乘后加的操作。</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">torch.add(input, other, out=None)</span><br><span class="line">torch.add(input, other, *, alpha=1, out=None)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>input: 第一个张量</li>
@@ -445,18 +463,29 @@
 <p>计算公式为：out <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%3D%5Coperatorname%7Binput%7D_%7Bi%7D%2B" alt="[公式]"> value <img src="https://www.zhihu.com/equation?tex=%5Ctimes+%5Cfrac%7B%5Ctext+%7B+tensor+%7D+1_%7Bi%7D%7D%7B%5Ctext+%7B+tensor+%7D+2_%7Bi%7D%7D" alt="[公式]"></p>
 <h4><span id="torchaddcmul">torch.addcmul()</span></h4>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.addcmul(input, tensor1, tensor2, *, value=1, out=None)</span><br></pre></td></tr></table></figure>
-<p>计算公式为：out <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%3D" alt="[公式]"> input <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%2B" alt="[公式]"> value <img src="https://www.zhihu.com/equation?tex=%5Ctimes" alt="[公式]"> tensor <img src="https://www.zhihu.com/equation?tex=1_%7Bi%7D+%5Ctimes" alt="[公式]"> tensor <img src="https://www.zhihu.com/equation?tex=2_%7Bi%7D" alt="[公式]"></p>
+<p>计算公式为：out <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%3D" alt="[公式]">
+input <img src="https://www.zhihu.com/equation?tex=_%7Bi%7D%2B" alt="[公式]"> value <img src="https://www.zhihu.com/equation?tex=%5Ctimes" alt="[公式]"> tensor
+<img src="https://www.zhihu.com/equation?tex=1_%7Bi%7D+%5Ctimes" alt="[公式]"> tensor <img src="https://www.zhihu.com/equation?tex=2_%7Bi%7D" alt="[公式]"></p>
 <h4><span id="pytorch-线性回归">==Pytorch 线性回归==</span></h4>
-<p>线性回归是分析一个变量 (<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">) 与另外一 (多) 个变量 (<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">) 之间的关系的方法。一般可以写成 <img src="https://www.zhihu.com/equation?tex=y%3Dwx%2Bb" alt="[公式]">。线性回归的目的就是求解参数 <img src="https://www.zhihu.com/equation?tex=w%2C+b" alt="[公式]">。</p>
+<p>线性回归是分析一个变量 (<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">) 与另外一
+(多) 个变量 (<img src="https://www.zhihu.com/equation?tex=x" alt="[公式]">) 之间的关系的方法。一般可以写成 <img src="https://www.zhihu.com/equation?tex=y%3Dwx%2Bb" alt="[公式]">。线性回归的目的就是求解参数 <img src="https://www.zhihu.com/equation?tex=w%2C+b" alt="[公式]">。</p>
 <p>线性回归的求解可以分为 3 步：</p>
-<ol>
+<ol type="1">
 <li>确定模型：<img src="https://www.zhihu.com/equation?tex=y%3Dwx%2Bb" alt="[公式]"></li>
-<li>选择损失函数，一般使用均方误差 MSE：<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D+%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%5Cleft%28y_%7Bi%7D-%5Chat%7By%7D_%7Bi%7D%5Cright%29%5E%7B2%7D" alt="[公式]">。其中 <img src="https://www.zhihu.com/equation?tex=+%5Chat%7By%7D_%7Bi%7D+" alt="[公式]"> 是预测值，<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]"> 是真实值。</li>
-<li>使用梯度下降法求解梯度 (其中 <img src="https://www.zhihu.com/equation?tex=lr" alt="[公式]"> 是学习率)，并更新参数：</li>
+<li>选择损失函数，一般使用均方误差 MSE：<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D+%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%5Cleft%28y_%7Bi%7D-%5Chat%7By%7D_%7Bi%7D%5Cright%29%5E%7B2%7D" alt="[公式]">。其中 <img src="https://www.zhihu.com/equation?tex=+%5Chat%7By%7D_%7Bi%7D+" alt="[公式]"> 是预测值，<img src="https://www.zhihu.com/equation?tex=y" alt="[公式]">
+是真实值。</li>
+<li>使用梯度下降法求解梯度 (其中 <img src="https://www.zhihu.com/equation?tex=lr" alt="[公式]">
+是学习率)，并更新参数：</li>
 </ol>
 <ul>
-<li><img src="https://www.zhihu.com/equation?tex=w+%3D+w+-+lr+%2A+w.grad" alt="[公式]"></li>
-<li><img src="https://www.zhihu.com/equation?tex=b+%3D+b+-+lr+%2A+b.grad" alt="[公式]"></li>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=w+%3D+w+-+lr+%2A+w.grad" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
+<li><figure>
+<img src="https://www.zhihu.com/equation?tex=b+%3D+b+-+lr+%2A+b.grad" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">代码如下：</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">torch.manual_seed(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">lr = <span class="number">0.05</span>  <span class="comment"># 学习率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建训练数据</span></span><br><span class="line">x = torch.rand(<span class="number">20</span>, <span class="number">1</span>) * <span class="number">10</span>  <span class="comment"># x data (tensor), shape=(20, 1)</span></span><br><span class="line"><span class="comment"># torch.randn(20, 1) 用于添加噪声</span></span><br><span class="line">y = <span class="number">2</span>*x + (<span class="number">5</span> + torch.randn(<span class="number">20</span>, <span class="number">1</span>))  <span class="comment"># y data (tensor), shape=(20, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建线性回归参数</span></span><br><span class="line">w = torch.randn((<span class="number">1</span>), requires_grad=<span class="literal">True</span>) <span class="comment"># 设置梯度求解为 true</span></span><br><span class="line">b = torch.zeros((<span class="number">1</span>), requires_grad=<span class="literal">True</span>) <span class="comment"># 设置梯度求解为 true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练 1000 次</span></span><br><span class="line"><span class="keyword">for</span> iteration <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 前向传播，计算预测值</span></span><br><span class="line">    wx = torch.mul(w, x)</span><br><span class="line">    y_pred = torch.add(wx, b)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算 MSE loss</span></span><br><span class="line">    loss = (<span class="number">0.5</span> * (y - y_pred) ** <span class="number">2</span>).mean()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向传播</span></span><br><span class="line">    loss.backward()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新参数</span></span><br><span class="line">    b.data.sub_(lr * b.grad)</span><br><span class="line">    w.data.sub_(lr * w.grad)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 每次更新参数之后，都要清零张量的梯度</span></span><br><span class="line">    w.grad.zero_()</span><br><span class="line">    b.grad.zero_()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘图，每隔 20 次重新绘制直线</span></span><br><span class="line">    <span class="keyword">if</span> iteration % <span class="number">20</span> == <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        plt.scatter(x.data.numpy(), y.data.numpy())</span><br><span class="line">        plt.plot(x.data.numpy(), y_pred.data.numpy(), <span class="string">&#x27;r-&#x27;</span>, lw=<span class="number">5</span>)</span><br><span class="line">        plt.text(<span class="number">2</span>, <span class="number">20</span>, <span class="string">&#x27;Loss=%.4f&#x27;</span> % loss.data.numpy(), fontdict=&#123;<span class="string">&#x27;size&#x27;</span>: <span class="number">20</span>, <span class="string">&#x27;color&#x27;</span>:  <span class="string">&#x27;red&#x27;</span>&#125;)</span><br><span class="line">        plt.xlim(<span class="number">1.5</span>, <span class="number">10</span>)</span><br><span class="line">        plt.ylim(<span class="number">8</span>, <span class="number">28</span>)</span><br><span class="line">        plt.title(<span class="string">&quot;Iteration: &#123;&#125;\nw: &#123;&#125; b: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(iteration, w.data.numpy(), b.data.numpy()))</span><br><span class="line">        plt.pause(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果 MSE 小于 1，则停止训练</span></span><br><span class="line">        <span class="keyword">if</span> loss.data.numpy() &lt; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 
@@ -670,41 +699,38 @@
 </blockquote>
 <h3><span id="一-hadoop">一、 hadoop</span></h3>
 <h4><span id="11-hadoop简介">1.1 hadoop简介</span></h4>
-<p><strong>Hadoop是一个由Apache基金会所开发的分布式系统基础架构</strong>。 <strong>Hadoop实现了一个分布式文件系统HDFS</strong>。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程序。Hadoop的框架最核心的设计就是：HDFS和MapReduce。<strong>HDFS为海量的数据提供了存储，而MapReduce则为海量的数据提供了计算</strong>。</p>
+<p><strong>Hadoop是一个由Apache基金会所开发的分布式系统基础架构</strong>。
+<strong>Hadoop实现了一个分布式文件系统HDFS</strong>。HDFS有高容错性的特点，并且设计用来部署在低廉的硬件上；而且它提供高吞吐量来访问应用程序的数据，适合那些有着超大数据集的应用程序。Hadoop的框架最核心的设计就是：HDFS和MapReduce。<strong>HDFS为海量的数据提供了存储，而MapReduce则为海量的数据提供了计算</strong>。</p>
 <h4><span id="12-hadoop优点">1.2 hadoop优点</span></h4>
-<p><strong>Hadoop 以一种可靠、高效、可伸缩的方式进行数据处理。</strong></p>
+<p><strong>Hadoop
+以一种可靠、高效、可伸缩的方式进行数据处理。</strong></p>
 <ul>
-<li>
-<p><strong>可靠性</strong>: Hadoop将数据存储在多个备份，Hadoop提供高吞吐量来访问应用程序的数据。</p>
-</li>
-<li>
-<p><strong>高扩展性</strong>： Hadoop是在可用的计算机集簇间分配数据并完成计算任务的，这些集簇可以方便地扩展到数以千计的节点中。</p>
-</li>
-<li>
-<p><strong>高效性</strong>： Hadoop以并行的方式工作，通过并行处理加快处理速度。</p>
-</li>
-<li>
-<p><strong>高容错性</strong>： Hadoop能够自动保存数据的多个副本，并且能够自动将失败的任务重新分配。</p>
-</li>
-<li>
-<p><strong>低成本</strong>： Hadoop能够部署在低廉的（low-cost）硬件上。</p>
-</li>
+<li><p><strong>可靠性</strong>:
+Hadoop将数据存储在多个备份，Hadoop提供高吞吐量来访问应用程序的数据。</p></li>
+<li><p><strong>高扩展性</strong>：
+Hadoop是在可用的计算机集簇间分配数据并完成计算任务的，这些集簇可以方便地扩展到数以千计的节点中。</p></li>
+<li><p><strong>高效性</strong>：
+Hadoop以并行的方式工作，通过并行处理加快处理速度。</p></li>
+<li><p><strong>高容错性</strong>：
+Hadoop能够自动保存数据的多个副本，并且能够自动将失败的任务重新分配。</p></li>
+<li><p><strong>低成本</strong>：
+Hadoop能够部署在低廉的（low-cost）硬件上。</p></li>
 </ul>
 <h3><span id="二-spark"><strong>二、spark</strong></span></h3>
 <h4><span id="21-spark简介">2.1 spark简介</span></h4>
-<p><strong>Spark 是专为大规模数据处理而设计的快速通用的计算引擎</strong>。Spark拥有Hadoop MapReduce所具有的优点，Spark在Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark性能以及运算速度高于MapReduce。</p>
+<p><strong>Spark
+是专为大规模数据处理而设计的快速通用的计算引擎</strong>。Spark拥有Hadoop
+MapReduce所具有的优点，Spark在Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark性能以及运算速度高于MapReduce。</p>
 <h4><span id="22-spark优点">2.2 spark优点</span></h4>
-<p><strong>计算速度快</strong>: 因为spark从磁盘中读取数据，把<strong>中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
+<p><strong>计算速度快</strong>:
+因为spark从磁盘中读取数据，把<strong>中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
 <ul>
-<li>
-<p><strong>Spark 提供了大量的库</strong>: 包括Spark Core、Spark SQL、Spark Streaming、MLlib、GraphX。</p>
-</li>
-<li>
-<p><strong>支持多种资源管理器</strong>: Spark 支持 Hadoop YARN，及其自带的独立集群管理器</p>
-</li>
-<li>
-<p><strong>操作简单</strong>: 高级 API 剥离了对集群本身的关注，Spark 应用开发者可以专注于应用所要做的计算本身</p>
-</li>
+<li><p><strong>Spark 提供了大量的库</strong>: 包括Spark Core、Spark
+SQL、Spark Streaming、MLlib、GraphX。</p></li>
+<li><p><strong>支持多种资源管理器</strong>: Spark 支持 Hadoop
+YARN，及其自带的独立集群管理器</p></li>
+<li><p><strong>操作简单</strong>: 高级 API 剥离了对集群本身的关注，Spark
+应用开发者可以专注于应用所要做的计算本身</p></li>
 </ul>
 <h3><span id="三-spark与hadoop的不同点">三、spark与hadoop的不同点</span></h3>
 <h4><span id="31-应用场景不同">3.1 应用场景不同</span></h4>
@@ -712,9 +738,12 @@
 <h4><span id="32-处理速度不同">3.2 处理速度不同</span></h4>
 <p><strong>hadoop的MapReduce是分步对数据进行处理的，从磁盘中读取数据，进行一次处理，将结果写到磁盘</strong>，然后在从磁盘中读取更新后的数据，再次进行的处理，最后再将结果存入磁盘，这存取磁盘的过程会影响处理速度。<strong>spark从磁盘中读取数据，把中间数据放到内存中</strong>，，完成所有必须的分析处理，将结果写回集群，所以spark更快。</p>
 <h4><span id="33-容错性不同">3.3 容错性不同</span></h4>
-<p><strong>Hadoop将每次处理后的数据都写入到磁盘上，基本谈不上断电或者出错数据丢失的情况</strong>。Spark的数据对象存储在弹性分布式数据集 RDD，RDD是分布在一组节点中的只读对象集合，如果数据集一部分丢失，则可以根据于数据衍生过程对它们进行重建。而且RDD 计算时可以通过 CheckPoint 来实现容错。</p>
+<p><strong>Hadoop将每次处理后的数据都写入到磁盘上，基本谈不上断电或者出错数据丢失的情况</strong>。Spark的数据对象存储在弹性分布式数据集
+RDD，RDD是分布在一组节点中的只读对象集合，如果数据集一部分丢失，则可以根据于数据衍生过程对它们进行重建。而且RDD
+计算时可以通过 CheckPoint 来实现容错。</p>
 <h3><span id="四-spark与hadoop的联系">四、spark与hadoop的联系</span></h3>
-<p>Hadoop提供分布式数据存储功能HDFS，还提供了用于数据处理的MapReduce。 MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依靠HDFS进行运作，它可以依靠其它的分布式文件系统。但是两者完全可以结合在一起，<strong>hadoop提供分布式集群和分布式文件系统</strong>，<strong>spark可以依附在hadoop的HDFS代替MapReduce弥补MapReduce计算能力不足的问题。</strong></p>
+<p>Hadoop提供分布式数据存储功能HDFS，还提供了用于数据处理的MapReduce。
+MapReduce是可以不依靠spark数据的处理的。当然spark也可以不依靠HDFS进行运作，它可以依靠其它的分布式文件系统。但是两者完全可以结合在一起，<strong>hadoop提供分布式集群和分布式文件系统</strong>，<strong>spark可以依附在hadoop的HDFS代替MapReduce弥补MapReduce计算能力不足的问题。</strong></p>
 
       
     </div>
@@ -814,7 +843,7 @@
     <div class="post-body" itemprop="articleBody">
           <h1><span id="数据湖data-lake-总结">数据湖（Data Lake） 总结</span></h1>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/91165577">https://zhuanlan.zhihu.com/p/91165577</a></li>
+<li>https://zhuanlan.zhihu.com/p/91165577</li>
 </ul>
 <blockquote>
 <p>数据湖从本质上来讲，是一种企业数据架构方法，物理实现上则是一个数据存储平台，用来集中化存储企业内海量的、多来源，多种类的数据，并支持对数据进行快速加工和分析。</p>
@@ -932,64 +961,80 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="the-forrester-wavetm-endpoint-detection-and-response-providers-q2-2022"><strong>The Forrester Wave™: Endpoint Detection And Response Providers, Q2 2022</strong></span></h2>
-<p>在我们对端点检测和响应提供商的 20 个标准评估中，我们确定了 15 个最重要的——Bitdefender、BlackBerry Cylance、Check Point Software Technologies、CrowdStrike、Cybereason、Elastic、FireEye、Fortinet、McAfee、Microsoft、Palo Alto Networks、SentinelOne 、Sophos、趋势科技和 VMware Carbon Black — 并对它们进行了研究、分析和评分。该报告显示了每个供应商如何衡量并帮助安全专业人员根据他们的需求选择合适的供应商。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505869.png" alt="image-20220426183404208" style="zoom: 33%;">
+          <h2><span id="theforrester-wavetm-endpoint-detection-and-response-providers-q22022"><strong>The
+Forrester Wave™: Endpoint Detection And Response Providers, Q2
+2022</strong></span></h2>
+<p>在我们对端点检测和响应提供商的 20 个标准评估中，我们确定了 15
+个最重要的——Bitdefender、BlackBerry Cylance、Check Point Software
+Technologies、CrowdStrike、Cybereason、Elastic、FireEye、Fortinet、McAfee、Microsoft、Palo
+Alto Networks、SentinelOne 、Sophos、趋势科技和 VMware Carbon Black —
+并对它们进行了研究、分析和评分。该报告显示了每个供应商如何衡量并帮助安全专业人员根据他们的需求选择合适的供应商。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505869.png" alt="image-20220426183404208" style="zoom: 33%;"></p>
 <h1><span id="crowdstrike无文件攻击白皮书解析">CrowdStrike《无文件攻击白皮书》解析</span></h1>
 <blockquote>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://www.secrss.com/articles/26671">https://www.secrss.com/articles/26671</a></p>
+<p>原文链接：https://www.secrss.com/articles/26671</p>
 </blockquote>
-<p>CrowdStrike是端点保护平台（EPP）的最强者，是云交付的下一代端点保护的领导者。由于CrowdStrike邮件推送了“<strong>无文件攻击白皮书</strong>”《谁需要恶意软件？<strong>对手如何使用无文件攻击来规避你的安全措施</strong>》（Who Needs Malware? How Adversaries Use Fileless Attacks To Evade Your Security），笔者顺手对其进行了<strong>全文翻译</strong>。</p>
-<p><strong>无文件攻击（Fileless attack）<strong>是</strong>不向磁盘写入可执行文件</strong>的攻击方法，难以被常规方法检测出来。根据CrowdStrike统计，“10个成功突破的攻击向量中有8个使用了无文件攻击技术。”即 <strong>80%的成功入侵都使用了无文件攻击</strong> <strong>。</strong> 根据二八原理，这显然是安全人员应该高度关注的技术类型。</p>
+<p>CrowdStrike是端点保护平台（EPP）的最强者，是云交付的下一代端点保护的领导者。由于CrowdStrike邮件推送了“<strong>无文件攻击白皮书</strong>”《谁需要恶意软件？<strong>对手如何使用无文件攻击来规避你的安全措施</strong>》（Who
+Needs Malware? How Adversaries Use Fileless Attacks To Evade Your
+Security），笔者顺手对其进行了<strong>全文翻译</strong>。</p>
+<p><strong>无文件攻击（Fileless
+attack）</strong>是<strong>不向磁盘写入可执行文件</strong>的攻击方法，难以被常规方法检测出来。根据CrowdStrike统计，“10个成功突破的攻击向量中有8个使用了无文件攻击技术。”即
+<strong>80%的成功入侵都使用了无文件攻击</strong> <strong>。</strong>
+根据二八原理，这显然是安全人员应该高度关注的技术类型。</p>
 <p><strong>无文件攻击白皮书</strong>解释了<strong>无文件攻击的工作原理、传统解决方案失效的原因，以及CrowdStrike解决该难题的方法</strong>。CrowdStrike的解决方案是<strong>应用程序清单、漏洞利用阻断、攻击指标（IOA）、托管狩猎、无签名人工智能等技术的集成化方法</strong>。</p>
-<p>除了全文翻译外，笔者主要在文末做了两块内容增补：一是关于CrowdStrike<strong>Threat Graph（威胁图</strong>）的技术思想**，因为威胁图 是 CrowdStrike Falcon（猎鹰）端点保护平台的“ <strong>大脑” ；二是 关于CrowdStrike提出的</strong>攻击指标**（IOA）**与传统的失陷指标（IOC）**的对比。<strong>笔者认为，这两类技术领域具有战略价值</strong>。如果说全文翻译只花费一小时的话，这些增补内容反而消耗了笔者两个小时。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505079.png" alt="img" style="zoom:33%;">
-<p>随着安全措施在检测和阻止恶意软件和网络攻击方面越来越出色，对手和网络犯罪分子被迫不断开发新技术来逃避检测。其中一种高级技术涉及**<font color="red"> “无文件”（fileless）攻击，即不向磁盘写入可执行文件。</font>**这类攻击特别有效地躲避了传统防病毒（AV）解决方案，因为传统防病毒（AV）方法寻找被保存到磁盘上的文件并扫描这些文件以确定它们是否恶意。</p>
-<p>虽然无文件攻击并不新鲜，但它们正变得越来越普遍。在2016年的调查中，CrowdStrike Services事件响应团队发现，<strong>10个成功入侵的攻击向量中有8个使用了无文件攻击技术</strong>。为了帮助您了解无文件攻击所带来的风险，本白皮书解释了无文件攻击的工作原理、当前解决方案对其无能为力的原因，以及CrowdStrike解决这一难题的行之有效的方法。</p>
+<p>除了全文翻译外，笔者主要在文末做了两块内容增补：一是关于CrowdStrike<strong>Threat
+Graph（威胁图</strong>）的技术思想<strong>，因为威胁图 是 CrowdStrike
+Falcon（猎鹰）端点保护平台的“ </strong>大脑” ；二是
+关于CrowdStrike提出的<strong>攻击指标</strong>（IOA）<strong>与传统的失陷指标（IOC）</strong>的对比。<strong>笔者认为，这两类技术领域具有战略价值</strong>。如果说全文翻译只花费一小时的话，这些增补内容反而消耗了笔者两个小时。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181505079.png" alt="img" style="zoom:33%;"></p>
+<p>随着安全措施在检测和阻止恶意软件和网络攻击方面越来越出色，对手和网络犯罪分子被迫不断开发新技术来逃避检测。其中一种高级技术涉及<strong><font color="red">
+“无文件”（fileless）攻击，即不向磁盘写入可执行文件。</font></strong>这类攻击特别有效地躲避了传统防病毒（AV）解决方案，因为传统防病毒（AV）方法寻找被保存到磁盘上的文件并扫描这些文件以确定它们是否恶意。</p>
+<p>虽然无文件攻击并不新鲜，但它们正变得越来越普遍。在2016年的调查中，CrowdStrike
+Services事件响应团队发现，<strong>10个成功入侵的攻击向量中有8个使用了无文件攻击技术</strong>。为了帮助您了解无文件攻击所带来的风险，本白皮书解释了无文件攻击的工作原理、当前解决方案对其无能为力的原因，以及CrowdStrike解决这一难题的行之有效的方法。</p>
 <h3><span id="什么是无文件攻击">什么是无文件攻击？</span></h3>
 <p>当攻击者通过消除将PE（可移植可执行文件）复制到磁盘驱动器的传统步骤来逃避检测时，就会发生无文件或无恶意软件的攻击。<strong>有多种技术可以采取这种方式危害系统</strong>。</p>
 <ul>
-<li>
-<p><strong>漏洞利用和漏洞利用工具包</strong>，通常通过利用操作系统（OS）或已安装应用程序中存在的漏洞，直接在内存中执行攻击。</p>
-</li>
-<li>
-<p><strong>使用盗用的凭证</strong>，是发起无文件攻击的另一种普遍方法。Verizon在其2017年的DBIR（数据泄露调查报告）中发现，81%的数据泄露涉及弱口令、默认口令或被盗口令，比上一年增加了18%。这使得攻击者能够像普通用户一样访问系统。</p>
-</li>
-<li>
-<p>一旦实现初步突破，对手就可以<strong>依赖操作系统本身提供的工具</strong>，如Windows管理工具和Windows <strong>PowerShell</strong>，以执行进一步的操作，而不必将文件保存到磁盘。例如，它们可以通过在注册表、内核中隐藏代码，或者通过创建允许它们随意访问系统的用户帐户来<strong>建立持久化</strong>，而无需向磁盘写入任何内容。</p>
-</li>
+<li><p><strong>漏洞利用和漏洞利用工具包</strong>，通常通过利用操作系统（OS）或已安装应用程序中存在的漏洞，直接在内存中执行攻击。</p></li>
+<li><p><strong>使用盗用的凭证</strong>，是发起无文件攻击的另一种普遍方法。Verizon在其2017年的DBIR（数据泄露调查报告）中发现，81%的数据泄露涉及弱口令、默认口令或被盗口令，比上一年增加了18%。这使得攻击者能够像普通用户一样访问系统。</p></li>
+<li><p>一旦实现初步突破，对手就可以<strong>依赖操作系统本身提供的工具</strong>，如Windows管理工具和Windows
+<strong>PowerShell</strong>，以执行进一步的操作，而不必将文件保存到磁盘。例如，它们可以通过在注册表、内核中隐藏代码，或者通过创建允许它们随意访问系统的用户帐户来<strong>建立持久化</strong>，而无需向磁盘写入任何内容。</p></li>
 </ul>
-<p>在安全行业，对上述这些技术的使用，通常被称为“<strong>living off the land</strong>”（离地生存？生存手段？）。</p>
+<p>在安全行业，对上述这些技术的使用，通常被称为“<strong>living off the
+land</strong>”（离地生存？生存手段？）。</p>
 <h4><span id="真实案例一个无文件入侵的解剖">真实案例：一个无文件入侵的解剖</span></h4>
-<p>通过展示CrowdStrike Services事件响应团队发现的一个真实的案例，我们可以检查端到端的无恶意软件入侵是什么样子。</p>
-<p>在本例中，首个目标是<strong>使用Microsoft ISS并运行SQL服务器数据库的web服务器</strong>。对于最初的入侵，攻击者使用了一个web shell，一个可以被上传到web服务器并在其上执行的简短脚本。脚本可以用web服务器支持的任何语言编写，比如Perl、Python、ASP或PHP。Web Shell在此类攻击中很流行，因为它们可以通过<strong>利用系统上存在的漏洞直接加载到内存中</strong>，而无需将任何内容写入磁盘。在这一特定的攻击中，对手使用SQL注入，将其web shell嵌入到服务器。</p>
+<p>通过展示CrowdStrike
+Services事件响应团队发现的一个真实的案例，我们可以检查端到端的无恶意软件入侵是什么样子。</p>
+<p>在本例中，首个目标是<strong>使用Microsoft
+ISS并运行SQL服务器数据库的web服务器</strong>。对于最初的入侵，攻击者使用了一个web
+shell，一个可以被上传到web服务器并在其上执行的简短脚本。脚本可以用web服务器支持的任何语言编写，比如Perl、Python、ASP或PHP。Web
+Shell在此类攻击中很流行，因为它们可以通过<strong>利用系统上存在的漏洞直接加载到内存中</strong>，而无需将任何内容写入磁盘。在这一特定的攻击中，对手使用SQL注入，将其web
+shell嵌入到服务器。</p>
 <blockquote>
-<p>WEB Shell允许使用web浏览器来远程访问系统。它们可以用ASP或PHP或任何其他web脚本语言编写，代码可以非常小。如下所示：</p>
-  <img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506159.png" alt="img" style="zoom:50%;">
-<p>由于web服务器<strong>没有正确检查转义字符</strong>，攻击者能够简单地将web shell回传到服务器上。所用的web shell，名为“<strong>China Chopper</strong>”（中国菜刀/直升机），包含了JavaScript命令，值得注意的是它只使用了72个字符。在内存中执行web shell，使攻击者能够使用Chopper用户界面，对web服务器执行任意命令。通过对web服务器的完全远程访问，攻击者通过执行编码的PowerShell命令，来窃取凭据。</p>
+<p>WEB
+Shell允许使用web浏览器来远程访问系统。它们可以用ASP或PHP或任何其他web脚本语言编写，代码可以非常小。如下所示：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506159.png" alt="img" style="zoom:50%;"></p>
+<p>由于web服务器<strong>没有正确检查转义字符</strong>，攻击者能够简单地将web
+shell回传到服务器上。所用的web shell，名为“<strong>China
+Chopper</strong>”（中国菜刀/直升机），包含了JavaScript命令，值得注意的是它只使用了72个字符。在内存中执行web
+shell，使攻击者能够使用Chopper用户界面，对web服务器执行任意命令。通过对web服务器的完全远程访问，攻击者通过执行编码的PowerShell命令，来窃取凭据。</p>
 </blockquote>
 <p>第一步是从远程服务器下载脚本，将脚本直接加载到内存中，然后执行它。这个脚本反过来窃取了缓存在web服务器内存中的所有纯文本密码。在几秒钟内，攻击者获得了系统上所有帐户的多个用户名和密码。</p>
 <p><strong>PowerShell是一个合法的Windows工具</strong>，它允许攻击者在受损系统上执行任何操作，而不必在磁盘上写入恶意软件。为了进一步做混淆，攻击者可以对其PowerShell脚本进行编码，如下所示：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506444.png" alt="img" style="zoom:50%;">
-<p>下一步是让攻击者在服务器上实现<strong>持久化</strong>。为了在不需要任何恶意软件的情况下执行此操作，攻击者使用了一种称为“<strong>粘滞键</strong>”（Sticky Keys）的技术。通过修改Windows注册表中的一行，攻击者可以使用PowerShell或WMI命令，轻松完成此操作，从而将Windows屏幕键盘进程，设置为<strong>调试模式</strong>。</p>
-<p><strong>粘滞键（Sticky Keys）<strong>是使攻击者</strong>无需登录凭据</strong>即可<strong>访问命令shell</strong>的注册表项。如下所示：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506654.png" alt="img" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506444.png" alt="img" style="zoom:50%;"></p>
+<p>下一步是让攻击者在服务器上实现<strong>持久化</strong>。为了在不需要任何恶意软件的情况下执行此操作，攻击者使用了一种称为“<strong>粘滞键</strong>”（Sticky
+Keys）的技术。通过修改Windows注册表中的一行，攻击者可以使用PowerShell或WMI命令，轻松完成此操作，从而将Windows屏幕键盘进程，设置为<strong>调试模式</strong>。</p>
+<p><strong>粘滞键（Sticky
+Keys）</strong>是使攻击者<strong>无需登录凭据</strong>即可<strong>访问命令shell</strong>的注册表项。如下所示：</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181506654.png" alt="img" style="zoom:50%;"></p>
 <p>当设置为调试模式时，屏幕键盘允许具有远程访问权限的任何人，以系统权限打开命令行，而无需登录。一旦设置了该注册表项，攻击者可以通过打开到web服务器的远程桌面连接，随时返回。此外，访问系统而<strong>不在Windows事件历史记录中生成登录事件</strong>，会使攻击者的行为几乎无法追踪。</p>
 <blockquote>
 <p>现在小结一下，本案例中，<strong>在不同的攻击阶段所使用的文件技术</strong>包括：</p>
 <ul>
-<li>
-<p><strong>初始入侵</strong>：针对Web服务器的<strong>SQL注入</strong>攻击；</p>
-</li>
-<li>
-<p><strong>命令与控制（C2）</strong>：“中国菜刀/直升机”的<strong>Web Shell</strong>；</p>
-</li>
-<li>
-<p><strong>提升权限</strong>：使用<strong>PowerShell脚本</strong>转储<strong>凭据</strong>；</p>
-</li>
-<li>
-<p><strong>建立持久化</strong>：修改<strong>注册表</strong>粘滞键技术。</p>
-</li>
+<li><p><strong>初始入侵</strong>：针对Web服务器的<strong>SQL注入</strong>攻击；</p></li>
+<li><p><strong>命令与控制（C2）</strong>：“中国菜刀/直升机”的<strong>Web
+Shell</strong>；</p></li>
+<li><p><strong>提升权限</strong>：使用<strong>PowerShell脚本</strong>转储<strong>凭据</strong>；</p></li>
+<li><p><strong>建立持久化</strong>：修改<strong>注册表</strong>粘滞键技术。</p></li>
 </ul>
 </blockquote>
 <h3><span id="作案工具真实世界的无文件恶意软件">作案工具：真实世界的无文件恶意软件</span></h3>
@@ -1008,13 +1053,15 @@
 <p><strong>2）注册表驻留恶意软件</strong></p>
 <p>注册表驻留恶意软件是安装在Windows注册表中的恶意软件，以便在逃避检测的同时，保持持久性。第一种是<strong>Poweliks</strong>，此后就出现了许多变体。一些变体，如Kovter，使用了类似的注册表隐藏技术，来保持不被发现。Poweliks<strong>调用C2（命令和控制）服务器</strong>，攻击者可以从该服务器向受损系统发送进一步的指令。所有这些操作，都可以在没有任何文件写入磁盘的情况下进行。</p>
 <p><strong>3）内存型（Memory-only）恶意软件</strong></p>
-<p>有些恶意软件只存在于内存中，以逃避检测。新版本的<strong>Duqu蠕虫</strong>就是这种情况，它只驻留在内存中，不会被发现。Duqu 2.0有两个版本：第一个是后门，它允许攻击者在组织中站稳脚跟。如果攻击者认为目标值得攻击，他可以使用Duqu 2.0的高级版本，该版本提供了诸如侦察、横向移动、数据渗出等附加功能。Duqu2.0以成功攻破电信行业的公司以及至少一家知名的安全软件提供商而闻名。</p>
+<p>有些恶意软件只存在于内存中，以逃避检测。新版本的<strong>Duqu蠕虫</strong>就是这种情况，它只驻留在内存中，不会被发现。Duqu
+2.0有两个版本：第一个是后门，它允许攻击者在组织中站稳脚跟。如果攻击者认为目标值得攻击，他可以使用Duqu
+2.0的高级版本，该版本提供了诸如侦察、横向移动、数据渗出等附加功能。Duqu2.0以成功攻破电信行业的公司以及至少一家知名的安全软件提供商而闻名。</p>
 <p><strong>4）无文件型勒索软件</strong></p>
 <p>甚至勒索软件攻击者，现在也在使用无文件技术，来实现他们的目标。在这类勒索软件中，<strong>恶意代码要么嵌入文档中以使用本机脚本语言（如宏），要么使用漏洞直接写入内存</strong>。然后，勒索软件<strong>使用合法的管理工具如PowerShell，来加密人质文件</strong>，而所有这些都不需要写入磁盘。</p>
 <h3><span id="为何传统技术无法抵御无文件攻击">为何传统技术无法抵御无文件攻击</span></h3>
 <p>由于传统安全解决方案极难检测到无文件攻击，因此无文件攻击正在增加。让我们来看看，为什么当今市场上的一些端点保护技术，对这些无恶意软件入侵如此脆弱。</p>
-<p>**1）传统防病毒（AV）**旨在寻找已知恶意软件的特征码。由于无文件攻击没有恶意软件，所以AV没有可检测的特征码。</p>
-<p>**2）基于机器学习（ML）**的反恶意软件方法，在应对无文件攻击时，面临着与传统AV相同的挑战。<strong>ML动态分析</strong>未知文件，并将其区分为好的或坏的。但是我们已经注意到，在无文件攻击中，<strong>没有要分析的文件</strong>，因此ML无法提供帮助。</p>
+<p><strong>1）传统防病毒（AV）</strong>旨在寻找已知恶意软件的特征码。由于无文件攻击没有恶意软件，所以AV没有可检测的特征码。</p>
+<p><strong>2）基于机器学习（ML）</strong>的反恶意软件方法，在应对无文件攻击时，面临着与传统AV相同的挑战。<strong>ML动态分析</strong>未知文件，并将其区分为好的或坏的。但是我们已经注意到，在无文件攻击中，<strong>没有要分析的文件</strong>，因此ML无法提供帮助。</p>
 <p><strong>3）白名单方法</strong>包括列出一台机器上所有良好的进程，以防止未知进程执行。无文件攻击的问题在于，它们利用易受攻击的合法白名单应用程序，并利用内置的操作系统可执行文件。阻止用户和操作系统共同依赖的应用程序，并不是一个好的选项。</p>
 <p><strong>4）使用失陷指标（IOC）工具</strong>来防止无文件攻击也不是很有效。本质上，<strong>IOC类似于传统的AV签名，因为它们是攻击者留下的已知恶意制品</strong>。然而，由于它们利用合法的进程，并且在内存中操作，所以无文件攻击不会留下制品，因此IOC工具几乎找不到任何东西。</p>
 <p><strong>5）另一种方法涉及沙箱</strong>，它可以采取多种形式，包括基于网络的爆破和微虚拟化。由于无文件攻击不使用PE文件，因此沙盒没有什么可爆破的。即便真有东西被发送到沙箱，因为无文件攻击通常会劫持合法进程，大多数沙箱也都会忽略它。</p>
@@ -1022,42 +1069,46 @@
 <p>正如我们所看到的，如果您依赖基于签名的方法、沙盒、白名单甚至机器学习保护方法，那么想检测无文件技术是非常有挑战性的。</p>
 <p>为了抵御秘密的、无文件的攻击，<strong>CrowdStrike独特地将多种方法结合到一个强大的集成式方法中，提供了无与伦比的端点保护</strong>。CrowdStrikeFalcon平台通过单个的轻量级代理提供了云原生的下一代端点保护，并提供一系列互补的预防和检测方法：</p>
 <ul>
-<li>
-<p><strong>应用程序清单（Application inventory）</strong>：可以发现在您的环境中运行的任何应用程序，帮助您找到漏洞，以便您可以修补或更新它们，使之不会成为漏洞利用工具包的目标。</p>
-</li>
-<li>
-<p><strong>漏洞利用阻断（Exploit blocking）</strong>：通过未修补漏洞的漏洞利用方法，来阻断无文件攻击的执行。</p>
-</li>
-<li>
-<p>**<font color="red"> 攻击指标（IOA，Indicators of Attack）：</font><strong>在攻击的早期阶段，识别并阻止恶意活动，以免其完全执行并造成损害。此能力还可以防止那些新的勒索软件类别，那些勒索软件不使用文件加密受害者系统。</strong></p>
-</li>
-<li>
-<p><strong>托管狩猎（Managed hunting）</strong>：全天候地主动搜索由于无文件技术而产生的恶意活动。</p>
-</li>
+<li><p><strong>应用程序清单（Application
+inventory）</strong>：可以发现在您的环境中运行的任何应用程序，帮助您找到漏洞，以便您可以修补或更新它们，使之不会成为漏洞利用工具包的目标。</p></li>
+<li><p><strong>漏洞利用阻断（Exploit
+blocking）</strong>：通过未修补漏洞的漏洞利用方法，来阻断无文件攻击的执行。</p></li>
+<li><p><strong><font color="red"> 攻击指标（IOA，Indicators of
+Attack）：</font></strong>在攻击的早期阶段，识别并阻止恶意活动，以免其完全执行并造成损害。此能力还可以防止那些新的勒索软件类别，那些勒索软件不使用文件加密受害者系统。**</p></li>
+<li><p><strong>托管狩猎（Managed
+hunting）</strong>：全天候地主动搜索由于无文件技术而产生的恶意活动。</p></li>
 </ul>
 <h4><span id="ioa攻击指标的力量">IOA（攻击指标）的力量</span></h4>
 <blockquote>
-<p><strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列, IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</strong></p>
+<p><strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列,
+IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</strong></p>
 </blockquote>
 <p>IOA之所以引人注目，是因为它们提供了<strong>针对无文件攻击的独特的主动预防能力</strong>。<strong>IOA寻找攻击可能正在进行的迹象，而不是关心攻击的步骤是如何执行的</strong>。<strong>迹象可以包括代码执行、试图隐身、横向移动等等</strong>。<strong>如何启动或执行这些步骤对IOAs来说并不重要</strong>。</p>
-<p><strong><font color="red"> IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</font></strong></p>
-<p>此外，在无文件攻击的情况下，恶意代码可以利用诸如PowerShell之类的合法脚本语言，而无需写入磁盘。正如我们所看到的，这对于基于签名的方法、白名单、沙箱甚至机器学习来说都是一个挑战。相比之下，**IOA检测恶意软件或攻击完成其任务所必须执行的事件序列。**这可以暴露最隐秘的无文件方法，因此它们可以被迅速处理。</p>
+<p><strong><font color="red">
+IOA关注的是所执行的行为、它们之间的关系、它们的顺序、它们的依赖性，将它们视为揭示一系列事件背后真实意图和目的的指标。IOA不关注攻击者使用的特定工具和恶意软件。</font></strong></p>
+<p>此外，在无文件攻击的情况下，恶意代码可以利用诸如PowerShell之类的合法脚本语言，而无需写入磁盘。正如我们所看到的，这对于基于签名的方法、白名单、沙箱甚至机器学习来说都是一个挑战。相比之下，<strong>IOA检测恶意软件或攻击完成其任务所必须执行的事件序列。</strong>这可以暴露最隐秘的无文件方法，因此它们可以被迅速处理。</p>
 <p>最后，由于IOA会查看意图、上下文、活动序列，因此<strong>即使恶意活动是使用合法帐户实施的，也可以检测和阻止这些活动</strong>，攻击者使用窃取的凭据时通常会出现这种情况。</p>
 <p>所有这些使得<strong>IOA成为防止无文件恶意软件攻击的突破口</strong>。IOA不再基于磁盘上可执行文件的存在与否，来开展无文件攻击这场徒劳的战斗，而是在<strong>造成任何损害之前监视、检测、阻止此类攻击的影响</strong>。</p>
 <h4><span id="托管狩猎">托管狩猎</span></h4>
-<p>托管狩猎（Managed Hunt）是针对文件攻击的另一种独特而有效的防御措施。<strong>Falcon OverWatch</strong>（猎鹰看守）是Falcon平台的<strong>威胁搜索组件</strong>，它提供了一个<strong>额外的保护层</strong>，来抵御无文件攻击。</p>
-<p>**利用Falcon平台的强大功能，OverWatch（看守）团队全天候主动狩猎威胁，监控客户的环境，并狩猎那些标准安全技术无法检测到但可能表明正在发生攻击的狡猾活动。**Falcon OverWatch确保即使是最复杂和最隐蔽的攻击，也能在发生时被发现。它通过狩猎和识别难以检测的、复杂的、尖端的攻击，生成有意义的警报和精确的指导性补救建议，从而提高您对抗无文件技术的效率。</p>
+<p>托管狩猎（Managed
+Hunt）是针对文件攻击的另一种独特而有效的防御措施。<strong>Falcon
+OverWatch</strong>（猎鹰看守）是Falcon平台的<strong>威胁搜索组件</strong>，它提供了一个<strong>额外的保护层</strong>，来抵御无文件攻击。</p>
+<p><strong>利用Falcon平台的强大功能，OverWatch（看守）团队全天候主动狩猎威胁，监控客户的环境，并狩猎那些标准安全技术无法检测到但可能表明正在发生攻击的狡猾活动。</strong>Falcon
+OverWatch确保即使是最复杂和最隐蔽的攻击，也能在发生时被发现。它通过狩猎和识别难以检测的、复杂的、尖端的攻击，生成有意义的警报和精确的指导性补救建议，从而提高您对抗无文件技术的效率。</p>
 <h4><span id="结论">结论</span></h4>
 <p>由于漏洞利用工具包的存在，导致了攻击组合的高效性和易创建性，很可能会提高无文件黑客技术的普及率。不幸的是，鉴于传统杀毒软件无法阻止无文件攻击，犯罪黑客越来越可能将注意力集中在这些隐形技术上。因此，安全专家需要在他们的安全策略中，考虑无文件恶意软件和无文件攻击的存在。</p>
-<p>正如本文所解释的那样，传统的安全措施在面对无文件攻击时可能不够有效，需要新的保护方法。CrowdStrike Falcon（猎鹰平台）提供了一种全面的解决方案，不仅可以防御无文件攻击，而且还可以很好地防御已知和未知的恶意软件威胁。</p>
+<p>正如本文所解释的那样，传统的安全措施在面对无文件攻击时可能不够有效，需要新的保护方法。CrowdStrike
+Falcon（猎鹰平台）提供了一种全面的解决方案，不仅可以防御无文件攻击，而且还可以很好地防御已知和未知的恶意软件威胁。</p>
 <h3><span id="威胁图和攻击指标">威胁图和攻击指标</span></h3>
 <p>CrowdStrike将自身定位为<strong>云交付</strong>的<strong>下一代端点保护</strong>的领导者。CrowdStrike是第一家也是唯一一家统一了<strong>下一代防病毒、端点检测和响应（EDR）、IT卫生、漏洞评估、全天候托管狩猎服务</strong>的公司——全部通过<strong>一个轻量级代理</strong>提供，彻底革新了端点保护。CrowdStrike的<strong>端点保护平台</strong>（EPP）如下图所示：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507229.png" alt="img" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507229.png" alt="img" style="zoom:50%;"></p>
 <h4><span id="威胁图threat-graph">威胁图（Threat Graph）</span></h4>
-<p>CrowdStrike Falcon（猎鹰）平台由两种紧密集成的<strong>专有技术</strong>组成：一个是易于部署的智能<strong>轻量级代理</strong>；另一个是基于云的动态<strong>图数据库</strong>，即上面提到的<strong>威胁图</strong>（Threat Graph）。</p>
+<p>CrowdStrike
+Falcon（猎鹰）平台由两种紧密集成的<strong>专有技术</strong>组成：一个是易于部署的智能<strong>轻量级代理</strong>；另一个是基于云的动态<strong>图数据库</strong>，即上面提到的<strong>威胁图</strong>（Threat
+Graph）。</p>
 <p><strong>下表进一步梳理了威胁图的主要特性</strong>：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507209.png" alt="img" style="zoom:50%;">
-<p><a target="_blank" rel="noopener" href="https://www.crowdstrike.com/cybersecurity-101/indicators-of-compromise/ioa-vs-ioc/">https://www.crowdstrike.com/cybersecurity-101/indicators-of-compromise/ioa-vs-ioc/</a></p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304181507209.png" alt="img" style="zoom:50%;"></p>
+<p>https://www.crowdstrike.com/cybersecurity-101/indicators-of-compromise/ioa-vs-ioc/</p>
 
       
     </div>
@@ -1165,16 +1216,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="总结："><a class="header-anchor" href="#总结：">¶</a>总结：</h4>
+          <h4 id="总结">总结：</h4>
 <ul>
 <li>SGD为随机梯度下降,每一次迭代计算数据集的mini-batch的梯度,然后对参数进行更新。</li>
 <li>Momentum参考了物理中动量的概念,前几次的梯度也会参与到当前的计算中,但是前几轮的梯度叠加在当前计算中会有一定的衰减。</li>
 <li>Adagard在训练的过程中可以自动变更学习的速率,设置一个全局的学习率,而实际的学习率与以往的参数模和的开方成反比。</li>
 <li>Adam利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率,在经过偏置的校正后,每一次迭代后的学习率都有个确定的范围,使得参数较为平稳。</li>
 </ul>
-<h4 id="引言"><a class="header-anchor" href="#引言">¶</a><strong>引言</strong></h4>
+<h4 id="引言"><strong>引言</strong></h4>
 <p><strong>最优化问题</strong>是计算数学中最为重要的研究方向之一。而在深度学习领域，优化算法的选择也是一个模型的重中之重。即使在数据集和模型架构完全相同的情况下，采用不同的优化算法，也很可能导致截然不同的训练效果。</p>
-<p>梯度下降是目前神经网络中使用最为广泛的优化算法之一。为了弥补朴素梯度下降的种种缺陷，研究者们发明了一系列变种算法，从最初的 SGD (随机梯度下降) 逐步演进到 NAdam。<strong>然而，许多学术界最为前沿的文章中，都并没有一味使用 Adam/NAdam 等公认“好用”的自适应算法，很多甚至还选择了最为初级的 SGD 或者 SGD with Momentum 等</strong>。</p>
+<p>梯度下降是目前神经网络中使用最为广泛的优化算法之一。为了弥补朴素梯度下降的种种缺陷，研究者们发明了一系列变种算法，从最初的
+SGD (随机梯度下降) 逐步演进到
+NAdam。<strong>然而，许多学术界最为前沿的文章中，都并没有一味使用
+Adam/NAdam 等公认“好用”的自适应算法，很多甚至还选择了最为初级的 SGD 或者
+SGD with Momentum 等</strong>。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/30588BP/#more" rel="contents">
@@ -1289,13 +1344,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="一、激活函数"><a class="header-anchor" href="#一、激活函数">¶</a>一、激活函数</h3>
-<p>**<font color="red"> 激活函数简述激活函数是向神经网络中引入非线性因素，通过激活函数神经网络就可以拟合各种曲线。激活函数主要分为饱和激活函数（Saturated Neurons）和非饱和函数（One-sided Saturations）。</font>**Sigmoid和Tanh是饱和激活函数，而ReLU以及其变种为非饱和激活函数。非饱和激活函数主要有如下优势：</p>
+          <h3 id="一激活函数">一、激活函数</h3>
+<p><strong><font color="red">
+激活函数简述激活函数是向神经网络中引入非线性因素，通过激活函数神经网络就可以拟合各种曲线。激活函数主要分为饱和激活函数（Saturated
+Neurons）和非饱和函数（One-sided
+Saturations）。</font></strong>Sigmoid和Tanh是饱和激活函数，而ReLU以及其变种为非饱和激活函数。非饱和激活函数主要有如下优势：</p>
 <ul>
 <li><strong>非饱和激活函数可以解决梯度消失问题</strong>。</li>
 <li><strong>非饱和激活函数可以加速收敛</strong>。</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301635756.jpg" alt="img"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304301635756.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/M1YMBK/#more" rel="contents">
@@ -1392,7 +1453,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>422</span>
+      <span>421</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1410,10 +1471,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="ldalatent-dirichlet-allocation-主题模型"></span></h2>
+          <h2><span id="ldalatentdirichlet-allocation-主题模型"></span></h2>
 <p><strong>同一个主题，在不同的文章中，他出现的比例(概率)是不同的</strong>，看到这里，读者可能已经发现，文档和主题之间的关系和主题和词汇的关系是多么惊人的类似！</p>
 <blockquote>
-<p>LDA于2003年由 David Blei, Andrew Ng和 Michael I. Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔。于是牛人们看不下去了，纷纷站出来发表了各种教程。国内方面rickjin有著名的《<a href="https://link.zhihu.com/?target=http%3A//www.52nlp.cn/author/rickjin">LDA数学八卦</a>》，国外的Gregor Heinrich有著名的《<a href="https://link.zhihu.com/?target=https%3A//users.soe.ucsc.edu/~amichelo/docs/text-est2.pdf">Parameter estimation for text analysis</a>》。其实有了这两篇互补的通俗教程，大家沉住心看个4、5遍，基本就可以明白LDA为什么是简单的了。那么其实也没我什么事了，然而心中总有一种被大牛点播的豁然开朗的快感，实在是不吐不快啊。</p>
+<p>LDA于2003年由 David Blei, Andrew Ng和 Michael I.
+Jordan提出，因为模型的简单和有效，掀起了主题模型研究的波浪。虽然说LDA模型简单，但是它的数学推导却不是那么平易近人，一般初学者会深陷数学细节推导中不能自拔。于是牛人们看不下去了，纷纷站出来发表了各种教程。国内方面rickjin有著名的《<a href="https://link.zhihu.com/?target=http%3A//www.52nlp.cn/author/rickjin">LDA数学八卦</a>》，国外的Gregor
+Heinrich有著名的《<a href="https://link.zhihu.com/?target=https%3A//users.soe.ucsc.edu/~amichelo/docs/text-est2.pdf">Parameter
+estimation for text
+analysis</a>》。其实有了这两篇互补的通俗教程，大家沉住心看个4、5遍，基本就可以明白LDA为什么是简单的了。那么其实也没我什么事了，然而心中总有一种被大牛点播的豁然开朗的快感，实在是不吐不快啊。</p>
 </blockquote>
 
       
@@ -1524,7 +1589,7 @@
     <div class="post-body" itemprop="articleBody">
           <h2><span id="rnn">RNN</span></h2>
 <blockquote>
-<p>史上最详细循环神经网络讲解（RNN/LSTM/GRU）:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/123211148">https://zhuanlan.zhihu.com/p/123211148</a></p>
+<p>史上最详细循环神经网络讲解（RNN/LSTM/GRU）:https://zhuanlan.zhihu.com/p/123211148</p>
 </blockquote>
 <h3><span id="一-什么是循环神经网络"><strong>一、什么是循环神经网络</strong></span></h3>
 <p><strong>RNN对具有序列特性的数据非常有效，它能挖掘数据中的时序信息以及语义信息</strong>，利用了RNN的这种能力，使深度学习模型在解决语音识别、语言模型、机器翻译以及时序分析等NLP领域的问题时有所突破。</p>
@@ -1537,33 +1602,58 @@
 <h3><span id="二-为什么要发明循环神经网络"><strong>二、为什么要发明循环神经网络</strong></span></h3>
 <p>我们先来看一个NLP很常见的问题，命名实体识别，举个例子，现在有两句话：</p>
 <p>第一句话：I like eating apple！（我喜欢吃苹果！）</p>
-<p>第二句话：The Apple is a great company！（苹果真是一家很棒的公司！）</p>
+<p>第二句话：The Apple is a great
+company！（苹果真是一家很棒的公司！）</p>
 <p>现在的任务是要给apple打Label，我们都知道第一个apple是一种水果，第二个apple是苹果公司，假设我们现在有大量的已经标记好的数据以供训练模型，当我们使用全连接的神经网络时，我们做法是把apple这个单词的特征向量输入到我们的模型中（如下图），在输出结果时，让我们的label里，正确的label概率最大，来训练模型，但我们的语料库中，有的apple的label是水果，有的label是公司，这将导致，模型在训练的过程中，预测的准确程度，取决于训练集中哪个label多一些，这样的模型对于我们来说完全没有作用。<strong>问题就出在了我们没有结合上下文去训练模型，而是单独的在训练apple这个单词的label，这也是全连接神经网络模型所不能做到的，于是就有了我们的循环神经网络。</strong></p>
-<p><img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h3><span id="三-循环神经网络的结构及原理"><strong>三、循环神经网络的结构及原理：</strong></span></h3>
-<img src="https://pic1.zhimg.com/80/v2-8f534b5db1f3d8a5c4ccd029be4a15b4_1440w.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://pic1.zhimg.com/80/v2-8f534b5db1f3d8a5c4ccd029be4a15b4_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p>上图就是RNN的结构，我第一次看到这图的第一反应是，不是说好的循环神经网络么，起码得是神经网络啊，神经网络不是有很多球球么，也就是神经元，这RNN咋就这几个球球，不科学啊，看不懂啊！！！！随着慢慢的了解RNN，才发现这图看着是真的清楚，因为RNN的特殊性，如果展开画成那种很多神经元的神经网络，会很麻烦。</p>
 <p>我们先来讲解一下上面这幅图，首先不要管右边的W，只看X,U,S,V,O，这幅图就变成了，如下：</p>
-<p><img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-9a86430ba17aa299ce5c44c7b75c5ece_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>不看W的话，上面那幅图展开就是全连接神经网络，其中X是一个向量，也就是某个字或词的特征向量，作为输入层，如上图也就是3维向量，U是输入层到隐藏层的参数矩阵，在上图中其维度就是3X4，S是隐藏层的向量，如上图维度就是4，V是隐藏层到输出层的参数矩阵，在上图中就是4X2，O是输出层的向量，在上图中维度为2。</p>
-<p>**弄懂了RNN结构的左边，那么右边这个W到底是什么啊？**把上面那幅图打开之后，是这样的：<br>
+<p><strong>弄懂了RNN结构的左边，那么右边这个W到底是什么啊？</strong>把上面那幅图打开之后，是这样的：
 <img src="https://pic4.zhimg.com/80/v2-8abf977157000e6dad8589ec60ed6c3f_1440w.jpg" alt="img" style="zoom:50%;"></p>
-<p>等等，这又是什么？？别慌，很容易看，举个例子，有一句话是，I love you，那么在利用RNN做一些事情时，比如命名实体识别，上图中的 <img src="https://www.zhihu.com/equation?tex=X_%7Bt-1%7D" alt="[公式]"> 代表的就是I这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X" alt="[公式]"> 代表的是love这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X_%7Bt%2B1%7D" alt="[公式]"> 代表的是you这个单词的向量，以此类推，我们注意到，上图展开后，W一直没有变，<strong>W其实是每个时间点之间的权重矩阵</strong>，我们注意到，RNN之所以可以解决序列问题，<strong>是因为它可以记住每一时刻的信息，==每一时刻的隐藏层不仅由该时刻的输入层决定，还由上一时刻的隐藏层决定==</strong>，公式如下，其中 <img src="https://www.zhihu.com/equation?tex=O_t" alt="[公式]"> 代表t时刻的输出, <img src="https://www.zhihu.com/equation?tex=S_t" alt="[公式]"> 代表t时刻的隐藏层的值：</p>
-<img src="https://pic4.zhimg.com/80/v2-9524a28210c98ed130644eb3c3002087_1440w.jpg" alt="img" style="zoom: 33%;">
+<p>等等，这又是什么？？别慌，很容易看，举个例子，有一句话是，I love
+you，那么在利用RNN做一些事情时，比如命名实体识别，上图中的 <img src="https://www.zhihu.com/equation?tex=X_%7Bt-1%7D" alt="[公式]">
+代表的就是I这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X" alt="[公式]">
+代表的是love这个单词的向量， <img src="https://www.zhihu.com/equation?tex=X_%7Bt%2B1%7D" alt="[公式]">
+代表的是you这个单词的向量，以此类推，我们注意到，上图展开后，W一直没有变，<strong>W其实是每个时间点之间的权重矩阵</strong>，我们注意到，RNN之所以可以解决序列问题，<strong>是因为它可以记住每一时刻的信息，==每一时刻的隐藏层不仅由该时刻的输入层决定，还由上一时刻的隐藏层决定==</strong>，公式如下，其中
+<img src="https://www.zhihu.com/equation?tex=O_t" alt="[公式]">
+代表t时刻的输出, <img src="https://www.zhihu.com/equation?tex=S_t" alt="[公式]"> 代表t时刻的隐藏层的值：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-9524a28210c98ed130644eb3c3002087_1440w.jpg" alt="img" style="zoom: 33%;"></p>
 <p><strong>值得注意的一点是，在整个训练过程中，每一时刻所用的都是同样的W。</strong></p>
 <h4><span id="四-举个例子方便理解"><strong>四、举个例子，方便理解：</strong></span></h4>
 <p>假设现在我们已经训练好了一个RNN，如图，<strong>我们假设每个单词的特征向量是二维的，也就是输入层的维度是二维，且隐藏层也假设是二维，输出也假设是二维</strong>，所有权重的值都为1且没有偏差且所有激活函数都是线性函数，现在输入一个序列，到该模型中，我们来一步步求解出输出序列：</p>
-<img src="https://pic4.zhimg.com/80/v2-09ce45f29378cb2695b3b4fcd2015047_1440w.png" alt="img" style="zoom:75%;">
-<p>你可能会好奇W去哪了？<strong>W在实际的计算中，在图像中表示非常困难 ，所以我们可以想象上一时刻的隐藏层的值是被存起来，等下一时刻的隐藏层进来时，上一时刻的隐藏层的值通过与权重相乘，两者相加便得到了下一时刻真正的隐藏层</strong>，如图 <img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]"> 可以看做每一时刻存下来的值，当然初始时<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">是没有存值的，因此初始值为0：</p>
-<img src="https://pic2.zhimg.com/80/v2-2c3522b9d250a44cfaeddecbcd139275_1440w.jpg" alt="img" style="zoom:80%;">
-<p>当我们输入第一个序列，【1,1】，如下图，其中隐藏层的值，也就是绿色神经元，是通过公式 <img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 计算得到的，因为所有权重都是1，所以也就是 <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A0%2B1%2A0%3D2" alt="[公式]"> （我把向量X拆开计算的，由于篇幅关系，我只详细列了其中一个神经元的计算过程，希望大家可以看懂，看不懂的请留言），输出层的值4是通过公式 <img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]"> 计算得到的，也就是 <img src="https://www.zhihu.com/equation?tex=2%2A1%2B2%2A1%3D4" alt="[公式]"> （同上，也是只举例其中一个神经元），得到输出向量【4,4】：</p>
-<img src="https://pic2.zhimg.com/80/v2-c01a8a5c476aa2bd189965aa149d9e85_1440w.jpg" alt="img" style="zoom:67%;">
-<p>当【1,1】输入过后，我们的记忆里的 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]"> 已经不是0了，而是把这一时刻的隐藏状态放在里面，即变成了2，如图，输入下一个向量【1,1】，隐藏层的值通过公式<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 得到， <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A2%2B1%2A2%3D6" alt="[公式]"> ，输出层的值通过公式<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]">，得到 <img src="https://www.zhihu.com/equation?tex=6%2A1%2B6%2A1%3D12" alt="[公式]"> ，最终得到输出向量【12,12】：</p>
-<img src="https://pic2.zhimg.com/80/v2-5170c41f0285a718b890979e125832ed_1440w.jpg" alt="img" style="zoom:67%;">
-<p>同理，该时刻过后 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]"> 的值变成了6，也就是输入第二个【1,1】过后所存下来的值，同理，输入第三个向量【2,2】，如图，细节过程不再描述，得到输出向量【32,32】：</p>
-<img src="https://pic3.zhimg.com/80/v2-7ba6fd916892a89211b5ee6a5940d2b2_1440w.jpg" alt="img" style="zoom:67%;">
+<p><img src="https://pic4.zhimg.com/80/v2-09ce45f29378cb2695b3b4fcd2015047_1440w.png" alt="img" style="zoom:75%;"></p>
+<p>你可能会好奇W去哪了？<strong>W在实际的计算中，在图像中表示非常困难
+，所以我们可以想象上一时刻的隐藏层的值是被存起来，等下一时刻的隐藏层进来时，上一时刻的隐藏层的值通过与权重相乘，两者相加便得到了下一时刻真正的隐藏层</strong>，如图
+<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">
+可以看做每一时刻存下来的值，当然初始时<img src="https://www.zhihu.com/equation?tex=a_1" alt="[公式]"> , <img src="https://www.zhihu.com/equation?tex=a_2" alt="[公式]">是没有存值的，因此初始值为0：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-2c3522b9d250a44cfaeddecbcd139275_1440w.jpg" alt="img" style="zoom:80%;"></p>
+<p>当我们输入第一个序列，【1,1】，如下图，其中隐藏层的值，也就是绿色神经元，是通过公式
+<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 计算得到的，因为所有权重都是1，所以也就是 <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A0%2B1%2A0%3D2" alt="[公式]">
+（我把向量X拆开计算的，由于篇幅关系，我只详细列了其中一个神经元的计算过程，希望大家可以看懂，看不懂的请留言），输出层的值4是通过公式
+<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]"> 计算得到的，也就是 <img src="https://www.zhihu.com/equation?tex=2%2A1%2B2%2A1%3D4" alt="[公式]">
+（同上，也是只举例其中一个神经元），得到输出向量【4,4】：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-c01a8a5c476aa2bd189965aa149d9e85_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<p>当【1,1】输入过后，我们的记忆里的 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]">
+已经不是0了，而是把这一时刻的隐藏状态放在里面，即变成了2，如图，输入下一个向量【1,1】，隐藏层的值通过公式<img src="https://www.zhihu.com/equation?tex=S_%7Bt%7D%3Df%5Cleft%28U+%5Ccdot+X_%7Bt%7D%2BW+%5Ccdot+S_%7Bt-1%7D%5Cright%29" alt="[公式]"> 得到， <img src="https://www.zhihu.com/equation?tex=1%2A1%2B1%2A1%2B1%2A2%2B1%2A2%3D6" alt="[公式]"> ，输出层的值通过公式<img src="https://www.zhihu.com/equation?tex=O_%7Bt%7D%3Dg%5Cleft%28V+%5Ccdot+S_%7Bt%7D%5Cright%29" alt="[公式]">，得到 <img src="https://www.zhihu.com/equation?tex=6%2A1%2B6%2A1%3D12" alt="[公式]"> ，最终得到输出向量【12,12】：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-5170c41f0285a718b890979e125832ed_1440w.jpg" alt="img" style="zoom:67%;"></p>
+<p>同理，该时刻过后 <img src="https://www.zhihu.com/equation?tex=a_1%2Ca_2" alt="[公式]">
+的值变成了6，也就是输入第二个【1,1】过后所存下来的值，同理，输入第三个向量【2,2】，如图，细节过程不再描述，得到输出向量【32,32】：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-7ba6fd916892a89211b5ee6a5940d2b2_1440w.jpg" alt="img" style="zoom:67%;"></p>
 <p>由此，我们得到了最终的输出序列为：</p>
-<p><img src="https://pic4.zhimg.com/80/v2-e21cfad47c16012c38d2acd9c75039d7_1440w.jpg" alt="img"></p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-e21cfad47c16012c38d2acd9c75039d7_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <p>至此，一个完整的RNN结构我们已经经历了一遍，我们注意到，每一时刻的输出结果都与上一时刻的输入有着非常大的关系，如果我们将输入序列换个顺序，那么我们得到的结果也将是截然不同，这就是RNN的特性，可以处理序列数据，同时对序列也很敏感。</p>
 
       
@@ -1668,17 +1758,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="python多进程可以多核-多线程no协程">Python多进程[可以多核] 多线程【No】协程</span></h2>
+          <h2><span id="python多进程可以多核多线程no协程">Python多进程[可以多核]
+多线程【No】协程</span></h2>
 <blockquote>
-<p><strong>multiprocessing — 基于进程的并行</strong>:<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/multiprocessing.html">https://docs.python.org/zh-cn/3/library/multiprocessing.html</a></p>
-<p><strong>Python进阶</strong>：<a target="_blank" rel="noopener" href="https://ebook-python-study.readthedocs.io/zh_CN/latest/index.html">https://ebook-python-study.readthedocs.io/zh_CN/latest/index.html</a></p>
+<p><strong>multiprocessing ---
+基于进程的并行</strong>:https://docs.python.org/zh-cn/3/library/multiprocessing.html</p>
+<p><strong>Python进阶</strong>：https://ebook-python-study.readthedocs.io/zh_CN/latest/index.html</p>
 </blockquote>
 <h3><span id="一-进程的定义">一、进程的定义</span></h3>
-<h5><span id="进程一个程序运行起来后代码用到的资源-称之为进程它是操作系统分配资源的基本单元">进程：一个程序运行起来后，代码+用到的资源 称之为进程，它是操作系统分配资源的基本单元。</span></h5>
+<h5><span id="进程一个程序运行起来后代码用到的资源称之为进程它是操作系统分配资源的基本单元">进程：一个程序运行起来后，代码+用到的资源
+称之为进程，它是操作系统分配资源的基本单元。</span></h5>
 <h5><span id="线程操作系统能够进行运算调度的最小单位">线程：<strong>操作系统能够进行运算调度的最小单位</strong>。</span></h5>
-<h5><span id="协程协程是python个中另外一种实现多任务的方式只不过比线程更小占用更小执行单元理解为需要的资源-因为它自带cpu上下文-这样只要在合适的时机-我们可以把一个协程-切换到另一个协程-只要这个过程中保存或恢复-cpu上下文那么程序还是可以运行的">协程：协程是python个中另外一种实现多任务的方式，只不过比线程更小占用更小执行单元（理解为需要的资源）。 因为它自带CPU上下文。这样只要在合适的时机， 我们可以把一个协程 切换到另一个协程。 只要这个过程中保存或恢复 CPU上下文那么程序还是可以运行的。</span></h5>
-<p><a target="_blank" rel="noopener" href="https://anchorety.github.io/2018/12/30/python%E5%A4%9A%E8%BF%9B%E7%A8%8B/">https://anchorety.github.io/2018/12/30/python多进程/</a></p>
-<p>在介绍Python中的线程之前，先明确一个问题，Python中的多线程是<strong>假的多线程</strong>！ 为什么这么说，我们先明确一个概念，<strong>全局解释器锁</strong>（GIL）。</p>
+<h5><span id="协程协程是python个中另外一种实现多任务的方式只不过比线程更小占用更小执行单元理解为需要的资源-因为它自带cpu上下文-这样只要在合适的时机-我们可以把一个协程切换到另一个协程-只要这个过程中保存或恢复cpu上下文那么程序还是可以运行的">协程：协程是python个中另外一种实现多任务的方式，只不过比线程更小占用更小执行单元（理解为需要的资源）。
+因为它自带CPU上下文。这样只要在合适的时机， 我们可以把一个协程
+切换到另一个协程。 只要这个过程中保存或恢复
+CPU上下文那么程序还是可以运行的。</span></h5>
+<p>https://anchorety.github.io/2018/12/30/python%E5%A4%9A%E8%BF%9B%E7%A8%8B/</p>
+<p>在介绍Python中的线程之前，先明确一个问题，Python中的多线程是<strong>假的多线程</strong>！
+为什么这么说，我们先明确一个概念，<strong>全局解释器锁</strong>（GIL）。</p>
 <p>Python代码的执行由Python虚拟机（解释器）来控制。Python在设计之初就考虑要在主循环中，同时只有一个线程在执行，就像单CPU的系统中运行多个进程那样，内存中可以存放多个程序，但任意时刻，只有一个程序在CPU中运行。同样地，虽然Python解释器可以运行多个线程，只有一个线程在解释器中运行。</p>
 <p><strong>对Python虚拟机的访问由全局解释器锁（GIL）来控制，正是这个锁能保证同时只有一个线程在运行</strong>。在多线程环境中，Python虚拟机按照以下方式执行。</p>
 <blockquote>
@@ -1695,26 +1792,31 @@
 <h3><span id="11-multiprocessing">1.1 multiprocessing</span></h3>
 <h3><span id="12-joblib">1.2 joblib</span></h3>
 <blockquote>
-<p>Python之并行–基于joblib - 半个冯博士的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/180347090">https://zhuanlan.zhihu.com/p/180347090</a></p>
+<p>Python之并行--基于joblib - 半个冯博士的文章 - 知乎
+https://zhuanlan.zhihu.com/p/180347090</p>
 </blockquote>
 <p>首先<code>joblib</code>里面最常用到的一个类和一个方法分别是<code>Parallel</code>和<code>delayed</code>。<code>Parallel</code>主要用于初始化并行计算时需要用到的参数，而<code>delayed</code>则主要用来指定需要被并行的参数。比如官方给出的以下示例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"><span class="keyword">from</span> joblib <span class="keyword">import</span> Parallel, delayed</span><br><span class="line">Parallel(n_jobs=<span class="number">2</span>)(delayed(sqrt)(i ** <span class="number">2</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line">[<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">8.0</span>, <span class="number">9.0</span>]</span><br></pre></td></tr></table></figure>
 <p>这段代码其实已经基本看出方法的主要使用模式了。</p>
 <p>解释一下：</p>
 <ul>
-<li><code>Parallel(n_jobs=2)</code>: 指定两个CPU（默认是分配给不同的CPU）</li>
+<li><code>Parallel(n_jobs=2)</code>:
+指定两个CPU（默认是分配给不同的CPU）</li>
 <li>后面的<code>delayed(sqrt)</code>表示要用的函数是<code>sqrt</code>，这里这种用法就非常类似<code>C++</code>里面的<strong>委托(delegate)</strong>。</li>
-<li><code>(i ** 2) for i in range(10)</code>: 这里注意<code>(i**2)</code>的括号和<code>delayed(sqrt)</code>是紧挨着的。这一小段表示<strong>要传递给<code>delayed</code>中指定的函数的参数是<code>i^2</code>。</strong></li>
+<li><code>(i ** 2) for i in range(10)</code>:
+这里注意<code>(i**2)</code>的括号和<code>delayed(sqrt)</code>是紧挨着的。这一小段表示<strong>要传递给<code>delayed</code>中指定的函数的参数是<code>i^2</code>。</strong></li>
 </ul>
 <p>那么结合这么一小段程序，其实已经能大致理解它的使用方法了。这里最开始可能主要不习惯的是要用到了Python里面的<a href="https://link.zhihu.com/?target=https%3A//blog.mioshu.com/archives/328.html">内部函数</a>机制。</p>
 <h2><span id="二-多进程应用">二、多进程应用</span></h2>
-<h3><span id="21-python多进程读写公共数据-异步读取">2.1、python多进程读写公共数据 - 异步读取</span></h3>
+<h3><span id="21-python多进程读写公共数据-异步读取">2.1、python多进程读写公共数据 -
+异步读取</span></h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing, os, time  </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment">#公共数据</span></span><br><span class="line">temp = np.zeros((<span class="number">4</span>,<span class="number">12</span>))</span><br><span class="line"><span class="comment"># 回调函数，用于多进程读写公共数据的，我的理解：多进程在回调函数这里是串行的，否则同时读写会乱掉</span></span><br><span class="line"><span class="comment"># 回调函数必须只有一个输入参数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mycallback</span>(<span class="params">index</span>):</span><br><span class="line">    i,j = index[<span class="number">0</span>],index[<span class="number">1</span>]</span><br><span class="line">    temp[i,j] = i+j</span><br><span class="line"><span class="comment"># 多进程处理的耗时的算法函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">multiprocess</span>(<span class="params">i,j</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;子进程开始执行&gt;&gt;&gt; pid=&#123;&#125;,ppid=&#123;&#125;,编号&#123;&#125;&quot;</span>.<span class="built_in">format</span>(os.getpid(), os.getppid(), i))</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> (i,j)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    time_start = time.time()</span><br><span class="line">    MultiP = multiprocessing.Pool(<span class="number">2</span>)  <span class="comment"># 多进程</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;主进程开始执行&gt;&gt;&gt; parent_pid=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(os.getpid()))</span><br><span class="line">            MultiP.apply_async(multiprocess, args=(i, j), callback=mycallback)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关闭进程池，停止接受其它进程</span></span><br><span class="line">    MultiP.close()</span><br><span class="line">    <span class="comment"># 阻塞进程 等待进程池中的所有进程执行完毕，必须在close()之后调用</span></span><br><span class="line">    MultiP.join()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;主进程终止&quot;</span>)</span><br><span class="line">    time_end = time.time()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;totally cost&#x27;</span>, time_end - time_start)</span><br><span class="line">    <span class="built_in">print</span>(temp)</span><br></pre></td></tr></table></figure>
 <h5><span id="异步非阻塞式">异步非阻塞式：</span></h5>
 <p>正因为是异步非阻塞式的，不用等待当前运行的子进程执行完毕，随时根据系统调度来进行进程切换。基本上主进程和三个子进程，四个进程是同时运行的。</p>
-<h3><span id="22-python中多进程读取excel文件-异步读取返回值管理">2.2 python中多进程读取excel文件 - 异步读取，返回值管理</span></h3>
+<h3><span id="22python中多进程读取excel文件-异步读取返回值管理">2.2
+python中多进程读取excel文件 - 异步读取，返回值管理</span></h3>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hynkoala/article/details/93895004">https://blog.csdn.net/hynkoala/article/details/93895004</a></p>
+<p>https://blog.csdn.net/hynkoala/article/details/93895004</p>
 </blockquote>
 <p>首先准备:当前文件上级目录下有个excels目录，目录里存在15份.xls文件，每个文件1000条数据，需要通过多进程对这些文件读取为pandas的dataframe格式</p>
 <blockquote>
@@ -1757,7 +1859,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

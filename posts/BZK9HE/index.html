@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -299,37 +299,55 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="图论算法从入门到放下">图论算法从入门到放下</span></h2>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://leetcode.cn/circle/discuss/FyPTTM/">https://leetcode.cn/circle/discuss/FyPTTM/</a></p>
+<p>https://leetcode.cn/circle/discuss/FyPTTM/</p>
 </blockquote>
 <h4><span id="主要内容一览">主要内容一览</span></h4>
-<img src="https://pic.leetcode-cn.com/1655461415-YbBmuc-graph_mind.png" alt="graph_mind.png" style="zoom: 33%;">
+<p><img src="https://pic.leetcode-cn.com/1655461415-YbBmuc-graph_mind.png" alt="graph_mind.png" style="zoom: 33%;"></p>
 <h2><span id="岛屿问题">岛屿问题</span></h2>
-<h4><span id="剑指-offer-ii-105-岛屿的最大面积"></span></h4>
-<p>给定一个由 0 和 1 组成的非空二维数组 grid ，用来表示海洋岛屿地图。一个 岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在水平或者竖直方向上相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。</p>
-<p>找到给定的二维数组中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。</p>
+<h4><span id="剑指-offer-ii-105岛屿的最大面积"></span></h4>
+<p>给定一个由 0 和 1 组成的非空二维数组 grid
+，用来表示海洋岛屿地图。一个 岛屿 是由一些相邻的 1 (代表土地)
+构成的组合，这里的「相邻」要求两个 1
+必须在水平或者竖直方向上相邻。你可以假设 grid 的四个边缘都被
+0（代表水）包围着。</p>
+<p>找到给定的二维数组中最大的岛屿面积。如果没有岛屿，则返回面积为 0
+。</p>
 <p>示例 1:</p>
-<img src="https://pic.leetcode-cn.com/1626667010-nSGPXz-image.png" alt="img" style="zoom:33%;">
-<p>输入: grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]<br>
-输出: 6<br>
-解释: 对于上面这个给定矩阵应返回 6。注意答案不应该是 11 ，因为岛屿只能包含水平或垂直的四个方向的 1 。</p>
+<p><img src="https://pic.leetcode-cn.com/1626667010-nSGPXz-image.png" alt="img" style="zoom:33%;"></p>
+<p>输入: grid =
+[[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+输出: 6 解释: 对于上面这个给定矩阵应返回 6。注意答案不应该是 11
+，因为岛屿只能包含水平或垂直的四个方向的 1 。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxAreaOfIsland</span>(<span class="params">self, grid: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="comment"># 深度优先搜索 空间复杂度o(m*n)</span></span><br><span class="line">        m, n = <span class="built_in">len</span>(grid), <span class="built_in">len</span>(grid[<span class="number">0</span>])</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">x, y</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">            s = <span class="number">1</span></span><br><span class="line">            grid[x][y] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i, j <span class="keyword">in</span> [(x - <span class="number">1</span>, y), (x, y - <span class="number">1</span>), (x + <span class="number">1</span>, y), (x, y + <span class="number">1</span>)]:</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="number">0</span> <span class="keyword">or</span> j &lt; <span class="number">0</span> <span class="keyword">or</span> i == m <span class="keyword">or</span> j == n <span class="keyword">or</span> grid[i][j]!=<span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                s += dfs(i, j)</span><br><span class="line">            <span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                <span class="keyword">if</span> grid[i][j] == <span class="number">1</span>:</span><br><span class="line">                    res = <span class="built_in">max</span>(res, dfs(i, j))</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-<h4><span id="743-网络延迟时间"></span></h4>
-<p>有 n 个网络节点，标记为 1 到 n。给你一个列表 times，表示信号经过 有向 边的传递时间。 times[i] = (ui, vi, wi)，其中 ui 是源节点，vi 是目标节点， wi 是一个信号从源节点传递到目标节点的时间。</p>
-<p>现在，从某个节点 K 发出一个信号。需要多久才能使所有节点都收到信号？如果不能使所有节点收到信号，返回 -1 。</p>
+<h4><span id="743网络延迟时间"></span></h4>
+<p>有 n 个网络节点，标记为 1 到 n。给你一个列表 times，表示信号经过 有向
+边的传递时间。 times[i] = (ui, vi, wi)，其中 ui 是源节点，vi
+是目标节点， wi 是一个信号从源节点传递到目标节点的时间。</p>
+<p>现在，从某个节点 K
+发出一个信号。需要多久才能使所有节点都收到信号？如果不能使所有节点收到信号，返回
+-1 。</p>
 <ul>
 <li>图最短路径【<strong>优先队列</strong>】</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">networkDelayTime</span>(<span class="params">self, times: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]], n: <span class="built_in">int</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        g = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> x, y, time <span class="keyword">in</span> times:</span><br><span class="line">            g[x - <span class="number">1</span>].append((y - <span class="number">1</span>, time))</span><br><span class="line"></span><br><span class="line">        dist = [<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)] * n</span><br><span class="line">        dist[k - <span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        q = [(<span class="number">0</span>, k - <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">while</span> q:</span><br><span class="line">            time, x = heapq.heappop(q)</span><br><span class="line">            <span class="keyword">if</span> dist[x] &lt; time:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">for</span> y, time <span class="keyword">in</span> g[x]:</span><br><span class="line">                <span class="keyword">if</span> (d := dist[x] + time) &lt; dist[y]:</span><br><span class="line">                    dist[y] = d</span><br><span class="line">                    heapq.heappush(q, (d, y))</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(dist)</span><br><span class="line">        <span class="keyword">return</span> ans <span class="keyword">if</span> ans &lt; <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>) <span class="keyword">else</span> -<span class="number">1</span></span><br></pre></td></tr></table></figure>
-<h4><span id="剑指-offer-ii-106-二分图"></span></h4>
-<p>存在一个 无向图 ，图中有 n 个节点。其中每个节点都有一个介于 0 到 n - 1 之间的唯一编号。给定一个二维数组 graph ，表示图，其中 graph[u] 是一个节点数组，由节点 u 的邻接节点组成。形式上，对于 graph[u] 中的每个 v ，都存在一条位于节点 u 和节点 v 之间的无向边。</p>
-<p><strong>二分图 定义</strong>：如果能将一个图的节点集合分割成两个独立的子集 A 和 B ，并使图中的每一条边的两个节点一个来自 A 集合，一个来自 B 集合，就将这个图称为 二分图 。</p>
+<h4><span id="剑指-offer-ii-106二分图"></span></h4>
+<p>存在一个 无向图 ，图中有 n 个节点。其中每个节点都有一个介于 0 到 n -
+1 之间的唯一编号。给定一个二维数组 graph ，表示图，其中 graph[u]
+是一个节点数组，由节点 u 的邻接节点组成。形式上，对于 graph[u] 中的每个
+v ，都存在一条位于节点 u 和节点 v 之间的无向边。</p>
+<p><strong>二分图
+定义</strong>：如果能将一个图的节点集合分割成两个独立的子集 A 和 B
+，并使图中的每一条边的两个节点一个来自 A 集合，一个来自 B
+集合，就将这个图称为 二分图 。</p>
 <p><strong>示例 1：</strong></p>
-<p><img src="https://assets.leetcode.com/uploads/2020/10/21/bi2.jpg" alt="img"></p>
-<p>输入：graph = [[1,2,3],[0,2],[0,1,3],[0,2]]<br>
-输出：false<br>
+<figure>
+<img src="https://assets.leetcode.com/uploads/2020/10/21/bi2.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>输入：graph = [[1,2,3],[0,2],[0,1,3],[0,2]] 输出：false
 解释：不能将节点分割成两个独立的子集，以使每条边都连通一个子集中的一个节点与另一个子集中的一个节点。</p>
 <ul>
-<li>DFS\BFS【染色问题】、并查集</li>
+<li>DFS【染色问题】、并查集</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isBipartite</span>(<span class="params">self, graph: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 广度优先遍历 [推荐]</span></span><br><span class="line">        n = <span class="built_in">len</span>(graph)</span><br><span class="line">        uncolor, red, green = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">        color = [<span class="number">0</span>] * n</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> color[i] == uncolor:</span><br><span class="line">                color[i] = red</span><br><span class="line">                q = deque([i])</span><br><span class="line">                <span class="keyword">while</span> q:</span><br><span class="line">                    node = q.popleft()</span><br><span class="line">                    nei = green <span class="keyword">if</span> color[node] == red <span class="keyword">else</span> red</span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> graph[node]:</span><br><span class="line">                        <span class="keyword">if</span> color[j] == uncolor:</span><br><span class="line">                            color[j] = nei</span><br><span class="line">                            q.append(j)</span><br><span class="line">                        <span class="keyword">elif</span> color[j] != nei:</span><br><span class="line">                            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isBipartite</span>(<span class="params">self, graph: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="comment"># 深度优先遍历 【不推荐】</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">i: <span class="built_in">int</span>, c: <span class="built_in">int</span></span>):</span><br><span class="line">            <span class="keyword">nonlocal</span> res</span><br><span class="line">            nei = green <span class="keyword">if</span> c == red <span class="keyword">else</span> red</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> graph[i]:</span><br><span class="line">                <span class="keyword">if</span> color[j] == uncolor:</span><br><span class="line">                    color[j] = nei</span><br><span class="line">                    dfs(j, nei)</span><br><span class="line">                <span class="keyword">elif</span> color[j] != nei:</span><br><span class="line">                    res = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(graph)</span><br><span class="line">        uncolor, red, green = <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">        color = [<span class="number">0</span>] * n</span><br><span class="line">        res = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> color[i] == uncolor <span class="keyword">and</span> res:</span><br><span class="line">                dfs(i, red)</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># def isBipartite(self, graph: List[List[int]]) -&gt; bool:</span></span><br><span class="line">    <span class="comment">#     # 并查集 【了解】</span></span><br></pre></td></tr></table></figure>
 
@@ -390,7 +408,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -145,7 +145,14 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记] DataLoader 与 DataSet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">人民币 二分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、DataLoader 与 DataSet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 torch.utils.data.DataLoader()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Epoch, Iteration, Batchsize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3 torch.utils.data.Dataset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;1.4 _SingleProcessDataLoaderIter单进程&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;PyTorch 单进程数据读取流程图&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;1.5 _MultiProcessingDataLoaderIter(self)多进程&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">[PyTorch 学习笔记]
+DataLoader 与 DataSet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">人民币 二分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、DataLoader 与 DataSet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1
+torch.utils.data.DataLoader()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.2 Epoch, Iteration,
+Batchsize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.3
+torch.utils.data.Dataset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;1.4
+_SingleProcessDataLoaderIter单进程&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;PyTorch
+单进程数据读取流程图&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">&#x3D;&#x3D;1.5
+_MultiProcessingDataLoaderIter(self)多进程&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,7 +173,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -277,7 +284,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.4k</span>
+      <span>6.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -295,52 +302,77 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="pytorch-学习笔记-dataloader-与-dataset">[PyTorch 学习笔记] DataLoader 与 DataSet</span></h2>
+        <h2><span id="pytorch-学习笔记dataloader-与-dataset">[PyTorch 学习笔记]
+DataLoader 与 DataSet</span></h2>
 <h4><span id="人民币-二分类"><strong>人民币 二分类</strong></span></h4>
-<p>实现 1 元人民币和 100 元人民币的图片二分类。前面讲过 PyTorch 的五大模块：数据、模型、损失函数、优化器和迭代训练。</p>
+<p>实现 1 元人民币和 100 元人民币的图片二分类。前面讲过 PyTorch
+的五大模块：数据、模型、损失函数、优化器和迭代训练。</p>
 <p>数据模块又可以细分为 4 个部分：</p>
 <ul>
 <li>数据收集：样本和标签。</li>
 <li>数据划分：训练集、验证集和测试集</li>
-<li>数据读取：对应于 PyTorch 的 DataLoader。其中 DataLoader 包括 Sampler 和 DataSet。Sampler 的功能是生成索引， DataSet 是根据生成的索引读取样本以及标签。</li>
+<li>数据读取：对应于 PyTorch 的 DataLoader。其中 DataLoader 包括 Sampler
+和 DataSet。Sampler 的功能是生成索引， DataSet
+是根据生成的索引读取样本以及标签。</li>
 <li>数据预处理：对应于 PyTorch 的 transforms</li>
 </ul>
-<img src="https://pic1.zhimg.com/80/v2-11280c55c7d6f98b4ddb6fffe9c3645c_1440w.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://pic1.zhimg.com/80/v2-11280c55c7d6f98b4ddb6fffe9c3645c_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <h3><span id="一-dataloader-与-dataset">一、DataLoader 与 DataSet</span></h3>
-<h4><span id="11-torchutilsdatadataloader"><strong>1.1 torch.utils.data.DataLoader()</strong></span></h4>
+<h4><span id="11torchutilsdatadataloader"><strong>1.1
+torch.utils.data.DataLoader()</strong></span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.utils.data.DataLoader(dataset, batch_size=<span class="number">1</span>, shuffle=<span class="literal">False</span>, sampler=<span class="literal">None</span>, batch_sampler=<span class="literal">None</span>, num_workers=<span class="number">0</span>, collate_fn=<span class="literal">None</span>, pin_memory=<span class="literal">False</span>, drop_last=<span class="literal">False</span>, timeout=<span class="number">0</span>, worker_init_fn=<span class="literal">None</span>, multiprocessing_context=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
 <p>功能：构建可迭代的数据装载器</p>
 <ul>
-<li><strong>dataset</strong>: Dataset 类，决定数据从哪里读取以及如何读取</li>
+<li><strong>dataset</strong>: Dataset
+类，决定数据从哪里读取以及如何读取</li>
 <li><strong>batchsize</strong>: 批大小</li>
 <li><strong>num_works</strong>:num_works: 是否多进程读取数据</li>
 <li><strong>sheuffle</strong>: 每个 epoch 是否乱序</li>
-<li>drop_last: 当样本数不能被 batchsize 整除时，是否舍弃最后一批数据</li>
+<li>drop_last: 当样本数不能被 batchsize
+整除时，是否舍弃最后一批数据</li>
 </ul>
-<h4><span id="12-epoch-iteration-batchsize"><strong>1.2 Epoch, Iteration, Batchsize</strong></span></h4>
+<h4><span id="12-epoch-iterationbatchsize"><strong>1.2 Epoch, Iteration,
+Batchsize</strong></span></h4>
 <ul>
-<li><strong>Epoch</strong>: 所有训练样本都已经输入到模型中，称为一个 Epoch</li>
-<li><strong>Iteration</strong>: 一批样本输入到模型中，称为一个 Iteration</li>
-<li><strong>Batchsize</strong>: 批大小，决定一个 iteration 有多少样本，也决定了一个 Epoch 有多少个 Iteration</li>
+<li><strong>Epoch</strong>: 所有训练样本都已经输入到模型中，称为一个
+Epoch</li>
+<li><strong>Iteration</strong>: 一批样本输入到模型中，称为一个
+Iteration</li>
+<li><strong>Batchsize</strong>: 批大小，决定一个 iteration
+有多少样本，也决定了一个 Epoch 有多少个 Iteration</li>
 </ul>
-<h4><span id="13-torchutilsdatadataset">1.3 <strong>torch.utils.data.Dataset</strong></span></h4>
-<p><strong>功能</strong>：Dataset 是抽象类，所有自定义的 Dataset 都需要继承该类，<strong>并且重写<code>__getitem()__</code>方法和<code>__len__()</code>方法</strong> 。<code>__getitem()__</code>方法的作用是接收一个索引，返回索引对应的样本和标签，这是我们自己需要实现的逻辑。<code>__len__()</code>方法是返回所有样本的数量。</p>
+<h4><span id="13torchutilsdatadataset">1.3
+<strong>torch.utils.data.Dataset</strong></span></h4>
+<p><strong>功能</strong>：Dataset 是抽象类，所有自定义的 Dataset
+都需要继承该类，<strong>并且重写<code>__getitem()__</code>方法和<code>__len__()</code>方法</strong>
+。<code>__getitem()__</code>方法的作用是接收一个索引，返回索引对应的样本和标签，这是我们自己需要实现的逻辑。<code>__len__()</code>方法是返回所有样本的数量。</p>
 <p>数据读取包含 3 个方面：</p>
 <ul>
-<li><strong>读取哪些数据</strong>：每个 Iteration 读取一个 <strong>Batchsize 大小</strong>的数据，每个 Iteration 应该读取哪些数据。</li>
+<li><strong>读取哪些数据</strong>：每个 Iteration 读取一个
+<strong>Batchsize 大小</strong>的数据，每个 Iteration
+应该读取哪些数据。</li>
 <li><strong>从哪里读取数据</strong>：如何找到硬盘中的数据，应该在哪里设置<strong>文件路径参数</strong></li>
 <li><strong>如何读取数据</strong>：不同的文件需要使用不同的读取方法和库。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RMBDataset</span>(<span class="title class_ inherited__">Dataset</span>):  </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, data_dir, transform=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        rmb面额分类任务的Dataset</span></span><br><span class="line"><span class="string">        :param data_dir: str, 数据集所在路径</span></span><br><span class="line"><span class="string">        :param transform: torch.transform，数据预处理</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># data_info存储所有图片路径和标签，在DataLoader中通过index读取样本</span></span><br><span class="line">        self.data_info = self.get_img_info(data_dir)</span><br><span class="line">        self.transform = transform</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_img_info</span>(<span class="params">data_dir</span>):</span><br><span class="line">        data_info = <span class="built_in">list</span>()</span><br><span class="line">        <span class="comment"># data_dir 是训练集、验证集或者测试集的路径</span></span><br><span class="line">        <span class="keyword">for</span> root, dirs, _ <span class="keyword">in</span> os.walk(data_dir):</span><br><span class="line">            <span class="comment"># 遍历类别</span></span><br><span class="line">            <span class="comment"># dirs [&#x27;1&#x27;, &#x27;100&#x27;]</span></span><br><span class="line">            <span class="keyword">for</span> sub_dir <span class="keyword">in</span> dirs:</span><br><span class="line">                <span class="comment"># 文件列表</span></span><br><span class="line">                img_names = os.listdir(os.path.join(root, sub_dir))</span><br><span class="line">                <span class="comment"># 取出 jpg 结尾的文件</span></span><br><span class="line">                img_names = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x.endswith(<span class="string">&#x27;.jpg&#x27;</span>), img_names))</span><br><span class="line">                <span class="comment"># 遍历图片</span></span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(img_names)):</span><br><span class="line">                    img_name = img_names[i]</span><br><span class="line">                    <span class="comment"># 图片的绝对路径</span></span><br><span class="line">                    path_img = os.path.join(root, sub_dir, img_name)</span><br><span class="line">                    <span class="comment"># 标签，这里需要映射为 0、1 两个类别</span></span><br><span class="line">                    label = rmb_label[sub_dir]</span><br><span class="line">                    <span class="comment"># 保存在 data_info 变量中</span></span><br><span class="line">                    data_info.append((path_img, <span class="built_in">int</span>(label)))</span><br><span class="line">        <span class="keyword">return</span> data_info</span><br><span class="line">      </span><br><span class="line">		<span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="comment"># 通过 index 读取样本</span></span><br><span class="line">        path_img, label = self.data_info[index]</span><br><span class="line">        <span class="comment"># 注意这里需要 convert(&#x27;RGB&#x27;)</span></span><br><span class="line">        img = Image.<span class="built_in">open</span>(path_img).convert(<span class="string">&#x27;RGB&#x27;</span>)     <span class="comment"># 0~255</span></span><br><span class="line">        <span class="keyword">if</span> self.transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            img = self.transform(img)   <span class="comment"># 在这里做transform，转为tensor等等</span></span><br><span class="line">        <span class="comment"># 返回是样本和标签</span></span><br><span class="line">        <span class="keyword">return</span> img, label   </span><br><span class="line">      </span><br><span class="line">		<span class="comment"># 返回所有样本的数量</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.data_info)      </span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>图片的路径和对应的标签</strong>：实现读取数据的 Dataset，编写一个<code>get_img_info()</code>方法，<strong>读取每一个图片的路径和对应的标签，组成一个元组，再把所有的元组作为 list 存放到<code>self.data_info</code>变量中</strong>，这里需要注意的是标签需要映射到 0 开始的整数: <code>rmb_label = &#123;&quot;1&quot;: 0, &quot;100&quot;: 1&#125;</code>。</li>
-<li>然后在<code>Dataset</code> 的初始化函数中调用<code>get_img_info()</code>方法。</li>
-<li><strong>索引</strong>：然后在<code>__getitem__()</code>方法中根据<code>index</code> 读取<code>self.data_info</code>中路径对应的数据，并在这里做 transform 操作，返回的是样本和标签。</li>
+<li><strong>图片的路径和对应的标签</strong>：实现读取数据的
+Dataset，编写一个<code>get_img_info()</code>方法，<strong>读取每一个图片的路径和对应的标签，组成一个元组，再把所有的元组作为
+list
+存放到<code>self.data_info</code>变量中</strong>，这里需要注意的是标签需要映射到
+0 开始的整数: <code>rmb_label = &#123;"1": 0, "100": 1&#125;</code>。</li>
+<li>然后在<code>Dataset</code>
+的初始化函数中调用<code>get_img_info()</code>方法。</li>
+<li><strong>索引</strong>：然后在<code>__getitem__()</code>方法中根据<code>index</code>
+读取<code>self.data_info</code>中路径对应的数据，并在这里做 transform
+操作，返回的是样本和标签。</li>
 <li><strong>长度</strong>：在<code>__len__()</code>方法中返回<code>self.data_info</code>的长度，即为所有样本的数量。</li>
 </ul>
 <p>在<code>train_lenet.py</code>中，分 5 步构建模型。</p>
 <ul>
-<li>首先定义训练集、验证集、测试集的路径，定义训练集和测试集的<code>transforms</code>。然后构建训练集和验证集的<code>RMBDataset</code>对象，把对应的路径和<code>transforms</code>传进去。再构建<code>DataLoder</code>，设置 batch_size，其中训练集设置<code>shuffle=True</code>，表示每个 Epoch 都打乱样本。</li>
+<li>首先定义训练集、验证集、测试集的路径，定义训练集和测试集的<code>transforms</code>。然后构建训练集和验证集的<code>RMBDataset</code>对象，把对应的路径和<code>transforms</code>传进去。再构建<code>DataLoder</code>，设置
+batch_size，其中训练集设置<code>shuffle=True</code>，表示每个 Epoch
+都打乱样本。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建MyDataset实例train_data = RMBDataset(data_dir=train_dir, transform=train_transform)valid_data = RMBDataset(data_dir=valid_dir, transform=valid_transform)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建DataLoder</span></span><br><span class="line"><span class="comment"># 其中训练集设置 shuffle=True，表示每个 Epoch 都打乱样本</span></span><br><span class="line">train_loader = DataLoader(dataset=train_data, batch_size=BATCH_SIZE, shuffle=<span class="literal">True</span>)</span><br><span class="line">valid_loader = DataLoader(dataset=valid_data, batch_size=BATCH_SIZE)</span><br></pre></td></tr></table></figure>
 <ul>
@@ -356,52 +388,67 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">optimizer = optim.SGD(net.parameters(), lr=LR, momentum=<span class="number">0.9</span>) <span class="comment"># 选择优化器</span></span><br><span class="line">scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=<span class="number">10</span>, gamma=<span class="number">0.1</span>) </span><br><span class="line"><span class="comment"># 设置学习率下降策略</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>
-<p>第 5 步<strong>迭代训练模型</strong>，在每一个 epoch 里面，<strong>需要遍历 train_loader 取出数据，每次取得数据是一个 batchsize 大小</strong>。这里又分为 4 步。</p>
+<li><p>第 5 步<strong>迭代训练模型</strong>，在每一个 epoch
+里面，<strong>需要遍历 train_loader 取出数据，每次取得数据是一个
+batchsize 大小</strong>。这里又分为 4 步。</p>
 <ul>
-<li>
-<p><strong>前向传播</strong></p>
-</li>
-<li>
-<p><strong>反向传播求导</strong></p>
-</li>
-<li>
-<p><strong>使用<code>optimizer</code>更新权重</strong></p>
-</li>
-<li>
-<p><strong>统计训练情况</strong>。每一个 epoch 完成时都需要使用<code>scheduler</code>更新学习率，和计算验证集的准确率、</p>
+<li><p><strong>前向传播</strong></p></li>
+<li><p><strong>反向传播求导</strong></p></li>
+<li><p><strong>使用<code>optimizer</code>更新权重</strong></p></li>
+<li><p><strong>统计训练情况</strong>。每一个 epoch
+完成时都需要使用<code>scheduler</code>更新学习率，和计算验证集的准确率、</p>
 <p>loss。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(MAX_EPOCH):</span><br><span class="line"></span><br><span class="line">    loss_mean = <span class="number">0.</span></span><br><span class="line">    correct = <span class="number">0.</span></span><br><span class="line">    total = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    net.train()</span><br><span class="line">    <span class="comment"># 遍历 train_loader 取数据</span></span><br><span class="line">    <span class="keyword">for</span> i, data <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># forward</span></span><br><span class="line">        inputs, labels = data</span><br><span class="line">        outputs = net(inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># backward</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update weights</span></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 统计分类情况</span></span><br><span class="line">        _, predicted = torch.<span class="built_in">max</span>(outputs.data, <span class="number">1</span>)</span><br><span class="line">        total += labels.size(<span class="number">0</span>)</span><br><span class="line">        correct += (predicted == labels).squeeze().<span class="built_in">sum</span>().numpy()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打印训练信息</span></span><br><span class="line">        loss_mean += loss.item()</span><br><span class="line">        train_curve.append(loss.item())</span><br><span class="line">        <span class="keyword">if</span> (i+<span class="number">1</span>) % log_interval == <span class="number">0</span>:</span><br><span class="line">            loss_mean = loss_mean / log_interval</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Training:Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;&quot;</span>.<span class="built_in">format</span>(</span><br><span class="line">                epoch, MAX_EPOCH, i+<span class="number">1</span>, <span class="built_in">len</span>(train_loader), loss_mean, correct / total))</span><br><span class="line">            loss_mean = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    scheduler.step()  <span class="comment"># 更新学习率</span></span><br><span class="line">    <span class="comment"># 每个 epoch 计算验证集得准确率和loss</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(MAX_EPOCH):</span><br><span class="line"></span><br><span class="line">    loss_mean = <span class="number">0.</span></span><br><span class="line">    correct = <span class="number">0.</span></span><br><span class="line">    total = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    net.train()</span><br><span class="line">    <span class="comment"># 遍历 train_loader 取数据</span></span><br><span class="line">    <span class="keyword">for</span> i, data <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># forward</span></span><br><span class="line">        inputs, labels = data</span><br><span class="line">        outputs = net(inputs)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># backward</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># update weights</span></span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 统计分类情况</span></span><br><span class="line">        _, predicted = torch.<span class="built_in">max</span>(outputs.data, <span class="number">1</span>)</span><br><span class="line">        total += labels.size(<span class="number">0</span>)</span><br><span class="line">        correct += (predicted == labels).squeeze().<span class="built_in">sum</span>().numpy()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打印训练信息</span></span><br><span class="line">        loss_mean += loss.item()</span><br><span class="line">        train_curve.append(loss.item())</span><br><span class="line">        <span class="keyword">if</span> (i+<span class="number">1</span>) % log_interval == <span class="number">0</span>:</span><br><span class="line">            loss_mean = loss_mean / log_interval</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Training:Epoch[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Iteration[&#123;:0&gt;3&#125;/&#123;:0&gt;3&#125;] Loss: &#123;:.4f&#125; Acc:&#123;:.2%&#125;&quot;</span>.<span class="built_in">format</span>(</span><br><span class="line">                epoch, MAX_EPOCH, i+<span class="number">1</span>, <span class="built_in">len</span>(train_loader), loss_mean, correct / total))</span><br><span class="line">            loss_mean = <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">    scheduler.step()  <span class="comment"># 更新学习率</span></span><br><span class="line">    <span class="comment"># 每个 epoch 计算验证集得准确率和loss</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p>我们可以看到每个 iteration，我们是从<strong>train_loader</strong>中取出数据的。</p>
+<p>我们可以看到每个
+iteration，我们是从<strong>train_loader</strong>中取出数据的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">if</span> self.num_workers == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> _SingleProcessDataLoaderIter(self)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> _MultiProcessingDataLoaderIter(self)</span><br></pre></td></tr></table></figure>
 <p>这里我们没有设置多进程，会执行<code>_SingleProcessDataLoaderIter</code>的方法。我们以<code>_SingleProcessDataLoaderIter</code>为例。在<code>_SingleProcessDataLoaderIter</code>里只有一个方法<code>_next_data()</code>，如下：</p>
-<h4><span id="14-_singleprocessdataloaderiter单进程">==1.4 <code>_SingleProcessDataLoaderIter</code>单进程==</span></h4>
+<h4><span id="14_singleprocessdataloaderiter单进程">==1.4
+<code>_SingleProcessDataLoaderIter</code>单进程==</span></h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_next_data</span>(<span class="params">self</span>):</span><br><span class="line">		index = self._next_index()  <span class="comment"># may raise StopIteration</span></span><br><span class="line"> 		data = self._dataset_fetcher.fetch(index)  <span class="comment"># may raise StopIteration</span></span><br><span class="line"> 		<span class="keyword">if</span> self._pin_memory:</span><br><span class="line">  			data = _utils.pin_memory.pin_memory(data)</span><br><span class="line"> 		<span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
-<p>在该方法中，<strong>self._next_index()<strong>是</strong>获取一个 batchsize 大小的 index 列表</strong>，代码如下：</p>
+<p>在该方法中，<strong>self._next_index()</strong>是<strong>获取一个
+batchsize 大小的 index 列表</strong>，代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_next_index</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">next</span>(self._sampler_iter)  <span class="comment"># may raise StopIteration</span></span><br></pre></td></tr></table></figure>
-<p>其中调用的<strong>sample类</strong>的<code>__iter__()</code>方法<strong>返回 batch_size 大小的随机 index 列表</strong>。</p>
+<p>其中调用的<strong>sample类</strong>的<code>__iter__()</code>方法<strong>返回
+batch_size 大小的随机 index 列表</strong>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">		batch = []</span><br><span class="line"> 		<span class="keyword">for</span> idx <span class="keyword">in</span> self.sampler:</span><br><span class="line">  			batch.append(idx)</span><br><span class="line">  			<span class="keyword">if</span> <span class="built_in">len</span>(batch) == self.batch_size:</span><br><span class="line">   					<span class="keyword">yield</span> batch</span><br><span class="line">   					batch = []</span><br><span class="line"> 		<span class="keyword">if</span> <span class="built_in">len</span>(batch) &gt; <span class="number">0</span> <span class="keyword">and</span> <span class="keyword">not</span> self.drop_last:</span><br><span class="line">  			<span class="keyword">yield</span> batch</span><br></pre></td></tr></table></figure>
-<p>然后再返回看 <code>dataloader</code>的<code>_next_data()</code>方法，在第二行中调用了**self._dataset_fetcher.fetch(index)**获取数据。这里会调用<code>_MapDatasetFetcher</code>中的<code>fetch()</code>函数：</p>
+<p>然后再返回看
+<code>dataloader</code>的<code>_next_data()</code>方法，在第二行中调用了<strong>self._dataset_fetcher.fetch(index)</strong>获取数据。这里会调用<code>_MapDatasetFetcher</code>中的<code>fetch()</code>函数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fetch</span>(<span class="params">self, possibly_batched_index</span>):</span><br><span class="line">		<span class="keyword">if</span> self.auto_collation:</span><br><span class="line">  			data = [self.dataset[idx] <span class="keyword">for</span> idx <span class="keyword">in</span> possibly_batched_index]</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">  			data = self.dataset[possibly_batched_index]</span><br><span class="line"> 		<span class="keyword">return</span> self.collate_fn(data)</span><br></pre></td></tr></table></figure>
-<p>这里调用了<strong>self.dataset[idx]</strong>，这个函数会<strong>调用<code>dataset.__getitem__()</code>方法获取具体的数据</strong>，所以<code>__getitem__()</code>方法是我们必须实现的。我们拿到的<code>data</code>是一个 list，每个元素是一个 tuple，<strong>每个 tuple 包括样本和标签</strong>。所以最后要使用<code>self.collate_fn(data)</code>把 data 转换为两个 list，<strong>第一个 元素 是样本的 batch 形式，形状为 [16, 3, 32, 32] (16 是 batch size，[3, 32, 32] 是图片像素)；第二个元素是标签的 batch 形式，形状为 [16]。</strong></p>
+<p>这里调用了<strong>self.dataset[idx]</strong>，这个函数会<strong>调用<code>dataset.__getitem__()</code>方法获取具体的数据</strong>，所以<code>__getitem__()</code>方法是我们必须实现的。我们拿到的<code>data</code>是一个
+list，每个元素是一个 tuple，<strong>每个 tuple
+包括样本和标签</strong>。所以最后要使用<code>self.collate_fn(data)</code>把
+data 转换为两个 list，<strong>第一个 元素 是样本的 batch 形式，形状为
+[16, 3, 32, 32] (16 是 batch size，[3, 32, 32]
+是图片像素)；第二个元素是标签的 batch 形式，形状为 [16]。</strong></p>
 <p>所以在代码中，我们使用<code>inputs, labels = data</code>来接收数据。</p>
-<h4><span id="pytorch-单进程数据读取流程图">==PyTorch 单进程数据读取流程图==</span></h4>
-<p><img src="https://pic2.zhimg.com/80/v2-7604c8f5e0df531b9127d81736b1da91_1440w.jpg" alt="img"></p>
-<h4><span id="15-_multiprocessingdataloaderiterself多进程">==1.5 _MultiProcessingDataLoaderIter(self)多进程==</span></h4>
+<h4><span id="pytorch单进程数据读取流程图">==PyTorch
+单进程数据读取流程图==</span></h4>
+<figure>
+<img src="https://pic2.zhimg.com/80/v2-7604c8f5e0df531b9127d81736b1da91_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4><span id="15_multiprocessingdataloaderiterself多进程">==1.5
+_MultiProcessingDataLoaderIter(self)多进程==</span></h4>
 <blockquote>
-<p>[源码解析] PyTorch 分布式(2) — 数据加载之DataLoader:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/rossiXYZ/p/15150504.html">https://www.cnblogs.com/rossiXYZ/p/15150504.html</a></p>
+<p>[源码解析] PyTorch 分布式(2) ---
+数据加载之DataLoader:https://www.cnblogs.com/rossiXYZ/p/15150504.html</p>
 </blockquote>
 <p>总体逻辑如下：</p>
 <ul>
 <li>主进程把需要获取的数据 index 放入index_queue。</li>
-<li>子进程从 index_queue 之中读取 index，进行数据读取，然后把读取数据的index放入worker_result_queue。</li>
-<li>主进程的 pin_memory_thread 会从 worker_result_queue 读取数据index，依据这个index进行读取数据，进行处理，把结果放入 data_queue。</li>
+<li>子进程从 index_queue 之中读取
+index，进行数据读取，然后把读取数据的index放入worker_result_queue。</li>
+<li>主进程的 pin_memory_thread 会从 worker_result_queue
+读取数据index，依据这个index进行读取数据，进行处理，把结果放入
+data_queue。</li>
 </ul>
-<p><img src="https://img2020.cnblogs.com/blog/1850883/202108/1850883-20210811215147352-1780778189.png" alt="img"></p>
+<figure>
+<img src="https://img2020.cnblogs.com/blog/1850883/202108/1850883-20210811215147352-1780778189.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 
     </div>
 
@@ -460,7 +507,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

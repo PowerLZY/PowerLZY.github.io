@@ -144,7 +144,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、HBOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 HBOS算法流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、 XGBOD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、COPOD：用「统计」+「机器学习」检测异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、More about Anomaly Detection</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、HBOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.1 HBOS算法流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">三、 XGBOD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">四、COPOD：用「统计」+「机器学习」检测异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">五、More about Anomaly
+Detection</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -301,40 +302,37 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3><span id="一-hbos">一、HBOS</span></h3>
-<p><strong>HBOS全名为：Histogram-based Outlier Score</strong>。它是一种单变量方法的组合，不能对特征之间的依赖关系进行建模，但是计算速度较快，对大数据集友好，其基本假设是数据集的每个维度相互独立，然后对<strong>每个维度进行区间(bin)划分，区间的密度越高，异常评分越低。理解了这句话，基本就理解了这个算法。</strong></p>
+<p><strong>HBOS全名为：Histogram-based Outlier
+Score</strong>。它是一种单变量方法的组合，不能对特征之间的依赖关系进行建模，但是计算速度较快，对大数据集友好，其基本假设是数据集的每个维度相互独立，然后对<strong>每个维度进行区间(bin)划分，区间的密度越高，异常评分越低。理解了这句话，基本就理解了这个算法。</strong></p>
 <h4><span id="11-hbos算法流程"><strong>1.1 HBOS算法流程</strong></span></h4>
 <h5><span id="1-静态宽度直方图"><strong>1、静态宽度直方图</strong></span></h5>
 <p>标准的直方图构建方法，在值范围内使用k个等宽箱，样本落入每个箱的频率（相对数量）作为密度（箱子高度）的估计，时间复杂度：O(n)</p>
-<p>**注意：**等宽分箱，每个箱中的数据宽度相同，不是指数据个数相同。例如序列[5,10,11,13,15,35,50,55,72,92,204,215]，数据集中最大值是215，最小值是5，分成3个箱，故每个箱的宽度应该为（215-5）/3=70，所以箱的宽度是70，这就要求箱中数据之差不能超过70，并且要把不超过70的数据全放在一起，最后的分箱结果如下：</p>
+<p><strong>注意：</strong>等宽分箱，每个箱中的数据宽度相同，不是指数据个数相同。例如序列[5,10,11,13,15,35,50,55,72,92,204,215]，数据集中最大值是215，最小值是5，分成3个箱，故每个箱的宽度应该为（215-5）/3=70，所以箱的宽度是70，这就要求箱中数据之差不能超过70，并且要把不超过70的数据全放在一起，最后的分箱结果如下：</p>
 <p><strong>箱一：5,10，11,13,15,35,50,55,72；箱二：92；箱三：204,215</strong></p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026218.png" alt="图片" style="zoom:48%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026218.png" alt="图片" style="zoom:48%;"></p>
 <h5><span id="2-动态宽度直方图"><strong>2、动态宽度直方图</strong></span></h5>
-<p>首先对所有值进行排序，然后固定数量的N/k 个连续值装进一个箱里，其 中N是总实例数，k是箱个数，<strong>直方图中的箱面积表示实例数</strong>，因为箱的宽度是由箱中第一个值和最后一个值决定的，所有箱的面积都一样，因此每一个箱的高度都是可计算的。这意味着跨度大的箱的高度低，即密度小，只有一种情况例外，超过k个数相等，此时允许在同一个箱里超过N/k值，时间复杂度：O(n×log(n))</p>
+<p>首先对所有值进行排序，然后固定数量的N/k 个连续值装进一个箱里，其
+中N是总实例数，k是箱个数，<strong>直方图中的箱面积表示实例数</strong>，因为箱的宽度是由箱中第一个值和最后一个值决定的，所有箱的面积都一样，因此每一个箱的高度都是可计算的。这意味着跨度大的箱的高度低，即密度小，只有一种情况例外，超过k个数相等，此时允许在同一个箱里超过N/k值，时间复杂度：O(n×log(n))</p>
 <p>还是用序列[<strong>5,10,11,13,15</strong>,<strong>35,50,55,72</strong>,92,204,215]举例，也是假如分3箱，那么每箱都是4个，宽度为边缘之差，第一个差为15-5=10，第二差为72-35=37，第三个箱宽为215-92=123，为了保持面积相等，所以导致后面的很矮，前面的比较高，如下图所示（非严格按照规则）：</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026012.png" alt="图片" style="zoom:50%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304182026012.png" alt="图片" style="zoom:50%;"></p>
 <h5><span id="3-算法推导过程"><strong>3、算法推导过程</strong></span></h5>
-<p>**对每个维度都计算了一个独立的直方图，其中每个箱子的高度表示密度的估计，然后为了使得最大高度为1（确保了每个特征与异常值得分的权重相等），对直方图进行归一化处理。**最后，每一个实例的HBOS值由以下公式计算：<br>
-$$<br>
-H B O S(p)=\sum_{i=0}^d \log \left(\frac{1}{\operatorname{hist}<em>i(p)}\right)<br>
-$$<br>
-推导过程:<br>
-假设样本 $\mathrm{p}$ 第 $\mathrm{i}$ 个特征的概率密度为 pi ( $p$ ) , 则p的概率密度可以计算为, $d$ 为总的特征的个数：<br>
-$$<br>
-P(p)=P_1(p) P_2(p) \cdots P_d(p)<br>
-$$<br>
-两边取对数：<br>
-$$<br>
-\log (P(p))=\log \left(P_1(p) P_2(p) \cdots P_d(p)\right)=\sum</em>{i=1}^d \log \left(P_i(p)\right)<br>
-$$<br>
-概率密度越大，异常评分越小，为了方便评分，两边乘以“-1”:<br>
-$$<br>
--\log (P(p))=-1 \sum_{i=1}^d \log \left(P_t(p)\right)=\sum_{i=1}^d \frac{1}{\log \left(P_i(p)\right)}<br>
-$$<br>
-最后可得：<br>
-$$<br>
-H B O S(p)=-\log (P(p))=\sum_{i=1}^d \frac{1}{\log \left(P_i(p)\right)}<br>
-$$<br>
-PyOD是一个可扩展的Python工具包，用于检测多变量数据中的异常值。它可以在一个详细记录API下访问大约 20 个离群值检测算法。</p>
+<p><strong>对每个维度都计算了一个独立的直方图，其中每个箱子的高度表示密度的估计，然后为了使得最大高度为1（确保了每个特征与异常值得分的权重相等），对直方图进行归一化处理。</strong>最后，每一个实例的HBOS值由以下公式计算：
+<span class="math display">\[
+H B O S(p)=\sum_{i=0}^d \log
+\left(\frac{1}{\operatorname{hist}_i(p)}\right)
+\]</span> 推导过程: 假设样本 <span class="math inline">\(\mathrm{p}\)</span> 第 <span class="math inline">\(\mathrm{i}\)</span> 个特征的概率密度为 pi ( <span class="math inline">\(p\)</span> ) , 则p的概率密度可以计算为, <span class="math inline">\(d\)</span> 为总的特征的个数： <span class="math display">\[
+P(p)=P_1(p) P_2(p) \cdots P_d(p)
+\]</span> 两边取对数： <span class="math display">\[
+\log (P(p))=\log \left(P_1(p) P_2(p) \cdots P_d(p)\right)=\sum_{i=1}^d
+\log \left(P_i(p)\right)
+\]</span> 概率密度越大，异常评分越小，为了方便评分，两边乘以“-1”: <span class="math display">\[
+-\log (P(p))=-1 \sum_{i=1}^d \log \left(P_t(p)\right)=\sum_{i=1}^d
+\frac{1}{\log \left(P_i(p)\right)}
+\]</span> 最后可得： <span class="math display">\[
+H B O S(p)=-\log (P(p))=\sum_{i=1}^d \frac{1}{\log \left(P_i(p)\right)}
+\]</span>
+PyOD是一个可扩展的Python工具包，用于检测多变量数据中的异常值。它可以在一个详细记录API下访问大约
+20 个离群值检测算法。</p>
 <h3><span id="三-xgbod">三、 XGBOD</span></h3>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/349519844">【异常检测】<em>XGBOD</em>：用无监督表示学习改进有监督异常检测</a></p>
@@ -343,40 +341,36 @@ PyOD是一个可扩展的Python工具包，用于检测多变量数据中的异�
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338189299">COPOD：用「统计」+「机器学习」检测异常</a></p>
 </blockquote>
-<h3><span id="五-more-about-anomaly-detection">五、More about Anomaly Detection</span></h3>
-<p>那这个异常检测啊,其实也是另外一门学问,那我们课堂上就没有时间讲了,异常检测不是只能用 Aauto-Encoder 这个技术,Aauto-Encoder 这个技术,只是众多可能方法里面的其中一个,我们拿它来当做 Aauto-Encoder 的作业,因为我相信,你未来有很多的机会用得上异常检测这个技术,那实际上有关异常检测更完整的介绍,我们把过去上课的录影放在这边,给大家参考,</p>
-<p>Part 1: <a target="_blank" rel="noopener" href="https://youtu.be/gDp2LXGnVLQ">https://youtu.be/gDp2LXGnVLQ</a></p>
+<h3><span id="五-more-about-anomalydetection">五、More about Anomaly
+Detection</span></h3>
+<p>那这个异常检测啊,其实也是另外一门学问,那我们课堂上就没有时间讲了,异常检测不是只能用
+Aauto-Encoder 这个技术,Aauto-Encoder
+这个技术,只是众多可能方法里面的其中一个,我们拿它来当做 Aauto-Encoder
+的作业,因为我相信,你未来有很多的机会用得上异常检测这个技术,那实际上有关异常检测更完整的介绍,我们把过去上课的录影放在这边,给大家参考,</p>
+<p>Part 1: https://youtu.be/gDp2LXGnVLQ</p>
 <ul>
 <li><strong>简介</strong></li>
 </ul>
-<p>Part 2: <a target="_blank" rel="noopener" href="https://youtu.be/cYrNjLxkoXs">https://youtu.be/cYrNjLxkoXs</a></p>
+<p>Part 2: https://youtu.be/cYrNjLxkoXs</p>
 <ul>
 <li><strong>信心分数</strong></li>
 </ul>
-<p>Part 3: <a target="_blank" rel="noopener" href="https://youtu.be/ueDlm2FkCnw">https://youtu.be/ueDlm2FkCnw</a></p>
+<p>Part 3: https://youtu.be/ueDlm2FkCnw</p>
 <ul>
-<li>
-<p>异常检测系统的评估？</p>
+<li><p>异常检测系统的评估？</p>
 <ul>
-<li>
-<p>no ACC</p>
-</li>
-<li>
-<p>cost loss设计</p>
-</li>
-<li>
-<p>RUC</p>
-</li>
+<li><p>no ACC</p></li>
+<li><p>cost loss设计</p></li>
+<li><p>RUC</p></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p>Part 4: <a target="_blank" rel="noopener" href="https://youtu.be/XwkHOUPbc0Q">https://youtu.be/XwkHOUPbc0Q</a></p>
-<p>Part 5: <a target="_blank" rel="noopener" href="https://youtu.be/Fh1xFBktRLQ">https://youtu.be/Fh1xFBktRLQ</a></p>
+<p>Part 4: https://youtu.be/XwkHOUPbc0Q</p>
+<p>Part 5: https://youtu.be/Fh1xFBktRLQ</p>
 <ul>
 <li>无监督</li>
 </ul>
-<p>Part 6: <a target="_blank" rel="noopener" href="https://youtu.be/LmFWzmn2rFY">https://youtu.be/LmFWzmn2rFY</a></p>
-<p>Part 7: <a target="_blank" rel="noopener" href="https://youtu.be/6W8FqUGYyDo">https://youtu.be/6W8FqUGYyDo</a></p>
+<p>Part 6: https://youtu.be/LmFWzmn2rFY</p>
+<p>Part 7: https://youtu.be/6W8FqUGYyDo</p>
 <p>那以上就是有关 Aauto-Encoder 的部分</p>
 
     </div>
@@ -436,7 +430,7 @@ PyOD是一个可扩展的Python工具包，用于检测多变量数据中的异�
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

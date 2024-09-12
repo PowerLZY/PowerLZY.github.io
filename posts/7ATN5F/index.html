@@ -21,12 +21,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"powerlzy.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、CART ID3 和 C4.5 虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART 算法的二分法可以简化决策树的规模，提高生成决策树的效率。 1.1 思想 CART 包含的基本过程有分裂，剪枝和树选择。  **分裂：**分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART 没有停止准则，会一直生长下去； 剪枝：">
+    <meta name="description" content="一、CART ID3 和 C4.5 虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART 算法的二分法可以简化决策树的规模，提高生成决策树的效率。 1.1 思想 CART 包含的基本过程有分裂，剪枝和树选择。  分裂：分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART 没有停止准则，会一直生长下去； 剪枝：采用代价">
 <meta property="og:type" content="article">
 <meta property="og:title" content="决策树（3）CART">
 <meta property="og:url" content="https://powerlzy.github.io/posts/7ATN5F/index.html">
 <meta property="og:site_name" content="PowerLZY&#39;s Blog">
-<meta property="og:description" content="一、CART ID3 和 C4.5 虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART 算法的二分法可以简化决策树的规模，提高生成决策树的效率。 1.1 思想 CART 包含的基本过程有分裂，剪枝和树选择。  **分裂：**分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART 没有停止准则，会一直生长下去； 剪枝：">
+<meta property="og:description" content="一、CART ID3 和 C4.5 虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART 算法的二分法可以简化决策树的规模，提高生成决策树的效率。 1.1 思想 CART 包含的基本过程有分裂，剪枝和树选择。  分裂：分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART 没有停止准则，会一直生长下去； 剪枝：采用代价">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211501941.png">
 <meta property="og:image" content="https://picx.zhimg.com/v2-9081bc3cd5f2ec069212b79d5c5ff7d3_b.jpg">
@@ -147,7 +147,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、CART</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 划分标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 缺失值处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 剪枝策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 类别不平衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.6 连续值处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6.1 分类树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.7 回归树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7.1 CART分类树建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、 总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">一、CART</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.1 思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.2 划分标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.3 缺失值处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.4 剪枝策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.5 类别不平衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.6 连续值处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.6.1 分类树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">1.7 回归树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">1.7.1
+CART分类树建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">二、 总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +169,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -304,109 +305,144 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2><span id="一-cart">一、CART</span></h2>
-<p>ID3 和 C4.5 虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART 算法的二分法可以简化决策树的规模，提高生成决策树的效率。</p>
+<p>ID3 和 C4.5
+虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART
+算法的二分法可以简化决策树的规模，提高生成决策树的效率。</p>
 <h3><span id="11-思想">1.1 思想</span></h3>
 <p>CART 包含的基本过程有分裂，剪枝和树选择。</p>
 <ul>
-<li>**分裂：**分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART 没有停止准则，会一直生长下去；</li>
-<li><strong>剪枝：<strong>采用</strong>代价复杂度剪枝</strong>，从最大树开始，每次选择训练数据熵对整体性能贡献最小的那个分裂节点作为下一个剪枝对象，直到只剩下根节点。CART 会产生一系列嵌套的剪枝树，需要从中选出一颗最优的决策树；</li>
-<li>**树选择：**用单独的测试集评估每棵剪枝树的预测性能（也可以用交叉验证）。</li>
+<li><strong>分裂：</strong>分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART
+没有停止准则，会一直生长下去；</li>
+<li><strong>剪枝：</strong>采用<strong>代价复杂度剪枝</strong>，从最大树开始，每次选择训练数据熵对整体性能贡献最小的那个分裂节点作为下一个剪枝对象，直到只剩下根节点。CART
+会产生一系列嵌套的剪枝树，需要从中选出一颗最优的决策树；</li>
+<li><strong>树选择：</strong>用单独的测试集评估每棵剪枝树的预测性能（也可以用交叉验证）。</li>
 </ul>
 <p>CART 在 C4.5 的基础上进行了很多提升。</p>
 <ul>
-<li>C4.5 为多叉树，运算速度慢，CART 为<strong>二叉树</strong>，运算速度快；</li>
+<li>C4.5 为多叉树，运算速度慢，CART
+为<strong>二叉树</strong>，运算速度快；</li>
 <li>C4.5 只能分类，CART 既可以分类也可以<strong>回归</strong>；</li>
-<li>CART 使用 <strong>Gini 系数作为变量的不纯度量</strong>，减少了<strong>大量的对数运算</strong>；</li>
-<li>CART 采用<strong>代理测试来估计缺失值</strong>，而 C4.5 以不同概率划分到不同节点中；</li>
-<li>CART 采用**“基于代价复杂度剪枝”方法进行剪枝，而 C4.5 采用悲观剪枝方法**。</li>
+<li>CART 使用 <strong>Gini
+系数作为变量的不纯度量</strong>，减少了<strong>大量的对数运算</strong>；</li>
+<li>CART 采用<strong>代理测试来估计缺失值</strong>，而 C4.5
+以不同概率划分到不同节点中；</li>
+<li>CART 采用<strong>“基于代价复杂度剪枝”方法进行剪枝，而 C4.5
+采用悲观剪枝方法</strong>。</li>
 </ul>
 <h3><span id="12-划分标准">1.2 划分标准</span></h3>
-<p><strong>熵模型拥有大量耗时的对数运算</strong>，基尼指数在简化模型的同时还保留了熵模型的优点。基尼指数代表了模型的不纯度，基尼系数越小，不纯度越低，特征越好。这和信息增益（率）正好相反。<br>
-$$<br>
-\begin{aligned} \operatorname{Gini}(D) &amp;=\sum_{k=1}^{K} \frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right) =1- \sum_{k=1}<sup>{K}\left(\frac{\left|C_{k}\right|}{|D|}\right)</sup>{2}  &amp;\operatorname{Gini}(D \mid A) =\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} \operatorname{Gini}\left(D_{i}\right) \end{aligned}<br>
-$$</p>
-<p><strong>基尼指数</strong>反映了从<strong>数据集中随机抽取两个样本，其类别标记不一致的概率</strong>。因此基尼指数越小，则数据集纯度越高。基尼指数偏向于特征值较多的特征，类似信息增益。基尼指数可以用来度量任何不均匀分布，是介于 0~1 之间的数，0 是完全相等，1 是完全不相等，<strong>基尼指数可以理解为熵模型的一阶泰勒展开。</strong></p>
+<p><strong>熵模型拥有大量耗时的对数运算</strong>，基尼指数在简化模型的同时还保留了熵模型的优点。基尼指数代表了模型的不纯度，基尼系数越小，不纯度越低，特征越好。这和信息增益（率）正好相反。
+<span class="math display">\[
+\begin{aligned} \operatorname{Gini}(D) &amp;=\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right)
+=1-
+\sum_{k=1}^{K}\left(\frac{\left|C_{k}\right|}{|D|}\right)^{2}  &amp;\operatorname{Gini}(D
+\mid A) =\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|}
+\operatorname{Gini}\left(D_{i}\right) \end{aligned}
+\]</span></p>
+<p><strong>基尼指数</strong>反映了从<strong>数据集中随机抽取两个样本，其类别标记不一致的概率</strong>。因此基尼指数越小，则数据集纯度越高。基尼指数偏向于特征值较多的特征，类似信息增益。基尼指数可以用来度量任何不均匀分布，是介于
+0~1 之间的数，0 是完全相等，1
+是完全不相等，<strong>基尼指数可以理解为熵模型的一阶泰勒展开。</strong></p>
 <blockquote>
-<p><em><strong>基尼指数是信息熵中﹣logP在P=1处一阶泰勒展开后的结果！所以两者都可以用来度量数据集的纯度</strong></em></p>
+<p><strong><em>基尼指数是信息熵中﹣logP在P=1处一阶泰勒展开后的结果！所以两者都可以用来度量数据集的纯度</em></strong></p>
 </blockquote>
 <h3><span id="13-缺失值处理">1.3 缺失值处理</span></h3>
 <p>上文说到，模型对于缺失值的处理会分为两个子问题：</p>
 <ul>
 <li><strong>如何在特征值缺失的情况下进行划分特征的选择？</strong></li>
 </ul>
-<p>对于问题 1，<strong>CART 一开始严格要求分裂特征评估时只能使用在该特征上没有缺失值的那部分数据，在后续版本中，CART 算法使用了一种惩罚机制来抑制提升值，从而反映出缺失值的影响</strong>（例如，如果一个特征在节点的 20% 的记录是缺失的，那么这个特征就会减少 20% 或者其他数值）。</p>
+<p>对于问题 1，<strong>CART
+一开始严格要求分裂特征评估时只能使用在该特征上没有缺失值的那部分数据，在后续版本中，CART
+算法使用了一种惩罚机制来抑制提升值，从而反映出缺失值的影响</strong>（例如，如果一个特征在节点的
+20% 的记录是缺失的，那么这个特征就会减少 20% 或者其他数值）。</p>
 <ul>
 <li><strong>选定该划分特征，模型对于缺失该特征值的样本该进行怎样处理？</strong></li>
 </ul>
-<p>对于问题 2，CART 算法的机制是为树的每个节点都找到<strong>代理分裂器</strong>，无论在训练数据上得到的树是否有缺失值都会这样做。在代理分裂器中，特征的分值必须超过默认规则的性能才有资格作为代理（即代理就是<strong>代替缺失值特征作为划分特征的特征</strong>），<strong>当 CART 树中遇到缺失值时，这个实例划分到左边还是右边是决定于其排名最高的代理，如果这个代理的值也缺失了，那么就使用排名第二的代理</strong>，以此类推，如果所有代理值都缺失，那么默认规则就是把样本划分到较大的那个子节点。代理分裂器可以确保无缺失训练数据上得到的树可以用来处理包含确实值的新数据。</p>
+<p>对于问题 2，CART
+算法的机制是为树的每个节点都找到<strong>代理分裂器</strong>，无论在训练数据上得到的树是否有缺失值都会这样做。在代理分裂器中，特征的分值必须超过默认规则的性能才有资格作为代理（即代理就是<strong>代替缺失值特征作为划分特征的特征</strong>），<strong>当
+CART
+树中遇到缺失值时，这个实例划分到左边还是右边是决定于其排名最高的代理，如果这个代理的值也缺失了，那么就使用排名第二的代理</strong>，以此类推，如果所有代理值都缺失，那么默认规则就是把样本划分到较大的那个子节点。代理分裂器可以确保无缺失训练数据上得到的树可以用来处理包含确实值的新数据。</p>
 <h3><span id="14-剪枝策略">1.4 剪枝策略</span></h3>
-<p><strong>基于代价复杂度的剪枝</strong>:<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv11066239">https://www.bilibili.com/read/cv11066239</a></p>
-<p>采用一种**“基于代价复杂度的剪枝**”方法进行<strong>后剪枝</strong>，这种方法会生成一系列树，每<strong>个树都是通过将前面的树的某个或某些子树替换成一个叶节点而得到的，这一系列树中的最后一棵树仅含一个用来预测类别的叶节点</strong>。然后用一种成本复杂度的度量准则来判断哪棵子树应该被一个预测类别值的叶节点所代替。<strong>这种方法需要使用一个单独的测试数据集来评估所有的树，根据它们在测试数据集熵的分类性能选出最佳的树</strong>。</p>
+<p><strong>基于代价复杂度的剪枝</strong>:https://www.bilibili.com/read/cv11066239</p>
+<p>采用一种<strong>“基于代价复杂度的剪枝</strong>”方法进行<strong>后剪枝</strong>，这种方法会生成一系列树，每<strong>个树都是通过将前面的树的某个或某些子树替换成一个叶节点而得到的，这一系列树中的最后一棵树仅含一个用来预测类别的叶节点</strong>。然后用一种成本复杂度的度量准则来判断哪棵子树应该被一个预测类别值的叶节点所代替。<strong>这种方法需要使用一个单独的测试数据集来评估所有的树，根据它们在测试数据集熵的分类性能选出最佳的树</strong>。</p>
 <blockquote>
-<p>从完整子树 $T0$ 开始， 通过在 $Ti$ 子树序列中裁剪真实误差最小【考虑叶子节点的个数】的子树，得到 $Ti+1$。<br>
-$$<br>
-$\alpha=\frac{R(t)-R(T)}{N(T)-1}$<br>
-$$</p>
+<p>从完整子树 <span class="math inline">\(T0\)</span> 开始， 通过在
+<span class="math inline">\(Ti\)</span>
+子树序列中裁剪真实误差最小【考虑叶子节点的个数】的子树，得到 <span class="math inline">\(Ti+1\)</span>。 <span class="math display">\[
+  $\alpha=\frac{R(t)-R(T)}{N(T)-1}$
+  \]</span></p>
 <p>【剪枝之后的误差 - 剪枝前的误差 / 叶子节点数 - 1】</p>
 <p>每次误差增加率最小的节点，得到一系列的子树，从中选择效果最好的【独立剪枝数据集】和【K折交叉验证】</p>
 </blockquote>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211501941.png" alt="image-20220320215056933" style="zoom: 33%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211501941.png" alt="image-20220320215056933" style="zoom: 33%;"></p>
 <p>我们来看具体看一下代价复杂度剪枝算法：</p>
-<p>首先我们将最大树称为 $T_0$, 我们希望减少树的大小来防止过拟合, 但又担心去掉节点后预测误差会增大, 所以我 们定义了一个损失函数来达到这两个变量之间的平衡。损失函数定义如下：<br>
-$$<br>
-C_\alpha(T)=C(T)+\alpha|T|<br>
-$$<br>
-$T$ 为任意子树, $C(T)$ 为预测误差, $|T|$ 为子树 $T$ 的叶子节点个数, $\alpha$ 是参数, $C(T)$ 衡量训练数据的拟合 程度, $|T|$ 衡量树的复杂度, $\alpha$ <strong>权衡拟合程度与树的复杂度</strong>。</p>
+<p>首先我们将最大树称为 <span class="math inline">\(T_0\)</span>,
+我们希望减少树的大小来防止过拟合, 但又担心去掉节点后预测误差会增大,
+所以我
+们定义了一个损失函数来达到这两个变量之间的平衡。损失函数定义如下： <span class="math display">\[
+C_\alpha(T)=C(T)+\alpha|T|
+\]</span> <span class="math inline">\(T\)</span> 为任意子树, <span class="math inline">\(C(T)\)</span> 为预测误差, <span class="math inline">\(|T|\)</span> 为子树 <span class="math inline">\(T\)</span> 的叶子节点个数, <span class="math inline">\(\alpha\)</span> 是参数, <span class="math inline">\(C(T)\)</span> 衡量训练数据的拟合 程度, <span class="math inline">\(|T|\)</span> 衡量树的复杂度, <span class="math inline">\(\alpha\)</span>
+<strong>权衡拟合程度与树的复杂度</strong>。</p>
 <h3><span id="15-类别不平衡">1.5 类别不平衡</span></h3>
-<p><font color="red"> CART 的一大优势在于：无论训练数据集有多失衡，它都可以将其子冻消除不需要建模人员采取其他操作。</font></p>
-<p>CART 使用了一种先验机制，其作用相当于对类别进行加权。这种先验机制嵌入于 CART 算法判断分裂优劣的运算 里, 在 CART 默认的分类模式中, 总是要计算每个节点关于根节点的类别频率的比值, 这就相当于对数据自动重加 权, 对类别进行均衡。</p>
-<p>对于一个二分类问题，节点 node 被分成类别 1 当且仅当:<br>
-$$<br>
-\frac{N_1(\text { node })}{N_1(\text { root })}&gt;\frac{N_0(\text { node })}{N_0(\text { root })}<br>
-$$<br>
-比如二分类，根节点属于 1 类和 0 类的分别有 20 和 80 个。在子节点上有 30 个样本，其中属于 1 类和 0 类的分 别是 10 和 20 个。如果 10/20&gt;20/80，该节点就属于 1 类。</p>
-<p>通过这种计算方式就无需管理数据真实的类别分布。假设有 $\mathrm{K}$ 个目标类别，就可以确保根节点中每个类别的概率 都是 $1 / \mathrm{K}$ 。这种默认的模式被称为“先验相等”。</p>
-<p>先验设置和加权不同之处在于先验不影响每个节点中的各类别样本的数量或者份额。先验影响的是每个节点的类别 赋值和树生长过程中分裂的选择。</p>
+<p><font color="red"> CART
+的一大优势在于：无论训练数据集有多失衡，它都可以将其子冻消除不需要建模人员采取其他操作。</font></p>
+<p>CART
+使用了一种先验机制，其作用相当于对类别进行加权。这种先验机制嵌入于 CART
+算法判断分裂优劣的运算 里, 在 CART 默认的分类模式中,
+总是要计算每个节点关于根节点的类别频率的比值, 这就相当于对数据自动重加
+权, 对类别进行均衡。</p>
+<p>对于一个二分类问题，节点 node 被分成类别 1 当且仅当: <span class="math display">\[
+\frac{N_1(\text { node })}{N_1(\text { root })}&gt;\frac{N_0(\text {
+node })}{N_0(\text { root })}
+\]</span> 比如二分类，根节点属于 1 类和 0 类的分别有 20 和 80
+个。在子节点上有 30 个样本，其中属于 1 类和 0 类的分 别是 10 和 20
+个。如果 10/20&gt;20/80，该节点就属于 1 类。</p>
+<p>通过这种计算方式就无需管理数据真实的类别分布。假设有 <span class="math inline">\(\mathrm{K}\)</span>
+个目标类别，就可以确保根节点中每个类别的概率 都是 <span class="math inline">\(1 / \mathrm{K}\)</span>
+。这种默认的模式被称为“先验相等”。</p>
+<p>先验设置和加权不同之处在于先验不影响每个节点中的各类别样本的数量或者份额。先验影响的是每个节点的类别
+赋值和树生长过程中分裂的选择。</p>
 <h3><span id="16-连续值处理">1.6 连续值处理</span></h3>
 <h4><span id="161-分类树">1.6.1 分类树</span></h4>
 <ul>
-<li>
-<p><strong><font color="red">如果特征值是连续值：CART的处理思想与C4.5是相同的，即将连续特征值离散化。唯一不同的地方是度量的标准不一样，</font></strong> <strong>CART采用基尼指数，而C4.5采用信息增益比</strong>。</p>
-</li>
-<li>
-<p>如果当前节点为连续属性，<strong>CART树中该属性（剩余的属性值）后面还可以参与子节点的产生选择过程</strong>。</p>
-</li>
+<li><p><strong><font color="red">如果特征值是连续值：CART的处理思想与C4.5是相同的，即将连续特征值离散化。唯一不同的地方是度量的标准不一样，</font></strong>
+<strong>CART采用基尼指数，而C4.5采用信息增益比</strong>。</p></li>
+<li><p>如果当前节点为连续属性，<strong>CART树中该属性（剩余的属性值）后面还可以参与子节点的产生选择过程</strong>。</p></li>
 </ul>
 <h3><span id="17-回归树">1.7 回归树</span></h3>
-<p><strong>CART（Classification and Regression Tree，分类回归树），从名字就可以看出其不仅可以用于分类，也可以应用于回归</strong>。其回归树的建立算法上与分类树部分相似，这里简单介绍下不同之处。</p>
+<p><strong>CART（Classification and Regression
+Tree，分类回归树），从名字就可以看出其不仅可以用于分类，也可以应用于回归</strong>。其回归树的建立算法上与分类树部分相似，这里简单介绍下不同之处。</p>
 <h5><span id="连续值处理rss残差平方和"><strong>连续值处理</strong>：RSS<strong>残差平方和</strong></span></h5>
-<p><strong>对于连续值的处理, CART 分类树采用基尼系数的大小来度量特征的各个划分点。在回归模型中, 我们使用常见的 和方差度量方式</strong>, 对于任意划分特征 $\mathrm{A}$, 对应的任意划分点 $\mathrm{s}$ 两边划分成的数据集 $D_1$ 和 $D_2$, 求出使 $D_1$ 和 $D_2$ 各自<strong>集合的均方差最小</strong>, 同时 $D_1$ 和 $D_2$ 的均方差之和最小所对应的特征和特征值划分点。表达式为:<br>
-$$<br>
-\min _{a, s}\left[\min <em>{c_1} \sum</em>{x_i \in D_1}\left(y_i-c_1\right)^2+\min <em>{c_2} \sum</em>{x_i \in D_2}\left(y_i-c_2\right)^2\right]<br>
-$$<br>
-其中, $c_1$ 为 $D_1$ 数据集的样本输出均值, $c_2$ 为 $D_2$ 数据集的样本输出均值。</p>
+<p><strong>对于连续值的处理, CART
+分类树采用基尼系数的大小来度量特征的各个划分点。在回归模型中,
+我们使用常见的 和方差度量方式</strong>, 对于任意划分特征 <span class="math inline">\(\mathrm{A}\)</span>, 对应的任意划分点 <span class="math inline">\(\mathrm{s}\)</span> 两边划分成的数据集 <span class="math inline">\(D_1\)</span> 和 <span class="math inline">\(D_2\)</span>, 求出使 <span class="math inline">\(D_1\)</span> 和 <span class="math inline">\(D_2\)</span>
+各自<strong>集合的均方差最小</strong>, 同时 <span class="math inline">\(D_1\)</span> 和 <span class="math inline">\(D_2\)</span>
+的均方差之和最小所对应的特征和特征值划分点。表达式为: <span class="math display">\[
+\min _{a, s}\left[\min _{c_1} \sum_{x_i \in
+D_1}\left(y_i-c_1\right)^2+\min _{c_2} \sum_{x_i \in
+D_2}\left(y_i-c_2\right)^2\right]
+\]</span> 其中, <span class="math inline">\(c_1\)</span> 为 <span class="math inline">\(D_1\)</span> 数据集的样本输出均值, <span class="math inline">\(c_2\)</span> 为 <span class="math inline">\(D_2\)</span> 数据集的样本输出均值。</p>
 <h5><span id="预测方式"><strong>预测方式</strong></span></h5>
-<p>对于决策树建立后做预测的方式，上面讲到了 CART 分类树采用叶子节点里概率最大的类别作为当前节点的预测类别。而回归树输出不是类别，它采用的是用最终叶子的均值或者中位数来预测输出结果。</p>
-<h4><span id="171-cart分类树建模时预测变量中存在连续和离散时会自动分别进行处理吗">1.7.1 CART分类树建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？</span></h4>
+<p>对于决策树建立后做预测的方式，上面讲到了 CART
+分类树采用叶子节点里概率最大的类别作为当前节点的预测类别。而回归树输出不是类别，它采用的是用最终叶子的均值或者中位数来预测输出结果。</p>
+<h4><span id="171cart分类树建模时预测变量中存在连续和离散时会自动分别进行处理吗">1.7.1
+CART分类树建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？</span></h4>
 <blockquote>
-<p>在使用sklearn的决策树CART建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？ - 月来客栈的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/472579561/answer/2002434993">https://www.zhihu.com/question/472579561/answer/2002434993</a></p>
+<p>在使用sklearn的决策树CART建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？
+- 月来客栈的回答 - 知乎
+https://www.zhihu.com/question/472579561/answer/2002434993</p>
 </blockquote>
-<p><strong>对于这种连续型的特征变量，Sklearn中的具体做法（包括ID3、CART、随机森林等）是先对连续型特征变量进行排序处理</strong>，<strong><font color="red"> 然后取所有连续两个值的均值来离散化整个连续型特征变量。</font></strong></p>
-<p>假设现在某数据集其中一个特征维度为:<br>
-$$<br>
-[0.5,0.2,0.8,0.9,1.2,2.1,3.2,4.5]<br>
-$$<br>
-则首先需要对其进行排序处理, 排序后的结果为:<br>
-$$<br>
-[0.2,0.5,0.8,0.9,1.2,2.1,3.2,4.5]<br>
-$$<br>
-接着再计算所有连续两个值之间的平均值：<br>
-$$<br>
-[0.35,0.65,0.85,1.05,1.65,2.65,3.85]<br>
-$$<br>
+<p><strong>对于这种连续型的特征变量，Sklearn中的具体做法（包括ID3、CART、随机森林等）是先对连续型特征变量进行排序处理</strong>，<strong><font color="red">
+然后取所有连续两个值的均值来离散化整个连续型特征变量。</font></strong></p>
+<p>假设现在某数据集其中一个特征维度为: <span class="math display">\[
+[0.5,0.2,0.8,0.9,1.2,2.1,3.2,4.5]
+\]</span> 则首先需要对其进行排序处理, 排序后的结果为: <span class="math display">\[
+[0.2,0.5,0.8,0.9,1.2,2.1,3.2,4.5]
+\]</span> 接着再计算所有连续两个值之间的平均值： <span class="math display">\[
+[0.35,0.65,0.85,1.05,1.65,2.65,3.85]
+\]</span>
 这样，便得到了该特征离散化后的结果。最后在构造决策树时，只需要使用式最后离散化后的特征进行划分指标的计算即可。同时，值得一说的地方是<strong>目前Sklearn在实际处理时，会把所有的特征均看作连续型变量进行处理</strong>。</p>
 <p>下图所示为iris数据集根据sklearn中CART算法所建模的决策树的可视化结果：</p>
-<img src="https://picx.zhimg.com/v2-9081bc3cd5f2ec069212b79d5c5ff7d3_b.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://picx.zhimg.com/v2-9081bc3cd5f2ec069212b79d5c5ff7d3_b.jpg" alt="img" style="zoom:50%;"></p>
 <p>从图中可以看到，<code>petal width</code>这个特征在前两次分类时的分割点分别为0.8和1.75。下面先来看看原始特征<code>petal width</code>的取值情况：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1.</span>  <span class="number">1.5</span> <span class="number">1.8</span> <span class="number">1.4</span> <span class="number">2.5</span> <span class="number">1.3</span> <span class="number">2.1</span> <span class="number">1.5</span> <span class="number">0.2</span> <span class="number">2.</span>  <span class="number">1.</span>  <span class="number">0.2</span> <span class="number">0.3</span> <span class="number">0.4</span> <span class="number">1.</span>  <span class="number">1.8</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.5</span> <span class="number">1.3</span> <span class="number">0.2</span> <span class="number">1.2</span> <span class="number">2.2</span> <span class="number">0.2</span> <span class="number">1.3</span> <span class="number">2.</span>  <span class="number">0.2</span> <span class="number">1.8</span> <span class="number">1.9</span> <span class="number">1.</span>  <span class="number">1.5</span> <span class="number">2.3</span> <span class="number">1.3</span> <span class="number">0.4</span> <span class="number">1.</span>  <span class="number">1.9</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">1.1</span> <span class="number">1.7</span> <span class="number">0.2</span> <span class="number">2.4</span> <span class="number">0.2</span> <span class="number">0.6</span> <span class="number">1.8</span> <span class="number">1.1</span> <span class="number">2.3</span> <span class="number">1.6</span> <span class="number">1.4</span> <span class="number">2.3</span> <span class="number">1.3</span> <span class="number">0.2</span> <span class="number">0.1</span> <span class="number">1.5</span> <span class="number">1.8</span> <span class="number">0.2</span> <span class="number">0.3</span> <span class="number">0.2</span> <span class="number">1.5</span> <span class="number">2.4</span> <span class="number">0.3</span> <span class="number">2.1</span> <span class="number">2.5</span> <span class="number">0.2</span> <span class="number">1.4</span> <span class="number">1.5</span> <span class="number">1.8</span> <span class="number">1.4</span> <span class="number">2.3</span> <span class="number">0.2</span> <span class="number">2.1</span> <span class="number">1.5</span> <span class="number">2.</span>  <span class="number">1.</span>  <span class="number">1.4</span> <span class="number">1.4</span> <span class="number">0.3</span> <span class="number">1.3</span> <span class="number">1.2</span> <span class="number">0.2</span> <span class="number">1.3</span> <span class="number">1.8</span> <span class="number">2.1</span> <span class="number">0.4</span> <span class="number">1.</span>  <span class="number">2.5</span> <span class="number">1.6</span> <span class="number">0.1</span> <span class="number">2.4</span> <span class="number">0.2</span> <span class="number">1.5</span> <span class="number">1.9</span> <span class="number">1.8</span> <span class="number">1.3</span> <span class="number">1.8</span> <span class="number">1.3</span> <span class="number">1.3</span> <span class="number">2.</span>  <span class="number">1.8</span> <span class="number">0.2</span> <span class="number">1.3</span> <span class="number">1.7</span> <span class="number">0.2</span> <span class="number">1.2</span> <span class="number">2.1</span>]</span><br></pre></td></tr></table></figure>
 <p>可以发现上面并没有0.8和1.75这两个取值。接着按上面的方法先排序，再取相邻两个值的平均作为离散化的特征，其结果为：</p>
@@ -415,11 +451,24 @@ $$<br>
 <p>最后通过总结的方式对比下 ID3、C4.5 和 CART 三者之间的差异。</p>
 <p>除了之前列出来的划分标准、剪枝策略、连续值确实值处理方式等之外，我再介绍一些其他差异：</p>
 <ul>
-<li>**划分标准的差异：**ID3 使用信息增益偏向特征值多的特征，C4.5 使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART 使用基尼指数克服 C4.5 需要求 log 的巨大计算量，偏向于特征值较多的特征。</li>
-<li>**使用场景的差异：**ID3 和 C4.5 都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5 是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
-<li>**样本数据的差异：**ID3 只能处理离散数据且缺失值敏感，C4.5 和 CART 可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议 C4.5、大样本建议 CART。C4.5 处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART 本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
-<li>**样本特征的差异：**ID3 和 C4.5 层级之间只使用一次特征，CART 可多次重复使用特征（连续型）；</li>
-<li>**剪枝策略的差异：**ID3 没有剪枝策略，C4.5 是通过悲观剪枝策略来修正树的准确性，而 CART 是通过代价复杂度剪枝。</li>
+<li><strong>划分标准的差异：</strong>ID3
+使用信息增益偏向特征值多的特征，C4.5
+使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART
+使用基尼指数克服 C4.5 需要求 log
+的巨大计算量，偏向于特征值较多的特征。</li>
+<li><strong>使用场景的差异：</strong>ID3 和 C4.5
+都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5
+是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
+<li><strong>样本数据的差异：</strong>ID3
+只能处理离散数据且缺失值敏感，C4.5 和 CART
+可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议
+C4.5、大样本建议 CART。C4.5
+处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART
+本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
+<li><strong>样本特征的差异：</strong>ID3 和 C4.5
+层级之间只使用一次特征，CART 可多次重复使用特征（连续型）；</li>
+<li><strong>剪枝策略的差异：</strong>ID3 没有剪枝策略，C4.5
+是通过悲观剪枝策略来修正树的准确性，而 CART 是通过代价复杂度剪枝。</li>
 </ul>
 
     </div>
@@ -484,7 +533,7 @@ $$<br>
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

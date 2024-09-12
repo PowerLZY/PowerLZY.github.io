@@ -162,7 +162,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -299,8 +299,8 @@
     <div class="post-body" itemprop="articleBody">
         <h2><span id="业务风控常用算法归纳">业务风控常用算法归纳</span></h2>
 <blockquote>
-<p><strong>风控碎碎念</strong>：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1483570023214510080">https://www.zhihu.com/column/c_1483570023214510080</a></p>
-<p><strong>求是汪在路上</strong>：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1156982447794233344">https://www.zhihu.com/column/c_1156982447794233344</a></p>
+<p><strong>风控碎碎念</strong>：https://www.zhihu.com/column/c_1483570023214510080</p>
+<p><strong>求是汪在路上</strong>：https://www.zhihu.com/column/c_1156982447794233344</p>
 </blockquote>
 <h4><span id="前言">前言</span></h4>
 <p>本篇文章在这里主要是做一个综述性的文章简单介绍一下，做一个归纳性质的文章：<strong>风控最核心的算法，按我的理解可以分解为以下几类</strong></p>
@@ -313,12 +313,14 @@
 </ul>
 <h3><span id="一-风控算法场景">一、风控算法场景</span></h3>
 <h4><span id="11-用于用户风险评级的算法">1.1 用于用户风险评级的算法</span></h4>
-<p>这里不考虑<strong>冷启动阶段</strong>所涉及的一些专家规则和头脑风暴，一般评级往往存在于项目运行了一段时间，有了比较可靠的数据积累之后，这时候往往需要我们更精确的根据场景进行用户的划分，最为人熟知的便是信贷中常用的信用分的那一套东西，这一块的知识，我常常是看这个博主 <strong>求是汪在路上</strong>；这一块的算法或者说这一类的算法，这位大佬讲的已经十分清楚了，有兴趣的可以翻出来看看；</p>
-<p>**<font color="red"> 这一类的算法，主要是以有监督为准，难点主要集中在，正负样本不平衡，正负样本的选择，样本的观察期，表现期，观察点等的选择。</font>**一般涉及到的算法，主要以lr，xgb为主，那么在实际使用中，xgb和lightGBM因为其效果出色，特征工程的东西往往比较简单，往往在使用中用的更多一些。</p>
+<p>这里不考虑<strong>冷启动阶段</strong>所涉及的一些专家规则和头脑风暴，一般评级往往存在于项目运行了一段时间，有了比较可靠的数据积累之后，这时候往往需要我们更精确的根据场景进行用户的划分，最为人熟知的便是信贷中常用的信用分的那一套东西，这一块的知识，我常常是看这个博主
+<strong>求是汪在路上</strong>；这一块的算法或者说这一类的算法，这位大佬讲的已经十分清楚了，有兴趣的可以翻出来看看；</p>
+<p><strong><font color="red">
+这一类的算法，主要是以有监督为准，难点主要集中在，正负样本不平衡，正负样本的选择，样本的观察期，表现期，观察点等的选择。</font></strong>一般涉及到的算法，主要以lr，xgb为主，那么在实际使用中，xgb和lightGBM因为其效果出色，特征工程的东西往往比较简单，往往在使用中用的更多一些。</p>
 <p>这一类场景，往往目标相对明确，用途相对明确，做起来，工作量主要集中在特征工程上，一般来说特征工程做好了，这一类模型都可以做出还可以的效果；</p>
 <h4><span id="12-用于社区挖掘的算法">1.2 用于社区挖掘的算法</span></h4>
 <p><strong>社区挖掘，其实和聚类有点点像，也有点像推荐中的基于用户相似的推荐</strong>，本质就是将有关系，有联系的各类用户放到一起，用以达到用户分群的目的，这一块写的比较好的文章，我推荐：</p>
-<ol>
+<ol type="1">
 <li>怎么去找边与边之间的关联：</li>
 </ol>
 <ul>
@@ -335,7 +337,8 @@
 <h4><span id="13-异常值相关的发现算法">1.3 异常值相关的发现算法</span></h4>
 <p>异常值算法，其实和不平衡数据集(pu-learning)的解决方法类似，因为对于风控来讲，风控本身针对的用户在平台或者在用户群中，占比就非常非常低，部分场景可能连千分之一，万分之一都不到，对于大数据集来讲，本身就算是一种<strong>异常值</strong>了，所以往往异常值发现的算法，在实际使用当中，往往会有意想不到的好效果；</p>
 <p>说到异常值发现，日常的监控可能是一个方面，比如同比环比，比例异常，用户群占比异常等；除此之外还有一些，xgbod，iforest的半监督或者单分类的模型可以用于此类场景，这类场景，推荐可以参考：</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/368352445">xiaobo Xie：异常检测用于不平衡数据的二分类</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/368352445">xiaobo
+Xie：异常检测用于不平衡数据的二分类</a></p>
 <p>我个人觉得这是一类对于风控来讲非常好的思考方式，就<strong>是当我们很难刻画黑用户的特征的时候，我们能尽可能好的描述好白用户的特征</strong>，我们一样可以解决问题，这一类问题的模型解决也往往是朝着这个思路来做的；</p>
 <h4><span id="14-行为序列相关的算法">1.4 行为序列相关的算法</span></h4>
 <p>行为序列作为风控行为挖掘的重要组成部分，在部分场景往往有着意想不到的作用，举个例子，电商场景，正常人从搜索到下单，<strong>往往有着复杂的序列，至少大部分用户会有复杂的序列</strong>，而黑灰产往往会点击某些固定的链接直接进入商详，或者搜索固定的词进入商品，下单购买一气呵成，而如果一个非营销类商品大多数聚集着这样的序列，可能往往就存在一些问题，如果这个问题深入探讨下去，便是行为序列的挖掘；</p>
@@ -402,7 +405,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

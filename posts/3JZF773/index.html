@@ -143,7 +143,9 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">CADE: Detecting and Explaining Concept Drift Samples for Security Applications</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">贡献：</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text">CADE:
+Detecting and Explaining Concept Drift Samples for Security
+Applications</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-text">一、说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text">贡献：</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -303,29 +305,41 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2><span id="cade-detecting-and-explaining-concept-drift-samples-for-security-applications">CADE: Detecting and Explaining Concept Drift Samples for Security Applications</span></h2>
-<p>原文作者：Limin Yang, <em>University of Illinois at Urbana-Champaign</em></p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin">https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin</a></p>
+        <h2><span id="cadedetecting-and-explaining-concept-drift-samples-for-securityapplications">CADE:
+Detecting and Explaining Concept Drift Samples for Security
+Applications</span></h2>
+<p>原文作者：Limin Yang, <em>University of Illinois at
+Urbana-Champaign</em></p>
+<p>原文链接：https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin</p>
 <p>发表会议：USENIXSec 2021</p>
-<p><strong>代码地址</strong>：<a target="_blank" rel="noopener" href="https://github.com/whyisyoung/CADE">https://github.com/whyisyoung/CADE</a></p>
+<p><strong>代码地址</strong>：https://github.com/whyisyoung/CADE</p>
 <h3><span id="摘要">摘要</span></h3>
 <p>概念漂移对部署机器学习模型来解决实际的安全问题提出了严峻的挑战。<strong>由于攻击者（和/或良性对手）的动态行为变化，随着时间的推移，测试数据分布往往会从原始的训练数据转移，从而导致部署的模型出现重大故障</strong>。</p>
 <p>为了对抗概念漂移，我们提出了一种新的系统CADE，旨在（1）<strong>检测偏离现有类别的漂移样本</strong>；（2）<strong>解释检测到漂移的原因</strong>。与传统方法不同（需要大量新标签来统计确定概念漂移），我们的目标是在单个漂移样本到达时识别它们。认识到高维离群空间带来的挑战，我们建议将数据样本映射到低维空间，并自动学习距离函数来度量样本之间的相异性。通过对比学习，我们可以充分利用训练数据集中现有的标签来学习如何对样本进行比较和对比。<strong>为了解释检测到的漂移的意义，我们开发了一种基于距离的解释方法</strong>。我们表明，在这个问题背景下，解释“距离”比传统方法更有效，传统方法侧重于解释“决策边界”。我们通过两个案例来评估CADE：Android恶意软件分类和网络入侵检测。我们进一步与一家安全公司合作，在其恶意软件数据库上测试CADE。我们的结果表明，CADE可以有效地检测漂移样本，并提供语义上有意义的解释。</p>
 <h3><span id="一-说明">一、说明</span></h3>
 <p>由于概念漂移，部署基于机器学习的安全应用程序可能非常具有挑战性。无论是恶意软件分类、入侵检测还是在线滥用检测[6、12、17、42、48]，基于学习的模型都是在“封闭世界”假设下工作的，期望测试数据分布与训练数据大致匹配。然而，部署模型的环境通常会随着时间的推移而动态变化。这种变化可能既包括良性玩家的有机行为变化，也包括攻击者的恶意突变和适应。因此，测试数据分布从原始训练数据转移，这可能会导致模型出现严重故障[23]。</p>
 <blockquote>
-<p>[23] A survey on concept drift adaptation. ACM computing surveys (CSUR), 2014.</p>
+<p>[23] A survey on concept drift adaptation. ACM computing surveys
+(CSUR), 2014.</p>
 </blockquote>
 <p>为了解决概念漂移问题，大多数基于学习的模型需要<strong>定期重新培训</strong>[36、39、52]。然而，再培训通常需要标记大量新样本（昂贵）。更重要的是，还很难确定何时应该对模型进行再培训。延迟的再培训会使过时的模型容易受到新的攻击。</p>
-<p><font color="red"><strong>我们设想，对抗概念漂移需要建立一个监控系统来检查传入数据流和训练数据（和/或当前分类器）之间的关系</strong></font>。图1说明了高级思想。当原始分类器在生产空间中工作时，另一个系统应定期检查分类器对传入数据样本做出决策的能力。<strong>A检测模块(1) 可以过滤正在远离训练空间的漂移样本</strong>。更重要的是，为了<strong>解释漂移的原因（例如，攻击者突变、有机行为变化、以前未知的系统错误）</strong>，我们需要一种解释方法(2) 将检测决策与语义上有意义的特征联系起来。这两项功能对于为开放世界环境准备基于学习的安全应用程序至关重要。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550835.png" alt="image-20220605202728095" style="zoom: 67%;">
-<p>之前的工作已经探索了通过直接检查原始分类器（0）的预测置信度来检测漂移样本的方法 <strong>[32]</strong>。置信度较低可能表明传入样本是漂移样本。然而，该置信度得分是基于所有类别已知（封闭世界）的假设计算的概率（总和为1.0）。不属于任何现有类别的漂移样本可能会被分配到错误的类别，并具有很高的置信度（已通过现有工作验证[25、32、37]）。最近的一项工作提出了计算传入样本和每个现有类之间的不一致性度量的想法，以确定适合度[38]。<strong>该不合格度量基于距离函数计算，以量化样本之间的不相似性</strong>。<strong>然而，我们发现这种距离函数很容易失效，尤其是当数据稀疏且维数较高时。</strong></p>
+<p><font color="red"><strong>我们设想，对抗概念漂移需要建立一个监控系统来检查传入数据流和训练数据（和/或当前分类器）之间的关系</strong></font>。图1说明了高级思想。当原始分类器在生产空间中工作时，另一个系统应定期检查分类器对传入数据样本做出决策的能力。<strong>A检测模块(1)
+可以过滤正在远离训练空间的漂移样本</strong>。更重要的是，为了<strong>解释漂移的原因（例如，攻击者突变、有机行为变化、以前未知的系统错误）</strong>，我们需要一种解释方法(2)
+将检测决策与语义上有意义的特征联系起来。这两项功能对于为开放世界环境准备基于学习的安全应用程序至关重要。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550835.png" alt="image-20220605202728095" style="zoom: 67%;"></p>
+<p>之前的工作已经探索了通过直接检查原始分类器（0）的预测置信度来检测漂移样本的方法
+<strong>[32]</strong>。置信度较低可能表明传入样本是漂移样本。然而，该置信度得分是基于所有类别已知（封闭世界）的假设计算的概率（总和为1.0）。不属于任何现有类别的漂移样本可能会被分配到错误的类别，并具有很高的置信度（已通过现有工作验证[25、32、37]）。最近的一项工作提出了计算传入样本和每个现有类之间的不一致性度量的想法，以确定适合度[38]。<strong>该不合格度量基于距离函数计算，以量化样本之间的不相似性</strong>。<strong>然而，我们发现这种距离函数很容易失效，尤其是当数据稀疏且维数较高时。</strong></p>
 <blockquote>
-<p><strong>[32] A baseline for detecting misclassified and out-of-distribution examples in neural networks.</strong></p>
+<p><strong>[32] A baseline for detecting misclassified and
+out-of-distribution examples in neural networks.</strong></p>
 </blockquote>
-<p><strong>我们的方法</strong>。在本文中，我们提出了一种检测漂移样本的新方法，并结合一种解释检测决策的新方法。我们共同构建了一个称为CADE的系统，它是“用于漂移检测和解释的对比自动编码器 (“<strong>Contrastive Autoencoder for Drifting detection and Explanation</strong>)”的缩写关键的挑战是<strong>推导一个有效的距离函数来衡量样本的相异性</strong>。我们没有随意选取距离函数，而是利用对比学习的思想[29]，根据现有的标签，从现有的训练数据中学习距离函数。给定原始分类器的训练数据（多个类别），我们将训练样本映射到低维潜在空间。映射函数通过对比样本来学习，以扩大不同类样本之间的距离，同时减少同一类样本之间的距离。<strong>我们证明了在潜在空间中得到的距离函数可以有效地检测和排序漂移样本。</strong></p>
+<p><strong>我们的方法</strong>。在本文中，我们提出了一种检测漂移样本的新方法，并结合一种解释检测决策的新方法。我们共同构建了一个称为CADE的系统，它是“用于漂移检测和解释的对比自动编码器
+(“<strong>Contrastive Autoencoder for Drifting detection and
+Explanation</strong>)”的缩写关键的挑战是<strong>推导一个有效的距离函数来衡量样本的相异性</strong>。我们没有随意选取距离函数，而是利用对比学习的思想[29]，根据现有的标签，从现有的训练数据中学习距离函数。给定原始分类器的训练数据（多个类别），我们将训练样本映射到低维潜在空间。映射函数通过对比样本来学习，以扩大不同类样本之间的距离，同时减少同一类样本之间的距离。<strong>我们证明了在潜在空间中得到的距离函数可以有效地检测和排序漂移样本。</strong></p>
 <p>评价我们使用两个数据集评估我们的方法，包括<strong>Android恶意软件数据集[7]和2018年发布的入侵检测数据集[57]</strong>。我们的评估表明，我们的漂移检测方法具有很高的准确性，F1平均得分为0.96或更高，优于各种基线和现有方法。我们的分析还表明，使用对比学习可以减少检测决策的模糊性。对于解释模型，我们进行了定量和定性评估。案例研究还表明，所选特征与漂移样本的语义行为相匹配。</p>
-<p>此外，我们还与一家安全公司的合作伙伴合作，在其内部恶意软件数据库上测试CADE。作为初步测试，我们从395个家庭中获得了2019年8月至2020年2月出现的20613个Windows PE恶意软件样本。这使我们能够在不同的环境中测试更多恶意软件系列的系统性能。结果很有希望。<font color="red"><strong>例如，CADE在10个家庭中进行训练并在160个以前未见过的家庭中进行测试时，F1成绩达到0.95分。这使得人们有兴趣在生产系统中进一步测试和部署CADE。</strong> </font></p>
+<p>此外，我们还与一家安全公司的合作伙伴合作，在其内部恶意软件数据库上测试CADE。作为初步测试，我们从395个家庭中获得了2019年8月至2020年2月出现的20613个Windows
+PE恶意软件样本。这使我们能够在不同的环境中测试更多恶意软件系列的系统性能。结果很有希望。<font color="red"><strong>例如，CADE在10个家庭中进行训练并在160个以前未见过的家庭中进行测试时，F1成绩达到0.95分。这使得人们有兴趣在生产系统中进一步测试和部署CADE。</strong>
+</font></p>
 <h4><span id="贡献">贡献：</span></h4>
 <p>本文有三个主要贡献。</p>
 <ul>
@@ -391,7 +405,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

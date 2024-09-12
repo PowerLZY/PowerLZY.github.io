@@ -165,7 +165,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">61</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -299,35 +299,31 @@
         <h2><span id="treelite树模型部署加速工具支持xgboost-lightgbm和sklearn">Treelite：树模型部署加速工具（支持XGBoost、LightGBM和Sklearn）</span></h2>
 <h3><span id="一-treelite介绍"><strong>一、TreeLite介绍</strong></span></h3>
 <p>TreeLite能够树模型编译优化为单独库，可以很方便的用于模型部署。经过优化后可以将XGBoost模型的预测速度提高2-6倍。</p>
-<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261551831.jpg" alt></p>
-<p>如上图，黑色曲线为XGBoost在不同batch size下的吞吐量，红色曲线为XGBoost经过TreeLite编译后的吞吐量。</p>
-<p>Treelite支持众多的树模型，特别是随机森林和GBDT。同时Treelite可以很好的支持XGBoost, LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译。</p>
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304261551831.jpg"></p>
+<p>如上图，黑色曲线为XGBoost在不同batch
+size下的吞吐量，红色曲线为XGBoost经过TreeLite编译后的吞吐量。</p>
+<p>Treelite支持众多的树模型，特别是随机森林和GBDT。同时Treelite可以很好的支持XGBoost,
+LightGBM和 scikit-learn，也可以将自定义模型根据要求完成编译。</p>
 <h3><span id="二-treelite原理"><strong>二、TreeLite原理</strong></span></h3>
 <p><strong>TreeLite主要在两方面完成了改进。</strong></p>
 <ul>
-<li>
-<p><strong>逻辑分支</strong></p>
+<li><p><strong>逻辑分支</strong></p>
 <ul>
-<li>
-<p>这个指令是<strong>gcc引入</strong>的，作用是<strong>允许程序员将最有可能执行的分支告诉编译器</strong>。这个指令的写法为：<code>__builtin_expect(EXP, N)</code>。意思是：EXP==N的概率很大。【<strong>减少重新取跳转地址</strong>】__builtin_expect 说明: <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2684613a300f">https://www.jianshu.com/p/2684613a300f</a></p>
-</li>
-<li>
-<p><strong>构建树模型+ 计算好每个分支下面样本的个数+提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>逻辑比较</strong></p>
+<li><p>这个指令是<strong>gcc引入</strong>的，作用是<strong>允许程序员将最有可能执行的分支告诉编译器</strong>。这个指令的写法为：<code>__builtin_expect(EXP, N)</code>。意思是：EXP==N的概率很大。【<strong>减少重新取跳转地址</strong>】__builtin_expect
+说明: https://www.jianshu.com/p/2684613a300f</p></li>
+<li><p><strong>构建树模型+
+计算好每个分支下面样本的个数+提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p></li>
+</ul></li>
+<li><p><strong>逻辑比较</strong></p>
 <ul>
 <li><strong>浮点数比较，转化为整数型比较</strong>。</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 <h4><span id="21-逻辑分支"><strong>2.1 逻辑分支</strong></span></h4>
 <p>对于树模型而言，节点的分类本质使用if语句完成，而CPU在执行if语句时会等待条件逻辑的计算。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( [conditional expression] ) &#123;</span><br><span class="line">  <span class="built_in">foo</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">bar</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>如果在构建树模型时候，提前计算好每个分支下面样本的个数，则可以提前预知哪一个叶子节点被执行的可能性更大，进而可以提前执行子节点逻辑。</strong></p>
-<img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211426056.jpg" alt="img" style="zoom: 67%;">
+<p><img src="https://lzy-picture.oss-cn-beijing.aliyuncs.com/img/202304211426056.jpg" alt="img" style="zoom: 67%;"></p>
 <p>借助于编译命令，可以完成逻辑计算加速。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* expected to be false */</span></span><br><span class="line"><span class="keyword">if</span>( __builtin_expect([condition],<span class="number">0</span>))&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4><span id="22-逻辑比较">2.2 逻辑比较</span></h4>
@@ -335,12 +331,8 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].fvalue &lt; <span class="number">1.5</span>) &#123;  </span><br><span class="line"><span class="comment">/* floating-point comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (data[<span class="number">3</span>].qvalue &lt; <span class="number">3</span>) &#123;     </span><br><span class="line"><span class="comment">/* integer comparison */</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3><span id="参考文献">参考文献</span></h3>
 <ul>
-<li>
-<p>项目链接：<a href="https://link.zhihu.com/?target=https%3A//treelite.readthedocs.io/">https://treelite.readthedocs.io/</a></p>
-</li>
-<li>
-<p>项目论文：<a href="https://link.zhihu.com/?target=https%3A//mlsys.org/Conferences/doc/2018/196.pdf">https://mlsys.org/Conferences/doc/2018/196.pdf</a></p>
-</li>
+<li><p>项目链接：<a href="https://link.zhihu.com/?target=https%3A//treelite.readthedocs.io/">https://treelite.readthedocs.io/</a></p></li>
+<li><p>项目论文：<a href="https://link.zhihu.com/?target=https%3A//mlsys.org/Conferences/doc/2018/196.pdf">https://mlsys.org/Conferences/doc/2018/196.pdf</a></p></li>
 </ul>
 
     </div>
@@ -400,7 +392,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
